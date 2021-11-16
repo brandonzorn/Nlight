@@ -19,9 +19,7 @@ class Desu:
             con = sqlite3.connect(f'{wd}/Desu/data.db')
             cur = con.cursor()
             cur.execute("""CREATE TABLE manga (id INTEGER PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
-             name STRING, russian STRING, kind STRING, description TEXT, mylist STRING, score FLOAT);""")
-            cur.execute("""CREATE TABLE genres (id INTEGER PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
-             text STRING UNIQUE, russian STRING UNIQUE);""")
+             name STRING, russian STRING, kind STRING, description TEXT, favorites STRING, score FLOAT);""")
             cur.execute("""CREATE TABLE chapters (id INTEGER PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
             vol STRING, ch STRING, title STRING, manga_id INTEGER, index_n INTEGER);""")
             cur.execute("""CREATE TABLE images (id INTEGER PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
@@ -38,16 +36,16 @@ class Desu:
                 self.manga.append(i)
                 manga_add(i)
 
-    def get_content_mylist(self):
+    def get_content_favorites(self):
         self.manga_mylist = []
-        for i in manga_mylist_get():
+        for i in manga_favorites_get():
             self.manga_mylist.append(i)
 
     def get_chapters(self, html):
         self.chapters = []
         if html and html.status_code == 200:
             if len(html.json()) == 0:
-                return None
+                return
             chapters = html.json().get('response').get('chapters').get('list')
             if chapters:
                 for i in chapters:
@@ -58,7 +56,7 @@ class Desu:
         self.images = []
         if html and html.status_code == 200:
             if len(html.json()) == 0:
-                return None
+                return
             images = html.json().get('response').get('pages').get('list')
             for i in images:
                 images_add(i, self.chapter_id, images.index(i))
@@ -71,7 +69,7 @@ class Desu:
         chapter_id = self.chapter_id
         for i in images:
             if form.isHidden() or chapter_id != self.chapter_id:
-                return None
+                return
             page = i.get('page')
             if not os.path.exists(f'{wd}/Desu/images/{manga_id}/{chapter_id}/{page}.jpg'):
                 img = get_html(images[page - 1].get('img'))
@@ -92,7 +90,7 @@ class Desu:
                     images_add(x, chapter_id, images.index(x))
             for j in images:
                 if main_window.isHidden():
-                    return None
+                    return
                 page = j.get('page')
                 if not os.path.exists(f'{wd}/Desu/images/{manga_id}/{chapter_id}/{page}.jpg'):
                     os.makedirs(f'{wd}/Desu/images/{manga_id}/{chapter_id}', exist_ok=True)
@@ -109,7 +107,7 @@ class Desu:
                 a.append(i.get('russian'))
         return a
 
-    def get_manga_mylist(self) -> list:
+    def get_manga_favorites(self) -> list:
         a = []
         for i in self.manga_mylist:
             if i.get('russian') == '':
