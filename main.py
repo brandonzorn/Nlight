@@ -72,7 +72,7 @@ class App:
                        self.ui_ge.g_fiction: 'Fiction', self.ui_ge.g_fantasy: 'Fantasy', self.ui_ge.g_hentai: 'Hentai',
                        self.ui_ge.g_school: 'School', self.ui_ge.g_action: 'Action', self.ui_ge.g_ecchi: 'Ecchi',
                        self.ui_ge.g_yuri: 'Yuri', self.ui_ge.g_yaoi: 'Yaoi'}
-        self.icon_path = os.path.join(Path(__file__).parent, "images/icon.png")
+        app_icon_path = os.path.join(Path(__file__).parent, "images/icon.png")
         library_icon_path = os.path.join(Path(__file__).parent, "images/library.png")
         main_icon_path = os.path.join(Path(__file__).parent, "images/main.png")
         back_icon_path = os.path.join(Path(__file__).parent, "images/back.png")
@@ -80,9 +80,9 @@ class App:
         self.favorite1_icon_path = os.path.join(Path(__file__).parent, "images/favorite1.png")
         self.favorite2_icon_path = os.path.join(Path(__file__).parent, "images/favorite2.png")
         self.window.setWindowTitle('Desu')
-        self.window.setWindowIcon(QIcon(self.icon_path))
-        self.Form_reader.setWindowIcon(QIcon(self.icon_path))
-        self.Form_genres.setWindowIcon(QIcon(self.icon_path))
+        self.window.setWindowIcon(QIcon(app_icon_path))
+        self.Form_reader.setWindowIcon(QIcon(app_icon_path))
+        self.Form_genres.setWindowIcon(QIcon(app_icon_path))
         self.ui.btn_mylist.setIcon(QIcon(library_icon_path))
         self.ui_ml.btn_mylist.setIcon(QIcon(library_icon_path))
         self.ui.btn_main.setIcon(QIcon(main_icon_path))
@@ -93,7 +93,7 @@ class App:
         self.ui_ml.btn_main.setIconSize(self.ui.btn_main.size())
         self.ui_ch.btn_back.setIcon(QIcon(back_icon_path))
         self.ui.btn_main.clicked.connect(self.clicked_main)
-        self.ui.btn_mylist.clicked.connect(self.clicked_mylist)
+        self.ui.btn_mylist.clicked.connect(self.clicked_favorites)
         self.ui.prev_page.clicked.connect(lambda: self.change_page('-'))
         self.ui.next_page.clicked.connect(lambda: self.change_page('+'))
         self.ui.btn_genres_list.clicked.connect(self.clicked_genres)
@@ -107,7 +107,7 @@ class App:
         self.ui.list_manga.doubleClicked.connect(self.double_click)
         self.ui_ch.btn_back.clicked.connect(self.back)
         self.ui_ch.chapters.doubleClicked.connect(self.reader)
-        self.ui_ch.btn_mylist.clicked.connect(self.mylist)
+        self.ui_ch.btn_mylist.clicked.connect(self.add_to_favorites)
         self.ui_ge.buttonBox.accepted.connect(self.genres_accept)
         self.ui_ge.buttonBox.rejected.connect(self.genres_reject)
         self.Form_reader.c.next_page.connect(lambda: self.change_page_reader('+'))
@@ -127,16 +127,16 @@ class App:
     def clicked_chapters(self):
         self.window.setCurrentIndex(1)
 
-    def clicked_mylist(self):
+    def clicked_favorites(self):
         self.is_mylist = True
         self.ui_ml.list_manga.clear()
         self.window.setCurrentIndex(2)
-        self.desu.get_content_mylist()
-        [self.ui_ml.list_manga.addItem(i) for i in self.desu.get_manga_mylist()]
+        self.desu.get_content_favorites()
+        [self.ui_ml.list_manga.addItem(i) for i in self.desu.get_manga_favorites()]
 
     def back(self):
         if self.is_mylist:
-            self.clicked_mylist()
+            self.clicked_favorites()
         else:
             self.clicked_main()
 
@@ -192,6 +192,8 @@ class App:
 
     def download_all(self):
         cur_id = self.ui_ml.list_manga.currentIndex().row()
+        if cur_id < 0:
+            return
         self.desu.manga_id = self.desu.manga_mylist[cur_id].get('id')
         current_url = f'{URL_API}/{self.desu.manga_id}'
         html = get_html(current_url)
@@ -206,7 +208,7 @@ class App:
             cur_id = self.ui_ml.list_manga.currentIndex().row()
             a = self.desu.manga_mylist
         self.desu.manga_id = a[cur_id].get('id')
-        self.Form_reader.close()
+        self.Form_reader.hide()
         self.clicked_chapters()
         pixmap = QPixmap(self.desu.get_preview())
         self.ui_ch.image.setPixmap(pixmap)
@@ -216,7 +218,7 @@ class App:
         self.Form_reader.setWindowTitle(a[cur_id].get('name'))
         self.ui_ch.russian.setText(a[cur_id].get('russian'))
         self.set_score(a[cur_id].get('score'))
-        if manga_mylist_check(self.desu.manga_id):
+        if manga_favorites_check(self.desu.manga_id):
             self.ui_ch.btn_mylist.setIcon(QIcon(self.favorite1_icon_path))
         else:
             self.ui_ch.btn_mylist.setIcon(QIcon(self.favorite_icon_path))
@@ -224,7 +226,8 @@ class App:
 
     def set_score(self, score: float):
         stars = [self.ui_ch.star_1, self.ui_ch.star_2, self.ui_ch.star_3, self.ui_ch.star_4, self.ui_ch.star_5]
-        [i.hide() for i in stars]
+        [i.setIcon(QIcon(self.favorite_icon_path)) for i in stars]
+        self.ui_ch.rate.setText(f'Рейтинг: {score}')
         score = round(score) / 2
         for i in range(int(score)):
             a = stars[i]
@@ -243,7 +246,7 @@ class App:
         elif self.cur_page > 1:
             self.cur_page -= 1
         else:
-            return None
+            return
         self.ui.label_page.setText(f'Страница {self.cur_page}')
         self.get_content()
 
@@ -265,11 +268,11 @@ class App:
     def change_chapter_reader(self, page=None):
         if page == '+':
             if self.cur_index == 0:
-                return None
+                return
             self.cur_index -= 1
         elif page == '-':
             if self.cur_index == len(self.desu.chapters) - 1:
-                return None
+                return
             self.cur_index += 1
         self.page_reader[0] = 1
         self.get_images()
@@ -303,12 +306,12 @@ class App:
         [i.setChecked(False) for i in self.kinds]
         self.get_content()
 
-    def mylist(self):
-        if manga_mylist_check(self.desu.manga_id):
-            manga_mylist_rem(self.desu.manga_id)
+    def add_to_favorites(self):
+        if manga_favorites_check(self.desu.manga_id):
+            manga_favorites_rem(self.desu.manga_id)
             self.ui_ch.btn_mylist.setIcon(QIcon(self.favorite_icon_path))
         else:
-            manga_mylist_add(self.desu.manga_id)
+            manga_favorites_add(self.desu.manga_id)
             self.ui_ch.btn_mylist.setIcon(QIcon(self.favorite1_icon_path))
 
     def genres_accept(self):
