@@ -21,7 +21,7 @@ class Reader(QWidget):
         keyboard.add_hotkey('esc', self.close_reader)
 
     def close_reader(self):
-        self.close()
+        self.hide()
 
     def press_key(self, e):
         if self.isActiveWindow():
