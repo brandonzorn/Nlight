@@ -1,6 +1,7 @@
 import requests
 import sqlite3
 import os
+from items import *
 
 HEADERS = {'User-Agent': 'Desu'}
 
@@ -46,7 +47,7 @@ def chapters_get(manga_id: int) -> list:
     a = cur.execute(f"SELECT * FROM chapters WHERE manga_id = {manga_id} ORDER by index_n").fetchall()
     con.commit()
     con.close()
-    return [{'id': i[0], 'vol': i[1], 'ch': i[2], 'title': i[3]} for i in a[::-1]]
+    return [Chapter({'id': i[0], 'vol': i[1], 'ch': i[2], 'title': i[3]}) for i in a[::-1]]
 
 
 def images_add(data: dict, chapter_id: int, index: int):
@@ -67,7 +68,7 @@ def images_get(chapter_id: int) -> list:
     a = cur.execute(f"SELECT * FROM images WHERE chapter_id = {chapter_id} ORDER by index_n").fetchall()
     con.commit()
     con.close()
-    return [{'id': i[0], 'page': i[1], 'width': i[2], 'height': i[3], 'img': i[4]} for i in a]
+    return [Image({'id': i[0], 'page': i[1], 'width': i[2], 'height': i[3], 'img': i[4]}) for i in a]
 
 
 def manga_favorites_add(manga_id: int):
@@ -86,8 +87,8 @@ def manga_favorites_get():
     a = cur.execute(f"SELECT * FROM manga WHERE favorites not Null;").fetchall()
     con.commit()
     con.close()
-    return [{'id': i[0], 'name': i[1], 'russian': i[2], 'kind': i[3],
-             'description': i[4], 'score': i[6]} for i in a[::-1]]
+    return [Manga({'id': i[0], 'name': i[1], 'russian': i[2], 'kind': i[3],
+                   'description': i[4], 'score': i[6]}) for i in a[::-1]]
 
 
 def manga_favorites_check(manga_id: int) -> bool:
