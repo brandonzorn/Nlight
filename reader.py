@@ -14,6 +14,10 @@ class Reader(QWidget):
     def __init__(self):
         super().__init__()
         self.c = Communicate()
+        self.cur_chapter: int = 1
+        self.max_chapters: int = 1
+        self.cur_page: int = 1
+        self.max_page: int = 1
         keyboard.add_hotkey('left', lambda: self.press_key('prev_page'))
         keyboard.add_hotkey('right', lambda: self.press_key('next_page'))
         keyboard.add_hotkey('up', lambda: self.press_key('next_ch'))
@@ -33,3 +37,24 @@ class Reader(QWidget):
                 self.c.next_ch.emit()
             if e == 'prev_ch':
                 self.c.prev_ch.emit()
+
+    def change_page(self, page):
+        if page == '+':
+            if self.cur_page == self.max_page:
+                self.cur_page = 1
+            else:
+                self.cur_page += 1
+        elif page == '-':
+            if self.cur_page > 1:
+                self.cur_page -= 1
+            elif self.cur_page == 1:
+                self.cur_page = self.max_page
+
+    def change_chapter(self, page=None):
+        if page == '+':
+            if self.cur_chapter != self.max_chapters:
+                self.cur_chapter += 1
+        elif page == '-':
+            if self.cur_chapter > 1:
+                self.cur_chapter -= 1
+        self.cur_page = 1
