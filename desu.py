@@ -1,14 +1,15 @@
 from static import *
+from items import *
 
 
 class Desu:
     def __init__(self):
-        self.manga = []
-        self.manga_mylist = []
+        self.mangas = []
+        self.manga_favorites = []
         self.chapters = []
         self.images = []
-        self.manga_id = 0
-        self.chapter_id = 0
+        self.manga: Manga = Manga({})
+        self.chapter: Chapter = Chapter({})
         self.start()
 
     @staticmethod
@@ -28,18 +29,18 @@ class Desu:
             con.close()
 
     def get_content(self, html):
-        self.manga = []
+        self.mangas = []
         if html and html.status_code == 200:
             if len(html.json()) == 0:
                 return None
             for i in html.json().get('response'):
-                self.manga.append(i)
+                self.mangas.append(Manga(i))
                 manga_add(i)
 
     def get_content_favorites(self):
-        self.manga_mylist = []
+        self.manga_favorites = []
         for i in manga_favorites_get():
-            self.manga_mylist.append(i)
+            self.manga_favorites.append(i)
 
     def get_chapters(self, html):
         self.chapters = []
@@ -49,8 +50,9 @@ class Desu:
             chapters = html.json().get('response').get('chapters').get('list')
             if chapters:
                 for i in chapters:
-                    chapters_add(i, self.manga_id, chapters[::-1].index(i))
-        self.chapters = chapters_get(self.manga_id)
+                    chapters_add(i, self.manga.id, chapters[::-1].index(i))
+        self.chapters = chapters_get(self.manga.id)
+        self.chapters.reverse()
 
     def get_images(self, html):
         self.images = []
@@ -59,27 +61,27 @@ class Desu:
                 return
             images = html.json().get('response').get('pages').get('list')
             for i in images:
-                images_add(i, self.chapter_id, images.index(i))
-        self.images = images_get(self.chapter_id)
+                images_add(i, self.chapter.id, images.index(i))
+        self.images = images_get(self.chapter.id)
 
     def download(self, form):
         wd = os.getcwd()
         images = self.images
-        manga_id = self.manga_id
-        chapter_id = self.chapter_id
+        manga_id = self.manga.id
+        chapter_id = self.chapter.id
         for i in images:
-            if form.isHidden() or chapter_id != self.chapter_id:
+            if form.isHidden() or chapter_id != self.chapter.id:
                 return
-            page = i.get('page')
+            page = i.page
             if not os.path.exists(f'{wd}/Desu/images/{manga_id}/{chapter_id}/{page}.jpg'):
-                img = get_html(images[page - 1].get('img'))
+                img = get_html(images[page - 1].img)
                 with open(f'{wd}/Desu/images/{manga_id}/{chapter_id}/{page}.jpg', 'wb') as f:
                     f.write(img.content)
 
     def download_all(self, main_window):
         wd = os.getcwd()
         chapters = self.chapters
-        manga_id = self.manga_id
+        manga_id = self.manga.id
         for i in chapters[::-1]:
             chapter_id = i.get('id')
             current_url = f'https://desu.me/manga/api/{manga_id}/chapter/{chapter_id}'
@@ -99,45 +101,34 @@ class Desu:
                         f.write(img.content)
 
     def get_manga(self) -> list:
-        a = []
-        for i in self.manga:
-            if i.get('russian') == '':
-                a.append(i.get('name'))
-            else:
-                a.append(i.get('russian'))
-        return a
+        return [i.get_name() for i in self.mangas]
 
     def get_manga_favorites(self) -> list:
-        a = []
-        for i in self.manga_mylist:
-            if i.get('russian') == '':
-                a.append(i.get('name'))
-            else:
-                a.append(i.get('russian'))
-        return a
+        return [i.get_name() for i in self.manga_favorites]
 
     def get_images_pages(self) -> int:
         if not self.images:
             return 1
-        return self.images[-1].get('page')
+        return self.images[-1].page
 
-    def get_chapter(self, index: int) -> list:
-        return [self.chapters[index].get("vol"), self.chapters[index].get("ch"), self.chapters[index].get("title")]
+    def get_chapter(self) -> list:
+        return self.chapter.get_name()
 
     def get_preview(self) -> str:
         wd = os.getcwd()
-        if not os.path.exists(f'{wd}/Desu/images/{self.manga_id}/preview.jpg'):
-            os.makedirs(f'{wd}/Desu/images/{self.manga_id}', exist_ok=True)
-            img = get_html(f'https://desu.me/data/manga/covers/preview/{self.manga_id}.jpg')
-            with open(f'{wd}/Desu/images/{self.manga_id}/preview.jpg', 'wb') as f:
+        if not os.path.exists(f'{wd}/Desu/images/{self.manga.id}/preview.jpg'):
+            os.makedirs(f'{wd}/Desu/images/{self.manga.id}', exist_ok=True)
+            img = get_html(f'https://desu.me/data/manga/covers/preview/{self.manga.id}.jpg')
+            with open(f'{wd}/Desu/images/{self.manga.id}/preview.jpg', 'wb') as f:
                 f.write(img.content)
-        return f'{wd}/Desu/images/{self.manga_id}/preview.jpg'
+        return f'{wd}/Desu/images/{self.manga.id}/preview.jpg'
 
-    def get_image(self, page: int) -> str:
+    def get_image(self, image: Image) -> str:
         wd = os.getcwd()
-        if not os.path.exists(f'{wd}/Desu/images/{self.manga_id}/{self.chapter_id}/{page}.jpg'):
-            os.makedirs(f'{wd}/Desu/images/{self.manga_id}/{self.chapter_id}', exist_ok=True)
-            img = get_html(self.images[page - 1].get('img'))
-            with open(f'{wd}/Desu/images/{self.manga_id}/{self.chapter_id}/{page}.jpg', 'wb') as f:
+        page = image.page
+        if not os.path.exists(f'{wd}/Desu/images/{self.manga.id}/{self.chapter.id}/{page}.jpg'):
+            os.makedirs(f'{wd}/Desu/images/{self.manga.id}/{self.chapter.id}', exist_ok=True)
+            img = get_html(image.img)
+            with open(f'{wd}/Desu/images/{self.manga.id}/{self.chapter.id}/{page}.jpg', 'wb') as f:
                 f.write(img.content)
-        return f'{wd}/Desu/images/{self.manga_id}/{self.chapter_id}/{page}.jpg'
+        return f'{wd}/Desu/images/{self.manga.id}/{self.chapter.id}/{page}.jpg'

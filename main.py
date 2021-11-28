@@ -9,9 +9,9 @@ import desu_chaptersUI
 import desu_genresUI
 import desu_mylistUI
 from desu import Desu
+from reader import Reader
 from static import *
 from threading import Thread
-from form_reader import Reader
 
 URL = 'https://desu.me'
 URL_API = 'https://desu.me/manga/api'
@@ -23,13 +23,12 @@ class App:
         self.desu = Desu()
         self.cur_page = 1
         self.cur_index = 0
-        self.page_reader = [1, 1]
         self.is_favorites = False
         self.params = {'limit': 50, 'page': self.cur_page, 'order': 'popular', 'genres': ''}
         self.window = QStackedWidget()
         self.Form_main = QWidget()
         self.Form_chapters = QWidget()
-        self.Form_reader = Reader()
+        self.reader = Reader()
         self.Form_favorites = QWidget()
         self.Form_genres = QDialog()
         self.ui = desuUI.Ui_Dialog()
@@ -40,7 +39,7 @@ class App:
         self.ui.setupUi(self.Form_main)
         self.ui_ml.setupUi(self.Form_favorites)
         self.ui_ch.setupUi(self.Form_chapters)
-        self.ui_re.setupUi(self.Form_reader)
+        self.ui_re.setupUi(self.reader)
         self.ui_ge.setupUi(self.Form_genres)
         self.window.addWidget(self.Form_main)
         self.window.addWidget(self.Form_chapters)
@@ -81,7 +80,7 @@ class App:
         self.favorite2_icon_path = os.path.join(Path(__file__).parent, "images/favorite2.png")
         self.window.setWindowTitle('Desu')
         self.window.setWindowIcon(QIcon(app_icon_path))
-        self.Form_reader.setWindowIcon(QIcon(app_icon_path))
+        self.reader.setWindowIcon(QIcon(app_icon_path))
         self.Form_genres.setWindowIcon(QIcon(app_icon_path))
         self.ui.btn_mylist.setIcon(QIcon(library_icon_path))
         self.ui_ml.btn_mylist.setIcon(QIcon(library_icon_path))
@@ -106,14 +105,14 @@ class App:
         self.ui.btn_search.clicked.connect(self.search)
         self.ui.list_manga.doubleClicked.connect(self.double_click)
         self.ui_ch.btn_back.clicked.connect(self.back)
-        self.ui_ch.chapters.doubleClicked.connect(self.reader)
+        self.ui_ch.chapters.doubleClicked.connect(self.open_reader)
         self.ui_ch.btn_mylist.clicked.connect(self.add_to_favorites)
         self.ui_ge.buttonBox.accepted.connect(self.genres_accept)
         self.ui_ge.buttonBox.rejected.connect(self.genres_reject)
-        self.Form_reader.c.next_page.connect(lambda: self.change_page_reader('+'))
-        self.Form_reader.c.prev_page.connect(lambda: self.change_page_reader('-'))
-        self.Form_reader.c.next_ch.connect(lambda: self.change_chapter_reader('+'))
-        self.Form_reader.c.prev_ch.connect(lambda: self.change_chapter_reader('-'))
+        self.reader.c.next_page.connect(lambda: self.change_page_reader('+'))
+        self.reader.c.prev_page.connect(lambda: self.change_page_reader('-'))
+        self.reader.c.next_ch.connect(lambda: self.change_chapter_reader('+'))
+        self.reader.c.prev_ch.connect(lambda: self.change_chapter_reader('-'))
         self.ui_ml.btn_main.clicked.connect(self.clicked_main)
         self.ui_ml.list_manga.doubleClicked.connect(self.double_click)
         self.ui_ml.pushButton.clicked.connect(self.download_all)
@@ -155,25 +154,27 @@ class App:
 
     def get_chapters(self):
         self.ui_ch.chapters.clear()
-        current_url = f'{URL_API}/{self.desu.manga_id}'
+        current_url = f'{URL_API}/{self.desu.manga.id}'
         html = get_html(current_url)
         self.desu.get_chapters(html)
         self.ui.label_page.setText(f'Страница {self.cur_page}')
-        [self.ui_ch.chapters.addItem(f'{i.get("vol")}-{i.get("ch")} {i.get("title")}') for i in self.desu.chapters]
+        self.reader.max_chapters = len(self.desu.chapters)
+        [self.ui_ch.chapters.addItem(i.get_name()) for i in self.desu.chapters]
 
     def get_images(self):
-        self.desu.chapter_id = self.desu.chapters[self.cur_index].get('id')
-        current_url = f'{URL_API}/{self.desu.manga_id}/chapter/{self.desu.chapter_id}'
+        self.desu.chapter = self.desu.chapters[self.reader.cur_chapter - 1]
+        current_url = f'{URL_API}/{self.desu.manga.id}/chapter/{self.desu.chapter.id}'
         html = get_html(current_url)
         self.desu.get_images(html)
-        self.page_reader[1] = self.desu.get_images_pages()
-        Thread(target=lambda: self.desu.download(self.Form_reader)).start()
+        self.reader.max_page = self.desu.get_images_pages()
+        Thread(target=lambda: self.desu.download(self.reader)).start()
 
     def get_image(self):
-        size = self.Form_reader.screen().size()
-        self.Form_reader.resize(size)
-        self.Form_reader.showFullScreen()
-        pixmap = QPixmap(self.desu.get_image(self.page_reader[0]))
+        size = self.reader.screen().size()
+        self.reader.resize(size)
+        self.reader.showFullScreen()
+        image = self.desu.images[self.reader.cur_page - 1]
+        pixmap = QPixmap(self.desu.get_image(image))
         pixmap = pixmap.scaled(size - QSize(20, 80), Qt.KeepAspectRatio, Qt.SmoothTransformation)
         return pixmap
 
@@ -182,19 +183,19 @@ class App:
         self.params.update({'search': self.ui.line_search.text()})
         self.get_content()
 
-    def reader(self):
+    def open_reader(self):
         self.cur_index = self.ui_ch.chapters.currentIndex().row()
         self.get_images()
-        pixmap = self.get_image()
-        self.ui_re.img.setPixmap(pixmap)
+        self.reader.manga = self.desu.manga
+        self.reader.chapters = self.desu.chapters
         self.change_chapter_reader()
-        self.Form_reader.show()
+        self.reader.show()
 
     def download_all(self):
         cur_id = self.ui_ml.list_manga.currentIndex().row()
         if cur_id < 0:
             return
-        self.desu.manga_id = self.desu.manga_mylist[cur_id].get('id')
+        self.desu.manga_id = self.desu.manga_favorites[cur_id].get('id')
         current_url = f'{URL_API}/{self.desu.manga_id}'
         html = get_html(current_url)
         self.desu.get_chapters(html)
@@ -203,22 +204,22 @@ class App:
     def double_click(self):
         if self.window.currentIndex() == 0:
             cur_id = self.ui.list_manga.currentIndex().row()
-            a = self.desu.manga
+            a = self.desu.mangas
         else:
             cur_id = self.ui_ml.list_manga.currentIndex().row()
-            a = self.desu.manga_mylist
-        self.desu.manga_id = a[cur_id].get('id')
-        self.Form_reader.hide()
+            a = self.desu.manga_favorites
+        self.desu.manga = a[cur_id]
+        self.reader.hide()
         self.clicked_chapters()
         pixmap = QPixmap(self.desu.get_preview())
         self.ui_ch.image.setPixmap(pixmap)
         self.ui_ch.image.setScaledContents(True)
-        self.ui_ch.description.setText(a[cur_id].get('description'))
-        self.ui_ch.name.setText(a[cur_id].get('name'))
-        self.Form_reader.setWindowTitle(a[cur_id].get('name'))
-        self.ui_ch.russian.setText(a[cur_id].get('russian'))
-        self.set_score(a[cur_id].get('score'))
-        if manga_favorites_check(self.desu.manga_id):
+        self.ui_ch.description.setText(a[cur_id].description)
+        self.ui_ch.name.setText(a[cur_id].name)
+        self.reader.setWindowTitle(a[cur_id].name)
+        self.ui_ch.russian.setText(a[cur_id].russian)
+        self.set_score(a[cur_id].score)
+        if manga_favorites_check(self.desu.manga.id):
             self.ui_ch.btn_mylist.setIcon(QIcon(self.favorite1_icon_path))
         else:
             self.ui_ch.btn_mylist.setIcon(QIcon(self.favorite_icon_path))
@@ -251,36 +252,20 @@ class App:
         self.get_content()
 
     def change_page_reader(self, page):
-        if page == '+':
-            if self.page_reader[0] == self.page_reader[1]:
-                self.page_reader[0] = 1
-            else:
-                self.page_reader[0] += 1
-        elif page == '-':
-            if self.page_reader[0] > 1:
-                self.page_reader[0] -= 1
-            elif self.page_reader[0] == 1:
-                self.page_reader[0] = self.page_reader[1]
+        self.reader.change_page(page)
         pixmap = self.get_image()
         self.ui_re.img.setPixmap(pixmap)
-        self.ui_re.lbl_page.setText(f'Страница {self.page_reader[0]} / {self.page_reader[1]}')
+        cur_page, max_page = self.reader.cur_page, self.reader.max_page
+        self.ui_re.lbl_page.setText(f'Страница {cur_page} / {max_page}')
 
     def change_chapter_reader(self, page=None):
-        if page == '+':
-            if self.cur_index == 0:
-                return
-            self.cur_index -= 1
-        elif page == '-':
-            if self.cur_index == len(self.desu.chapters) - 1:
-                return
-            self.cur_index += 1
-        self.page_reader[0] = 1
+        self.reader.change_chapter(page)
         self.get_images()
-        chapter = self.desu.get_chapter(self.cur_index)
-        self.ui_re.lbl_page.setText(f'Страница {self.page_reader[0]} / {self.page_reader[1]}')
-        self.ui_re.lbl_chp.setText(f'{chapter[0]}-{chapter[1]} {chapter[2]}')
         pixmap = self.get_image()
         self.ui_re.img.setPixmap(pixmap)
+        cur_page, max_page = self.reader.cur_page, self.reader.max_page
+        self.ui_re.lbl_page.setText(f'Страница {cur_page} / {max_page}')
+        self.ui_re.lbl_chp.setText(self.desu.get_chapter())
 
     def filter_apply(self):
         self.cur_page = 1
@@ -307,11 +292,11 @@ class App:
         self.get_content()
 
     def add_to_favorites(self):
-        if manga_favorites_check(self.desu.manga_id):
-            manga_favorites_rem(self.desu.manga_id)
+        if manga_favorites_check(self.desu.manga.id):
+            manga_favorites_rem(self.desu.manga.id)
             self.ui_ch.btn_mylist.setIcon(QIcon(self.favorite_icon_path))
         else:
-            manga_favorites_add(self.desu.manga_id)
+            manga_favorites_add(self.desu.manga.id)
             self.ui_ch.btn_mylist.setIcon(QIcon(self.favorite1_icon_path))
 
     def genres_accept(self):
