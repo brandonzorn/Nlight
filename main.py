@@ -24,13 +24,13 @@ class App:
         self.cur_page = 1
         self.cur_index = 0
         self.page_reader = [1, 1]
-        self.is_mylist = False
+        self.is_favorites = False
         self.params = {'limit': 50, 'page': self.cur_page, 'order': 'popular', 'genres': ''}
         self.window = QStackedWidget()
         self.Form_main = QWidget()
         self.Form_chapters = QWidget()
         self.Form_reader = Reader()
-        self.Form_mylist = QWidget()
+        self.Form_favorites = QWidget()
         self.Form_genres = QDialog()
         self.ui = desuUI.Ui_Dialog()
         self.ui_ml = desu_mylistUI.Ui_Dialog()
@@ -38,13 +38,13 @@ class App:
         self.ui_re = desu_readerUI.Ui_Dialog()
         self.ui_ge = desu_genresUI.Ui_Dialog()
         self.ui.setupUi(self.Form_main)
-        self.ui_ml.setupUi(self.Form_mylist)
+        self.ui_ml.setupUi(self.Form_favorites)
         self.ui_ch.setupUi(self.Form_chapters)
         self.ui_re.setupUi(self.Form_reader)
         self.ui_ge.setupUi(self.Form_genres)
         self.window.addWidget(self.Form_main)
         self.window.addWidget(self.Form_chapters)
-        self.window.addWidget(self.Form_mylist)
+        self.window.addWidget(self.Form_favorites)
         screen_size = [self.window.screen().size().width(), self.window.screen().size().height()]
         self.window.setMinimumSize(QSize(screen_size[0] // 2, screen_size[1] // 2))
         self.Form_genres.setFixedSize(self.Form_genres.minimumSize())
@@ -121,21 +121,21 @@ class App:
         self.get_content()
 
     def clicked_main(self):
-        self.is_mylist = False
+        self.is_favorites = False
         self.window.setCurrentIndex(0)
 
     def clicked_chapters(self):
         self.window.setCurrentIndex(1)
 
     def clicked_favorites(self):
-        self.is_mylist = True
+        self.is_favorites = True
         self.ui_ml.list_manga.clear()
         self.window.setCurrentIndex(2)
         self.desu.get_content_favorites()
         [self.ui_ml.list_manga.addItem(i) for i in self.desu.get_manga_favorites()]
 
     def back(self):
-        if self.is_mylist:
+        if self.is_favorites:
             self.clicked_favorites()
         else:
             self.clicked_main()
