@@ -67,15 +67,15 @@ class Desu:
     def download(self, form):
         wd = os.getcwd()
         images = self.images
-        manga_id = self.manga.id
-        chapter_id = self.chapter.id
-        for i in images:
-            if form.isHidden() or chapter_id != self.chapter.id:
+        manga = self.manga
+        chapter = self.chapter
+        for image in images:
+            if form.isHidden() or chapter.id != self.chapter.id:
                 break
-            page = i.page
-            if not os.path.exists(f'{wd}/Desu/images/{manga_id}/{chapter_id}/{page}.jpg'):
-                img = get_html(images[page - 1].img)
-                with open(f'{wd}/Desu/images/{manga_id}/{chapter_id}/{page}.jpg', 'wb') as f:
+            self.get_image(manga, chapter, image)
+            if not os.path.exists(f'{wd}/Desu/images/{manga.id}/{chapter.id}/{image.page}.jpg'):
+                img = get_html(images[image.page - 1].img)
+                with open(f'{wd}/Desu/images/{manga.id}/{chapter.id}/{image.page}.jpg', 'wb') as f:
                     f.write(img.content)
 
     def download_all(self, main_window):
@@ -123,13 +123,14 @@ class Desu:
                 f.write(img.content)
         return f'{wd}/Desu/images/{self.manga.id}/preview.jpg'
 
-    def get_image(self, image: Image) -> str:
+    @staticmethod
+    def get_image(manga: Manga, chapter: Chapter, image: Image) -> str:
         wd = os.getcwd()
         page = image.page
-        if not os.path.exists(f'{wd}/Desu/images/{self.manga.id}/{self.chapter.id}/{page}.jpg'):
-            os.makedirs(f'{wd}/Desu/images/{self.manga.id}/{self.chapter.id}', exist_ok=True)
+        if not os.path.exists(f'{wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg'):
+            os.makedirs(f'{wd}/Desu/images/{manga.id}/{chapter.id}', exist_ok=True)
             return
             img = get_html(image.img)
-            with open(f'{wd}/Desu/images/{self.manga.id}/{self.chapter.id}/{page}.jpg', 'wb') as f:
+            with open(f'{wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg', 'wb') as f:
                 f.write(img.content)
-        return f'{wd}/Desu/images/{self.manga.id}/{self.chapter.id}/{page}.jpg'
+        return f'{wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg'
