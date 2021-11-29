@@ -40,14 +40,18 @@ class Reader(QWidget):
 
     def change_page(self, page):
         if page == '+':
-            if self.cur_page == self.max_page:
+            if self.cur_page == self.max_page and self.cur_chapter == self.max_chapters:
+                return
+            elif self.cur_page == self.max_page:
                 self.press_key('next_ch')
             else:
                 self.cur_page += 1
         elif page == '-':
             if self.cur_page > 1:
                 self.cur_page -= 1
-            elif self.cur_page == 1:
+            elif self.cur_page == 1 and self.cur_chapter == 1:
+                return
+            else:
                 self.press_key('prev_ch')
 
     def change_chapter(self, page=None):

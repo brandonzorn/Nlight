@@ -71,7 +71,7 @@ class Desu:
         chapter_id = self.chapter.id
         for i in images:
             if form.isHidden() or chapter_id != self.chapter.id:
-                return
+                break
             page = i.page
             if not os.path.exists(f'{wd}/Desu/images/{manga_id}/{chapter_id}/{page}.jpg'):
                 img = get_html(images[page - 1].img)
@@ -128,6 +128,7 @@ class Desu:
         page = image.page
         if not os.path.exists(f'{wd}/Desu/images/{self.manga.id}/{self.chapter.id}/{page}.jpg'):
             os.makedirs(f'{wd}/Desu/images/{self.manga.id}/{self.chapter.id}', exist_ok=True)
+            return
             img = get_html(image.img)
             with open(f'{wd}/Desu/images/{self.manga.id}/{self.chapter.id}/{page}.jpg', 'wb') as f:
                 f.write(img.content)
