@@ -251,7 +251,7 @@ class App:
         self.ui.label_page.setText(f'Страница {self.cur_page}')
         self.get_content()
 
-    def change_page_reader(self, page):
+    def change_page_reader(self, page=None):
         self.reader.change_page(page)
         pixmap = self.get_image()
         self.ui_re.img.setPixmap(pixmap)
