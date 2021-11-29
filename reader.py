@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal, QObject
 import keyboard
+from threading import Thread
 
 
 class Communicate(QObject):
@@ -22,7 +23,7 @@ class Reader(QWidget):
         keyboard.add_hotkey('right', lambda: self.press_key('next_page'))
         keyboard.add_hotkey('up', lambda: self.press_key('next_ch'))
         keyboard.add_hotkey('down', lambda: self.press_key('prev_ch'))
-        keyboard.add_hotkey('esc', self.close_reader)
+        keyboard.add_hotkey('esc', lambda: Thread(target=self.close_reader).start())
 
     def close_reader(self):
         self.hide()
