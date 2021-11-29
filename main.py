@@ -12,6 +12,7 @@ from desu import Desu
 from reader import Reader
 from static import *
 from threading import Thread
+import asyncio
 
 URL = 'https://desu.me'
 URL_API = 'https://desu.me/manga/api'
@@ -166,6 +167,7 @@ class App:
         html = get_html(current_url)
         self.desu.get_images(html)
         self.reader.max_page = self.desu.get_images_pages()
+        self.desu.download(self.reader)
         Thread(target=lambda: self.desu.download(self.reader)).start()
 
     def get_image(self):
@@ -174,6 +176,8 @@ class App:
         self.reader.showFullScreen()
         image = self.desu.images[self.reader.cur_page - 1]
         pixmap = QPixmap(self.desu.get_image(image))
+        if pixmap.isNull():
+            return QPixmap()
         pixmap = pixmap.scaled(size - QSize(20, 80), Qt.KeepAspectRatio, Qt.SmoothTransformation)
         return pixmap
 
