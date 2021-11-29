@@ -82,8 +82,8 @@ class Desu:
         wd = os.getcwd()
         chapters = self.chapters
         manga_id = self.manga.id
-        for i in chapters[::-1]:
-            chapter_id = i.get('id')
+        for i in chapters:
+            chapter_id = i.id
             current_url = f'https://desu.me/manga/api/{manga_id}/chapter/{chapter_id}'
             html = get_html(current_url)
             images = html.json().get('response').get('pages').get('list')
