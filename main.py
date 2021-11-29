@@ -22,7 +22,6 @@ class App:
     def __init__(self):
         self.desu = Desu()
         self.cur_page = 1
-        self.cur_index = 0
         self.is_favorites = False
         self.params = {'limit': 50, 'page': self.cur_page, 'order': 'popular', 'genres': ''}
         self.window = QStackedWidget()
@@ -184,7 +183,6 @@ class App:
         self.get_content()
 
     def open_reader(self):
-        self.cur_index = self.ui_ch.chapters.currentIndex().row()
         self.get_images()
         self.reader.manga = self.desu.manga
         self.reader.chapters = self.desu.chapters
@@ -192,11 +190,12 @@ class App:
         self.reader.show()
 
     def download_all(self):
+        self.reader.close_reader()
         cur_id = self.ui_ml.list_manga.currentIndex().row()
         if cur_id < 0:
             return
-        self.desu.manga_id = self.desu.manga_favorites[cur_id].get('id')
-        current_url = f'{URL_API}/{self.desu.manga_id}'
+        self.desu.manga = self.desu.manga_favorites[cur_id]
+        current_url = f'{URL_API}/{self.desu.manga.id}'
         html = get_html(current_url)
         self.desu.get_chapters(html)
         Thread(target=lambda: self.desu.download_all(self.window)).start()
