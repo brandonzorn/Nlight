@@ -129,7 +129,6 @@ class Desu:
         page = image.page
         if not os.path.exists(f'{wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg'):
             os.makedirs(f'{wd}/Desu/images/{manga.id}/{chapter.id}', exist_ok=True)
-            return
             img = get_html(image.img)
             with open(f'{wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg', 'wb') as f:
                 f.write(img.content)
