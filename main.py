@@ -186,7 +186,7 @@ class App:
 
     def open_reader(self):
         self.reader.cur_chapter = self.ui_ch.chapters.currentIndex().row() + 1
-        self.reader.show()
+        self.reader.showFullScreen()
         self.change_chapter_reader()
 
     def download_all(self):
