@@ -24,6 +24,14 @@ class Reader(QWidget):
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Escape:
             self.close_reader()
+        if event.key() == Qt.Key_Left:
+            self.press_key('prev_page')
+        if event.key() == Qt.Key_Right:
+            self.press_key('next_page')
+        if event.key() == Qt.Key_Up:
+            self.press_key('next_ch')
+        if event.key() == Qt.Key_Down:
+            self.press_key('prev_ch')
         event.accept()
 
     def press_key(self, e):
