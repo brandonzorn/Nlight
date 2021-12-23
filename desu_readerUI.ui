@@ -148,15 +148,6 @@
        </color>
       </brush>
      </colorrole>
-     <colorrole role="PlaceholderText">
-      <brush brushstyle="SolidPattern">
-       <color alpha="128">
-        <red>199</red>
-        <green>203</green>
-        <blue>203</blue>
-       </color>
-      </brush>
-     </colorrole>
     </active>
     <inactive>
      <colorrole role="WindowText">
@@ -291,15 +282,6 @@
         <red>236</red>
         <green>240</green>
         <blue>241</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="PlaceholderText">
-      <brush brushstyle="SolidPattern">
-       <color alpha="128">
-        <red>199</red>
-        <green>203</green>
-        <blue>203</blue>
        </color>
       </brush>
      </colorrole>
@@ -440,15 +422,6 @@
        </color>
       </brush>
      </colorrole>
-     <colorrole role="PlaceholderText">
-      <brush brushstyle="SolidPattern">
-       <color alpha="128">
-        <red>199</red>
-        <green>203</green>
-        <blue>203</blue>
-       </color>
-      </brush>
-     </colorrole>
     </disabled>
    </palette>
   </property>
@@ -489,6 +462,9 @@ background-color: rgb(45, 45, 45);</string>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="2">
       <widget class="QPushButton" name="next_page">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(0, 133, 52);</string>
        </property>
@@ -499,6 +475,12 @@ background-color: rgb(45, 45, 45);</string>
      </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="prev_page">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(0, 133, 52);</string>
        </property>
@@ -516,6 +498,9 @@ background-color: rgb(45, 45, 45);</string>
      </item>
      <item row="1" column="2">
       <widget class="QPushButton" name="next_chp">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(0, 133, 52);</string>
        </property>
@@ -526,6 +511,9 @@ background-color: rgb(45, 45, 45);</string>
      </item>
      <item row="1" column="0">
       <widget class="QPushButton" name="prev_chp">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(0, 133, 52);</string>
        </property>
