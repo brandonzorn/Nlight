@@ -7,7 +7,7 @@ class Manga:
         self.description: str = manga.get('description')
         self.score: str = manga.get('score')
 
-    def get_name(self):
+    def get_name(self) -> str:
         if self.russian:
             return self.russian
         return self.name
@@ -20,7 +20,7 @@ class Chapter:
         self.ch: int = chapter.get('ch')
         self.title: str = chapter.get('title')
 
-    def get_name(self):
+    def get_name(self) -> str:
         if self.title:
             return f'{self.vol}-{self.ch} {self.title}'
         return f'{self.vol}-{self.ch}'

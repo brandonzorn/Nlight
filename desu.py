@@ -111,9 +111,6 @@ class Desu:
             return 1
         return self.images[-1].page
 
-    def get_chapter(self) -> list:
-        return self.chapter.get_name()
-
     def get_preview(self) -> str:
         wd = os.getcwd()
         if not os.path.exists(f'{wd}/Desu/images/{self.manga.id}/preview.jpg'):

@@ -264,7 +264,7 @@ class App:
         self.ui_re.img.setPixmap(pixmap)
         cur_page, max_page = self.reader.cur_page, self.reader.max_page
         self.ui_re.lbl_page.setText(f'Страница {cur_page} / {max_page}')
-        self.ui_re.lbl_chp.setText(self.Desu.get_chapter())
+        self.ui_re.lbl_chp.setText(self.Desu.chapter.get_name())
 
     def filter_apply(self):
         self.cur_page = 1
