@@ -114,7 +114,7 @@ class App:
         self.reader.c.prev_ch.connect(lambda: self.change_chapter_reader('-'))
         self.ui_ml.btn_main.clicked.connect(self.clicked_main)
         self.ui_ml.list_manga.doubleClicked.connect(self.double_click)
-        self.ui_ml.pushButton.clicked.connect(self.download_all)
+        self.ui_ml.b_download.clicked.connect(self.download_all)
         self.window.show()
         self.get_content()
 
