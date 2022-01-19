@@ -26,7 +26,6 @@ class App:
         self.window = QStackedWidget()
         self.Form_main = QWidget()
         self.Form_chapters = QWidget()
-        self.reader = Reader()
         self.Form_favorites = QWidget()
         self.Form_genres = QDialog()
         self.ui = desuUI.Ui_Dialog()
@@ -76,7 +75,6 @@ class App:
         self.favorite2_icon_path = os.path.join(Path(__file__).parent, "images/favorite2.png")
         self.window.setWindowTitle('Desu')
         self.window.setWindowIcon(QIcon(app_icon_path))
-        self.reader.setWindowIcon(QIcon(app_icon_path))
         self.Form_genres.setWindowIcon(QIcon(app_icon_path))
         self.ui.btn_mylist.setIcon(QIcon(library_icon_path))
         self.ui_ml.btn_mylist.setIcon(QIcon(library_icon_path))
@@ -101,10 +99,6 @@ class App:
         self.ui_ch.btn_mylist.clicked.connect(self.add_to_favorites)
         self.ui_ge.buttonBox.accepted.connect(self.genres_accept)
         self.ui_ge.buttonBox.rejected.connect(self.genres_reject)
-        self.reader.c.next_page.connect(lambda: self.change_page_reader('+'))
-        self.reader.c.prev_page.connect(lambda: self.change_page_reader('-'))
-        self.reader.c.next_ch.connect(lambda: self.change_chapter_reader('+'))
-        self.reader.c.prev_ch.connect(lambda: self.change_chapter_reader('-'))
         self.ui_ml.btn_main.clicked.connect(self.clicked_main)
         self.ui_ml.list_manga.doubleClicked.connect(self.double_click)
         self.ui_ml.b_download.clicked.connect(self.download_all)
@@ -150,27 +144,7 @@ class App:
         html = get_html(current_url)
         self.Desu.get_chapters(html)
         self.ui.label_page.setText(f'Страница {self.cur_page}')
-        self.reader.max_chapters = len(self.Desu.chapters)
         [self.ui_ch.chapters.addItem(i.get_name()) for i in self.Desu.chapters]
-
-    def get_images(self):
-        self.Desu.chapter = self.Desu.chapters[self.reader.cur_chapter - 1]
-        current_url = f'{URL_API}/{self.Desu.manga.id}/chapter/{self.Desu.chapter.id}'
-        html = get_html(current_url)
-        self.Desu.get_images(html)
-        self.reader.max_page = self.Desu.get_images_pages()
-        Thread(target=lambda: self.Desu.download(self.reader)).start()
-
-    def get_image(self):
-        size = self.reader.screen().size()
-        self.reader.resize(size)
-        self.reader.showFullScreen()
-        image = self.Desu.images[self.reader.cur_page - 1]
-        pixmap = QPixmap(self.Desu.get_image(self.Desu.manga, self.Desu.chapter, image))
-        if pixmap.isNull():
-            return QPixmap()
-        pixmap = pixmap.scaled(size - QSize(20, 80), Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        return pixmap
 
     def search(self):
         self.cur_page = 1
@@ -178,12 +152,10 @@ class App:
         self.get_content()
 
     def open_reader(self):
-        self.reader.cur_chapter = self.ui_ch.chapters.currentIndex().row() + 1
-        self.reader.showFullScreen()
-        self.change_chapter_reader()
+        cur_chapter = self.ui_ch.chapters.currentIndex().row() + 1
+        Reader(self.Desu.manga, self.Desu.chapters, cur_chapter).open()
 
     def download_all(self):
-        self.reader.close_reader()
         cur_id = self.ui_ml.list_manga.currentIndex().row()
         if cur_id < 0:
             return
@@ -201,14 +173,12 @@ class App:
             cur_id = self.ui_ml.list_manga.currentIndex().row()
             a = self.Desu.manga_favorites
         self.Desu.manga = a[cur_id]
-        self.reader.hide()
         self.clicked_chapters()
         pixmap = QPixmap(self.Desu.get_preview())
         self.ui_ch.image.setPixmap(pixmap)
         self.ui_ch.image.setScaledContents(True)
         self.ui_ch.description.setText(a[cur_id].description)
         self.ui_ch.name.setText(a[cur_id].name)
-        self.reader.setWindowTitle(a[cur_id].name)
         self.ui_ch.russian.setText(a[cur_id].russian)
         self.set_score(a[cur_id].score)
         if manga_favorites_check(self.Desu.manga.id):
@@ -242,18 +212,6 @@ class App:
             return
         self.ui.label_page.setText(f'Страница {self.cur_page}')
         self.get_content()
-
-    def change_page_reader(self, page=None):
-        self.reader.change_page(page)
-        pixmap = self.get_image()
-        self.reader.ui.img.setPixmap(pixmap)
-
-    def change_chapter_reader(self, page=None):
-        self.reader.change_chapter(page)
-        self.get_images()
-        pixmap = self.get_image()
-        self.reader.ui.img.setPixmap(pixmap)
-        self.reader.ui.lbl_chp.setText(self.Desu.chapter.get_name())
 
     def filter_apply(self):
         self.cur_page = 1
@@ -306,4 +264,4 @@ if __name__ == '__main__':
         QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
     app = QApplication(sys.argv)
     App()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
