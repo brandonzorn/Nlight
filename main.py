@@ -126,7 +126,7 @@ class App:
             self.clicked_main()
 
     def clicked_genres(self):
-        self.Form_genres.setWindowTitle('Genres')
+        # self.Form_genres.setWindowTitle('Genres')
         self.Form_genres.show()
 
     def get_content(self):
