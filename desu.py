@@ -1,5 +1,7 @@
+from database import Database
 from static import *
 from items import *
+import os
 
 
 class Desu:
@@ -10,23 +12,7 @@ class Desu:
         self.images = []
         self.manga: Manga = Manga({})
         self.chapter: Chapter = Chapter({})
-        self.start()
-
-    @staticmethod
-    def start():
-        wd = os.getcwd()
-        if not os.path.exists(f'{wd}/Desu/data.db'):
-            os.makedirs(f'{wd}/Desu', exist_ok=True)
-            con = sqlite3.connect(f'{wd}/Desu/data.db')
-            cur = con.cursor()
-            cur.execute("""CREATE TABLE manga (id INTEGER PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
-             name STRING, russian STRING, kind STRING, description TEXT, favorites STRING, score FLOAT);""")
-            cur.execute("""CREATE TABLE chapters (id INTEGER PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
-            vol STRING, ch STRING, title STRING, manga_id INTEGER, index_n INTEGER);""")
-            cur.execute("""CREATE TABLE images (id INTEGER PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
-            page INTEGER, width INTEGER, height INTEGER, img STRING, chapter_id INTEGER, index_n INTEGER);""")
-            con.commit()
-            con.close()
+        self.db = Database()
 
     def get_content(self, html):
         self.mangas = []
@@ -35,11 +21,11 @@ class Desu:
                 return None
             for i in html.json().get('response'):
                 self.mangas.append(Manga(i))
-                manga_add(i)
+                self.db.add_manga(i)
 
     def get_content_favorites(self):
         self.manga_favorites = []
-        for i in manga_favorites_get():
+        for i in self.db.get_manga_library():
             self.manga_favorites.append(i)
 
     def get_chapters(self, html):
@@ -50,8 +36,8 @@ class Desu:
             chapters = html.json().get('response').get('chapters').get('list')
             if chapters:
                 for i in chapters:
-                    chapters_add(i, self.manga.id, chapters[::-1].index(i))
-        self.chapters = chapters_get(self.manga.id)
+                    self.db.add_chapters(i, self.manga.id, chapters[::-1].index(i))
+        self.chapters = self.db.get_chapters(self.manga.id)
         self.chapters.reverse()
 
     def get_images(self, html):
@@ -61,8 +47,8 @@ class Desu:
                 return
             images = html.json().get('response').get('pages').get('list')
             for i in images:
-                images_add(i, self.chapter.id, images.index(i))
-        self.images = images_get(self.chapter.id)
+                self.db.add_images(i, self.chapter.id, images.index(i))
+        self.images = self.db.get_images(self.chapter.id)
 
     def download(self, form):
         wd = os.getcwd()
@@ -89,7 +75,7 @@ class Desu:
             images = html.json().get('response').get('pages').get('list')
             if images:
                 for x in images:
-                    images_add(x, chapter_id, images.index(x))
+                    self.db.add_images(x, chapter_id, images.index(x))
             for j in images:
                 if main_window.isHidden():
                     return
