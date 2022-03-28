@@ -47,22 +47,25 @@ class Database:
         return [Image({'id': i[0], 'page': i[1], 'width': i[2], 'height': i[3], 'img': i[4]}) for i in a]
 
     def add_manga_library(self, manga_id: int):
-        self.cur.execute(f"UPDATE manga SET favorites = True WHERE id = {manga_id};")
+        self.cur.execute(f"INSERT INTO library VALUES(?, ?);", (manga_id, "list"))
         self.con.commit()
 
-    def get_manga_library(self):
-        a = self.cur.execute(f"SELECT * FROM manga WHERE favorites not Null;").fetchall()
-        self.con.commit()
-        return [Manga({'id': i[0], 'name': i[1], 'russian': i[2], 'kind': i[3],
-                       'description': i[4], 'score': i[6]}) for i in a[::-1]]
+    def get_manga_library(self) -> [Manga]:
+        a = self.cur.execute(f"SELECT id FROM library WHERE list not Null;").fetchall()
+        manga = []
+        for i in a[::-1]:
+            x = self.cur.execute(f"SELECT * FROM manga WHERE id = {i[0]}").fetchall()[0]
+            manga.append(Manga({'id': x[0], 'name': x[1], 'russian': x[2], 'kind': x[3],
+                                'description': x[4], 'score': x[5]}))
+        return manga
 
     def check_manga_library(self, manga_id: int) -> bool:
-        a = self.cur.execute(f"SELECT favorites FROM manga WHERE id = {manga_id};").fetchall()
+        a = self.cur.execute(f"SELECT list FROM library WHERE id = {manga_id};").fetchall()
         self.con.commit()
         if a and a[0][0]:
             return True
         return False
 
     def rem_manga_library(self, manga_id: int):
-        self.cur.execute(f"UPDATE manga SET favorites = Null WHERE id = {manga_id};")
+        self.cur.execute(f"DELETE FROM library WHERE id = {manga_id};")
         self.con.commit()
