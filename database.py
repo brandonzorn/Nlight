@@ -69,3 +69,6 @@ class Database:
     def rem_manga_library(self, manga_id: int):
         self.cur.execute(f"DELETE FROM library WHERE id = {manga_id};")
         self.con.commit()
+
+
+db = Database()

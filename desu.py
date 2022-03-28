@@ -1,4 +1,4 @@
-from database import Database
+from database import db
 from static import *
 from items import *
 import os
@@ -9,10 +9,9 @@ class Desu:
         self.mangas = []
         self.manga_favorites = []
         self.chapters = []
-        self.images = []
         self.manga: Manga = Manga({})
         self.chapter: Chapter = Chapter({})
-        self.db = Database()
+        self.db = db
 
     def get_content(self, html):
         self.mangas = []
@@ -39,30 +38,6 @@ class Desu:
                     self.db.add_chapters(i, self.manga.id, chapters[::-1].index(i))
         self.chapters = self.db.get_chapters(self.manga.id)
         self.chapters.reverse()
-
-    def get_images(self, html):
-        self.images = []
-        if html and html.status_code == 200:
-            if len(html.json()) == 0:
-                return
-            images = html.json().get('response').get('pages').get('list')
-            for i in images:
-                self.db.add_images(i, self.chapter.id, images.index(i))
-        self.images = self.db.get_images(self.chapter.id)
-
-    def download(self, form):
-        wd = os.getcwd()
-        images = self.images
-        manga = self.manga
-        chapter = self.chapter
-        for image in images:
-            if form.isHidden() or chapter.id != self.chapter.id:
-                break
-            self.get_image(manga, chapter, image)
-            if not os.path.exists(f'{wd}/Desu/images/{manga.id}/{chapter.id}/{image.page}.jpg'):
-                img = get_html(images[image.page - 1].img)
-                with open(f'{wd}/Desu/images/{manga.id}/{chapter.id}/{image.page}.jpg', 'wb') as f:
-                    f.write(img.content)
 
     def download_all(self, main_window):
         wd = os.getcwd()
@@ -92,11 +67,6 @@ class Desu:
     def get_manga_favorites(self) -> list:
         return [i.get_name() for i in self.manga_favorites]
 
-    def get_images_pages(self) -> int:
-        if not self.images:
-            return 1
-        return self.images[-1].page
-
     def get_preview(self) -> str:
         wd = os.getcwd()
         if not os.path.exists(f'{wd}/Desu/images/{self.manga.id}/preview.jpg'):
@@ -105,14 +75,3 @@ class Desu:
             with open(f'{wd}/Desu/images/{self.manga.id}/preview.jpg', 'wb') as f:
                 f.write(img.content)
         return f'{wd}/Desu/images/{self.manga.id}/preview.jpg'
-
-    @staticmethod
-    def get_image(manga: Manga, chapter: Chapter, image: Image) -> str:
-        wd = os.getcwd()
-        page = image.page
-        if not os.path.exists(f'{wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg'):
-            os.makedirs(f'{wd}/Desu/images/{manga.id}/{chapter.id}', exist_ok=True)
-            img = get_html(image.img)
-            with open(f'{wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg', 'wb') as f:
-                f.write(img.content)
-        return f'{wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg'
