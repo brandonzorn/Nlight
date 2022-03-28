@@ -7,15 +7,12 @@ from PyQt5.QtWidgets import *
 import desuUI
 import desu_chaptersUI
 import desu_mylistUI
+from const import URL_API
 from desu import Desu
 from form_genres import FormGenres
 from reader import Reader
 from static import *
 from threading import Thread
-
-URL = 'https://desu.me'
-URL_API = 'https://desu.me/manga/api'
-HEADERS = {'User-Agent': 'Desu'}
 
 
 class App:
