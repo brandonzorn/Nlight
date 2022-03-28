@@ -33,6 +33,3 @@ class Image:
         self.width: int = page.get('width')
         self.height: int = page.get('height')
         self.img: str = page.get('img')
-
-    def get_image(self):
-        pass
