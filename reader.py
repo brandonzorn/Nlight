@@ -1,29 +1,39 @@
+import os
+from pathlib import Path
+from threading import Thread
+from database import db
+
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from desu_readerUI import Ui_Dialog
+from static import get_html
 
-
-class Communicate(QObject):
-    next_page = pyqtSignal()
-    prev_page = pyqtSignal()
-    next_ch = pyqtSignal()
-    prev_ch = pyqtSignal()
+URL_API = 'https://desu.me/manga/api'
 
 
 class Reader(QWidget):
-    def __init__(self):
+    def __init__(self, manga, chapters, cur_chapter=1):
         super().__init__()
         self.ui_re = Ui_Dialog()
         self.ui_re.setupUi(self)
+        app_icon_path = os.path.join(Path(__file__).parent, "images/icon.png")
+        self.setWindowIcon(QIcon(app_icon_path))
         self.ui_re.prev_page.clicked.connect(lambda: self.press_key('prev_page'))
         self.ui_re.next_page.clicked.connect(lambda: self.press_key('next_page'))
         self.ui_re.prev_chp.clicked.connect(lambda: self.press_key('prev_ch'))
         self.ui_re.next_chp.clicked.connect(lambda: self.press_key('next_ch'))
-        self.c = Communicate()
-        self.cur_chapter: int = 1
-        self.max_chapters: int = 1
+        self.cur_chapter: int = cur_chapter
+        self.max_chapters: int = len(chapters)
         self.cur_page: int = 1
         self.max_page: int = 1
+        self.manga = manga
+        self.chapters = chapters
+        self.images = []
+        self.db = db
+        self.wd = os.getcwd()
+        self.change_chapter()
+        self.showFullScreen()
 
     def close_reader(self):
         self.hide()
@@ -44,15 +54,15 @@ class Reader(QWidget):
     def press_key(self, e):
         if self.isActiveWindow():
             if e == 'next_page':
-                self.c.next_page.emit()
+                self.change_page('+')
             if e == 'prev_page':
-                self.c.prev_page.emit()
+                self.change_page('-')
             if e == 'next_ch':
-                self.c.next_ch.emit()
+                self.change_chapter('+')
             if e == 'prev_ch':
-                self.c.prev_ch.emit()
+                self.change_chapter('-')
 
-    def change_page(self, page):
+    def change_page(self, page=None):
         if page == '+':
             if self.cur_page == self.max_page and self.cur_chapter == self.max_chapters:
                 return
@@ -67,6 +77,8 @@ class Reader(QWidget):
                 return
             else:
                 self.press_key('prev_ch')
+        pixmap = self.get_pixmap()
+        self.ui_re.img.setPixmap(pixmap)
         self.ui_re.lbl_page.setText(f'Страница {self.cur_page} / {self.max_page}')
 
     def change_chapter(self, page=None):
@@ -80,5 +92,61 @@ class Reader(QWidget):
                 self.cur_chapter -= 1
             elif self.cur_chapter == 1:
                 return
-        self.ui_re.lbl_page.setText(f'Страница {self.cur_page} / {self.max_page}')
         self.cur_page = 1
+        self.get_images()
+        self.change_page()
+        self.ui_re.lbl_chp.setText(self.chapters[self.cur_chapter - 1].get_name())
+
+    def get_image(self) -> str:
+        image = self.images[self.cur_page - 1]
+        chapter = self.chapters[self.cur_chapter - 1]
+        if not os.path.exists(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg'):
+            os.makedirs(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}', exist_ok=True)
+            img = get_html(image.img)
+            with open(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg', 'wb') as f:
+                f.write(img.content)
+        return f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg'
+
+    def get_pixmap(self):
+        size = self.screen().size()
+        self.resize(size)
+        self.showFullScreen()
+        pixmap = QPixmap(self.get_image())
+        if pixmap.isNull():
+            return QPixmap()
+        pixmap = pixmap.scaled(size - QSize(20, 80), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        return pixmap
+
+    def get_images(self):
+        chapter = self.chapters[self.cur_chapter - 1]
+        current_url = f'{URL_API}/{self.manga.id}/chapter/{chapter.id}'
+        html = get_html(current_url)
+        self.images = []
+        if html and html.status_code == 200:
+            if len(html.json()) == 0:
+                return
+            images = html.json().get('response').get('pages').get('list')
+            for i in images:
+                self.db.add_images(i, chapter.id, images.index(i))
+        self.images = self.db.get_images(chapter.id)
+        self.max_page = self.get_images_pages()
+        # Thread(target=lambda: self.download(self)).start()
+
+    def get_images_pages(self) -> int:
+        if not self.images:
+            return 1
+        return self.images[-1].page
+
+    def download(self, form):
+        wd = os.getcwd()
+        images = self.images
+        manga = self.manga
+        chapter = self.chapter
+        for image in images:
+            if form.isHidden() or chapter.id != self.chapter.id:
+                break
+            self.get_image(manga, chapter, image)
+            if not os.path.exists(f'{wd}/Desu/images/{manga.id}/{chapter.id}/{image.page}.jpg'):
+                img = get_html(images[image.page - 1].img)
+                with open(f'{wd}/Desu/images/{manga.id}/{chapter.id}/{image.page}.jpg', 'wb') as f:
+                    f.write(img.content)
