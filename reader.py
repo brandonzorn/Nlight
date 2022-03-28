@@ -1,15 +1,13 @@
 import os
 from pathlib import Path
 from threading import Thread
-from database import db
-
+from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
+from const import URL_API
+from database import db
 from desu_readerUI import Ui_Dialog
 from static import get_html
-
-URL_API = 'https://desu.me/manga/api'
 
 
 class Reader(QWidget):
