@@ -1,4 +1,5 @@
 import sys
+import os
 from pathlib import Path
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -6,9 +7,9 @@ from PyQt5.QtWidgets import *
 import desuUI
 import desu_readerUI
 import desu_chaptersUI
-import desu_genresUI
 import desu_mylistUI
 from desu import Desu
+from form_genres import FormGenres
 from reader import Reader
 from static import *
 from threading import Thread
@@ -29,17 +30,15 @@ class App:
         self.Form_chapters = QWidget()
         self.reader = Reader()
         self.Form_favorites = QWidget()
-        self.Form_genres = QDialog()
+        self.Form_genres = FormGenres()
         self.ui = desuUI.Ui_Dialog()
         self.ui_ml = desu_mylistUI.Ui_Dialog()
         self.ui_ch = desu_chaptersUI.Ui_Dialog()
         self.ui_re = desu_readerUI.Ui_Dialog()
-        self.ui_ge = desu_genresUI.Ui_Dialog()
         self.ui.setupUi(self.Form_main)
         self.ui_ml.setupUi(self.Form_favorites)
         self.ui_ch.setupUi(self.Form_chapters)
         self.ui_re.setupUi(self.reader)
-        self.ui_ge.setupUi(self.Form_genres)
         self.window.addWidget(self.Form_main)
         self.window.addWidget(self.Form_chapters)
         self.window.addWidget(self.Form_favorites)
@@ -49,27 +48,6 @@ class App:
         self.order_by = {self.ui.sort_name: 'name', self.ui.sort_popular: 'popular'}
         self.kinds = {self.ui.type_manga: 'manga', self.ui.type_manhwa: 'manhwa', self.ui.type_manhua: 'manhua',
                       self.ui.type_one_shot: 'one_shot', self.ui.type_comics: 'comics'}
-        self.genres = {self.ui_ge.g_dementia: 'Dementia', self.ui_ge.g_martialarts: 'Martial Arts',
-                       self.ui_ge.g_color: 'Color', self.ui_ge.g_vampire: 'Vampire', self.ui_ge.g_web: 'Web',
-                       self.ui_ge.g_harem: 'Harem', self.ui_ge.g_heroicfantasy: 'Heroic Fantasy',
-                       self.ui_ge.g_demons: 'Demons',  self.ui_ge.g_mystery: 'Mystery', self.ui_ge.g_josei: 'Josei',
-                       self.ui_ge.g_drama: 'Drama', self.ui_ge.g_yonkoma: 'Yonkoma', self.ui_ge.g_game: 'Game',
-                       self.ui_ge.g_isekai: 'Isekai', self.ui_ge.g_historical: 'Historical',
-                       self.ui_ge.g_comedy: 'Comedy', self.ui_ge.g_space: 'Space', self.ui_ge.g_litrpg: 'LitRPG',
-                       self.ui_ge.g_magic: 'Magic', self.ui_ge.g_mecha: 'Mecha', self.ui_ge.g_mystic: 'Mystic',
-                       self.ui_ge.g_music: 'Music', self.ui_ge.g_scifi: 'Sci-Fi', self.ui_ge.g_parody: 'Parody',
-                       self.ui_ge.g_sliceoflife: 'Slice of Life', self.ui_ge.g_postapocalyptic: 'Post Apocalyptic',
-                       self.ui_ge.g_adventure: 'Adventure', self.ui_ge.g_psychological: 'Psychological',
-                       self.ui_ge.g_romance: 'Romance', self.ui_ge.g_samurai: 'Samurai',
-                       self.ui_ge.g_supernatural: 'Supernatural', self.ui_ge.g_shoujo: 'Shoujo',
-                       self.ui_ge.g_shoujoai: 'Shoujo Ai', self.ui_ge.g_seinen: 'Seinen',
-                       self.ui_ge.g_shounen: 'Shounen', self.ui_ge.g_shounenai: 'Shounen Ai',
-                       self.ui_ge.g_genderbender: 'Gender Bender', self.ui_ge.g_sports: 'Sports',
-                       self.ui_ge.g_superpower: 'Super Power', self.ui_ge.g_tragedy: 'Tragedy',
-                       self.ui_ge.g_thriller: 'Thriller', self.ui_ge.g_horror: 'Horror',
-                       self.ui_ge.g_fiction: 'Fiction', self.ui_ge.g_fantasy: 'Fantasy', self.ui_ge.g_hentai: 'Hentai',
-                       self.ui_ge.g_school: 'School', self.ui_ge.g_action: 'Action', self.ui_ge.g_ecchi: 'Ecchi',
-                       self.ui_ge.g_yuri: 'Yuri', self.ui_ge.g_yaoi: 'Yaoi'}
         app_icon_path = os.path.join(Path(__file__).parent, "images/icon.png")
         library_icon_path = os.path.join(Path(__file__).parent, "images/library.png")
         main_icon_path = os.path.join(Path(__file__).parent, "images/main.png")
@@ -106,8 +84,6 @@ class App:
         self.ui_ch.btn_back.clicked.connect(self.back)
         self.ui_ch.chapters.doubleClicked.connect(self.open_reader)
         self.ui_ch.btn_mylist.clicked.connect(self.add_to_favorites)
-        self.ui_ge.buttonBox.accepted.connect(self.genres_accept)
-        self.ui_ge.buttonBox.rejected.connect(self.genres_reject)
         self.reader.c.next_page.connect(lambda: self.change_page_reader('+'))
         self.reader.c.prev_page.connect(lambda: self.change_page_reader('-'))
         self.reader.c.next_ch.connect(lambda: self.change_chapter_reader('+'))
@@ -276,15 +252,16 @@ class App:
             self.params.update({'kinds': a})
         if self.ui.line_search.text() != '':
             self.params.update({'search': self.ui.line_search.text()})
-        self.genres_accept()
+        self.Form_genres.accept_genres()
+        self.params.update(self.Form_genres.selected_genres)
         self.get_content()
 
     def filter_reset(self):
         self.cur_page = 1
-        self.genres_reject()
+        self.Form_genres.reject_genres()
         self.ui.label_page.setText(f'Страница {self.cur_page}')
         self.params = {'limit': 50, 'order': '', 'genres': ''}
-        self.genres_reject()
+        self.Form_genres.reject_genres()
         self.ui.sort_popular.setChecked(True)
         self.ui.line_search.setText('')
         [i.setChecked(False) for i in self.kinds]
@@ -297,17 +274,6 @@ class App:
         else:
             manga_favorites_add(self.Desu.manga.id)
             self.ui_ch.btn_mylist.setIcon(QIcon(self.favorite1_icon_path))
-
-    def genres_accept(self):
-        genres = [self.genres.get(i) for i in self.genres if i.isChecked()]
-        self.params.update({'genres': ','.join(genres)})
-
-    def genres_reject(self):
-        for i in self.genres:
-            if self.genres.get(i) not in self.params.get('genres'):
-                i.setChecked(False)
-            else:
-                i.setChecked(True)
 
 
 if __name__ == '__main__':
