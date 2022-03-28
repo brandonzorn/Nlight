@@ -5,7 +5,6 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import desuUI
-import desu_readerUI
 import desu_chaptersUI
 import desu_mylistUI
 from desu import Desu
@@ -34,11 +33,9 @@ class App:
         self.ui = desuUI.Ui_Dialog()
         self.ui_ml = desu_mylistUI.Ui_Dialog()
         self.ui_ch = desu_chaptersUI.Ui_Dialog()
-        self.ui_re = desu_readerUI.Ui_Dialog()
         self.ui.setupUi(self.Form_main)
         self.ui_ml.setupUi(self.Form_favorites)
         self.ui_ch.setupUi(self.Form_chapters)
-        self.ui_re.setupUi(self.reader)
         self.window.addWidget(self.Form_main)
         self.window.addWidget(self.Form_chapters)
         self.window.addWidget(self.Form_favorites)
@@ -73,10 +70,6 @@ class App:
         self.ui.prev_page.clicked.connect(lambda: self.change_page('-'))
         self.ui.next_page.clicked.connect(lambda: self.change_page('+'))
         self.ui.btn_genres_list.clicked.connect(self.clicked_genres)
-        self.ui_re.prev_page.clicked.connect(lambda: self.change_page_reader('-'))
-        self.ui_re.next_page.clicked.connect(lambda: self.change_page_reader('+'))
-        self.ui_re.prev_chp.clicked.connect(lambda: self.change_chapter_reader('-'))
-        self.ui_re.next_chp.clicked.connect(lambda: self.change_chapter_reader('+'))
         self.ui.filter_apply.clicked.connect(self.filter_apply)
         self.ui.filter_reset.clicked.connect(self.filter_reset)
         self.ui.btn_search.clicked.connect(self.search)
@@ -229,18 +222,14 @@ class App:
     def change_page_reader(self, page=None):
         self.reader.change_page(page)
         pixmap = self.get_image()
-        self.ui_re.img.setPixmap(pixmap)
-        cur_page, max_page = self.reader.cur_page, self.reader.max_page
-        self.ui_re.lbl_page.setText(f'Страница {cur_page} / {max_page}')
+        self.reader.ui_re.img.setPixmap(pixmap)
 
     def change_chapter_reader(self, page=None):
         self.reader.change_chapter(page)
         self.get_images()
         pixmap = self.get_image()
-        self.ui_re.img.setPixmap(pixmap)
-        cur_page, max_page = self.reader.cur_page, self.reader.max_page
-        self.ui_re.lbl_page.setText(f'Страница {cur_page} / {max_page}')
-        self.ui_re.lbl_chp.setText(self.Desu.chapter.get_name())
+        self.reader.ui_re.img.setPixmap(pixmap)
+        self.reader.ui_re.lbl_chp.setText(self.Desu.chapter.get_name())
 
     def filter_apply(self):
         self.cur_page = 1
