@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+from desu_readerUI import Ui_Dialog
 
 
 class Communicate(QObject):
@@ -12,6 +13,12 @@ class Communicate(QObject):
 class Reader(QWidget):
     def __init__(self):
         super().__init__()
+        self.ui_re = Ui_Dialog()
+        self.ui_re.setupUi(self)
+        self.ui_re.prev_page.clicked.connect(lambda: self.press_key('prev_page'))
+        self.ui_re.next_page.clicked.connect(lambda: self.press_key('next_page'))
+        self.ui_re.prev_chp.clicked.connect(lambda: self.press_key('prev_ch'))
+        self.ui_re.next_chp.clicked.connect(lambda: self.press_key('next_ch'))
         self.c = Communicate()
         self.cur_chapter: int = 1
         self.max_chapters: int = 1
@@ -28,10 +35,10 @@ class Reader(QWidget):
             self.press_key('prev_page')
         if event.key() == Qt.Key_Right:
             self.press_key('next_page')
-        if event.key() == Qt.Key_Up:
-            self.press_key('next_ch')
         if event.key() == Qt.Key_Down:
             self.press_key('prev_ch')
+        if event.key() == Qt.Key_Up:
+            self.press_key('next_ch')
         event.accept()
 
     def press_key(self, e):
@@ -60,6 +67,7 @@ class Reader(QWidget):
                 return
             else:
                 self.press_key('prev_ch')
+        self.ui_re.lbl_page.setText(f'Страница {self.cur_page} / {self.max_page}')
 
     def change_chapter(self, page=None):
         if page == '+':
@@ -72,4 +80,5 @@ class Reader(QWidget):
                 self.cur_chapter -= 1
             elif self.cur_chapter == 1:
                 return
+        self.ui_re.lbl_page.setText(f'Страница {self.cur_page} / {self.max_page}')
         self.cur_page = 1
