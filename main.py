@@ -194,7 +194,7 @@ class App:
         self.reader.setWindowTitle(a[cur_id].name)
         self.ui_ch.russian.setText(a[cur_id].russian)
         self.set_score(a[cur_id].score)
-        if manga_favorites_check(self.Desu.manga.id):
+        if self.Desu.db.check_manga_library(self.Desu.manga.id):
             self.ui_ch.btn_mylist.setIcon(QIcon(self.favorite1_icon_path))
         else:
             self.ui_ch.btn_mylist.setIcon(QIcon(self.favorite_icon_path))
@@ -268,11 +268,11 @@ class App:
         self.get_content()
 
     def add_to_favorites(self):
-        if manga_favorites_check(self.Desu.manga.id):
-            manga_favorites_rem(self.Desu.manga.id)
+        if self.Desu.db.check_manga_library(self.Desu.manga.id):
+            self.Desu.db.rem_manga_library(self.Desu.manga.id)
             self.ui_ch.btn_mylist.setIcon(QIcon(self.favorite_icon_path))
         else:
-            manga_favorites_add(self.Desu.manga.id)
+            self.Desu.db.add_manga_library(self.Desu.manga.id)
             self.ui_ch.btn_mylist.setIcon(QIcon(self.favorite1_icon_path))
 
 
