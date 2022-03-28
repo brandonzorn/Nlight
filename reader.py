@@ -32,8 +32,8 @@ class Reader(QWidget):
         self.images = []
         self.db = db
         self.wd = os.getcwd()
-        self.change_chapter()
         self.showFullScreen()
+        self.change_chapter()
 
     def close_reader(self):
         self.hide()
@@ -97,9 +97,7 @@ class Reader(QWidget):
         self.change_page()
         self.ui_re.lbl_chp.setText(self.chapters[self.cur_chapter - 1].get_name())
 
-    def get_image(self) -> str:
-        image = self.images[self.cur_page - 1]
-        chapter = self.chapters[self.cur_chapter - 1]
+    def get_image(self, chapter, image) -> str:
         if not os.path.exists(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg'):
             os.makedirs(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}', exist_ok=True)
             img = get_html(image.img)
@@ -111,7 +109,7 @@ class Reader(QWidget):
         size = self.screen().size()
         self.resize(size)
         self.showFullScreen()
-        pixmap = QPixmap(self.get_image())
+        pixmap = QPixmap(self.get_image(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1]))
         if pixmap.isNull():
             return QPixmap()
         pixmap = pixmap.scaled(size - QSize(20, 80), Qt.KeepAspectRatio, Qt.SmoothTransformation)
@@ -130,7 +128,7 @@ class Reader(QWidget):
                 self.db.add_images(i, chapter.id, images.index(i))
         self.images = self.db.get_images(chapter.id)
         self.max_page = self.get_images_pages()
-        # Thread(target=lambda: self.download(self)).start()
+        Thread(target=lambda: self.download(self)).start()
 
     def get_images_pages(self) -> int:
         if not self.images:
@@ -138,15 +136,13 @@ class Reader(QWidget):
         return self.images[-1].page
 
     def download(self, form):
-        wd = os.getcwd()
         images = self.images
-        manga = self.manga
-        chapter = self.chapter
+        chapter = self.chapters[self.cur_chapter - 1]
         for image in images:
-            if form.isHidden() or chapter.id != self.chapter.id:
+            if form.isHidden() or chapter.id != self.chapters[self.cur_chapter - 1].id:
                 break
-            self.get_image(manga, chapter, image)
-            if not os.path.exists(f'{wd}/Desu/images/{manga.id}/{chapter.id}/{image.page}.jpg'):
+            self.get_image(chapter, image)
+            if not os.path.exists(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg'):
                 img = get_html(images[image.page - 1].img)
-                with open(f'{wd}/Desu/images/{manga.id}/{chapter.id}/{image.page}.jpg', 'wb') as f:
+                with open(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg', 'wb') as f:
                     f.write(img.content)
