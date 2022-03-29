@@ -14,10 +14,10 @@ def get_html(url: str, params=None):
 
 def get_url(manga: Manga=None, chapter: Chapter=None, image: Image=None):
     url = f'https://desu.me/manga/api/'
-    if image:
-        return f'{os.getcwd()}/Desu/images/{manga.id}/{chapter.id}/{image.page}.jpg'
     if manga:
         url += f'/{manga.id}'
         if chapter:
             url += f'/chapter/{chapter.id}'
+            if image:
+                return f'{os.getcwd()}/Desu/images/{manga.id}/{chapter.id}/{image.page}.jpg'
     return url
