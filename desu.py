@@ -8,9 +8,6 @@ class Desu:
     def __init__(self):
         self.mangas = []
         self.manga_favorites = []
-        self.chapters = []
-        self.manga: Manga = Manga({})
-        self.chapter: Chapter = Chapter({})
         self.db = db
 
     def get_content(self, html):
@@ -26,18 +23,6 @@ class Desu:
         self.manga_favorites = []
         for i in self.db.get_manga_library():
             self.manga_favorites.append(i)
-
-    def get_chapters(self, html):
-        self.chapters = []
-        if html and html.status_code == 200:
-            if len(html.json()) == 0:
-                return
-            chapters = html.json().get('response').get('chapters').get('list')
-            if chapters:
-                for i in chapters:
-                    self.db.add_chapters(i, self.manga.id, chapters[::-1].index(i))
-        self.chapters = self.db.get_chapters(self.manga.id)
-        self.chapters.reverse()
 
     def download_all(self, main_window):
         wd = os.getcwd()
@@ -66,12 +51,3 @@ class Desu:
 
     def get_manga_favorites(self) -> list:
         return [i.get_name() for i in self.manga_favorites]
-
-    def get_preview(self) -> str:
-        wd = os.getcwd()
-        if not os.path.exists(f'{wd}/Desu/images/{self.manga.id}/preview.jpg'):
-            os.makedirs(f'{wd}/Desu/images/{self.manga.id}', exist_ok=True)
-            img = get_html(f'https://desu.me/data/manga/covers/preview/{self.manga.id}.jpg')
-            with open(f'{wd}/Desu/images/{self.manga.id}/preview.jpg', 'wb') as f:
-                f.write(img.content)
-        return f'{wd}/Desu/images/{self.manga.id}/preview.jpg'
