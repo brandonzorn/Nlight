@@ -30,6 +30,7 @@ class Reader(QWidget):
         self.images = []
         self.db = db
         self.wd = os.getcwd()
+        self.setWindowTitle(self.manga.name)
         self.showFullScreen()
         self.change_chapter()
 
@@ -51,14 +52,15 @@ class Reader(QWidget):
 
     def press_key(self, e):
         if self.isActiveWindow():
-            if e == 'next_page':
-                self.change_page('+')
-            if e == 'prev_page':
-                self.change_page('-')
-            if e == 'next_ch':
-                self.change_chapter('+')
-            if e == 'prev_ch':
-                self.change_chapter('-')
+            match e:
+                case 'next_page':
+                    self.change_page('+')
+                case 'prev_page':
+                    self.change_page('-')
+                case 'next_ch':
+                    self.change_chapter('+')
+                case 'prev_ch':
+                    self.change_chapter('-')
 
     def change_page(self, page=None):
         if page == '+':
