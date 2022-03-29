@@ -1,4 +1,5 @@
 import os
+from threading import Thread
 
 from PyQt5.QtCore import QObject, pyqtSignal
 from PyQt5.QtGui import QIcon, QPixmap
@@ -28,6 +29,7 @@ class FormInfo(QDialog):
         self.c = Communicate()
         self.manga = manga
         self.chapters = []
+        self.reader = None
 
     def back(self):
         self.c.turn_back.emit()
@@ -96,3 +98,23 @@ class FormInfo(QDialog):
             with open(f'{wd}/Desu/images/{self.manga.id}/preview.jpg', 'wb') as f:
                 f.write(img.content)
         return f'{wd}/Desu/images/{self.manga.id}/preview.jpg'
+
+    def download_all(self):
+        chapters = self.chapters
+        manga = self.manga
+        for chapter in chapters:
+            current_url = f'https://desu.me/manga/api/{manga.id}/chapter/{chapter.id}'
+            html = get_html(current_url)
+            images = html.json().get('response').get('pages').get('list')
+            if images:
+                for image in images:
+                    if self.isHidden():
+                        return
+                    self.db.add_images(image, chapter.id, images.index(image))
+                    page = image.get('page')
+                    if not os.path.exists(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg'):
+                        os.makedirs(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}', exist_ok=True)
+                        img = get_html(images[page - 1].get('img'))
+                        with open(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg', 'wb') as f:
+                            f.write(img.content)
+
