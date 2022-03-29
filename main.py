@@ -104,16 +104,6 @@ class App:
         self.params.update({'search': self.ui.line_search.text()})
         self.get_content()
 
-    def download_all(self):
-        cur_id = self.ui_ml.list_manga.currentIndex().row()
-        if cur_id < 0:
-            return
-        self.Desu.manga = self.Desu.manga_favorites[cur_id]
-        current_url = f'{URL_API}/{self.Desu.manga.id}'
-        html = get_html(current_url)
-        self.Desu.get_chapters(html)
-        Thread(target=lambda: self.Desu.download_all(self.window)).start()
-
     def double_click(self):
         if self.window.currentIndex() == 0:
             cur_id = self.ui.list_manga.currentIndex().row()
