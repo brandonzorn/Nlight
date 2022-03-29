@@ -117,4 +117,3 @@ class FormInfo(QDialog):
                         img = get_html(images[page - 1].get('img'))
                         with open(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg', 'wb') as f:
                             f.write(img.content)
-

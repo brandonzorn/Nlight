@@ -8,9 +8,7 @@ from const import URL_API, app_icon_path, library_icon_path, main_icon_path
 from desu import Desu
 from form_genres import FormGenres
 from form_info import FormInfo
-from items import Manga
 from static import *
-from threading import Thread
 
 
 class App:
@@ -59,7 +57,6 @@ class App:
         self.ui.list_manga.doubleClicked.connect(self.double_click)
         self.ui_ml.btn_main.clicked.connect(self.clicked_main)
         self.ui_ml.list_manga.doubleClicked.connect(self.double_click)
-        self.ui_ml.b_download.clicked.connect(self.download_all)
         self.Form_chapters.c.turn_back.connect(self.back)
         self.window.show()
         self.get_content()
