@@ -1,5 +1,6 @@
 import os
 
+from PyQt5.QtCore import QObject, pyqtSignal
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QDialog
 
@@ -10,8 +11,8 @@ from reader import Reader
 from static import get_html
 
 
-class Communicate:
-
+class Communicate(QObject):
+    back = pyqtSignal()
 
 
 class FormInfo(QDialog):
@@ -24,11 +25,12 @@ class FormInfo(QDialog):
         self.ui_ch.btn_mylist.clicked.connect(self.add_to_favorites)
         self.ui_ch.btn_back.setIcon(QIcon(back_icon_path))
         self.db = db
+        self.c = Communicate()
         self.manga = manga
         self.chapters = []
 
     def back(self):
-        pass
+        self.c.back.emit()
 
     def setup(self):
         self.ui_ch.image.setPixmap(QPixmap(self.get_preview()))
