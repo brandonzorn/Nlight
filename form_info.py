@@ -3,7 +3,7 @@ from threading import Thread
 
 from PyQt5.QtCore import QObject, pyqtSignal
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QWidget
 
 from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, URL_API
 from database import db
@@ -16,7 +16,7 @@ class Communicate(QObject):
     turn_back = pyqtSignal()
 
 
-class FormInfo(QDialog):
+class FormInfo(QWidget):
     def __init__(self, manga):
         super().__init__()
         self.ui_ch = Ui_Dialog()
