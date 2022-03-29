@@ -18,8 +18,9 @@ class App:
         self.is_favorites = False
         self.params = {'limit': 50, 'page': self.cur_page, 'order': 'popular', 'genres': ''}
         self.window = QStackedWidget()
+        self.window.setStyleSheet('color: rgb(255, 255, 255);background-color: rgb(45, 45, 45);')
         self.Form_main = QWidget()
-        self.Form_chapters = FormInfo(Manga)
+        self.Form_info = FormInfo(Manga)
         self.Form_favorites = QWidget()
         self.Form_genres = FormGenres()
         self.ui = desuUI.Ui_Dialog()
@@ -27,7 +28,7 @@ class App:
         self.ui.setupUi(self.Form_main)
         self.ui_ml.setupUi(self.Form_favorites)
         self.window.addWidget(self.Form_main)
-        self.window.addWidget(self.Form_chapters)
+        self.window.addWidget(self.Form_info)
         self.window.addWidget(self.Form_favorites)
         screen_size = [self.window.screen().size().width(), self.window.screen().size().height()]
         self.window.setMinimumSize(QSize(screen_size[0] // 2, screen_size[1] // 2))
@@ -57,7 +58,7 @@ class App:
         self.ui.list_manga.doubleClicked.connect(self.double_click)
         self.ui_ml.btn_main.clicked.connect(self.clicked_main)
         self.ui_ml.list_manga.doubleClicked.connect(self.double_click)
-        self.Form_chapters.c.turn_back.connect(self.back)
+        self.Form_info.c.turn_back.connect(self.back)
         self.window.show()
         self.get_content()
 
@@ -66,8 +67,8 @@ class App:
         self.window.setCurrentIndex(0)
 
     def clicked_chapters(self, manga):
-        self.Form_chapters.manga = manga
-        self.Form_chapters.setup()
+        self.Form_info.manga = manga
+        self.Form_info.setup()
         self.window.setCurrentIndex(1)
 
     def clicked_favorites(self):
