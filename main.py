@@ -60,7 +60,7 @@ class App:
         self.ui_ml.btn_main.clicked.connect(self.clicked_main)
         self.ui_ml.list_manga.doubleClicked.connect(self.double_click)
         self.ui_ml.b_download.clicked.connect(self.download_all)
-        self.Form_chapters.ui_ch.back.connect(self.back)
+        self.Form_chapters.c.turn_back.connect(self.back)
         self.window.show()
         self.get_content()
 
