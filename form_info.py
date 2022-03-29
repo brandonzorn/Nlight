@@ -3,7 +3,7 @@ from threading import Thread
 
 from PyQt5.QtCore import QObject, pyqtSignal
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import QDialog, QWidget
+from PyQt5.QtWidgets import QWidget
 
 from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, URL_API
 from database import db
