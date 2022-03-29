@@ -12,7 +12,7 @@ from static import get_html
 
 
 class Communicate(QObject):
-    back = pyqtSignal()
+    turn_back = pyqtSignal()
 
 
 class FormInfo(QDialog):
@@ -30,7 +30,7 @@ class FormInfo(QDialog):
         self.chapters = []
 
     def back(self):
-        self.c.back.emit()
+        self.c.turn_back.emit()
 
     def setup(self):
         self.ui_ch.image.setPixmap(QPixmap(self.get_preview()))
