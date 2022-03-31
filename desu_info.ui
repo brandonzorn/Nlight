@@ -69,7 +69,7 @@
      </colorrole>
      <colorrole role="PlaceholderText">
       <brush brushstyle="SolidPattern">
-       <color alpha="128">
+       <color alpha="255">
         <red>255</red>
         <green>255</green>
         <blue>255</blue>
@@ -134,7 +134,7 @@
      </colorrole>
      <colorrole role="PlaceholderText">
       <brush brushstyle="SolidPattern">
-       <color alpha="128">
+       <color alpha="255">
         <red>255</red>
         <green>255</green>
         <blue>255</blue>
@@ -199,7 +199,7 @@
      </colorrole>
      <colorrole role="PlaceholderText">
       <brush brushstyle="SolidPattern">
-       <color alpha="128">
+       <color alpha="255">
         <red>255</red>
         <green>255</green>
         <blue>255</blue>
@@ -282,6 +282,19 @@ color: rgb(255, 255, 255);</string>
           <size>
            <width>40</width>
            <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
           </size>
          </property>
         </spacer>
@@ -428,19 +441,6 @@ background-color: rgb(45, 45, 45);</string>
           </layout>
          </item>
         </layout>
-       </item>
-       <item row="1" column="0">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </item>

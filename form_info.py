@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QWidget
 
 from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, URL_API
 from database import db
-from desu_chaptersUI import Ui_Dialog
+from desu_info import Ui_Dialog
 from reader import Reader
 from static import get_html
 
