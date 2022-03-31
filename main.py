@@ -29,6 +29,10 @@ class App(QStackedWidget):
         self.Form_facial.c.double_click.connect(self.double_click)
         self.Form_library.c.double_click.connect(self.double_click)
         self.Form_info.c.turn_back.connect(self.back)
+        self.Form_facial.ui.btn_main.setIconSize(self.Form_facial.ui.btn_main.size())
+        self.Form_facial.ui.btn_mylist.setIconSize(self.Form_facial.ui.btn_mylist.size())
+        self.Form_library.ui.btn_main.setIconSize(self.Form_facial.ui.btn_main.size())
+        self.Form_library.ui.btn_mylist.setIconSize(self.Form_facial.ui.btn_mylist.size())
         self.show()
 
     def clicked_main(self):
