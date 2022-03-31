@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'desu_mylistUI.ui'
+# Form implementation generated from reading ui file 'desu_library.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -58,8 +58,6 @@ class Ui_Dialog(object):
 "color: rgb(255, 255, 255);")
         self.b_watching.setObjectName("b_watching")
         self.verticalLayout.addWidget(self.b_watching)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout.addItem(spacerItem)
         self.gridLayout.addLayout(self.verticalLayout, 0, 2, 3, 1)
         self.btn_main = QtWidgets.QPushButton(Dialog)
         self.btn_main.setStyleSheet("background-color: rgb(0, 133, 52);\n"
@@ -67,13 +65,8 @@ class Ui_Dialog(object):
         self.btn_main.setText("")
         self.btn_main.setObjectName("btn_main")
         self.gridLayout.addWidget(self.btn_main, 1, 0, 1, 1)
-        spacerItem1 = QtWidgets.QSpacerItem(38, 561, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem1, 2, 0, 2, 1)
-        self.b_download = QtWidgets.QPushButton(Dialog)
-        self.b_download.setStyleSheet("background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
-        self.b_download.setObjectName("b_download")
-        self.gridLayout.addWidget(self.b_download, 3, 2, 1, 1)
+        spacerItem = QtWidgets.QSpacerItem(38, 561, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout.addItem(spacerItem, 2, 0, 2, 1)
         self.list_manga = QtWidgets.QListWidget(Dialog)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
@@ -123,6 +116,9 @@ class Ui_Dialog(object):
         palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.ToolTipText, brush)
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.PlaceholderText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.WindowText, brush)
         brush = QtGui.QBrush(QtGui.QColor(45, 45, 45))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -168,6 +164,9 @@ class Ui_Dialog(object):
         palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.ToolTipText, brush)
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.PlaceholderText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
         brush = QtGui.QBrush(QtGui.QColor(45, 45, 45))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -211,10 +210,15 @@ class Ui_Dialog(object):
         brush = QtGui.QBrush(QtGui.QColor(236, 240, 241))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ToolTipText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.PlaceholderText, brush)
         self.list_manga.setPalette(palette)
         self.list_manga.setAutoFillBackground(False)
         self.list_manga.setObjectName("list_manga")
         self.gridLayout.addWidget(self.list_manga, 0, 1, 4, 1)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout.addItem(spacerItem1, 3, 2, 1, 1)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -228,4 +232,3 @@ class Ui_Dialog(object):
         self.b_planned.setText(_translate("Dialog", "Запланировано"))
         self.pushButton_6.setText(_translate("Dialog", "Перечитываю"))
         self.b_watching.setText(_translate("Dialog", "Читаю"))
-        self.b_download.setText(_translate("Dialog", "Скачать"))
