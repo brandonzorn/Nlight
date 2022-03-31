@@ -17,14 +17,12 @@ class FormLibrary(QWidget):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.c = Communicate()
-        self.ui.btn_mylist.setIcon(QIcon(library_icon_path))
-        self.ui.btn_main.setIcon(QIcon(main_icon_path))
-        self.ui.btn_mylist.setIconSize(self.ui.btn_mylist.size())
-        self.ui.btn_main.setIconSize(self.ui.btn_main.size())
-        self.ui.btn_main.clicked.connect(lambda: self.c.clicked_main.emit())
-        self.ui.list_manga.doubleClicked.connect(lambda: self.c.double_click.emit())
         self.manga_library = []
         self.db = db
+        self.ui.btn_mylist.setIcon(QIcon(library_icon_path))
+        self.ui.btn_main.setIcon(QIcon(main_icon_path))
+        self.ui.btn_main.clicked.connect(lambda: self.c.clicked_main.emit())
+        self.ui.list_manga.doubleClicked.connect(lambda: self.c.double_click.emit())
 
     def update_list(self):
         self.ui.list_manga.clear()
