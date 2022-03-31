@@ -100,19 +100,6 @@ color: rgb(255, 255, 255);</string>
        </property>
       </widget>
      </item>
-     <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
     </layout>
    </item>
    <item row="1" column="0">
@@ -138,17 +125,6 @@ color: rgb(255, 255, 255);</string>
       </size>
      </property>
     </spacer>
-   </item>
-   <item row="3" column="2">
-    <widget class="QPushButton" name="b_download">
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(0, 133, 52);
-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Скачать</string>
-     </property>
-    </widget>
    </item>
    <item row="0" column="1" rowspan="4">
     <widget class="QListWidget" name="list_manga">
@@ -290,6 +266,15 @@ color: rgb(255, 255, 255);</string>
           </color>
          </brush>
         </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
        </active>
        <inactive>
         <colorrole role="WindowText">
@@ -424,6 +409,15 @@ color: rgb(255, 255, 255);</string>
            <red>236</red>
            <green>240</green>
            <blue>241</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
           </color>
          </brush>
         </colorrole>
@@ -564,6 +558,15 @@ color: rgb(255, 255, 255);</string>
           </color>
          </brush>
         </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
        </disabled>
       </palette>
      </property>
@@ -571,6 +574,19 @@ color: rgb(255, 255, 255);</string>
       <bool>false</bool>
      </property>
     </widget>
+   </item>
+   <item row="3" column="2">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

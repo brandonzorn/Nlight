@@ -3,7 +3,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import desuUI
-import desu_mylistUI
+import desu_library
 from const import URL_API, app_icon_path, library_icon_path, main_icon_path
 from desu import Desu
 from form_genres import FormGenres
@@ -24,7 +24,7 @@ class App:
         self.Form_favorites = QWidget()
         self.Form_genres = FormGenres()
         self.ui = desuUI.Ui_Dialog()
-        self.ui_ml = desu_mylistUI.Ui_Dialog()
+        self.ui_ml = desu_library.Ui_Dialog()
         self.ui.setupUi(self.Form_main)
         self.ui_ml.setupUi(self.Form_favorites)
         self.window.addWidget(self.Form_main)
