@@ -1,4 +1,7 @@
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog
+
+from const import app_icon_path
 from desu_genresUI import Ui_Dialog
 
 
@@ -7,6 +10,9 @@ class FormGenres(QDialog):
         super().__init__()
         self.ui_ge = Ui_Dialog()
         self.ui_ge.setupUi(self)
+        self.setFixedSize(self.minimumSize())
+        self.setWindowTitle('Genres')
+        self.setWindowIcon(QIcon(app_icon_path))
         self.ui_ge.buttonBox.accepted.connect(self.accept_genres)
         self.ui_ge.buttonBox.rejected.connect(self.reject_genres)
         self.selected_genres = {'genres': ''}
