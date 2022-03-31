@@ -92,11 +92,10 @@ class FormFacial(QWidget):
 
     def filter_reset(self):
         self.cur_page = 1
-        self.Form_genres.reject_genres()
+        self.Form_genres.clear_genres()
         self.ui.label_page.setText(f'Страница {self.cur_page}')
         self.params = {'limit': 50, 'order': '', 'genres': ''}
-        self.Form_genres.reject_genres()
         self.ui.sort_popular.setChecked(True)
-        self.ui.line_search.setText('')
+        self.ui.line_search.clear()
         [i.setChecked(False) for i in self.kinds]
         self.get_content()
