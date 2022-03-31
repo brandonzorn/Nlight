@@ -30,8 +30,6 @@ class FormFacial(QWidget):
         self.Form_genres = FormGenres()
         self.ui.btn_mylist.setIcon(QIcon(library_icon_path))
         self.ui.btn_main.setIcon(QIcon(main_icon_path))
-        self.ui.btn_mylist.setIconSize(self.ui.btn_mylist.size())
-        self.ui.btn_main.setIconSize(self.ui.btn_main.size())
         self.ui.btn_mylist.clicked.connect(lambda: self.c.clicked_library.emit())
         self.ui.prev_page.clicked.connect(lambda: self.change_page('-'))
         self.ui.next_page.clicked.connect(lambda: self.change_page('+'))
