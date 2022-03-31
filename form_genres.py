@@ -48,3 +48,7 @@ class FormGenres(QDialog):
                 i.setChecked(False)
             else:
                 i.setChecked(True)
+
+    def clear_genres(self):
+        [i.setChecked(False) for i in self.genres]
+        self.accept_genres()
