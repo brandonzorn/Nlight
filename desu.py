@@ -1,7 +1,5 @@
 from database import db
-from static import *
 from items import *
-import os
 
 
 class Desu:
