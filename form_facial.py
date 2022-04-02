@@ -11,7 +11,7 @@ from static import get_html
 
 class Communicate(QObject):
     clicked_library = pyqtSignal()
-    double_click = pyqtSignal()
+    double_click = pyqtSignal(object)
 
 
 class FormFacial(QWidget):
@@ -37,11 +37,14 @@ class FormFacial(QWidget):
         self.ui.filter_apply.clicked.connect(self.filter_apply)
         self.ui.filter_reset.clicked.connect(self.filter_reset)
         self.ui.btn_search.clicked.connect(self.search)
-        self.ui.list_manga.doubleClicked.connect(lambda: self.c.double_click.emit())
+        self.ui.list_manga.doubleClicked.connect(lambda: self.c.double_click.emit(self.get_current_manga()))
         self.get_content()
 
     def clicked_genres(self):
         self.Form_genres.show()
+
+    def get_current_manga(self):
+        return self.mangas[self.ui.list_manga.currentIndex().row()]
 
     def get_content(self):
         self.ui.list_manga.clear()
