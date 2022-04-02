@@ -19,23 +19,34 @@ class FormLibrary(QWidget):
         self.ui.setupUi(self)
         self.c = Communicate()
         self.mangas = []
+        self.cur_list = 'planned'
         self.db = db
         self.ui.btn_mylist.setIcon(QIcon(library_icon_path))
         self.ui.btn_main.setIcon(QIcon(main_icon_path))
         self.ui.btn_main.clicked.connect(lambda: self.c.clicked_main.emit())
         self.ui.list_manga.doubleClicked.connect(lambda: self.c.double_click.emit(self.get_current_manga()))
+        self.ui.b_planned.clicked.connect(lambda: self.update_list('planned'))
+        self.ui.b_watching.clicked.connect(lambda: self.update_list('watching'))
+        self.ui.b_on_hold.clicked.connect(lambda: self.update_list('on_hold'))
+        self.ui.b_completed.clicked.connect(lambda: self.update_list('completed'))
+        self.ui.b_dropped.clicked.connect(lambda: self.update_list('dropped'))
+        self.ui.b_rewatching.clicked.connect(lambda: self.update_list('rewatching'))
 
     def get_current_manga(self):
         return self.mangas[self.ui.list_manga.currentIndex().row()]
 
-    def update_list(self):
+    def update_list(self, lib_list=None):
+        if not lib_list:
+            lib_list = self.cur_list
+        else:
+            self.cur_list = lib_list
         self.ui.list_manga.clear()
-        self.get_content_library()
+        self.get_content_library(lib_list)
         [self.ui.list_manga.addItem(i) for i in self.get_manga_library()]
 
-    def get_content_library(self):
+    def get_content_library(self, lib_list):
         self.mangas = []
-        for i in self.db.get_manga_library():
+        for i in self.db.get_manga_library(lib_list):
             self.mangas.append(i)
 
     def get_manga_library(self) -> list:
