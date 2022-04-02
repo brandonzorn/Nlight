@@ -217,6 +217,9 @@
 background-color: rgb(45, 45, 45);</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
+   <item row="0" column="1">
+    <widget class="QListWidget" name="chapters"/>
+   </item>
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
@@ -229,6 +232,11 @@ color: rgb(255, 255, 255);</string>
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normalon>images/back.png</normalon>
+          </iconset>
          </property>
         </widget>
        </item>
@@ -246,6 +254,44 @@ color: rgb(255, 255, 255);</string>
         </spacer>
        </item>
        <item>
+        <widget class="QComboBox" name="lib_list">
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(0, 133, 52);
+color: rgb(255, 255, 255);</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>Запланированно</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Прочитано</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Читаю</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Перечитываю</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Отложено</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Брошено</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="btn_mylist">
          <property name="styleSheet">
           <string notr="true">background-color: rgb(0, 133, 52);
@@ -253,6 +299,11 @@ color: rgb(255, 255, 255);</string>
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normalon>images/favorite.png</normalon>
+          </iconset>
          </property>
         </widget>
        </item>
@@ -456,9 +507,6 @@ background-color: rgb(45, 45, 45);</string>
       </layout>
      </item>
     </layout>
-   </item>
-   <item row="0" column="1">
-    <widget class="QListWidget" name="chapters"/>
    </item>
   </layout>
  </widget>
