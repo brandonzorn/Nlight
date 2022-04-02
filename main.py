@@ -55,14 +55,8 @@ class App(QStackedWidget):
         else:
             self.clicked_main()
 
-    def double_click(self):
-        if self.currentIndex() == 0:
-            cur_id = self.Form_facial.ui.list_manga.currentIndex().row()
-            cur_list = self.Form_facial.mangas
-        else:
-            cur_id = self.Form_library.ui.list_manga.currentIndex().row()
-            cur_list = self.Form_library.manga_library
-        self.clicked_chapters(cur_list[cur_id])
+    def double_click(self, manga):
+        self.clicked_chapters(manga)
 
 
 if __name__ == '__main__':
