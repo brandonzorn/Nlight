@@ -8,7 +8,7 @@ from desu_library import Ui_Dialog
 
 class Communicate(QObject):
     clicked_main = pyqtSignal()
-    double_click = pyqtSignal()
+    double_click = pyqtSignal(object)
 
 
 class FormLibrary(QWidget):
@@ -17,12 +17,15 @@ class FormLibrary(QWidget):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.c = Communicate()
-        self.manga_library = []
+        self.mangas = []
         self.db = db
         self.ui.btn_mylist.setIcon(QIcon(library_icon_path))
         self.ui.btn_main.setIcon(QIcon(main_icon_path))
         self.ui.btn_main.clicked.connect(lambda: self.c.clicked_main.emit())
-        self.ui.list_manga.doubleClicked.connect(lambda: self.c.double_click.emit())
+        self.ui.list_manga.doubleClicked.connect(lambda: self.c.double_click.emit(self.get_current_manga()))
+
+    def get_current_manga(self):
+        return self.mangas[self.ui.list_manga.currentIndex().row()]
 
     def update_list(self):
         self.ui.list_manga.clear()
@@ -30,9 +33,9 @@ class FormLibrary(QWidget):
         [self.ui.list_manga.addItem(i) for i in self.get_manga_library()]
 
     def get_content_library(self):
-        self.manga_library = []
+        self.mangas = []
         for i in self.db.get_manga_library():
-            self.manga_library.append(i)
+            self.mangas.append(i)
 
     def get_manga_library(self) -> list:
-        return [i.get_name() for i in self.manga_library]
+        return [i.get_name() for i in self.mangas]
