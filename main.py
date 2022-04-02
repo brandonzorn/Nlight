@@ -1,7 +1,9 @@
 import sys
-from PySide2.QtCore import *
-from PySide2.QtGui import *
-from PySide2.QtWidgets import *
+
+from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QStackedWidget, QApplication
+
 from const import app_icon_path
 from form_facial import FormFacial
 from form_info import FormInfo
@@ -64,6 +66,6 @@ if __name__ == '__main__':
         QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
     if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
         QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
-    app = QApplication()
+    app = QApplication(sys.argv)
     a = App()
     sys.exit(app.exec_())
