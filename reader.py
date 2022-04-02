@@ -1,9 +1,9 @@
 import os
 from pathlib import Path
 from threading import Thread
-from PyQt5.QtCore import *
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import *
+from PySide2.QtCore import *
+from PySide2.QtGui import QIcon, QPixmap
+from PySide2.QtWidgets import *
 from const import URL_API
 from database import db
 from desu_readerUI import Ui_Dialog
@@ -11,7 +11,7 @@ from static import get_html
 
 
 class Reader(QWidget):
-    def __init__(self, manga, chapters, cur_chapter=1):
+    def __init__(self, manga, chapters, parent, cur_chapter=1):
         super().__init__()
         self.ui_re = Ui_Dialog()
         self.ui_re.setupUi(self)
