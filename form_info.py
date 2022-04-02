@@ -5,11 +5,11 @@ from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QWidget
 
-from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, URL_API
+from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, URL_API, lib_lists_en
 from database import db
 from desu_info import Ui_Dialog
 from reader import Reader
-from static import get_html
+from static import get_html, get_lib_list_en
 
 
 class Communicate(QObject):
@@ -25,6 +25,7 @@ class FormInfo(QWidget):
         self.ui_ch.chapters.doubleClicked.connect(self.open_reader)
         self.ui_ch.btn_mylist.clicked.connect(self.add_to_favorites)
         self.ui_ch.btn_back.setIcon(QIcon(back_icon_path))
+        self.ui_ch.lib_list.currentIndexChanged.connect(self.change_lib_list)
         self.db = db
         self.c = Communicate()
         self.manga = manga
@@ -70,6 +71,12 @@ class FormInfo(QWidget):
         else:
             self.db.add_manga_library(self.manga.id)
             self.ui_ch.btn_mylist.setIcon(QIcon(favorite1_icon_path))
+            self.change_lib_list()
+
+    def change_lib_list(self):
+        if self.db.check_manga_library(self.manga.id):
+            lib_list = lib_lists_en[self.ui_ch.lib_list.currentIndex()]
+            self.db.add_manga_library(self.manga.id, lib_list)
 
     def get_chapters(self):
         self.ui_ch.chapters.clear()

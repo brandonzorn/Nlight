@@ -1,6 +1,7 @@
 import sqlite3
 import os
 
+from const import lib_lists_en
 from items import Chapter, Image, Manga
 
 
@@ -46,12 +47,12 @@ class Database:
         a = self.cur.execute(f"SELECT * FROM images WHERE chapter_id = {chapter_id} ORDER by index_n").fetchall()
         return [Image({'id': i[0], 'page': i[1], 'width': i[2], 'height': i[3], 'img': i[4]}) for i in a]
 
-    def add_manga_library(self, manga_id: int):
-        self.cur.execute(f"INSERT INTO library VALUES(?, ?);", (manga_id, "list"))
+    def add_manga_library(self, manga_id: int, lib_list: str = "planned"):
+        self.cur.execute(f"INSERT INTO library VALUES(?, ?);", (manga_id, lib_list))
         self.con.commit()
 
-    def get_manga_library(self) -> [Manga]:
-        a = self.cur.execute(f"SELECT id FROM library WHERE list not Null;").fetchall()
+    def get_manga_library(self, lib_list) -> [Manga]:
+        a = self.cur.execute(f"SELECT id FROM library WHERE list = '{lib_list}';").fetchall()
         manga = []
         for i in a[::-1]:
             x = self.cur.execute(f"SELECT * FROM manga WHERE id = {i[0]}").fetchall()[0]
@@ -62,7 +63,7 @@ class Database:
     def check_manga_library(self, manga_id: int) -> bool:
         a = self.cur.execute(f"SELECT list FROM library WHERE id = {manga_id};").fetchall()
         self.con.commit()
-        if a and a[0][0]:
+        if a and a[0][0] in lib_lists_en:
             return True
         return False
 
