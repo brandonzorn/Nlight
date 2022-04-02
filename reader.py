@@ -1,9 +1,11 @@
 import os
 from pathlib import Path
 from threading import Thread
-from PySide2.QtCore import *
-from PySide2.QtGui import QIcon, QPixmap
-from PySide2.QtWidgets import *
+
+from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import QWidget
+
 from const import URL_API
 from database import db
 from desu_readerUI import Ui_Dialog
