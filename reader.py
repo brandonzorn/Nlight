@@ -11,7 +11,7 @@ from static import get_html
 
 
 class Reader(QWidget):
-    def __init__(self, manga, chapters, parent, cur_chapter=1):
+    def __init__(self, manga, chapters, cur_chapter=1):
         super().__init__()
         self.ui_re = Ui_Dialog()
         self.ui_re.setupUi(self)
