@@ -1,5 +1,5 @@
-from PySide2.QtGui import QIcon
-from PySide2.QtWidgets import QDialog
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QDialog
 
 from const import app_icon_path
 from desu_genresUI import Ui_Dialog

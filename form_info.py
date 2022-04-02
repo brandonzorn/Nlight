@@ -1,9 +1,9 @@
 import os
 from threading import Thread
 
-from PySide2.QtCore import QObject, Signal
-from PySide2.QtGui import QIcon, QPixmap
-from PySide2.QtWidgets import QWidget
+from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import QWidget
 
 from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, URL_API
 from database import db
@@ -13,7 +13,7 @@ from static import get_html
 
 
 class Communicate(QObject):
-    turn_back = Signal()
+    turn_back = pyqtSignal()
 
 
 class FormInfo(QWidget):

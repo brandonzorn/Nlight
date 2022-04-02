@@ -1,6 +1,7 @@
-from PySide2.QtCore import QObject, Signal
-from PySide2.QtGui import QIcon
-from PySide2.QtWidgets import QWidget
+from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QWidget
+
 from const import URL_API, library_icon_path, main_icon_path
 from database import db
 from desuUI import Ui_Dialog
@@ -10,8 +11,8 @@ from static import get_html
 
 
 class Communicate(QObject):
-    clicked_library = Signal()
-    double_click = Signal(object)
+    clicked_library = pyqtSignal()
+    double_click = pyqtSignal(object)
 
 
 class FormFacial(QWidget):
