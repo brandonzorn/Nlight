@@ -1,14 +1,15 @@
-from PySide2.QtCore import QObject, Signal
-from PySide2.QtGui import QIcon
-from PySide2.QtWidgets import QWidget
+from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QWidget
+
 from const import library_icon_path, main_icon_path
 from database import db
 from desu_library import Ui_Dialog
 
 
 class Communicate(QObject):
-    clicked_main = Signal()
-    double_click = Signal(object)
+    clicked_main = pyqtSignal()
+    double_click = pyqtSignal(object)
 
 
 class FormLibrary(QWidget):
