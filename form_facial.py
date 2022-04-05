@@ -1,4 +1,3 @@
-from PyQt5.QtCore import QObject, pyqtSignal
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget
 
@@ -10,18 +9,12 @@ from items import Manga
 from static import get_html
 
 
-class Communicate(QObject):
-    clicked_library = pyqtSignal()
-    double_click = pyqtSignal(object)
-
-
 class FormFacial(QWidget):
     def __init__(self):
         super().__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.db = db
-        self.c = Communicate()
         self.cur_page = 1
         self.mangas = []
         self.params = {'limit': 50, 'page': self.cur_page, 'order': 'popular', 'genres': ''}
@@ -31,14 +24,12 @@ class FormFacial(QWidget):
         self.Form_genres = FormGenres()
         self.ui.btn_mylist.setIcon(QIcon(library_icon_path))
         self.ui.btn_main.setIcon(QIcon(main_icon_path))
-        self.ui.btn_mylist.clicked.connect(lambda: self.c.clicked_library.emit())
         self.ui.prev_page.clicked.connect(lambda: self.change_page('-'))
         self.ui.next_page.clicked.connect(lambda: self.change_page('+'))
         self.ui.btn_genres_list.clicked.connect(self.clicked_genres)
         self.ui.filter_apply.clicked.connect(self.filter_apply)
         self.ui.filter_reset.clicked.connect(self.filter_reset)
         self.ui.btn_search.clicked.connect(self.search)
-        self.ui.list_manga.doubleClicked.connect(lambda: self.c.double_click.emit(self.get_current_manga()))
         self.get_content()
 
     def clicked_genres(self):
@@ -60,9 +51,9 @@ class FormFacial(QWidget):
                 self.mangas.append(Manga(i))
                 self.db.add_manga(i)
         self.ui.label_page.setText(f'Страница {self.cur_page}')
-        [self.ui.list_manga.addItem(i) for i in self.get_manga()]
+        [self.ui.list_manga.addItem(i) for i in self.get_manga_names()]
 
-    def get_manga(self) -> list:
+    def get_manga_names(self) -> list:
         return [i.get_name() for i in self.mangas]
 
     def search(self):
