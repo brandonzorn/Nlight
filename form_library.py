@@ -1,4 +1,3 @@
-from PyQt5.QtCore import QObject, pyqtSignal
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget
 
@@ -7,24 +6,16 @@ from database import db
 from desu_library import Ui_Dialog
 
 
-class Communicate(QObject):
-    clicked_main = pyqtSignal()
-    double_click = pyqtSignal(object)
-
-
 class FormLibrary(QWidget):
     def __init__(self):
         super().__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.c = Communicate()
         self.mangas = []
         self.cur_list = 'planned'
         self.db = db
         self.ui.btn_mylist.setIcon(QIcon(library_icon_path))
         self.ui.btn_main.setIcon(QIcon(main_icon_path))
-        self.ui.btn_main.clicked.connect(lambda: self.c.clicked_main.emit())
-        self.ui.list_manga.doubleClicked.connect(lambda: self.c.double_click.emit(self.get_current_manga()))
         self.ui.b_planned.clicked.connect(lambda: self.update_list('planned'))
         self.ui.b_watching.clicked.connect(lambda: self.update_list('watching'))
         self.ui.b_on_hold.clicked.connect(lambda: self.update_list('on_hold'))

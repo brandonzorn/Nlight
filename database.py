@@ -60,12 +60,11 @@ class Database:
                                 'description': x[4], 'score': x[5]}))
         return manga
 
-    def check_manga_library(self, manga_id: int) -> bool:
+    def check_manga_library(self, manga_id: int):
         a = self.cur.execute(f"SELECT list FROM library WHERE id = {manga_id};").fetchall()
         self.con.commit()
         if a and a[0][0] in lib_lists_en:
-            return True
-        return False
+            return a[0][0]
 
     def rem_manga_library(self, manga_id: int):
         self.cur.execute(f"DELETE FROM library WHERE id = {manga_id};")

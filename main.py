@@ -14,8 +14,7 @@ from static import *
 class App(QStackedWidget):
     def __init__(self):
         super().__init__()
-        screen_size = [self.screen().size().width(), self.screen().size().height()]
-        self.setMinimumSize(QSize(screen_size[0] // 2, screen_size[1] // 2))
+        self.setMinimumSize(QSize(self.screen().size().width() // 2, self.screen().size().height() // 2))
         self.setWindowTitle('Desu')
         self.setWindowIcon(QIcon(app_icon_path))
         self.setStyleSheet('color: rgb(255, 255, 255);background-color: rgb(45, 45, 45);')
@@ -26,11 +25,13 @@ class App(QStackedWidget):
         self.addWidget(self.Form_facial)
         self.addWidget(self.Form_info)
         self.addWidget(self.Form_library)
-        self.Form_facial.c.clicked_library.connect(self.clicked_library)
-        self.Form_library.c.clicked_main.connect(self.clicked_main)
-        self.Form_facial.c.double_click.connect(self.double_click)
-        self.Form_library.c.double_click.connect(self.double_click)
-        self.Form_info.c.turn_back.connect(self.back)
+        self.Form_facial.ui.btn_mylist.clicked.connect(self.clicked_library)
+        self.Form_facial.ui.list_manga.doubleClicked.connect(lambda: self.clicked_chapters(
+            self.Form_facial.get_current_manga()))
+        self.Form_library.ui.btn_main.clicked.connect(self.clicked_main)
+        self.Form_library.ui.list_manga.doubleClicked.connect(lambda: self.clicked_chapters(
+            self.Form_library.get_current_manga()))
+        self.Form_info.ui.btn_back.clicked.connect(self.back)
         self.Form_facial.ui.btn_main.setIconSize(self.Form_facial.ui.btn_main.size())
         self.Form_facial.ui.btn_mylist.setIconSize(self.Form_facial.ui.btn_mylist.size())
         self.Form_library.ui.btn_main.setIconSize(self.Form_facial.ui.btn_main.size())
@@ -56,9 +57,6 @@ class App(QStackedWidget):
             self.clicked_library()
         else:
             self.clicked_main()
-
-    def double_click(self, manga):
-        self.clicked_chapters(manga)
 
 
 if __name__ == '__main__':
