@@ -18,13 +18,10 @@ class App(QStackedWidget):
         self.setWindowTitle('Desu')
         self.setWindowIcon(QIcon(app_icon_path))
         self.setStyleSheet('color: rgb(255, 255, 255);background-color: rgb(45, 45, 45);')
-        self.is_library = False
         self.Form_facial = FormFacial()
         self.Form_info = FormInfo(Manga)
         self.Form_library = FormLibrary()
         self.addWidget(self.Form_facial)
-        self.addWidget(self.Form_info)
-        self.addWidget(self.Form_library)
         self.Form_facial.ui.btn_mylist.clicked.connect(self.clicked_library)
         self.Form_facial.ui.list_manga.doubleClicked.connect(lambda: self.clicked_chapters(
             self.Form_facial.get_current_manga()))
@@ -39,24 +36,22 @@ class App(QStackedWidget):
         self.show()
 
     def clicked_main(self):
-        self.is_library = False
-        self.setCurrentIndex(0)
+        self.removeWidget(self.currentWidget())
+        self.addWidget(self.Form_facial)
 
     def clicked_chapters(self, manga):
+        self.addWidget(self.Form_info)
+        self.setCurrentWidget(self.Form_info)
         self.Form_info.manga = manga
         self.Form_info.setup()
-        self.setCurrentIndex(1)
 
     def clicked_library(self):
-        self.is_library = True
+        self.removeWidget(self.currentWidget())
+        self.addWidget(self.Form_library)
         self.Form_library.update_list()
-        self.setCurrentIndex(2)
 
     def back(self):
-        if self.is_library:
-            self.clicked_library()
-        else:
-            self.clicked_main()
+        self.removeWidget(self.currentWidget())
 
 
 if __name__ == '__main__':
