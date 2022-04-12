@@ -41,16 +41,17 @@ class Reader(QWidget):
         self.hide()
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Escape:
-            self.close_reader()
-        if event.key() == Qt.Key_Left:
-            self.press_key('prev_page')
-        if event.key() == Qt.Key_Right:
-            self.press_key('next_page')
-        if event.key() == Qt.Key_Down:
-            self.press_key('prev_ch')
-        if event.key() == Qt.Key_Up:
-            self.press_key('next_ch')
+        match event.key():
+            case Qt.Key_Escape:
+                self.close_reader()
+            case Qt.Key_Left:
+                self.press_key('prev_page')
+            case Qt.Key_Right:
+                self.press_key('next_page')
+            case Qt.Key_Down:
+                self.press_key('prev_ch')
+            case Qt.Key_Up:
+                self.press_key('next_ch')
         event.accept()
 
     def press_key(self, e):
@@ -80,16 +81,15 @@ class Reader(QWidget):
                 return
             else:
                 self.press_key('prev_ch')
-        pixmap = self.get_pixmap()
-        self.attach_image(pixmap)
+        self.attach_image()
         self.ui_re.lbl_page.setText(f'Страница {self.cur_page} / {self.max_page}')
 
-    def attach_image(self, pixmap):
+    def attach_image(self):
+        pixmap = self.get_pixmap()
         self.ui_re.img.setPixmap(pixmap)
         self.ui_re.scrollArea.verticalScrollBar().setValue(0)
         self.ui_re.scrollArea.horizontalScrollBar().setValue(0)
         # self.ui_re.scrollArea.setWidgetResizable(True)
-        self.ui_re.img.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
     def change_chapter(self, page=None):
         if page == '+':
