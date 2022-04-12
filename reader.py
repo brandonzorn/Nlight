@@ -1,11 +1,9 @@
 import os
 from pathlib import Path
 from threading import Thread
-
-from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import QWidget
-
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
 from const import URL_API
 from database import db
 from desu_readerUI import Ui_Dialog
@@ -23,6 +21,9 @@ class Reader(QWidget):
         self.ui_re.next_page.clicked.connect(lambda: self.press_key('next_page'))
         self.ui_re.prev_chp.clicked.connect(lambda: self.press_key('prev_ch'))
         self.ui_re.next_chp.clicked.connect(lambda: self.press_key('next_ch'))
+        self.lay = QVBoxLayout(self.ui_re.scrollAreaWidgetContents)
+        self.lay.setContentsMargins(0, 0, 0, 0)
+        self.lay.addWidget(self.ui_re.img)
         self.cur_chapter: int = cur_chapter
         self.max_chapters: int = len(chapters)
         self.cur_page: int = 1
@@ -80,8 +81,15 @@ class Reader(QWidget):
             else:
                 self.press_key('prev_ch')
         pixmap = self.get_pixmap()
-        self.ui_re.img.setPixmap(pixmap)
+        self.attach_image(pixmap)
         self.ui_re.lbl_page.setText(f'Страница {self.cur_page} / {self.max_page}')
+
+    def attach_image(self, pixmap):
+        self.ui_re.img.setPixmap(pixmap)
+        self.ui_re.scrollArea.verticalScrollBar().setValue(0)
+        self.ui_re.scrollArea.horizontalScrollBar().setValue(0)
+        # self.ui_re.scrollArea.setWidgetResizable(True)
+        self.ui_re.img.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
     def change_chapter(self, page=None):
         if page == '+':
@@ -114,7 +122,8 @@ class Reader(QWidget):
         pixmap = QPixmap(self.get_image(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1]))
         if pixmap.isNull():
             return QPixmap()
-        pixmap = pixmap.scaled(size - QSize(20, 80), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        if self.manga.kind in ['manga', 'manhua', 'one_shot']:
+            pixmap = pixmap.scaled(self.ui_re.img.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
         return pixmap
 
     def get_images(self):
