@@ -5,10 +5,10 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QWidget
 
 from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, URL_API, lib_lists_en
-from database import db
+from database import Database
 from desu_info import Ui_Form
 from reader import Reader
-from static import get_html, get_lib_list_en
+from static import get_html
 
 
 class FormInfo(QWidget):
@@ -20,7 +20,7 @@ class FormInfo(QWidget):
         self.ui.btn_add_to_lib.clicked.connect(self.add_to_favorites)
         self.ui.btn_back.setIcon(QIcon(back_icon_path))
         self.ui.lib_list.currentIndexChanged.connect(self.change_lib_list)
-        self.db = db
+        self.db = Database()
         self.manga = manga
         self.chapters = []
         self.reader = None
@@ -102,14 +102,14 @@ class FormInfo(QWidget):
         chapters = self.chapters
         manga = self.manga
         for chapter in chapters:
-            current_url = f'https://desu.me/manga/api/{manga.id}/chapter/{chapter.id}'
+            current_url = f'{URL_API}/{manga.id}/chapter/{chapter.id}'
             html = get_html(current_url)
             images = html.json().get('response').get('pages').get('list')
             if images:
                 for image in images:
                     if self.isHidden():
                         return
-                    self.db.add_images(image, chapter.id, images.index(image))
+                    self.db.add_images(image, chapter.id)
                     page = image.get('page')
                     if not os.path.exists(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg'):
                         os.makedirs(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}', exist_ok=True)
