@@ -1,10 +1,12 @@
 import sqlite3
 import os
 
+from static import singleton
 from const import lib_lists_en
 from items import Chapter, Image, Manga
 
 
+@singleton
 class Database:
     def __init__(self):
         self.wd = os.getcwd()
@@ -17,7 +19,7 @@ class Database:
         self.cur.execute("""CREATE TABLE IF NOT EXISTS chapters (id INTEGER PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
         vol STRING, ch STRING, title STRING, manga_id INTEGER, index_n INTEGER);""")
         self.cur.execute("""CREATE TABLE IF NOT EXISTS images (id INTEGER PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
-        page INTEGER, width INTEGER, height INTEGER, img STRING, chapter_id INTEGER, index_n INTEGER);""")
+        page INTEGER, width INTEGER, height INTEGER, img STRING, chapter_id INTEGER);""")
         self.cur.execute("""CREATE TABLE IF NOT EXISTS library (id INTEGER PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
         list STRING)""")
         self.con.commit()
@@ -37,14 +39,14 @@ class Database:
         a = self.cur.execute(f"SELECT * FROM chapters WHERE manga_id = {manga_id} ORDER by index_n").fetchall()
         return [Chapter({'id': i[0], 'vol': i[1], 'ch': i[2], 'title': i[3]}) for i in a[::-1]]
 
-    def add_images(self, data: dict, chapter_id: int, index: int):
-        self.cur.execute("INSERT INTO images VALUES(?, ?, ?, ?, ?, ?, ?);",
+    def add_images(self, data: dict, chapter_id: int):
+        self.cur.execute("INSERT INTO images VALUES(?, ?, ?, ?, ?, ?);",
                          (data.get('id'), data.get('page'), data.get('width'),
-                          data.get('height'), data.get('img'), chapter_id, index))
+                          data.get('height'), data.get('img'), chapter_id))
         self.con.commit()
 
     def get_images(self, chapter_id: int) -> list:
-        a = self.cur.execute(f"SELECT * FROM images WHERE chapter_id = {chapter_id} ORDER by index_n").fetchall()
+        a = self.cur.execute(f"SELECT * FROM images WHERE chapter_id = {chapter_id} ORDER by page").fetchall()
         return [Image({'id': i[0], 'page': i[1], 'width': i[2], 'height': i[3], 'img': i[4]}) for i in a]
 
     def add_manga_library(self, manga_id: int, lib_list: str = "planned"):
@@ -69,6 +71,3 @@ class Database:
     def rem_manga_library(self, manga_id: int):
         self.cur.execute(f"DELETE FROM library WHERE id = {manga_id};")
         self.con.commit()
-
-
-db = Database()
