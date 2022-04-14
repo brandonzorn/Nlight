@@ -5,6 +5,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QStackedWidget, QApplication
 
 from const import app_icon_path
+from database import Database
 from form_facial import FormFacial
 from form_info import FormInfo
 from form_library import FormLibrary
@@ -14,6 +15,7 @@ from static import *
 class App(QStackedWidget):
     def __init__(self):
         super().__init__()
+        self.db = Database()
         self.setMinimumSize(QSize(self.screen().size().width() // 2, self.screen().size().height() // 2))
         self.setWindowTitle('Desu')
         self.setWindowIcon(QIcon(app_icon_path))

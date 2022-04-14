@@ -25,3 +25,13 @@ def get_url(manga: Manga=None, chapter: Chapter=None, image: Image=None):
             if image:
                 return f'{os.getcwd()}/Desu/images/{manga.id}/{chapter.id}/{image.page}.jpg'
     return url
+
+
+def singleton(cls):
+    instance = [None]
+
+    def wrapper(*args, **kwargs):
+        if instance[0] is None:
+            instance[0] = cls(*args, **kwargs)
+        return instance[0]
+    return wrapper

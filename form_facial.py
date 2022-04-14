@@ -2,7 +2,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget
 
 from const import URL_API, library_icon_path, main_icon_path
-from database import db
+from database import Database
 from desuUI import Ui_Dialog
 from form_genres import FormGenres
 from items import Manga
@@ -14,7 +14,7 @@ class FormFacial(QWidget):
         super().__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.db = db
+        self.db = Database()
         self.cur_page = 1
         self.mangas = []
         self.params = {'limit': 50, 'page': self.cur_page, 'order': 'popular', 'genres': ''}
