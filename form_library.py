@@ -2,7 +2,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget
 
 from const import library_icon_path, main_icon_path
-from database import db
+from database import Database
 from desu_library import Ui_Dialog
 
 
@@ -13,7 +13,7 @@ class FormLibrary(QWidget):
         self.ui.setupUi(self)
         self.mangas = []
         self.cur_list = 'planned'
-        self.db = db
+        self.db = Database()
         self.ui.btn_mylist.setIcon(QIcon(library_icon_path))
         self.ui.btn_main.setIcon(QIcon(main_icon_path))
         self.ui.b_planned.clicked.connect(lambda: self.update_list('planned'))
