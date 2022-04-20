@@ -4,11 +4,11 @@ from threading import Thread
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QWidget
 
-from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, URL_API, lib_lists_en
+from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, lib_lists_en
 from database import Database
-from desu_info import Ui_Form
+from form.desu_info import Ui_Form
+from parser.Desu import Desu
 from reader import Reader
-from static import get_html
 
 
 class FormInfo(QWidget):
@@ -23,18 +23,17 @@ class FormInfo(QWidget):
         self.db = Database()
         self.manga = manga
         self.chapters = []
-        self.reader = None
 
     def setup(self):
-        if self.db.check_manga_library(self.manga.id):
-            self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga.id)))
+        if self.db.check_manga_library(self.manga):
+            self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
         self.ui.image.setPixmap(QPixmap(self.get_preview()))
         self.ui.image.setScaledContents(True)
         self.ui.description.setText(self.manga.description)
         self.ui.name.setText(self.manga.name)
         self.ui.russian.setText(self.manga.russian)
         self.set_score(self.manga.score)
-        if self.db.check_manga_library(self.manga.id):
+        if self.db.check_manga_library(self.manga):
             self.ui.btn_add_to_lib.setIcon(QIcon(favorite1_icon_path))
         else:
             self.ui.btn_add_to_lib.setIcon(QIcon(favorite_icon_path))
@@ -57,43 +56,37 @@ class FormInfo(QWidget):
             stars[int(score)].show()
 
     def add_to_favorites(self):
-        if self.db.check_manga_library(self.manga.id):
-            self.db.rem_manga_library(self.manga.id)
+        if self.db.check_manga_library(self.manga):
+            self.db.rem_manga_library(self.manga)
             self.ui.btn_add_to_lib.setIcon(QIcon(favorite_icon_path))
         else:
-            self.db.add_manga_library(self.manga.id)
+            self.db.add_manga_library(self.manga)
             self.ui.btn_add_to_lib.setIcon(QIcon(favorite1_icon_path))
             self.change_lib_list()
 
     def change_lib_list(self):
-        if self.db.check_manga_library(self.manga.id):
+        if self.db.check_manga_library(self.manga):
             lib_list = lib_lists_en[self.ui.lib_list.currentIndex()]
-            self.db.add_manga_library(self.manga.id, lib_list)
+            self.db.add_manga_library(self.manga, lib_list)
 
     def get_chapters(self):
         self.ui.chapters.clear()
-        current_url = f'{URL_API}/{self.manga.id}'
-        html = get_html(current_url)
-        self.chapters = []
-        if html and html.status_code == 200:
-            if len(html.json()) == 0:
-                return
-            chapters = html.json().get('response').get('chapters').get('list')
-            if chapters:
-                for i in chapters:
-                    self.db.add_chapters(i, self.manga.id, chapters[::-1].index(i))
-        self.chapters = self.db.get_chapters(self.manga.id)
+        self.chapters = Desu().get_chapters(self.manga)
+        for i in self.chapters:
+            self.db.add_chapter(i, self.manga, self.chapters[::-1].index(i))
+        self.chapters = self.db.get_chapters(self.manga)
         self.chapters.reverse()
         [self.ui.chapters.addItem(i.get_name()) for i in self.chapters]
 
     def open_reader(self):
-        self.reader = Reader(self.manga, self.chapters, self.ui.chapters.currentIndex().row() + 1)
+        reader = Reader()
+        reader.setup(self.manga, self.chapters, self.ui.chapters.currentIndex().row() + 1)
 
     def get_preview(self) -> str:
         wd = os.getcwd()
         if not os.path.exists(f'{wd}/Desu/images/{self.manga.id}/preview.jpg'):
             os.makedirs(f'{wd}/Desu/images/{self.manga.id}', exist_ok=True)
-            img = get_html(f'https://desu.me/data/manga/covers/preview/{self.manga.id}.jpg')
+            img = Desu().get_preview(self.manga)
             with open(f'{wd}/Desu/images/{self.manga.id}/preview.jpg', 'wb') as f:
                 f.write(img.content)
         return f'{wd}/Desu/images/{self.manga.id}/preview.jpg'
@@ -102,9 +95,7 @@ class FormInfo(QWidget):
         chapters = self.chapters
         manga = self.manga
         for chapter in chapters:
-            current_url = f'{URL_API}/{manga.id}/chapter/{chapter.id}'
-            html = get_html(current_url)
-            images = html.json().get('response').get('pages').get('list')
+            images = Desu().get_images(manga, chapter)
             if images:
                 for image in images:
                     if self.isHidden():
@@ -113,6 +104,6 @@ class FormInfo(QWidget):
                     page = image.get('page')
                     if not os.path.exists(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg'):
                         os.makedirs(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}', exist_ok=True)
-                        img = get_html(images[page - 1].get('img'))
+                        img = Desu().get_image(images[page - 1])
                         with open(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg', 'wb') as f:
                             f.write(img.content)

@@ -1,12 +1,11 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget
 
-from const import URL_API, library_icon_path, main_icon_path
+from const import library_icon_path, main_icon_path
 from database import Database
-from desuUI import Ui_Dialog
+from form.desuUI import Ui_Dialog
 from form_genres import FormGenres
-from items import Manga
-from static import get_html
+from parser.Desu import Desu
 
 
 class FormFacial(QWidget):
@@ -41,15 +40,11 @@ class FormFacial(QWidget):
     def get_content(self):
         self.ui.list_manga.clear()
         self.params.update({'page': self.cur_page})
-        current_url = f'{URL_API}'
-        html = get_html(current_url, self.params)
-        self.mangas = []
-        if html and html.status_code == 200:
-            if len(html.json()) == 0:
-                return None
-            for i in html.json().get('response'):
-                self.mangas.append(Manga(i))
-                self.db.add_manga(i)
+        self.mangas = Desu().search_manga(self.params)
+        if len(self.mangas) == 0:
+            return
+        for i in self.mangas:
+            self.db.add_manga(i)
         self.ui.label_page.setText(f'Страница {self.cur_page}')
         [self.ui.list_manga.addItem(i) for i in self.get_manga_names()]
 
@@ -62,12 +57,14 @@ class FormFacial(QWidget):
         self.get_content()
 
     def change_page(self, page):
-        if page == '+':
-            self.cur_page += 1
-        elif self.cur_page > 1:
-            self.cur_page -= 1
-        else:
-            return
+        match page:
+            case '+':
+                self.cur_page += 1
+            case '-':
+                if self.cur_page > 1:
+                    self.cur_page -= 1
+            case _:
+                return
         self.ui.label_page.setText(f'Страница {self.cur_page}')
         self.get_content()
 
