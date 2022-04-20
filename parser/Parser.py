@@ -7,7 +7,7 @@ class Parser:
         self.url_api = ''
         self.headers = DEFAULT_HEADERS
 
-    def get_manga(self, manga) -> Manga:
+    def get_manga(self, manga: Manga) -> Manga:
         pass
 
     def search_manga(self, params: dict) -> [Manga]:
@@ -23,4 +23,7 @@ class Parser:
         pass
 
     def get_preview(self, manga: Manga):
+        pass
+
+    def get_genres(self):
         pass
