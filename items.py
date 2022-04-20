@@ -5,7 +5,10 @@ class Manga:
         self.russian: str = manga.get('russian')
         self.kind: str = manga.get('kind')
         self.description: str = manga.get('description')
-        self.score: str = manga.get('score')
+        self.score: float = manga.get('score')
+        if self.score:
+            self.score: float = float(self.score)
+        self.shikimori_id = manga.get('shikimori_id')
 
     def get_name(self) -> str:
         if self.russian:
@@ -33,3 +36,11 @@ class Image:
         self.width: int = page.get('width')
         self.height: int = page.get('height')
         self.img: str = page.get('img')
+
+
+class Genre:
+    def __init__(self, data: dict):
+        self.id = data.get('id')
+        self.name = data.get('name')
+        self.russian = data.get('russian')
+        self.kind = data.get('kind')

@@ -10,8 +10,8 @@ class Desu(Parser):
         self.url_api = URL_DESU_API
         self.headers = DESU_HEADERS
 
-    def get_manga(self, manga) -> Manga:
-        pass
+    def get_manga(self, manga: Manga) -> Manga:
+        return manga
 
     def search_manga(self, params: dict) -> [Manga]:
         url = f'{self.url_api}'
