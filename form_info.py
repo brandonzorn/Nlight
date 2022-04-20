@@ -7,12 +7,14 @@ from PyQt5.QtWidgets import QWidget
 from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, lib_lists_en
 from database import Database
 from form.desu_info import Ui_Form
+from items import Manga
 from parser.Desu import Desu
+from parser.Shikimori import Shikimori
 from reader import Reader
 
 
 class FormInfo(QWidget):
-    def __init__(self, manga):
+    def __init__(self, manga: Manga):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
@@ -25,6 +27,10 @@ class FormInfo(QWidget):
         self.chapters = []
 
     def setup(self):
+        manga_id = self.manga.id
+        if self.manga.shikimori_id:
+            self.manga = Shikimori().get_manga(self.manga)
+        self.manga.id = manga_id
         if self.db.check_manga_library(self.manga):
             self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
         self.ui.image.setPixmap(QPixmap(self.get_preview()))

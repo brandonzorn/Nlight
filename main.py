@@ -21,7 +21,7 @@ class App(QStackedWidget):
         self.setWindowIcon(QIcon(app_icon_path))
         self.setStyleSheet('color: rgb(255, 255, 255);background-color: rgb(45, 45, 45);')
         self.Form_facial = FormFacial()
-        self.Form_info = FormInfo(Manga)
+        self.Form_info = FormInfo(Manga({}))
         self.Form_library = FormLibrary()
         self.addWidget(self.Form_facial)
         self.Form_facial.ui.btn_mylist.clicked.connect(self.clicked_library)
