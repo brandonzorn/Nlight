@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QWidget
 
 from const import library_icon_path, main_icon_path
 from database import Database
-from desu_library import Ui_Dialog
+from form.desu_library import Ui_Dialog
 
 
 class FormLibrary(QWidget):

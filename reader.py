@@ -4,15 +4,14 @@ from threading import Thread
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from const import URL_API
 from database import Database
-from desu_readerUI import Ui_Dialog
-from items import Image
-from static import get_html
+from form.desu_readerUI import Ui_Dialog
+from items import Image, Manga, Chapter
+from parser.Desu import Desu
 
 
 class Reader(QWidget):
-    def __init__(self, manga, chapters, cur_chapter=1):
+    def __init__(self):
         super().__init__()
         self.ui_re = Ui_Dialog()
         self.ui_re.setupUi(self)
@@ -22,18 +21,23 @@ class Reader(QWidget):
         self.ui_re.next_page.clicked.connect(lambda: self.press_key('next_page'))
         self.ui_re.prev_chp.clicked.connect(lambda: self.press_key('prev_ch'))
         self.ui_re.next_chp.clicked.connect(lambda: self.press_key('next_ch'))
+        self.wd = os.getcwd()
+        self.db = Database()
         self.lay = QVBoxLayout(self.ui_re.scrollAreaWidgetContents)
-        self.lay.setContentsMargins(0, 0, 0, 0)
         self.lay.addWidget(self.ui_re.img)
-        self.cur_chapter: int = cur_chapter
-        self.max_chapters: int = len(chapters)
+        self.manga: Manga = Manga({})
+        self.chapters: [Chapter] = [Chapter({})]
+        self.images: [Image] = [Image({})]
+        self.cur_chapter: int = 1
+        self.max_chapters: int = 1
         self.cur_page: int = 1
         self.max_page: int = 1
+
+    def setup(self, manga, chapters, cur_chapter=1):
+        self.cur_chapter = cur_chapter
+        self.max_chapters = len(chapters)
         self.manga = manga
         self.chapters = chapters
-        self.images = []
-        self.db = Database()
-        self.wd = os.getcwd()
         self.setWindowTitle(self.manga.name)
         self.showFullScreen()
         self.change_chapter()
@@ -85,7 +89,7 @@ class Reader(QWidget):
     def change_chapter(self, page=None):
         match page:
             case '+':
-                if self.cur_page == self.max_chapters:
+                if self.cur_chapter == self.max_chapters:
                     self.close_reader()
                 else:
                     self.cur_chapter += 1
@@ -100,25 +104,25 @@ class Reader(QWidget):
         self.ui_re.lbl_chp.setText(self.chapters[self.cur_chapter - 1].get_name())
 
     def attach_image(self):
-        pixmap = self.get_pixmap()
+        pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
         self.ui_re.img.setPixmap(pixmap)
+        self.resize(self.screen().size())
         self.ui_re.scrollArea.verticalScrollBar().setValue(0)
         self.ui_re.scrollArea.horizontalScrollBar().setValue(0)
+        self.showFullScreen()
         # self.ui_re.scrollArea.setWidgetResizable(True)
 
     def get_image(self, chapter, image) -> str:
         if not os.path.exists(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg'):
             os.makedirs(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}', exist_ok=True)
-            img = get_html(image.img)
+            img = Desu().get_image(image)
             if img:
                 with open(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg', 'wb') as f:
                     f.write(img.content)
         return f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg'
 
-    def get_pixmap(self):
-        self.resize(self.screen().size())
-        self.showFullScreen()
-        pixmap = QPixmap(self.get_image(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1]))
+    def get_pixmap(self, chapter, image):
+        pixmap = QPixmap(self.get_image(chapter, image))
         if pixmap.isNull():
             return QPixmap()
         if self.manga.kind in ['manga', 'manhua', 'one_shot']:
@@ -127,16 +131,10 @@ class Reader(QWidget):
 
     def get_images(self):
         chapter = self.chapters[self.cur_chapter - 1]
-        current_url = f'{URL_API}/{self.manga.id}/chapter/{chapter.id}'
-        html = get_html(current_url)
-        self.images = []
-        if html and html.status_code == 200:
-            if len(html.json()) == 0:
-                return
-            images = html.json().get('response').get('pages').get('list')
-            for i in images:
-                self.db.add_images(i, chapter.id)
-        self.images = self.db.get_images(chapter.id)
+        self.images = Desu().get_images(self.manga, chapter)
+        for i in self.images:
+            self.db.add_image(i, chapter)
+        self.images = self.db.get_images(chapter)
         if not self.images:
             self.images = [Image({'page': 1})]
         self.max_page = self.get_images_pages()
@@ -155,6 +153,7 @@ class Reader(QWidget):
                 break
             self.get_image(chapter, image)
             if not os.path.exists(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg'):
-                img = get_html(images[image.page - 1].img)
-                with open(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg', 'wb') as f:
-                    f.write(img.content)
+                img = Desu().get_image(images[image.page - 1])
+                if img:
+                    with open(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg', 'wb') as f:
+                        f.write(img.content)
