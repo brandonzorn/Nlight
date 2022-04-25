@@ -1,11 +1,11 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget
 
+from catalog_manager import get_catalog
 from const import library_icon_path, main_icon_path
 from database import Database
 from form.desuUI import Ui_Dialog
 from form_genres import FormGenres
-from parser.Desu import Desu
 
 
 class FormFacial(QWidget):
@@ -29,6 +29,7 @@ class FormFacial(QWidget):
         self.ui.filter_apply.clicked.connect(self.filter_apply)
         self.ui.filter_reset.clicked.connect(self.filter_reset)
         self.ui.btn_search.clicked.connect(self.search)
+        self.catalog = get_catalog(0)()
         self.get_content()
 
     def clicked_genres(self):
@@ -40,7 +41,7 @@ class FormFacial(QWidget):
     def get_content(self):
         self.ui.list_manga.clear()
         self.params.update({'page': self.cur_page})
-        self.mangas = Desu().search_manga(self.params)
+        self.mangas = self.catalog.search_manga(self.params)
         if len(self.mangas) == 0:
             return
         for i in self.mangas:
