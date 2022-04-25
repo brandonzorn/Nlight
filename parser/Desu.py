@@ -1,14 +1,13 @@
-from const import DESU_HEADERS, URL_DESU_API
-from items import Manga, Chapter, Image
-from parser.Parser import Parser
+from const import DESU_HEADERS, URL_DESU_API, manga_desu_genres
+from items import Manga, Chapter, Image, Genre
 from static import get_html
 
 
-class Desu(Parser):
+class Desu:
     def __init__(self):
-        super().__init__()
         self.url_api = URL_DESU_API
         self.headers = DESU_HEADERS
+        self.catalog_id = 0
 
     def get_manga(self, manga: Manga) -> Manga:
         return manga
@@ -16,9 +15,13 @@ class Desu(Parser):
     def search_manga(self, params: dict) -> [Manga]:
         url = f'{self.url_api}'
         html = get_html(url, self.headers, params)
+        manga = []
         if html and html.status_code == 200 and len(html.json()):
-            return [Manga(i) for i in html.json().get('response')]
-        return []
+            for i in html.json().get('response'):
+                data = i
+                data.update({'catalog_id': self.catalog_id})
+                manga.append(Manga(data))
+        return manga
 
     def get_chapters(self, manga: Manga) -> [Chapter]:
         url = f'{self.url_api}/{manga.id}'
@@ -39,3 +42,6 @@ class Desu(Parser):
 
     def get_preview(self, manga: Manga):
         return get_html(f'https://desu.me/data/manga/covers/preview/{manga.id}.jpg')
+
+    def get_genres(self):
+        return [Genre({'name': i['en'], 'russian': i['ru']}) for i in manga_desu_genres]
