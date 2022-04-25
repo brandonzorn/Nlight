@@ -4,12 +4,11 @@ from threading import Thread
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QWidget
 
+from catalog_manager import get_catalog
 from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, lib_lists_en
 from database import Database
 from form.desu_info import Ui_Form
 from items import Manga
-from parser.Desu import Desu
-from parser.Shikimori import Shikimori
 from reader import Reader
 
 
@@ -23,16 +22,15 @@ class FormInfo(QWidget):
         self.ui.btn_back.setIcon(QIcon(back_icon_path))
         self.ui.lib_list.currentIndexChanged.connect(self.change_lib_list)
         self.db = Database()
+        self.wd = os.getcwd()
+        self.catalog = None
         self.manga = manga
         self.chapters = []
 
     def setup(self):
-        manga_id = self.manga.id
-        if self.manga.shikimori_id:
-            self.manga = Shikimori().get_manga(self.manga)
-        self.manga.id = manga_id
         if self.db.check_manga_library(self.manga):
             self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
+        self.catalog = get_catalog(self.manga.catalog_id)()
         self.ui.image.setPixmap(QPixmap(self.get_preview()))
         self.ui.image.setScaledContents(True)
         self.ui.description.setText(self.manga.description)
@@ -77,7 +75,7 @@ class FormInfo(QWidget):
 
     def get_chapters(self):
         self.ui.chapters.clear()
-        self.chapters = Desu().get_chapters(self.manga)
+        self.chapters = self.catalog.get_chapters(self.manga)
         for i in self.chapters:
             self.db.add_chapter(i, self.manga, self.chapters[::-1].index(i))
         self.chapters = self.db.get_chapters(self.manga)
@@ -92,16 +90,18 @@ class FormInfo(QWidget):
         wd = os.getcwd()
         if not os.path.exists(f'{wd}/Desu/images/{self.manga.id}/preview.jpg'):
             os.makedirs(f'{wd}/Desu/images/{self.manga.id}', exist_ok=True)
-            img = Desu().get_preview(self.manga)
-            with open(f'{wd}/Desu/images/{self.manga.id}/preview.jpg', 'wb') as f:
-                f.write(img.content)
+            img = self.catalog.get_preview(self.manga)
+            if img:
+                with open(f'{wd}/Desu/images/{self.manga.id}/preview.jpg', 'wb') as f:
+                    f.write(img.content)
         return f'{wd}/Desu/images/{self.manga.id}/preview.jpg'
 
     def download_all(self):
         chapters = self.chapters
         manga = self.manga
+        catalog = get_catalog(manga.catalog_id)()
         for chapter in chapters:
-            images = Desu().get_images(manga, chapter)
+            images = catalog.get_images(manga, chapter)
             if images:
                 for image in images:
                     if self.isHidden():
@@ -110,6 +110,6 @@ class FormInfo(QWidget):
                     page = image.get('page')
                     if not os.path.exists(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg'):
                         os.makedirs(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}', exist_ok=True)
-                        img = Desu().get_image(images[page - 1])
+                        img = catalog.get_image(images[page - 1])
                         with open(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg', 'wb') as f:
                             f.write(img.content)

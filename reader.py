@@ -4,10 +4,11 @@ from threading import Thread
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+
+from catalog_manager import get_catalog
 from database import Database
 from form.desu_readerUI import Ui_Dialog
 from items import Image, Manga, Chapter
-from parser.Desu import Desu
 
 
 class Reader(QWidget):
@@ -32,11 +33,13 @@ class Reader(QWidget):
         self.max_chapters: int = 1
         self.cur_page: int = 1
         self.max_page: int = 1
+        self.catalog = None
 
     def setup(self, manga, chapters, cur_chapter=1):
         self.cur_chapter = cur_chapter
         self.max_chapters = len(chapters)
         self.manga = manga
+        self.catalog = get_catalog(manga.catalog_id)()
         self.chapters = chapters
         self.setWindowTitle(self.manga.name)
         self.showFullScreen()
@@ -115,7 +118,7 @@ class Reader(QWidget):
     def get_image(self, chapter, image) -> str:
         if not os.path.exists(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg'):
             os.makedirs(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}', exist_ok=True)
-            img = Desu().get_image(image)
+            img = self.catalog.get_image(image)
             if img:
                 with open(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg', 'wb') as f:
                     f.write(img.content)
@@ -131,10 +134,10 @@ class Reader(QWidget):
 
     def get_images(self):
         chapter = self.chapters[self.cur_chapter - 1]
-        self.images = Desu().get_images(self.manga, chapter)
-        for i in self.images:
-            self.db.add_image(i, chapter)
-        self.images = self.db.get_images(chapter)
+        self.images = self.catalog.get_images(self.manga, chapter)
+        # for i in self.images:
+        #     self.db.add_image(i, chapter)
+        # self.images = self.db.get_images(chapter)
         if not self.images:
             self.images = [Image({'page': 1})]
         self.max_page = self.get_images_pages()
@@ -153,7 +156,7 @@ class Reader(QWidget):
                 break
             self.get_image(chapter, image)
             if not os.path.exists(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg'):
-                img = Desu().get_image(images[image.page - 1])
+                img = self.catalog.get_image(images[image.page - 1])
                 if img:
                     with open(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg', 'wb') as f:
                         f.write(img.content)

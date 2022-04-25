@@ -2,6 +2,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from const import app_icon_path, manga_desu_genres
+from catalog_manager import get_catalog
 from form.desu_genresUI import Ui_Dialog
 
 
@@ -17,9 +18,10 @@ class FormGenres(QDialog):
         self.ui_ge.buttonBox.rejected.connect(self.reject_genres)
         self.selected_genres = {'genres': ''}
         self.genres_items = {}
-        for i in range(len(manga_desu_genres)):
-            check_box = QCheckBox(manga_desu_genres[i].get('ru'))
-            self.genres_items.update({check_box: manga_desu_genres[i].get('en')})
+        genres = get_catalog(0)().get_genres()
+        for i in range(len(genres)):
+            check_box = QCheckBox(genres[i].get_name())
+            self.genres_items.update({check_box: genres[i].name})
             self.ui_ge.gridLayout.addWidget(check_box, i // 5, i % 5)
 
     def accept_genres(self):
