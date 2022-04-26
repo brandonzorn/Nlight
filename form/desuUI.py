@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(891, 649)
+        Dialog.resize(959, 649)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -196,6 +196,11 @@ class Ui_Dialog(object):
         self.horizontalLayout_3.addLayout(self.verticalLayout_2)
         self.catalog_list = QtWidgets.QListWidget(Dialog)
         self.catalog_list.setEnabled(True)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.catalog_list.sizePolicy().hasHeightForWidth())
+        self.catalog_list.setSizePolicy(sizePolicy)
         self.catalog_list.setObjectName("catalog_list")
         self.horizontalLayout_3.addWidget(self.catalog_list)
         self.verticalLayout = QtWidgets.QVBoxLayout()
