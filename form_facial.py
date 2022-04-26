@@ -48,7 +48,7 @@ class FormFacial(QWidget):
 
     def setup_catalogs(self):
         self.ui.catalog_list.clear()
-        self.ui.catalog_list.addItems([str(i()) for i in CATALOGS.values()])
+        self.ui.catalog_list.addItems([i.catalog_name for i in CATALOGS.values()])
 
     def setup_request(self):
         self.request_params.page = self.cur_page
