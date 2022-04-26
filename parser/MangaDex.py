@@ -5,9 +5,9 @@ from static import get_html
 
 
 class MangaDex(Parser):
+    catalog_name = 'MangaDex'
+
     def __init__(self):
-        super().__init__()
-        self.catalog_name = 'MangaDex'
         self.url_api = URL_MANGA_DEX_API
         self.headers = DEFAULT_HEADERS
         self.catalog_id = 2
