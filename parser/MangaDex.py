@@ -1,5 +1,5 @@
 from const import MANGA_DEX_HEADERS, URL_MANGA_DEX_API, DEFAULT_HEADERS
-from items import Manga, Chapter, Image, Genre
+from items import Manga, Chapter, Image, Genre, RequestForm
 from static import get_html
 
 
@@ -12,10 +12,10 @@ class MangaDex:
     def get_manga(self, manga: Manga) -> Manga:
         pass
 
-    def search_manga(self, params: dict) -> [Manga]:
+    def search_manga(self, params: RequestForm) -> [Manga]:
         url = f'{self.url_api}/manga'
-        params = {'limit': 50, 'title': params.get('search'), 'offset': (params.get('page') - 1) * 50,
-                  'includedTags[]': []}
+        params = {'limit': 50, 'title': params.search, 'offset': params.offset(),
+                  'includedTags[]': [i.id for i in params.genres]}
         manga = []
         html = get_html(url, self.headers, params)
         if html and html.status_code == 200 and len(html.json()):
@@ -28,6 +28,8 @@ class MangaDex:
                     for j in i.get('attributes').get('altTitles'):
                         if 'ru' in j.keys():
                             russian = j.get('ru')
+                        if not name and 'en' in j.keys():
+                            name = j.get('en')
                 description = i.get('attributes').get('description')
                 if description:
                     if description.get('ru'):

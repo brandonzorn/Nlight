@@ -1,5 +1,5 @@
 from const import SHIKIMORI_HEADERS, URL_SHIKIMORI_API
-from items import Manga, Chapter, Image, Genre
+from items import Manga, Chapter, Image, Genre, RequestForm
 from static import get_html
 
 
@@ -18,11 +18,11 @@ class Shikimori:
             return m
         return manga
 
-    def search_manga(self, params: dict) -> [Manga]:
+    def search_manga(self, params: RequestForm) -> [Manga]:
         url = f'{self.url_api}/mangas'
-        params.update({'order': 'popularity'})
+        params = {'limit': params.limit, 'search': params.search, 'genre': ','.join([i.id for i in params.genres]),
+                  'order': 'popularity', 'kind': ','.join(params.kinds), 'page': params.page}
         html = get_html(url, self.headers, params)
-        print(html.url)
         manga = []
         if html and html.status_code == 200 and len(html.json()):
             for i in html.json():
