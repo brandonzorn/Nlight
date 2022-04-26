@@ -1,10 +1,13 @@
 from const import MANGA_DEX_HEADERS, URL_MANGA_DEX_API, DEFAULT_HEADERS
 from items import Manga, Chapter, Image, Genre, RequestForm
+from parser.Parser import Parser
 from static import get_html
 
 
-class MangaDex:
+class MangaDex(Parser):
     def __init__(self):
+        super().__init__()
+        self.catalog_name = 'MangaDex'
         self.url_api = URL_MANGA_DEX_API
         self.headers = DEFAULT_HEADERS
         self.catalog_id = 2

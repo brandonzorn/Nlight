@@ -1,10 +1,13 @@
 from const import DESU_HEADERS, URL_DESU_API, manga_desu_genres
 from items import Manga, Chapter, Image, Genre, RequestForm
+from parser.Parser import Parser
 from static import get_html
 
 
-class Desu:
+class Desu(Parser):
     def __init__(self):
+        super().__init__()
+        self.catalog_name = 'Desu'
         self.url_api = URL_DESU_API
         self.headers = DESU_HEADERS
         self.catalog_id = 0
