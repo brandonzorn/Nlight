@@ -1,5 +1,5 @@
 from const import DESU_HEADERS, URL_DESU_API, manga_desu_genres
-from items import Manga, Chapter, Image, Genre
+from items import Manga, Chapter, Image, Genre, RequestForm
 from static import get_html
 
 
@@ -12,8 +12,10 @@ class Desu:
     def get_manga(self, manga: Manga) -> Manga:
         return manga
 
-    def search_manga(self, params: dict) -> [Manga]:
+    def search_manga(self, params: RequestForm) -> [Manga]:
         url = f'{self.url_api}'
+        params = {'limit': params.limit, 'search': params.search, 'genres': ','.join([i.name for i in params.genres]),
+                  'order': params.order, 'kinds': ','.join(params.kinds), 'page': params.page}
         html = get_html(url, self.headers, params)
         manga = []
         if html and html.status_code == 200 and len(html.json()):
