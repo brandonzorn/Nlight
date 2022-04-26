@@ -5,9 +5,9 @@ from static import get_html
 
 
 class Desu(Parser):
+    catalog_name = 'Desu'
+
     def __init__(self):
-        super().__init__()
-        self.catalog_name = 'Desu'
         self.url_api = URL_DESU_API
         self.headers = DESU_HEADERS
         self.catalog_id = 0

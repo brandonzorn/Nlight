@@ -5,9 +5,9 @@ from static import get_html
 
 
 class Shikimori(Parser):
+    catalog_name = 'Shikimori'
+
     def __init__(self):
-        super().__init__()
-        self.catalog_name = 'Shikimori'
         self.url_api = URL_SHIKIMORI_API
         self.headers = SHIKIMORI_HEADERS
         self.catalog_id = 1
