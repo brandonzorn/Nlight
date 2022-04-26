@@ -9,7 +9,7 @@ from database import Database
 from form_facial import FormFacial
 from form_info import FormInfo
 from form_library import FormLibrary
-from static import *
+from items import Manga
 
 
 class App(QStackedWidget):
