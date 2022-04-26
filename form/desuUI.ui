@@ -507,7 +507,25 @@ color: rgb(255, 255, 255);</string>
        </property>
       </spacer>
      </item>
+     <item>
+      <widget class="QPushButton" name="btn_settings">
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(0, 133, 52);
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QListWidget" name="catalog_list">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">

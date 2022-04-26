@@ -16,9 +16,16 @@ class FormGenres(QDialog):
         self.setWindowIcon(QIcon(app_icon_path))
         self.ui_ge.buttonBox.accepted.connect(self.accept_genres)
         self.ui_ge.buttonBox.rejected.connect(self.reject_genres)
-        genres = get_catalog()().get_genres()
+        self.catalog = get_catalog()()
         self.selected_genres = []
         self.genres_items = {}
+        self.setup()
+
+    def setup(self):
+        [self.ui_ge.gridLayout.removeWidget(i) for i in self.genres_items]
+        self.genres_items = {}
+        self.selected_genres = []
+        genres = self.catalog.get_genres()
         for i in range(len(genres)):
             check_box = QCheckBox(genres[i].get_name())
             self.genres_items.update({check_box: genres[i]})

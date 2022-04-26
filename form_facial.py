@@ -1,7 +1,7 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget
 
-from catalog_manager import get_catalog
+from catalog_manager import get_catalog, CATALOGS
 from const import library_icon_path, main_icon_path
 from database import Database
 from form.desuUI import Ui_Dialog
@@ -38,6 +38,17 @@ class FormFacial(QWidget):
 
     def get_current_manga(self):
         return self.mangas[self.ui.list_manga.currentIndex().row()]
+
+    def update_catalog(self, index):
+        catalog = get_catalog(index)
+        self.catalog = catalog()
+        self.Form_genres.catalog = catalog()
+        self.Form_genres.setup()
+        self.get_content()
+
+    def setup_catalogs(self):
+        self.ui.catalog_list.clear()
+        self.ui.catalog_list.addItems([str(i()) for i in CATALOGS.values()])
 
     def setup_request(self):
         self.request_params.page = self.cur_page

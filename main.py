@@ -25,8 +25,12 @@ class App(QStackedWidget):
         self.Form_library = FormLibrary()
         self.addWidget(self.Form_facial)
         self.Form_facial.ui.btn_mylist.clicked.connect(self.clicked_library)
+        self.Form_facial.ui.btn_settings.clicked.connect(self.clicked_catalogs)
+        self.Form_facial.ui.catalog_list.hide()
         self.Form_facial.ui.list_manga.doubleClicked.connect(lambda: self.clicked_chapters(
             self.Form_facial.get_current_manga()))
+        self.Form_facial.ui.catalog_list.doubleClicked.connect(lambda: self.change_catalog(
+            self.Form_facial.ui.catalog_list.currentIndex().row()))
         self.Form_library.ui.btn_main.clicked.connect(self.clicked_main)
         self.Form_library.ui.list_manga.doubleClicked.connect(lambda: self.clicked_chapters(
             self.Form_library.get_current_manga()))
@@ -51,6 +55,16 @@ class App(QStackedWidget):
         self.removeWidget(self.currentWidget())
         self.addWidget(self.Form_library)
         self.Form_library.update_list()
+
+    def clicked_catalogs(self):
+        if self.Form_facial.ui.catalog_list.isHidden():
+            self.Form_facial.setup_catalogs()
+            self.Form_facial.ui.catalog_list.show()
+        else:
+            self.Form_facial.ui.catalog_list.hide()
+
+    def change_catalog(self, index):
+        self.Form_facial.update_catalog(index)
 
     def back(self):
         self.removeWidget(self.currentWidget())
