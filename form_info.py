@@ -2,7 +2,7 @@ import os
 
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QWidget
-
+from threading import Thread
 from catalog_manager import get_catalog
 from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, lib_lists_en
 from database import Database
@@ -27,9 +27,9 @@ class FormInfo(QWidget):
         self.chapters = []
 
     def setup(self):
+        self.catalog = get_catalog(self.manga.catalog_id)()
         if self.db.check_manga_library(self.manga):
             self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
-        self.catalog = get_catalog(self.manga.catalog_id)()
         self.ui.image.setPixmap(QPixmap(self.get_preview()))
         self.ui.image.setScaledContents(True)
         self.ui.description.setText(self.manga.description)
@@ -40,7 +40,8 @@ class FormInfo(QWidget):
             self.ui.btn_add_to_lib.setIcon(QIcon(favorite1_icon_path))
         else:
             self.ui.btn_add_to_lib.setIcon(QIcon(favorite_icon_path))
-        self.get_chapters()
+        thread = Thread(target=self.get_chapters)
+        thread.start()
 
     def set_score(self, score: float):
         stars = [self.ui.star_1, self.ui.star_2, self.ui.star_3, self.ui.star_4, self.ui.star_5]

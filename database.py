@@ -12,7 +12,7 @@ class Database:
         self.wd = os.getcwd()
         if not os.path.exists(f'{self.wd}/Desu/data.db'):
             os.makedirs(f'{self.wd}/Desu', exist_ok=True)
-        self.con = sqlite3.connect(f'{self.wd}/Desu/data.db')
+        self.con = sqlite3.connect(f'{self.wd}/Desu/data.db', check_same_thread=False)
         self.cur = self.con.cursor()
         self.cur.execute("""CREATE TABLE IF NOT EXISTS manga (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
         name STRING, russian STRING, kind STRING, description TEXT, score FLOAT, catalog_id INTEGER);""")
