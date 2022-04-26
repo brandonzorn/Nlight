@@ -16,9 +16,8 @@ class Shikimori(Parser):
         url = f'{self.url_api}/mangas/{manga.id}'
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and len(html.json()):
-            m = Manga(html.json())
-            m.catalog_id = self.catalog_id
-            return m
+            data = html.json()
+            manga.description = data.get('description')
         return manga
 
     def search_manga(self, params: RequestForm) -> [Manga]:

@@ -13,7 +13,7 @@ class MangaDex(Parser):
         self.catalog_id = 2
 
     def get_manga(self, manga: Manga) -> Manga:
-        pass
+        return manga
 
     def search_manga(self, params: RequestForm) -> [Manga]:
         url = f'{self.url_api}/manga'

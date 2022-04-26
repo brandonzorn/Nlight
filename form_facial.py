@@ -37,7 +37,7 @@ class FormFacial(QWidget):
         self.Form_genres.show()
 
     def get_current_manga(self):
-        return self.mangas[self.ui.list_manga.currentIndex().row()]
+        return self.catalog.get_manga(self.mangas[self.ui.list_manga.currentIndex().row()])
 
     def update_catalog(self, index):
         catalog = get_catalog(index)
