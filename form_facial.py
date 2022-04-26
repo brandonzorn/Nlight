@@ -6,6 +6,7 @@ from const import library_icon_path, main_icon_path
 from database import Database
 from form.desuUI import Ui_Dialog
 from form_genres import FormGenres
+from items import RequestForm
 
 
 class FormFacial(QWidget):
@@ -16,7 +17,7 @@ class FormFacial(QWidget):
         self.db = Database()
         self.cur_page = 1
         self.mangas = []
-        self.params = {'limit': 50, 'page': self.cur_page, 'order': 'popular', 'genres': ''}
+        self.request_params = RequestForm()
         self.order_by = {self.ui.sort_name: 'name', self.ui.sort_popular: 'popular'}
         self.kinds = {self.ui.type_manga: 'manga', self.ui.type_manhwa: 'manhwa', self.ui.type_manhua: 'manhua',
                       self.ui.type_one_shot: 'one_shot', self.ui.type_comics: 'comics'}
@@ -29,7 +30,7 @@ class FormFacial(QWidget):
         self.ui.filter_apply.clicked.connect(self.filter_apply)
         self.ui.filter_reset.clicked.connect(self.filter_reset)
         self.ui.btn_search.clicked.connect(self.search)
-        self.catalog = get_catalog(0)()
+        self.catalog = get_catalog()()
         self.get_content()
 
     def clicked_genres(self):
@@ -38,10 +39,15 @@ class FormFacial(QWidget):
     def get_current_manga(self):
         return self.mangas[self.ui.list_manga.currentIndex().row()]
 
+    def setup_request(self):
+        self.request_params.page = self.cur_page
+        self.request_params.order = 'popular'
+        self.request_params.genres = []
+
     def get_content(self):
         self.ui.list_manga.clear()
-        self.params.update({'page': self.cur_page})
-        self.mangas = self.catalog.search_manga(self.params)
+        self.request_params.page = self.cur_page
+        self.mangas = self.catalog.search_manga(self.request_params)
         if len(self.mangas) == 0:
             return
         for i in self.mangas:
@@ -54,7 +60,7 @@ class FormFacial(QWidget):
 
     def search(self):
         self.cur_page = 1
-        self.params.update({'search': self.ui.line_search.text()})
+        self.request_params.search = self.ui.line_search.text()
         self.get_content()
 
     def change_page(self, page):
@@ -72,22 +78,19 @@ class FormFacial(QWidget):
     def filter_apply(self):
         self.cur_page = 1
         self.ui.label_page.setText(f'Страница {self.cur_page}')
-        self.params = {'limit': 50}
-        [self.params.update({'order': self.order_by.get(i)}) for i in self.order_by if i.isChecked()]
-        a = ','.join([self.kinds.get(i) for i in self.kinds if i.isChecked()])
-        if len(a) != 0:
-            self.params.update({'kinds': a})
-        if self.ui.line_search.text() != '':
-            self.params.update({'search': self.ui.line_search.text()})
+        self.request_params.clear()
+        self.request_params.order = [self.order_by.get(i) for i in self.order_by if i.isChecked()]
+        self.request_params.kinds = [self.kinds.get(i) for i in self.kinds if i.isChecked()]
+        self.request_params.search = self.ui.line_search.text()
         self.Form_genres.accept_genres()
-        self.params.update(self.Form_genres.selected_genres)
+        self.request_params.genres = self.Form_genres.selected_genres
         self.get_content()
 
     def filter_reset(self):
         self.cur_page = 1
         self.Form_genres.clear_genres()
         self.ui.label_page.setText(f'Страница {self.cur_page}')
-        self.params = {'limit': 50, 'order': '', 'genres': ''}
+        self.request_params.clear()
         self.ui.sort_popular.setChecked(True)
         self.ui.line_search.clear()
         [i.setChecked(False) for i in self.kinds]

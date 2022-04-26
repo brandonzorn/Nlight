@@ -54,3 +54,23 @@ class Genre:
         if self.russian:
             return self.russian
         return self.name
+
+
+class RequestForm:
+    def __init__(self):
+        self.limit: int = 50
+        self.search: str = ''
+        self.page: int = 1
+        self.offset = lambda: (self.page - 1) * 50
+        self.genres: [Genre] = []
+        self.order = ''
+        self.kinds = []
+
+    def clear(self):
+        self.limit: int = 50
+        self.search: str = ''
+        self.page: int = 1
+        # self.offset: int = (self.page - 1) * 50
+        self.genres: [Genre] = []
+        self.order = ''
+        self.kinds = []
