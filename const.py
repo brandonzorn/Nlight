@@ -22,6 +22,7 @@ lib_lists_ru = ('запланированно', 'прочитано', 'чита�
 
 app_icon_path = os.path.join(Path(__file__).parent, "images/icon.png")
 library_icon_path = os.path.join(Path(__file__).parent, "images/library.png")
+shikimori_icon_path = os.path.join(Path(__file__).parent, "images/shikimori.png")
 main_icon_path = os.path.join(Path(__file__).parent, "images/main.png")
 back_icon_path = os.path.join(Path(__file__).parent, "images/back.png")
 favorite_icon_path = os.path.join(Path(__file__).parent, "images/favorite.png")
