@@ -1,465 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>959</width>
-    <height>649</height>
+    <width>894</width>
+    <height>574</height>
    </rect>
   </property>
-  <property name="palette">
-   <palette>
-    <active>
-     <colorrole role="WindowText">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Button">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Light">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Midlight">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Dark">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Mid">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Text">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="ButtonText">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Base">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Window">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Shadow">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Highlight">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>0</red>
-        <green>133</green>
-        <blue>62</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="AlternateBase">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="ToolTipBase">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="ToolTipText">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>236</red>
-        <green>240</green>
-        <blue>241</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="PlaceholderText">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </brush>
-     </colorrole>
-    </active>
-    <inactive>
-     <colorrole role="WindowText">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Button">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Light">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Midlight">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Dark">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Mid">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Text">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="ButtonText">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Base">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Window">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Shadow">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Highlight">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>0</red>
-        <green>133</green>
-        <blue>62</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="AlternateBase">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="ToolTipBase">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="ToolTipText">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>236</red>
-        <green>240</green>
-        <blue>241</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="PlaceholderText">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </brush>
-     </colorrole>
-    </inactive>
-    <disabled>
-     <colorrole role="WindowText">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Button">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Light">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Midlight">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Dark">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Mid">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Text">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="ButtonText">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Base">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Window">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Shadow">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Highlight">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>0</red>
-        <green>120</green>
-        <blue>215</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="AlternateBase">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="ToolTipBase">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>45</red>
-        <green>45</green>
-        <blue>45</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="ToolTipText">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>236</red>
-        <green>240</green>
-        <blue>241</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="PlaceholderText">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
-       </color>
-      </brush>
-     </colorrole>
-    </disabled>
-   </palette>
-  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Form</string>
   </property>
   <property name="styleSheet">
    <string notr="true">color: rgb(255, 255, 255);
 background-color: rgb(45, 45, 45);</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_3">
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
@@ -523,31 +81,7 @@ color: rgb(255, 255, 255);</string>
        </property>
       </spacer>
      </item>
-     <item>
-      <widget class="QPushButton" name="btn_catalogs">
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(0, 133, 52);
-color: rgb(255, 255, 255);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QListWidget" name="catalog_list">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-    </widget>
    </item>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -1003,25 +537,6 @@ color: rgb(255, 255, 255);</string>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QLineEdit" name="line_search">
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(45, 45, 45);
-color: rgb(255, 255, 255);</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btn_search">
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(0, 133, 52);
-color: rgb(255, 255, 255);</string>
-         </property>
-         <property name="text">
-          <string>Поиск</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QPushButton" name="prev_page">
          <property name="styleSheet">
           <string notr="true">background-color: rgb(0, 133, 52);
@@ -1036,6 +551,12 @@ color: rgb(255, 255, 255);</string>
         <widget class="QLabel" name="label_page">
          <property name="text">
           <string> Страница 1</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::AutoText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -1057,161 +578,101 @@ color: rgb(255, 255, 255);</string>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_genre">
-         <property name="text">
-          <string>Жанр</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QCheckBox" name="type_one_shot">
-         <property name="text">
-          <string>Ваншот</string>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
-         </property>
-         <property name="tristate">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_type">
-         <property name="text">
-          <string>Тип</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QCheckBox" name="type_manhwa">
-         <property name="text">
-          <string>Манхва</string>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
-         </property>
-         <property name="tristate">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QCheckBox" name="type_manga">
-         <property name="text">
-          <string>Манга</string>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
-         </property>
-         <property name="tristate">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QCheckBox" name="type_comics">
-         <property name="text">
-          <string>Комикс</string>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
-         </property>
-         <property name="tristate">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QCheckBox" name="type_manhua">
-         <property name="text">
-          <string>Маньхуа</string>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
-         </property>
-         <property name="tristate">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QRadioButton" name="sort_name">
-         <property name="text">
-          <string>Название</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_sort">
-         <property name="text">
-          <string>Сортировка</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QRadioButton" name="sort_popular">
-         <property name="text">
-          <string>Популярность</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="7" column="0" colspan="2">
-        <widget class="QPushButton" name="btn_genres_list">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <property name="spacing">
+        <number>7</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="b_planned">
          <property name="styleSheet">
           <string notr="true">background-color: rgb(0, 133, 52);
 color: rgb(255, 255, 255);</string>
          </property>
          <property name="text">
-          <string>Список жанров</string>
+          <string>Запланировано</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="b_completed">
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(0, 133, 52);
+color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="text">
+          <string>Прочитано</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="b_watching">
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(0, 133, 52);
+color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="text">
+          <string>Читаю</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="b_rewatching">
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(0, 133, 52);
+color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="text">
+          <string>Перечитываю</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="b_on_hold">
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(0, 133, 52);
+color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="text">
+          <string>Отложено</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="b_dropped">
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(0, 133, 52);
+color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="text">
+          <string>Брошено</string>
          </property>
         </widget>
        </item>
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QPushButton" name="filter_reset">
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(0, 133, 52);
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_auth">
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(0, 133, 52);
 color: rgb(255, 255, 255);</string>
-         </property>
-         <property name="text">
-          <string>Сбросить</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="filter_apply">
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(0, 133, 52);
-color: rgb(255, 255, 255);</string>
-         </property>
-         <property name="text">
-          <string>Применить</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+       </property>
+       <property name="text">
+        <string>Войти</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
