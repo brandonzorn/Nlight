@@ -1,3 +1,4 @@
+from auth import Auth
 from const import SHIKIMORI_HEADERS, URL_SHIKIMORI_API
 from items import Manga, Chapter, Image, Genre, RequestForm
 from parser.Parser import Parser
@@ -51,3 +52,16 @@ class Shikimori(Parser):
         if html and html.status_code == 200 and len(html.json()):
             return [Genre(i) for i in html.json()]
         return []
+
+    def get_manga_login(self, params: RequestForm) -> [Manga]:
+        session = Auth()
+        url = f'{self.url_api}/mangas'
+        params = {'limit': params.limit, 'page': params.page, 'mylist': params.mylist}
+        html = session.get(url, params)
+        manga = []
+        if html and html.status_code == 200 and len(html.json()):
+            for i in html.json():
+                data = i
+                data.update({'catalog_id': self.catalog_id})
+                manga.append(Manga(data))
+        return manga

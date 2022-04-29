@@ -31,7 +31,7 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="icon">
         <iconset>
-         <normalon>images/library.png</normalon>
+         <normalon>../images/library.png</normalon>
         </iconset>
        </property>
       </widget>
@@ -47,7 +47,23 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="icon">
         <iconset>
-         <normalon>images/main.png</normalon>
+         <normalon>../images/main.png</normalon>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_shikimori">
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(0, 133, 52);
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>../images/shikimori.png</normalon>
         </iconset>
        </property>
       </widget>

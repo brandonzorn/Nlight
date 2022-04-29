@@ -65,6 +65,7 @@ class RequestForm:
         self.genres: [Genre] = []
         self.order = ''
         self.kinds = []
+        self.mylist = 'planned'
 
     def clear(self):
         self.limit: int = 50
@@ -74,3 +75,4 @@ class RequestForm:
         self.genres: [Genre] = []
         self.order = ''
         self.kinds = []
+        self.mylist = 'planned'
