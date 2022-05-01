@@ -24,8 +24,6 @@ class Reader(QWidget):
         self.ui_re.next_chp.clicked.connect(lambda: self.press_key('next_ch'))
         self.wd = os.getcwd()
         self.db = Database()
-        self.lay = QVBoxLayout(self.ui_re.scrollAreaWidgetContents)
-        self.lay.addWidget(self.ui_re.img)
         self.manga: Manga = Manga({})
         self.chapters: [Chapter] = [Chapter({})]
         self.images: [Image] = [Image({})]
