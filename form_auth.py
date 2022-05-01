@@ -6,7 +6,6 @@ from PyQt5.QtWidgets import *
 from auth import Auth
 from const import app_icon_path
 from form.authUI import Ui_Dialog
-from static import token_saver
 
 
 class FormAuth(QDialog):
@@ -14,8 +13,8 @@ class FormAuth(QDialog):
         super().__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.session = Auth(token_saver=token_saver)
-        # self.setFixedSize(self.minimumSize())
+        self.session = Auth()
+        self.setFixedSize(self.minimumSize())
         self.setWindowTitle('Authenticate')
         self.setWindowIcon(QIcon(app_icon_path))
         self.ui.btn_get.clicked.connect(self.login)
@@ -31,7 +30,9 @@ class FormAuth(QDialog):
             case 401:
                 print(whoami.json())
             case 200:
-                self.close()
+                self.accept()
+            case _:
+                self.reject()
 
     def login(self):
         webbrowser.open_new_tab(self.session.get_auth_url())

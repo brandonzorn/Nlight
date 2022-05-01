@@ -1,12 +1,13 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget
 
+from auth import Auth
 from catalog_manager import get_catalog
 from const import library_icon_path, main_icon_path, shikimori_icon_path
 from database import Database
 from form.shikimoriUI import Ui_Form
 from form_auth import FormAuth
-from items import Manga, RequestForm
+from items import Manga, RequestForm, User
 
 
 class FormShikimori(QWidget):
@@ -14,11 +15,13 @@ class FormShikimori(QWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.mangas = []
+        self.mangas: [Manga] = []
         self.Form_auth = FormAuth()
         self.catalog = get_catalog(1)()
         self.request_params = RequestForm()
+        self.session = Auth()
         self.cur_list = 'planned'
+        self.ui.btn_auth.setText(self.get_whoami().nickname)
         self.db = Database()
         self.ui.btn_mylist.setIcon(QIcon(library_icon_path))
         self.ui.btn_main.setIcon(QIcon(main_icon_path))
@@ -30,12 +33,25 @@ class FormShikimori(QWidget):
         self.ui.b_dropped.clicked.connect(lambda: self.update_list('dropped'))
         self.ui.b_rewatching.clicked.connect(lambda: self.update_list('rewatching'))
         self.ui.btn_auth.clicked.connect(self.authorize)
+        self.Form_auth.accepted.connect(lambda: self.ui.btn_auth.setText(self.get_whoami().nickname))
 
     def get_current_manga(self):
         return self.catalog.get_manga(self.mangas[self.ui.list_manga.currentIndex().row()])
 
     def authorize(self):
         self.Form_auth.show()
+
+    def get_whoami(self) -> User:
+        whoami = self.session.get('https://shikimori.one/api/users/whoami')
+        user = User()
+        match whoami.status_code:
+            case 401:
+                print(whoami.json())
+            case 200:
+                data = whoami.json()
+                user.id = data.get('id')
+                user.nickname = data.get('nickname')
+        return user
 
     def update_list(self, lib_list=None):
         self.ui.list_manga.clear()

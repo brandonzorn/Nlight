@@ -1,14 +1,13 @@
 import oauthlib.oauth2.rfc6749.errors
-import requests.models
 from requests_oauthlib import OAuth2Session
 from const import URL_SHIKIMORI, URL_SHIKIMORI_TOKEN
 from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
-from static import token_loader, singleton
+from static import token_loader, token_saver, singleton
 
 
 @singleton
 class Auth:
-    def __init__(self, token=None, token_saver=None, scope=None):
+    def __init__(self, token=None, scope=None):
         self.client_id = SHIKIMORI_CLIENT_ID
         self.client_secret = SHIKIMORI_CLIENT_SECRET
         self.redirect_uri = 'urn:ietf:wg:oauth:2.0:oob'
@@ -47,7 +46,7 @@ class Auth:
         self.client.headers.update({'Authorization': f'Bearer {token_loader().get("access_token")}'})
         return self.token
 
-    def get(self, url, params=None) -> requests.models.Response:
+    def get(self, url, params=None):
         return self.client.request('GET', url, params)
 
     @property

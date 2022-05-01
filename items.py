@@ -76,3 +76,11 @@ class RequestForm:
         self.order = ''
         self.kinds = []
         self.mylist = 'planned'
+
+
+class User:
+    def __init__(self):
+        self.id = 0
+        self.nickname = None
+        self.avatar = None
+        self.locale = None
