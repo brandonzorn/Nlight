@@ -1,29 +1,35 @@
+import json
 import os
 
 import requests
-from const import HEADERS, lib_lists_en, lib_lists_ru
+from const import lib_lists_en, lib_lists_ru, DESU_HEADERS
 from items import Manga, Chapter, Image
 
 
-def get_html(url: str, params=None):
+def get_html(url: str, headers: dict = DESU_HEADERS, params=None):
     try:
-        return requests.get(url, headers=HEADERS, params=params)
-    except Exception as e:
-        print(e)
+        return requests.get(url, headers=headers, params=params)
+    except requests.exceptions.ConnectionError:
+        print('Connection Error')
+        print(url)
+        print(params)
+    except requests.exceptions.MissingSchema:
+        print('Missing Schema')
+        print(url)
+        print(params)
 
 
 def get_lib_list_en(lib_list_ru):
     return lib_lists_en[lib_lists_ru.index(lib_list_ru)]
 
 
-def get_url(manga: Manga=None, chapter: Chapter=None, image: Image=None):
+def get_url(manga: Manga, chapter: Chapter = None, image: Image = None):
     url = f'https://desu.me/manga/api/'
-    if manga:
-        url += f'/{manga.id}'
-        if chapter:
-            url += f'/chapter/{chapter.id}'
-            if image:
-                return f'{os.getcwd()}/Desu/images/{manga.id}/{chapter.id}/{image.page}.jpg'
+    url += f'/{manga.id}'
+    if chapter:
+        url += f'/chapter/{chapter.id}'
+        if image:
+            return f'{os.getcwd()}/Desu/images/{manga.id}/{chapter.id}/{image.page}.jpg'
     return url
 
 
@@ -35,3 +41,15 @@ def singleton(cls):
             instance[0] = cls(*args, **kwargs)
         return instance[0]
     return wrapper
+
+
+def token_saver(token):
+    with open('Desu/token.json', 'w') as f:
+        f.write(json.dumps(token))
+
+
+def token_loader():
+    if os.path.exists('Desu/token.json'):
+        with open('Desu/token.json') as f:
+            return json.load(f)
+    return {}
