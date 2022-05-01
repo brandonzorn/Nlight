@@ -53,4 +53,3 @@ def token_loader():
         with open('Desu/token.json') as f:
             return json.load(f)
     return {}
-
