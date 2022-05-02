@@ -1,7 +1,6 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget
 
-from auth import Auth
 from catalog_manager import get_catalog
 from const import library_icon_path, main_icon_path, shikimori_icon_path
 from database import Database
@@ -19,7 +18,6 @@ class FormShikimori(QWidget):
         self.Form_auth = FormAuth()
         self.catalog = get_catalog(1)()
         self.request_params = RequestForm()
-        self.session = Auth()
         self.cur_list = 'planned'
         self.ui.btn_auth.setText(self.get_whoami().nickname)
         self.db = Database()
@@ -42,16 +40,7 @@ class FormShikimori(QWidget):
         self.Form_auth.show()
 
     def get_whoami(self) -> User:
-        whoami = self.session.get('https://shikimori.one/api/users/whoami')
-        user = User()
-        match whoami.status_code:
-            case 401:
-                print(whoami.json())
-            case 200:
-                data = whoami.json()
-                user.id = data.get('id')
-                user.nickname = data.get('nickname')
-        return user
+        return self.catalog.get_user()
 
     def update_list(self, lib_list=None):
         self.ui.list_manga.clear()
