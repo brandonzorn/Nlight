@@ -1,7 +1,7 @@
 import os
 
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtGui import QIcon, QPixmap, QColor
+from PyQt5.QtWidgets import QWidget, QListWidgetItem
 from threading import Thread
 from catalog_manager import get_catalog
 from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, lib_lists_en
@@ -80,7 +80,11 @@ class FormInfo(QWidget):
             self.db.add_chapter(i, self.manga, self.chapters[::-1].index(i))
         self.chapters = self.db.get_chapters(self.manga)
         self.chapters.reverse()
-        [self.ui.chapters.addItem(i.get_name()) for i in self.chapters]
+        for i in self.chapters:
+            item = QListWidgetItem(i.get_name())
+            if self.db.check_complete_chapter(i):
+                item.setBackground(QColor("GREEN"))
+            self.ui.chapters.addItem(item)
 
     def open_reader(self):
         reader = Reader()
