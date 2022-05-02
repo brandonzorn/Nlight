@@ -112,17 +112,18 @@ class Reader(QWidget):
         self.resize(self.screen().size())
         self.ui_re.scrollArea.verticalScrollBar().setValue(0)
         self.ui_re.scrollArea.horizontalScrollBar().setValue(0)
-        self.showFullScreen()
+        # self.showFullScreen()
         # self.ui_re.scrollArea.setWidgetResizable(True)
 
     def get_image(self, chapter, image) -> str:
-        if not os.path.exists(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg'):
-            os.makedirs(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}', exist_ok=True)
+        path = f'{self.wd}/Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
+        if not os.path.exists(f'{path}/{image.page}.jpg'):
+            os.makedirs(path, exist_ok=True)
             img = self.catalog.get_image(image)
             if img:
-                with open(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg', 'wb') as f:
+                with open(f'{path}/{image.page}.jpg', 'wb') as f:
                     f.write(img.content)
-        return f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg'
+        return f'{path}/{image.page}.jpg'
 
     def get_pixmap(self, chapter, image):
         pixmap = QPixmap(self.get_image(chapter, image))
@@ -154,9 +155,9 @@ class Reader(QWidget):
         for image in images:
             if form.isHidden() or chapter.id != self.chapters[self.cur_chapter - 1].id:
                 break
-            self.get_image(chapter, image)
-            if not os.path.exists(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg'):
+            path = f'{self.wd}/Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
+            if not os.path.exists(f'{path}/{image.page}.jpg'):
                 img = self.catalog.get_image(images[image.page - 1])
                 if img:
-                    with open(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg', 'wb') as f:
+                    with open(f'{path}/{image.page}.jpg', 'wb') as f:
                         f.write(img.content)
