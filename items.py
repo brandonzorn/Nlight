@@ -81,6 +81,6 @@ class RequestForm:
 class User:
     def __init__(self):
         self.id = 0
-        self.nickname = None
+        self.nickname = "Войти"
         self.avatar = None
         self.locale = None
