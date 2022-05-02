@@ -84,6 +84,7 @@ class FormInfo(QWidget):
             item = QListWidgetItem(i.get_name())
             if self.db.check_complete_chapter(i):
                 item.setBackground(QColor("GREEN"))
+                # item.setIcon(QIcon(back_icon_path))
             self.ui.chapters.addItem(item)
 
     def open_reader(self):
@@ -91,14 +92,14 @@ class FormInfo(QWidget):
         reader.setup(self.manga, self.chapters, self.ui.chapters.currentIndex().row() + 1)
 
     def get_preview(self) -> str:
-        wd = os.getcwd()
-        if not os.path.exists(f'{wd}/Desu/images/{self.manga.id}/preview.jpg'):
-            os.makedirs(f'{wd}/Desu/images/{self.manga.id}', exist_ok=True)
+        path = f'{self.wd}/Desu/images/{self.catalog.catalog_name}/{self.manga.id}'
+        if not os.path.exists(f'{path}/preview.jpg'):
+            os.makedirs(path, exist_ok=True)
             img = self.catalog.get_preview(self.manga)
             if img:
-                with open(f'{wd}/Desu/images/{self.manga.id}/preview.jpg', 'wb') as f:
+                with open(f'{path}/preview.jpg', 'wb') as f:
                     f.write(img.content)
-        return f'{wd}/Desu/images/{self.manga.id}/preview.jpg'
+        return f'{path}/preview.jpg'
 
     def download_all(self):
         chapters = self.chapters
@@ -112,8 +113,9 @@ class FormInfo(QWidget):
                         return
                     self.db.add_images(image, chapter.id)
                     page = image.get('page')
-                    if not os.path.exists(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg'):
-                        os.makedirs(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}', exist_ok=True)
+                    path = f'{self.wd}/Desu/images/{catalog.catalog_name}/{manga.id}/{chapter.id}'
+                    if not os.path.exists(f'{path}/{page}.jpg'):
+                        os.makedirs(path, exist_ok=True)
                         img = catalog.get_image(images[page - 1])
-                        with open(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg', 'wb') as f:
+                        with open(f'{path}/{page}.jpg', 'wb') as f:
                             f.write(img.content)
