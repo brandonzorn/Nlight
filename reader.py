@@ -90,11 +90,13 @@ class Reader(QWidget):
     def change_chapter(self, page=None):
         match page:
             case '+':
+                self.db.set_complete_chapter(self.chapters[self.cur_chapter - 1])
                 if self.cur_chapter == self.max_chapters:
                     self.close_reader()
                 else:
                     self.cur_chapter += 1
             case '-':
+                self.db.del_complete_chapter(self.chapters[self.cur_chapter - 1])
                 if self.cur_chapter == 1:
                     return
                 else:
