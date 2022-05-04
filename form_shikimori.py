@@ -15,8 +15,8 @@ class FormShikimori(QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.mangas: [Manga] = []
-        self.Form_auth = FormAuth()
         self.catalog = get_catalog(1)()
+        self.Form_auth = FormAuth(self.catalog)
         self.request_params = RequestForm()
         self.cur_list = 'planned'
         self.ui.btn_auth.setText(self.get_whoami().nickname)
@@ -30,6 +30,8 @@ class FormShikimori(QWidget):
         self.ui.b_completed.clicked.connect(lambda: self.update_list('completed'))
         self.ui.b_dropped.clicked.connect(lambda: self.update_list('dropped'))
         self.ui.b_rewatching.clicked.connect(lambda: self.update_list('rewatching'))
+        self.ui.prev_page.clicked.connect(lambda: self.change_page('-'))
+        self.ui.next_page.clicked.connect(lambda: self.change_page('+'))
         self.ui.btn_auth.clicked.connect(self.authorize)
         self.Form_auth.accepted.connect(lambda: self.ui.btn_auth.setText(self.get_whoami().nickname))
 
@@ -41,6 +43,17 @@ class FormShikimori(QWidget):
 
     def get_whoami(self) -> User:
         return self.catalog.get_user()
+
+    def change_page(self, page):
+        match page:
+            case '+':
+                self.request_params.page += 1
+            case '-':
+                if self.request_params.page == 1:
+                    return
+                self.request_params.page -= 1
+        self.ui.label_page.setText(f"Страница {self.request_params.page}")
+        self.update_list()
 
     def update_list(self, lib_list=None):
         self.ui.list_manga.clear()
