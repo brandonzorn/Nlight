@@ -2,18 +2,16 @@ import webbrowser
 
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-
-from auth import Auth
 from const import app_icon_path
 from form.authUI import Ui_Dialog
 
 
 class FormAuth(QDialog):
-    def __init__(self):
+    def __init__(self, catalog):
         super().__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.session = Auth()
+        self.session = catalog.session
         self.setFixedSize(self.minimumSize())
         self.setWindowTitle('Authenticate')
         self.setWindowIcon(QIcon(app_icon_path))
@@ -25,14 +23,8 @@ class FormAuth(QDialog):
         if not code:
             return
         self.session.fetch_token(code)
-        whoami = self.session.get('https://shikimori.one/api/users/whoami')
-        match whoami.status_code:
-            case 401:
-                print(whoami.json())
-            case 200:
-                self.accept()
-            case _:
-                self.reject()
+        if self.session.check_auth():
+            self.accept()
 
     def login(self):
         webbrowser.open_new_tab(self.session.get_auth_url())
