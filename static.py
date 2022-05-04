@@ -2,21 +2,29 @@ import json
 import os
 
 import requests
+from requests import Response
+
 from const import lib_lists_en, lib_lists_ru, DESU_HEADERS
 from items import Manga, Chapter, Image
 
 
 def get_html(url: str, headers: dict = DESU_HEADERS, params=None):
+    response = Response()
     try:
-        return requests.get(url, headers=headers, params=params)
+        response = requests.get(url, headers=headers, params=params)
+        return response
     except requests.exceptions.ConnectionError:
         print('Connection Error')
         print(url)
         print(params)
+        response.status_code = 0
+        return response
     except requests.exceptions.MissingSchema:
         print('Missing Schema')
         print(url)
         print(params)
+        response.status_code = 0
+        return response
 
 
 def get_lib_list_en(lib_list_ru):
@@ -43,13 +51,16 @@ def singleton(cls):
     return wrapper
 
 
-def token_saver(token):
-    with open('Desu/token.json', 'w') as f:
+def token_saver(token, catalog_name):
+    if not os.path.exists(f'Desu/{catalog_name}'):
+        os.makedirs(f'Desu/{catalog_name}', exist_ok=True)
+    with open(f'Desu/{catalog_name}/token.json', 'w') as f:
         f.write(json.dumps(token))
 
 
-def token_loader():
-    if os.path.exists('Desu/token.json'):
-        with open('Desu/token.json') as f:
+def token_loader(catalog_name):
+    if os.path.exists(f'Desu/{catalog_name}'):
+        os.makedirs(f'Desu/{catalog_name}', exist_ok=True)
+        with open(f'Desu/{catalog_name}/token.json') as f:
             return json.load(f)
     return {}
