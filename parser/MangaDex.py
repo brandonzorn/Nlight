@@ -134,6 +134,8 @@ class Auth:
     def __init__(self):
         self.url_api = URL_MANGA_DEX_API
         self.token = token_loader(MangaDex.catalog_name)
+        if self.check_token() and not self.check_auth():
+            self.refresh_token()
 
     def get_token(self):
         if self.check_token():
