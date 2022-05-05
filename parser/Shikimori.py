@@ -16,6 +16,7 @@ class Shikimori(Parser):
         self.url_api = URL_SHIKIMORI_API
         self.headers = SHIKIMORI_HEADERS
         self.catalog_id = 1
+        self.fields = 1
         self.session = Auth()
 
     def get_manga(self, manga: Manga) -> Manga:
@@ -60,7 +61,7 @@ class Shikimori(Parser):
 
     def get_manga_login(self, params: RequestForm) -> [Manga]:
         url = f'{self.url_api}/mangas'
-        params = {'limit': params.limit, 'page': params.page, 'mylist': params.mylist}
+        params = {'limit': params.limit, 'page': params.page, 'mylist': params.mylist, 'search': params.search}
         html = self.session.get(url, params)
         manga = []
         if html and html.status_code == 200 and len(html.json()):
@@ -95,6 +96,9 @@ class Auth:
         self.tokens = token_loader(Shikimori.catalog_name)
         self.headers = {'User-Agent': 'Shikimori', 'Authorization': f'Bearer {self.tokens.get("access_token")}'}
         self.client = self.get_client(scope, self.redirect_uri, token)
+
+    def auth_login(self, data):
+        pass
 
     def get_client(self, scope, redirect_uri, token):
         client = OAuth2Session(self.client_id, auto_refresh_url=URL_SHIKIMORI_TOKEN, auto_refresh_kwargs=self.extra,
