@@ -11,21 +11,34 @@ class FormAuth(QDialog):
         super().__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+        self.ui.lbl_shikimori.setText(catalog.catalog_name)
         self.session = catalog.session
-        self.setFixedSize(self.minimumSize())
+        self.setup_form(catalog.fields)
+
+    def setup_form(self, fields: int):
         self.setWindowTitle('Authenticate')
         self.setWindowIcon(QIcon(app_icon_path))
-        self.ui.btn_get.clicked.connect(self.login)
-        self.ui.btn_login.clicked.connect(self.clicked_account_login)
+        self.setFixedSize(self.minimumSize())
+        if fields == 1:
+            self.ui.btn_get.clicked.connect(self.login)
+            self.ui.btn_login.clicked.connect(self.clicked_account_login)
+        else:
+            self.ui.btn_login.clicked.connect(self.verify_user_data)
 
     def clicked_account_login(self):
-        code = self.ui.txt_login.text()
+        code = self.ui.auth_code.text()
         if not code:
             return
         self.session.fetch_token(code)
         if self.session.check_auth():
             self.accept()
 
+    def verify_user_data(self):
+        if self.ui.username.text() and self.ui.password.text():
+            self.accept()
+
+    def get_user_data(self):
+        return {'username': self.ui.username.text(), 'password': self.ui.password.text()}
+
     def login(self):
         webbrowser.open_new_tab(self.session.get_auth_url())
-        self.ui.btn_login.setEnabled(True)
