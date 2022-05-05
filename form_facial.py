@@ -51,11 +51,6 @@ class FormFacial(QWidget):
         self.ui.catalog_list.clear()
         self.ui.catalog_list.addItems([i.catalog_name for i in CATALOGS.values()])
 
-    def setup_request(self):
-        self.request_params.page = self.cur_page
-        self.request_params.order = 'popular'
-        self.request_params.genres = []
-
     def get_content(self):
         self.ui.list_manga.clear()
         self.request_params.page = self.cur_page
