@@ -32,11 +32,16 @@ class FormShikimori(QWidget):
         self.ui.b_rewatching.clicked.connect(lambda: self.update_list('rewatching'))
         self.ui.prev_page.clicked.connect(lambda: self.change_page('-'))
         self.ui.next_page.clicked.connect(lambda: self.change_page('+'))
+        self.ui.btn_search.clicked.connect(self.search)
         self.ui.btn_auth.clicked.connect(self.authorize)
-        self.Form_auth.accepted.connect(lambda: self.ui.btn_auth.setText(self.get_whoami().nickname))
+        self.Form_auth.accepted.connect(self.on_accept_auth)
 
     def get_current_manga(self):
         return self.catalog.get_manga(self.mangas[self.ui.list_manga.currentIndex().row()])
+
+    def on_accept_auth(self):
+        self.catalog.session.auth_login(self.Form_auth.get_user_data())
+        self.ui.btn_auth.setText(self.get_whoami().nickname)
 
     def authorize(self):
         self.Form_auth.show()
@@ -53,6 +58,11 @@ class FormShikimori(QWidget):
                     return
                 self.request_params.page -= 1
         self.ui.label_page.setText(f"Страница {self.request_params.page}")
+        self.update_list()
+
+    def search(self):
+        self.request_params.page = 1
+        self.request_params.search = self.ui.line_search.text()
         self.update_list()
 
     def update_list(self, lib_list=None):
