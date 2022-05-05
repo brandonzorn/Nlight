@@ -58,6 +58,16 @@ class Ui_Form(object):
         self.verticalLayout.addWidget(self.list_manga)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.line_search = QtWidgets.QLineEdit(Form)
+        self.line_search.setStyleSheet("background-color: rgb(45, 45, 45);\n"
+"color: rgb(255, 255, 255);")
+        self.line_search.setObjectName("line_search")
+        self.horizontalLayout_2.addWidget(self.line_search)
+        self.btn_search = QtWidgets.QPushButton(Form)
+        self.btn_search.setStyleSheet("background-color: rgb(0, 133, 52);\n"
+"color: rgb(255, 255, 255);")
+        self.btn_search.setObjectName("btn_search")
+        self.horizontalLayout_2.addWidget(self.btn_search)
         self.prev_page = QtWidgets.QPushButton(Form)
         self.prev_page.setStyleSheet("background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
@@ -126,6 +136,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
+        self.btn_search.setText(_translate("Form", "Поиск"))
         self.prev_page.setText(_translate("Form", "<"))
         self.label_page.setText(_translate("Form", " Страница 1"))
         self.next_page.setText(_translate("Form", ">"))
