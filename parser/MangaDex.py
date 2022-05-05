@@ -13,6 +13,7 @@ class MangaDex(Parser):
         self.url_api = URL_MANGA_DEX_API
         self.headers = DEFAULT_HEADERS
         self.catalog_id = 2
+        self.fields = 2
         self.session = Auth()
 
     def get_manga(self, manga: Manga) -> Manga:
