@@ -1,8 +1,7 @@
-import requests
 from bs4 import BeautifulSoup
 
 from const import URL_RULATE, DEFAULT_HEADERS
-from items import Manga, Chapter, Image, Genre, RequestForm
+from items import Manga, Chapter, Image, RequestForm
 from parser.Parser import Parser
 from static import get_html
 
@@ -47,8 +46,10 @@ class Rulate(Parser):
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter) -> [Image]:
-        a = get_html(f"{self.url_api}/book/{manga.id}/{chapter.id}/download?format=t&enc=UTF-8",
-                     headers=DEFAULT_HEADERS)
+        url = f"{self.url_api}/book/{manga.id}/{chapter.id}/download?format=t&enc=UTF-8"
+        return [Image({'is_text': True, 'page': 1, 'img': url})]
 
-        return [Image({'text': a.text})]
+    def get_image(self, image: Image):
+        a = get_html(image.img, headers=DEFAULT_HEADERS)
+        return a
 
