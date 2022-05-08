@@ -59,8 +59,10 @@ def token_saver(token, catalog_name):
 
 
 def token_loader(catalog_name):
-    if os.path.exists(f'Desu/{catalog_name}'):
-        os.makedirs(f'Desu/{catalog_name}', exist_ok=True)
-        with open(f'Desu/{catalog_name}/token.json') as f:
-            return json.load(f)
+    path = f'Desu/{catalog_name}'
+    if os.path.exists(path):
+        os.makedirs(path, exist_ok=True)
+        if os.path.exists(f'{path}/token.json'):
+            with open(f'{path}/token.json') as f:
+                return json.load(f)
     return {}
