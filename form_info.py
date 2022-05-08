@@ -1,8 +1,9 @@
 import os
 
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QPixmap, QColor
 from PyQt5.QtWidgets import QWidget, QListWidgetItem
-from threading import Thread
+from threading import Thread, RLock
 from catalog_manager import get_catalog
 from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, lib_lists_en
 from database import Database
@@ -21,6 +22,7 @@ class FormInfo(QWidget):
         self.ui.btn_back.setIcon(QIcon(back_icon_path))
         self.ui.lib_list.currentIndexChanged.connect(self.change_lib_list)
         self.db = Database()
+        self.locker = RLock()
         self.wd = os.getcwd()
         self.catalog = None
         self.manga = manga
@@ -28,15 +30,16 @@ class FormInfo(QWidget):
 
     def setup(self):
         self.catalog = get_catalog(self.manga.catalog_id)()
-        if self.db.check_manga_library(self.manga):
-            self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
-        self.ui.image.setPixmap(QPixmap(self.get_preview()))
+        pixmap = QPixmap(self.get_preview())
+        pixmap = pixmap.scaled(self.ui.image.size())
+        self.ui.image.setPixmap(pixmap)
         self.ui.image.setScaledContents(True)
         self.ui.description.setText(self.manga.description)
         self.ui.name.setText(self.manga.name)
         self.ui.russian.setText(self.manga.russian)
         self.set_score(self.manga.score)
         if self.db.check_manga_library(self.manga):
+            self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
             self.ui.btn_add_to_lib.setIcon(QIcon(favorite1_icon_path))
         else:
             self.ui.btn_add_to_lib.setIcon(QIcon(favorite_icon_path))
@@ -78,7 +81,7 @@ class FormInfo(QWidget):
         self.chapters = self.catalog.get_chapters(self.manga)
         for i in self.chapters:
             self.db.add_chapter(i, self.manga, self.chapters[::-1].index(i))
-        self.chapters = self.db.get_chapters(self.manga)
+        # self.chapters = self.db.get_chapters(self.manga)
         self.chapters.reverse()
         for i in self.chapters:
             item = QListWidgetItem(i.get_name())
