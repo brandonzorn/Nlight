@@ -26,6 +26,8 @@ class Chapter:
         self.title: str = chapter.get('title')
 
     def get_name(self) -> str:
+        if not self.vol and not self.ch:
+            return self.title
         if self.title:
             return f'{self.vol}-{self.ch} {self.title}'
         return f'{self.vol}-{self.ch}'
@@ -41,6 +43,7 @@ class Image:
         self.height: int = page.get('height')
         self.hash: str = page.get('hash')
         self.img: str = page.get('img')
+        self.text: str = page.get('text')
 
 
 class Genre:
