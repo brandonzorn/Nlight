@@ -15,10 +15,15 @@ class Rulate(Parser):
         self.catalog_id = 3
 
     def get_manga(self, manga: Manga) -> Manga:
+        html = get_html(f"{self.url_api}/book/{manga.id}", headers=self.headers)
+        soup = BeautifulSoup(html.text, "html.parser")
+        hranobe = soup.find('div', style="margin: 20px 0 0 0")
+        description = hranobe.findAll('p')[0].text
+        manga.description = description
         return manga
 
     def search_manga(self, params: RequestForm) -> [Manga]:
-        params = {'t': params.search}
+        params = {'t': params.search, 'cat': 12}
         html = get_html(f"{self.url_api}/search", headers=self.headers, params=params)
         soup = BeautifulSoup(html.text, "html.parser")
         hranobe = soup.findAll('p', class_='book-tooltip')
