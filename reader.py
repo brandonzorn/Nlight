@@ -169,7 +169,7 @@ class Reader(QWidget):
         images = self.images
         chapter = self.chapters[self.cur_chapter - 1]
         for image in images:
-            if form.isHidden() or chapter.id != self.chapters[self.cur_chapter - 1].id:
+            if form.isHidden() or chapter.id != self.chapters[self.cur_chapter - 1].id or image.is_text:
                 break
             path = f'{self.wd}/Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
             if not os.path.exists(f'{path}/{image.page}.jpg'):
