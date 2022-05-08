@@ -15,7 +15,7 @@ class Rulate(Parser):
         self.catalog_id = 3
 
     def get_manga(self, manga: Manga) -> Manga:
-        html = get_html(f"{self.url_api}/book/{manga.id}", headers=self.headers)
+        html = get_html(f"{self.url_api}/book/{manga.id}")
         soup = BeautifulSoup(html.text, "html.parser")
         hranobe = soup.find('div', style="margin: 20px 0 0 0")
         description = hranobe.findAll('p')[0].text
@@ -24,7 +24,7 @@ class Rulate(Parser):
 
     def search_manga(self, params: RequestForm) -> [Manga]:
         params = {'t': params.search, 'cat': 12, 'Book_page': params.page, 'sort': 5}
-        html = get_html(f"{self.url_api}/search", headers=self.headers, params=params)
+        html = get_html(f"{self.url_api}/search", params=params)
         soup = BeautifulSoup(html.text, "html.parser")
         hranobe = soup.findAll('p', class_='book-tooltip')
         ranobe = []
@@ -38,7 +38,7 @@ class Rulate(Parser):
 
     def get_chapters(self, manga: Manga) -> [Chapter]:
         chapters = []
-        a = get_html(f"{self.url_api}/book/{manga.id}", headers=DEFAULT_HEADERS)
+        a = get_html(f"{self.url_api}/book/{manga.id}")
         soup = BeautifulSoup(a.text, "html.parser")
         hchapters = soup.findAll('tr', class_='chapter_row')
         for chapter in hchapters:
@@ -55,5 +55,11 @@ class Rulate(Parser):
         return [Image({'is_text': True, 'page': 1, 'img': url})]
 
     def get_image(self, image: Image):
-        a = get_html(image.img, headers=DEFAULT_HEADERS)
+        a = get_html(image.img)
         return a
+
+    def get_preview(self, manga: Manga):
+        a = get_html(f"{self.url_api}/book/{manga.id}")
+        soup = BeautifulSoup(a.text, "html.parser")
+        himage = soup.find('meta', property="og:image")
+        return get_html(himage['content'])
