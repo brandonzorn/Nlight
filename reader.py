@@ -107,8 +107,11 @@ class Reader(QWidget):
         self.ui_re.lbl_chp.setText(self.chapters[self.cur_chapter - 1].get_name())
 
     def attach_image(self):
-        pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
-        self.ui_re.img.setPixmap(pixmap)
+        if self.images[self.cur_page - 1].text:
+            self.ui_re.img.setText(self.images[self.cur_page - 1].text)
+        else:
+            pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
+            self.ui_re.img.setPixmap(pixmap)
         self.resize(self.screen().size())
         self.ui_re.scrollArea.verticalScrollBar().setValue(0)
         self.ui_re.scrollArea.horizontalScrollBar().setValue(0)
