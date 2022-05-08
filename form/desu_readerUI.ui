@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>663</width>
-    <height>774</height>
+    <width>703</width>
+    <height>746</height>
    </rect>
   </property>
   <property name="palette">
@@ -459,53 +459,47 @@
    <string notr="true">color: rgb(255, 255, 255);
 background-color: rgb(45, 45, 45);</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
+  <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>679</width>
+        <height>646</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <widget class="QScrollArea" name="scrollArea">
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="widgetResizable">
-          <bool>true</bool>
+        <widget class="QLabel" name="img">
+         <property name="text">
+          <string/>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignJustify|Qt::AlignVCenter</set>
          </property>
-         <widget class="QWidget" name="scrollAreaWidgetContents">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>635</width>
-            <height>670</height>
-           </rect>
-          </property>
-          <widget class="QLabel" name="img">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>1</y>
-             <width>621</width>
-             <height>661</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </widget>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
       </layout>
-     </item>
-    </layout>
+     </widget>
+    </widget>
    </item>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">

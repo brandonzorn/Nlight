@@ -21,11 +21,13 @@ class Manga:
 class Chapter:
     def __init__(self, chapter: dict):
         self.id: str = str(chapter.get('id'))
-        self.vol: int = chapter.get('vol')
-        self.ch: int = chapter.get('ch')
+        self.vol: str = chapter.get('vol')
+        self.ch: str = chapter.get('ch')
         self.title: str = chapter.get('title')
 
     def get_name(self) -> str:
+        if not self.vol and not self.ch:
+            return self.title
         if self.title:
             return f'{self.vol}-{self.ch} {self.title}'
         return f'{self.vol}-{self.ch}'
@@ -39,8 +41,9 @@ class Image:
             self.page = int(self.page)
         self.width: int = page.get('width')
         self.height: int = page.get('height')
-        self.hash = page.get('hash')
+        self.hash: str = page.get('hash')
         self.img: str = page.get('img')
+        self.is_text: bool = page.get('is_text')
 
 
 class Genre:
@@ -81,6 +84,6 @@ class RequestForm:
 class User:
     def __init__(self):
         self.id = 0
-        self.nickname = None
+        self.nickname = "Войти"
         self.avatar = None
         self.locale = None

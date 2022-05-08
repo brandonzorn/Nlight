@@ -1,7 +1,6 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget
 
-from auth import Auth
 from catalog_manager import get_catalog
 from const import library_icon_path, main_icon_path, shikimori_icon_path
 from database import Database
@@ -16,10 +15,9 @@ class FormShikimori(QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.mangas: [Manga] = []
-        self.Form_auth = FormAuth()
         self.catalog = get_catalog(1)()
+        self.Form_auth = FormAuth(self.catalog)
         self.request_params = RequestForm()
-        self.session = Auth()
         self.cur_list = 'planned'
         self.ui.btn_auth.setText(self.get_whoami().nickname)
         self.db = Database()
@@ -32,26 +30,40 @@ class FormShikimori(QWidget):
         self.ui.b_completed.clicked.connect(lambda: self.update_list('completed'))
         self.ui.b_dropped.clicked.connect(lambda: self.update_list('dropped'))
         self.ui.b_rewatching.clicked.connect(lambda: self.update_list('rewatching'))
+        self.ui.prev_page.clicked.connect(lambda: self.change_page('-'))
+        self.ui.next_page.clicked.connect(lambda: self.change_page('+'))
+        self.ui.btn_search.clicked.connect(self.search)
         self.ui.btn_auth.clicked.connect(self.authorize)
-        self.Form_auth.accepted.connect(lambda: self.ui.btn_auth.setText(self.get_whoami().nickname))
+        self.Form_auth.accepted.connect(self.on_accept_auth)
 
     def get_current_manga(self):
         return self.catalog.get_manga(self.mangas[self.ui.list_manga.currentIndex().row()])
+
+    def on_accept_auth(self):
+        self.catalog.session.auth_login(self.Form_auth.get_user_data())
+        self.ui.btn_auth.setText(self.get_whoami().nickname)
 
     def authorize(self):
         self.Form_auth.show()
 
     def get_whoami(self) -> User:
-        whoami = self.session.get('https://shikimori.one/api/users/whoami')
-        user = User()
-        match whoami.status_code:
-            case 401:
-                print(whoami.json())
-            case 200:
-                data = whoami.json()
-                user.id = data.get('id')
-                user.nickname = data.get('nickname')
-        return user
+        return self.catalog.get_user()
+
+    def change_page(self, page):
+        match page:
+            case '+':
+                self.request_params.page += 1
+            case '-':
+                if self.request_params.page == 1:
+                    return
+                self.request_params.page -= 1
+        self.ui.label_page.setText(f"Страница {self.request_params.page}")
+        self.update_list()
+
+    def search(self):
+        self.request_params.page = 1
+        self.request_params.search = self.ui.line_search.text()
+        self.update_list()
 
     def update_list(self, lib_list=None):
         self.ui.list_manga.clear()

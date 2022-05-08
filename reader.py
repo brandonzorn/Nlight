@@ -24,8 +24,6 @@ class Reader(QWidget):
         self.ui_re.next_chp.clicked.connect(lambda: self.press_key('next_ch'))
         self.wd = os.getcwd()
         self.db = Database()
-        self.lay = QVBoxLayout(self.ui_re.scrollAreaWidgetContents)
-        self.lay.addWidget(self.ui_re.img)
         self.manga: Manga = Manga({})
         self.chapters: [Chapter] = [Chapter({})]
         self.images: [Image] = [Image({})]
@@ -92,11 +90,13 @@ class Reader(QWidget):
     def change_chapter(self, page=None):
         match page:
             case '+':
+                self.db.set_complete_chapter(self.chapters[self.cur_chapter - 1])
                 if self.cur_chapter == self.max_chapters:
                     self.close_reader()
                 else:
                     self.cur_chapter += 1
             case '-':
+                self.db.del_complete_chapter(self.chapters[self.cur_chapter - 1])
                 if self.cur_chapter == 1:
                     return
                 else:
@@ -107,22 +107,42 @@ class Reader(QWidget):
         self.ui_re.lbl_chp.setText(self.chapters[self.cur_chapter - 1].get_name())
 
     def attach_image(self):
-        pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
-        self.ui_re.img.setPixmap(pixmap)
+        if self.images[self.cur_page - 1].is_text:
+            text = self.get_text(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
+            self.ui_re.img.setText(text)
+        else:
+            pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
+            self.ui_re.img.setAlignment(Qt.AlignCenter)
+            self.ui_re.img.setPixmap(pixmap)
         self.resize(self.screen().size())
         self.ui_re.scrollArea.verticalScrollBar().setValue(0)
         self.ui_re.scrollArea.horizontalScrollBar().setValue(0)
-        self.showFullScreen()
+        # self.showFullScreen()
         # self.ui_re.scrollArea.setWidgetResizable(True)
 
     def get_image(self, chapter, image) -> str:
-        if not os.path.exists(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg'):
-            os.makedirs(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}', exist_ok=True)
+        path = f'{self.wd}/Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
+        if not os.path.exists(f'{path}/{image.page}.jpg'):
+            os.makedirs(path, exist_ok=True)
             img = self.catalog.get_image(image)
             if img:
-                with open(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg', 'wb') as f:
+                with open(f'{path}/{image.page}.jpg', 'wb') as f:
                     f.write(img.content)
-        return f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg'
+        return f'{path}/{image.page}.jpg'
+
+    def get_text(self, chapter, image):
+        path = f'{self.wd}/Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
+        if not os.path.exists(f'{path}/{image.page}.txt'):
+            os.makedirs(path, exist_ok=True)
+            img = self.catalog.get_image(image)
+            if img:
+                with open(f'{path}/{image.page}.txt', 'wb') as f:
+                    f.write(img.content)
+        with open(f'{path}/{image.page}.txt', encoding="utf8") as f:
+            text = f.read()
+            text = text.replace('&nbsp;', u'\xa0')
+            text = text.replace('&mdash;', '—')
+            return text
 
     def get_pixmap(self, chapter, image):
         pixmap = QPixmap(self.get_image(chapter, image))
@@ -152,11 +172,11 @@ class Reader(QWidget):
         images = self.images
         chapter = self.chapters[self.cur_chapter - 1]
         for image in images:
-            if form.isHidden() or chapter.id != self.chapters[self.cur_chapter - 1].id:
+            if form.isHidden() or chapter.id != self.chapters[self.cur_chapter - 1].id or image.is_text:
                 break
-            self.get_image(chapter, image)
-            if not os.path.exists(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg'):
+            path = f'{self.wd}/Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
+            if not os.path.exists(f'{path}/{image.page}.jpg'):
                 img = self.catalog.get_image(images[image.page - 1])
                 if img:
-                    with open(f'{self.wd}/Desu/images/{self.manga.id}/{chapter.id}/{image.page}.jpg', 'wb') as f:
+                    with open(f'{path}/{image.page}.jpg', 'wb') as f:
                         f.write(img.content)
