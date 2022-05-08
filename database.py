@@ -22,6 +22,8 @@ class Database:
         page INTEGER, width INTEGER, height INTEGER, img STRING, chapter_id INTEGER);""")
         self.cur.execute("""CREATE TABLE IF NOT EXISTS library (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
         list STRING)""")
+        self.cur.execute("""CREATE TABLE IF NOT EXISTS chapter_history
+        (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL, is_completed BOOLEAN)""")
         self.con.commit()
 
     def add_manga(self, manga: Manga):
@@ -63,10 +65,21 @@ class Database:
 
     def check_manga_library(self, manga: Manga):
         a = self.cur.execute(f"SELECT list FROM library WHERE id = '{manga.id}';").fetchall()
-        self.con.commit()
         if a and a[0][0] in lib_lists_en:
             return a[0][0]
 
     def rem_manga_library(self, manga: Manga):
         self.cur.execute(f"DELETE FROM library WHERE id = '{manga.id}';")
         self.con.commit()
+
+    def set_complete_chapter(self, chapter: Chapter):
+        self.cur.execute(f"INSERT INTO chapter_history VALUES(?, ?);", (chapter.id, True))
+        self.con.commit()
+
+    def del_complete_chapter(self, chapter: Chapter):
+        self.cur.execute(f"DELETE FROM chapter_history WHERE id = '{chapter.id}';")
+        self.con.commit()
+
+    def check_complete_chapter(self, chapter: Chapter):
+        a = self.cur.execute(f"SELECT is_completed FROM chapter_history WHERE id = '{chapter.id}';").fetchall()
+        return a and a[0][0]
