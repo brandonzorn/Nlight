@@ -92,7 +92,6 @@ class Auth:
         self.client_secret = SHIKIMORI_CLIENT_SECRET
         self.redirect_uri = 'urn:ietf:wg:oauth:2.0:oob'
         self.extra = {'client_id': self.client_id, 'client_secret': self.client_secret}
-        self.token_saver = token_saver
         self.tokens = token_loader(Shikimori.catalog_name)
         self.headers = {'User-Agent': 'Shikimori', 'Authorization': f'Bearer {self.tokens.get("access_token")}'}
         self.client = self.get_client(scope, self.redirect_uri, token)
@@ -103,7 +102,7 @@ class Auth:
     def get_client(self, scope, redirect_uri, token):
         client = OAuth2Session(self.client_id, auto_refresh_url=URL_SHIKIMORI_TOKEN, auto_refresh_kwargs=self.extra,
                                scope=scope, redirect_uri=redirect_uri, token=token,
-                               token_updater=self.token_saver)
+                               token_updater=token_saver)
         client.headers.update(self.headers)
         return client
 
@@ -116,23 +115,34 @@ class Auth:
             self.client.fetch_token(URL_SHIKIMORI_TOKEN, code, client_secret=self.client_secret)
         except oauthlib.oauth2.rfc6749.errors.InvalidGrantError:
             return
-        self.token_saver(self.token, Shikimori.catalog_name)
+        token_saver(self.token, Shikimori.catalog_name)
         return self.token
+
+    def update_token(self, token):
+        if token:
+            token = token.json().get('token')
+            token_saver(token, Shikimori.catalog_name)
+            self.tokens = token
 
     def refresh_token(self):
         if not token_loader(Shikimori.catalog_name):
-            return
+            return False
         self.client.headers.clear()
         self.client.headers.update({'User-Agent': 'Shikimori'})
         self.client.refresh_token(URL_SHIKIMORI_TOKEN,
                                   refresh_token=token_loader(Shikimori.catalog_name).get('refresh_token'))
-        self.token_saver(self.token, Shikimori.catalog_name)
+        self.update_token(self.token)
         self.client.headers.update({'Authorization': f'Bearer'
                                                      f'{token_loader(Shikimori.catalog_name).get("access_token")}'})
         return self.token
 
     def get(self, url, params=None):
-        return self.client.request('GET', url, params)
+        resp = self.client.request('GET', url, params)
+        match resp.status_code:
+            case 401:
+                if self.token:
+                    self.get(url, params)
+        return resp
 
     def check_auth(self):
         whoami = self.get('https://shikimori.one/api/users/whoami')
