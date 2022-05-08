@@ -43,7 +43,7 @@ class Rulate(Parser):
             id = chapter.unwrap()['data-id']
             data = {'id': id, 'title': name}
             chapters.append(Chapter(data))
-            chapters.reverse()
+        chapters.reverse()
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter) -> [Image]:
