@@ -4,11 +4,11 @@ import os
 import requests
 from requests import Response
 
-from const import lib_lists_en, lib_lists_ru, DESU_HEADERS
+from const import lib_lists_en, lib_lists_ru, DEFAULT_HEADERS
 from items import Manga, Chapter, Image
 
 
-def get_html(url: str, headers: dict = DESU_HEADERS, params=None):
+def get_html(url: str, headers: dict = DEFAULT_HEADERS, params=None):
     response = Response()
     try:
         response = requests.get(url, headers=headers, params=params)
