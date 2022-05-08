@@ -23,7 +23,7 @@ class Rulate(Parser):
         return manga
 
     def search_manga(self, params: RequestForm) -> [Manga]:
-        params = {'t': params.search, 'cat': 12}
+        params = {'t': params.search, 'cat': 12, 'Book_page': params.page, 'sort': 5}
         html = get_html(f"{self.url_api}/search", headers=self.headers, params=params)
         soup = BeautifulSoup(html.text, "html.parser")
         hranobe = soup.findAll('p', class_='book-tooltip')
