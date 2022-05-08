@@ -52,4 +52,3 @@ class Rulate(Parser):
     def get_image(self, image: Image):
         a = get_html(image.img, headers=DEFAULT_HEADERS)
         return a
-

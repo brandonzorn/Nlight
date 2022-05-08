@@ -139,7 +139,10 @@ class Reader(QWidget):
                 with open(f'{path}/{image.page}.txt', 'wb') as f:
                     f.write(img.content)
         with open(f'{path}/{image.page}.txt', encoding="utf8") as f:
-            return f.read()
+            text = f.read()
+            text = text.replace('&nbsp;', u'\xa0')
+            text = text.replace('&mdash;', '—')
+            return text
 
     def get_pixmap(self, chapter, image):
         pixmap = QPixmap(self.get_image(chapter, image))
