@@ -112,6 +112,7 @@ class Reader(QWidget):
             self.ui_re.img.setText(text)
         else:
             pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
+            self.ui_re.img.setAlignment(Qt.AlignCenter)
             self.ui_re.img.setPixmap(pixmap)
         self.resize(self.screen().size())
         self.ui_re.scrollArea.verticalScrollBar().setValue(0)
