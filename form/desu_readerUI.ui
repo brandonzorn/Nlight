@@ -487,9 +487,12 @@ background-color: rgb(45, 45, 45);</string>
           <string/>
          </property>
          <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          <set>Qt::AlignJustify|Qt::AlignVCenter</set>
          </property>
          <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+         <property name="openExternalLinks">
           <bool>true</bool>
          </property>
         </widget>
