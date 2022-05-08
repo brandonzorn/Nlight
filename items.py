@@ -43,7 +43,7 @@ class Image:
         self.height: int = page.get('height')
         self.hash: str = page.get('hash')
         self.img: str = page.get('img')
-        self.text: str = page.get('text')
+        self.is_text: bool = page.get('is_text')
 
 
 class Genre:

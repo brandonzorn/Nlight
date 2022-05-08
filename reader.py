@@ -107,8 +107,9 @@ class Reader(QWidget):
         self.ui_re.lbl_chp.setText(self.chapters[self.cur_chapter - 1].get_name())
 
     def attach_image(self):
-        if self.images[self.cur_page - 1].text:
-            self.ui_re.img.setText(self.images[self.cur_page - 1].text)
+        if self.images[self.cur_page - 1].is_text:
+            text = self.get_text(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
+            self.ui_re.img.setText(text)
         else:
             pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
             self.ui_re.img.setPixmap(pixmap)
@@ -127,6 +128,17 @@ class Reader(QWidget):
                 with open(f'{path}/{image.page}.jpg', 'wb') as f:
                     f.write(img.content)
         return f'{path}/{image.page}.jpg'
+
+    def get_text(self, chapter, image):
+        path = f'{self.wd}/Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
+        if not os.path.exists(f'{path}/{image.page}.txt'):
+            os.makedirs(path, exist_ok=True)
+            img = self.catalog.get_image(image)
+            if img:
+                with open(f'{path}/{image.page}.txt', 'wb') as f:
+                    f.write(img.content)
+        with open(f'{path}/{image.page}.txt', encoding="utf8") as f:
+            return f.read()
 
     def get_pixmap(self, chapter, image):
         pixmap = QPixmap(self.get_image(chapter, image))
