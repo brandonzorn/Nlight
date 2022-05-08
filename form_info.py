@@ -1,8 +1,9 @@
 import os
 
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import QWidget
-from threading import Thread
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon, QPixmap, QColor
+from PyQt5.QtWidgets import QWidget, QListWidgetItem
+from threading import Thread, RLock
 from catalog_manager import get_catalog
 from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, lib_lists_en
 from database import Database
@@ -21,6 +22,7 @@ class FormInfo(QWidget):
         self.ui.btn_back.setIcon(QIcon(back_icon_path))
         self.ui.lib_list.currentIndexChanged.connect(self.change_lib_list)
         self.db = Database()
+        self.locker = RLock()
         self.wd = os.getcwd()
         self.catalog = None
         self.manga = manga
@@ -28,15 +30,16 @@ class FormInfo(QWidget):
 
     def setup(self):
         self.catalog = get_catalog(self.manga.catalog_id)()
-        if self.db.check_manga_library(self.manga):
-            self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
-        self.ui.image.setPixmap(QPixmap(self.get_preview()))
+        pixmap = QPixmap(self.get_preview())
+        pixmap = pixmap.scaled(self.ui.image.size())
+        self.ui.image.setPixmap(pixmap)
         self.ui.image.setScaledContents(True)
         self.ui.description.setText(self.manga.description)
         self.ui.name.setText(self.manga.name)
         self.ui.russian.setText(self.manga.russian)
         self.set_score(self.manga.score)
         if self.db.check_manga_library(self.manga):
+            self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
             self.ui.btn_add_to_lib.setIcon(QIcon(favorite1_icon_path))
         else:
             self.ui.btn_add_to_lib.setIcon(QIcon(favorite_icon_path))
@@ -78,23 +81,28 @@ class FormInfo(QWidget):
         self.chapters = self.catalog.get_chapters(self.manga)
         for i in self.chapters:
             self.db.add_chapter(i, self.manga, self.chapters[::-1].index(i))
-        self.chapters = self.db.get_chapters(self.manga)
+        # self.chapters = self.db.get_chapters(self.manga)
         self.chapters.reverse()
-        [self.ui.chapters.addItem(i.get_name()) for i in self.chapters]
+        for i in self.chapters:
+            item = QListWidgetItem(i.get_name())
+            if self.db.check_complete_chapter(i):
+                item.setBackground(QColor("GREEN"))
+                # item.setIcon(QIcon(back_icon_path))
+            self.ui.chapters.addItem(item)
 
     def open_reader(self):
         reader = Reader()
         reader.setup(self.manga, self.chapters, self.ui.chapters.currentIndex().row() + 1)
 
     def get_preview(self) -> str:
-        wd = os.getcwd()
-        if not os.path.exists(f'{wd}/Desu/images/{self.manga.id}/preview.jpg'):
-            os.makedirs(f'{wd}/Desu/images/{self.manga.id}', exist_ok=True)
+        path = f'{self.wd}/Desu/images/{self.catalog.catalog_name}/{self.manga.id}'
+        if not os.path.exists(f'{path}/preview.jpg'):
+            os.makedirs(path, exist_ok=True)
             img = self.catalog.get_preview(self.manga)
             if img:
-                with open(f'{wd}/Desu/images/{self.manga.id}/preview.jpg', 'wb') as f:
+                with open(f'{path}/preview.jpg', 'wb') as f:
                     f.write(img.content)
-        return f'{wd}/Desu/images/{self.manga.id}/preview.jpg'
+        return f'{path}/preview.jpg'
 
     def download_all(self):
         chapters = self.chapters
@@ -108,8 +116,9 @@ class FormInfo(QWidget):
                         return
                     self.db.add_images(image, chapter.id)
                     page = image.get('page')
-                    if not os.path.exists(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg'):
-                        os.makedirs(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}', exist_ok=True)
+                    path = f'{self.wd}/Desu/images/{catalog.catalog_name}/{manga.id}/{chapter.id}'
+                    if not os.path.exists(f'{path}/{page}.jpg'):
+                        os.makedirs(path, exist_ok=True)
                         img = catalog.get_image(images[page - 1])
-                        with open(f'{self.wd}/Desu/images/{manga.id}/{chapter.id}/{page}.jpg', 'wb') as f:
+                        with open(f'{path}/{page}.jpg', 'wb') as f:
                             f.write(img.content)
