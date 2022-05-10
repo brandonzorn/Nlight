@@ -1,9 +1,9 @@
 import os
 from pathlib import Path
 from threading import Thread
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
+from PyQt6.QtGui import *
+from PyQt6.QtWidgets import *
+from PyQt6.QtCore import *
 
 from catalog_manager import get_catalog
 from database import Database
@@ -48,15 +48,15 @@ class Reader(QWidget):
 
     def keyPressEvent(self, event):
         match event.key():
-            case Qt.Key_Escape:
+            case Qt.Key.Key_Escape:
                 self.close_reader()
-            case Qt.Key_Left:
+            case Qt.Key.Key_Left:
                 self.press_key('prev_page')
-            case Qt.Key_Right:
+            case Qt.Key.Key_Right:
                 self.press_key('next_page')
-            case Qt.Key_Down:
+            case Qt.Key.Key_Down:
                 self.press_key('prev_ch')
-            case Qt.Key_Up:
+            case Qt.Key.Key_Up:
                 self.press_key('next_ch')
         event.accept()
 
@@ -112,8 +112,9 @@ class Reader(QWidget):
             self.ui_re.img.setText(text)
         else:
             pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
-            self.ui_re.img.setAlignment(Qt.AlignCenter)
+            self.ui_re.img.setAlignment(Qt.AlignmentFlag.AlignHCenter)
             self.ui_re.img.setPixmap(pixmap)
+        # "AlignmentFlag.AlignVCenter|AlignJustify"
         self.resize(self.screen().size())
         self.ui_re.scrollArea.verticalScrollBar().setValue(0)
         self.ui_re.scrollArea.horizontalScrollBar().setValue(0)
@@ -149,7 +150,8 @@ class Reader(QWidget):
         if pixmap.isNull():
             return QPixmap()
         if self.manga.kind in ['manga', 'manhua', 'one_shot']:
-            pixmap = pixmap.scaled(self.ui_re.img.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            pixmap = pixmap.scaled(self.ui_re.img.size(), Qt.AspectRatioMode.KeepAspectRatio,
+                                   Qt.TransformationMode.SmoothTransformation)
         return pixmap
 
     def get_images(self):
