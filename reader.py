@@ -149,7 +149,7 @@ class Reader(QWidget):
         pixmap = QPixmap(self.get_image(chapter, image))
         if pixmap.isNull():
             return QPixmap()
-        if self.manga.kind in ['manga', 'manhua', 'one_shot']:
+        if 0.5 < pixmap.width() / pixmap.height() < 2:
             pixmap = pixmap.scaled(self.ui_re.img.size(), Qt.AspectRatioMode.KeepAspectRatio,
                                    Qt.TransformationMode.SmoothTransformation)
         return pixmap
