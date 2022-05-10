@@ -120,7 +120,7 @@ class Auth:
 
     def update_token(self, token):
         if token:
-            token = token.json().get('token')
+            token = token.get('token')
             token_saver(token, Shikimori.catalog_name)
             self.tokens = token
 
