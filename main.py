@@ -1,8 +1,8 @@
 import sys
 
-from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QStackedWidget, QApplication
+from PyQt6.QtCore import QSize, Qt
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QStackedWidget, QApplication
 
 from const import app_icon_path
 from database import Database
@@ -98,4 +98,4 @@ if __name__ == '__main__':
         QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
     app = QApplication(sys.argv)
     a = App()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

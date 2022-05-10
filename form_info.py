@@ -1,8 +1,7 @@
 import os
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon, QPixmap, QColor
-from PyQt5.QtWidgets import QWidget, QListWidgetItem
+from PyQt6.QtGui import QIcon, QPixmap, QColor
+from PyQt6.QtWidgets import QWidget, QListWidgetItem
 from threading import Thread, RLock
 from catalog_manager import get_catalog
 from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, lib_lists_en
