@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(1046, 706)
+        Form.resize(727, 541)
         Form.setStyleSheet("color: rgb(255, 255, 255);\n"
 "background-color: rgb(45, 45, 45);")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(Form)
