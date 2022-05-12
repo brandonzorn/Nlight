@@ -27,12 +27,19 @@ class FormInfo(QWidget):
         self.manga = manga
         self.chapters = []
 
+    def resizeEvent(self, a0):
+        self.ui.image.clear()
+        if not self.catalog:
+            return
+        pixmap = QPixmap(self.get_preview())
+        pixmap = pixmap.scaled(self.ui.image.size())
+        self.ui.image.setPixmap(pixmap)
+
     def setup(self):
         self.catalog = get_catalog(self.manga.catalog_id)()
         pixmap = QPixmap(self.get_preview())
         pixmap = pixmap.scaled(self.ui.image.size())
         self.ui.image.setPixmap(pixmap)
-        self.ui.image.setScaledContents(True)
         self.ui.description.setText(self.manga.description)
         self.ui.name.setText(self.manga.name)
         self.ui.russian.setText(self.manga.russian)
