@@ -2,7 +2,7 @@ import os
 
 from PyQt6.QtGui import QIcon, QPixmap, QColor
 from PyQt6.QtWidgets import QWidget, QListWidgetItem
-from threading import Thread, RLock
+from threading import Thread
 from catalog_manager import get_catalog
 from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, lib_lists_en
 from database import Database
@@ -21,7 +21,6 @@ class FormInfo(QWidget):
         self.ui.btn_back.setIcon(QIcon(back_icon_path))
         self.ui.lib_list.currentIndexChanged.connect(self.change_lib_list)
         self.db = Database()
-        self.locker = RLock()
         self.wd = os.getcwd()
         self.catalog = None
         self.manga = manga
