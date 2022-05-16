@@ -107,6 +107,9 @@ class Reader(QWidget):
         self.ui_re.lbl_chp.setText(self.chapters[self.cur_chapter - 1].get_name())
 
     def attach_image(self):
+        self.resize(self.screen().size())
+        self.ui_re.scrollArea.verticalScrollBar().setValue(0)
+        self.ui_re.scrollArea.horizontalScrollBar().setValue(0)
         if self.images[self.cur_page - 1].is_text:
             text = self.get_text(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
             self.ui_re.img.setText(text)
@@ -115,9 +118,6 @@ class Reader(QWidget):
             self.ui_re.img.setAlignment(Qt.AlignmentFlag.AlignHCenter)
             self.ui_re.img.setPixmap(pixmap)
         # "AlignmentFlag.AlignVCenter|AlignJustify"
-        self.resize(self.screen().size())
-        self.ui_re.scrollArea.verticalScrollBar().setValue(0)
-        self.ui_re.scrollArea.horizontalScrollBar().setValue(0)
         # self.showFullScreen()
         # self.ui_re.scrollArea.setWidgetResizable(True)
 
