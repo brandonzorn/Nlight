@@ -24,6 +24,7 @@ class Chapter:
         self.vol: str = chapter.get('vol')
         self.ch: str = chapter.get('ch')
         self.title: str = chapter.get('title')
+        self.language = chapter.get('language')
 
     def get_name(self) -> str:
         if not self.vol and not self.ch:
