@@ -45,7 +45,7 @@ class Rulate(Parser):
             name: str = chapter.find('td', class_='t').text
             name = name.strip()
             id = chapter.unwrap()['data-id']
-            data = {'id': id, 'title': name}
+            data = {'id': id, 'title': name, 'language': 'ru'}
             chapters.append(Chapter(data))
         chapters.reverse()
         return chapters

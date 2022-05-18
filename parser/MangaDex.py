@@ -55,7 +55,7 @@ class MangaDex(Parser):
 
     def get_chapters(self, manga: Manga) -> [Chapter]:
         url = f'{self.url_api}/chapter'
-        params = {'manga': manga.id, 'limit': 1, 'translatedLanguage[]': ['ru'], 'order[chapter]': 'asc'}
+        params = {'manga': manga.id, 'limit': 1, 'translatedLanguage[]': ['ru', 'en'], 'order[chapter]': 'asc'}
         html = get_html(url, self.headers, params)
         chapters = []
         if html and html.status_code == 200 and len(html.json()):
@@ -66,7 +66,7 @@ class MangaDex(Parser):
                 for i in html.json().get('data'):
                     attr = i.get('attributes')
                     data = {'id': i.get('id'), 'vol': attr.get('volume'), 'ch': attr.get('chapter'),
-                            'title': attr.get('title')}
+                            'title': attr.get('title'), 'language': attr.get('translatedLanguage')}
                     chapters.append(Chapter(data))
             chapters.reverse()
         return chapters
