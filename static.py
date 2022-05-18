@@ -4,7 +4,7 @@ import os
 import requests
 from requests import Response
 
-from const import lib_lists_en, lib_lists_ru, DEFAULT_HEADERS, ru_icon_path, gb_icon_path
+from const import lib_lists_en, lib_lists_ru, DEFAULT_HEADERS, ru_icon_path, gb_icon_path, jp_icon_path
 from items import Manga, Chapter, Image
 
 
@@ -37,6 +37,10 @@ def get_language_icon(language: str):
             return ru_icon_path
         case 'en':
             return gb_icon_path
+        case 'jp':
+            return jp_icon_path
+        case _:
+            return ''
 
 
 def get_url(manga: Manga, chapter: Chapter = None, image: Image = None):
