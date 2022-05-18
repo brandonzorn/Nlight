@@ -14,7 +14,7 @@ class FormShikimori(QWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.mangas: [Manga] = []
+        self.mangas: list[Manga] = []
         self.catalog = get_catalog(1)()
         self.Form_auth = FormAuth(self.catalog)
         self.request_params = RequestForm()

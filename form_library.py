@@ -13,7 +13,7 @@ class FormLibrary(QWidget):
         super().__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.mangas = []
+        self.mangas: list[Manga] = []
         self.cur_list = 'planned'
         self.db = Database()
         self.ui.btn_mylist.setIcon(QIcon(library_icon_path))
