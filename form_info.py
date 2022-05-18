@@ -7,8 +7,9 @@ from catalog_manager import get_catalog
 from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, lib_lists_en
 from database import Database
 from form.desu_info import Ui_Form
-from items import Manga
+from items import Manga, Chapter
 from reader import Reader
+from static import get_language_icon
 
 
 class FormInfo(QWidget):
@@ -24,7 +25,7 @@ class FormInfo(QWidget):
         self.wd = os.getcwd()
         self.catalog = None
         self.manga = manga
-        self.chapters = []
+        self.chapters: list[Chapter] = []
 
     def resizeEvent(self, a0):
         self.ui.image.clear()
@@ -83,16 +84,18 @@ class FormInfo(QWidget):
 
     def get_chapters(self):
         self.ui.chapters.clear()
-        self.chapters = self.catalog.get_chapters(self.manga)
+        self.chapters: list[Chapter] = self.catalog.get_chapters(self.manga)
         for i in self.chapters:
             self.db.add_chapter(i, self.manga, self.chapters[::-1].index(i))
         # self.chapters = self.db.get_chapters(self.manga)
         self.chapters.reverse()
+        self.chapters.sort(key=lambda ch: ch.language if ch.language else False)
         for i in self.chapters:
             item = QListWidgetItem(i.get_name())
             if self.db.check_complete_chapter(i):
                 item.setBackground(QColor("GREEN"))
-                # item.setIcon(QIcon(back_icon_path))
+            if i.language:
+                item.setIcon(QIcon(get_language_icon(i.language)))
             self.ui.chapters.addItem(item)
 
     def open_reader(self):
