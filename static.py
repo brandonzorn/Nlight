@@ -4,7 +4,7 @@ import os
 import requests
 from requests import Response
 
-from const import lib_lists_en, lib_lists_ru, DEFAULT_HEADERS
+from const import lib_lists_en, lib_lists_ru, DEFAULT_HEADERS, ru_icon_path, gb_icon_path
 from items import Manga, Chapter, Image
 
 
@@ -29,6 +29,14 @@ def get_html(url: str, headers: dict = DEFAULT_HEADERS, params=None):
 
 def get_lib_list_en(lib_list_ru):
     return lib_lists_en[lib_lists_ru.index(lib_list_ru)]
+
+
+def get_language_icon(language: str):
+    match language:
+        case 'ru':
+            return ru_icon_path
+        case 'en':
+            return gb_icon_path
 
 
 def get_url(manga: Manga, chapter: Chapter = None, image: Image = None):
