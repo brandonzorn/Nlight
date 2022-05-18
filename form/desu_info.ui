@@ -323,7 +323,11 @@ background-color: rgb(45, 45, 45);</string>
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="chapters"/>
+    <layout class="QVBoxLayout" name="verticalLayout_5">
+     <item>
+      <widget class="QListWidget" name="chapters"/>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
