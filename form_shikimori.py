@@ -34,12 +34,12 @@ class FormShikimori(QWidget):
         self.ui.next_page.clicked.connect(lambda: self.change_page('+'))
         self.ui.btn_search.clicked.connect(self.search)
         self.ui.btn_auth.clicked.connect(self.authorize)
-        self.Form_auth.accepted.connect(self.on_accept_auth)
+        self.Form_auth.accepted.connect(self.auth_accept)
 
     def get_current_manga(self):
         return self.catalog.get_manga(self.mangas[self.ui.list_manga.currentIndex().row()])
 
-    def on_accept_auth(self):
+    def auth_accept(self):
         self.catalog.session.auth_login(self.Form_auth.get_user_data())
         self.ui.btn_auth.setText(self.get_whoami().nickname)
 
