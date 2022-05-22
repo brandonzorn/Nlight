@@ -1,5 +1,6 @@
 import os
 
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon, QPixmap, QColor
 from PyQt6.QtWidgets import QWidget, QListWidgetItem
 from threading import Thread
@@ -32,7 +33,8 @@ class FormInfo(QWidget):
         if not self.catalog:
             return
         pixmap = QPixmap(self.get_preview())
-        pixmap = pixmap.scaled(self.ui.image.size())
+        pixmap = pixmap.scaled(self.ui.image.size(), Qt.AspectRatioMode.KeepAspectRatio,
+                               Qt.TransformationMode.SmoothTransformation)
         self.ui.image.setPixmap(pixmap)
 
     def setup(self):

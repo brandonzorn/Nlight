@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(727, 541)
+        Form.resize(780, 564)
         Form.setStyleSheet("color: rgb(255, 255, 255);\n"
 "background-color: rgb(45, 45, 45);")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(Form)
@@ -143,9 +143,12 @@ class Ui_Form(object):
         self.verticalLayout.addWidget(self.description)
         self.verticalLayout_2.addLayout(self.verticalLayout)
         self.horizontalLayout_5.addLayout(self.verticalLayout_2)
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.chapters = QtWidgets.QListWidget(Form)
         self.chapters.setObjectName("chapters")
-        self.horizontalLayout_5.addWidget(self.chapters)
+        self.verticalLayout_5.addWidget(self.chapters)
+        self.horizontalLayout_5.addLayout(self.verticalLayout_5)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
