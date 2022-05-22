@@ -134,12 +134,18 @@ color: rgb(255, 255, 255);</string>
              <property name="text">
               <string>russian</string>
              </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item>
             <widget class="QLabel" name="name">
              <property name="text">
               <string>name</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
