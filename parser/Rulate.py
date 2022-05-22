@@ -22,7 +22,7 @@ class Rulate(Parser):
         manga.description = description
         return manga
 
-    def search_manga(self, params: RequestForm) -> [Manga]:
+    def search_manga(self, params: RequestForm):
         params = {'t': params.search, 'cat': 12, 'Book_page': params.page, 'sort': 5}
         html = get_html(f"{self.url_api}/search", params=params)
         soup = BeautifulSoup(html.text, "html.parser")
@@ -36,7 +36,7 @@ class Rulate(Parser):
             ranobe.append(Manga(data))
         return ranobe
 
-    def get_chapters(self, manga: Manga) -> [Chapter]:
+    def get_chapters(self, manga: Manga):
         chapters = []
         a = get_html(f"{self.url_api}/book/{manga.id}")
         soup = BeautifulSoup(a.text, "html.parser")
@@ -50,7 +50,7 @@ class Rulate(Parser):
         chapters.reverse()
         return chapters
 
-    def get_images(self, manga: Manga, chapter: Chapter) -> [Image]:
+    def get_images(self, manga: Manga, chapter: Chapter):
         url = f"{self.url_api}/book/{manga.id}/{chapter.id}/download?format=t&enc=UTF-8"
         return [Image({'is_text': True, 'page': 1, 'img': url})]
 

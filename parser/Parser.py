@@ -1,4 +1,4 @@
-from items import Manga, Chapter, Image, User, RequestForm
+from items import Manga, Chapter, Image, User, RequestForm, Genre
 
 
 class Parser:
@@ -7,22 +7,22 @@ class Parser:
     def get_manga(self, manga: Manga) -> Manga:
         return manga
 
-    def search_manga(self, params: RequestForm) -> [Manga]:
+    def search_manga(self, params: RequestForm) -> list[Manga]:
         return []
 
-    def get_chapters(self, manga: Manga) -> [Chapter]:
+    def get_chapters(self, manga: Manga) -> list[Chapter]:
         return []
 
-    def get_images(self, manga: Manga, chapter: Chapter) -> [Image]:
+    def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         return []
 
     def get_image(self, image: Image):
-        pass
+        return
 
     def get_preview(self, manga: Manga):
         return
 
-    def get_genres(self):
+    def get_genres(self) -> list[Genre]:
         return []
 
     def get_user(self) -> User:

@@ -27,7 +27,7 @@ class Shikimori(Parser):
             manga.description = data.get('description')
         return manga
 
-    def search_manga(self, params: RequestForm) -> [Manga]:
+    def search_manga(self, params: RequestForm):
         url = f'{self.url_api}/mangas'
         params = {'limit': params.limit, 'search': params.search, 'genre': ','.join([i.id for i in params.genres]),
                   'order': 'popularity', 'kind': ','.join(params.kinds), 'page': params.page}
@@ -40,10 +40,10 @@ class Shikimori(Parser):
                 manga.append(Manga(data))
         return manga
 
-    def get_chapters(self, manga: Manga) -> [Chapter]:
+    def get_chapters(self, manga: Manga):
         return []
 
-    def get_images(self, manga: Manga, chapter: Chapter) -> [Image]:
+    def get_images(self, manga: Manga, chapter: Chapter):
         return []
 
     def get_image(self, image: Image):
@@ -59,7 +59,7 @@ class Shikimori(Parser):
             return [Genre(i) for i in html.json()]
         return []
 
-    def get_manga_login(self, params: RequestForm) -> [Manga]:
+    def get_manga_login(self, params: RequestForm):
         url = f'{self.url_api}/mangas'
         params = {'limit': params.limit, 'page': params.page, 'mylist': params.mylist, 'search': params.search}
         html = self.session.get(url, params)
