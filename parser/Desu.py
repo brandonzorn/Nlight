@@ -31,9 +31,13 @@ class Desu(Parser):
     def get_chapters(self, manga: Manga) -> [Chapter]:
         url = f'{self.url_api}/{manga.id}'
         html = get_html(url, self.headers)
+        chapters = []
         if html and html.status_code == 200 and len(html.json()):
-            return [Chapter(i) for i in html.json().get('response').get('chapters').get('list')]
-        return []
+            for i in html.json().get('response').get('chapters').get('list'):
+                data = i
+                data.update({'language': 'ru'})
+                chapters.append(Chapter(data))
+        return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter) -> [Image]:
         url = f'{URL_DESU_API}/{manga.id}/chapter/{chapter.id}'

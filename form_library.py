@@ -1,5 +1,5 @@
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QWidget
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QWidget
 
 from catalog_manager import get_catalog
 from const import library_icon_path, main_icon_path, shikimori_icon_path
@@ -13,7 +13,7 @@ class FormLibrary(QWidget):
         super().__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.mangas = []
+        self.mangas: list[Manga] = []
         self.cur_list = 'planned'
         self.db = Database()
         self.ui.btn_mylist.setIcon(QIcon(library_icon_path))
