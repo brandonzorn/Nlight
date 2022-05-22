@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1046</width>
-    <height>706</height>
+    <width>780</width>
+    <height>564</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -323,7 +323,11 @@ background-color: rgb(45, 45, 45);</string>
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="chapters"/>
+    <layout class="QVBoxLayout" name="verticalLayout_5">
+     <item>
+      <widget class="QListWidget" name="chapters"/>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

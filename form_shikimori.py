@@ -1,5 +1,5 @@
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QWidget
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QWidget
 
 from catalog_manager import get_catalog
 from const import library_icon_path, main_icon_path, shikimori_icon_path
@@ -14,7 +14,7 @@ class FormShikimori(QWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.mangas: [Manga] = []
+        self.mangas: list[Manga] = []
         self.catalog = get_catalog(1)()
         self.Form_auth = FormAuth(self.catalog)
         self.request_params = RequestForm()
@@ -34,12 +34,12 @@ class FormShikimori(QWidget):
         self.ui.next_page.clicked.connect(lambda: self.change_page('+'))
         self.ui.btn_search.clicked.connect(self.search)
         self.ui.btn_auth.clicked.connect(self.authorize)
-        self.Form_auth.accepted.connect(self.on_accept_auth)
+        self.Form_auth.accepted.connect(self.auth_accept)
 
     def get_current_manga(self):
         return self.catalog.get_manga(self.mangas[self.ui.list_manga.currentIndex().row()])
 
-    def on_accept_auth(self):
+    def auth_accept(self):
         self.catalog.session.auth_login(self.Form_auth.get_user_data())
         self.ui.btn_auth.setText(self.get_whoami().nickname)
 
