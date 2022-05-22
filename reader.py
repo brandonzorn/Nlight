@@ -1,9 +1,9 @@
 import os
 from pathlib import Path
 from threading import Thread
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
+from PyQt6.QtGui import *
+from PyQt6.QtWidgets import *
+from PyQt6.QtCore import *
 
 from catalog_manager import get_catalog
 from database import Database
@@ -16,17 +16,19 @@ class Reader(QWidget):
         super().__init__()
         self.ui_re = Ui_Dialog()
         self.ui_re.setupUi(self)
+        self.ui_re.text_size_slider.hide()
         app_icon_path = os.path.join(Path(__file__).parent, "images/icon.png")
         self.setWindowIcon(QIcon(app_icon_path))
         self.ui_re.prev_page.clicked.connect(lambda: self.press_key('prev_page'))
         self.ui_re.next_page.clicked.connect(lambda: self.press_key('next_page'))
         self.ui_re.prev_chp.clicked.connect(lambda: self.press_key('prev_ch'))
         self.ui_re.next_chp.clicked.connect(lambda: self.press_key('next_ch'))
+        self.ui_re.text_size_slider.valueChanged.connect(self.update_text_size)
         self.wd = os.getcwd()
         self.db = Database()
         self.manga: Manga = Manga({})
-        self.chapters: [Chapter] = [Chapter({})]
-        self.images: [Image] = [Image({})]
+        self.chapters: list[Chapter] = [Chapter({})]
+        self.images: list[Image] = [Image({})]
         self.cur_chapter: int = 1
         self.max_chapters: int = 1
         self.cur_page: int = 1
@@ -43,20 +45,17 @@ class Reader(QWidget):
         self.showFullScreen()
         self.change_chapter()
 
-    def close_reader(self):
-        self.hide()
-
     def keyPressEvent(self, event):
         match event.key():
-            case Qt.Key_Escape:
-                self.close_reader()
-            case Qt.Key_Left:
+            case Qt.Key.Key_Escape:
+                self.hide()
+            case Qt.Key.Key_Left:
                 self.press_key('prev_page')
-            case Qt.Key_Right:
+            case Qt.Key.Key_Right:
                 self.press_key('next_page')
-            case Qt.Key_Down:
+            case Qt.Key.Key_Down:
                 self.press_key('prev_ch')
-            case Qt.Key_Up:
+            case Qt.Key.Key_Up:
                 self.press_key('next_ch')
         event.accept()
 
@@ -92,7 +91,7 @@ class Reader(QWidget):
             case '+':
                 self.db.set_complete_chapter(self.chapters[self.cur_chapter - 1])
                 if self.cur_chapter == self.max_chapters:
-                    self.close_reader()
+                    self.hide()
                 else:
                     self.cur_chapter += 1
             case '-':
@@ -107,18 +106,25 @@ class Reader(QWidget):
         self.ui_re.lbl_chp.setText(self.chapters[self.cur_chapter - 1].get_name())
 
     def attach_image(self):
+        self.resize(self.screen().size())
+        self.ui_re.scrollArea.verticalScrollBar().setValue(0)
+        self.ui_re.scrollArea.horizontalScrollBar().setValue(0)
         if self.images[self.cur_page - 1].is_text:
+            self.ui_re.text_size_slider.show()
             text = self.get_text(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
             self.ui_re.img.setText(text)
         else:
             pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
-            self.ui_re.img.setAlignment(Qt.AlignCenter)
+            self.ui_re.img.setAlignment(Qt.AlignmentFlag.AlignHCenter)
             self.ui_re.img.setPixmap(pixmap)
-        self.resize(self.screen().size())
-        self.ui_re.scrollArea.verticalScrollBar().setValue(0)
-        self.ui_re.scrollArea.horizontalScrollBar().setValue(0)
+        # "AlignmentFlag.AlignVCenter|AlignJustify"
         # self.showFullScreen()
         # self.ui_re.scrollArea.setWidgetResizable(True)
+
+    def update_text_size(self):
+        font = self.ui_re.img.font()
+        font.setPointSize(self.ui_re.text_size_slider.value())
+        self.ui_re.img.setFont(font)
 
     def get_image(self, chapter, image) -> str:
         path = f'{self.wd}/Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
@@ -148,8 +154,9 @@ class Reader(QWidget):
         pixmap = QPixmap(self.get_image(chapter, image))
         if pixmap.isNull():
             return QPixmap()
-        if self.manga.kind in ['manga', 'manhua', 'one_shot']:
-            pixmap = pixmap.scaled(self.ui_re.img.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        if 0.5 < pixmap.width() / pixmap.height() < 2:
+            pixmap = pixmap.scaled(self.ui_re.img.size(), Qt.AspectRatioMode.KeepAspectRatio,
+                                   Qt.TransformationMode.SmoothTransformation)
         return pixmap
 
     def get_images(self):

@@ -22,13 +22,21 @@ lib_lists_ru = ('запланированно', 'прочитано', 'чита�
 
 
 app_icon_path = os.path.join(Path(__file__).parent, "images/icon.png")
-library_icon_path = os.path.join(Path(__file__).parent, "images/library.png")
-shikimori_icon_path = os.path.join(Path(__file__).parent, "images/shikimori.png")
+
 main_icon_path = os.path.join(Path(__file__).parent, "images/main.png")
+library_icon_path = os.path.join(Path(__file__).parent, "images/library.png")
+
+shikimori_icon_path = os.path.join(Path(__file__).parent, "images/shikimori.png")
+
 back_icon_path = os.path.join(Path(__file__).parent, "images/back.png")
+
 favorite_icon_path = os.path.join(Path(__file__).parent, "images/favorite.png")
 favorite1_icon_path = os.path.join(Path(__file__).parent, "images/favorite1.png")
 favorite2_icon_path = os.path.join(Path(__file__).parent, "images/favorite2.png")
+
+gb_icon_path = os.path.join(Path(__file__).parent, "images/gb.svg")
+ru_icon_path = os.path.join(Path(__file__).parent, "images/ru.svg")
+jp_icon_path = os.path.join(Path(__file__).parent, "images/jp.svg")
 
 
 manga_desu_genres = ({'en': 'Dementia', 'ru': 'Безумие'}, {'en': 'Martial Arts', 'ru': 'Боевые искусства'},
