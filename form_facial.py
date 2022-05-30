@@ -1,5 +1,5 @@
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QWidget
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QWidget
 
 from catalog_manager import get_catalog, CATALOGS
 from const import library_icon_path, main_icon_path, shikimori_icon_path
