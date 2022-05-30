@@ -1,7 +1,7 @@
 import webbrowser
 
-from PyQt6.QtGui import *
-from PyQt6.QtWidgets import *
+from PySide6.QtGui import *
+from PySide6.QtWidgets import *
 from const import app_icon_path
 from form.authUI import Ui_Dialog
 
