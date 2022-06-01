@@ -9,7 +9,7 @@ from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favor
 from database import Database
 from form.desu_info import Ui_Form
 from items import Manga, Chapter
-from reader import Reader
+from app_windows.reader import Reader
 from static import get_language_icon
 
 

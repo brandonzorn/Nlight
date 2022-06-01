@@ -109,6 +109,14 @@ class MangaDex(Parser):
 
     def get_manga_login(self, params: RequestForm):
         manga = []
+        lib_list = 'plan_to_read'
+        match params.mylist:
+            case 'planned':
+                lib_list = 'plan_to_read'
+            case 'watching':
+                lib_list = 'reading'
+            case 'rewatching':
+                lib_list = 're_reading'
         params = {'limit': params.limit, 'offset': params.offset()}
         html = get_html(f'{self.url_api}/user/follows/manga',
                         headers={'Authorization': self.session.get_token()}, params=params)

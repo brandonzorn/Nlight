@@ -28,45 +28,7 @@ class Ui_Form(object):
 "background-color: rgb(45, 45, 45);")
         self.horizontalLayout = QHBoxLayout(Form)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.verticalLayout_2 = QVBoxLayout()
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.btn_mylist = QPushButton(Form)
-        self.btn_mylist.setObjectName(u"btn_mylist")
-        self.btn_mylist.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
-        icon = QIcon()
-        icon.addFile(u"../images/library.png", QSize(), QIcon.Normal, QIcon.On)
-        self.btn_mylist.setIcon(icon)
-
-        self.verticalLayout_2.addWidget(self.btn_mylist)
-
-        self.btn_main = QPushButton(Form)
-        self.btn_main.setObjectName(u"btn_main")
-        self.btn_main.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
-        icon1 = QIcon()
-        icon1.addFile(u"../images/main.png", QSize(), QIcon.Normal, QIcon.On)
-        self.btn_main.setIcon(icon1)
-
-        self.verticalLayout_2.addWidget(self.btn_main)
-
-        self.btn_shikimori = QPushButton(Form)
-        self.btn_shikimori.setObjectName(u"btn_shikimori")
-        self.btn_shikimori.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
-        icon2 = QIcon()
-        icon2.addFile(u"../images/shikimori.png", QSize(), QIcon.Normal, QIcon.On)
-        self.btn_shikimori.setIcon(icon2)
-
-        self.verticalLayout_2.addWidget(self.btn_shikimori)
-
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.verticalLayout_2.addItem(self.verticalSpacer_2)
-
-
-        self.horizontalLayout.addLayout(self.verticalLayout_2)
-
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.list_manga = QListWidget(Form)
@@ -189,9 +151,6 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.btn_mylist.setText("")
-        self.btn_main.setText("")
-        self.btn_shikimori.setText("")
         self.btn_search.setText(QCoreApplication.translate("Form", u"\u041f\u043e\u0438\u0441\u043a", None))
         self.prev_page.setText(QCoreApplication.translate("Form", u"<", None))
         self.label_page.setText(QCoreApplication.translate("Form", u" \u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 1", None))

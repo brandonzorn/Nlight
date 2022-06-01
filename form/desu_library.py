@@ -28,45 +28,7 @@ class Ui_Dialog(object):
 "background-color: rgb(45, 45, 45);")
         self.horizontalLayout = QHBoxLayout(Dialog)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.verticalLayout_2 = QVBoxLayout()
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.btn_mylist = QPushButton(Dialog)
-        self.btn_mylist.setObjectName(u"btn_mylist")
-        self.btn_mylist.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
-        icon = QIcon()
-        icon.addFile(u"../images/library.png", QSize(), QIcon.Normal, QIcon.On)
-        self.btn_mylist.setIcon(icon)
-
-        self.verticalLayout_2.addWidget(self.btn_mylist)
-
-        self.btn_main = QPushButton(Dialog)
-        self.btn_main.setObjectName(u"btn_main")
-        self.btn_main.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
-        icon1 = QIcon()
-        icon1.addFile(u"../images/main.png", QSize(), QIcon.Normal, QIcon.On)
-        self.btn_main.setIcon(icon1)
-
-        self.verticalLayout_2.addWidget(self.btn_main)
-
-        self.btn_shikimori = QPushButton(Dialog)
-        self.btn_shikimori.setObjectName(u"btn_shikimori")
-        self.btn_shikimori.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
-        icon2 = QIcon()
-        icon2.addFile(u"../images/shikimori.png", QSize(), QIcon.Normal, QIcon.On)
-        self.btn_shikimori.setIcon(icon2)
-
-        self.verticalLayout_2.addWidget(self.btn_shikimori)
-
-        self.verticalSpacer_2 = QSpacerItem(38, 561, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.verticalLayout_2.addItem(self.verticalSpacer_2)
-
-
-        self.horizontalLayout.addLayout(self.verticalLayout_2)
-
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.list_manga = QListWidget(Dialog)
         self.list_manga.setObjectName(u"list_manga")
         palette = QPalette()
@@ -204,9 +166,6 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
-        self.btn_mylist.setText("")
-        self.btn_main.setText("")
-        self.btn_shikimori.setText("")
         self.b_planned.setText(QCoreApplication.translate("Dialog", u"\u0417\u0430\u043f\u043b\u0430\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043e", None))
         self.b_completed.setText(QCoreApplication.translate("Dialog", u"\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u043e", None))
         self.b_watching.setText(QCoreApplication.translate("Dialog", u"\u0427\u0438\u0442\u0430\u044e", None))

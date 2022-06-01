@@ -28,6 +28,7 @@ class Ui_Form(object):
 "background-color: rgb(45, 45, 45);")
         self.horizontalLayout_5 = QHBoxLayout(Form)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.horizontalLayout = QHBoxLayout()
