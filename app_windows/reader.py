@@ -17,7 +17,7 @@ class Reader(QWidget):
         self.ui_re = Ui_Dialog()
         self.ui_re.setupUi(self)
         self.ui_re.text_size_slider.hide()
-        app_icon_path = os.path.join(Path(__file__).parent, "images/icon.png")
+        app_icon_path = os.path.join(Path(__file__).parent, "../images/icon.png")
         self.setWindowIcon(QIcon(app_icon_path))
         self.ui_re.prev_page.clicked.connect(lambda: self.press_key('prev_page'))
         self.ui_re.next_page.clicked.connect(lambda: self.press_key('next_page'))

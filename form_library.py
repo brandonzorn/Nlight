@@ -1,8 +1,6 @@
-from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget
 
 from catalog_manager import get_catalog
-from const import library_icon_path, main_icon_path, shikimori_icon_path
 from database import Database
 from form.desu_library import Ui_Dialog
 from items import Manga
@@ -16,9 +14,6 @@ class FormLibrary(QWidget):
         self.mangas: list[Manga] = []
         self.cur_list = 'planned'
         self.db = Database()
-        self.ui.btn_mylist.setIcon(QIcon(library_icon_path))
-        self.ui.btn_main.setIcon(QIcon(main_icon_path))
-        self.ui.btn_shikimori.setIcon(QIcon(shikimori_icon_path))
         self.ui.b_planned.clicked.connect(lambda: self.update_list('planned'))
         self.ui.b_watching.clicked.connect(lambda: self.update_list('watching'))
         self.ui.b_on_hold.clicked.connect(lambda: self.update_list('on_hold'))
