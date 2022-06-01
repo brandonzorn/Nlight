@@ -1,8 +1,6 @@
-from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget
 
 from catalog_manager import get_catalog, CATALOGS
-from const import library_icon_path, main_icon_path, shikimori_icon_path
 from database import Database
 from form.desuUI import Ui_Dialog
 from form_genres import FormGenres
@@ -22,15 +20,17 @@ class FormFacial(QWidget):
         self.kinds = {self.ui.type_manga: 'manga', self.ui.type_manhwa: 'manhwa', self.ui.type_manhua: 'manhua',
                       self.ui.type_one_shot: 'one_shot', self.ui.type_comics: 'comics'}
         self.Form_genres = FormGenres()
-        self.ui.btn_mylist.setIcon(QIcon(library_icon_path))
-        self.ui.btn_main.setIcon(QIcon(main_icon_path))
-        self.ui.btn_shikimori.setIcon(QIcon(shikimori_icon_path))
         self.ui.prev_page.clicked.connect(lambda: self.change_page('-'))
         self.ui.next_page.clicked.connect(lambda: self.change_page('+'))
         self.ui.btn_genres_list.clicked.connect(self.clicked_genres)
         self.ui.filter_apply.clicked.connect(self.filter_apply)
         self.ui.filter_reset.clicked.connect(self.filter_reset)
         self.ui.btn_search.clicked.connect(self.search)
+        self.setup_catalogs()
+        self.ui.catalog_list.doubleClicked.connect(
+            lambda: self.update_catalog(self.ui.catalog_list.currentIndex().row()))
+        self.ui.catalog_list.hide()
+        self.ui.btn_catalogs.clicked.connect(self.clicked_catalogs)
         self.catalog = get_catalog()()
         self.get_content()
 
@@ -40,12 +40,18 @@ class FormFacial(QWidget):
     def get_current_manga(self):
         return self.catalog.get_manga(self.mangas[self.ui.list_manga.currentIndex().row()])
 
-    def update_catalog(self, index):
+    def update_catalog(self, index: int):
         catalog = get_catalog(index)
         self.catalog = catalog()
         self.Form_genres.catalog = catalog()
         self.Form_genres.setup()
         self.get_content()
+
+    def clicked_catalogs(self):
+        if self.ui.catalog_list.isHidden():
+            self.ui.catalog_list.show()
+        else:
+            self.ui.catalog_list.hide()
 
     def setup_catalogs(self):
         self.ui.catalog_list.clear()
