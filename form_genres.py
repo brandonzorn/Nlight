@@ -22,7 +22,8 @@ class FormGenres(QDialog):
         self.setup()
 
     def setup(self):
-        [self.ui_ge.gridLayout.removeWidget(i) for i in self.genres_items]
+        for i in reversed(range(self.ui_ge.gridLayout.count())):
+            self.ui_ge.gridLayout.itemAt(i).widget().deleteLater()
         self.genres_items = {}
         self.selected_genres = []
         genres = self.catalog.get_genres()
