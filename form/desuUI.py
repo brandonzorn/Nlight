@@ -15,16 +15,16 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QDialog, QGridLayout,
-    QHBoxLayout, QLabel, QLineEdit, QListWidget,
-    QListWidgetItem, QPushButton, QRadioButton, QSizePolicy,
-    QSpacerItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QDialog, QFormLayout,
+    QFrame, QHBoxLayout, QLabel, QLineEdit,
+    QListWidget, QListWidgetItem, QPushButton, QRadioButton,
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(709, 458)
+        Dialog.resize(695, 588)
         palette = QPalette()
         brush = QBrush(QColor(255, 255, 255, 255))
         brush.setStyle(Qt.SolidPattern)
@@ -187,89 +187,134 @@ class Ui_Dialog(object):
 
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.gridLayout = QGridLayout()
-        self.gridLayout.setObjectName(u"gridLayout")
-        self.btn_genres_list = QPushButton(Dialog)
-        self.btn_genres_list.setObjectName(u"btn_genres_list")
-        self.btn_genres_list.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
+        self.filters_frame = QFrame(Dialog)
+        self.filters_frame.setObjectName(u"filters_frame")
+        self.filters_frame.setFrameShape(QFrame.StyledPanel)
+        self.filters_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_6 = QVBoxLayout(self.filters_frame)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.order_frame = QFrame(self.filters_frame)
+        self.order_frame.setObjectName(u"order_frame")
+        self.order_frame.setFrameShape(QFrame.StyledPanel)
+        self.order_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_2 = QVBoxLayout(self.order_frame)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.label_sort = QLabel(self.order_frame)
+        self.label_sort.setObjectName(u"label_sort")
 
-        self.gridLayout.addWidget(self.btn_genres_list, 7, 0, 1, 2)
+        self.verticalLayout_2.addWidget(self.label_sort)
 
-        self.sort_popular = QRadioButton(Dialog)
+        self.formLayout = QFormLayout()
+        self.formLayout.setObjectName(u"formLayout")
+        self.sort_popular = QRadioButton(self.order_frame)
         self.sort_popular.setObjectName(u"sort_popular")
         self.sort_popular.setChecked(True)
 
-        self.gridLayout.addWidget(self.sort_popular, 1, 0, 1, 1)
+        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.sort_popular)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.gridLayout.addItem(self.verticalSpacer, 9, 0, 1, 2)
-
-        self.type_manhua = QCheckBox(Dialog)
-        self.type_manhua.setObjectName(u"type_manhua")
-        self.type_manhua.setChecked(False)
-        self.type_manhua.setTristate(False)
-
-        self.gridLayout.addWidget(self.type_manhua, 3, 1, 1, 1)
-
-        self.label_genre = QLabel(Dialog)
-        self.label_genre.setObjectName(u"label_genre")
-
-        self.gridLayout.addWidget(self.label_genre, 6, 0, 1, 1)
-
-        self.sort_name = QRadioButton(Dialog)
+        self.sort_name = QRadioButton(self.order_frame)
         self.sort_name.setObjectName(u"sort_name")
 
-        self.gridLayout.addWidget(self.sort_name, 1, 1, 1, 1)
+        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.sort_name)
 
-        self.type_one_shot = QCheckBox(Dialog)
-        self.type_one_shot.setObjectName(u"type_one_shot")
-        self.type_one_shot.setChecked(False)
-        self.type_one_shot.setTristate(False)
 
-        self.gridLayout.addWidget(self.type_one_shot, 4, 1, 1, 1)
+        self.verticalLayout_2.addLayout(self.formLayout)
 
-        self.type_comics = QCheckBox(Dialog)
-        self.type_comics.setObjectName(u"type_comics")
-        self.type_comics.setChecked(False)
-        self.type_comics.setTristate(False)
 
-        self.gridLayout.addWidget(self.type_comics, 5, 0, 1, 1)
+        self.verticalLayout_6.addWidget(self.order_frame)
 
-        self.type_manhwa = QCheckBox(Dialog)
-        self.type_manhwa.setObjectName(u"type_manhwa")
-        self.type_manhwa.setChecked(False)
-        self.type_manhwa.setTristate(False)
-
-        self.gridLayout.addWidget(self.type_manhwa, 4, 0, 1, 1)
-
-        self.label_type = QLabel(Dialog)
+        self.kind_frame = QFrame(self.filters_frame)
+        self.kind_frame.setObjectName(u"kind_frame")
+        self.kind_frame.setFrameShape(QFrame.StyledPanel)
+        self.kind_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_4 = QVBoxLayout(self.kind_frame)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.label_type = QLabel(self.kind_frame)
         self.label_type.setObjectName(u"label_type")
 
-        self.gridLayout.addWidget(self.label_type, 2, 0, 1, 1)
+        self.verticalLayout_4.addWidget(self.label_type)
 
-        self.type_manga = QCheckBox(Dialog)
+        self.formLayout_2 = QFormLayout()
+        self.formLayout_2.setObjectName(u"formLayout_2")
+        self.type_manga = QCheckBox(self.kind_frame)
         self.type_manga.setObjectName(u"type_manga")
         self.type_manga.setChecked(False)
         self.type_manga.setTristate(False)
 
-        self.gridLayout.addWidget(self.type_manga, 3, 0, 1, 1)
+        self.formLayout_2.setWidget(0, QFormLayout.LabelRole, self.type_manga)
 
-        self.label_sort = QLabel(Dialog)
-        self.label_sort.setObjectName(u"label_sort")
+        self.type_manhua = QCheckBox(self.kind_frame)
+        self.type_manhua.setObjectName(u"type_manhua")
+        self.type_manhua.setChecked(False)
+        self.type_manhua.setTristate(False)
 
-        self.gridLayout.addWidget(self.label_sort, 0, 0, 1, 1)
+        self.formLayout_2.setWidget(0, QFormLayout.FieldRole, self.type_manhua)
 
-        self.btn_catalogs = QPushButton(Dialog)
+        self.type_manhwa = QCheckBox(self.kind_frame)
+        self.type_manhwa.setObjectName(u"type_manhwa")
+        self.type_manhwa.setChecked(False)
+        self.type_manhwa.setTristate(False)
+
+        self.formLayout_2.setWidget(1, QFormLayout.LabelRole, self.type_manhwa)
+
+        self.type_one_shot = QCheckBox(self.kind_frame)
+        self.type_one_shot.setObjectName(u"type_one_shot")
+        self.type_one_shot.setChecked(False)
+        self.type_one_shot.setTristate(False)
+
+        self.formLayout_2.setWidget(1, QFormLayout.FieldRole, self.type_one_shot)
+
+        self.type_comics = QCheckBox(self.kind_frame)
+        self.type_comics.setObjectName(u"type_comics")
+        self.type_comics.setChecked(False)
+        self.type_comics.setTristate(False)
+
+        self.formLayout_2.setWidget(2, QFormLayout.SpanningRole, self.type_comics)
+
+
+        self.verticalLayout_4.addLayout(self.formLayout_2)
+
+
+        self.verticalLayout_6.addWidget(self.kind_frame)
+
+        self.genres_frame = QFrame(self.filters_frame)
+        self.genres_frame.setObjectName(u"genres_frame")
+        self.genres_frame.setFrameShape(QFrame.StyledPanel)
+        self.genres_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_5 = QVBoxLayout(self.genres_frame)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.label_genre = QLabel(self.genres_frame)
+        self.label_genre.setObjectName(u"label_genre")
+
+        self.verticalLayout_5.addWidget(self.label_genre)
+
+        self.btn_genres_list = QPushButton(self.genres_frame)
+        self.btn_genres_list.setObjectName(u"btn_genres_list")
+        self.btn_genres_list.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
+"color: rgb(255, 255, 255);")
+
+        self.verticalLayout_5.addWidget(self.btn_genres_list)
+
+
+        self.verticalLayout_6.addWidget(self.genres_frame)
+
+        self.btn_catalogs = QPushButton(self.filters_frame)
         self.btn_catalogs.setObjectName(u"btn_catalogs")
         self.btn_catalogs.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.gridLayout.addWidget(self.btn_catalogs, 8, 0, 1, 2)
+        self.verticalLayout_6.addWidget(self.btn_catalogs)
 
 
-        self.verticalLayout_3.addLayout(self.gridLayout)
+        self.verticalLayout_3.addWidget(self.filters_frame)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_3.addItem(self.verticalSpacer)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -305,17 +350,17 @@ class Ui_Dialog(object):
         self.prev_page.setText(QCoreApplication.translate("Dialog", u"<", None))
         self.label_page.setText(QCoreApplication.translate("Dialog", u" \u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 1", None))
         self.next_page.setText(QCoreApplication.translate("Dialog", u">", None))
-        self.btn_genres_list.setText(QCoreApplication.translate("Dialog", u"\u0421\u043f\u0438\u0441\u043e\u043a \u0436\u0430\u043d\u0440\u043e\u0432", None))
+        self.label_sort.setText(QCoreApplication.translate("Dialog", u"\u0421\u043e\u0440\u0442\u0438\u0440\u043e\u0432\u043a\u0430", None))
         self.sort_popular.setText(QCoreApplication.translate("Dialog", u"\u041f\u043e\u043f\u0443\u043b\u044f\u0440\u043d\u043e\u0441\u0442\u044c", None))
-        self.type_manhua.setText(QCoreApplication.translate("Dialog", u"\u041c\u0430\u043d\u044c\u0445\u0443\u0430", None))
-        self.label_genre.setText(QCoreApplication.translate("Dialog", u"\u0416\u0430\u043d\u0440", None))
         self.sort_name.setText(QCoreApplication.translate("Dialog", u"\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435", None))
-        self.type_one_shot.setText(QCoreApplication.translate("Dialog", u"\u0412\u0430\u043d\u0448\u043e\u0442", None))
-        self.type_comics.setText(QCoreApplication.translate("Dialog", u"\u041a\u043e\u043c\u0438\u043a\u0441", None))
-        self.type_manhwa.setText(QCoreApplication.translate("Dialog", u"\u041c\u0430\u043d\u0445\u0432\u0430", None))
         self.label_type.setText(QCoreApplication.translate("Dialog", u"\u0422\u0438\u043f", None))
         self.type_manga.setText(QCoreApplication.translate("Dialog", u"\u041c\u0430\u043d\u0433\u0430", None))
-        self.label_sort.setText(QCoreApplication.translate("Dialog", u"\u0421\u043e\u0440\u0442\u0438\u0440\u043e\u0432\u043a\u0430", None))
+        self.type_manhua.setText(QCoreApplication.translate("Dialog", u"\u041c\u0430\u043d\u044c\u0445\u0443\u0430", None))
+        self.type_manhwa.setText(QCoreApplication.translate("Dialog", u"\u041c\u0430\u043d\u0445\u0432\u0430", None))
+        self.type_one_shot.setText(QCoreApplication.translate("Dialog", u"\u0412\u0430\u043d\u0448\u043e\u0442", None))
+        self.type_comics.setText(QCoreApplication.translate("Dialog", u"\u041a\u043e\u043c\u0438\u043a\u0441", None))
+        self.label_genre.setText(QCoreApplication.translate("Dialog", u"\u0416\u0430\u043d\u0440", None))
+        self.btn_genres_list.setText(QCoreApplication.translate("Dialog", u"\u0421\u043f\u0438\u0441\u043e\u043a \u0436\u0430\u043d\u0440\u043e\u0432", None))
         self.btn_catalogs.setText(QCoreApplication.translate("Dialog", u"\u041a\u0430\u0442\u0430\u043b\u043e\u0433\u0438", None))
         self.filter_reset.setText(QCoreApplication.translate("Dialog", u"\u0421\u0431\u0440\u043e\u0441\u0438\u0442\u044c", None))
         self.filter_apply.setText(QCoreApplication.translate("Dialog", u"\u041f\u0440\u0438\u043c\u0435\u043d\u0438\u0442\u044c", None))
