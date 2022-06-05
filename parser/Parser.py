@@ -1,4 +1,4 @@
-from items import Manga, Chapter, Image, User, RequestForm, Genre
+from items import Manga, Chapter, Image, User, RequestForm, Genre, Kind, Order
 
 
 class Parser:
@@ -23,6 +23,12 @@ class Parser:
         return
 
     def get_genres(self) -> list[Genre]:
+        return []
+
+    def get_kinds(self) -> list[Kind]:
+        return []
+
+    def get_orders(self) -> list[Order]:
         return []
 
     def get_user(self) -> User:
