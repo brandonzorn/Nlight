@@ -44,8 +44,14 @@ class FormFacial(QWidget):
         catalog = get_catalog(index)
         self.catalog = catalog()
         self.Form_genres.catalog = catalog()
-        self.Form_genres.setup()
+        self.setup_filters()
         self.get_content()
+
+    def setup_filters(self):
+        self.Form_genres.setup()
+        self.ui.genres_frame.setVisible(bool(self.Form_genres.genres_items))
+        self.ui.kind_frame.setVisible(bool(self.catalog.get_kinds()))
+        self.ui.order_frame.setVisible(bool(self.catalog.get_orders()))
 
     def clicked_catalogs(self):
         if self.ui.catalog_list.isHidden():

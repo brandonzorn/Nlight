@@ -8,7 +8,7 @@ from form.desu_genresUI import Ui_Dialog
 
 class FormGenres(QDialog):
     def __init__(self):
-        super().__init__()
+        super().__init__(None)
         self.ui_ge = Ui_Dialog()
         self.ui_ge.setupUi(self)
         self.setFixedSize(self.minimumSize())
