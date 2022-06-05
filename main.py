@@ -22,7 +22,6 @@ class App(MainWindow):
         self.setMinimumSize(QSize(self.screen().size().width() // 2, self.screen().size().height() // 2))
         self.setWindowTitle('Desu')
         self.setWindowIcon(QIcon(app_icon_path))
-        self.setStyleSheet('color: rgb(255, 255, 255);background-color: rgb(45, 45, 45);')
 
         # Side menu
         self.Side_menu = SideMenu()
@@ -50,6 +49,7 @@ class App(MainWindow):
         self.add_widget(self.top_item)
         self.top_item.addWidget(self.Form_facial)
         self.show()
+
         self.Side_menu.ui.btn_main.setIconSize(self.Side_menu.ui.btn_main.size())
         self.Side_menu.ui.btn_shikimori.setIconSize(self.Side_menu.ui.btn_shikimori.size())
         self.Side_menu.ui.btn_mylist.setIconSize(self.Side_menu.ui.btn_mylist.size())
