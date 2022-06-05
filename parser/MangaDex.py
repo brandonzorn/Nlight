@@ -14,7 +14,13 @@ class MangaDex(Parser):
         self.headers = DEFAULT_HEADERS
         self.catalog_id = 2
         self.fields = 2
-        self.session = Auth()
+        self.session = Auth
+        self.auth_status = False
+
+    def init_auth_session(self):
+        if not self.auth_status:
+            self.session = self.session()
+            self.auth_status = True
 
     def get_manga(self, manga: Manga) -> Manga:
         return manga
@@ -108,6 +114,7 @@ class MangaDex(Parser):
         return genres
 
     def get_manga_login(self, params: RequestForm):
+        self.init_auth_session()
         manga = []
         lib_list = 'plan_to_read'
         match params.mylist:
@@ -126,6 +133,7 @@ class MangaDex(Parser):
         return manga
 
     def get_user(self) -> User:
+        self.init_auth_session()
         whoami = get_html(f'{self.url_api}/user/me', headers=self.session.get_headers())
         user = User()
         match whoami.status_code:
