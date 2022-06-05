@@ -15,9 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QHBoxLayout, QLabel,
-    QListWidget, QListWidgetItem, QPushButton, QSizePolicy,
-    QSpacerItem, QTextEdit, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QHBoxLayout,
+    QLabel, QListWidget, QListWidgetItem, QPushButton,
+    QSizePolicy, QSpacerItem, QTextEdit, QVBoxLayout,
+    QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -122,16 +123,28 @@ class Ui_Form(object):
 
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.verticalLayout_3 = QVBoxLayout()
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_4.addItem(self.horizontalSpacer_2)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_4)
+
+        self.rate_frame = QFrame(Form)
+        self.rate_frame.setObjectName(u"rate_frame")
+        self.rate_frame.setFrameShape(QFrame.StyledPanel)
+        self.rate_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_3 = QVBoxLayout(self.rate_frame)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.rate = QLabel(Form)
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.rate = QLabel(self.rate_frame)
         self.rate.setObjectName(u"rate")
 
         self.verticalLayout_3.addWidget(self.rate)
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.star_1 = QPushButton(Form)
+        self.star_1 = QPushButton(self.rate_frame)
         self.star_1.setObjectName(u"star_1")
         self.star_1.setEnabled(False)
         self.star_1.setStyleSheet(u"color: rgb(255, 255, 255);\n"
@@ -141,7 +154,7 @@ class Ui_Form(object):
 
         self.horizontalLayout_2.addWidget(self.star_1)
 
-        self.star_2 = QPushButton(Form)
+        self.star_2 = QPushButton(self.rate_frame)
         self.star_2.setObjectName(u"star_2")
         self.star_2.setEnabled(False)
         self.star_2.setAutoDefault(False)
@@ -149,7 +162,7 @@ class Ui_Form(object):
 
         self.horizontalLayout_2.addWidget(self.star_2)
 
-        self.star_3 = QPushButton(Form)
+        self.star_3 = QPushButton(self.rate_frame)
         self.star_3.setObjectName(u"star_3")
         self.star_3.setEnabled(False)
         self.star_3.setAutoDefault(False)
@@ -157,7 +170,7 @@ class Ui_Form(object):
 
         self.horizontalLayout_2.addWidget(self.star_3)
 
-        self.star_4 = QPushButton(Form)
+        self.star_4 = QPushButton(self.rate_frame)
         self.star_4.setObjectName(u"star_4")
         self.star_4.setEnabled(False)
         self.star_4.setAutoDefault(False)
@@ -165,7 +178,7 @@ class Ui_Form(object):
 
         self.horizontalLayout_2.addWidget(self.star_4)
 
-        self.star_5 = QPushButton(Form)
+        self.star_5 = QPushButton(self.rate_frame)
         self.star_5.setObjectName(u"star_5")
         self.star_5.setEnabled(False)
         self.star_5.setAutoDefault(False)
@@ -173,18 +186,15 @@ class Ui_Form(object):
 
         self.horizontalLayout_2.addWidget(self.star_5)
 
+        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_2.addItem(self.horizontalSpacer_5)
+
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
 
 
-        self.horizontalLayout_4.addLayout(self.verticalLayout_3)
-
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_4.addItem(self.horizontalSpacer_2)
-
-
-        self.verticalLayout.addLayout(self.horizontalLayout_4)
+        self.verticalLayout.addWidget(self.rate_frame)
 
         self.description = QTextEdit(Form)
         self.description.setObjectName(u"description")
@@ -201,15 +211,10 @@ class Ui_Form(object):
 
         self.horizontalLayout_5.addLayout(self.verticalLayout_2)
 
-        self.verticalLayout_5 = QVBoxLayout()
-        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.chapters = QListWidget(Form)
         self.chapters.setObjectName(u"chapters")
 
-        self.verticalLayout_5.addWidget(self.chapters)
-
-
-        self.horizontalLayout_5.addLayout(self.verticalLayout_5)
+        self.horizontalLayout_5.addWidget(self.chapters)
 
 
         self.retranslateUi(Form)

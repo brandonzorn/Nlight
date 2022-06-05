@@ -1,5 +1,5 @@
-from const import DESU_HEADERS, URL_DESU_API, manga_desu_genres
-from items import Manga, Chapter, Image, Genre, RequestForm
+from const import DESU_HEADERS, URL_DESU_API, manga_desu_genres, manga_desu_kinds, manga_desu_orders
+from items import Manga, Chapter, Image, Genre, RequestForm, Kind, Order
 from parser.Parser import Parser
 from static import get_html
 
@@ -54,3 +54,9 @@ class Desu(Parser):
 
     def get_genres(self):
         return [Genre({'name': i['en'], 'russian': i['ru']}) for i in manga_desu_genres]
+
+    def get_kinds(self) -> list[Kind]:
+        return [Kind({'name': i['en'], 'russian': i['ru']}) for i in manga_desu_kinds]
+
+    def get_orders(self) -> list[Order]:
+        return [Order({'name': i['en'], 'russian': i['ru']}) for i in manga_desu_orders]

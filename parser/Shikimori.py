@@ -4,7 +4,7 @@ from const import URL_SHIKIMORI, URL_SHIKIMORI_TOKEN
 from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
 from static import token_loader, token_saver
 from const import SHIKIMORI_HEADERS, URL_SHIKIMORI_API
-from items import Manga, Chapter, Image, Genre, RequestForm, User
+from items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
 from parser.Parser import Parser
 from static import get_html
 
@@ -57,6 +57,16 @@ class Shikimori(Parser):
         html = get_html(url, headers=self.headers)
         if html and html.status_code == 200 and len(html.json()):
             return [Genre(i) for i in html.json()]
+        return []
+
+    def get_orders(self):
+        pass
+
+    def get_kinds(self):
+        url = f'{self.url_api}/constants/manga'
+        html = get_html(url, headers=self.headers)
+        if html and html.status_code == 200 and len(html.json()):
+            return [Kind({'id': 0, 'name': i}) for i in html.json().get('kind')]
         return []
 
     def get_manga_login(self, params: RequestForm):
