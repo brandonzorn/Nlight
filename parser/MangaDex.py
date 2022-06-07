@@ -14,13 +14,7 @@ class MangaDex(Parser):
         self.headers = DEFAULT_HEADERS
         self.catalog_id = 2
         self.fields = 2
-        self.session = Auth
-        self.auth_status = False
-
-    def init_auth_session(self):
-        if not self.auth_status:
-            self.session = self.session()
-            self.auth_status = True
+        self.session = Auth()
 
     def get_manga(self, manga: Manga) -> Manga:
         return manga
@@ -114,27 +108,26 @@ class MangaDex(Parser):
         return genres
 
     def get_manga_login(self, params: RequestForm):
-        self.init_auth_session()
-        manga = []
-        lib_list = 'plan_to_read'
+        mangas = []
         match params.mylist:
             case 'planned':
-                lib_list = 'plan_to_read'
+                params.mylist = 'plan_to_read'
             case 'watching':
-                lib_list = 'reading'
+                params.mylist = 'reading'
             case 'rewatching':
-                lib_list = 're_reading'
+                params.mylist = 're_reading'
+        html_statuses = self.session.get(f'{self.url_api}/manga/status', params={'status': params.mylist})
         params = {'limit': params.limit, 'offset': params.offset()}
-        html = get_html(f'{self.url_api}/user/follows/manga',
-                        headers={'Authorization': self.session.get_token()}, params=params)
+        html = self.session.get(f'{self.url_api}/user/follows/manga', params=params)
         if html and html.status_code == 200 and len(html.json()):
             for i in html.json().get('data'):
-                manga.append(self.setup_manga(i))
-        return manga
+                manga = self.setup_manga(i)
+                if manga.id in html_statuses.json().get('statuses'):
+                    mangas.append(manga)
+        return mangas
 
     def get_user(self) -> User:
-        self.init_auth_session()
-        whoami = get_html(f'{self.url_api}/user/me', headers=self.session.get_headers())
+        whoami = self.session.get(f'{self.url_api}/user/me')
         user = User()
         match whoami.status_code:
             case 401:
@@ -149,37 +142,33 @@ class MangaDex(Parser):
 class Auth:
     def __init__(self):
         self.url_api = URL_MANGA_DEX_API
-        self.token = token_loader(MangaDex.catalog_name)
+        self.tokens = token_loader(MangaDex.catalog_name)
+        self.is_authorized = False
         if self.check_token() and not self.check_auth():
             self.refresh_token()
-
-    def get_token(self):
-        if self.check_token():
-            if self.check_auth():
-                return self.token.get('session')
-            else:
-                self.refresh_token()
 
     def get_refresh(self):
         if self.check_token():
             return self.token.get('refresh')
 
     def check_token(self) -> bool:
-        if not self.token:
+        if not self.tokens:
             return False
         return True
 
     def check_auth(self):
-        response = get_html(f'{self.url_api}/auth/check', headers={'Authorization': self.token.get('session')})
+        response = get_html(f'{self.url_api}/auth/check', headers=self.headers)
         if response.status_code and response.json():
+            self.is_authorized = response.json().get('isAuthenticated')
             return response.json().get('isAuthenticated')
+        self.is_authorized = False
         return False
 
     def update_token(self, token):
         if token:
             token = token.json().get('token')
             token_saver(token, MangaDex.catalog_name)
-            self.token = token
+            self.tokens = token
 
     def refresh_token(self):
         token = requests.post(f'{self.url_api}/auth/refresh', json={"token": self.get_refresh()})
@@ -191,9 +180,6 @@ class Auth:
             case 401:
                 print(token.json())
 
-    def get_headers(self):
-        return {'Authorization': self.get_token()}
-
     def auth_login(self, params):
         token = requests.post(f"{self.url_api}/auth/login", json=params)
         match token.status_code:
@@ -203,3 +189,19 @@ class Auth:
                 print(token.json())
             case 401:
                 print(token.json())
+
+    def get(self, url, params=None):
+        response = get_html(url, params=params, headers=self.headers)
+        return response
+
+    @property
+    def token(self):
+        if self.check_token():
+            if self.check_auth():
+                return self.tokens.get('session')
+            else:
+                self.refresh_token()
+
+    @property
+    def headers(self):
+        return {'Authorization': self.tokens.get('session')}
