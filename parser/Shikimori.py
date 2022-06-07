@@ -84,15 +84,16 @@ class Shikimori(Parser):
     def get_user(self) -> User:
         whoami = self.session.get('https://shikimori.one/api/users/whoami')
         user = User()
-        match whoami.status_code:
-            case 401:
-                print(whoami.json())
-            case 200:
-                data = whoami.json()
-                user.id = data.get('id')
-                user.nickname = data.get('nickname')
-                user.avatar = data.get('avatar')
-                user.locale = data.get('locale')
+        if whoami:
+            match whoami.status_code:
+                case 401:
+                    print(whoami.json())
+                case 200:
+                    data = whoami.json()
+                    user.id = data.get('id')
+                    user.nickname = data.get('nickname')
+                    user.avatar = data.get('avatar')
+                    user.locale = data.get('locale')
         return user
 
 
@@ -105,6 +106,8 @@ class Auth:
         self.tokens = token_loader(Shikimori.catalog_name)
         self.headers = {'User-Agent': 'Shikimori', 'Authorization': f'Bearer {self.tokens.get("access_token")}'}
         self.client = self.get_client(scope, self.redirect_uri, token)
+        self.is_authorized = False
+        self.check_auth()
 
     def auth_login(self, data):
         pass
@@ -147,6 +150,8 @@ class Auth:
         return self.token
 
     def get(self, url, params=None):
+        if not self.is_authorized:
+            return
         resp = self.client.request('GET', url, params)
         match resp.status_code:
             case 401:
@@ -155,10 +160,10 @@ class Auth:
         return resp
 
     def check_auth(self):
-        whoami = self.get('https://shikimori.one/api/users/whoami')
-        if whoami and whoami.json():
-            return True
-        return False
+        url = 'https://shikimori.one/api/users/whoami'
+        whoami = self.client.request('GET', url)
+        self.is_authorized = whoami and whoami.json()
+        return self.is_authorized
 
     @property
     def token(self):
