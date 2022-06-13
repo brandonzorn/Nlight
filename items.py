@@ -85,6 +85,31 @@ class RequestForm:
 class User:
     def __init__(self):
         self.id = 0
-        self.nickname = "Войти"
+        self.nickname: str = "Войти"
         self.avatar = None
         self.locale = None
+
+
+class Order:
+    def __init__(self, data: dict):
+        self.id: str = data.get('id')
+        self.name: str = data.get('name')
+        self.russian: str = data.get('russian')
+
+    def get_name(self):
+        if self.russian:
+            return self.russian
+        return self.name
+
+
+class Kind:
+    def __init__(self, data: dict):
+        self.id: str = data.get('id')
+        self.name: str = data.get('name')
+        self.russian: str = data.get('russian')
+
+    def get_name(self):
+        if self.russian:
+            return self.russian
+        return self.name
+

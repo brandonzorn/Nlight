@@ -1,15 +1,15 @@
 import os
 
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QIcon, QPixmap, QColor
-from PyQt6.QtWidgets import QWidget, QListWidgetItem
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon, QPixmap, QColor
+from PySide6.QtWidgets import QWidget, QListWidgetItem
 from threading import Thread
 from catalog_manager import get_catalog
 from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, lib_lists_en
 from database import Database
 from form.desu_info import Ui_Form
 from items import Manga, Chapter
-from reader import Reader
+from app_windows.reader import Reader
 from static import get_language_icon
 
 
@@ -46,6 +46,7 @@ class FormInfo(QWidget):
         self.ui.name.setText(self.manga.name)
         self.ui.russian.setText(self.manga.russian)
         self.set_score(self.manga.score)
+        self.ui.rate_frame.setVisible(bool(self.manga.score))
         if self.db.check_manga_library(self.manga):
             self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
             self.ui.btn_add_to_lib.setIcon(QIcon(favorite1_icon_path))
@@ -99,6 +100,7 @@ class FormInfo(QWidget):
             if i.language:
                 item.setIcon(QIcon(get_language_icon(i.language)))
             self.ui.chapters.addItem(item)
+        self.ui.chapters.setVisible(bool(self.chapters))
 
     def open_reader(self):
         reader = Reader()

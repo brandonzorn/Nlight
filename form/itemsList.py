@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'desu_library.ui'
+## Form generated from reading UI file 'itemsList.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.3.0
 ##
@@ -15,21 +15,19 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QListWidget,
-    QListWidgetItem, QPushButton, QSizePolicy, QSpacerItem,
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QLineEdit,
+    QListWidget, QListWidgetItem, QPushButton, QSizePolicy,
     QVBoxLayout, QWidget)
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        if not Dialog.objectName():
-            Dialog.setObjectName(u"Dialog")
-        Dialog.resize(730, 541)
-        Dialog.setStyleSheet(u"color: rgb(255, 255, 255);\n"
-"background-color: rgb(45, 45, 45);")
-        self.horizontalLayout = QHBoxLayout(Dialog)
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.list_manga = QListWidget(Dialog)
+class Ui_Form(object):
+    def setupUi(self, Form):
+        if not Form.objectName():
+            Form.setObjectName(u"Form")
+        Form.resize(371, 560)
+        self.verticalLayout = QVBoxLayout(Form)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.list_manga = QListWidget(Form)
         self.list_manga.setObjectName(u"list_manga")
         palette = QPalette()
         brush = QBrush(QColor(255, 255, 255, 255))
@@ -99,78 +97,57 @@ class Ui_Dialog(object):
         self.list_manga.setPalette(palette)
         self.list_manga.setAutoFillBackground(False)
 
-        self.horizontalLayout.addWidget(self.list_manga)
+        self.verticalLayout.addWidget(self.list_manga)
 
-        self.verticalLayout_3 = QVBoxLayout()
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setSpacing(7)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.b_planned = QPushButton(Dialog)
-        self.b_planned.setObjectName(u"b_planned")
-        self.b_planned.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.line_search = QLineEdit(Form)
+        self.line_search.setObjectName(u"line_search")
+        self.line_search.setStyleSheet(u"background-color: rgb(45, 45, 45);\n"
 "color: rgb(255, 255, 255);")
 
-        self.verticalLayout.addWidget(self.b_planned)
+        self.horizontalLayout_2.addWidget(self.line_search)
 
-        self.b_completed = QPushButton(Dialog)
-        self.b_completed.setObjectName(u"b_completed")
-        self.b_completed.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
+        self.btn_search = QPushButton(Form)
+        self.btn_search.setObjectName(u"btn_search")
+        self.btn_search.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.verticalLayout.addWidget(self.b_completed)
+        self.horizontalLayout_2.addWidget(self.btn_search)
 
-        self.b_watching = QPushButton(Dialog)
-        self.b_watching.setObjectName(u"b_watching")
-        self.b_watching.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
+        self.prev_page = QPushButton(Form)
+        self.prev_page.setObjectName(u"prev_page")
+        self.prev_page.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.verticalLayout.addWidget(self.b_watching)
+        self.horizontalLayout_2.addWidget(self.prev_page)
 
-        self.b_rewatching = QPushButton(Dialog)
-        self.b_rewatching.setObjectName(u"b_rewatching")
-        self.b_rewatching.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
+        self.label_page = QLabel(Form)
+        self.label_page.setObjectName(u"label_page")
+
+        self.horizontalLayout_2.addWidget(self.label_page)
+
+        self.next_page = QPushButton(Form)
+        self.next_page.setObjectName(u"next_page")
+        self.next_page.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.verticalLayout.addWidget(self.b_rewatching)
-
-        self.b_on_hold = QPushButton(Dialog)
-        self.b_on_hold.setObjectName(u"b_on_hold")
-        self.b_on_hold.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
-
-        self.verticalLayout.addWidget(self.b_on_hold)
-
-        self.b_dropped = QPushButton(Dialog)
-        self.b_dropped.setObjectName(u"b_dropped")
-        self.b_dropped.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
-
-        self.verticalLayout.addWidget(self.b_dropped)
+        self.horizontalLayout_2.addWidget(self.next_page)
 
 
-        self.verticalLayout_3.addLayout(self.verticalLayout)
-
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.verticalLayout_3.addItem(self.verticalSpacer)
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
 
 
-        self.horizontalLayout.addLayout(self.verticalLayout_3)
+        self.retranslateUi(Form)
 
-
-        self.retranslateUi(Dialog)
-
-        QMetaObject.connectSlotsByName(Dialog)
+        QMetaObject.connectSlotsByName(Form)
     # setupUi
 
-    def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
-        self.b_planned.setText(QCoreApplication.translate("Dialog", u"\u0417\u0430\u043f\u043b\u0430\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043e", None))
-        self.b_completed.setText(QCoreApplication.translate("Dialog", u"\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u043e", None))
-        self.b_watching.setText(QCoreApplication.translate("Dialog", u"\u0427\u0438\u0442\u0430\u044e", None))
-        self.b_rewatching.setText(QCoreApplication.translate("Dialog", u"\u041f\u0435\u0440\u0435\u0447\u0438\u0442\u044b\u0432\u0430\u044e", None))
-        self.b_on_hold.setText(QCoreApplication.translate("Dialog", u"\u041e\u0442\u043b\u043e\u0436\u0435\u043d\u043e", None))
-        self.b_dropped.setText(QCoreApplication.translate("Dialog", u"\u0411\u0440\u043e\u0448\u0435\u043d\u043e", None))
+    def retranslateUi(self, Form):
+        Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
+        self.btn_search.setText(QCoreApplication.translate("Form", u"\u041f\u043e\u0438\u0441\u043a", None))
+        self.prev_page.setText(QCoreApplication.translate("Form", u"<", None))
+        self.label_page.setText(QCoreApplication.translate("Form", u" \u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 1", None))
+        self.next_page.setText(QCoreApplication.translate("Form", u">", None))
     # retranslateUi
 
