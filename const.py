@@ -62,3 +62,9 @@ manga_desu_genres = ({'en': 'Dementia', 'ru': 'Безумие'}, {'en': 'Martial
                      {'en': 'Fantasy', 'ru': 'Фэнтези'}, {'en': 'Hentai', 'ru': 'Хентай'},
                      {'en': 'School', 'ru': 'Школа'}, {'en': 'Action', 'ru': 'Экшен'}, {'en': 'Ecchi', 'ru': 'Этти'},
                      {'en': 'Yuri', 'ru': 'Юри'}, {'en': 'Yaoi', 'ru': 'Яой'})
+
+
+manga_desu_orders = ({'en': 'name', 'ru': 'Название'}, {'en': 'popular', 'ru': 'Популярность'})
+
+manga_desu_kinds = ({'en': 'manga', 'ru': 'Манга'}, {'en': 'manhwa', 'ru': 'Манхва'}, {'en': 'manhua', 'ru': 'Маньхуа'},
+                    {'en': 'one_shot', 'ru': 'Ваншот'}, {'en': 'comics', 'ru': 'Комикс'})

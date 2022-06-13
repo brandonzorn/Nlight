@@ -1,5 +1,5 @@
-from PyQt6.QtGui import *
-from PyQt6.QtWidgets import *
+from PySide6.QtGui import *
+from PySide6.QtWidgets import *
 
 from const import app_icon_path
 from catalog_manager import get_catalog
@@ -8,7 +8,7 @@ from form.desu_genresUI import Ui_Dialog
 
 class FormGenres(QDialog):
     def __init__(self):
-        super().__init__()
+        super().__init__(None)
         self.ui_ge = Ui_Dialog()
         self.ui_ge.setupUi(self)
         self.setFixedSize(self.minimumSize())
@@ -22,7 +22,8 @@ class FormGenres(QDialog):
         self.setup()
 
     def setup(self):
-        [self.ui_ge.gridLayout.removeWidget(i) for i in self.genres_items]
+        for i in reversed(range(self.ui_ge.gridLayout.count())):
+            self.ui_ge.gridLayout.itemAt(i).widget().deleteLater()
         self.genres_items = {}
         self.selected_genres = []
         genres = self.catalog.get_genres()
