@@ -1,4 +1,4 @@
-import oauthlib.oauth2.rfc6749.errors
+from oauthlib.oauth2.rfc6749.errors import InvalidGrantError
 from requests_oauthlib import OAuth2Session
 
 from const import SHIKIMORI_HEADERS, URL_SHIKIMORI_API
@@ -127,7 +127,7 @@ class Auth:
     def fetch_token(self, code):
         try:
             self.client.fetch_token(URL_SHIKIMORI_TOKEN, code, client_secret=self.client_secret)
-        except oauthlib.oauth2.rfc6749.errors.InvalidGrantError:
+        except InvalidGrantError:
             return
         token_saver(self.token, Shikimori.catalog_name)
         return self.token
