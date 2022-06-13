@@ -1,15 +1,16 @@
 import os
+from threading import Thread
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon, QPixmap, QColor
 from PySide6.QtWidgets import QWidget, QListWidgetItem
-from threading import Thread
+
+from app_windows.reader import Reader
 from catalog_manager import get_catalog
 from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, lib_lists_en
 from database import Database
 from form.desu_info import Ui_Form
 from items import Manga, Chapter
-from app_windows.reader import Reader
 from static import get_language_icon
 
 
