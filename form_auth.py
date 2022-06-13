@@ -1,7 +1,7 @@
 import webbrowser
 
-from PyQt6.QtGui import *
-from PyQt6.QtWidgets import *
+from PySide6.QtGui import *
+from PySide6.QtWidgets import *
 from const import app_icon_path
 from form.authUI import Ui_Dialog
 
@@ -22,8 +22,10 @@ class FormAuth(QDialog):
         if fields == 1:
             self.ui.btn_get.clicked.connect(self.login)
             self.ui.btn_login.clicked.connect(self.clicked_account_login)
+            self.ui.widget.hide()
         else:
             self.ui.btn_login.clicked.connect(self.verify_user_data)
+            self.ui.code_widget.hide()
 
     def clicked_account_login(self):
         code = self.ui.auth_code.text()
