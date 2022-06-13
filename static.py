@@ -2,14 +2,13 @@ import json
 import os
 
 import requests
-from requests import Response
 
 from const import lib_lists_en, lib_lists_ru, DEFAULT_HEADERS, ru_icon_path, gb_icon_path, jp_icon_path
 from items import Manga, Chapter, Image
 
 
 def get_html(url: str, headers: dict = DEFAULT_HEADERS, params=None):
-    response = Response()
+    response = requests.Response()
     try:
         response = requests.get(url, headers=headers, params=params)
         return response
