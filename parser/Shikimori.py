@@ -1,12 +1,13 @@
 import oauthlib.oauth2.rfc6749.errors
 from requests_oauthlib import OAuth2Session
-from const import URL_SHIKIMORI, URL_SHIKIMORI_TOKEN
-from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
-from static import token_loader, token_saver
+
 from const import SHIKIMORI_HEADERS, URL_SHIKIMORI_API
+from const import URL_SHIKIMORI, URL_SHIKIMORI_TOKEN
 from items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
+from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
 from parser.Parser import Parser
 from static import get_html
+from static import token_loader, token_saver
 
 
 class Shikimori(Parser):
