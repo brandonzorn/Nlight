@@ -20,7 +20,7 @@ class MangaDex(Parser):
         return manga
 
     def setup_manga(self, data: dict):
-        id = data.get('id')
+        manga_id = data.get('id')
         kind = data.get('type')
         name = data.get('attributes').get('title').get('en')
         russian = None
@@ -38,7 +38,7 @@ class MangaDex(Parser):
                 description = description.get('en')
         else:
             description = None
-        data = {'id': id, 'kind': kind, 'name': name, 'russian': russian, 'description': description}
+        data = {'id': manga_id, 'kind': kind, 'name': name, 'russian': russian, 'description': description}
         data.update({'catalog_id': self.catalog_id})
         return Manga(data)
 
@@ -76,10 +76,10 @@ class MangaDex(Parser):
         html = get_html(url, self.headers)
         images = []
         if html and html.status_code == 200 and len(html.json()):
-            hash = html.json().get('chapter').get('hash')
+            image_hash = html.json().get('chapter').get('hash')
             for i in html.json().get('chapter').get('data'):
                 i = str(i)
-                data = {'hash': hash, 'page': html.json().get('chapter').get('data').index(i) + 1, 'img': i}
+                data = {'hash': image_hash, 'page': html.json().get('chapter').get('data').index(i) + 1, 'img': i}
                 images.append(Image(data))
         return images
 
@@ -144,8 +144,6 @@ class Auth:
         self.url_api = URL_MANGA_DEX_API
         self.tokens = token_loader(MangaDex.catalog_name)
         self.is_authorized = False
-        if self.check_token() and not self.check_auth():
-            self.refresh_token()
 
     def get_refresh(self):
         if self.check_token():
@@ -175,9 +173,8 @@ class Auth:
         match token.status_code:
             case 200:
                 self.update_token(token)
-            case 400:
-                print(token.json())
-            case 401:
+            case _:
+                print(token.status_code)
                 print(token.json())
 
     def auth_login(self, params):
@@ -185,14 +182,14 @@ class Auth:
         match token.status_code:
             case 200:
                 self.update_token(token)
-            case 400:
-                print(token.json())
-            case 401:
+            case _:
+                print(token.status_code)
                 print(token.json())
 
     def get(self, url, params=None):
-        response = get_html(url, params=params, headers=self.headers)
-        return response
+        if self.check_auth():
+            response = get_html(url, params=params, headers=self.headers)
+            return response
 
     @property
     def token(self):
