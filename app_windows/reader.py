@@ -1,9 +1,10 @@
 import os
 from pathlib import Path
 from threading import Thread
-from PySide6.QtGui import *
-from PySide6.QtWidgets import *
-from PySide6.QtCore import *
+
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon, QPixmap
+from PySide6.QtWidgets import QWidget
 
 from catalog_manager import get_catalog
 from database import Database
@@ -117,9 +118,6 @@ class Reader(QWidget):
             pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
             self.ui_re.img.setAlignment(Qt.AlignmentFlag.AlignHCenter)
             self.ui_re.img.setPixmap(pixmap)
-        # "AlignmentFlag.AlignVCenter|AlignJustify"
-        # self.showFullScreen()
-        # self.ui_re.scrollArea.setWidgetResizable(True)
 
     def update_text_size(self):
         font = self.ui_re.img.font()

@@ -5,13 +5,13 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QStackedWidget, QApplication
 
 from app_widgets.side_widget import SideMenu
+from app_windows.main_window import MainWindow
 from const import app_icon_path
 from database import Database
 from form_facial import FormFacial
 from form_info import FormInfo
 from form_library import FormLibrary
 from form_shikimori import FormShikimori
-from app_windows.main_window import MainWindow
 from items import Manga
 
 
