@@ -1,4 +1,5 @@
 import os
+from enum import Enum
 from pathlib import Path
 
 URL_DESU = 'https://desu.me'
@@ -16,8 +17,7 @@ SHIKIMORI_HEADERS = {'User-Agent': 'Shikimori'}
 MANGA_DEX_HEADERS = {'User-Agent': 'Shikimori'}
 DEFAULT_HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:99.0) Gecko/20100101 Firefox/99.0'}
 
-
-lib_lists_en = ('planned', 'completed', 'watching', 'rewatching', 'on_hold',  'dropped')
+lib_lists_en = ('planned', 'completed', 'watching', 'rewatching', 'on_hold', 'dropped')
 lib_lists_ru = ('запланированно', 'прочитано', 'читаю', 'перечитываю', 'отложено', 'брошено')
 
 
@@ -68,3 +68,13 @@ manga_desu_orders = ({'en': 'name', 'ru': 'Название'}, {'en': 'popular',
 
 manga_desu_kinds = ({'en': 'manga', 'ru': 'Манга'}, {'en': 'manhwa', 'ru': 'Манхва'}, {'en': 'manhua', 'ru': 'Маньхуа'},
                     {'en': 'one_shot', 'ru': 'Ваншот'}, {'en': 'comics', 'ru': 'Комикс'})
+
+
+class LibraryLists(Enum):
+    lib_lists_ru = ('запланированно', 'прочитано', 'читаю', 'перечитываю', 'отложено', 'брошено')
+    PLANNED = 'planned'
+    COMPLETED = 'completed'
+    WATCHING = 'watching'
+    REWATCHING = 'rewatching'
+    ON_HOLD = 'on_hold'
+    DROPPED = 'dropped'
