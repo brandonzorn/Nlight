@@ -116,22 +116,3 @@ class FormInfo(QWidget):
                 with open(f'{path}/preview.jpg', 'wb') as f:
                     f.write(img.content)
         return f'{path}/preview.jpg'
-
-    def download_all(self):
-        chapters = self.chapters
-        manga = self.manga
-        catalog = get_catalog(manga.catalog_id)()
-        for chapter in chapters:
-            images = catalog.get_images(manga, chapter)
-            if images:
-                for image in images:
-                    if self.isHidden():
-                        return
-                    self.db.add_images(image, chapter.id)
-                    page = image.get('page')
-                    path = f'{self.wd}/Desu/images/{catalog.catalog_name}/{manga.id}/{chapter.id}'
-                    if not os.path.exists(f'{path}/{page}.jpg'):
-                        os.makedirs(path, exist_ok=True)
-                        img = catalog.get_image(images[page - 1])
-                        with open(f'{path}/{page}.jpg', 'wb') as f:
-                            f.write(img.content)

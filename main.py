@@ -9,6 +9,7 @@ from app_windows.main_window import MainWindow
 from const import app_icon_path
 from database import Database
 from form_facial import FormFacial
+from form_history import FormHistory
 from form_info import FormInfo
 from form_library import FormLibrary
 from form_shikimori import FormShikimori
@@ -28,6 +29,7 @@ class App(MainWindow):
         self.Side_menu.ui.btn_main.clicked.connect(self.clicked_main)
         self.Side_menu.ui.btn_mylist.clicked.connect(self.clicked_library)
         self.Side_menu.ui.btn_shikimori.clicked.connect(self.clicked_shikimori)
+        self.Side_menu.ui.btn_history.clicked.connect(self.clicked_history)
 
         self.Form_facial = FormFacial()
         self.Form_facial.ui.list_manga.doubleClicked.connect(
@@ -40,6 +42,8 @@ class App(MainWindow):
         self.Form_shikimori = FormShikimori()
         self.Form_shikimori.ui.list_manga.doubleClicked.connect(
             lambda: self.clicked_chapters(self.Form_shikimori.get_current_manga()))
+
+        self.Form_history = FormHistory()
 
         self.Form_info = FormInfo(Manga({}))
         self.Form_info.ui.btn_back.clicked.connect(self.back)
@@ -74,6 +78,11 @@ class App(MainWindow):
         self.top_item.removeWidget(self.top_item.currentWidget())
         self.top_item.addWidget(self.Form_library)
         self.Form_library.update_list()
+
+    def clicked_history(self):
+        self.top_item.removeWidget(self.top_item.currentWidget())
+        self.top_item.addWidget(self.Form_history)
+        self.Form_history.setup()
 
     def clicked_catalogs(self):
         if self.Form_facial.ui.catalog_list.isHidden():

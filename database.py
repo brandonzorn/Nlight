@@ -23,7 +23,7 @@ class Database:
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS library (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
         list STRING)""")
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS chapter_history
-        (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL, is_completed BOOLEAN)""")
+        (chapter_id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL, manga_id STRING NOT NULL, is_completed BOOLEAN)""")
         self.__con.commit()
 
     def add_manga(self, manga: Manga):
@@ -72,14 +72,22 @@ class Database:
         self.__cur.execute(f"DELETE FROM library WHERE id = '{manga.id}';")
         self.__con.commit()
 
-    def set_complete_chapter(self, chapter: Chapter):
-        self.__cur.execute(f"INSERT INTO chapter_history VALUES(?, ?);", (chapter.id, True))
+    def set_complete_chapter(self, manga: Manga, chapter: Chapter, is_completed: bool):
+        self.__cur.execute(f"INSERT INTO chapter_history VALUES(?, ?, ?);", (chapter.id, manga.id, is_completed))
         self.__con.commit()
 
     def del_complete_chapter(self, chapter: Chapter):
-        self.__cur.execute(f"DELETE FROM chapter_history WHERE id = '{chapter.id}';")
+        self.__cur.execute(f"DELETE FROM chapter_history WHERE chapter_id = '{chapter.id}';")
         self.__con.commit()
 
     def check_complete_chapter(self, chapter: Chapter):
-        a = self.__cur.execute(f"SELECT is_completed FROM chapter_history WHERE id = '{chapter.id}';").fetchall()
+        a = self.__cur.execute(f"SELECT is_completed FROM chapter_history WHERE chapter_id = '{chapter.id}';").fetchall()
         return a and a[0][0]
+
+    def get_chapters_history(self):
+        chapters = []
+        a = self.__cur.execute(f"SELECT chapter_id FROM chapter_history;").fetchall()
+        for i in a:
+            ch = self.__cur.execute(f"SELECT * FROM chapters WHERE id = '{i[0]}'").fetchone()
+            chapters.append(Chapter({'id': ch[0], 'vol': ch[1], 'ch': ch[2], 'title': ch[3]}))
+        return chapters

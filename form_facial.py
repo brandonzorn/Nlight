@@ -76,7 +76,7 @@ class FormFacial(QWidget):
         self.ui.label_page.setText(f'Страница {self.cur_page}')
         [self.ui.list_manga.addItem(i) for i in self.get_manga_names()]
 
-    def get_manga_names(self) -> list:
+    def get_manga_names(self) -> list[str]:
         return [i.get_name() for i in self.mangas]
 
     def search(self):
