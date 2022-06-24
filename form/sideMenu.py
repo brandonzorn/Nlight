@@ -22,7 +22,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(100, 309)
+        Form.resize(464, 309)
         self.verticalLayout = QVBoxLayout(Form)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -58,6 +58,11 @@ class Ui_Form(object):
 
         self.btn_history = QPushButton(Form)
         self.btn_history.setObjectName(u"btn_history")
+        self.btn_history.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
+"color: rgb(255, 255, 255);")
+        icon3 = QIcon()
+        icon3.addFile(u"../images/history.png", QSize(), QIcon.Normal, QIcon.On)
+        self.btn_history.setIcon(icon3)
 
         self.verticalLayout.addWidget(self.btn_history)
 
@@ -76,6 +81,6 @@ class Ui_Form(object):
         self.btn_mylist.setText("")
         self.btn_main.setText("")
         self.btn_shikimori.setText("")
-        self.btn_history.setText(QCoreApplication.translate("Form", u"HISTORY", None))
+        self.btn_history.setText("")
     # retranslateUi
 

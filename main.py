@@ -57,6 +57,7 @@ class App(MainWindow):
         self.Side_menu.ui.btn_main.setIconSize(self.Side_menu.ui.btn_main.size())
         self.Side_menu.ui.btn_shikimori.setIconSize(self.Side_menu.ui.btn_shikimori.size())
         self.Side_menu.ui.btn_mylist.setIconSize(self.Side_menu.ui.btn_mylist.size())
+        self.Side_menu.ui.btn_history.setIconSize(self.Side_menu.ui.btn_history.size())
 
     def clicked_main(self):
         self.top_item.removeWidget(self.top_item.currentWidget())
