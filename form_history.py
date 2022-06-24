@@ -3,7 +3,6 @@ from PySide6.QtWidgets import QWidget, QListWidgetItem
 
 from database import Database
 from form.ui_ui_history import Ui_Dialog
-from items import Chapter
 
 
 class FormHistory(QWidget):
@@ -23,4 +22,3 @@ class FormHistory(QWidget):
             else:
                 item.setBackground(QColor("RED"))
             self.ui.listWidget.addItem(item)
-

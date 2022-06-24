@@ -81,7 +81,8 @@ class Database:
         self.__con.commit()
 
     def check_complete_chapter(self, chapter: Chapter):
-        a = self.__cur.execute(f"SELECT is_completed FROM chapter_history WHERE chapter_id = '{chapter.id}';").fetchall()
+        a = self.__cur.execute(
+            f"SELECT is_completed FROM chapter_history WHERE chapter_id = '{chapter.id}';").fetchall()
         return a and a[0][0]
 
     def get_chapters_history(self):
