@@ -25,6 +25,7 @@ app_icon_path = os.path.join(Path(__file__).parent, "images/icon.png")
 
 main_icon_path = os.path.join(Path(__file__).parent, "images/main.png")
 library_icon_path = os.path.join(Path(__file__).parent, "images/library.png")
+history_icon_path = os.path.join(Path(__file__).parent, "images/history.png")
 
 shikimori_icon_path = os.path.join(Path(__file__).parent, "images/shikimori.png")
 
