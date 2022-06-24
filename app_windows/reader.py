@@ -1,6 +1,6 @@
 import os
-from pathlib import Path
 from threading import Thread
+from const import app_icon_path
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon, QPixmap
@@ -18,7 +18,6 @@ class Reader(QWidget):
         self.ui_re = Ui_Dialog()
         self.ui_re.setupUi(self)
         self.ui_re.text_size_slider.hide()
-        app_icon_path = os.path.join(Path(__file__).parent, "../images/icon.png")
         self.setWindowIcon(QIcon(app_icon_path))
         self.ui_re.prev_page.clicked.connect(lambda: self.press_key('prev_page'))
         self.ui_re.next_page.clicked.connect(lambda: self.press_key('next_page'))
@@ -73,14 +72,17 @@ class Reader(QWidget):
                     self.change_chapter('-')
 
     def change_page(self, page=None):
+        self.db.set_complete_chapter(self.manga, self.chapters[self.cur_chapter - 1], False)
         match page:
             case '+':
                 if self.cur_page == self.max_page:
+                    self.db.set_complete_chapter(self.manga, self.chapters[self.cur_chapter - 1], True)
                     self.press_key('next_ch')
                 else:
                     self.cur_page += 1
             case '-':
                 if self.cur_page == 1:
+                    self.db.del_complete_chapter(self.chapters[self.cur_chapter - 1])
                     self.press_key('prev_ch')
                 else:
                     self.cur_page -= 1
@@ -90,13 +92,11 @@ class Reader(QWidget):
     def change_chapter(self, page=None):
         match page:
             case '+':
-                self.db.set_complete_chapter(self.chapters[self.cur_chapter - 1])
                 if self.cur_chapter == self.max_chapters:
                     self.hide()
                 else:
                     self.cur_chapter += 1
             case '-':
-                self.db.del_complete_chapter(self.chapters[self.cur_chapter - 1])
                 if self.cur_chapter == 1:
                     return
                 else:

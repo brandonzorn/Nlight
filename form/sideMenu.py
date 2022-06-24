@@ -1,17 +1,22 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'sideMenu.ui'
+## Form generated from reading UI file 'sideMenuPkrPYn.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.3.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize)
-from PySide6.QtGui import (QIcon)
-from PySide6.QtWidgets import (QPushButton, QSizePolicy, QSpacerItem,
-                               QVBoxLayout)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QPushButton, QSizePolicy, QSpacerItem,
+    QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -51,6 +56,11 @@ class Ui_Form(object):
 
         self.verticalLayout.addWidget(self.btn_shikimori)
 
+        self.btn_history = QPushButton(Form)
+        self.btn_history.setObjectName(u"btn_history")
+
+        self.verticalLayout.addWidget(self.btn_history)
+
         self.verticalSpacer_2 = QSpacerItem(20, 328, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout.addItem(self.verticalSpacer_2)
@@ -66,5 +76,6 @@ class Ui_Form(object):
         self.btn_mylist.setText("")
         self.btn_main.setText("")
         self.btn_shikimori.setText("")
+        self.btn_history.setText(QCoreApplication.translate("Form", u"HISTORY", None))
     # retranslateUi
 
