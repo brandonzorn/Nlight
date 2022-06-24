@@ -74,8 +74,5 @@ class FormShikimori(QWidget):
             self.db.add_manga(i)
         [self.ui.list_manga.addItem(i) for i in self.get_manga_library()]
 
-    def get_content_library(self, lib_list):
-        self.mangas = [i for i in self.db.get_manga_library(lib_list)]
-
     def get_manga_library(self) -> list:
         return [i.get_name() for i in self.mangas]

@@ -75,6 +75,13 @@ color: rgb(255, 255, 255);</string>
     </widget>
    </item>
    <item>
+    <widget class="QPushButton" name="btn_history">
+     <property name="text">
+      <string>HISTORY</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer_2">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
