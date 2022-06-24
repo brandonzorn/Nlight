@@ -68,6 +68,7 @@ class App(MainWindow):
     def clicked_shikimori(self):
         self.top_item.removeWidget(self.top_item.currentWidget())
         self.top_item.addWidget(self.Form_shikimori)
+        self.Form_shikimori.setup()
 
     def clicked_library(self):
         self.top_item.removeWidget(self.top_item.currentWidget())

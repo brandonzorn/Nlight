@@ -15,10 +15,9 @@ class FormShikimori(QWidget):
         self.mangas: list[Manga] = []
         self.catalog = get_catalog(1)()
         self.Form_auth = FormAuth(self.catalog)
+        self.db = Database()
         self.request_params = RequestForm()
         self.cur_list = 'planned'
-        self.ui.btn_auth.setText(self.get_whoami().nickname)
-        self.db = Database()
         self.ui.b_planned.clicked.connect(lambda: self.update_list('planned'))
         self.ui.b_watching.clicked.connect(lambda: self.update_list('watching'))
         self.ui.b_on_hold.clicked.connect(lambda: self.update_list('on_hold'))
@@ -30,6 +29,9 @@ class FormShikimori(QWidget):
         self.ui.btn_search.clicked.connect(self.search)
         self.ui.btn_auth.clicked.connect(self.authorize)
         self.Form_auth.accepted.connect(self.auth_accept)
+
+    def setup(self):
+        self.ui.btn_auth.setText(self.get_whoami().nickname)
 
     def get_current_manga(self):
         return self.catalog.get_manga(self.mangas[self.ui.list_manga.currentIndex().row()])
