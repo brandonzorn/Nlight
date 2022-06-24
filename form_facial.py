@@ -1,3 +1,5 @@
+from threading import Thread
+
 from PySide6.QtWidgets import QWidget
 
 from catalog_manager import get_catalog, CATALOGS
@@ -32,7 +34,7 @@ class FormFacial(QWidget):
         self.ui.catalog_list.hide()
         self.ui.btn_catalogs.clicked.connect(self.clicked_catalogs)
         self.catalog = get_catalog()()
-        self.get_content()
+        Thread(target=self.get_content).start()
 
     def clicked_genres(self):
         self.Form_genres.show()
@@ -89,10 +91,10 @@ class FormFacial(QWidget):
             case '-':
                 if self.cur_page > 1:
                     self.cur_page -= 1
-            case _:
-                return
+                else:
+                    return
         self.ui.label_page.setText(f'Страница {self.cur_page}')
-        self.get_content()
+        Thread(target=self.get_content).start()
 
     def filter_apply(self):
         self.cur_page = 1
