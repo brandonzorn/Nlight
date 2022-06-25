@@ -11,14 +11,22 @@ class FormHistory(QWidget):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.db = Database()
+        self.ui.btn_delete.clicked.connect(self.delete_note)
+        self.chapters = []
 
     def setup(self):
         self.ui.listWidget.clear()
-        chapters = self.db.get_chapters_history()
-        for chapter in chapters:
+        self.chapters = self.db.get_chapters_history()
+        for chapter in self.chapters:
             item = QListWidgetItem(chapter.get_name())
             if self.db.check_complete_chapter(chapter):
-                item.setBackground(QColor("GREEN"))
-            else:
-                item.setBackground(QColor("RED"))
+                if self.db.get_complete_status(chapter):
+                    item.setBackground(QColor("GREEN"))
+                else:
+                    item.setBackground(QColor("RED"))
             self.ui.listWidget.addItem(item)
+
+    def delete_note(self):
+        if self.ui.listWidget.currentIndex().row() >= 0:
+            self.db.del_complete_chapter(self.chapters[self.ui.listWidget.currentIndex().row()])
+            self.setup()
