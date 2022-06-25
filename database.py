@@ -83,7 +83,12 @@ class Database:
     def check_complete_chapter(self, chapter: Chapter):
         a = self.__cur.execute(
             f"SELECT is_completed FROM chapter_history WHERE chapter_id = '{chapter.id}';").fetchall()
-        return a and a[0][0]
+        return bool(a)
+
+    def get_complete_status(self, chapter: Chapter):
+        a = self.__cur.execute(
+            f"SELECT is_completed FROM chapter_history WHERE chapter_id = '{chapter.id}';").fetchall()
+        return bool(a[0][0])
 
     def get_chapters_history(self):
         chapters = []
