@@ -13,7 +13,6 @@ from form_history import FormHistory
 from form_info import FormInfo
 from form_library import FormLibrary
 from form_shikimori import FormShikimori
-from items import Manga
 
 
 class App(MainWindow):
@@ -45,7 +44,7 @@ class App(MainWindow):
 
         self.Form_history = FormHistory()
 
-        self.Form_info = FormInfo(Manga({}))
+        self.Form_info = FormInfo()
         self.Form_info.ui.btn_back.clicked.connect(self.back)
 
         self.top_item = QStackedWidget()
@@ -67,8 +66,7 @@ class App(MainWindow):
         self.Side_menu.hide()
         self.top_item.addWidget(self.Form_info)
         self.top_item.setCurrentWidget(self.Form_info)
-        self.Form_info.manga = manga
-        self.Form_info.setup()
+        self.Form_info.setup(manga)
 
     def clicked_shikimori(self):
         self.top_item.removeWidget(self.top_item.currentWidget())
