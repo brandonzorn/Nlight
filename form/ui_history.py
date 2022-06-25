@@ -16,13 +16,14 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QListWidget,
-    QListWidgetItem, QSizePolicy, QWidget)
+    QListWidgetItem, QPushButton, QSizePolicy, QSpacerItem,
+    QVBoxLayout, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(650, 436)
+        Dialog.resize(654, 487)
         palette = QPalette()
         brush = QBrush(QColor(255, 255, 255, 255))
         brush.setStyle(Qt.SolidPattern)
@@ -58,13 +59,30 @@ class Ui_Dialog(object):
         Dialog.setPalette(palette)
         Dialog.setStyleSheet(u"color: rgb(255, 255, 255);\n"
 "background-color: rgb(45, 45, 45);")
-        self.horizontalLayout_3 = QHBoxLayout(Dialog)
-        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout = QHBoxLayout(Dialog)
+        self.horizontalLayout.setSpacing(6)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.listWidget = QListWidget(Dialog)
         self.listWidget.setObjectName(u"listWidget")
 
-        self.horizontalLayout_3.addWidget(self.listWidget)
+        self.horizontalLayout.addWidget(self.listWidget)
+
+        self.verticalLayout = QVBoxLayout()
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.btn_delete = QPushButton(Dialog)
+        self.btn_delete.setObjectName(u"btn_delete")
+        self.btn_delete.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
+"color: rgb(255, 255, 255);")
+
+        self.verticalLayout.addWidget(self.btn_delete)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout.addItem(self.verticalSpacer)
+
+
+        self.horizontalLayout.addLayout(self.verticalLayout)
 
 
         self.retranslateUi(Dialog)
@@ -74,5 +92,6 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
+        self.btn_delete.setText("")
     # retranslateUi
 
