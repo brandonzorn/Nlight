@@ -15,7 +15,7 @@ from static import get_language_icon
 
 
 class FormInfo(QWidget):
-    def __init__(self, manga: Manga):
+    def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
@@ -26,7 +26,7 @@ class FormInfo(QWidget):
         self.db = Database()
         self.wd = os.getcwd()
         self.catalog = None
-        self.manga = manga
+        self.manga = None
         self.chapters: list[Chapter] = []
 
     def resizeEvent(self, a0):
@@ -38,7 +38,8 @@ class FormInfo(QWidget):
                                Qt.TransformationMode.SmoothTransformation)
         self.ui.image.setPixmap(pixmap)
 
-    def setup(self):
+    def setup(self, manga: Manga):
+        self.manga = manga
         self.catalog = get_catalog(self.manga.catalog_id)()
         pixmap = QPixmap(self.get_preview())
         pixmap = pixmap.scaled(self.ui.image.size())
@@ -94,12 +95,15 @@ class FormInfo(QWidget):
         # self.chapters = self.db.get_chapters(self.manga)
         self.chapters.reverse()
         self.chapters.sort(key=lambda ch: ch.language if ch.language else False)
-        for i in self.chapters:
-            item = QListWidgetItem(i.get_name())
-            if self.db.check_complete_chapter(i):
-                item.setBackground(QColor("GREEN"))
-            if i.language:
-                item.setIcon(QIcon(get_language_icon(i.language)))
+        for chapter in self.chapters:
+            item = QListWidgetItem(chapter.get_name())
+            if self.db.check_complete_chapter(chapter):
+                if self.db.get_complete_status(chapter):
+                    item.setBackground(QColor("GREEN"))
+                else:
+                    item.setBackground(QColor("RED"))
+            if chapter.language:
+                item.setIcon(QIcon(get_language_icon(chapter.language)))
             self.ui.chapters.addItem(item)
         self.ui.chapters.setVisible(bool(self.chapters))
 

@@ -26,21 +26,21 @@ class Reader(QWidget):
         self.ui_re.text_size_slider.valueChanged.connect(self.update_text_size)
         self.wd = os.getcwd()
         self.db = Database()
-        self.manga: Manga = Manga({})
-        self.chapters: list[Chapter] = [Chapter({})]
-        self.images: list[Image] = [Image({})]
+        self.manga = None
+        self.chapters = None
+        self.images = None
         self.cur_chapter: int = 1
         self.max_chapters: int = 1
         self.cur_page: int = 1
         self.max_page: int = 1
         self.catalog = None
 
-    def setup(self, manga, chapters, cur_chapter=1):
+    def setup(self, manga: Manga, chapters: list[Chapter], cur_chapter=1):
+        self.manga = manga
+        self.chapters = chapters
         self.cur_chapter = cur_chapter
         self.max_chapters = len(chapters)
-        self.manga = manga
         self.catalog = get_catalog(manga.catalog_id)()
-        self.chapters = chapters
         self.setWindowTitle(self.manga.name)
         self.showFullScreen()
         self.change_chapter()
