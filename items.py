@@ -112,4 +112,3 @@ class Kind:
         if self.russian:
             return self.russian
         return self.name
-

@@ -1,6 +1,5 @@
 import json
 import os
-
 import requests
 
 from const import lib_lists_en, lib_lists_ru, DEFAULT_HEADERS, ru_icon_path, gb_icon_path, jp_icon_path
