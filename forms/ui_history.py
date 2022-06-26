@@ -74,6 +74,9 @@ class Ui_Dialog(object):
         self.btn_delete.setObjectName(u"btn_delete")
         self.btn_delete.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        icon = QIcon()
+        icon.addFile(u"images/delete.png", QSize(), QIcon.Normal, QIcon.On)
+        self.btn_delete.setIcon(icon)
 
         self.verticalLayout.addWidget(self.btn_delete)
 
