@@ -3,7 +3,7 @@ import requests
 from const import URL_MANGA_DEX_API, DEFAULT_HEADERS
 from items import Manga, Chapter, Image, Genre, RequestForm, User
 from parser.Parser import Parser
-from static import get_html, token_loader, token_saver
+from utils import get_html, token_loader, token_saver
 
 
 class MangaDex(Parser):

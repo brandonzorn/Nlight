@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>695</width>
-    <height>588</height>
+    <width>650</width>
+    <height>398</height>
    </rect>
   </property>
   <property name="palette">
@@ -697,7 +697,12 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
          </property>
          <property name="text">
-          <string>Поиск</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normalon>images/search.png</normalon>
+          </iconset>
          </property>
         </widget>
        </item>
@@ -708,7 +713,12 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
          </property>
          <property name="text">
-          <string>&lt;</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normalon>images/prev.png</normalon>
+          </iconset>
          </property>
         </widget>
        </item>
@@ -726,7 +736,12 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
          </property>
          <property name="text">
-          <string>&gt;</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normalon>images/next.png</normalon>
+          </iconset>
          </property>
         </widget>
        </item>
@@ -965,14 +980,38 @@ color: rgb(255, 255, 255);</string>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_catalogs">
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(0, 133, 52);
+         <widget class="QFrame" name="catalogs_frame">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="btn_catalogs">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(0, 133, 52);
 color: rgb(255, 255, 255);</string>
-          </property>
-          <property name="text">
-           <string>Каталоги</string>
-          </property>
+             </property>
+             <property name="text">
+              <string>Каталоги</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>

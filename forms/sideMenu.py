@@ -23,6 +23,11 @@ class Ui_Form(object):
         if not Form.objectName():
             Form.setObjectName(u"Form")
         Form.resize(464, 309)
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
+        Form.setSizePolicy(sizePolicy)
         self.verticalLayout = QVBoxLayout(Form)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -31,7 +36,7 @@ class Ui_Form(object):
         self.btn_mylist.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
         icon = QIcon()
-        icon.addFile(u"../images/library.png", QSize(), QIcon.Normal, QIcon.On)
+        icon.addFile(u"images/library.png", QSize(), QIcon.Normal, QIcon.On)
         self.btn_mylist.setIcon(icon)
 
         self.verticalLayout.addWidget(self.btn_mylist)
@@ -41,7 +46,7 @@ class Ui_Form(object):
         self.btn_main.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
         icon1 = QIcon()
-        icon1.addFile(u"../images/main.png", QSize(), QIcon.Normal, QIcon.On)
+        icon1.addFile(u"images/main.png", QSize(), QIcon.Normal, QIcon.On)
         self.btn_main.setIcon(icon1)
 
         self.verticalLayout.addWidget(self.btn_main)
@@ -51,7 +56,7 @@ class Ui_Form(object):
         self.btn_shikimori.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
         icon2 = QIcon()
-        icon2.addFile(u"../images/shikimori.png", QSize(), QIcon.Normal, QIcon.On)
+        icon2.addFile(u"images/shikimori.png", QSize(), QIcon.Normal, QIcon.On)
         self.btn_shikimori.setIcon(icon2)
 
         self.verticalLayout.addWidget(self.btn_shikimori)
@@ -61,7 +66,7 @@ class Ui_Form(object):
         self.btn_history.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
         icon3 = QIcon()
-        icon3.addFile(u"../images/history.png", QSize(), QIcon.Normal, QIcon.On)
+        icon3.addFile(u"images/history.png", QSize(), QIcon.Normal, QIcon.On)
         self.btn_history.setIcon(icon3)
 
         self.verticalLayout.addWidget(self.btn_history)

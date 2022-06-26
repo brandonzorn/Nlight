@@ -2,7 +2,7 @@ from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 
 from database import Database
-from form.ui_history import Ui_Dialog
+from forms.ui_history import Ui_Dialog
 
 
 class FormHistory(QWidget):

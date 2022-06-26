@@ -3,7 +3,7 @@ import sqlite3
 
 from const import lib_lists_en
 from items import Chapter, Image, Manga
-from static import singleton
+from utils import singleton
 
 
 @singleton

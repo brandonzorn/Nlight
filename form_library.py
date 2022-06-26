@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QWidget
 
 from catalog_manager import get_catalog
 from database import Database
-from form.desu_library import Ui_Dialog
+from forms.desu_library import Ui_Dialog
 from items import Manga
 
 

@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QWidget
 
-from form.itemsList import Ui_Form
+from forms.itemsList import Ui_Form
 
 
 class ItemsList(QWidget):

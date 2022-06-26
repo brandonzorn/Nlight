@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QWidget
 
 from catalog_manager import get_catalog
 from database import Database
-from form.shikimoriUI import Ui_Form
+from forms.shikimoriUI import Ui_Form
 from form_auth import FormAuth
 from items import Manga, RequestForm, User
 

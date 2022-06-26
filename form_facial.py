@@ -1,10 +1,12 @@
 from threading import Thread
 
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget
 
 from catalog_manager import get_catalog, CATALOGS
+from const import search_icon_path
 from database import Database
-from form.desuUI import Ui_Dialog
+from forms.desuUI import Ui_Dialog
 from form_genres import FormGenres
 from items import RequestForm
 
@@ -28,6 +30,7 @@ class FormFacial(QWidget):
         self.ui.filter_apply.clicked.connect(self.filter_apply)
         self.ui.filter_reset.clicked.connect(self.filter_reset)
         self.ui.btn_search.clicked.connect(self.search)
+        self.ui.btn_search.setIcon(QIcon(search_icon_path))
         self.setup_catalogs()
         self.ui.catalog_list.doubleClicked.connect(
             lambda: self.update_catalog(self.ui.catalog_list.currentIndex().row()))
