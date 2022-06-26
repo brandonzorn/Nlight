@@ -246,6 +246,11 @@ color: rgb(255, 255, 255);</string>
        <property name="text">
         <string/>
        </property>
+       <property name="icon">
+        <iconset>
+         <normalon>../images/delete.png</normalon>
+        </iconset>
+       </property>
       </widget>
      </item>
      <item>
