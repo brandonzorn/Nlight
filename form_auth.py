@@ -4,7 +4,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QDialog
 
 from const import app_icon_path
-from form.authUI import Ui_Dialog
+from forms.authUI import Ui_Dialog
 
 
 class FormAuth(QDialog):

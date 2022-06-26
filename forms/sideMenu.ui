@@ -10,6 +10,12 @@
     <height>309</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -37,7 +43,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="icon">
       <iconset>
-       <normalon>../images/library.png</normalon>
+       <normalon>images/library.png</normalon>
       </iconset>
      </property>
     </widget>
@@ -53,7 +59,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="icon">
       <iconset>
-       <normalon>../images/main.png</normalon>
+       <normalon>images/main.png</normalon>
       </iconset>
      </property>
     </widget>
@@ -69,7 +75,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="icon">
       <iconset>
-       <normalon>../images/shikimori.png</normalon>
+       <normalon>images/shikimori.png</normalon>
       </iconset>
      </property>
     </widget>
@@ -85,7 +91,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="icon">
       <iconset>
-       <normalon>../images/history.png</normalon>
+       <normalon>images/history.png</normalon>
       </iconset>
      </property>
     </widget>

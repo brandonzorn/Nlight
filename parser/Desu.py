@@ -1,7 +1,7 @@
 from const import DESU_HEADERS, URL_DESU_API, manga_desu_genres, manga_desu_kinds, manga_desu_orders
 from items import Manga, Chapter, Image, Genre, RequestForm, Kind, Order
 from parser.Parser import Parser
-from static import get_html
+from utils import get_html
 
 
 class Desu(Parser):

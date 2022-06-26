@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from const import URL_RULATE, DEFAULT_HEADERS
 from items import Manga, Chapter, Image, RequestForm
 from parser.Parser import Parser
-from static import get_html
+from utils import get_html
 
 
 class Rulate(Parser):
