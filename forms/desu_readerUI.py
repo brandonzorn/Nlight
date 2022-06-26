@@ -25,6 +25,37 @@ class Ui_Dialog(object):
             Dialog.setObjectName(u"Dialog")
         Dialog.resize(688, 647)
         palette = QPalette()
+        brush = QBrush(QColor(255, 255, 255, 255))
+        brush.setStyle(Qt.SolidPattern)
+        palette.setBrush(QPalette.Active, QPalette.WindowText, brush)
+        brush1 = QBrush(QColor(45, 45, 45, 255))
+        brush1.setStyle(Qt.SolidPattern)
+        palette.setBrush(QPalette.Active, QPalette.Button, brush1)
+        palette.setBrush(QPalette.Active, QPalette.Text, brush)
+        palette.setBrush(QPalette.Active, QPalette.ButtonText, brush)
+        palette.setBrush(QPalette.Active, QPalette.Base, brush1)
+        palette.setBrush(QPalette.Active, QPalette.Window, brush1)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
+        palette.setBrush(QPalette.Active, QPalette.PlaceholderText, brush)
+#endif
+        palette.setBrush(QPalette.Inactive, QPalette.WindowText, brush)
+        palette.setBrush(QPalette.Inactive, QPalette.Button, brush1)
+        palette.setBrush(QPalette.Inactive, QPalette.Text, brush)
+        palette.setBrush(QPalette.Inactive, QPalette.ButtonText, brush)
+        palette.setBrush(QPalette.Inactive, QPalette.Base, brush1)
+        palette.setBrush(QPalette.Inactive, QPalette.Window, brush1)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
+        palette.setBrush(QPalette.Inactive, QPalette.PlaceholderText, brush)
+#endif
+        palette.setBrush(QPalette.Disabled, QPalette.WindowText, brush)
+        palette.setBrush(QPalette.Disabled, QPalette.Button, brush1)
+        palette.setBrush(QPalette.Disabled, QPalette.Text, brush)
+        palette.setBrush(QPalette.Disabled, QPalette.ButtonText, brush)
+        palette.setBrush(QPalette.Disabled, QPalette.Base, brush1)
+        palette.setBrush(QPalette.Disabled, QPalette.Window, brush1)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
+        palette.setBrush(QPalette.Disabled, QPalette.PlaceholderText, brush)
+#endif
         Dialog.setPalette(palette)
         Dialog.setStyleSheet(u"color: rgb(255, 255, 255);\n"
 "background-color: rgb(45, 45, 45);")
@@ -71,6 +102,9 @@ class Ui_Dialog(object):
         self.prev_page.setEnabled(True)
         self.prev_page.setFocusPolicy(Qt.NoFocus)
         self.prev_page.setStyleSheet(u"background-color: rgb(0, 133, 52);")
+        icon = QIcon()
+        icon.addFile(u"../images/prev.png", QSize(), QIcon.Normal, QIcon.On)
+        self.prev_page.setIcon(icon)
 
         self.horizontalLayout_3.addWidget(self.prev_page)
 
@@ -83,6 +117,9 @@ class Ui_Dialog(object):
         self.next_page.setObjectName(u"next_page")
         self.next_page.setFocusPolicy(Qt.NoFocus)
         self.next_page.setStyleSheet(u"background-color: rgb(0, 133, 52);")
+        icon1 = QIcon()
+        icon1.addFile(u"../images/next.png", QSize(), QIcon.Normal, QIcon.On)
+        self.next_page.setIcon(icon1)
 
         self.horizontalLayout_3.addWidget(self.next_page)
 
@@ -95,6 +132,9 @@ class Ui_Dialog(object):
         self.prev_chp.setObjectName(u"prev_chp")
         self.prev_chp.setFocusPolicy(Qt.NoFocus)
         self.prev_chp.setStyleSheet(u"background-color: rgb(0, 133, 52);")
+        icon2 = QIcon()
+        icon2.addFile(u"../images/double_prev.png", QSize(), QIcon.Normal, QIcon.On)
+        self.prev_chp.setIcon(icon2)
 
         self.horizontalLayout_2.addWidget(self.prev_chp)
 
@@ -107,6 +147,9 @@ class Ui_Dialog(object):
         self.next_chp.setObjectName(u"next_chp")
         self.next_chp.setFocusPolicy(Qt.NoFocus)
         self.next_chp.setStyleSheet(u"background-color: rgb(0, 133, 52);")
+        icon3 = QIcon()
+        icon3.addFile(u"../images/double_next.png", QSize(), QIcon.Normal, QIcon.On)
+        self.next_chp.setIcon(icon3)
 
         self.horizontalLayout_2.addWidget(self.next_chp)
 
@@ -125,11 +168,11 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
         self.img.setText("")
-        self.prev_page.setText(QCoreApplication.translate("Dialog", u"<", None))
+        self.prev_page.setText("")
         self.lbl_page.setText(QCoreApplication.translate("Dialog", u"\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 1", None))
-        self.next_page.setText(QCoreApplication.translate("Dialog", u">", None))
-        self.prev_chp.setText(QCoreApplication.translate("Dialog", u"<<", None))
+        self.next_page.setText("")
+        self.prev_chp.setText("")
         self.lbl_chp.setText(QCoreApplication.translate("Dialog", u"\u0413\u043b\u0430\u0432\u0430 1", None))
-        self.next_chp.setText(QCoreApplication.translate("Dialog", u">>", None))
+        self.next_chp.setText("")
     # retranslateUi
 

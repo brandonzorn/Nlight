@@ -36,6 +36,11 @@ favorite_icon_path = os.path.join(Path(__file__).parent, "images/favorite.png")
 favorite1_icon_path = os.path.join(Path(__file__).parent, "images/favorite1.png")
 favorite2_icon_path = os.path.join(Path(__file__).parent, "images/favorite2.png")
 
+prev_page_icon_path = os.path.join(Path(__file__).parent, "images/prev.png")
+next_page_icon_path = os.path.join(Path(__file__).parent, "images/next.png")
+prev_ch_icon_path = os.path.join(Path(__file__).parent, "images/double_prev.png")
+next_ch_icon_path = os.path.join(Path(__file__).parent, "images/double_next.png")
+
 gb_icon_path = os.path.join(Path(__file__).parent, "images/gb.svg")
 ru_icon_path = os.path.join(Path(__file__).parent, "images/ru.svg")
 jp_icon_path = os.path.join(Path(__file__).parent, "images/jp.svg")
