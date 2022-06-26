@@ -6,8 +6,8 @@ from const import URL_SHIKIMORI, URL_SHIKIMORI_TOKEN
 from items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
 from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
 from parser.Parser import Parser
-from static import get_html
-from static import token_loader, token_saver
+from utils import get_html
+from utils import token_loader, token_saver
 
 
 class Shikimori(Parser):

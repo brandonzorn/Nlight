@@ -24,7 +24,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(695, 588)
+        Dialog.resize(650, 398)
         palette = QPalette()
         brush = QBrush(QColor(255, 255, 255, 255))
         brush.setStyle(Qt.SolidPattern)
@@ -146,6 +146,9 @@ class Ui_Dialog(object):
         self.btn_search.setObjectName(u"btn_search")
         self.btn_search.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        icon = QIcon()
+        icon.addFile(u"images/search.png", QSize(), QIcon.Normal, QIcon.On)
+        self.btn_search.setIcon(icon)
 
         self.horizontalLayout_2.addWidget(self.btn_search)
 
@@ -153,6 +156,9 @@ class Ui_Dialog(object):
         self.prev_page.setObjectName(u"prev_page")
         self.prev_page.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        icon1 = QIcon()
+        icon1.addFile(u"images/prev.png", QSize(), QIcon.Normal, QIcon.On)
+        self.prev_page.setIcon(icon1)
 
         self.horizontalLayout_2.addWidget(self.prev_page)
 
@@ -165,6 +171,9 @@ class Ui_Dialog(object):
         self.next_page.setObjectName(u"next_page")
         self.next_page.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        icon2 = QIcon()
+        icon2.addFile(u"images/next.png", QSize(), QIcon.Normal, QIcon.On)
+        self.next_page.setIcon(icon2)
 
         self.horizontalLayout_2.addWidget(self.next_page)
 
@@ -302,12 +311,22 @@ class Ui_Dialog(object):
 
         self.verticalLayout_6.addWidget(self.genres_frame)
 
-        self.btn_catalogs = QPushButton(self.filters_frame)
+        self.catalogs_frame = QFrame(self.filters_frame)
+        self.catalogs_frame.setObjectName(u"catalogs_frame")
+        self.catalogs_frame.setFrameShape(QFrame.StyledPanel)
+        self.catalogs_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_7 = QVBoxLayout(self.catalogs_frame)
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.btn_catalogs = QPushButton(self.catalogs_frame)
         self.btn_catalogs.setObjectName(u"btn_catalogs")
         self.btn_catalogs.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.verticalLayout_6.addWidget(self.btn_catalogs)
+        self.verticalLayout_7.addWidget(self.btn_catalogs)
+
+
+        self.verticalLayout_6.addWidget(self.catalogs_frame)
 
 
         self.verticalLayout_3.addWidget(self.filters_frame)
@@ -346,10 +365,10 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
-        self.btn_search.setText(QCoreApplication.translate("Dialog", u"\u041f\u043e\u0438\u0441\u043a", None))
-        self.prev_page.setText(QCoreApplication.translate("Dialog", u"<", None))
+        self.btn_search.setText("")
+        self.prev_page.setText("")
         self.label_page.setText(QCoreApplication.translate("Dialog", u" \u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 1", None))
-        self.next_page.setText(QCoreApplication.translate("Dialog", u">", None))
+        self.next_page.setText("")
         self.label_sort.setText(QCoreApplication.translate("Dialog", u"\u0421\u043e\u0440\u0442\u0438\u0440\u043e\u0432\u043a\u0430", None))
         self.sort_popular.setText(QCoreApplication.translate("Dialog", u"\u041f\u043e\u043f\u0443\u043b\u044f\u0440\u043d\u043e\u0441\u0442\u044c", None))
         self.sort_name.setText(QCoreApplication.translate("Dialog", u"\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435", None))
