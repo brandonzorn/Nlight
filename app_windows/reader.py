@@ -1,6 +1,7 @@
 import os
 from threading import Thread
-from const import app_icon_path, next_ch_icon_path, prev_ch_icon_path, next_page_icon_path, prev_page_icon_path
+from const import app_icon_path, next_ch_icon_path, prev_ch_icon_path, next_page_icon_path, prev_page_icon_path,\
+    fullscreen_icon_path
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon, QPixmap
@@ -24,12 +25,14 @@ class Reader(QWidget):
         self.ui_re.next_page.setIcon(QIcon(next_page_icon_path))
         self.ui_re.prev_chp.setIcon(QIcon(prev_ch_icon_path))
         self.ui_re.next_chp.setIcon(QIcon(next_ch_icon_path))
+        self.ui_re.btn_fullscreen.setIcon(QIcon(fullscreen_icon_path))
 
         self.ui_re.prev_page.clicked.connect(lambda: self.press_key('prev_page'))
         self.ui_re.next_page.clicked.connect(lambda: self.press_key('next_page'))
         self.ui_re.prev_chp.clicked.connect(lambda: self.press_key('prev_ch'))
         self.ui_re.next_chp.clicked.connect(lambda: self.press_key('next_ch'))
 
+        self.ui_re.btn_fullscreen.clicked.connect(self.change_fullscreen)
         self.ui_re.text_size_slider.valueChanged.connect(self.update_text_size)
 
         self.wd = os.getcwd()
@@ -114,8 +117,13 @@ class Reader(QWidget):
         self.change_page()
         self.ui_re.lbl_chp.setText(self.chapters[self.cur_chapter - 1].get_name())
 
+    def change_fullscreen(self):
+        if self.isFullScreen():
+            self.showNormal()
+        else:
+            self.showFullScreen()
+
     def attach_image(self):
-        self.resize(self.screen().size())
         self.ui_re.scrollArea.verticalScrollBar().setValue(0)
         self.ui_re.scrollArea.horizontalScrollBar().setValue(0)
         if self.images[self.cur_page - 1].is_text:
