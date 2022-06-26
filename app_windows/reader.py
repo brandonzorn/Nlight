@@ -1,6 +1,6 @@
 import os
 from threading import Thread
-from const import app_icon_path
+from const import app_icon_path, next_ch_icon_path, prev_ch_icon_path, next_page_icon_path, prev_page_icon_path
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon, QPixmap
@@ -19,11 +19,19 @@ class Reader(QWidget):
         self.ui_re.setupUi(self)
         self.ui_re.text_size_slider.hide()
         self.setWindowIcon(QIcon(app_icon_path))
+
+        self.ui_re.prev_page.setIcon(QIcon(prev_page_icon_path))
+        self.ui_re.next_page.setIcon(QIcon(next_page_icon_path))
+        self.ui_re.prev_chp.setIcon(QIcon(prev_ch_icon_path))
+        self.ui_re.next_chp.setIcon(QIcon(next_ch_icon_path))
+
         self.ui_re.prev_page.clicked.connect(lambda: self.press_key('prev_page'))
         self.ui_re.next_page.clicked.connect(lambda: self.press_key('next_page'))
         self.ui_re.prev_chp.clicked.connect(lambda: self.press_key('prev_ch'))
         self.ui_re.next_chp.clicked.connect(lambda: self.press_key('next_ch'))
+
         self.ui_re.text_size_slider.valueChanged.connect(self.update_text_size)
+
         self.wd = os.getcwd()
         self.db = Database()
         self.manga = None
