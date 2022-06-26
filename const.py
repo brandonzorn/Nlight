@@ -31,6 +31,7 @@ search_icon_path = os.path.join(Path(__file__).parent, "images/search.png")
 shikimori_icon_path = os.path.join(Path(__file__).parent, "images/shikimori.png")
 
 back_icon_path = os.path.join(Path(__file__).parent, "images/back.png")
+fullscreen_icon_path = os.path.join(Path(__file__).parent, "images/fullscreen.png")
 
 favorite_icon_path = os.path.join(Path(__file__).parent, "images/favorite.png")
 favorite1_icon_path = os.path.join(Path(__file__).parent, "images/favorite1.png")
