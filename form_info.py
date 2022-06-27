@@ -28,6 +28,7 @@ class FormInfo(QWidget):
         self.catalog = None
         self.manga = None
         self.chapters: list[Chapter] = []
+        self.reader = Reader()
 
     def resizeEvent(self, a0):
         self.ui.image.clear()
@@ -108,8 +109,7 @@ class FormInfo(QWidget):
         self.ui.chapters.setVisible(bool(self.chapters))
 
     def open_reader(self):
-        reader = Reader()
-        reader.setup(self.manga, self.chapters, self.ui.chapters.currentIndex().row() + 1)
+        self.reader.setup(self.manga, self.chapters, self.ui.chapters.currentIndex().row() + 1)
 
     def get_preview(self) -> str:
         path = f'{self.wd}/Desu/images/{self.catalog.catalog_name}/{self.manga.id}'
