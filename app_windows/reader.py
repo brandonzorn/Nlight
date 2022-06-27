@@ -53,8 +53,16 @@ class Reader(QWidget):
         self.max_chapters = len(chapters)
         self.catalog = get_catalog(manga.catalog_id)()
         self.setWindowTitle(self.manga.name)
-        self.showFullScreen()
+        self.show()
         self.change_chapter()
+
+    def resizeEvent(self, a0):
+        if not self.catalog:
+            return
+        pixmap = self.ui_re.img.pixmap()
+        pixmap = pixmap.scaled(self.ui_re.img.size(), Qt.AspectRatioMode.KeepAspectRatio,
+                               Qt.TransformationMode.SmoothTransformation)
+        self.ui_re.img.setPixmap(pixmap)
 
     def keyPressEvent(self, event):
         match event.key():
@@ -119,7 +127,7 @@ class Reader(QWidget):
 
     def change_fullscreen(self):
         if self.isFullScreen():
-            self.showNormal()
+            self.showMaximized()
         else:
             self.showFullScreen()
 
