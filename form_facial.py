@@ -71,6 +71,7 @@ class FormFacial(QWidget):
         self.ui.catalog_list.addItems([i.catalog_name for i in CATALOGS.values()])
 
     def get_content(self):
+        self.set_enabled_ui(False)
         self.ui.list_manga.clear()
         self.request_params.page = self.cur_page
         self.mangas = self.catalog.search_manga(self.request_params)
@@ -80,6 +81,12 @@ class FormFacial(QWidget):
             self.db.add_manga(i)
         self.ui.label_page.setText(f'Страница {self.cur_page}')
         [self.ui.list_manga.addItem(i) for i in self.get_manga_names()]
+        self.set_enabled_ui(True)
+
+    def set_enabled_ui(self, a: bool):
+        self.ui.filter_apply.setEnabled(a)
+        self.ui.filter_reset.setEnabled(a)
+        self.ui.search_frame.setEnabled(a)
 
     def get_manga_names(self) -> list[str]:
         return [i.get_name() for i in self.mangas]
