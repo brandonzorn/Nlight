@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QLineEdit,
-    QListWidget, QListWidgetItem, QPushButton, QSizePolicy,
-    QSpacerItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
+    QLineEdit, QListWidget, QListWidgetItem, QPushButton,
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -26,9 +26,9 @@ class Ui_Form(object):
         Form.resize(515, 451)
         Form.setStyleSheet(u"color: rgb(255, 255, 255);\n"
 "background-color: rgb(45, 45, 45);")
-        self.horizontalLayout = QHBoxLayout(Form)
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2 = QHBoxLayout(Form)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.list_manga = QListWidget(Form)
@@ -36,48 +36,63 @@ class Ui_Form(object):
 
         self.verticalLayout.addWidget(self.list_manga)
 
-        self.horizontalLayout_2 = QHBoxLayout()
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.line_search = QLineEdit(Form)
+        self.frame = QFrame(Form)
+        self.frame.setObjectName(u"frame")
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_4 = QHBoxLayout(self.frame)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.line_search = QLineEdit(self.frame)
         self.line_search.setObjectName(u"line_search")
         self.line_search.setStyleSheet(u"background-color: rgb(45, 45, 45);\n"
 "color: rgb(255, 255, 255);")
 
-        self.horizontalLayout_2.addWidget(self.line_search)
+        self.horizontalLayout_3.addWidget(self.line_search)
 
-        self.btn_search = QPushButton(Form)
+        self.btn_search = QPushButton(self.frame)
         self.btn_search.setObjectName(u"btn_search")
         self.btn_search.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.horizontalLayout_2.addWidget(self.btn_search)
+        self.horizontalLayout_3.addWidget(self.btn_search)
 
-        self.prev_page = QPushButton(Form)
+
+        self.horizontalLayout_4.addLayout(self.horizontalLayout_3)
+
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.prev_page = QPushButton(self.frame)
         self.prev_page.setObjectName(u"prev_page")
         self.prev_page.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.horizontalLayout_2.addWidget(self.prev_page)
+        self.horizontalLayout.addWidget(self.prev_page)
 
-        self.label_page = QLabel(Form)
+        self.label_page = QLabel(self.frame)
         self.label_page.setObjectName(u"label_page")
         self.label_page.setTextFormat(Qt.AutoText)
         self.label_page.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_2.addWidget(self.label_page)
+        self.horizontalLayout.addWidget(self.label_page)
 
-        self.next_page = QPushButton(Form)
+        self.next_page = QPushButton(self.frame)
         self.next_page.setObjectName(u"next_page")
         self.next_page.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.horizontalLayout_2.addWidget(self.next_page)
+        self.horizontalLayout.addWidget(self.next_page)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout_2)
+        self.horizontalLayout_4.addLayout(self.horizontalLayout)
 
 
-        self.horizontalLayout.addLayout(self.verticalLayout)
+        self.verticalLayout.addWidget(self.frame)
+
+
+        self.horizontalLayout_2.addLayout(self.verticalLayout)
 
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
@@ -141,7 +156,7 @@ class Ui_Form(object):
         self.verticalLayout_3.addWidget(self.btn_auth)
 
 
-        self.horizontalLayout.addLayout(self.verticalLayout_3)
+        self.horizontalLayout_2.addLayout(self.verticalLayout_3)
 
 
         self.retranslateUi(Form)
