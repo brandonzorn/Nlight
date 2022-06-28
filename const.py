@@ -24,13 +24,12 @@ lib_lists_ru = ('запланированно', 'прочитано', 'чита�
 app_icon_path = os.path.join(Path(__file__).parent, "images/icon.png")
 
 main_icon_path = os.path.join(Path(__file__).parent, "images/main.png")
+shikimori_icon_path = os.path.join(Path(__file__).parent, "images/shikimori.png")
 library_icon_path = os.path.join(Path(__file__).parent, "images/library.png")
 history_icon_path = os.path.join(Path(__file__).parent, "images/history.png")
 
 search_icon_path = os.path.join(Path(__file__).parent, "images/search.png")
 delete_icon_path = os.path.join(Path(__file__).parent, "images/delete.png")
-shikimori_icon_path = os.path.join(Path(__file__).parent, "images/shikimori.png")
-
 back_icon_path = os.path.join(Path(__file__).parent, "images/back.png")
 fullscreen_icon_path = os.path.join(Path(__file__).parent, "images/fullscreen.png")
 
