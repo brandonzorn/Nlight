@@ -1,3 +1,5 @@
+from threading import Thread
+
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget
 
@@ -60,7 +62,7 @@ class FormShikimori(QWidget):
                     return
                 self.request_params.page -= 1
         self.ui.label_page.setText(f"Страница {self.request_params.page}")
-        self.update_list()
+        Thread(target=self.update_list).start()
 
     def search(self):
         self.request_params.page = 1
@@ -68,6 +70,7 @@ class FormShikimori(QWidget):
         self.update_list()
 
     def update_list(self, lib_list=None):
+        self.set_enabled_ui(False)
         self.ui.list_manga.clear()
         if not lib_list:
             lib_list = self.cur_list
@@ -77,7 +80,12 @@ class FormShikimori(QWidget):
         self.mangas = self.catalog.get_manga_login(self.request_params)
         for i in self.mangas:
             self.db.add_manga(i)
+        self.ui.label_page.setText(f'Страница {self.request_params.page}')
         [self.ui.list_manga.addItem(i) for i in self.get_manga_library()]
+        self.set_enabled_ui(True)
+
+    def set_enabled_ui(self, a: bool):
+        self.ui.frame.setEnabled(a)
 
     def get_manga_library(self) -> list:
         return [i.get_name() for i in self.mangas]
