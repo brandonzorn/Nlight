@@ -2,7 +2,7 @@ import os
 import sqlite3
 
 from const import lib_lists_en
-from items import Chapter, Image, Manga
+from items import Chapter, Image, Manga, HistoryNote
 from utils import singleton
 
 
@@ -32,12 +32,21 @@ class Database:
                             manga.score, manga.catalog_id))
         self.__con.commit()
 
+    def get_manga(self, manga_id):
+        x = self.__cur.execute(f"SELECT * FROM manga WHERE id = '{manga_id}'").fetchone()
+        return Manga({'id': x[0], 'name': x[1], 'russian': x[2], 'kind': x[3],
+                      'description': x[4], 'score': x[5], 'catalog_id': x[6]})
+
     def add_chapter(self, chapter: Chapter, manga: Manga, index: int):
         self.__cur.execute("INSERT INTO chapters VALUES(?, ?, ?, ?, ?, ?);",
                            (chapter.id, chapter.vol, chapter.ch, chapter.title, manga.id, index))
         self.__con.commit()
 
-    def get_chapters(self, manga: Manga) -> list:
+    def get_chapter(self, chapter_id):
+        a = self.__cur.execute(f"SELECT * FROM chapters WHERE id = '{chapter_id}'").fetchone()
+        return Chapter({'id': a[0], 'vol': a[1], 'ch': a[2], 'title': a[3]})
+
+    def get_chapters(self, manga: Manga) -> list[Chapter]:
         a = self.__cur.execute(f"SELECT * FROM chapters WHERE manga_id = '{manga.id}' ORDER by index_n").fetchall()
         return [Chapter({'id': i[0], 'vol': i[1], 'ch': i[2], 'title': i[3]}) for i in a[::-1]]
 
@@ -46,7 +55,7 @@ class Database:
                            (image.id, image.page, image.width, image.height, image.img, chapter.id))
         self.__con.commit()
 
-    def get_images(self, chapter: Chapter) -> list:
+    def get_images(self, chapter: Chapter) -> list[Image]:
         a = self.__cur.execute(f"SELECT * FROM images WHERE chapter_id = '{chapter.id}' ORDER by page").fetchall()
         return [Image({'id': i[0], 'page': i[1], 'width': i[2], 'height': i[3], 'img': i[4]}) for i in a]
 
@@ -54,7 +63,7 @@ class Database:
         self.__cur.execute(f"INSERT INTO library VALUES(?, ?);", (manga.id, lib_list))
         self.__con.commit()
 
-    def get_manga_library(self, lib_list) -> [Manga]:
+    def get_manga_library(self, lib_list) -> list[Manga]:
         a = self.__cur.execute(f"SELECT id FROM library WHERE list = '{lib_list}';").fetchall()
         manga = []
         for i in a[::-1]:
@@ -72,14 +81,6 @@ class Database:
         self.__cur.execute(f"DELETE FROM library WHERE id = '{manga.id}';")
         self.__con.commit()
 
-    def set_complete_chapter(self, manga: Manga, chapter: Chapter, is_completed: bool):
-        self.__cur.execute(f"INSERT INTO chapter_history VALUES(?, ?, ?);", (chapter.id, manga.id, is_completed))
-        self.__con.commit()
-
-    def del_complete_chapter(self, chapter: Chapter):
-        self.__cur.execute(f"DELETE FROM chapter_history WHERE chapter_id = '{chapter.id}';")
-        self.__con.commit()
-
     def check_complete_chapter(self, chapter: Chapter):
         a = self.__cur.execute(
             f"SELECT is_completed FROM chapter_history WHERE chapter_id = '{chapter.id}';").fetchall()
@@ -90,10 +91,20 @@ class Database:
             f"SELECT is_completed FROM chapter_history WHERE chapter_id = '{chapter.id}';").fetchall()
         return bool(a[0][0])
 
-    def get_chapters_history(self):
-        chapters = []
-        a = self.__cur.execute(f"SELECT chapter_id FROM chapter_history;").fetchall()
+    def add_history_note(self, manga: Manga, chapter: Chapter, is_completed: bool):
+        self.__cur.execute(f"INSERT INTO chapter_history VALUES(?, ?, ?);", (chapter.id, manga.id, is_completed))
+        self.__con.commit()
+
+    def get_history_notes(self) -> list[HistoryNote]:
+        notes = []
+        a = self.__cur.execute(f"SELECT * FROM chapter_history;").fetchall()
         for i in a:
-            ch = self.__cur.execute(f"SELECT * FROM chapters WHERE id = '{i[0]}'").fetchone()
-            chapters.append(Chapter({'id': ch[0], 'vol': ch[1], 'ch': ch[2], 'title': ch[3]}))
-        return chapters
+            chapter = self.get_chapter(i[0])
+            manga = self.get_manga(i[1])
+            is_completed = bool(i[2])
+            notes.append(HistoryNote(0, chapter, manga, is_completed))
+        return notes
+
+    def del_history_note(self, chapter: Chapter):
+        self.__cur.execute(f"DELETE FROM chapter_history WHERE chapter_id = '{chapter.id}';")
+        self.__con.commit()
