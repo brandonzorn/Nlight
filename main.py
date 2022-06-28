@@ -43,6 +43,8 @@ class App(MainWindow):
             lambda: self.clicked_chapters(self.Form_shikimori.get_current_manga()))
 
         self.Form_history = FormHistory()
+        self.Form_history.ui.listWidget.doubleClicked.connect(
+            lambda: self.clicked_chapters(self.Form_history.get_current_manga()))
 
         self.Form_info = FormInfo()
         self.Form_info.ui.btn_back.clicked.connect(self.back)

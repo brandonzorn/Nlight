@@ -91,17 +91,17 @@ class Reader(QWidget):
                     self.change_chapter('-')
 
     def change_page(self, page=None):
-        self.db.set_complete_chapter(self.manga, self.chapters[self.cur_chapter - 1], False)
+        self.db.add_history_note(self.manga, self.chapters[self.cur_chapter - 1], False)
         match page:
             case '+':
                 if self.cur_page == self.max_page:
-                    self.db.set_complete_chapter(self.manga, self.chapters[self.cur_chapter - 1], True)
+                    self.db.add_history_note(self.manga, self.chapters[self.cur_chapter - 1], True)
                     self.press_key('next_ch')
                 else:
                     self.cur_page += 1
             case '-':
                 if self.cur_page == 1:
-                    self.db.del_complete_chapter(self.chapters[self.cur_chapter - 1])
+                    self.db.del_history_note(self.chapters[self.cur_chapter - 1])
                     self.press_key('prev_ch')
                 else:
                     self.cur_page -= 1
