@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>894</width>
-    <height>574</height>
+    <width>515</width>
+    <height>451</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -52,7 +52,7 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
          </property>
          <property name="text">
-          <string>Поиск</string>
+          <string/>
          </property>
         </widget>
        </item>
@@ -63,7 +63,7 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
          </property>
          <property name="text">
-          <string>&lt;</string>
+          <string/>
          </property>
         </widget>
        </item>
@@ -87,7 +87,7 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
          </property>
          <property name="text">
-          <string>&gt;</string>
+          <string/>
          </property>
         </widget>
        </item>

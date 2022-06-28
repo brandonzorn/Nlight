@@ -1,6 +1,7 @@
-from PySide6.QtGui import QColor
+from PySide6.QtGui import QColor, QIcon
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 
+from const import delete_icon_path
 from database import Database
 from forms.ui_history import Ui_Dialog
 
@@ -10,6 +11,7 @@ class FormHistory(QWidget):
         super().__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+        self.ui.btn_delete.setIcon(QIcon(delete_icon_path))
         self.db = Database()
         self.ui.btn_delete.clicked.connect(self.delete_note)
         self.chapters = []
