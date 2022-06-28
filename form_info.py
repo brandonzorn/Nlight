@@ -23,7 +23,7 @@ class FormInfo(QWidget):
         self.ui.btn_add_to_lib.clicked.connect(self.add_to_favorites)
         self.ui.btn_back.setIcon(QIcon(back_icon_path))
         self.ui.lib_list.currentIndexChanged.connect(self.change_lib_list)
-        self.db = Database()
+        self.db: Database = Database()
         self.wd = os.getcwd()
         self.catalog = None
         self.manga = None
