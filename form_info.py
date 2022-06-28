@@ -55,8 +55,7 @@ class FormInfo(QWidget):
             self.ui.btn_add_to_lib.setIcon(QIcon(favorite1_icon_path))
         else:
             self.ui.btn_add_to_lib.setIcon(QIcon(favorite_icon_path))
-        thread = Thread(target=self.get_chapters)
-        thread.start()
+        Thread(target=self.get_chapters).start()
 
     def set_score(self, score: float):
         stars = [self.ui.star_1, self.ui.star_2, self.ui.star_3, self.ui.star_4, self.ui.star_5]

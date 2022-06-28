@@ -19,26 +19,25 @@ class FormFacial(QWidget):
         self.ui.prev_page.setIcon(QIcon(prev_page_icon_path))
         self.ui.next_page.setIcon(QIcon(next_page_icon_path))
         self.ui.btn_search.setIcon(QIcon(search_icon_path))
-        self.db = Database()
-        self.cur_page = 1
-        self.mangas = []
-        self.request_params = RequestForm()
-        self.order_by = {self.ui.sort_name: 'name', self.ui.sort_popular: 'popular'}
-        self.kinds = {self.ui.type_manga: 'manga', self.ui.type_manhwa: 'manhwa', self.ui.type_manhua: 'manhua',
-                      self.ui.type_one_shot: 'one_shot', self.ui.type_comics: 'comics'}
-        self.Form_genres = FormGenres()
         self.ui.prev_page.clicked.connect(lambda: self.change_page('-'))
         self.ui.next_page.clicked.connect(lambda: self.change_page('+'))
         self.ui.btn_genres_list.clicked.connect(self.clicked_genres)
         self.ui.filter_apply.clicked.connect(self.filter_apply)
         self.ui.filter_reset.clicked.connect(self.filter_reset)
         self.ui.btn_search.clicked.connect(self.search)
-        self.ui.btn_search.setIcon(QIcon(search_icon_path))
-        self.setup_catalogs()
+        self.ui.btn_catalogs.clicked.connect(self.clicked_catalogs)
         self.ui.catalog_list.doubleClicked.connect(
             lambda: self.update_catalog(self.ui.catalog_list.currentIndex().row()))
+        self.mangas = []
+        self.cur_page = 1
+        self.order_by = {self.ui.sort_name: 'name', self.ui.sort_popular: 'popular'}
+        self.kinds = {self.ui.type_manga: 'manga', self.ui.type_manhwa: 'manhwa', self.ui.type_manhua: 'manhua',
+                      self.ui.type_one_shot: 'one_shot', self.ui.type_comics: 'comics'}
+        self.setup_catalogs()
         self.ui.catalog_list.hide()
-        self.ui.btn_catalogs.clicked.connect(self.clicked_catalogs)
+        self.Form_genres = FormGenres()
+        self.request_params = RequestForm()
+        self.db: Database = Database()
         self.catalog = get_catalog()()
         Thread(target=self.get_content).start()
 
