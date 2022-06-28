@@ -41,15 +41,6 @@ class Shikimori(Parser):
                 manga.append(Manga(data))
         return manga
 
-    def get_chapters(self, manga: Manga):
-        return []
-
-    def get_images(self, manga: Manga, chapter: Chapter):
-        return []
-
-    def get_image(self, image: Image):
-        pass
-
     def get_preview(self, manga: Manga):
         return get_html(f'https://shikimori.one/system/mangas/preview/{manga.id}.jpg')
 
@@ -59,9 +50,6 @@ class Shikimori(Parser):
         if html and html.status_code == 200 and len(html.json()):
             return [Genre(i) for i in html.json()]
         return []
-
-    def get_orders(self):
-        pass
 
     def get_kinds(self):
         url = f'{self.url_api}/constants/manga'

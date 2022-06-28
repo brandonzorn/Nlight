@@ -42,7 +42,6 @@ class Image:
             self.page = int(self.page)
         self.width: int = page.get('width')
         self.height: int = page.get('height')
-        self.hash: str = page.get('hash')
         self.img: str = page.get('img')
         self.is_text: bool = page.get('is_text')
 

@@ -1,9 +1,11 @@
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget
 
 from catalog_manager import get_catalog
+from const import search_icon_path, next_page_icon_path, prev_page_icon_path
 from database import Database
-from forms.shikimoriUI import Ui_Form
 from form_auth import FormAuth
+from forms.shikimoriUI import Ui_Form
 from items import Manga, RequestForm, User
 
 
@@ -12,6 +14,9 @@ class FormShikimori(QWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+        self.ui.btn_search.setIcon(QIcon(search_icon_path))
+        self.ui.prev_page.setIcon(QIcon(prev_page_icon_path))
+        self.ui.next_page.setIcon(QIcon(next_page_icon_path))
         self.mangas: list[Manga] = []
         self.catalog = get_catalog(1)()
         self.Form_auth = FormAuth(self.catalog)
