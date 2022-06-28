@@ -12,10 +12,10 @@ class Desu(Parser):
         self.headers = DESU_HEADERS
         self.catalog_id = 0
 
-    def get_manga(self, manga: Manga) -> Manga:
+    def get_manga(self, manga: Manga):
         return manga
 
-    def search_manga(self, params: RequestForm) -> [Manga]:
+    def search_manga(self, params: RequestForm):
         url = f'{self.url_api}'
         params = {'limit': params.limit, 'search': params.search, 'genres': ','.join([i.name for i in params.genres]),
                   'order': params.order, 'kinds': ','.join(params.kinds), 'page': params.page}
@@ -28,7 +28,7 @@ class Desu(Parser):
                 manga.append(Manga(data))
         return manga
 
-    def get_chapters(self, manga: Manga) -> [Chapter]:
+    def get_chapters(self, manga: Manga):
         url = f'{self.url_api}/{manga.id}'
         html = get_html(url, self.headers)
         chapters = []
@@ -39,7 +39,7 @@ class Desu(Parser):
                 chapters.append(Chapter(data))
         return chapters
 
-    def get_images(self, manga: Manga, chapter: Chapter) -> [Image]:
+    def get_images(self, manga: Manga, chapter: Chapter):
         url = f'{URL_DESU_API}/{manga.id}/chapter/{chapter.id}'
         html = get_html(url, headers=self.headers)
         if html and html.status_code == 200 and len(html.json()):

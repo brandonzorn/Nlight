@@ -23,7 +23,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(894, 574)
+        Form.resize(515, 451)
         Form.setStyleSheet(u"color: rgb(255, 255, 255);\n"
 "background-color: rgb(45, 45, 45);")
         self.horizontalLayout = QHBoxLayout(Form)
@@ -151,10 +151,10 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.btn_search.setText(QCoreApplication.translate("Form", u"\u041f\u043e\u0438\u0441\u043a", None))
-        self.prev_page.setText(QCoreApplication.translate("Form", u"<", None))
+        self.btn_search.setText("")
+        self.prev_page.setText("")
         self.label_page.setText(QCoreApplication.translate("Form", u" \u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 1", None))
-        self.next_page.setText(QCoreApplication.translate("Form", u">", None))
+        self.next_page.setText("")
         self.b_planned.setText(QCoreApplication.translate("Form", u"\u0417\u0430\u043f\u043b\u0430\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043e", None))
         self.b_completed.setText(QCoreApplication.translate("Form", u"\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u043e", None))
         self.b_watching.setText(QCoreApplication.translate("Form", u"\u0427\u0438\u0442\u0430\u044e", None))

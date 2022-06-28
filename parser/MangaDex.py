@@ -42,7 +42,7 @@ class MangaDex(Parser):
         data.update({'catalog_id': self.catalog_id})
         return Manga(data)
 
-    def search_manga(self, params: RequestForm) -> [Manga]:
+    def search_manga(self, params: RequestForm):
         url = f'{self.url_api}/manga'
         params = {'limit': 50, 'title': params.search, 'offset': params.offset(),
                   'includedTags[]': [i.id for i in params.genres]}
@@ -53,7 +53,7 @@ class MangaDex(Parser):
                 manga.append(self.setup_manga(i))
         return manga
 
-    def get_chapters(self, manga: Manga) -> [Chapter]:
+    def get_chapters(self, manga: Manga):
         url = f'{self.url_api}/chapter'
         params = {'manga': manga.id, 'limit': 1, 'translatedLanguage[]': ['ru', 'en'], 'order[chapter]': 'asc'}
         html = get_html(url, self.headers, params)
@@ -71,20 +71,20 @@ class MangaDex(Parser):
             chapters.reverse()
         return chapters
 
-    def get_images(self, manga: Manga, chapter: Chapter) -> [Image]:
+    def get_images(self, manga: Manga, chapter: Chapter):
         url = f'{self.url_api}/at-home/server/{chapter.id}'
         html = get_html(url, self.headers)
         images = []
         if html and html.status_code == 200 and len(html.json()):
             image_hash = html.json().get('chapter').get('hash')
             for i in html.json().get('chapter').get('data'):
-                i = str(i)
-                data = {'hash': image_hash, 'page': html.json().get('chapter').get('data').index(i) + 1, 'img': i}
+                img = f'https://uploads.mangadex.org/data/{image_hash}/{i}'
+                data = {'page': html.json().get('chapter').get('data').index(i) + 1, 'img': img}
                 images.append(Image(data))
         return images
 
     def get_image(self, image: Image):
-        return get_html(f'https://uploads.mangadex.org/data/{image.hash}/{image.img}')
+        return get_html(image.img)
 
     def get_preview(self, manga: Manga):
         url = f'{self.url_api}/cover'
