@@ -75,8 +75,6 @@ class FormFacial(QWidget):
         self.ui.list_manga.clear()
         self.request_params.page = self.cur_page
         self.mangas = self.catalog.search_manga(self.request_params)
-        if len(self.mangas) == 0:
-            return
         for i in self.mangas:
             self.db.add_manga(i)
         self.ui.label_page.setText(f'Страница {self.cur_page}')
