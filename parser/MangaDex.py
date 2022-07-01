@@ -79,8 +79,8 @@ class MangaDex(Parser):
             image_hash = html.json().get('chapter').get('hash')
             for i in html.json().get('chapter').get('data'):
                 img = f'https://uploads.mangadex.org/data/{image_hash}/{i}'
-                data = {'page': html.json().get('chapter').get('data').index(i) + 1, 'img': img}
-                images.append(Image(data))
+                page = html.json().get('chapter').get('data').index(i) + 1
+                images.append(Image('', page, img, False))
         return images
 
     def get_image(self, image: Image):

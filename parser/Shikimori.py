@@ -3,7 +3,7 @@ from requests_oauthlib import OAuth2Session
 
 from const import SHIKIMORI_HEADERS, URL_SHIKIMORI_API
 from const import URL_SHIKIMORI, URL_SHIKIMORI_TOKEN
-from items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
+from items import Manga, Genre, RequestForm, User, Kind
 from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
 from parser.Parser import Parser
 from utils import get_html

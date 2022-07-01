@@ -35,15 +35,11 @@ class Chapter:
 
 
 class Image:
-    def __init__(self, page: dict):
-        self.id: str = str(page.get('id'))
-        self.page: int = page.get('page')
-        if self.page:
-            self.page = int(self.page)
-        self.width: int = page.get('width')
-        self.height: int = page.get('height')
-        self.img: str = page.get('img')
-        self.is_text: bool = page.get('is_text')
+    def __init__(self, image_id, page, img, is_text):
+        self.id: str = image_id
+        self.page: int = page
+        self.img: str = img
+        self.is_text: bool = is_text
 
 
 class Genre:

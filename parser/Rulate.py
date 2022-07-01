@@ -52,7 +52,7 @@ class Rulate(Parser):
 
     def get_images(self, manga: Manga, chapter: Chapter):
         url = f"{self.url_api}/book/{manga.id}/{chapter.id}/download?format=t&enc=UTF-8"
-        return [Image({'is_text': True, 'page': 1, 'img': url})]
+        return [Image('', 1, url, True)]
 
     def get_image(self, image: Image):
         a = get_html(image.img)
