@@ -12,10 +12,11 @@ URL_MANGA_DEX_API = 'https://api.mangadex.org'
 URL_RULATE = 'https://tl.rulate.ru'
 
 
+DEFAULT_HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:99.0) Gecko/20100101 Firefox/99.0'}
 DESU_HEADERS = {'User-Agent': 'Desu'}
 SHIKIMORI_HEADERS = {'User-Agent': 'Shikimori'}
 MANGA_DEX_HEADERS = {'User-Agent': 'Shikimori'}
-DEFAULT_HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:99.0) Gecko/20100101 Firefox/99.0'}
+
 
 lib_lists_en = ('planned', 'completed', 'watching', 'rewatching', 'on_hold', 'dropped')
 lib_lists_ru = ('запланированно', 'прочитано', 'читаю', 'перечитываю', 'отложено', 'брошено')

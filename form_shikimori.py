@@ -62,7 +62,7 @@ class FormShikimori(QWidget):
                     return
                 self.request_params.page -= 1
         self.ui.label_page.setText(f"Страница {self.request_params.page}")
-        Thread(target=self.update_list).start()
+        Thread(target=self.update_list, daemon=True).start()
 
     def search(self):
         self.request_params.page = 1

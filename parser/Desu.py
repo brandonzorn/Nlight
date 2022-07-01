@@ -43,7 +43,8 @@ class Desu(Parser):
         url = f'{URL_DESU_API}/{manga.id}/chapter/{chapter.id}'
         html = get_html(url, headers=self.headers)
         if html and html.status_code == 200 and len(html.json()):
-            return [Image(i) for i in html.json().get('response').get('pages').get('list')]
+            return [Image(i.get('id'), i.get('page'), i.get('img'), False)
+                    for i in html.json().get('response').get('pages').get('list')]
         return []
 
     def get_image(self, image: Image):

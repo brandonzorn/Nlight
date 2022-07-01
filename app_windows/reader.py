@@ -10,7 +10,7 @@ from const import app_icon_path, next_ch_icon_path, prev_ch_icon_path, next_page
     fullscreen_icon_path
 from database import Database
 from forms.desu_readerUI import Ui_Dialog
-from items import Image, Manga, Chapter
+from items import Manga, Chapter
 
 
 class Reader(QWidget):
@@ -134,6 +134,8 @@ class Reader(QWidget):
     def attach_image(self):
         self.ui_re.scrollArea.verticalScrollBar().setValue(0)
         self.ui_re.scrollArea.horizontalScrollBar().setValue(0)
+        if not self.images:
+            return
         if self.images[self.cur_page - 1].is_text:
             self.ui_re.text_size_slider.show()
             text = self.get_text(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
@@ -184,11 +186,9 @@ class Reader(QWidget):
     def get_images(self):
         chapter = self.chapters[self.cur_chapter - 1]
         self.images = self.catalog.get_images(self.manga, chapter)
-        # for i in self.images:
-        #     self.db.add_image(i, chapter)
+        # for image in self.images:
+        #     self.db.add_image(image, chapter)
         # self.images = self.db.get_images(chapter)
-        if not self.images:
-            self.images = [Image({'page': 1})]
         self.max_page = self.get_images_pages()
         Thread(target=lambda: self.download(self)).start()
 
