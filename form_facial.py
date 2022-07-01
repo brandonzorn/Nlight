@@ -39,7 +39,7 @@ class FormFacial(QWidget):
         self.request_params = RequestForm()
         self.db: Database = Database()
         self.catalog = get_catalog()()
-        Thread(target=self.get_content).start()
+        Thread(target=self.get_content, daemon=True).start()
 
     def clicked_genres(self):
         self.Form_genres.show()
@@ -104,7 +104,7 @@ class FormFacial(QWidget):
                 else:
                     return
         self.ui.label_page.setText(f'Страница {self.cur_page}')
-        Thread(target=self.get_content).start()
+        Thread(target=self.get_content, daemon=True).start()
 
     def filter_apply(self):
         self.cur_page = 1

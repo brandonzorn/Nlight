@@ -1,5 +1,6 @@
 import json
 import os
+import threading
 
 import requests
 
@@ -59,6 +60,17 @@ def singleton(cls):
         if instance[0] is None:
             instance[0] = cls(*args, **kwargs)
         return instance[0]
+    return wrapper
+
+
+lock = threading.Lock()
+
+
+def database_method(func):
+    def wrapper(*args, **kwargs):
+        with lock:
+            return func(*args, **kwargs)
+
     return wrapper
 
 
