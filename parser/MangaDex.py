@@ -65,9 +65,8 @@ class MangaDex(Parser):
                 html = get_html(url, self.headers, params)
                 for i in html.json().get('data'):
                     attr = i.get('attributes')
-                    data = {'id': i.get('id'), 'vol': attr.get('volume'), 'ch': attr.get('chapter'),
-                            'title': attr.get('title'), 'language': attr.get('translatedLanguage')}
-                    chapters.append(Chapter(data))
+                    chapters.append(Chapter(i.get('id'), attr.get('volume'), attr.get('chapter'), attr.get('title'),
+                                            attr.get('translatedLanguage')))
             chapters.reverse()
         return chapters
 
@@ -80,7 +79,7 @@ class MangaDex(Parser):
             for i in html.json().get('chapter').get('data'):
                 img = f'https://uploads.mangadex.org/data/{image_hash}/{i}'
                 page = html.json().get('chapter').get('data').index(i) + 1
-                images.append(Image('', page, img, False))
+                images.append(Image('', page, img))
         return images
 
     def get_image(self, image: Image):
