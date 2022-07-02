@@ -1,16 +1,12 @@
 class Manga:
-    def __init__(self, manga: dict):
-        self.id: str = str(manga.get('id'))
-        self.catalog_id: int = manga.get('catalog_id')
-        self.name: str = manga.get('name')
-        self.russian: str = manga.get('russian')
-        self.kind: str = manga.get('kind')
-        self.description: str = manga.get('description')
-        self.score: float = manga.get('score')
-        if self.score:
-            self.score: float = float(self.score)
-        else:
-            self.score = float(0)
+    def __init__(self, manga_id, catalog_id, name, russian, kind, description, score):
+        self.id = manga_id
+        self.catalog_id = catalog_id
+        self.name = name
+        self.russian = russian
+        self.kind = kind
+        self.description = description
+        self.score = score
 
     def get_name(self) -> str:
         if self.russian:
@@ -19,11 +15,11 @@ class Manga:
 
 
 class Chapter:
-    def __init__(self, chapter_id, vol, ch, title, language):
-        self.id: str = chapter_id
-        self.vol: str = vol
-        self.ch: str = ch
-        self.title: str = title
+    def __init__(self, chapter_id: str, vol: str, ch: str, title: str, language: str):
+        self.id = chapter_id
+        self.vol = vol
+        self.ch = ch
+        self.title = title
         self.language = language
 
     def get_name(self) -> str:
@@ -35,10 +31,10 @@ class Chapter:
 
 
 class Image:
-    def __init__(self, image_id, page, img):
-        self.id: str = image_id
-        self.page: int = page
-        self.img: str = img
+    def __init__(self, image_id: str, page: int, img: str):
+        self.id = image_id
+        self.page = page
+        self.img = img
 
 
 class Genre:
