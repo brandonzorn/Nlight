@@ -15,7 +15,7 @@ class Database:
         self.__con = sqlite3.connect(f'{self.__wd}/Desu/data.db', check_same_thread=False)
         self.__cur = self.__con.cursor()
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS manga (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
-        name STRING, russian STRING, kind STRING, description TEXT, score FLOAT, catalog_id INTEGER);""")
+        catalog_id INTEGER, name STRING, russian STRING, kind STRING, description TEXT, score FLOAT);""")
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS chapters (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
         vol STRING, ch STRING, title STRING, language STRING, manga_id INTEGER, index_n INTEGER);""")
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS images (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
@@ -29,14 +29,13 @@ class Database:
     @database_method
     def add_manga(self, manga: Manga):
         self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?);",
-                           (manga.id, manga.name, manga.russian, manga.kind, manga.description,
-                            manga.score, manga.catalog_id))
+                           (manga.id, manga.catalog_id, manga.name, manga.russian, manga.kind, manga.description,
+                            manga.score))
         self.__con.commit()
 
     def get_manga(self, manga_id):
         x = self.__cur.execute(f"SELECT * FROM manga WHERE id = '{manga_id}'").fetchone()
-        return Manga({'id': x[0], 'name': x[1], 'russian': x[2], 'kind': x[3],
-                      'description': x[4], 'score': x[5], 'catalog_id': x[6]})
+        return Manga(x[0], x[1], x[2], x[3], x[4], x[5], x[6])
 
     @database_method
     def add_chapter(self, chapter: Chapter, manga: Manga, index: int):
@@ -75,8 +74,7 @@ class Database:
         manga = []
         for i in a[::-1]:
             x = self.__cur.execute(f"SELECT * FROM manga WHERE id = '{i[0]}'").fetchall()[0]
-            manga.append(Manga({'id': x[0], 'name': x[1], 'russian': x[2], 'kind': x[3],
-                                'description': x[4], 'score': x[5], 'catalog_id': x[6]}))
+            manga.append(Manga(x[0], x[1], x[2], x[3], x[4], x[5], x[6]))
         return manga
 
     @database_method

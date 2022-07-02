@@ -36,9 +36,8 @@ class Shikimori(Parser):
         manga = []
         if html and html.status_code == 200 and len(html.json()):
             for i in html.json():
-                data = i
-                data.update({'catalog_id': self.catalog_id})
-                manga.append(Manga(data))
+                manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
+                                   i.get('kind'), i.get('description'), i.get('score')))
         return manga
 
     def get_preview(self, manga: Manga):
@@ -65,9 +64,8 @@ class Shikimori(Parser):
         manga = []
         if html and html.status_code == 200 and len(html.json()):
             for i in html.json():
-                data = i
-                data.update({'catalog_id': self.catalog_id})
-                manga.append(Manga(data))
+                manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
+                                   i.get('kind'), i.get('description'), i.get('score')))
         return manga
 
     def get_user(self) -> User:
