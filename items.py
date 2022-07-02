@@ -19,12 +19,12 @@ class Manga:
 
 
 class Chapter:
-    def __init__(self, chapter: dict):
-        self.id: str = str(chapter.get('id'))
-        self.vol: str = chapter.get('vol')
-        self.ch: str = chapter.get('ch')
-        self.title: str = chapter.get('title')
-        self.language = chapter.get('language')
+    def __init__(self, chapter_id, vol, ch, title, language):
+        self.id: str = chapter_id
+        self.vol: str = vol
+        self.ch: str = ch
+        self.title: str = title
+        self.language = language
 
     def get_name(self) -> str:
         if not self.vol and not self.ch:
@@ -35,11 +35,10 @@ class Chapter:
 
 
 class Image:
-    def __init__(self, image_id, page, img, is_text):
+    def __init__(self, image_id, page, img):
         self.id: str = image_id
         self.page: int = page
         self.img: str = img
-        self.is_text: bool = is_text
 
 
 class Genre:

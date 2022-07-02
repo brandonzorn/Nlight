@@ -17,7 +17,7 @@ class Database:
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS manga (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
         name STRING, russian STRING, kind STRING, description TEXT, score FLOAT, catalog_id INTEGER);""")
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS chapters (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
-        vol STRING, ch STRING, title STRING, manga_id INTEGER, index_n INTEGER);""")
+        vol STRING, ch STRING, title STRING, language STRING, manga_id INTEGER, index_n INTEGER);""")
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS images (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
         page INTEGER, img STRING, chapter_id INTEGER);""")
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS library (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
@@ -40,18 +40,18 @@ class Database:
 
     @database_method
     def add_chapter(self, chapter: Chapter, manga: Manga, index: int):
-        self.__cur.execute("INSERT INTO chapters VALUES(?, ?, ?, ?, ?, ?);",
-                           (chapter.id, chapter.vol, chapter.ch, chapter.title, manga.id, index))
+        self.__cur.execute("INSERT INTO chapters VALUES(?, ?, ?, ?, ?, ?, ?);",
+                           (chapter.id, chapter.vol, chapter.ch, chapter.title, chapter.language, manga.id, index))
         self.__con.commit()
 
     def get_chapter(self, chapter_id):
         a = self.__cur.execute(f"SELECT * FROM chapters WHERE id = '{chapter_id}'").fetchone()
-        return Chapter({'id': a[0], 'vol': a[1], 'ch': a[2], 'title': a[3]})
+        return Chapter(a[0], a[1], a[2], a[3], a[4])
 
     @database_method
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         a = self.__cur.execute(f"SELECT * FROM chapters WHERE manga_id = '{manga.id}' ORDER by index_n").fetchall()
-        return [Chapter({'id': i[0], 'vol': i[1], 'ch': i[2], 'title': i[3]}) for i in a[::-1]]
+        return [Chapter(i[0], i[1], i[2], i[3], i[4]) for i in a[::-1]]
 
     @database_method
     def add_image(self, image: Image, chapter: Chapter):
@@ -62,7 +62,7 @@ class Database:
     @database_method
     def get_images(self, chapter: Chapter) -> list[Image]:
         a = self.__cur.execute(f"SELECT * FROM images WHERE chapter_id = '{chapter.id}' ORDER by page").fetchall()
-        return [Image(i[0], i[1], i[2], i[3]) for i in a]
+        return [Image(i[0], i[1], i[2]) for i in a]
 
     @database_method
     def add_manga_library(self, manga: Manga, lib_list: str = "planned"):

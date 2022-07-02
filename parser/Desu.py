@@ -34,16 +34,14 @@ class Desu(Parser):
         chapters = []
         if html and html.status_code == 200 and len(html.json()):
             for i in html.json().get('response').get('chapters').get('list'):
-                data = i
-                data.update({'language': 'ru'})
-                chapters.append(Chapter(data))
+                chapters.append(Chapter(i.get('id'), i.get('vol'), i.get('ch'), i.get('title'), 'ru'))
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter):
         url = f'{URL_DESU_API}/{manga.id}/chapter/{chapter.id}'
         html = get_html(url, headers=self.headers)
         if html and html.status_code == 200 and len(html.json()):
-            return [Image(i.get('id'), i.get('page'), i.get('img'), False)
+            return [Image(i.get('id'), i.get('page'), i.get('img'))
                     for i in html.json().get('response').get('pages').get('list')]
         return []
 

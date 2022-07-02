@@ -1,5 +1,4 @@
 import os
-from enum import Enum
 from pathlib import Path
 
 URL_DESU = 'https://desu.me'
@@ -33,6 +32,7 @@ search_icon_path = os.path.join(Path(__file__).parent, "images/search.png")
 delete_icon_path = os.path.join(Path(__file__).parent, "images/delete.png")
 back_icon_path = os.path.join(Path(__file__).parent, "images/back.png")
 fullscreen_icon_path = os.path.join(Path(__file__).parent, "images/fullscreen.png")
+settings_icon_path = os.path.join(Path(__file__).parent, "images/settings.png")
 
 favorite_icon_path = os.path.join(Path(__file__).parent, "images/favorite.png")
 favorite1_icon_path = os.path.join(Path(__file__).parent, "images/favorite1.png")
@@ -77,13 +77,3 @@ manga_desu_orders = ({'en': 'name', 'ru': 'Название'}, {'en': 'popular',
 
 manga_desu_kinds = ({'en': 'manga', 'ru': 'Манга'}, {'en': 'manhwa', 'ru': 'Манхва'}, {'en': 'manhua', 'ru': 'Маньхуа'},
                     {'en': 'one_shot', 'ru': 'Ваншот'}, {'en': 'comics', 'ru': 'Комикс'})
-
-
-class LibraryLists(Enum):
-    lib_lists_ru = ('запланированно', 'прочитано', 'читаю', 'перечитываю', 'отложено', 'брошено')
-    PLANNED = 'planned'
-    COMPLETED = 'completed'
-    WATCHING = 'watching'
-    REWATCHING = 'rewatching'
-    ON_HOLD = 'on_hold'
-    DROPPED = 'dropped'
