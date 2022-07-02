@@ -53,11 +53,11 @@ class Reader(QWidget):
         self.max_chapters = len(chapters)
         self.catalog = get_catalog(manga.catalog_id)()
         self.setWindowTitle(self.manga.name)
-        self.show()
+        self.showMaximized()
         self.change_chapter()
 
     def resizeEvent(self, a0):
-        if not self.catalog:
+        if not self.catalog or self.manga.kind == 'ranobe':
             return
         pixmap = self.ui_re.img.pixmap()
         pixmap = pixmap.scaled(self.ui_re.img.size(), Qt.AspectRatioMode.KeepAspectRatio,
@@ -136,7 +136,7 @@ class Reader(QWidget):
         self.ui_re.scrollArea.horizontalScrollBar().setValue(0)
         if not self.images:
             return
-        if self.images[self.cur_page - 1].is_text:
+        if self.manga.kind == 'ranobe':
             self.ui_re.text_size_slider.show()
             text = self.get_text(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
             self.ui_re.img.setText(text)
@@ -201,7 +201,7 @@ class Reader(QWidget):
         images = self.images
         chapter = self.chapters[self.cur_chapter - 1]
         for image in images:
-            if form.isHidden() or chapter.id != self.chapters[self.cur_chapter - 1].id or image.is_text:
+            if form.isHidden() or chapter.id != self.chapters[self.cur_chapter - 1].id or self.manga.kind == 'ranobe':
                 break
             path = f'{self.wd}/Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
             if not os.path.exists(f'{path}/{image.page}.jpg'):
