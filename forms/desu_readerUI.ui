@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>688</width>
-    <height>647</height>
+    <width>527</width>
+    <height>604</height>
    </rect>
   </property>
   <property name="palette">
@@ -256,11 +256,23 @@ background-color: rgb(45, 45, 45);</string>
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>668</width>
-        <height>535</height>
+        <width>507</width>
+        <height>492</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
         <widget class="QLabel" name="img">
          <property name="text">
