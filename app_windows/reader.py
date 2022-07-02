@@ -47,6 +47,7 @@ class Reader(QWidget):
         self.catalog = None
 
     def setup(self, manga: Manga, chapters: list[Chapter], cur_chapter=1):
+        self.ui_re.img.clear()
         self.manga = manga
         self.chapters = chapters
         self.cur_chapter = cur_chapter
@@ -60,6 +61,7 @@ class Reader(QWidget):
         if not self.catalog or self.manga.kind == 'ranobe':
             return
         pixmap = self.ui_re.img.pixmap()
+        self.ui_re.img.clear()
         pixmap = pixmap.scaled(self.ui_re.img.size(), Qt.AspectRatioMode.KeepAspectRatio,
                                Qt.TransformationMode.SmoothTransformation)
         self.ui_re.img.setPixmap(pixmap)
@@ -136,11 +138,13 @@ class Reader(QWidget):
         self.ui_re.scrollArea.horizontalScrollBar().setValue(0)
         if not self.images:
             return
+        print(self.manga.kind)
         if self.manga.kind == 'ranobe':
             self.ui_re.text_size_slider.show()
             text = self.get_text(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
             self.ui_re.img.setText(text)
         else:
+            self.ui_re.text_size_slider.hide()
             pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
             self.ui_re.img.setAlignment(Qt.AlignmentFlag.AlignHCenter)
             self.ui_re.img.setPixmap(pixmap)
