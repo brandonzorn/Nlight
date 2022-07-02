@@ -29,10 +29,9 @@ class Rulate(Parser):
         hranobe = soup.findAll('p', class_='book-tooltip')
         ranobe = []
         for i in hranobe:
-            fname = i.text.strip()
-            name = fname
-            id = i.unwrap()['data-tooltip-content'].split('#book-tooltip-')[-1]
-            data = {'id': id, 'name': name, 'catalog_id': self.catalog_id}
+            name = i.text.strip()
+            ranobe_id = i.unwrap()['data-tooltip-content'].split('#book-tooltip-')[-1]
+            data = {'id': ranobe_id, 'name': name, 'catalog_id': self.catalog_id, 'kind': 'ranobe'}
             ranobe.append(Manga(data))
         return ranobe
 
@@ -40,19 +39,18 @@ class Rulate(Parser):
         chapters = []
         a = get_html(f"{self.url_api}/book/{manga.id}")
         soup = BeautifulSoup(a.text, "html.parser")
-        hchapters = soup.findAll('tr', class_='chapter_row')
-        for chapter in hchapters:
+        ranobe_chapters = soup.findAll('tr', class_='chapter_row')
+        for chapter in ranobe_chapters:
             name: str = chapter.find('td', class_='t').text
             name = name.strip()
-            id = chapter.unwrap()['data-id']
-            data = {'id': id, 'title': name, 'language': 'ru'}
-            chapters.append(Chapter(data))
+            chapter_id = chapter.unwrap()['data-id']
+            chapters.append(Chapter(chapter_id, None, None, name, 'ru'))
         chapters.reverse()
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter):
         url = f"{self.url_api}/book/{manga.id}/{chapter.id}/download?format=t&enc=UTF-8"
-        return [Image('', 1, url, True)]
+        return [Image('', 1, url)]
 
     def get_image(self, image: Image):
         a = get_html(image.img)

@@ -108,7 +108,6 @@ class FormFacial(QWidget):
 
     def filter_apply(self):
         self.cur_page = 1
-        self.ui.label_page.setText(f'Страница {self.cur_page}')
         self.request_params.clear()
         self.request_params.order = [self.order_by.get(i) for i in self.order_by if i.isChecked()]
         self.request_params.kinds = [self.kinds.get(i) for i in self.kinds if i.isChecked()]
@@ -120,7 +119,6 @@ class FormFacial(QWidget):
     def filter_reset(self):
         self.cur_page = 1
         self.Form_genres.clear_genres()
-        self.ui.label_page.setText(f'Страница {self.cur_page}')
         self.request_params.clear()
         self.ui.sort_popular.setChecked(True)
         self.ui.line_search.clear()
