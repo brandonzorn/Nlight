@@ -38,9 +38,7 @@ class MangaDex(Parser):
                 description = description.get('en')
         else:
             description = None
-        data = {'id': manga_id, 'kind': kind, 'name': name, 'russian': russian, 'description': description}
-        data.update({'catalog_id': self.catalog_id})
-        return Manga(data)
+        return Manga(manga_id, self.catalog_id, name, russian, kind, description, 0)
 
     def search_manga(self, params: RequestForm):
         url = f'{self.url_api}/manga'
