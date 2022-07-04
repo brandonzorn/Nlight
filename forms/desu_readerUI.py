@@ -28,7 +28,7 @@ class Ui_Dialog(object):
         brush = QBrush(QColor(255, 255, 255, 255))
         brush.setStyle(Qt.SolidPattern)
         palette.setBrush(QPalette.Active, QPalette.WindowText, brush)
-        brush1 = QBrush(QColor(45, 45, 45, 255))
+        brush1 = QBrush(QColor(32, 32, 32, 255))
         brush1.setStyle(Qt.SolidPattern)
         palette.setBrush(QPalette.Active, QPalette.Button, brush1)
         palette.setBrush(QPalette.Active, QPalette.Text, brush)
@@ -58,7 +58,7 @@ class Ui_Dialog(object):
 #endif
         Dialog.setPalette(palette)
         Dialog.setStyleSheet(u"color: rgb(255, 255, 255);\n"
-"background-color: rgb(45, 45, 45);")
+"background-color: rgb(32, 32, 32);")
         self.verticalLayout = QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.horizontalLayout_4 = QHBoxLayout()

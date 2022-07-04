@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">color: rgb(255, 255, 255);
-background-color: rgb(45, 45, 45);</string>
+background-color: rgb(32, 32, 32);</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="leftMargin">
@@ -47,9 +47,9 @@ background-color: rgb(45, 45, 45);</string>
         <colorrole role="Button">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>45</red>
-           <green>45</green>
-           <blue>45</blue>
+           <red>32</red>
+           <green>32</green>
+           <blue>32</blue>
           </color>
          </brush>
         </colorrole>
@@ -110,18 +110,18 @@ background-color: rgb(45, 45, 45);</string>
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>45</red>
-           <green>45</green>
-           <blue>45</blue>
+           <red>32</red>
+           <green>32</green>
+           <blue>32</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="Window">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>45</red>
-           <green>45</green>
-           <blue>45</blue>
+           <red>32</red>
+           <green>32</green>
+           <blue>32</blue>
           </color>
          </brush>
         </colorrole>
@@ -193,9 +193,9 @@ background-color: rgb(45, 45, 45);</string>
         <colorrole role="Button">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>45</red>
-           <green>45</green>
-           <blue>45</blue>
+           <red>32</red>
+           <green>32</green>
+           <blue>32</blue>
           </color>
          </brush>
         </colorrole>
@@ -256,18 +256,18 @@ background-color: rgb(45, 45, 45);</string>
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>45</red>
-           <green>45</green>
-           <blue>45</blue>
+           <red>32</red>
+           <green>32</green>
+           <blue>32</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="Window">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>45</red>
-           <green>45</green>
-           <blue>45</blue>
+           <red>32</red>
+           <green>32</green>
+           <blue>32</blue>
           </color>
          </brush>
         </colorrole>
@@ -339,9 +339,9 @@ background-color: rgb(45, 45, 45);</string>
         <colorrole role="Button">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>45</red>
-           <green>45</green>
-           <blue>45</blue>
+           <red>32</red>
+           <green>32</green>
+           <blue>32</blue>
           </color>
          </brush>
         </colorrole>
@@ -402,18 +402,18 @@ background-color: rgb(45, 45, 45);</string>
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>45</red>
-           <green>45</green>
-           <blue>45</blue>
+           <red>32</red>
+           <green>32</green>
+           <blue>32</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="Window">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>45</red>
-           <green>45</green>
-           <blue>45</blue>
+           <red>32</red>
+           <green>32</green>
+           <blue>32</blue>
           </color>
          </brush>
         </colorrole>
