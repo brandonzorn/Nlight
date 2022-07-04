@@ -1,7 +1,7 @@
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget
 
-from const import main_icon_path, library_icon_path, shikimori_icon_path, history_icon_path
+from const import main_icon_path, library_icon_path, shikimori_icon_path, history_icon_path, settings_icon_path
 from forms.sideMenu import Ui_Form
 
 
@@ -14,3 +14,4 @@ class SideMenu(QWidget):
         self.ui.btn_main.setIcon(QIcon(main_icon_path))
         self.ui.btn_shikimori.setIcon(QIcon(shikimori_icon_path))
         self.ui.btn_history.setIcon(QIcon(history_icon_path))
+        self.ui.btn_options.setIcon(QIcon(settings_icon_path))

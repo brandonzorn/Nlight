@@ -23,7 +23,7 @@ class Shikimori(Parser):
     def get_manga(self, manga: Manga) -> Manga:
         url = f'{self.url_api}/mangas/{manga.id}'
         html = get_html(url, self.headers)
-        if html and html.status_code == 200 and len(html.json()):
+        if html and html.status_code == 200 and html.json():
             data = html.json()
             manga.description = data.get('description')
         return manga
@@ -34,10 +34,10 @@ class Shikimori(Parser):
                   'order': 'popularity', 'kind': ','.join(params.kinds), 'page': params.page}
         html = get_html(url, self.headers, params)
         manga = []
-        if html and html.status_code == 200 and len(html.json()):
+        if html and html.status_code == 200 and html.json():
             for i in html.json():
                 manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
-                                   i.get('kind'), i.get('description'), i.get('score')))
+                                   i.get('kind'), i.get('description'), float(i.get('score'))))
         return manga
 
     def get_preview(self, manga: Manga):
@@ -46,7 +46,7 @@ class Shikimori(Parser):
     def get_genres(self):
         url = f'{self.url_api}/genres'
         html = get_html(url, headers=self.headers)
-        if html and html.status_code == 200 and len(html.json()):
+        if html and html.status_code == 200 and html.json():
             return [Genre(i) for i in html.json()]
         return []
 
@@ -62,26 +62,17 @@ class Shikimori(Parser):
         params = {'limit': params.limit, 'page': params.page, 'mylist': params.mylist, 'search': params.search}
         html = self.session.get(url, params)
         manga = []
-        if html and html.status_code == 200 and len(html.json()):
+        if html and html.status_code == 200 and html.json():
             for i in html.json():
                 manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
-                                   i.get('kind'), i.get('description'), i.get('score')))
+                                   i.get('kind'), i.get('description'), float(i.get('score'))))
         return manga
 
     def get_user(self) -> User:
         whoami = self.session.get('https://shikimori.one/api/users/whoami')
-        user = User()
-        if whoami:
-            match whoami.status_code:
-                case 401:
-                    print(whoami.json())
-                case 200:
-                    data = whoami.json()
-                    user.id = data.get('id')
-                    user.nickname = data.get('nickname')
-                    user.avatar = data.get('avatar')
-                    user.locale = data.get('locale')
-        return user
+        if whoami and whoami.status_code == 200:
+            data = whoami.json()
+            return User(data.get('id'), data.get('nickname'), data.get('avatar'))
 
 
 class Auth:

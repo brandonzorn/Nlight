@@ -8,12 +8,16 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize, Qt)
-from PySide6.QtGui import (QBrush, QColor, QIcon,
-                           QPalette)
-from PySide6.QtWidgets import (QHBoxLayout, QListWidget,
-                               QPushButton, QSizePolicy, QSpacerItem,
-                               QVBoxLayout)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QListWidget,
+    QListWidgetItem, QPushButton, QSizePolicy, QSpacerItem,
+    QVBoxLayout, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -24,7 +28,7 @@ class Ui_Dialog(object):
         brush = QBrush(QColor(255, 255, 255, 255))
         brush.setStyle(Qt.SolidPattern)
         palette.setBrush(QPalette.Active, QPalette.WindowText, brush)
-        brush1 = QBrush(QColor(45, 45, 45, 255))
+        brush1 = QBrush(QColor(32, 32, 32, 255))
         brush1.setStyle(Qt.SolidPattern)
         palette.setBrush(QPalette.Active, QPalette.Button, brush1)
         palette.setBrush(QPalette.Active, QPalette.Text, brush)
@@ -54,7 +58,7 @@ class Ui_Dialog(object):
 #endif
         Dialog.setPalette(palette)
         Dialog.setStyleSheet(u"color: rgb(255, 255, 255);\n"
-"background-color: rgb(45, 45, 45);")
+"background-color: rgb(32, 32, 32);")
         self.horizontalLayout = QHBoxLayout(Dialog)
         self.horizontalLayout.setSpacing(6)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -71,7 +75,7 @@ class Ui_Dialog(object):
         self.btn_delete.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
         icon = QIcon()
-        icon.addFile(u"images/delete.png", QSize(), QIcon.Normal, QIcon.On)
+        icon.addFile(u"../images/delete.png", QSize(), QIcon.Normal, QIcon.On)
         self.btn_delete.setIcon(icon)
 
         self.verticalLayout.addWidget(self.btn_delete)

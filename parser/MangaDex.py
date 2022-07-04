@@ -125,15 +125,9 @@ class MangaDex(Parser):
 
     def get_user(self) -> User:
         whoami = self.session.get(f'{self.url_api}/user/me')
-        user = User()
-        match whoami.status_code:
-            case 401:
-                print(whoami.json())
-            case 200:
-                data = whoami.json().get('data')
-                user.id = data.get('id')
-                user.nickname = data.get('attributes').get('username')
-        return user
+        if whoami and whoami.status_code == 200:
+            data = whoami.json().get('data')
+            return User(data.get('id'), data.get('attributes').get('username'), '')
 
 
 class Auth:
@@ -170,18 +164,12 @@ class Auth:
         match token.status_code:
             case 200:
                 self.update_token(token)
-            case _:
-                print(token.status_code)
-                print(token.json())
 
     def auth_login(self, params):
         token = requests.post(f"{self.url_api}/auth/login", json=params)
         match token.status_code:
             case 200:
                 self.update_token(token)
-            case _:
-                print(token.status_code)
-                print(token.json())
 
     def get(self, url, params=None):
         if self.check_auth():
