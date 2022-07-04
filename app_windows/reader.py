@@ -138,7 +138,6 @@ class Reader(QWidget):
         self.ui_re.scrollArea.horizontalScrollBar().setValue(0)
         if not self.images:
             return
-        print(self.manga.kind)
         if self.manga.kind == 'ranobe':
             self.ui_re.text_size_slider.show()
             text = self.get_text(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
