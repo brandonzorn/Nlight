@@ -7,12 +7,12 @@ Open source manga and ranobe reading application
 
 ## Currently, supported catalogs
     Manga:
-     - Desu (RU)
-     - Shikimori (RU)
-     - MangaDex (RU, ENG)
+     - Desu (🇷🇺)
+     - Shikimori (🇷🇺)
+     - MangaDex (🇷🇺, 🇬🇧)
 
     Ranobe:
-     - Rulate (RU)
+     - Rulate (🇷🇺)
 
 ## Screenshots
 | ![desu_1](./.github/Screenshots/desu_1.png) | ![desu_2](./.github/Screenshots/desu_2.png) | ![desu_3](./.github/Screenshots/desu_3.png) |
