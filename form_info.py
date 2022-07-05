@@ -32,8 +32,8 @@ class FormInfo(QWidget):
         self.catalog = None
         self.manga = None
         self.chapters: list[Chapter] = []
-        self.reader = Reader()
         self.lock = Lock()
+        self.reader = None
 
     def resizeEvent(self, a0):
         self.ui.image.clear()
@@ -121,6 +121,7 @@ class FormInfo(QWidget):
                 self.ui.chapters.addItem(item)
 
     def open_reader(self):
+        self.reader = Reader()
         self.reader.setup(self.manga, self.chapters, self.ui.chapters.currentIndex().row() + 1)
 
     def get_preview(self) -> str:
