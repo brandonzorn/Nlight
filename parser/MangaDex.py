@@ -46,7 +46,7 @@ class MangaDex(Parser):
                   'includedTags[]': [i.id for i in params.genres]}
         manga = []
         html = get_html(url, self.headers, params)
-        if html and html.status_code == 200 and len(html.json()):
+        if html and html.status_code == 200 and html.json():
             for i in html.json().get('data'):
                 manga.append(self.setup_manga(i))
         return manga
@@ -56,7 +56,7 @@ class MangaDex(Parser):
         params = {'manga': manga.id, 'limit': 1, 'translatedLanguage[]': ['ru', 'en'], 'order[chapter]': 'asc'}
         html = get_html(url, self.headers, params)
         chapters = []
-        if html and html.status_code == 200 and len(html.json()):
+        if html and html.status_code == 200 and html.json():
             params.update({'limit': 100})
             for j in range(html.json().get('total') // 100 + 1):
                 params.update({'offset': j * 100})
@@ -72,7 +72,7 @@ class MangaDex(Parser):
         url = f'{self.url_api}/at-home/server/{chapter.id}'
         html = get_html(url, self.headers)
         images = []
-        if html and html.status_code == 200 and len(html.json()):
+        if html and html.status_code == 200 and html.json():
             image_hash = html.json().get('chapter').get('hash')
             for i in html.json().get('chapter').get('data'):
                 img = f'https://uploads.mangadex.org/data/{image_hash}/{i}'
@@ -96,7 +96,7 @@ class MangaDex(Parser):
         url = f'{self.url_api}/manga/tag'
         html = get_html(url, headers=self.headers)
         genres = []
-        if html and html.status_code == 200 and len(html.json()):
+        if html and html.status_code == 200 and html.json():
             for i in html.json().get('data'):
                 if i.get('attributes').get('group') not in ['genre', 'theme']:
                     continue
@@ -116,7 +116,7 @@ class MangaDex(Parser):
         html_statuses = self.session.get(f'{self.url_api}/manga/status', params={'status': params.mylist})
         params = {'limit': params.limit, 'offset': params.offset()}
         html = self.session.get(f'{self.url_api}/user/follows/manga', params=params)
-        if html and html.status_code == 200 and len(html.json()):
+        if html and html.status_code == 200 and html.json():
             for i in html.json().get('data'):
                 manga = self.setup_manga(i)
                 if manga.id in html_statuses.json().get('statuses'):
