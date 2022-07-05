@@ -18,7 +18,7 @@ class Reader(QWidget):
         super().__init__()
         self.ui_re = Ui_Dialog()
         self.ui_re.setupUi(self)
-        self.ui_re.text_size_slider.hide()
+
         self.setWindowIcon(QIcon(app_icon_path))
 
         self.ui_re.prev_page.setIcon(QIcon(prev_page_icon_path))
@@ -47,24 +47,22 @@ class Reader(QWidget):
         self.catalog = None
 
     def setup(self, manga: Manga, chapters: list[Chapter], cur_chapter=1):
-        self.ui_re.img.clear()
+        self.showMaximized()
         self.manga = manga
+        if self.manga.kind == 'ranobe':
+            self.ui_re.text_size_slider.show()
+        else:
+            self.ui_re.img.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+            self.ui_re.text_size_slider.hide()
         self.chapters = chapters
         self.cur_chapter = cur_chapter
         self.max_chapters = len(chapters)
         self.catalog = get_catalog(manga.catalog_id)()
         self.setWindowTitle(self.manga.name)
-        self.showMaximized()
         self.change_chapter()
 
     def resizeEvent(self, a0):
-        if not self.catalog or self.manga.kind == 'ranobe':
-            return
-        pixmap = self.ui_re.img.pixmap()
-        self.ui_re.img.clear()
-        pixmap = pixmap.scaled(self.ui_re.img.size(), Qt.AspectRatioMode.KeepAspectRatio,
-                               Qt.TransformationMode.SmoothTransformation)
-        self.ui_re.img.setPixmap(pixmap)
+        self.attach_image()
 
     def keyPressEvent(self, event):
         match event.key():
@@ -140,13 +138,10 @@ class Reader(QWidget):
         if not self.images:
             return
         if self.manga.kind == 'ranobe':
-            self.ui_re.text_size_slider.show()
             text = self.get_text(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
             self.ui_re.img.setText(text)
         else:
-            self.ui_re.text_size_slider.hide()
             pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
-            self.ui_re.img.setAlignment(Qt.AlignmentFlag.AlignHCenter)
             self.ui_re.img.setPixmap(pixmap)
 
     def update_text_size(self):
@@ -194,7 +189,7 @@ class Reader(QWidget):
         #     self.db.add_image(image, chapter)
         # self.images = self.db.get_images(chapter)
         self.max_page = self.get_images_pages()
-        Thread(target=lambda: self.download(self)).start()
+        Thread(target=lambda: self.download(self), daemon=True).start()
 
     def get_images_pages(self) -> int:
         if not self.images:
