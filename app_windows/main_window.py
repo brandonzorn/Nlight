@@ -5,7 +5,7 @@ from form_facial import FormFacial
 from form_history import FormHistory
 from form_info import FormInfo
 from form_library import FormLibrary
-from form_options import FormOptions
+from form_settings import FormSettings
 from form_shikimori import FormShikimori
 from forms.mainWindow import Ui_MainWindow
 
@@ -42,7 +42,7 @@ class MainWindow(QMainWindow):
         self.Form_info = FormInfo()
         self.Form_info.ui.btn_back.clicked.connect(self.back)
 
-        self.Form_options = FormOptions()
+        self.Form_settings = FormSettings()
 
         self.top_item = QStackedWidget()
         self.add_widget(self.Side_menu)
@@ -93,7 +93,7 @@ class MainWindow(QMainWindow):
         self.top_item.removeWidget(self.top_item.currentWidget())
 
     def clicked_options(self):
-        self.Form_options.show()
+        self.Form_settings.show()
 
     def add_widget(self, widget):
         self.ui.horizontalLayout.addWidget(widget)
