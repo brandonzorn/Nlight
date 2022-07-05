@@ -94,15 +94,15 @@ class Ui_Form(object):
 
         self.verticalLayout.addItem(self.verticalSpacer_2)
 
-        self.btn_options = QPushButton(Form)
-        self.btn_options.setObjectName(u"btn_options")
-        sizePolicy1.setHeightForWidth(self.btn_options.sizePolicy().hasHeightForWidth())
-        self.btn_options.setSizePolicy(sizePolicy1)
-        self.btn_options.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
+        self.btn_settings = QPushButton(Form)
+        self.btn_settings.setObjectName(u"btn_settings")
+        sizePolicy1.setHeightForWidth(self.btn_settings.sizePolicy().hasHeightForWidth())
+        self.btn_settings.setSizePolicy(sizePolicy1)
+        self.btn_settings.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
-        self.btn_options.setIconSize(QSize(40, 40))
+        self.btn_settings.setIconSize(QSize(40, 40))
 
-        self.verticalLayout.addWidget(self.btn_options)
+        self.verticalLayout.addWidget(self.btn_settings)
 
 
         self.retranslateUi(Form)
@@ -116,6 +116,6 @@ class Ui_Form(object):
         self.btn_main.setText("")
         self.btn_shikimori.setText("")
         self.btn_history.setText("")
-        self.btn_options.setText("")
+        self.btn_settings.setText("")
     # retranslateUi
 
