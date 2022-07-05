@@ -1,5 +1,6 @@
+import contextlib
 import os
-from threading import Thread
+from threading import Thread, Lock
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon, QPixmap, QColor
@@ -11,10 +12,13 @@ from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favor
 from database import Database
 from forms.desu_info import Ui_Form
 from items import Manga, Chapter
-from utils import get_language_icon
+from utils import get_language_icon, with_lock_thread
 
 
 class FormInfo(QWidget):
+
+    lock = Lock()
+
     def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
@@ -29,6 +33,7 @@ class FormInfo(QWidget):
         self.manga = None
         self.chapters: list[Chapter] = []
         self.reader = Reader()
+        self.lock = Lock()
 
     def resizeEvent(self, a0):
         self.ui.image.clear()
@@ -40,22 +45,30 @@ class FormInfo(QWidget):
         self.ui.image.setPixmap(pixmap)
 
     def setup(self, manga: Manga):
-        self.manga = manga
-        self.catalog = get_catalog(self.manga.catalog_id)()
-        pixmap = QPixmap(self.get_preview())
-        pixmap = pixmap.scaled(self.ui.image.size())
-        self.ui.image.setPixmap(pixmap)
-        self.ui.description.setText(self.manga.description)
-        self.ui.name.setText(self.manga.name)
-        self.ui.russian.setText(self.manga.russian)
-        self.set_score(self.manga.score)
-        self.ui.rate_frame.setVisible(bool(self.manga.score))
-        if self.db.check_manga_library(self.manga):
-            self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
-            self.ui.btn_add_to_lib.setIcon(QIcon(favorite1_icon_path))
-        else:
-            self.ui.btn_add_to_lib.setIcon(QIcon(favorite_icon_path))
-        Thread(target=self.get_chapters, daemon=True).start()
+        with self.lock_ui():
+            self.manga = manga
+            self.catalog = get_catalog(self.manga.catalog_id)()
+            pixmap = QPixmap(self.get_preview())
+            pixmap = pixmap.scaled(self.ui.image.size())
+            self.ui.image.setPixmap(pixmap)
+            self.ui.description.setText(self.manga.description)
+            self.ui.name.setText(self.manga.name)
+            self.ui.russian.setText(self.manga.russian)
+            self.ui.rate_frame.setVisible(bool(self.manga.score))
+            self.set_score(self.manga.score)
+            if self.db.check_manga_library(self.manga):
+                self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
+                self.ui.btn_add_to_lib.setIcon(QIcon(favorite1_icon_path))
+            else:
+                self.ui.btn_add_to_lib.setIcon(QIcon(favorite_icon_path))
+            Thread(target=self.get_chapters, daemon=True).start()
+
+    @contextlib.contextmanager
+    def lock_ui(self):
+        ui_to_lock = (self.ui.btn_back,)
+        [i.setEnabled(False) for i in ui_to_lock]
+        yield
+        [i.setEnabled(True) for i in ui_to_lock]
 
     def set_score(self, score: float):
         stars = [self.ui.star_1, self.ui.star_2, self.ui.star_3, self.ui.star_4, self.ui.star_5]
@@ -87,25 +100,25 @@ class FormInfo(QWidget):
             lib_list = lib_lists_en[self.ui.lib_list.currentIndex()]
             self.db.add_manga_library(self.manga, lib_list)
 
+    @with_lock_thread(lock)
     def get_chapters(self):
-        self.ui.chapters.clear()
-        self.chapters: list[Chapter] = self.catalog.get_chapters(self.manga)
-        for i in self.chapters:
-            self.db.add_chapter(i, self.manga, self.chapters[::-1].index(i))
-        # self.chapters = self.db.get_chapters(self.manga)
-        self.chapters.reverse()
-        self.chapters.sort(key=lambda ch: ch.language if ch.language else False)
-        for chapter in self.chapters:
-            item = QListWidgetItem(chapter.get_name())
-            if self.db.check_complete_chapter(chapter):
-                if self.db.get_complete_status(chapter):
-                    item.setBackground(QColor("GREEN"))
-                else:
-                    item.setBackground(QColor("RED"))
-            if chapter.language:
-                item.setIcon(QIcon(get_language_icon(chapter.language)))
-            self.ui.chapters.addItem(item)
-        self.ui.chapters.setVisible(bool(self.chapters))
+        with self.lock_ui():
+            self.ui.chapters.clear()
+            self.chapters: list[Chapter] = self.catalog.get_chapters(self.manga)
+            self.chapters.reverse()
+            self.chapters.sort(key=lambda ch: ch.language if ch.language else False)
+            self.ui.chapters.setVisible(bool(self.chapters))
+            for chapter in self.chapters:
+                self.db.add_chapter(chapter, self.manga, self.chapters[::-1].index(chapter))
+                item = QListWidgetItem(chapter.get_name())
+                if self.db.check_complete_chapter(chapter):
+                    if self.db.get_complete_status(chapter):
+                        item.setBackground(QColor("GREEN"))
+                    else:
+                        item.setBackground(QColor("RED"))
+                if chapter.language:
+                    item.setIcon(QIcon(get_language_icon(chapter.language)))
+                self.ui.chapters.addItem(item)
 
     def open_reader(self):
         self.reader.setup(self.manga, self.chapters, self.ui.chapters.currentIndex().row() + 1)

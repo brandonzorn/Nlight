@@ -115,6 +115,7 @@ class Reader(QWidget):
             case '+':
                 if self.cur_chapter == self.max_chapters:
                     self.hide()
+                    return
                 else:
                     self.cur_chapter += 1
             case '-':
