@@ -36,23 +36,23 @@ class Ui_Form(object):
 
         self.verticalLayout.addWidget(self.list_manga)
 
-        self.frame = QFrame(Form)
-        self.frame.setObjectName(u"frame")
-        self.frame.setFrameShape(QFrame.StyledPanel)
-        self.frame.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_4 = QHBoxLayout(self.frame)
+        self.search_frame = QFrame(Form)
+        self.search_frame.setObjectName(u"search_frame")
+        self.search_frame.setFrameShape(QFrame.StyledPanel)
+        self.search_frame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_4 = QHBoxLayout(self.search_frame)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.line_search = QLineEdit(self.frame)
+        self.line_search = QLineEdit(self.search_frame)
         self.line_search.setObjectName(u"line_search")
         self.line_search.setStyleSheet(u"background-color: rgb(45, 45, 45);\n"
 "color: rgb(255, 255, 255);")
 
         self.horizontalLayout_3.addWidget(self.line_search)
 
-        self.btn_search = QPushButton(self.frame)
+        self.btn_search = QPushButton(self.search_frame)
         self.btn_search.setObjectName(u"btn_search")
         self.btn_search.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
@@ -64,21 +64,21 @@ class Ui_Form(object):
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.prev_page = QPushButton(self.frame)
+        self.prev_page = QPushButton(self.search_frame)
         self.prev_page.setObjectName(u"prev_page")
         self.prev_page.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
         self.horizontalLayout.addWidget(self.prev_page)
 
-        self.label_page = QLabel(self.frame)
+        self.label_page = QLabel(self.search_frame)
         self.label_page.setObjectName(u"label_page")
         self.label_page.setTextFormat(Qt.AutoText)
         self.label_page.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout.addWidget(self.label_page)
 
-        self.next_page = QPushButton(self.frame)
+        self.next_page = QPushButton(self.search_frame)
         self.next_page.setObjectName(u"next_page")
         self.next_page.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
@@ -89,74 +89,73 @@ class Ui_Form(object):
         self.horizontalLayout_4.addLayout(self.horizontalLayout)
 
 
-        self.verticalLayout.addWidget(self.frame)
+        self.verticalLayout.addWidget(self.search_frame)
 
 
         self.horizontalLayout_2.addLayout(self.verticalLayout)
 
-        self.verticalLayout_3 = QVBoxLayout()
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.verticalLayout_4 = QVBoxLayout()
-        self.verticalLayout_4.setSpacing(7)
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.b_planned = QPushButton(Form)
+        self.lists_frame = QFrame(Form)
+        self.lists_frame.setObjectName(u"lists_frame")
+        self.lists_frame.setFrameShape(QFrame.StyledPanel)
+        self.lists_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_2 = QVBoxLayout(self.lists_frame)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.b_planned = QPushButton(self.lists_frame)
         self.b_planned.setObjectName(u"b_planned")
         self.b_planned.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.verticalLayout_4.addWidget(self.b_planned)
+        self.verticalLayout_2.addWidget(self.b_planned)
 
-        self.b_completed = QPushButton(Form)
+        self.b_completed = QPushButton(self.lists_frame)
         self.b_completed.setObjectName(u"b_completed")
         self.b_completed.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.verticalLayout_4.addWidget(self.b_completed)
+        self.verticalLayout_2.addWidget(self.b_completed)
 
-        self.b_watching = QPushButton(Form)
+        self.b_watching = QPushButton(self.lists_frame)
         self.b_watching.setObjectName(u"b_watching")
         self.b_watching.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.verticalLayout_4.addWidget(self.b_watching)
+        self.verticalLayout_2.addWidget(self.b_watching)
 
-        self.b_rewatching = QPushButton(Form)
+        self.b_rewatching = QPushButton(self.lists_frame)
         self.b_rewatching.setObjectName(u"b_rewatching")
         self.b_rewatching.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.verticalLayout_4.addWidget(self.b_rewatching)
+        self.verticalLayout_2.addWidget(self.b_rewatching)
 
-        self.b_on_hold = QPushButton(Form)
+        self.b_on_hold = QPushButton(self.lists_frame)
         self.b_on_hold.setObjectName(u"b_on_hold")
         self.b_on_hold.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.verticalLayout_4.addWidget(self.b_on_hold)
+        self.verticalLayout_2.addWidget(self.b_on_hold)
 
-        self.b_dropped = QPushButton(Form)
+        self.b_dropped = QPushButton(self.lists_frame)
         self.b_dropped.setObjectName(u"b_dropped")
         self.b_dropped.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.verticalLayout_4.addWidget(self.b_dropped)
+        self.verticalLayout_2.addWidget(self.b_dropped)
 
+        self.verticalSpacer = QSpacerItem(20, 236, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.verticalLayout_3.addLayout(self.verticalLayout_4)
+        self.verticalLayout_2.addItem(self.verticalSpacer)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.verticalLayout_3.addItem(self.verticalSpacer)
-
-        self.btn_auth = QPushButton(Form)
+        self.btn_auth = QPushButton(self.lists_frame)
         self.btn_auth.setObjectName(u"btn_auth")
         self.btn_auth.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.verticalLayout_3.addWidget(self.btn_auth)
+        self.verticalLayout_2.addWidget(self.btn_auth)
 
 
-        self.horizontalLayout_2.addLayout(self.verticalLayout_3)
+        self.horizontalLayout_2.addWidget(self.lists_frame)
 
 
         self.retranslateUi(Form)

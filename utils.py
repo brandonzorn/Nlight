@@ -63,15 +63,13 @@ def singleton(cls):
     return wrapper
 
 
-lock = threading.Lock()
-
-
-def database_method(func):
-    def wrapper(*args, **kwargs):
-        with lock:
-            return func(*args, **kwargs)
-
-    return wrapper
+def with_lock_thread(locker):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            with locker:
+                return func(*args, **kwargs)
+        return wrapper
+    return decorator
 
 
 def token_saver(token, catalog_name):

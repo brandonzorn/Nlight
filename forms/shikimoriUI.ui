@@ -36,7 +36,7 @@ background-color: rgb(32, 32, 32);</string>
       <widget class="QListWidget" name="list_manga"/>
      </item>
      <item>
-      <widget class="QFrame" name="frame">
+      <widget class="QFrame" name="search_frame">
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
        </property>
@@ -124,105 +124,118 @@ color: rgb(255, 255, 255);</string>
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_3">
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <property name="spacing">
-        <number>7</number>
-       </property>
-       <item>
-        <widget class="QPushButton" name="b_planned">
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(0, 133, 52);
+    <widget class="QFrame" name="lists_frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="b_planned">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(0, 133, 52);
 color: rgb(255, 255, 255);</string>
-         </property>
-         <property name="text">
-          <string>Запланировано</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="b_completed">
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(0, 133, 52);
+        </property>
+        <property name="text">
+         <string>Запланировано</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="b_completed">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(0, 133, 52);
 color: rgb(255, 255, 255);</string>
-         </property>
-         <property name="text">
-          <string>Прочитано</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="b_watching">
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(0, 133, 52);
+        </property>
+        <property name="text">
+         <string>Прочитано</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="b_watching">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(0, 133, 52);
 color: rgb(255, 255, 255);</string>
-         </property>
-         <property name="text">
-          <string>Читаю</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="b_rewatching">
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(0, 133, 52);
+        </property>
+        <property name="text">
+         <string>Читаю</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="b_rewatching">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(0, 133, 52);
 color: rgb(255, 255, 255);</string>
-         </property>
-         <property name="text">
-          <string>Перечитываю</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="b_on_hold">
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(0, 133, 52);
+        </property>
+        <property name="text">
+         <string>Перечитываю</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="b_on_hold">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(0, 133, 52);
 color: rgb(255, 255, 255);</string>
-         </property>
-         <property name="text">
-          <string>Отложено</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="b_dropped">
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(0, 133, 52);
+        </property>
+        <property name="text">
+         <string>Отложено</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="b_dropped">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(0, 133, 52);
 color: rgb(255, 255, 255);</string>
-         </property>
-         <property name="text">
-          <string>Брошено</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_auth">
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(0, 133, 52);
+        </property>
+        <property name="text">
+         <string>Брошено</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>236</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_auth">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(0, 133, 52);
 color: rgb(255, 255, 255);</string>
-       </property>
-       <property name="text">
-        <string>Войти</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+        </property>
+        <property name="text">
+         <string>Войти</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>
