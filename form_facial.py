@@ -1,7 +1,9 @@
-from threading import Thread
+import contextlib
+import os
+from threading import Thread, Lock
 
-from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QWidget
+from PySide6.QtGui import QIcon, QColor
+from PySide6.QtWidgets import QWidget, QListWidgetItem
 
 from catalog_manager import get_catalog, CATALOGS
 from const import search_icon_path, prev_page_icon_path, next_page_icon_path
@@ -9,9 +11,13 @@ from database import Database
 from form_genres import FormGenres
 from forms.desuUI import Ui_Dialog
 from items import RequestForm
+from utils import with_lock_thread
 
 
 class FormFacial(QWidget):
+
+    lock = Lock()
+
     def __init__(self):
         super().__init__()
         self.ui = Ui_Dialog()
@@ -39,6 +45,7 @@ class FormFacial(QWidget):
         self.request_params = RequestForm()
         self.db: Database = Database()
         self.catalog = get_catalog()()
+        self.wd = os.getcwd()
         Thread(target=self.get_content, daemon=True).start()
 
     def clicked_genres(self):
@@ -70,24 +77,26 @@ class FormFacial(QWidget):
         self.ui.catalog_list.clear()
         self.ui.catalog_list.addItems([i.catalog_name for i in CATALOGS.values()])
 
+    @with_lock_thread(lock)
     def get_content(self):
-        self.set_enabled_ui(False)
-        self.ui.list_manga.clear()
-        self.request_params.page = self.cur_page
-        self.mangas = self.catalog.search_manga(self.request_params)
-        for i in self.mangas:
-            self.db.add_manga(i)
-        self.ui.label_page.setText(f'Страница {self.cur_page}')
-        [self.ui.list_manga.addItem(i) for i in self.get_manga_names()]
-        self.set_enabled_ui(True)
+        with self.lock_ui():
+            self.ui.list_manga.clear()
+            self.request_params.page = self.cur_page
+            self.mangas = self.catalog.search_manga(self.request_params)
+            for i in self.mangas:
+                self.db.add_manga(i)
+                item = QListWidgetItem(i.get_name())
+                if self.db.check_manga_library(i):
+                    item.setBackground(QColor("ORANGE"))
+                self.ui.list_manga.addItem(item)
+            self.ui.label_page.setText(f'Страница {self.cur_page}')
 
-    def set_enabled_ui(self, a: bool):
-        self.ui.filter_apply.setEnabled(a)
-        self.ui.filter_reset.setEnabled(a)
-        self.ui.search_frame.setEnabled(a)
-
-    def get_manga_names(self) -> list[str]:
-        return [i.get_name() for i in self.mangas]
+    @contextlib.contextmanager
+    def lock_ui(self):
+        ui_to_lock = (self.ui.filters_frame, self.ui.search_frame)
+        [i.setEnabled(False) for i in ui_to_lock]
+        yield
+        [i.setEnabled(True) for i in ui_to_lock]
 
     def search(self):
         self.cur_page = 1

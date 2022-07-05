@@ -1,4 +1,5 @@
-from threading import Thread
+import contextlib
+from threading import Thread, Lock
 
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget
@@ -9,9 +10,13 @@ from database import Database
 from form_auth import FormAuth
 from forms.shikimoriUI import Ui_Form
 from items import Manga, RequestForm, User
+from utils import with_lock_thread
 
 
 class FormShikimori(QWidget):
+
+    lock = Lock()
+
     def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
@@ -69,23 +74,27 @@ class FormShikimori(QWidget):
         self.request_params.search = self.ui.line_search.text()
         self.update_list()
 
+    @with_lock_thread(lock)
     def update_list(self, lib_list=None):
-        self.set_enabled_ui(False)
-        self.ui.list_manga.clear()
-        if not lib_list:
-            lib_list = self.cur_list
-        else:
-            self.cur_list = lib_list
-        self.request_params.mylist = lib_list
-        self.mangas = self.catalog.get_manga_login(self.request_params)
-        for i in self.mangas:
-            self.db.add_manga(i)
-        self.ui.label_page.setText(f'Страница {self.request_params.page}')
-        [self.ui.list_manga.addItem(i) for i in self.get_manga_library()]
-        self.set_enabled_ui(True)
+        with self.lock_ui():
+            self.ui.list_manga.clear()
+            if not lib_list:
+                lib_list = self.cur_list
+            else:
+                self.cur_list = lib_list
+            self.request_params.mylist = lib_list
+            self.mangas = self.catalog.get_manga_login(self.request_params)
+            for i in self.mangas:
+                self.db.add_manga(i)
+            self.ui.label_page.setText(f'Страница {self.request_params.page}')
+            [self.ui.list_manga.addItem(i) for i in self.get_manga_library()]
 
-    def set_enabled_ui(self, a: bool):
-        self.ui.frame.setEnabled(a)
+    @contextlib.contextmanager
+    def lock_ui(self):
+        ui_to_lock = (self.ui.search_frame, self.ui.lists_frame)
+        [i.setEnabled(False) for i in ui_to_lock]
+        yield
+        [i.setEnabled(True) for i in ui_to_lock]
 
     def get_manga_library(self) -> list:
         return [i.get_name() for i in self.mangas]
