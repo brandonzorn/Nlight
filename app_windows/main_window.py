@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
         self.Side_menu.ui.btn_mylist.clicked.connect(self.clicked_library)
         self.Side_menu.ui.btn_shikimori.clicked.connect(self.clicked_shikimori)
         self.Side_menu.ui.btn_history.clicked.connect(self.clicked_history)
-        self.Side_menu.ui.btn_options.clicked.connect(self.clicked_options)
+        self.Side_menu.ui.btn_settings.clicked.connect(self.clicked_settings)
 
         self.Form_facial = FormFacial()
         self.Form_facial.ui.list_manga.doubleClicked.connect(
@@ -92,7 +92,7 @@ class MainWindow(QMainWindow):
         self.Side_menu.show()
         self.top_item.removeWidget(self.top_item.currentWidget())
 
-    def clicked_options(self):
+    def clicked_settings(self):
         self.Form_settings.show()
 
     def add_widget(self, widget):
