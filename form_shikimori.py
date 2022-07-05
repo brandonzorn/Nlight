@@ -43,7 +43,10 @@ class FormShikimori(QWidget):
         self.Form_auth.accepted.connect(self.auth_accept)
 
     def setup(self):
-        self.ui.btn_auth.setText(self.get_whoami().nickname)
+        try:
+            self.ui.btn_auth.setText(self.get_whoami().nickname)
+        except AttributeError:
+            self.ui.btn_auth.setText("Войти")
 
     def get_current_manga(self):
         return self.catalog.get_manga(self.mangas[self.ui.list_manga.currentIndex().row()])
