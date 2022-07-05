@@ -14,4 +14,4 @@ class SideMenu(QWidget):
         self.ui.btn_main.setIcon(QIcon(main_icon_path))
         self.ui.btn_shikimori.setIcon(QIcon(shikimori_icon_path))
         self.ui.btn_history.setIcon(QIcon(history_icon_path))
-        self.ui.btn_options.setIcon(QIcon(settings_icon_path))
+        self.ui.btn_settings.setIcon(QIcon(settings_icon_path))

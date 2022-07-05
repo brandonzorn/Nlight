@@ -171,7 +171,7 @@ color: rgb(255, 255, 255);</string>
     </spacer>
    </item>
    <item>
-    <widget class="QPushButton" name="btn_options">
+    <widget class="QPushButton" name="btn_settings">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
        <horstretch>0</horstretch>
