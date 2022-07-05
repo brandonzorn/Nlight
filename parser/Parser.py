@@ -32,4 +32,4 @@ class Parser:
         return []
 
     def get_user(self) -> User:
-        return User()
+        return User(None, None, None)
