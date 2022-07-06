@@ -83,8 +83,8 @@ class FormFacial(QWidget):
             self.ui.list_manga.clear()
             self.request_params.page = self.cur_page
             self.mangas = self.catalog.search_manga(self.request_params)
+            self.db.add_mangas(self.mangas)
             for i in self.mangas:
-                self.db.add_manga(i)
                 item = QListWidgetItem(i.get_name())
                 if self.db.check_manga_library(i):
                     item.setBackground(QColor("ORANGE"))

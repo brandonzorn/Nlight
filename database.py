@@ -31,10 +31,11 @@ class Database:
         self.__con.commit()
 
     @with_lock_thread(lock)
-    def add_manga(self, manga: Manga):
-        self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?);",
-                           (manga.id, manga.catalog_id, manga.name, manga.russian, manga.kind, manga.description,
-                            manga.score))
+    def add_mangas(self, mangas: list[Manga]):
+        for manga in mangas:
+            self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?);",
+                               (manga.id, manga.catalog_id, manga.name, manga.russian, manga.kind, manga.description,
+                                manga.score))
         self.__con.commit()
 
     def get_manga(self, manga_id):
@@ -42,9 +43,11 @@ class Database:
         return Manga(x[0], x[1], x[2], x[3], x[4], x[5], x[6])
 
     @with_lock_thread(lock)
-    def add_chapter(self, chapter: Chapter, manga: Manga, index: int):
-        self.__cur.execute("INSERT INTO chapters VALUES(?, ?, ?, ?, ?, ?, ?);",
-                           (chapter.id, chapter.vol, chapter.ch, chapter.title, chapter.language, manga.id, index))
+    def add_chapters(self, chapters: list[Chapter], manga: Manga):
+        for chapter in chapters:
+            index = chapters[::-1].index(chapter)
+            self.__cur.execute("INSERT INTO chapters VALUES(?, ?, ?, ?, ?, ?, ?);",
+                               (chapter.id, chapter.vol, chapter.ch, chapter.title, chapter.language, manga.id, index))
         self.__con.commit()
 
     def get_chapter(self, chapter_id):
@@ -57,9 +60,10 @@ class Database:
         return [Chapter(i[0], i[1], i[2], i[3], i[4]) for i in a[::-1]]
 
     @with_lock_thread(lock)
-    def add_image(self, image: Image, chapter: Chapter):
-        self.__cur.execute("INSERT INTO images VALUES(?, ?, ?, ?);",
-                           (image.id, image.page, image.img, chapter.id))
+    def add_images(self, images: list[Image], chapter: Chapter):
+        for image in images:
+            self.__cur.execute("INSERT INTO images VALUES(?, ?, ?, ?);",
+                               (image.id, image.page, image.img, chapter.id))
         self.__con.commit()
 
     @with_lock_thread(lock)
