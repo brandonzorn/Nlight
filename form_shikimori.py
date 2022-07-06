@@ -87,8 +87,7 @@ class FormShikimori(QWidget):
                 self.cur_list = lib_list
             self.request_params.mylist = lib_list
             self.mangas = self.catalog.get_manga_login(self.request_params)
-            for i in self.mangas:
-                self.db.add_manga(i)
+            self.db.add_mangas(self.mangas)
             self.ui.label_page.setText(f'Страница {self.request_params.page}')
             [self.ui.list_manga.addItem(i) for i in self.get_manga_library()]
 
