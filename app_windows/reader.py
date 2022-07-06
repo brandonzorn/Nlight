@@ -36,7 +36,7 @@ class Reader(QWidget):
         self.ui_re.text_size_slider.valueChanged.connect(self.update_text_size)
 
         self.wd = os.getcwd()
-        self.db = Database()
+        self.db: Database = Database()
         self.manga = None
         self.chapters = None
         self.images = None
@@ -185,8 +185,7 @@ class Reader(QWidget):
     def get_images(self):
         chapter = self.chapters[self.cur_chapter - 1]
         self.images = self.catalog.get_images(self.manga, chapter)
-        # for image in self.images:
-        #     self.db.add_image(image, chapter)
+        # self.db.add_images(self.images, chapter)
         # self.images = self.db.get_images(chapter)
         self.max_page = self.get_images_pages()
         Thread(target=lambda: self.download(self), daemon=True).start()
