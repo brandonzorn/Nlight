@@ -8,17 +8,22 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, Qt)
-from PySide6.QtGui import (QBrush, QColor, QPalette)
-from PySide6.QtWidgets import (QHBoxLayout, QListWidget,
-                               QPushButton, QSizePolicy, QSpacerItem,
-                               QVBoxLayout)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QHBoxLayout,
+    QListWidget, QListWidgetItem, QPushButton, QSizePolicy,
+    QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(730, 541)
+        Dialog.resize(553, 366)
         Dialog.setStyleSheet(u"color: rgb(255, 255, 255);\n"
 "background-color: rgb(32, 32, 32);")
         self.horizontalLayout = QHBoxLayout(Dialog)
@@ -98,62 +103,61 @@ class Ui_Dialog(object):
 
         self.horizontalLayout.addWidget(self.list_manga)
 
-        self.verticalLayout_3 = QVBoxLayout()
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setSpacing(7)
+        self.lists_frame = QFrame(Dialog)
+        self.lists_frame.setObjectName(u"lists_frame")
+        self.lists_frame.setFrameShape(QFrame.StyledPanel)
+        self.lists_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout = QVBoxLayout(self.lists_frame)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.b_planned = QPushButton(Dialog)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.b_planned = QPushButton(self.lists_frame)
         self.b_planned.setObjectName(u"b_planned")
         self.b_planned.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
         self.verticalLayout.addWidget(self.b_planned)
 
-        self.b_completed = QPushButton(Dialog)
+        self.b_completed = QPushButton(self.lists_frame)
         self.b_completed.setObjectName(u"b_completed")
         self.b_completed.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
         self.verticalLayout.addWidget(self.b_completed)
 
-        self.b_watching = QPushButton(Dialog)
+        self.b_watching = QPushButton(self.lists_frame)
         self.b_watching.setObjectName(u"b_watching")
         self.b_watching.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
         self.verticalLayout.addWidget(self.b_watching)
 
-        self.b_rewatching = QPushButton(Dialog)
+        self.b_rewatching = QPushButton(self.lists_frame)
         self.b_rewatching.setObjectName(u"b_rewatching")
         self.b_rewatching.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
         self.verticalLayout.addWidget(self.b_rewatching)
 
-        self.b_on_hold = QPushButton(Dialog)
+        self.b_on_hold = QPushButton(self.lists_frame)
         self.b_on_hold.setObjectName(u"b_on_hold")
         self.b_on_hold.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
         self.verticalLayout.addWidget(self.b_on_hold)
 
-        self.b_dropped = QPushButton(Dialog)
+        self.b_dropped = QPushButton(self.lists_frame)
         self.b_dropped.setObjectName(u"b_dropped")
         self.b_dropped.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
         self.verticalLayout.addWidget(self.b_dropped)
 
+        self.verticalSpacer = QSpacerItem(94, 181, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.verticalLayout_3.addLayout(self.verticalLayout)
-
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.verticalLayout_3.addItem(self.verticalSpacer)
+        self.verticalLayout.addItem(self.verticalSpacer)
 
 
-        self.horizontalLayout.addLayout(self.verticalLayout_3)
+        self.horizontalLayout.addWidget(self.lists_frame)
 
 
         self.retranslateUi(Dialog)
