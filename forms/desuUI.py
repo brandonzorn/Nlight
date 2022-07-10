@@ -8,26 +8,30 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize, Qt)
-from PySide6.QtGui import (QBrush, QColor, QIcon,
-                           QPalette)
-from PySide6.QtWidgets import (QCheckBox, QFormLayout,
-                               QFrame, QHBoxLayout, QLabel, QLineEdit,
-                               QListWidget, QPushButton, QRadioButton,
-                               QSizePolicy, QSpacerItem, QVBoxLayout)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QDialog, QFormLayout,
+    QFrame, QHBoxLayout, QLabel, QLineEdit,
+    QListWidget, QListWidgetItem, QPushButton, QRadioButton,
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(612, 652)
+        Dialog.resize(608, 462)
         palette = QPalette()
         Dialog.setPalette(palette)
         Dialog.setStyleSheet(u"color: rgb(255, 255, 255);\n"
 "background-color: rgb(32, 32, 32);")
-        self.horizontalLayout_5 = QHBoxLayout(Dialog)
-        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout = QHBoxLayout(Dialog)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.list_manga = QListWidget(Dialog)
@@ -167,7 +171,7 @@ class Ui_Dialog(object):
         self.verticalLayout.addWidget(self.search_frame)
 
 
-        self.horizontalLayout_5.addLayout(self.verticalLayout)
+        self.horizontalLayout.addLayout(self.verticalLayout)
 
         self.catalog_list = QListWidget(Dialog)
         self.catalog_list.setObjectName(u"catalog_list")
@@ -178,7 +182,7 @@ class Ui_Dialog(object):
         sizePolicy.setHeightForWidth(self.catalog_list.sizePolicy().hasHeightForWidth())
         self.catalog_list.setSizePolicy(sizePolicy)
 
-        self.horizontalLayout_5.addWidget(self.catalog_list)
+        self.horizontalLayout.addWidget(self.catalog_list)
 
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
@@ -321,27 +325,32 @@ class Ui_Dialog(object):
 
         self.verticalLayout_3.addItem(self.verticalSpacer)
 
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.filter_reset = QPushButton(Dialog)
+        self.frame = QFrame(Dialog)
+        self.frame.setObjectName(u"frame")
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_5 = QHBoxLayout(self.frame)
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.filter_reset = QPushButton(self.frame)
         self.filter_reset.setObjectName(u"filter_reset")
         self.filter_reset.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.horizontalLayout.addWidget(self.filter_reset)
+        self.horizontalLayout_5.addWidget(self.filter_reset)
 
-        self.filter_apply = QPushButton(Dialog)
+        self.filter_apply = QPushButton(self.frame)
         self.filter_apply.setObjectName(u"filter_apply")
         self.filter_apply.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.horizontalLayout.addWidget(self.filter_apply)
+        self.horizontalLayout_5.addWidget(self.filter_apply)
 
 
-        self.verticalLayout_3.addLayout(self.horizontalLayout)
+        self.verticalLayout_3.addWidget(self.frame)
 
 
-        self.horizontalLayout_5.addLayout(self.verticalLayout_3)
+        self.horizontalLayout.addLayout(self.verticalLayout_3)
 
 
         self.retranslateUi(Dialog)
