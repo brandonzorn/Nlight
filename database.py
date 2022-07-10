@@ -2,7 +2,7 @@ import os
 import sqlite3
 from threading import Lock
 
-from const import lib_lists_en
+from const.lists import lib_lists_en
 from items import Chapter, Image, Manga, HistoryNote
 from utils import singleton, with_lock_thread
 
@@ -28,6 +28,13 @@ class Database:
         list STRING)""")
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS chapter_history
         (chapter_id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL, manga_id STRING NOT NULL, is_completed BOOLEAN)""")
+        self.__con.commit()
+
+    @with_lock_thread(lock)
+    def add_manga(self, manga: Manga):
+        self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?);",
+                           (manga.id, manga.catalog_id, manga.name, manga.russian, manga.kind, manga.description,
+                            manga.score))
         self.__con.commit()
 
     @with_lock_thread(lock)

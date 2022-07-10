@@ -5,7 +5,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 
 from app_windows.main_window import MainWindow
-from const import app_icon_path
+from const.icons import app_icon_path
 from database import Database
 
 

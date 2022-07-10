@@ -6,7 +6,7 @@ from PySide6.QtGui import QIcon, QColor
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 
 from catalog_manager import get_catalog, CATALOGS
-from const import search_icon_path, prev_page_icon_path, next_page_icon_path
+from const.icons import search_icon_path, prev_page_icon_path, next_page_icon_path
 from database import Database
 from form_genres import FormGenres
 from forms.desuUI import Ui_Dialog
@@ -83,7 +83,6 @@ class FormFacial(QWidget):
             self.ui.list_manga.clear()
             self.request_params.page = self.cur_page
             self.mangas = self.catalog.search_manga(self.request_params)
-            self.db.add_mangas(self.mangas)
             for i in self.mangas:
                 item = QListWidgetItem(i.get_name())
                 if self.db.check_manga_library(i):

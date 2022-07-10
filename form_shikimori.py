@@ -5,7 +5,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget
 
 from catalog_manager import get_catalog
-from const import search_icon_path, next_page_icon_path, prev_page_icon_path
+from const.icons import search_icon_path, next_page_icon_path, prev_page_icon_path
 from database import Database
 from form_auth import FormAuth
 from forms.shikimoriUI import Ui_Form
@@ -87,7 +87,6 @@ class FormShikimori(QWidget):
                 self.cur_list = lib_list
             self.request_params.mylist = lib_list
             self.mangas = self.catalog.get_manga_login(self.request_params)
-            self.db.add_mangas(self.mangas)
             self.ui.label_page.setText(f'Страница {self.request_params.page}')
             [self.ui.list_manga.addItem(i) for i in self.get_manga_library()]
 

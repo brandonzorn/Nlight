@@ -1,6 +1,6 @@
 import requests
 
-from const import URL_MANGA_DEX_API, DEFAULT_HEADERS
+from const.urls import URL_MANGA_DEX_API, DEFAULT_HEADERS
 from items import Manga, Chapter, Image, Genre, RequestForm, User
 from parser.Parser import Parser
 from utils import get_html, token_loader, token_saver
@@ -100,8 +100,7 @@ class MangaDex(Parser):
             for i in html.json().get('data'):
                 if i.get('attributes').get('group') not in ['genre', 'theme']:
                     continue
-                data = {'id': i.get('id'), 'name': i.get('attributes').get('name').get('en'), }
-                genres.append(Genre(data))
+                genres.append(Genre(i.get('id'), i.get('attributes').get('name').get('en'), '', ''))
         return genres
 
     def get_manga_login(self, params: RequestForm):

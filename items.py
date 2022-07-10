@@ -38,11 +38,11 @@ class Image:
 
 
 class Genre:
-    def __init__(self, data: dict):
-        self.id: str = str(data.get('id'))
-        self.name = data.get('name')
-        self.russian = data.get('russian')
-        self.kind = data.get('kind')
+    def __init__(self, genre_id, name, russian, kind):
+        self.id: str = genre_id
+        self.name = name
+        self.russian = russian
+        self.kind = kind
 
     def get_name(self) -> str:
         if self.russian:
@@ -80,10 +80,10 @@ class User:
 
 
 class Order:
-    def __init__(self, data: dict):
-        self.id: str = data.get('id')
-        self.name: str = data.get('name')
-        self.russian: str = data.get('russian')
+    def __init__(self, order_id, name, russian):
+        self.id: str = order_id
+        self.name: str = name
+        self.russian: str = russian
 
     def get_name(self):
         if self.russian:
@@ -92,10 +92,10 @@ class Order:
 
 
 class Kind:
-    def __init__(self, data: dict):
-        self.id: str = data.get('id')
-        self.name: str = data.get('name')
-        self.russian: str = data.get('russian')
+    def __init__(self, kind_id, name, russian):
+        self.id: str = kind_id
+        self.name: str = name
+        self.russian: str = russian
 
     def get_name(self):
         if self.russian:

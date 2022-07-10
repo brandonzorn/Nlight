@@ -1,9 +1,12 @@
 import json
 import os
+import sys
 
 import requests
 
-from const import lib_lists_en, lib_lists_ru, DEFAULT_HEADERS, ru_icon_path, gb_icon_path, jp_icon_path
+from const.lists import lib_lists_en, lib_lists_ru
+from const.icons import ru_icon_path, gb_icon_path, jp_icon_path
+from const.urls import DEFAULT_HEADERS
 from items import Manga, Chapter, Image
 
 
@@ -11,18 +14,12 @@ def get_html(url: str, headers: dict = DEFAULT_HEADERS, params=None):
     response = requests.Response()
     try:
         response = requests.get(url, headers=headers, params=params)
-        return response
-    except requests.exceptions.ConnectionError:
-        print('Connection Error')
+    except Exception as e:
+        print(e)
         print(url)
         print(params)
         response.status_code = 0
-        return response
-    except requests.exceptions.MissingSchema:
-        print('Missing Schema')
-        print(url)
-        print(params)
-        response.status_code = 0
+    finally:
         return response
 
 
