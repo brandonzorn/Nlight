@@ -1,7 +1,7 @@
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QDialog, QStyleFactory, QApplication
 
-from const import app_icon_path
+from const.icons import app_icon_path
 from forms.ui_settings import Ui_Dialog
 
 

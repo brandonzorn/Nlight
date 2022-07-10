@@ -1,7 +1,7 @@
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget
 
-from const import main_icon_path, library_icon_path, shikimori_icon_path, history_icon_path, settings_icon_path
+from const.icons import main_icon_path, library_icon_path, shikimori_icon_path, history_icon_path, settings_icon_path
 from forms.sideMenu import Ui_Form
 
 

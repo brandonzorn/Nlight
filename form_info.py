@@ -8,7 +8,8 @@ from PySide6.QtWidgets import QWidget, QListWidgetItem
 
 from app_windows.reader import Reader
 from catalog_manager import get_catalog
-from const import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, lib_lists_en
+from const.icons import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path
+from const.lists import lib_lists_en
 from database import Database
 from forms.desu_info import Ui_Form
 from items import Manga, Chapter
@@ -48,6 +49,7 @@ class FormInfo(QWidget):
         with self.lock_ui():
             self.manga = manga
             self.catalog = get_catalog(self.manga.catalog_id)()
+            self.db.add_manga(self.manga)
             pixmap = QPixmap(self.get_preview())
             pixmap = pixmap.scaled(self.ui.image.size())
             self.ui.image.setPixmap(pixmap)
@@ -119,6 +121,9 @@ class FormInfo(QWidget):
                 if chapter.language:
                     item.setIcon(QIcon(get_language_icon(chapter.language)))
                 self.ui.chapters.addItem(item)
+
+    def filter_chapters(self):
+        pass
 
     def open_reader(self):
         self.reader = Reader()

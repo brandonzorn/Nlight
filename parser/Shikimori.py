@@ -1,8 +1,7 @@
 from oauthlib.oauth2.rfc6749.errors import InvalidGrantError
 from requests_oauthlib import OAuth2Session
 
-from const import SHIKIMORI_HEADERS, URL_SHIKIMORI_API
-from const import URL_SHIKIMORI, URL_SHIKIMORI_TOKEN
+from const.urls import SHIKIMORI_HEADERS, URL_SHIKIMORI_API, URL_SHIKIMORI, URL_SHIKIMORI_TOKEN
 from items import Manga, Genre, RequestForm, User, Kind
 from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
 from parser.Parser import Parser
@@ -47,14 +46,14 @@ class Shikimori(Parser):
         url = f'{self.url_api}/genres'
         html = get_html(url, headers=self.headers)
         if html and html.status_code == 200 and html.json():
-            return [Genre(i) for i in html.json()]
+            return [Genre(i.get('id'), i.get('name'), i.get('russian'), i.get('kind')) for i in html.json()]
         return []
 
     def get_kinds(self):
         url = f'{self.url_api}/constants/manga'
         html = get_html(url, headers=self.headers)
         if html and html.status_code == 200 and len(html.json()):
-            return [Kind({'id': 0, 'name': i}) for i in html.json().get('kind')]
+            return [Kind(0, i, '') for i in html.json().get('kind')]
         return []
 
     def get_manga_login(self, params: RequestForm):
@@ -137,9 +136,18 @@ class Auth:
                     self.get(url, params)
         return resp
 
+    def get_request(self, url, params=None):
+        try:
+            resp = self.client.request('GET', url, params)
+            return resp
+        except Exception as e:
+            print(e)
+            print(url)
+            print(params)
+
     def check_auth(self):
         url = 'https://shikimori.one/api/users/whoami'
-        whoami = self.client.request('GET', url)
+        whoami = self.get_request(url)
         self.is_authorized = whoami and whoami.json()
         return self.is_authorized
 
