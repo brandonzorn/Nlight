@@ -1,7 +1,7 @@
 from PySide6.QtGui import QColor, QIcon
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 
-from const import delete_icon_path
+from const.icons import delete_icon_path
 from database import Database
 from forms.ui_history import Ui_Dialog
 from items import HistoryNote

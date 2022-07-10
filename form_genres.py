@@ -2,7 +2,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QDialog, QCheckBox
 
 from catalog_manager import get_catalog
-from const import app_icon_path
+from const.icons import app_icon_path
 from forms.desu_genresUI import Ui_Dialog
 
 
