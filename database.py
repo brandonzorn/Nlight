@@ -13,10 +13,7 @@ class Database:
     lock = Lock()
 
     def __init__(self):
-        self.__wd = os.getcwd()
-        if not os.path.exists(f'{self.__wd}/Desu/data.db'):
-            os.makedirs(f'{self.__wd}/Desu', exist_ok=True)
-        self.__con = sqlite3.connect(f'{self.__wd}/Desu/data.db', check_same_thread=False)
+        self.__con = sqlite3.connect(f'{os.getcwd()}/Desu/data.db', check_same_thread=False)
         self.__cur = self.__con.cursor()
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS manga (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
         catalog_id INTEGER, name STRING, russian STRING, kind STRING, description TEXT, score FLOAT);""")

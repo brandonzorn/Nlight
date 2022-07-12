@@ -1,5 +1,3 @@
-import contextlib
-import os
 from threading import Thread, Lock
 
 from PySide6.QtCore import Qt
@@ -11,9 +9,10 @@ from catalog_manager import get_catalog
 from const.icons import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path
 from const.lists import lib_lists_en
 from database import Database
+from file_manager import check_file_exists, get_file, save_file
 from forms.desu_info import Ui_Form
 from items import Manga, Chapter
-from utils import get_language_icon, with_lock_thread
+from utils import get_language_icon, with_lock_thread, lock_ui
 
 
 class FormInfo(QWidget):
@@ -29,7 +28,6 @@ class FormInfo(QWidget):
         self.ui.btn_back.setIcon(QIcon(back_icon_path))
         self.ui.lib_list.currentIndexChanged.connect(self.change_lib_list)
         self.db: Database = Database()
-        self.wd = os.getcwd()
         self.catalog = None
         self.manga = None
         self.chapters: list[Chapter] = []
@@ -40,17 +38,18 @@ class FormInfo(QWidget):
         self.ui.image.clear()
         if not self.catalog:
             return
-        pixmap = QPixmap(self.get_preview())
+        pixmap = self.get_preview()
         pixmap = pixmap.scaled(self.ui.image.size(), Qt.AspectRatioMode.KeepAspectRatio,
                                Qt.TransformationMode.SmoothTransformation)
         self.ui.image.setPixmap(pixmap)
 
     def setup(self, manga: Manga):
-        with self.lock_ui():
+        ui_to_lock = [self.ui.btn_back]
+        with lock_ui(ui_to_lock):
             self.manga = manga
             self.catalog = get_catalog(self.manga.catalog_id)()
             self.db.add_manga(self.manga)
-            pixmap = QPixmap(self.get_preview())
+            pixmap = self.get_preview()
             pixmap = pixmap.scaled(self.ui.image.size())
             self.ui.image.setPixmap(pixmap)
             self.ui.description.setText(self.manga.description)
@@ -64,13 +63,6 @@ class FormInfo(QWidget):
             else:
                 self.ui.btn_add_to_lib.setIcon(QIcon(favorite_icon_path))
             Thread(target=self.get_chapters, daemon=True).start()
-
-    @contextlib.contextmanager
-    def lock_ui(self):
-        ui_to_lock = (self.ui.btn_back,)
-        [i.setEnabled(False) for i in ui_to_lock]
-        yield
-        [i.setEnabled(True) for i in ui_to_lock]
 
     def set_score(self, score: float):
         stars = [self.ui.star_1, self.ui.star_2, self.ui.star_3, self.ui.star_4, self.ui.star_5]
@@ -104,7 +96,8 @@ class FormInfo(QWidget):
 
     @with_lock_thread(lock)
     def get_chapters(self):
-        with self.lock_ui():
+        ui_to_lock = [self.ui.btn_back]
+        with lock_ui(ui_to_lock):
             self.ui.chapters.clear()
             self.chapters: list[Chapter] = self.catalog.get_chapters(self.manga)
             self.chapters.reverse()
@@ -129,12 +122,8 @@ class FormInfo(QWidget):
         self.reader = Reader()
         self.reader.setup(self.manga, self.chapters, self.ui.chapters.currentIndex().row() + 1)
 
-    def get_preview(self) -> str:
-        path = f'{self.wd}/Desu/images/{self.catalog.catalog_name}/{self.manga.id}'
-        if not os.path.exists(f'{path}/preview.jpg'):
-            os.makedirs(path, exist_ok=True)
-            img = self.catalog.get_preview(self.manga)
-            if img:
-                with open(f'{path}/preview.jpg', 'wb') as f:
-                    f.write(img.content)
-        return f'{path}/preview.jpg'
+    def get_preview(self) -> QPixmap:
+        path = f'Desu/images/{self.catalog.catalog_name}/{self.manga.id}'
+        if not check_file_exists(path, 'preview.jpg'):
+            save_file(path, 'preview.jpg', self.catalog.get_preview(self.manga))
+        return QPixmap(get_file(path, 'preview.jpg'))

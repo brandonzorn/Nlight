@@ -1,5 +1,3 @@
-import contextlib
-import os
 from threading import Thread, Lock
 
 from PySide6.QtGui import QIcon, QColor
@@ -11,7 +9,7 @@ from database import Database
 from form_genres import FormGenres
 from forms.desuUI import Ui_Dialog
 from items import RequestForm
-from utils import with_lock_thread
+from utils import with_lock_thread, lock_ui
 
 
 class FormFacial(QWidget):
@@ -45,7 +43,6 @@ class FormFacial(QWidget):
         self.request_params = RequestForm()
         self.db: Database = Database()
         self.catalog = get_catalog()()
-        self.wd = os.getcwd()
         Thread(target=self.get_content, daemon=True).start()
 
     def clicked_genres(self):
@@ -79,7 +76,8 @@ class FormFacial(QWidget):
 
     @with_lock_thread(lock)
     def get_content(self):
-        with self.lock_ui():
+        ui_to_lock = [self.ui.filters_frame, self.ui.search_frame]
+        with lock_ui(ui_to_lock):
             self.ui.list_manga.clear()
             self.request_params.page = self.cur_page
             self.mangas = self.catalog.search_manga(self.request_params)
@@ -89,13 +87,6 @@ class FormFacial(QWidget):
                     item.setBackground(QColor("ORANGE"))
                 self.ui.list_manga.addItem(item)
             self.ui.label_page.setText(f'Страница {self.cur_page}')
-
-    @contextlib.contextmanager
-    def lock_ui(self):
-        ui_to_lock = (self.ui.filters_frame, self.ui.search_frame)
-        [i.setEnabled(False) for i in ui_to_lock]
-        yield
-        [i.setEnabled(True) for i in ui_to_lock]
 
     def search(self):
         self.cur_page = 1

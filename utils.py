@@ -1,3 +1,4 @@
+import contextlib
 import json
 import os
 
@@ -65,6 +66,13 @@ def with_lock_thread(locker):
                 return func(*args, **kwargs)
         return wrapper
     return decorator
+
+
+@contextlib.contextmanager
+def lock_ui(ui_to_lock: list):
+    [i.setEnabled(False) for i in ui_to_lock]
+    yield
+    [i.setEnabled(True) for i in ui_to_lock]
 
 
 def token_saver(token, catalog_name):
