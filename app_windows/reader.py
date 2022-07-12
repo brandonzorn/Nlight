@@ -187,10 +187,10 @@ class Reader(QWidget):
         self.images = self.catalog.get_images(self.manga, chapter)
         # self.db.add_images(self.images, chapter)
         # self.images = self.db.get_images(chapter)
-        self.max_page = self.get_images_pages()
+        self.max_page = self.get_chapter_pages()
         Thread(target=lambda: self.download(self), daemon=True).start()
 
-    def get_images_pages(self) -> int:
+    def get_chapter_pages(self) -> int:
         if not self.images:
             return 1
         return self.images[-1].page
