@@ -3,8 +3,8 @@ import os
 
 import requests
 
-from const.lists import lib_lists_en, lib_lists_ru
 from const.icons import ru_icon_path, gb_icon_path, jp_icon_path
+from const.lists import lib_lists_en, lib_lists_ru
 from const.urls import DEFAULT_HEADERS
 from items import Manga, Chapter, Image
 
