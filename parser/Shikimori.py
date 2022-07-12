@@ -1,4 +1,4 @@
-from oauthlib.oauth2.rfc6749.errors import InvalidGrantError
+from oauthlib.oauth2 import InvalidGrantError
 from requests_oauthlib import OAuth2Session
 
 from const.urls import SHIKIMORI_HEADERS, URL_SHIKIMORI_API, URL_SHIKIMORI, URL_SHIKIMORI_TOKEN
