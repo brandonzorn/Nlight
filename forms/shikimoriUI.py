@@ -8,10 +8,16 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, Qt)
-from PySide6.QtWidgets import (QFrame, QHBoxLayout, QLabel,
-                               QLineEdit, QListWidget, QPushButton,
-                               QSizePolicy, QSpacerItem, QVBoxLayout)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
+    QLineEdit, QListWidget, QListWidgetItem, QPushButton,
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -99,6 +105,9 @@ class Ui_Form(object):
         self.b_planned.setObjectName(u"b_planned")
         self.b_planned.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        self.b_planned.setCheckable(True)
+        self.b_planned.setChecked(True)
+        self.b_planned.setAutoExclusive(True)
 
         self.verticalLayout_2.addWidget(self.b_planned)
 
@@ -106,6 +115,8 @@ class Ui_Form(object):
         self.b_completed.setObjectName(u"b_completed")
         self.b_completed.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        self.b_completed.setCheckable(True)
+        self.b_completed.setAutoExclusive(True)
 
         self.verticalLayout_2.addWidget(self.b_completed)
 
@@ -113,6 +124,8 @@ class Ui_Form(object):
         self.b_watching.setObjectName(u"b_watching")
         self.b_watching.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        self.b_watching.setCheckable(True)
+        self.b_watching.setAutoExclusive(True)
 
         self.verticalLayout_2.addWidget(self.b_watching)
 
@@ -120,6 +133,8 @@ class Ui_Form(object):
         self.b_rewatching.setObjectName(u"b_rewatching")
         self.b_rewatching.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        self.b_rewatching.setCheckable(True)
+        self.b_rewatching.setAutoExclusive(True)
 
         self.verticalLayout_2.addWidget(self.b_rewatching)
 
@@ -127,6 +142,8 @@ class Ui_Form(object):
         self.b_on_hold.setObjectName(u"b_on_hold")
         self.b_on_hold.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        self.b_on_hold.setCheckable(True)
+        self.b_on_hold.setAutoExclusive(True)
 
         self.verticalLayout_2.addWidget(self.b_on_hold)
 
@@ -134,6 +151,8 @@ class Ui_Form(object):
         self.b_dropped.setObjectName(u"b_dropped")
         self.b_dropped.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        self.b_dropped.setCheckable(True)
+        self.b_dropped.setAutoExclusive(True)
 
         self.verticalLayout_2.addWidget(self.b_dropped)
 

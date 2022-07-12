@@ -56,6 +56,7 @@ class FormShikimori(QWidget):
         self.ui.btn_auth.setText(self.get_whoami().nickname)
 
     def authorize(self):
+        self.Form_auth.hide()
         self.Form_auth.show()
 
     def get_whoami(self) -> User:

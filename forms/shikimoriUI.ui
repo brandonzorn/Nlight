@@ -153,6 +153,15 @@ color: rgb(255, 255, 255);</string>
         <property name="text">
          <string>Запланировано</string>
         </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -163,6 +172,12 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="text">
          <string>Прочитано</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -175,6 +190,12 @@ color: rgb(255, 255, 255);</string>
         <property name="text">
          <string>Читаю</string>
         </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -185,6 +206,12 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="text">
          <string>Перечитываю</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -197,6 +224,12 @@ color: rgb(255, 255, 255);</string>
         <property name="text">
          <string>Отложено</string>
         </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -207,6 +240,12 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="text">
          <string>Брошено</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
