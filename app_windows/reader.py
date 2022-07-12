@@ -6,7 +6,7 @@ from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import QWidget
 
 from catalog_manager import get_catalog
-from const.icons import app_icon_path, next_ch_icon_path, prev_ch_icon_path, next_page_icon_path, prev_page_icon_path,\
+from const.icons import app_icon_path, next_ch_icon_path, prev_ch_icon_path, next_page_icon_path, prev_page_icon_path, \
     fullscreen_icon_path
 from database import Database
 from forms.desu_readerUI import Ui_Dialog
