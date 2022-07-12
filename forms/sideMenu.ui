@@ -62,6 +62,15 @@ color: rgb(255, 255, 255);</string>
        <height>40</height>
       </size>
      </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="autoRepeat">
+      <bool>false</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
@@ -89,6 +98,18 @@ color: rgb(255, 255, 255);</string>
        <width>40</width>
        <height>40</height>
       </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="autoRepeat">
+      <bool>false</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -118,6 +139,15 @@ color: rgb(255, 255, 255);</string>
        <height>40</height>
       </size>
      </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="autoRepeat">
+      <bool>false</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
@@ -146,8 +176,14 @@ color: rgb(255, 255, 255);</string>
        <height>40</height>
       </size>
      </property>
-     <property name="autoExclusive">
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="autoRepeat">
       <bool>false</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>true</bool>
      </property>
      <property name="autoDefault">
       <bool>false</bool>
@@ -190,6 +226,15 @@ color: rgb(255, 255, 255);</string>
        <width>40</width>
        <height>40</height>
       </size>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="autoRepeat">
+      <bool>false</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>false</bool>
      </property>
     </widget>
    </item>

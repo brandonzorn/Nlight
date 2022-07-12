@@ -23,7 +23,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(553, 366)
+        Dialog.resize(569, 366)
         Dialog.setStyleSheet(u"color: rgb(255, 255, 255);\n"
 "background-color: rgb(32, 32, 32);")
         self.horizontalLayout = QHBoxLayout(Dialog)
@@ -114,6 +114,9 @@ class Ui_Dialog(object):
         self.b_planned.setObjectName(u"b_planned")
         self.b_planned.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        self.b_planned.setCheckable(True)
+        self.b_planned.setChecked(True)
+        self.b_planned.setAutoExclusive(True)
 
         self.verticalLayout.addWidget(self.b_planned)
 
@@ -121,6 +124,8 @@ class Ui_Dialog(object):
         self.b_completed.setObjectName(u"b_completed")
         self.b_completed.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        self.b_completed.setCheckable(True)
+        self.b_completed.setAutoExclusive(True)
 
         self.verticalLayout.addWidget(self.b_completed)
 
@@ -128,6 +133,8 @@ class Ui_Dialog(object):
         self.b_watching.setObjectName(u"b_watching")
         self.b_watching.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        self.b_watching.setCheckable(True)
+        self.b_watching.setAutoExclusive(True)
 
         self.verticalLayout.addWidget(self.b_watching)
 
@@ -135,6 +142,8 @@ class Ui_Dialog(object):
         self.b_rewatching.setObjectName(u"b_rewatching")
         self.b_rewatching.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        self.b_rewatching.setCheckable(True)
+        self.b_rewatching.setAutoExclusive(True)
 
         self.verticalLayout.addWidget(self.b_rewatching)
 
@@ -142,6 +151,8 @@ class Ui_Dialog(object):
         self.b_on_hold.setObjectName(u"b_on_hold")
         self.b_on_hold.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        self.b_on_hold.setCheckable(True)
+        self.b_on_hold.setAutoExclusive(True)
 
         self.verticalLayout.addWidget(self.b_on_hold)
 
@@ -149,6 +160,8 @@ class Ui_Dialog(object):
         self.b_dropped.setObjectName(u"b_dropped")
         self.b_dropped.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        self.b_dropped.setCheckable(True)
+        self.b_dropped.setAutoExclusive(True)
 
         self.verticalLayout.addWidget(self.b_dropped)
 

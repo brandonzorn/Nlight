@@ -93,6 +93,7 @@ class MainWindow(QMainWindow):
         self.top_item.removeWidget(self.top_item.currentWidget())
 
     def clicked_settings(self):
+        self.Form_settings.hide()
         self.Form_settings.show()
 
     def add_widget(self, widget):

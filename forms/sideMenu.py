@@ -8,10 +8,15 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize)
-from PySide6.QtGui import (QIcon)
-from PySide6.QtWidgets import (QPushButton, QSizePolicy, QSpacerItem,
-                               QVBoxLayout)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QPushButton, QSizePolicy, QSpacerItem,
+    QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -41,6 +46,9 @@ class Ui_Form(object):
         icon.addFile(u"images/library.png", QSize(), QIcon.Normal, QIcon.On)
         self.btn_mylist.setIcon(icon)
         self.btn_mylist.setIconSize(QSize(40, 40))
+        self.btn_mylist.setCheckable(True)
+        self.btn_mylist.setAutoRepeat(False)
+        self.btn_mylist.setAutoExclusive(True)
 
         self.verticalLayout.addWidget(self.btn_mylist)
 
@@ -54,6 +62,10 @@ class Ui_Form(object):
         icon1.addFile(u"images/main.png", QSize(), QIcon.Normal, QIcon.On)
         self.btn_main.setIcon(icon1)
         self.btn_main.setIconSize(QSize(40, 40))
+        self.btn_main.setCheckable(True)
+        self.btn_main.setChecked(True)
+        self.btn_main.setAutoRepeat(False)
+        self.btn_main.setAutoExclusive(True)
 
         self.verticalLayout.addWidget(self.btn_main)
 
@@ -67,6 +79,9 @@ class Ui_Form(object):
         icon2.addFile(u"images/shikimori.png", QSize(), QIcon.Normal, QIcon.On)
         self.btn_shikimori.setIcon(icon2)
         self.btn_shikimori.setIconSize(QSize(40, 40))
+        self.btn_shikimori.setCheckable(True)
+        self.btn_shikimori.setAutoRepeat(False)
+        self.btn_shikimori.setAutoExclusive(True)
 
         self.verticalLayout.addWidget(self.btn_shikimori)
 
@@ -80,7 +95,9 @@ class Ui_Form(object):
         icon3.addFile(u"images/history.png", QSize(), QIcon.Normal, QIcon.On)
         self.btn_history.setIcon(icon3)
         self.btn_history.setIconSize(QSize(40, 40))
-        self.btn_history.setAutoExclusive(False)
+        self.btn_history.setCheckable(True)
+        self.btn_history.setAutoRepeat(False)
+        self.btn_history.setAutoExclusive(True)
         self.btn_history.setAutoDefault(False)
 
         self.verticalLayout.addWidget(self.btn_history)
@@ -96,6 +113,9 @@ class Ui_Form(object):
         self.btn_settings.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
         self.btn_settings.setIconSize(QSize(40, 40))
+        self.btn_settings.setCheckable(False)
+        self.btn_settings.setAutoRepeat(False)
+        self.btn_settings.setAutoExclusive(False)
 
         self.verticalLayout.addWidget(self.btn_settings)
 
