@@ -1,4 +1,3 @@
-import contextlib
 from threading import Thread, Lock
 
 from PySide6.QtGui import QIcon
@@ -10,7 +9,7 @@ from database import Database
 from form_auth import FormAuth
 from forms.shikimoriUI import Ui_Form
 from items import Manga, RequestForm, User
-from utils import with_lock_thread
+from utils import with_lock_thread, lock_ui
 
 
 class FormShikimori(QWidget):
@@ -80,7 +79,8 @@ class FormShikimori(QWidget):
 
     @with_lock_thread(lock)
     def update_list(self, lib_list=None):
-        with self.lock_ui():
+        ui_to_lock = [self.ui.search_frame, self.ui.lists_frame]
+        with lock_ui(ui_to_lock):
             self.ui.list_manga.clear()
             if not lib_list:
                 lib_list = self.cur_list
@@ -90,13 +90,6 @@ class FormShikimori(QWidget):
             self.mangas = self.catalog.get_manga_login(self.request_params)
             self.ui.label_page.setText(f'Страница {self.request_params.page}')
             [self.ui.list_manga.addItem(i) for i in self.get_manga_library()]
-
-    @contextlib.contextmanager
-    def lock_ui(self):
-        ui_to_lock = (self.ui.search_frame, self.ui.lists_frame)
-        [i.setEnabled(False) for i in ui_to_lock]
-        yield
-        [i.setEnabled(True) for i in ui_to_lock]
 
     def get_manga_library(self) -> list:
         return [i.get_name() for i in self.mangas]

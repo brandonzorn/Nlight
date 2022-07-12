@@ -1,4 +1,3 @@
-import os
 from threading import Thread
 
 from PySide6.QtCore import Qt
@@ -9,6 +8,7 @@ from catalog_manager import get_catalog
 from const.icons import app_icon_path, next_ch_icon_path, prev_ch_icon_path, next_page_icon_path, prev_page_icon_path, \
     fullscreen_icon_path
 from database import Database
+from file_manager import check_file_exists, get_file, save_file
 from forms.desu_readerUI import Ui_Dialog
 from items import Manga, Chapter
 
@@ -35,7 +35,6 @@ class Reader(QWidget):
         self.ui_re.btn_fullscreen.clicked.connect(self.change_fullscreen)
         self.ui_re.text_size_slider.valueChanged.connect(self.update_text_size)
 
-        self.wd = os.getcwd()
         self.db: Database = Database()
         self.manga = None
         self.chapters = None
@@ -149,32 +148,26 @@ class Reader(QWidget):
         font.setPointSize(self.ui_re.text_size_slider.value())
         self.ui_re.img.setFont(font)
 
-    def get_image(self, chapter, image) -> str:
-        path = f'{self.wd}/Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
-        if not os.path.exists(f'{path}/{image.page}.jpg'):
-            os.makedirs(path, exist_ok=True)
-            img = self.catalog.get_image(image)
-            if img:
-                with open(f'{path}/{image.page}.jpg', 'wb') as f:
-                    f.write(img.content)
-        return f'{path}/{image.page}.jpg'
+    def get_image(self, chapter, image) -> QPixmap:
+        path = f'Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
+        file_name = f'{image.page}.jpg'
+        if not check_file_exists(path, file_name):
+            save_file(path, file_name, self.catalog.get_image(image))
+        return QPixmap(get_file(path, file_name))
 
     def get_text(self, chapter, image):
-        path = f'{self.wd}/Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
-        if not os.path.exists(f'{path}/{image.page}.txt'):
-            os.makedirs(path, exist_ok=True)
-            img = self.catalog.get_image(image)
-            if img:
-                with open(f'{path}/{image.page}.txt', 'wb') as f:
-                    f.write(img.content)
-        with open(f'{path}/{image.page}.txt', encoding="utf8") as f:
+        path = f'Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
+        file_name = f'{image.page}.txt'
+        if not check_file_exists(path, file_name):
+            save_file(path, file_name, self.catalog.get_image(image))
+        with open(f'{path}/{file_name}', encoding="utf8") as f:
             text = f.read()
             text = text.replace('&nbsp;', u'\xa0')
             text = text.replace('&mdash;', '—')
             return text
 
     def get_pixmap(self, chapter, image):
-        pixmap = QPixmap(self.get_image(chapter, image))
+        pixmap = self.get_image(chapter, image)
         if pixmap.isNull():
             return QPixmap()
         if 0.5 < pixmap.width() / pixmap.height() < 2:
@@ -185,8 +178,6 @@ class Reader(QWidget):
     def get_images(self):
         chapter = self.chapters[self.cur_chapter - 1]
         self.images = self.catalog.get_images(self.manga, chapter)
-        # self.db.add_images(self.images, chapter)
-        # self.images = self.db.get_images(chapter)
         self.max_page = self.get_chapter_pages()
         Thread(target=lambda: self.download(self), daemon=True).start()
 
@@ -201,9 +192,7 @@ class Reader(QWidget):
         for image in images:
             if form.isHidden() or chapter.id != self.chapters[self.cur_chapter - 1].id or self.manga.kind == 'ranobe':
                 break
-            path = f'{self.wd}/Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
-            if not os.path.exists(f'{path}/{image.page}.jpg'):
-                img = self.catalog.get_image(images[image.page - 1])
-                if img:
-                    with open(f'{path}/{image.page}.jpg', 'wb') as f:
-                        f.write(img.content)
+            path = f'Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
+            file_name = f'{image.page}.jpg'
+            if not check_file_exists(path, file_name):
+                save_file(path, file_name, self.catalog.get_image(image))
