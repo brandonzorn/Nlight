@@ -1,5 +1,5 @@
-from const.urls import DESU_HEADERS, URL_DESU_API
 from const.desu_items import DESU_GENRES, DESU_KINDS, DESU_ORDERS
+from const.urls import DESU_HEADERS, URL_DESU_API
 from items import Manga, Chapter, Image, Genre, RequestForm, Kind, Order
 from parser.Parser import Parser
 from utils import get_html
