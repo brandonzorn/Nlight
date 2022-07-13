@@ -68,6 +68,8 @@ class FormInfo(QWidget):
         stars = [self.ui.star_1, self.ui.star_2, self.ui.star_3, self.ui.star_4, self.ui.star_5]
         [i.setIcon(QIcon(favorite_icon_path)) for i in stars]
         self.ui.rate.setText(f'Рейтинг: {score}')
+        if score > 10:
+            return
         score = round(score) / 2
         for i in range(int(score)):
             a = stars[i]

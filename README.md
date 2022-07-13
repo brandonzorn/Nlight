@@ -19,6 +19,7 @@ Open source manga and ranobe reading application
 
     Ranobe:
      - Rulate (🇷🇺)
+     - Ranobehub (🇷🇺)
 
 ## Screenshots
 | ![desu_1](./.github/Screenshots/desu_1.png) | ![desu_2](./.github/Screenshots/desu_2.png) | ![desu_3](./.github/Screenshots/desu_3.png) |
