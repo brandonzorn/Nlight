@@ -1,7 +1,7 @@
 from threading import Thread, Lock
 
 from PySide6.QtGui import QIcon, QColor
-from PySide6.QtWidgets import QWidget, QListWidgetItem
+from PySide6.QtWidgets import QWidget, QListWidgetItem, QCheckBox, QRadioButton
 
 from catalog_manager import get_catalog, CATALOGS
 from const.icons import search_icon_path, prev_page_icon_path, next_page_icon_path
@@ -33,16 +33,16 @@ class FormFacial(QWidget):
         self.ui.catalog_list.doubleClicked.connect(
             lambda: self.update_catalog(self.ui.catalog_list.currentIndex().row()))
         self.mangas = []
+        self.order_items = {}
+        self.kind_items = {}
         self.cur_page = 1
-        self.order_by = {self.ui.sort_name: 'name', self.ui.sort_popular: 'popular'}
-        self.kinds = {self.ui.type_manga: 'manga', self.ui.type_manhwa: 'manhwa', self.ui.type_manhua: 'manhua',
-                      self.ui.type_one_shot: 'one_shot', self.ui.type_comics: 'comics'}
         self.setup_catalogs()
         self.ui.catalog_list.hide()
         self.Form_genres = FormGenres()
         self.request_params = RequestForm()
         self.db: Database = Database()
-        self.catalog = get_catalog()()
+        self.catalog = None
+        self.update_catalog(0)
         Thread(target=self.get_content, daemon=True).start()
 
     def clicked_genres(self):
@@ -59,10 +59,29 @@ class FormFacial(QWidget):
         self.get_content()
 
     def setup_filters(self):
+        self.clear_filters_items()
         self.Form_genres.setup()
         self.ui.genres_frame.setVisible(bool(self.Form_genres.genres_items))
         self.ui.kind_frame.setVisible(bool(self.catalog.get_kinds()))
         self.ui.order_frame.setVisible(bool(self.catalog.get_orders()))
+        for i in self.catalog.get_orders():
+            item = QRadioButton(i.get_name())
+            if not self.order_items:
+                item.setChecked(True)
+            self.ui.order_grid.addWidget(item)
+            self.order_items.update({item: i})
+        for i in self.catalog.get_kinds():
+            item = QCheckBox(i.get_name())
+            self.ui.kind_grid.addWidget(item)
+            self.kind_items.update({item: i})
+
+    def clear_filters_items(self):
+        self.kind_items.clear()
+        self.order_items.clear()
+        for i in reversed(range(self.ui.order_grid.count())):
+            self.ui.order_grid.itemAt(i).widget().deleteLater()
+        for i in reversed(range(self.ui.kind_grid.count())):
+            self.ui.kind_grid.itemAt(i).widget().deleteLater()
 
     def clicked_catalogs(self):
         if self.ui.catalog_list.isHidden():
@@ -108,8 +127,8 @@ class FormFacial(QWidget):
     def filter_apply(self):
         self.cur_page = 1
         self.request_params.clear()
-        self.request_params.order = [self.order_by.get(i) for i in self.order_by if i.isChecked()]
-        self.request_params.kinds = [self.kinds.get(i) for i in self.kinds if i.isChecked()]
+        self.request_params.order = [self.order_items[i].name for i in self.order_items if i.isChecked()]
+        self.request_params.kinds = [self.kind_items[i].name for i in self.kind_items if i.isChecked()]
         self.request_params.search = self.ui.line_search.text()
         self.Form_genres.accept_genres()
         self.request_params.genres = self.Form_genres.selected_genres
@@ -117,9 +136,10 @@ class FormFacial(QWidget):
 
     def filter_reset(self):
         self.cur_page = 1
-        self.Form_genres.clear_genres()
         self.request_params.clear()
-        self.ui.sort_popular.setChecked(True)
+        self.Form_genres.clear_genres()
+        if self.order_items:
+            list(self.order_items.keys())[0].setChecked(True)
+        [i.setChecked(False) for i in self.kind_items]
         self.ui.line_search.clear()
-        [i.setChecked(False) for i in self.kinds]
         self.get_content()
