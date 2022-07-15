@@ -15,7 +15,7 @@ class MainWindow(QMainWindow):
         super().__init__(parent, *args, **kwargs)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        # Side menu
+
         self.Side_menu = SideMenu()
         self.Side_menu.ui.btn_main.clicked.connect(self.clicked_main)
         self.Side_menu.ui.btn_mylist.clicked.connect(self.clicked_library)
@@ -48,10 +48,6 @@ class MainWindow(QMainWindow):
         self.add_widget(self.Side_menu)
         self.add_widget(self.top_item)
         self.top_item.addWidget(self.Form_facial)
-        # self.Side_menu.ui.btn_main.setIconSize(self.Side_menu.ui.btn_main.size())
-        # self.Side_menu.ui.btn_shikimori.setIconSize(self.Side_menu.ui.btn_shikimori.size())
-        # self.Side_menu.ui.btn_mylist.setIconSize(self.Side_menu.ui.btn_mylist.size())
-        # self.Side_menu.ui.btn_history.setIconSize(self.Side_menu.ui.btn_history.size())
 
     def clicked_main(self):
         self.top_item.removeWidget(self.top_item.currentWidget())
@@ -84,9 +80,6 @@ class MainWindow(QMainWindow):
             self.Form_facial.ui.catalog_list.show()
         else:
             self.Form_facial.ui.catalog_list.hide()
-
-    def change_catalog(self, index):
-        self.Form_facial.update_catalog(index)
 
     def back(self):
         self.Side_menu.show()
