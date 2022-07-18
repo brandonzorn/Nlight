@@ -67,6 +67,15 @@
        </color>
       </brush>
      </colorrole>
+     <colorrole role="Highlight">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>0</red>
+        <green>133</green>
+        <blue>52</blue>
+       </color>
+      </brush>
+     </colorrole>
      <colorrole role="PlaceholderText">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
@@ -129,6 +138,15 @@
         <red>32</red>
         <green>32</green>
         <blue>32</blue>
+       </color>
+      </brush>
+     </colorrole>
+     <colorrole role="Highlight">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>0</red>
+        <green>133</green>
+        <blue>52</blue>
        </color>
       </brush>
      </colorrole>
@@ -197,6 +215,15 @@
        </color>
       </brush>
      </colorrole>
+     <colorrole role="Highlight">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>0</red>
+        <green>133</green>
+        <blue>52</blue>
+       </color>
+      </brush>
+     </colorrole>
      <colorrole role="PlaceholderText">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
@@ -214,6 +241,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">color: rgb(255, 255, 255);
+selection-background-color: rgb(0, 133, 52);
 background-color: rgb(32, 32, 32);</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
