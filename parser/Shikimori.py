@@ -2,22 +2,23 @@ from oauthlib.oauth2 import InvalidGrantError, MissingTokenError
 from requests_oauthlib import OAuth2Session
 
 from const.urls import SHIKIMORI_HEADERS, URL_SHIKIMORI_API, URL_SHIKIMORI, URL_SHIKIMORI_TOKEN
-from items import Manga, Genre, RequestForm, User, Kind
+from items import Manga, Genre, RequestForm, User, Kind, UserRate
 from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
 from parser.Parser import Parser
-from utils import get_html
+from utils import get_html, singleton
 from utils import token_loader, token_saver
 
 
 class Shikimori(Parser):
     catalog_name = 'Shikimori'
+    is_primary = True
 
     def __init__(self):
         self.url_api = URL_SHIKIMORI_API
         self.headers = SHIKIMORI_HEADERS
         self.catalog_id = 1
         self.fields = 1
-        self.session = Auth()
+        self.session: Auth = Auth()
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f'{self.url_api}/mangas/{manga.id}'
@@ -65,6 +66,12 @@ class Shikimori(Parser):
             for i in html.json():
                 manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
                                    i.get('kind'), i.get('description'), float(i.get('score'))))
+        url = f'{self.url_api}/ranobe'
+        html = self.session.get(url, params)
+        if html and html.status_code == 200 and html.json():
+            for i in html.json():
+                manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
+                                   i.get('kind'), i.get('description'), float(i.get('score'))))
         return manga
 
     def get_user(self) -> User:
@@ -73,7 +80,20 @@ class Shikimori(Parser):
             data = whoami.json()
             return User(data.get('id'), data.get('nickname'), data.get('avatar'))
 
+    def get_user_rate(self, manga: Manga):
+        url = f'{self.url_api}/v2/user_rates'
+        params = {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.id}
+        html = self.session.get(url, params)
+        if html and html.status_code == 200 and html.json():
+            for i in html.json():
+                return UserRate(i.get('id'), i.get('user_id'), i.get('target_id'), i.get('score'), i.get('status'))
 
+    def post_user_rate(self, post_data):
+        url = 'https://shikimori.one/api/user_rates'
+        self.session.post(url, post_data)
+
+
+@singleton
 class Auth:
     def __init__(self, token=None, scope=None):
         self.client_id = SHIKIMORI_CLIENT_ID
@@ -138,6 +158,14 @@ class Auth:
             case 401:
                 if self.token:
                     self.get(url, params)
+        return resp
+
+    def post(self, url, json):
+        if not self.is_authorized:
+            return
+        resp = self.client.post(url, json=json)
+        print(resp.status_code)
+        print(resp.json())
         return resp
 
     def get_request(self, url, params=None):

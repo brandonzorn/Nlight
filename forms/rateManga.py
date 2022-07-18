@@ -8,10 +8,16 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject)
-from PySide6.QtWidgets import (QFrame, QHBoxLayout,
-                               QLabel, QPushButton, QSizePolicy, QSpacerItem,
-                               QSpinBox, QVBoxLayout)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QComboBox, QDialog, QFrame,
+    QHBoxLayout, QLabel, QPushButton, QSizePolicy,
+    QSpacerItem, QSpinBox, QVBoxLayout, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -38,10 +44,10 @@ class Ui_Dialog(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
-        self.spinBox_2 = QSpinBox(self.frame)
-        self.spinBox_2.setObjectName(u"spinBox_2")
+        self.chapters = QSpinBox(self.frame)
+        self.chapters.setObjectName(u"chapters")
 
-        self.horizontalLayout.addWidget(self.spinBox_2)
+        self.horizontalLayout.addWidget(self.chapters)
 
 
         self.verticalLayout.addWidget(self.frame)
@@ -61,14 +67,19 @@ class Ui_Dialog(object):
 
         self.horizontalLayout_3.addItem(self.horizontalSpacer_2)
 
-        self.spinBox = QSpinBox(self.frame_2)
-        self.spinBox.setObjectName(u"spinBox")
-        self.spinBox.setMaximum(10)
+        self.score = QSpinBox(self.frame_2)
+        self.score.setObjectName(u"score")
+        self.score.setMaximum(10)
 
-        self.horizontalLayout_3.addWidget(self.spinBox)
+        self.horizontalLayout_3.addWidget(self.score)
 
 
         self.verticalLayout.addWidget(self.frame_2)
+
+        self.lib_list = QComboBox(Dialog)
+        self.lib_list.setObjectName(u"lib_list")
+
+        self.verticalLayout.addWidget(self.lib_list)
 
         self.frame_3 = QFrame(Dialog)
         self.frame_3.setObjectName(u"frame_3")
@@ -76,19 +87,19 @@ class Ui_Dialog(object):
         self.frame_3.setFrameShadow(QFrame.Plain)
         self.horizontalLayout_2 = QHBoxLayout(self.frame_3)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.pushButton_2 = QPushButton(self.frame_3)
-        self.pushButton_2.setObjectName(u"pushButton_2")
-        self.pushButton_2.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
+        self.btn_cancel = QPushButton(self.frame_3)
+        self.btn_cancel.setObjectName(u"btn_cancel")
+        self.btn_cancel.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.horizontalLayout_2.addWidget(self.pushButton_2)
+        self.horizontalLayout_2.addWidget(self.btn_cancel)
 
-        self.pushButton = QPushButton(self.frame_3)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
+        self.btn_add = QPushButton(self.frame_3)
+        self.btn_add.setObjectName(u"btn_add")
+        self.btn_add.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.horizontalLayout_2.addWidget(self.pushButton)
+        self.horizontalLayout_2.addWidget(self.btn_add)
 
 
         self.verticalLayout.addWidget(self.frame_3)
@@ -103,7 +114,7 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
         self.label.setText(QCoreApplication.translate("Dialog", u"Chapters", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"Score", None))
-        self.pushButton_2.setText(QCoreApplication.translate("Dialog", u"Cancel", None))
-        self.pushButton.setText(QCoreApplication.translate("Dialog", u"Add", None))
+        self.btn_cancel.setText(QCoreApplication.translate("Dialog", u"Cancel", None))
+        self.btn_add.setText(QCoreApplication.translate("Dialog", u"Add", None))
     # retranslateUi
 

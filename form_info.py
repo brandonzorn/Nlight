@@ -10,6 +10,7 @@ from const.icons import back_icon_path, favorite_icon_path, favorite1_icon_path,
 from const.lists import lib_lists_en
 from database import Database
 from file_manager import check_file_exists, get_file, save_file
+from form_rate import FormRate
 from forms.desu_info import Ui_Form
 from items import Manga, Chapter
 from utils import get_language_icon, with_lock_thread, lock_ui
@@ -27,6 +28,7 @@ class FormInfo(QWidget):
         self.ui.btn_add_to_lib.clicked.connect(self.add_to_favorites)
         self.ui.btn_back.setIcon(QIcon(back_icon_path))
         self.ui.lib_list.currentIndexChanged.connect(self.change_lib_list)
+        self.ui.pushButton.clicked.connect(self.open_rate)
         self.db: Database = Database()
         self.catalog = None
         self.manga = None
@@ -48,6 +50,8 @@ class FormInfo(QWidget):
         with lock_ui(ui_to_lock):
             self.manga = manga
             self.catalog = get_catalog(self.manga.catalog_id)()
+            self.ui.add_lib_frame.setVisible(not self.catalog.is_primary)
+            self.ui.add_shikimrori_frame.setVisible(self.catalog.is_primary)
             self.db.add_manga(self.manga)
             pixmap = self.get_preview()
             pixmap = pixmap.scaled(self.ui.image.size())
@@ -63,6 +67,11 @@ class FormInfo(QWidget):
             else:
                 self.ui.btn_add_to_lib.setIcon(QIcon(favorite_icon_path))
             Thread(target=self.get_chapters, daemon=True).start()
+
+    def open_rate(self):
+        self.a = FormRate()
+        self.a.setup(self.manga)
+        self.a.show()
 
     def set_score(self, score: float):
         stars = [self.ui.star_1, self.ui.star_2, self.ui.star_3, self.ui.star_4, self.ui.star_5]

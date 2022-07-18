@@ -3,6 +3,7 @@ from items import Manga, Chapter, Image, User, RequestForm, Genre, Kind, Order
 
 class Parser:
     catalog_name = 'CATALOG'
+    is_primary = False
 
     def get_manga(self, manga: Manga) -> Manga:
         return manga
