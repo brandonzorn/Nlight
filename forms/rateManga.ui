@@ -51,7 +51,17 @@ background-color: rgb(32, 32, 32);</string>
        </spacer>
       </item>
       <item>
-       <widget class="QSpinBox" name="chapters"/>
+       <widget class="QSpinBox" name="chapters">
+        <property name="suffix">
+         <string/>
+        </property>
+        <property name="prefix">
+         <string/>
+        </property>
+        <property name="maximum">
+         <number>999</number>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
