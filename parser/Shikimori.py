@@ -86,7 +86,8 @@ class Shikimori(Parser):
         html = self.session.get(url, params)
         if html and html.status_code == 200 and html.json():
             for i in html.json():
-                return UserRate(i.get('id'), i.get('user_id'), i.get('target_id'), i.get('score'), i.get('status'))
+                return UserRate(i.get('id'), i.get('user_id'), i.get('target_id'),
+                                i.get('score'), i.get('status'), i.get('chapters'))
 
     def post_user_rate(self, post_data):
         url = 'https://shikimori.one/api/user_rates'

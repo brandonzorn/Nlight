@@ -46,6 +46,7 @@ class Ui_Dialog(object):
 
         self.chapters = QSpinBox(self.frame)
         self.chapters.setObjectName(u"chapters")
+        self.chapters.setMaximum(999)
 
         self.horizontalLayout.addWidget(self.chapters)
 
@@ -113,6 +114,8 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
         self.label.setText(QCoreApplication.translate("Dialog", u"Chapters", None))
+        self.chapters.setSuffix("")
+        self.chapters.setPrefix("")
         self.label_2.setText(QCoreApplication.translate("Dialog", u"Score", None))
         self.btn_cancel.setText(QCoreApplication.translate("Dialog", u"Cancel", None))
         self.btn_add.setText(QCoreApplication.translate("Dialog", u"Add", None))
