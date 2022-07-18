@@ -8,27 +8,38 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize, Qt)
-from PySide6.QtGui import (QIcon)
-from PySide6.QtWidgets import (QComboBox, QFrame, QHBoxLayout,
-                               QLabel, QListWidget, QPushButton,
-                               QSizePolicy, QSpacerItem, QTextEdit, QVBoxLayout)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QHBoxLayout,
+    QLabel, QListWidget, QListWidgetItem, QPushButton,
+    QSizePolicy, QSpacerItem, QTextEdit, QVBoxLayout,
+    QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(780, 564)
+        Form.resize(672, 549)
         Form.setStyleSheet(u"color: rgb(255, 255, 255);\n"
 "background-color: rgb(32, 32, 32);")
-        self.horizontalLayout_5 = QHBoxLayout(Form)
-        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_6 = QHBoxLayout(Form)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.horizontalLayout = QHBoxLayout()
+        self.frame = QFrame(Form)
+        self.frame.setObjectName(u"frame")
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout = QHBoxLayout(self.frame)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.btn_back = QPushButton(Form)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.btn_back = QPushButton(self.frame)
         self.btn_back.setObjectName(u"btn_back")
         self.btn_back.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
@@ -38,11 +49,20 @@ class Ui_Form(object):
 
         self.horizontalLayout.addWidget(self.btn_back)
 
-        self.horizontalSpacer = QSpacerItem(37, 17, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer = QSpacerItem(123, 36, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
-        self.lib_list = QComboBox(Form)
+        self.verticalLayout_4 = QVBoxLayout()
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.add_lib_frame = QFrame(self.frame)
+        self.add_lib_frame.setObjectName(u"add_lib_frame")
+        self.add_lib_frame.setFrameShape(QFrame.StyledPanel)
+        self.add_lib_frame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_4 = QHBoxLayout(self.add_lib_frame)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.lib_list = QComboBox(self.add_lib_frame)
         self.lib_list.addItem("")
         self.lib_list.addItem("")
         self.lib_list.addItem("")
@@ -53,9 +73,9 @@ class Ui_Form(object):
         self.lib_list.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.horizontalLayout.addWidget(self.lib_list)
+        self.horizontalLayout_4.addWidget(self.lib_list)
 
-        self.btn_add_to_lib = QPushButton(Form)
+        self.btn_add_to_lib = QPushButton(self.add_lib_frame)
         self.btn_add_to_lib.setObjectName(u"btn_add_to_lib")
         self.btn_add_to_lib.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
@@ -63,13 +83,34 @@ class Ui_Form(object):
         icon1.addFile(u"images/favorite.png", QSize(), QIcon.Normal, QIcon.On)
         self.btn_add_to_lib.setIcon(icon1)
 
-        self.horizontalLayout.addWidget(self.btn_add_to_lib)
+        self.horizontalLayout_4.addWidget(self.btn_add_to_lib)
 
 
-        self.verticalLayout_2.addLayout(self.horizontalLayout)
+        self.verticalLayout_4.addWidget(self.add_lib_frame)
 
-        self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.add_shikimrori_frame = QFrame(self.frame)
+        self.add_shikimrori_frame.setObjectName(u"add_shikimrori_frame")
+        self.add_shikimrori_frame.setFrameShape(QFrame.StyledPanel)
+        self.add_shikimrori_frame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_5 = QHBoxLayout(self.add_shikimrori_frame)
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.pushButton = QPushButton(self.add_shikimrori_frame)
+        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
+"color: rgb(255, 255, 255);")
+
+        self.horizontalLayout_5.addWidget(self.pushButton)
+
+
+        self.verticalLayout_4.addWidget(self.add_shikimrori_frame)
+
+
+        self.horizontalLayout.addLayout(self.verticalLayout_4)
+
+
+        self.verticalLayout_2.addWidget(self.frame)
+
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.image = QLabel(Form)
@@ -83,46 +124,43 @@ class Ui_Form(object):
 
         self.horizontalLayout_3.addWidget(self.image)
 
-        self.verticalLayout_4 = QVBoxLayout()
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.russian = QLabel(Form)
+        self.name_frame = QFrame(Form)
+        self.name_frame.setObjectName(u"name_frame")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.name_frame.sizePolicy().hasHeightForWidth())
+        self.name_frame.setSizePolicy(sizePolicy1)
+        self.name_frame.setFrameShape(QFrame.StyledPanel)
+        self.name_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout = QVBoxLayout(self.name_frame)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.russian = QLabel(self.name_frame)
         self.russian.setObjectName(u"russian")
         self.russian.setWordWrap(True)
 
-        self.verticalLayout_4.addWidget(self.russian)
+        self.verticalLayout.addWidget(self.russian)
 
-        self.name = QLabel(Form)
+        self.name = QLabel(self.name_frame)
         self.name.setObjectName(u"name")
         self.name.setWordWrap(True)
 
-        self.verticalLayout_4.addWidget(self.name)
+        self.verticalLayout.addWidget(self.name)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer = QSpacerItem(38, 186, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.verticalLayout_4.addItem(self.verticalSpacer)
-
-
-        self.horizontalLayout_3.addLayout(self.verticalLayout_4)
-
-        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_3.addItem(self.horizontalSpacer_4)
-
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_3.addItem(self.horizontalSpacer_3)
+        self.verticalLayout.addItem(self.verticalSpacer)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout_3)
+        self.horizontalLayout_3.addWidget(self.name_frame)
 
-        self.horizontalLayout_4 = QHBoxLayout()
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_4.addItem(self.horizontalSpacer_2)
+        self.horizontalLayout_3.addItem(self.horizontalSpacer_2)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout_4)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_3)
 
         self.rate_frame = QFrame(Form)
         self.rate_frame.setObjectName(u"rate_frame")
@@ -188,7 +226,7 @@ class Ui_Form(object):
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
 
 
-        self.verticalLayout.addWidget(self.rate_frame)
+        self.verticalLayout_2.addWidget(self.rate_frame)
 
         self.description = QTextEdit(Form)
         self.description.setObjectName(u"description")
@@ -197,18 +235,16 @@ class Ui_Form(object):
         self.description.setUndoRedoEnabled(True)
         self.description.setReadOnly(True)
 
-        self.verticalLayout.addWidget(self.description)
+        self.verticalLayout_2.addWidget(self.description)
 
 
-        self.verticalLayout_2.addLayout(self.verticalLayout)
-
-
-        self.horizontalLayout_5.addLayout(self.verticalLayout_2)
+        self.horizontalLayout_6.addLayout(self.verticalLayout_2)
 
         self.chapters = QListWidget(Form)
         self.chapters.setObjectName(u"chapters")
+        self.chapters.setEnabled(True)
 
-        self.horizontalLayout_5.addWidget(self.chapters)
+        self.horizontalLayout_6.addWidget(self.chapters)
 
 
         self.retranslateUi(Form)
@@ -227,6 +263,7 @@ class Ui_Form(object):
         self.lib_list.setItemText(5, QCoreApplication.translate("Form", u"\u0411\u0440\u043e\u0448\u0435\u043d\u043e", None))
 
         self.btn_add_to_lib.setText("")
+        self.pushButton.setText(QCoreApplication.translate("Form", u"Shikimori", None))
         self.image.setText("")
         self.russian.setText(QCoreApplication.translate("Form", u"russian", None))
         self.name.setText(QCoreApplication.translate("Form", u"name", None))
