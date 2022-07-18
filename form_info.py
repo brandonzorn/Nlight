@@ -35,6 +35,7 @@ class FormInfo(QWidget):
         self.chapters: list[Chapter] = []
         self.lock = Lock()
         self.reader = None
+        self.rate = None
 
     def resizeEvent(self, a0):
         self.ui.image.clear()
@@ -69,9 +70,9 @@ class FormInfo(QWidget):
             Thread(target=self.get_chapters, daemon=True).start()
 
     def open_rate(self):
-        self.a = FormRate()
-        self.a.setup(self.manga)
-        self.a.show()
+        self.rate = FormRate()
+        self.rate.setup(self.manga)
+        self.rate.show()
 
     def set_score(self, score: float):
         stars = [self.ui.star_1, self.ui.star_2, self.ui.star_3, self.ui.star_4, self.ui.star_5]

@@ -80,7 +80,7 @@ class Shikimori(Parser):
             data = whoami.json()
             return User(data.get('id'), data.get('nickname'), data.get('avatar'))
 
-    def get_user_rate(self, manga: Manga):
+    def get_user_rate(self, manga: Manga) -> UserRate:
         url = f'{self.url_api}/v2/user_rates'
         params = {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.id}
         html = self.session.get(url, params)
@@ -89,9 +89,11 @@ class Shikimori(Parser):
                 return UserRate(i.get('id'), i.get('user_id'), i.get('target_id'),
                                 i.get('score'), i.get('status'), i.get('chapters'))
 
-    def post_user_rate(self, post_data):
-        url = 'https://shikimori.one/api/user_rates'
-        self.session.post(url, post_data)
+    def update_user_rate(self, user_rate: UserRate):
+        url = f'{self.url_api}/v2/user_rates/{user_rate.id}'
+        data = {"user_rate": {"chapters": f"{user_rate.chapters}", "score": f"{user_rate.score}",
+                              "status": f"{user_rate.status}"}}
+        self.session.patch(url, data)
 
 
 @singleton
@@ -161,12 +163,10 @@ class Auth:
                     self.get(url, params)
         return resp
 
-    def post(self, url, json):
+    def patch(self, url, data):
         if not self.is_authorized:
             return
-        resp = self.client.post(url, json=json)
-        print(resp.status_code)
-        print(resp.json())
+        resp = self.client.patch(url, json=data)
         return resp
 
     def get_request(self, url, params=None):
