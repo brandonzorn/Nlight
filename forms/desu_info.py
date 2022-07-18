@@ -26,6 +26,7 @@ class Ui_Form(object):
             Form.setObjectName(u"Form")
         Form.resize(672, 549)
         Form.setStyleSheet(u"color: rgb(255, 255, 255);\n"
+"selection-background-color: rgb(0, 133, 52);\n"
 "background-color: rgb(32, 32, 32);")
         self.horizontalLayout_6 = QHBoxLayout(Form)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
