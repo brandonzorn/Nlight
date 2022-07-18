@@ -26,7 +26,7 @@ DESU_GENRES = [{'name': 'Dementia', 'russian': 'Безумие'}, {'name': 'Mart
                {'name': 'Yuri', 'russian': 'Юри'}, {'name': 'Yaoi', 'russian': 'Яой'}]
 
 
-DESU_ORDERS = [{'name': 'name', 'russian': 'Название'}, {'name': 'popular', 'russian': 'Популярность'}]
+DESU_ORDERS = [{'name': 'popular', 'russian': 'Популярность'}, {'name': 'name', 'russian': 'Название'}]
 
 DESU_KINDS = [{'name': 'manga', 'russian': 'Манга'}, {'name': 'manhwa', 'russian': 'Манхва'},
               {'name': 'manhua', 'russian': 'Маньхуа'}, {'name': 'one_shot', 'russian': 'Ваншот'},
