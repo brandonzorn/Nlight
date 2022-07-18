@@ -25,6 +25,10 @@ class Shikimori(Parser):
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
             data = html.json()
+            if data.get('volumes'):
+                manga.volumes = int(data.get('volumes'))
+            if data.get('chapters'):
+                manga.chapters = int(data.get('chapters'))
             manga.description = data.get('description')
         return manga
 
