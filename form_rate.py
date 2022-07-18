@@ -18,4 +18,5 @@ class FormRate(QDialog):
         self.catalog = get_catalog(manga.catalog_id)()
         rate = self.catalog.get_user_rate(manga)
         self.ui.score.setValue(rate.score)
+        self.ui.chapters.setValue(rate.chapters)
         self.ui.lib_list.setCurrentIndex(lib_lists_en.index(rate.status))
