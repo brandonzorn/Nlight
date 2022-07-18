@@ -7,6 +7,8 @@ class Manga:
         self.kind = kind
         self.description = description
         self.score = score
+        self.volumes = 0
+        self.chapters = 0
 
     def get_name(self) -> str:
         if self.russian:
