@@ -84,6 +84,26 @@ class Shikimori(Parser):
             data = whoami.json()
             return User(data.get('id'), data.get('nickname'), data.get('avatar'))
 
+    def create_user_rate(self, manga: Manga):
+        url = f'{self.url_api}/v2/user_rates'
+        data = {"user_rate": {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.id}}
+        print(self.session.post(url, data))
+
+    def check_user_rate(self, manga: Manga):
+        url = f'{self.url_api}/v2/user_rates'
+        params = {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.id}
+        html = self.session.get(url, params)
+        if html and html.status_code == 200 and html.json():
+            for i in html.json():
+                if manga.id == i.get('target_id'):
+                    return True
+        return False
+
+    def delete_user_rate(self, user_rate: UserRate):
+        url = f'{self.url_api}/v2/user_rates/{user_rate.id}'
+        html = self.session.delete(url)
+        print(html.status_code)
+
     def get_user_rate(self, manga: Manga) -> UserRate:
         url = f'{self.url_api}/v2/user_rates'
         params = {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.id}
@@ -114,6 +134,9 @@ class Auth:
         self.is_authorized = False
         if self.token:
             self.check_auth()
+
+    def auth_login(self, data):
+        pass
 
     def get_client(self, scope, redirect_uri, token):
         client = OAuth2Session(self.client_id, auto_refresh_url=URL_SHIKIMORI_TOKEN, auto_refresh_kwargs=self.extra,
@@ -169,6 +192,18 @@ class Auth:
         if not self.is_authorized:
             return
         resp = self.client.patch(url, json=data)
+        return resp
+
+    def post(self, url, data):
+        if not self.is_authorized:
+            return
+        resp = self.client.post(url, json=data)
+        return resp
+
+    def delete(self, url):
+        if not self.is_authorized:
+            return
+        resp = self.client.delete(url)
         return resp
 
     def get_request(self, url, params=None):

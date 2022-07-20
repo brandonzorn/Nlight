@@ -120,8 +120,7 @@ background-color: rgb(32, 32, 32);</string>
       <item>
        <widget class="QPushButton" name="btn_cancel">
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 133, 52);
-color: rgb(255, 255, 255);</string>
+         <string notr="true">background-color: rgb(0, 133, 52);</string>
         </property>
         <property name="text">
          <string>Cancel</string>
@@ -131,8 +130,7 @@ color: rgb(255, 255, 255);</string>
       <item>
        <widget class="QPushButton" name="btn_add">
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 133, 52);
-color: rgb(255, 255, 255);</string>
+         <string notr="true">background-color: rgb(0, 133, 52);</string>
         </property>
         <property name="text">
          <string>Add</string>
@@ -140,6 +138,16 @@ color: rgb(255, 255, 255);</string>
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btn_delete">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 133, 52);</string>
+     </property>
+     <property name="text">
+      <string>Delete</string>
+     </property>
     </widget>
    </item>
   </layout>
