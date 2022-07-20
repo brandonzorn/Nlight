@@ -90,20 +90,24 @@ class Ui_Dialog(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.btn_cancel = QPushButton(self.frame_3)
         self.btn_cancel.setObjectName(u"btn_cancel")
-        self.btn_cancel.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
+        self.btn_cancel.setStyleSheet(u"background-color: rgb(0, 133, 52);")
 
         self.horizontalLayout_2.addWidget(self.btn_cancel)
 
         self.btn_add = QPushButton(self.frame_3)
         self.btn_add.setObjectName(u"btn_add")
-        self.btn_add.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
+        self.btn_add.setStyleSheet(u"background-color: rgb(0, 133, 52);")
 
         self.horizontalLayout_2.addWidget(self.btn_add)
 
 
         self.verticalLayout.addWidget(self.frame_3)
+
+        self.btn_delete = QPushButton(Dialog)
+        self.btn_delete.setObjectName(u"btn_delete")
+        self.btn_delete.setStyleSheet(u"background-color: rgb(0, 133, 52);")
+
+        self.verticalLayout.addWidget(self.btn_delete)
 
 
         self.retranslateUi(Dialog)
@@ -119,5 +123,6 @@ class Ui_Dialog(object):
         self.label_2.setText(QCoreApplication.translate("Dialog", u"Score", None))
         self.btn_cancel.setText(QCoreApplication.translate("Dialog", u"Cancel", None))
         self.btn_add.setText(QCoreApplication.translate("Dialog", u"Add", None))
+        self.btn_delete.setText(QCoreApplication.translate("Dialog", u"Delete", None))
     # retranslateUi
 
