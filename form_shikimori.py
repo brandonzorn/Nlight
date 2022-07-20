@@ -1,11 +1,10 @@
 from threading import Thread, Lock
 
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QWidget, QListWidgetItem
 
 from catalog_manager import get_catalog
 from const.icons import search_icon_path, next_page_icon_path, prev_page_icon_path
-from database import Database
 from form_auth import FormAuth
 from forms.shikimoriUI import Ui_Form
 from items import Manga, RequestForm, User
@@ -26,15 +25,13 @@ class FormShikimori(QWidget):
         self.mangas: list[Manga] = []
         self.catalog = get_catalog(1)()
         self.Form_auth = FormAuth(self.catalog)
-        self.db = Database()
         self.request_params = RequestForm()
-        self.cur_list = 'planned'
-        self.ui.b_planned.clicked.connect(lambda: self.update_list('planned'))
-        self.ui.b_watching.clicked.connect(lambda: self.update_list('watching'))
-        self.ui.b_on_hold.clicked.connect(lambda: self.update_list('on_hold'))
-        self.ui.b_completed.clicked.connect(lambda: self.update_list('completed'))
-        self.ui.b_dropped.clicked.connect(lambda: self.update_list('dropped'))
-        self.ui.b_rewatching.clicked.connect(lambda: self.update_list('rewatching'))
+        self.ui.b_planned.clicked.connect(lambda: self.change_list('planned'))
+        self.ui.b_watching.clicked.connect(lambda: self.change_list('watching'))
+        self.ui.b_on_hold.clicked.connect(lambda: self.change_list('on_hold'))
+        self.ui.b_completed.clicked.connect(lambda: self.change_list('completed'))
+        self.ui.b_dropped.clicked.connect(lambda: self.change_list('dropped'))
+        self.ui.b_rewatching.clicked.connect(lambda: self.change_list('rewatching'))
         self.ui.prev_page.clicked.connect(lambda: self.change_page('-'))
         self.ui.next_page.clicked.connect(lambda: self.change_page('+'))
         self.ui.btn_search.clicked.connect(self.search)
@@ -77,19 +74,17 @@ class FormShikimori(QWidget):
         self.request_params.search = self.ui.line_search.text()
         self.update_list()
 
+    def change_list(self, list_name: str):
+        self.request_params.mylist = list_name
+        self.update_list()
+
     @with_lock_thread(lock)
-    def update_list(self, lib_list=None):
+    def update_list(self):
         ui_to_lock = [self.ui.search_frame, self.ui.lists_frame]
         with lock_ui(ui_to_lock):
             self.ui.list_manga.clear()
-            if not lib_list:
-                lib_list = self.cur_list
-            else:
-                self.cur_list = lib_list
-            self.request_params.mylist = lib_list
             self.mangas = self.catalog.get_manga_login(self.request_params)
             self.ui.label_page.setText(f'Страница {self.request_params.page}')
-            [self.ui.list_manga.addItem(i) for i in self.get_manga_library()]
-
-    def get_manga_library(self) -> list:
-        return [i.get_name() for i in self.mangas]
+            for manga in self.mangas:
+                item = QListWidgetItem(manga.get_name())
+                self.ui.list_manga.addItem(item)
