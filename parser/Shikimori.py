@@ -115,9 +115,6 @@ class Auth:
         if self.token:
             self.check_auth()
 
-    def auth_login(self, data):
-        pass
-
     def get_client(self, scope, redirect_uri, token):
         client = OAuth2Session(self.client_id, auto_refresh_url=URL_SHIKIMORI_TOKEN, auto_refresh_kwargs=self.extra,
                                scope=scope, redirect_uri=redirect_uri, token=token,
