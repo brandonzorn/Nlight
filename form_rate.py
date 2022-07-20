@@ -21,6 +21,7 @@ class FormRate(QDialog):
 
     def setup(self, manga: Manga):
         self.manga = manga
+        self.setWindowTitle(f'{self.manga.get_name()} Rate')
         self.catalog = get_catalog(manga.catalog_id)()
         if self.catalog.check_user_rate(self.manga):
             self.user_rate = self.catalog.get_user_rate(manga)
