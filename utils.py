@@ -75,7 +75,7 @@ def lock_ui(ui_to_lock: list):
     [i.setEnabled(True) for i in ui_to_lock]
 
 
-def token_saver(token, catalog_name):
+def token_saver(token, catalog_name='Shikimori'):
     if not os.path.exists(f'Desu/{catalog_name}'):
         os.makedirs(f'Desu/{catalog_name}', exist_ok=True)
     with open(f'Desu/{catalog_name}/token.json', 'w') as f:
@@ -88,5 +88,7 @@ def token_loader(catalog_name):
         os.makedirs(path, exist_ok=True)
         if os.path.exists(f'{path}/token.json'):
             with open(f'{path}/token.json') as f:
-                return json.load(f)
+                data = json.load(f)
+                if data:
+                    return data
     return {}
