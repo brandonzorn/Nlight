@@ -71,8 +71,7 @@ class Ui_Form(object):
         self.lib_list.addItem("")
         self.lib_list.addItem("")
         self.lib_list.setObjectName(u"lib_list")
-        self.lib_list.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
+        self.lib_list.setStyleSheet(u"background-color: rgb(0, 133, 52);")
 
         self.horizontalLayout_4.addWidget(self.lib_list)
 

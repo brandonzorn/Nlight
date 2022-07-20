@@ -106,7 +106,23 @@ background-color: rgb(32, 32, 32);</string>
     </widget>
    </item>
    <item>
-    <widget class="QComboBox" name="lib_list"/>
+    <widget class="QFrame" name="frame_4">
+     <property name="frameShape">
+      <enum>QFrame::Panel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QComboBox" name="lib_list">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(0, 133, 52);</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <widget class="QFrame" name="frame_3">

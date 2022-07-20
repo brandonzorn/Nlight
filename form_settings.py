@@ -11,7 +11,7 @@ class FormSettings(QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.setFixedSize(self.minimumSize())
-        self.setWindowTitle('Options')
+        self.setWindowTitle('Settings')
         self.setWindowIcon(QIcon(app_icon_path))
         self.ui.scale_box_2.addItems(QStyleFactory.keys())
         self.ui.scale_box_2.currentIndexChanged.connect(self.set_style)

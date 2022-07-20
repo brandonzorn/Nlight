@@ -109,8 +109,7 @@ color: rgb(255, 255, 255);</string>
              <item>
               <widget class="QComboBox" name="lib_list">
                <property name="styleSheet">
-                <string notr="true">background-color: rgb(0, 133, 52);
-color: rgb(255, 255, 255);</string>
+                <string notr="true">background-color: rgb(0, 133, 52);</string>
                </property>
                <item>
                 <property name="text">
