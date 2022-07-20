@@ -77,10 +77,20 @@ class Ui_Dialog(object):
 
         self.verticalLayout.addWidget(self.frame_2)
 
-        self.lib_list = QComboBox(Dialog)
+        self.frame_4 = QFrame(Dialog)
+        self.frame_4.setObjectName(u"frame_4")
+        self.frame_4.setFrameShape(QFrame.Panel)
+        self.frame_4.setFrameShadow(QFrame.Plain)
+        self.horizontalLayout_4 = QHBoxLayout(self.frame_4)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.lib_list = QComboBox(self.frame_4)
         self.lib_list.setObjectName(u"lib_list")
+        self.lib_list.setStyleSheet(u"background-color: rgb(0, 133, 52);")
 
-        self.verticalLayout.addWidget(self.lib_list)
+        self.horizontalLayout_4.addWidget(self.lib_list)
+
+
+        self.verticalLayout.addWidget(self.frame_4)
 
         self.frame_3 = QFrame(Dialog)
         self.frame_3.setObjectName(u"frame_3")
