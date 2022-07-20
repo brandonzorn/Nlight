@@ -185,13 +185,13 @@ color: rgb(255, 255, 255);</string>
               <number>0</number>
              </property>
              <item>
-              <widget class="QPushButton" name="pushButton">
+              <widget class="QPushButton" name="btn_shikimori">
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(0, 133, 52);
 color: rgb(255, 255, 255);</string>
                </property>
                <property name="text">
-                <string>Shikimori</string>
+                <string/>
                </property>
               </widget>
              </item>

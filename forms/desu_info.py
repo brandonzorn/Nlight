@@ -96,12 +96,12 @@ class Ui_Form(object):
         self.horizontalLayout_5 = QHBoxLayout(self.add_shikimrori_frame)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.pushButton = QPushButton(self.add_shikimrori_frame)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
+        self.btn_shikimori = QPushButton(self.add_shikimrori_frame)
+        self.btn_shikimori.setObjectName(u"btn_shikimori")
+        self.btn_shikimori.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
 
-        self.horizontalLayout_5.addWidget(self.pushButton)
+        self.horizontalLayout_5.addWidget(self.btn_shikimori)
 
 
         self.verticalLayout_4.addWidget(self.add_shikimrori_frame)
@@ -264,7 +264,7 @@ class Ui_Form(object):
         self.lib_list.setItemText(5, QCoreApplication.translate("Form", u"\u0411\u0440\u043e\u0448\u0435\u043d\u043e", None))
 
         self.btn_add_to_lib.setText("")
-        self.pushButton.setText(QCoreApplication.translate("Form", u"Shikimori", None))
+        self.btn_shikimori.setText("")
         self.image.setText("")
         self.russian.setText(QCoreApplication.translate("Form", u"russian", None))
         self.name.setText(QCoreApplication.translate("Form", u"name", None))
