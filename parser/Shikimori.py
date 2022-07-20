@@ -110,8 +110,10 @@ class Auth:
         self.tokens = token_loader(Shikimori.catalog_name)
         self.headers = {'User-Agent': 'Shikimori', 'Authorization': f'Bearer {self.tokens.get("access_token")}'}
         self.client = self.get_client(scope, self.redirect_uri, token)
+        self.refresh_token()
         self.is_authorized = False
-        self.check_auth()
+        if self.token:
+            self.check_auth()
 
     def auth_login(self, data):
         pass
@@ -141,7 +143,6 @@ class Auth:
 
     def update_token(self, token):
         if token:
-            token = token.get('token')
             token_saver(token, Shikimori.catalog_name)
             self.tokens = token
 
