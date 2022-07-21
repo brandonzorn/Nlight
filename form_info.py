@@ -37,7 +37,7 @@ class FormInfo(QWidget):
         self.chapters: list[Chapter] = []
         self.lock = Lock()
         self.reader = None
-        self.rate = None
+        self.rate = FormRate()
 
     def resizeEvent(self, a0):
         self.ui.image.clear()
@@ -72,7 +72,6 @@ class FormInfo(QWidget):
             Thread(target=self.get_chapters, daemon=True).start()
 
     def open_rate(self):
-        self.rate = FormRate()
         self.rate.setup(self.manga)
         self.rate.show()
 

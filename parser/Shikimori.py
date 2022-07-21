@@ -1,6 +1,4 @@
-from oauthlib.oauth2 import InvalidGrantError, MissingTokenError
 from requests_oauthlib import OAuth2Session
-
 from const.urls import SHIKIMORI_HEADERS, URL_SHIKIMORI_API, URL_SHIKIMORI, URL_SHIKIMORI_TOKEN
 from items import Manga, Genre, RequestForm, User, Kind, UserRate
 from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
@@ -61,19 +59,16 @@ class Shikimori(Parser):
             return [Kind(0, i, '') for i in html.json().get('kind')]
         return []
 
-    def get_manga_login(self, params: RequestForm):
-        url = f'{self.url_api}/mangas'
-        params = {'limit': params.limit, 'page': params.page, 'mylist': params.mylist, 'search': params.search}
+    def get_manga_login(self, req_params: RequestForm):
+        url = f'{self.url_api}/users/{self.get_user().id}/manga_rates'
+        params = {"limit": 50, "page": req_params.page}
         html = self.session.get(url, params)
         manga = []
         if html and html.status_code == 200 and html.json():
             for i in html.json():
-                manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
-                                   i.get('kind'), i.get('description'), float(i.get('score'))))
-        url = f'{self.url_api}/ranobe'
-        html = self.session.get(url, params)
-        if html and html.status_code == 200 and html.json():
-            for i in html.json():
+                if not i.get("status") == req_params.mylist:
+                    continue
+                i = i.get("manga")
                 manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
                                    i.get('kind'), i.get('description'), float(i.get('score'))))
         return manga
@@ -83,11 +78,12 @@ class Shikimori(Parser):
         if whoami and whoami.status_code == 200:
             data = whoami.json()
             return User(data.get('id'), data.get('nickname'), data.get('avatar'))
+        return User(None, 'Войти', None)
 
     def create_user_rate(self, manga: Manga):
         url = f'{self.url_api}/v2/user_rates'
         data = {"user_rate": {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.id}}
-        print(self.session.post(url, data))
+        self.session.post(url, data)
 
     def check_user_rate(self, manga: Manga):
         url = f'{self.url_api}/v2/user_rates'
@@ -101,8 +97,7 @@ class Shikimori(Parser):
 
     def delete_user_rate(self, user_rate: UserRate):
         url = f'{self.url_api}/v2/user_rates/{user_rate.id}'
-        html = self.session.delete(url)
-        print(html.status_code)
+        self.session.delete(url)
 
     def get_user_rate(self, manga: Manga) -> UserRate:
         url = f'{self.url_api}/v2/user_rates'
@@ -117,7 +112,7 @@ class Shikimori(Parser):
         url = f'{self.url_api}/v2/user_rates/{user_rate.id}'
         data = {"user_rate": {"chapters": f"{user_rate.chapters}", "score": f"{user_rate.score}",
                               "status": f"{user_rate.status}"}}
-        self.session.patch(url, data)
+        self.session.patch(url, data).json()
 
 
 @singleton
@@ -152,10 +147,6 @@ class Auth:
     def fetch_token(self, code):
         try:
             self.client.fetch_token(URL_SHIKIMORI_TOKEN, code, client_secret=self.client_secret)
-        except InvalidGrantError:
-            return
-        except MissingTokenError:
-            return
         except Exception as e:
             print(e)
         token_saver(self.token, Shikimori.catalog_name)
