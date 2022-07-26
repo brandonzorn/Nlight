@@ -44,7 +44,6 @@ class FormFacial(QWidget):
         self.db: Database = Database()
         self.catalog = None
         self.update_catalog(0)
-        Thread(target=self.get_content, daemon=True).start()
 
     def clicked_genres(self):
         self.Form_genres.show()
