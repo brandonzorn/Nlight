@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QWidget, QListWidgetItem
+
 from forms.desu_library import Ui_Dialog
 from items import Manga, RequestForm
 from parser.LocalLib import LocalLib

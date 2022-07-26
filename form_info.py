@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QWidget, QListWidgetItem
 
 from app_windows.reader import Reader
 from catalog_manager import get_catalog
-from const.icons import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path,\
+from const.icons import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, \
     shikimori_icon_path
 from const.lists import lib_lists_en
 from database import Database
