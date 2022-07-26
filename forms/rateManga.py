@@ -83,6 +83,15 @@ class Ui_Dialog(object):
         self.frame_4.setFrameShadow(QFrame.Plain)
         self.horizontalLayout_4 = QHBoxLayout(self.frame_4)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.label_3 = QLabel(self.frame_4)
+        self.label_3.setObjectName(u"label_3")
+
+        self.horizontalLayout_4.addWidget(self.label_3)
+
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_4.addItem(self.horizontalSpacer_3)
+
         self.lib_list = QComboBox(self.frame_4)
         self.lib_list.setObjectName(u"lib_list")
         self.lib_list.setStyleSheet(u"background-color: rgb(0, 133, 52);")
@@ -104,6 +113,12 @@ class Ui_Dialog(object):
 
         self.horizontalLayout_2.addWidget(self.btn_cancel)
 
+        self.btn_delete = QPushButton(self.frame_3)
+        self.btn_delete.setObjectName(u"btn_delete")
+        self.btn_delete.setStyleSheet(u"background-color: rgb(0, 133, 52);")
+
+        self.horizontalLayout_2.addWidget(self.btn_delete)
+
         self.btn_add = QPushButton(self.frame_3)
         self.btn_add.setObjectName(u"btn_add")
         self.btn_add.setStyleSheet(u"background-color: rgb(0, 133, 52);")
@@ -113,12 +128,6 @@ class Ui_Dialog(object):
 
         self.verticalLayout.addWidget(self.frame_3)
 
-        self.btn_delete = QPushButton(Dialog)
-        self.btn_delete.setObjectName(u"btn_delete")
-        self.btn_delete.setStyleSheet(u"background-color: rgb(0, 133, 52);")
-
-        self.verticalLayout.addWidget(self.btn_delete)
-
 
         self.retranslateUi(Dialog)
 
@@ -127,12 +136,13 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
-        self.label.setText(QCoreApplication.translate("Dialog", u"Chapters", None))
+        self.label.setText(QCoreApplication.translate("Dialog", u"\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u043e \u0433\u043b\u0430\u0432", None))
         self.chapters.setSuffix("")
         self.chapters.setPrefix("")
-        self.label_2.setText(QCoreApplication.translate("Dialog", u"Score", None))
-        self.btn_cancel.setText(QCoreApplication.translate("Dialog", u"Cancel", None))
-        self.btn_add.setText(QCoreApplication.translate("Dialog", u"Add", None))
-        self.btn_delete.setText(QCoreApplication.translate("Dialog", u"Delete", None))
+        self.label_2.setText(QCoreApplication.translate("Dialog", u"\u041e\u0446\u0435\u043d\u043a\u0430", None))
+        self.label_3.setText(QCoreApplication.translate("Dialog", u"\u0421\u0442\u0430\u0442\u0443\u0441", None))
+        self.btn_cancel.setText(QCoreApplication.translate("Dialog", u"\u041e\u0442\u043c\u0435\u043d\u0430", None))
+        self.btn_delete.setText(QCoreApplication.translate("Dialog", u"\u0423\u0434\u0430\u043b\u0438\u0442\u044c", None))
+        self.btn_add.setText(QCoreApplication.translate("Dialog", u"\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c", None))
     # retranslateUi
 
