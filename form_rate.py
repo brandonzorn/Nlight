@@ -23,21 +23,14 @@ class FormRate(QDialog):
         self.manga = manga
         self.setWindowTitle(f'{self.manga.get_name()} Rate')
         self.catalog = get_catalog(manga.catalog_id)()
-        if self.catalog.check_user_rate(self.manga):
-            self.user_rate = self.catalog.get_user_rate(manga)
-            self.ui.score.setValue(self.user_rate.score)
-            self.ui.chapters.setValue(self.user_rate.chapters)
-            if self.manga.chapters:
-                self.ui.chapters.setMaximum(self.manga.chapters)
-            self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.user_rate.status))
-        else:
+        if not self.catalog.check_user_rate(self.manga):
             self.catalog.create_user_rate(self.manga)
-            self.user_rate = self.catalog.get_user_rate(manga)
-            self.ui.score.setValue(self.user_rate.score)
-            self.ui.chapters.setValue(self.user_rate.chapters)
-            if self.manga.chapters:
-                self.ui.chapters.setMaximum(self.manga.chapters)
-            self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.user_rate.status))
+        self.user_rate = self.catalog.get_user_rate(manga)
+        self.ui.score.setValue(self.user_rate.score)
+        self.ui.chapters.setValue(self.user_rate.chapters)
+        if self.manga.chapters:
+            self.ui.chapters.setMaximum(self.manga.chapters)
+        self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.user_rate.status))
 
     def send_rate(self):
         self.user_rate.score = self.ui.score.value()
