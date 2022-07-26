@@ -1,5 +1,5 @@
-from items import Manga, RequestForm
 from database import Database
+from items import Manga, RequestForm
 from parser.Parser import Parser
 
 
