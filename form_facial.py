@@ -29,7 +29,8 @@ class FormFacial(QWidget):
         self.ui.filter_apply.clicked.connect(self.filter_apply)
         self.ui.filter_reset.clicked.connect(self.filter_reset)
         self.ui.btn_search.clicked.connect(self.search)
-        self.ui.btn_catalogs.clicked.connect(self.clicked_catalogs)
+        self.ui.btn_catalogs.clicked.connect(lambda: self.ui.catalog_list.setVisible(
+            not self.ui.catalog_list.isVisible()))
         self.ui.catalog_list.doubleClicked.connect(
             lambda: self.update_catalog(self.ui.catalog_list.currentIndex().row()))
         self.mangas = []
@@ -82,12 +83,6 @@ class FormFacial(QWidget):
             self.ui.order_grid.itemAt(i).widget().deleteLater()
         for i in reversed(range(self.ui.kind_grid.count())):
             self.ui.kind_grid.itemAt(i).widget().deleteLater()
-
-    def clicked_catalogs(self):
-        if self.ui.catalog_list.isHidden():
-            self.ui.catalog_list.show()
-        else:
-            self.ui.catalog_list.hide()
 
     def setup_catalogs(self):
         self.ui.catalog_list.clear()
