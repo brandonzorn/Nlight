@@ -4,7 +4,7 @@ from const.urls import URL_SHIKIMORI_API, URL_SHIKIMORI_TOKEN, URL_SHIKIMORI, SH
 from items import Manga, RequestForm, Genre, Kind, User, UserRate
 from keys import SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID
 from parser.Parser import Parser
-from utils import get_html, token_loader, token_saver, singleton
+from utils import get_html, TokenManager, singleton
 
 
 class Shikimori(Parser):
@@ -122,7 +122,7 @@ class Auth:
         self.client_secret = SHIKIMORI_CLIENT_SECRET
         self.redirect_uri = 'urn:ietf:wg:oauth:2.0:oob'
         self.extra = {'client_id': self.client_id, 'client_secret': self.client_secret}
-        self.tokens = token_loader(Shikimori.catalog_name)
+        self.tokens = TokenManager.load_token(Shikimori.catalog_name)
         self.headers = {'User-Agent': 'Shikimori', 'Authorization': f'Bearer {self.tokens.get("access_token")}'}
         self.client = self.get_client(scope, self.redirect_uri, token)
         self.refresh_token()
@@ -136,7 +136,7 @@ class Auth:
     def get_client(self, scope, redirect_uri, token):
         client = OAuth2Session(self.client_id, auto_refresh_url=URL_SHIKIMORI_TOKEN, auto_refresh_kwargs=self.extra,
                                scope=scope, redirect_uri=redirect_uri, token=token,
-                               token_updater=token_saver)
+                               token_updater=TokenManager.save_token)
         client.headers.update(self.headers)
         return client
 
@@ -149,24 +149,24 @@ class Auth:
             self.client.fetch_token(URL_SHIKIMORI_TOKEN, code, client_secret=self.client_secret)
         except Exception as e:
             print(e)
-        token_saver(self.token, Shikimori.catalog_name)
+        TokenManager.save_token(self.token, Shikimori.catalog_name)
         return self.token
 
     def update_token(self, token):
         if token:
-            token_saver(token, Shikimori.catalog_name)
+            TokenManager.save_token(token, Shikimori.catalog_name)
             self.tokens = token
 
     def refresh_token(self):
-        if not token_loader(Shikimori.catalog_name):
+        if not TokenManager.load_token(Shikimori.catalog_name):
             return False
         self.client.headers.clear()
         self.client.headers.update({'User-Agent': 'Shikimori'})
         self.client.refresh_token(URL_SHIKIMORI_TOKEN,
-                                  refresh_token=token_loader(Shikimori.catalog_name).get('refresh_token'))
+                                  refresh_token=TokenManager.load_token(Shikimori.catalog_name).get('refresh_token'))
         self.update_token(self.token)
         self.client.headers.update({'Authorization': f'Bearer'
-                                                     f'{token_loader(Shikimori.catalog_name).get("access_token")}'})
+                                                     f'{TokenManager.load_token(Shikimori.catalog_name).get("access_token")}'})
         return self.token
 
     def get(self, url, params=None):

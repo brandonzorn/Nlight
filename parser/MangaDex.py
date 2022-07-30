@@ -3,7 +3,7 @@ import requests
 from const.urls import URL_MANGA_DEX_API, DEFAULT_HEADERS
 from items import Manga, Chapter, Image, Genre, RequestForm, User
 from parser.Parser import Parser
-from utils import get_html, token_loader, token_saver
+from utils import get_html, TokenManager
 
 
 class MangaDex(Parser):
@@ -132,7 +132,7 @@ class MangaDex(Parser):
 class Auth:
     def __init__(self):
         self.url_api = URL_MANGA_DEX_API
-        self.tokens = token_loader(MangaDex.catalog_name)
+        self.tokens = TokenManager.load_token(MangaDex.catalog_name)
         self.is_authorized = False
 
     def get_refresh(self):
@@ -155,7 +155,7 @@ class Auth:
     def update_token(self, token):
         if token:
             token = token.json().get('token')
-            token_saver(token, MangaDex.catalog_name)
+            TokenManager.save_token(token, MangaDex.catalog_name)
             self.tokens = token
 
     def refresh_token(self):
