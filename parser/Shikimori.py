@@ -1,11 +1,10 @@
 from requests_oauthlib import OAuth2Session
 
-from const.urls import SHIKIMORI_HEADERS, URL_SHIKIMORI_API, URL_SHIKIMORI, URL_SHIKIMORI_TOKEN
-from items import Manga, Genre, RequestForm, User, Kind, UserRate
-from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
+from const.urls import URL_SHIKIMORI_API, URL_SHIKIMORI_TOKEN, URL_SHIKIMORI, SHIKIMORI_HEADERS
+from items import Manga, RequestForm, Genre, Kind, User, UserRate
+from keys import SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID
 from parser.Parser import Parser
-from utils import get_html, singleton
-from utils import token_loader, token_saver
+from utils import get_html, token_loader, token_saver, singleton
 
 
 class Shikimori(Parser):
@@ -56,7 +55,7 @@ class Shikimori(Parser):
     def get_kinds(self):
         url = f'{self.url_api}/constants/manga'
         html = get_html(url, headers=self.headers)
-        if html and html.status_code == 200 and len(html.json()):
+        if html and html.status_code == 200 and html.json():
             return [Kind(0, i, '') for i in html.json().get('kind')]
         return []
 
