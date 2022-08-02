@@ -31,9 +31,11 @@ class FormInfo(QWidget):
         self.ui.btn_shikimori.setIcon(QIcon(shikimori_icon_path))
         self.ui.lib_list.currentIndexChanged.connect(self.change_lib_list)
         self.ui.btn_shikimori.clicked.connect(self.open_rate)
+        self.ui.manga_relations.doubleClicked.connect(lambda: self.setup(self.get_current_manga()))
         self.db: Database = Database()
         self.catalog = None
         self.manga = None
+        self.related_mangas = []
         self.chapters: list[Chapter] = []
         self.lock = Lock()
         self.reader = None
@@ -47,6 +49,9 @@ class FormInfo(QWidget):
         pixmap = pixmap.scaled(self.ui.image.size(), Qt.AspectRatioMode.KeepAspectRatio,
                                Qt.TransformationMode.SmoothTransformation)
         self.ui.image.setPixmap(pixmap)
+
+    def get_current_manga(self):
+        return self.catalog.get_manga(self.related_mangas[self.ui.manga_relations.currentIndex().row()])
 
     def setup(self, manga: Manga):
         ui_to_lock = [self.ui.btn_back]
@@ -70,6 +75,7 @@ class FormInfo(QWidget):
             else:
                 self.ui.btn_add_to_lib.setIcon(QIcon(favorite_icon_path))
             Thread(target=self.get_chapters, daemon=True).start()
+            Thread(target=self.get_relations, daemon=True).start()
 
     def open_rate(self):
         self.rate.setup(self.manga)
@@ -127,6 +133,13 @@ class FormInfo(QWidget):
                 if chapter.language:
                     item.setIcon(QIcon(get_language_icon(chapter.language)))
                 self.ui.chapters.addItem(item)
+
+    def get_relations(self):
+        self.ui.manga_relations.clear()
+        self.related_mangas = self.catalog.get_relations(self.manga)
+        for manga in self.related_mangas:
+            item = QListWidgetItem(manga.get_name())
+            self.ui.manga_relations.addItem(item)
 
     def open_reader(self):
         self.reader = Reader()

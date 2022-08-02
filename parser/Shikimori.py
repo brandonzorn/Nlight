@@ -63,15 +63,27 @@ class Shikimori(Parser):
         url = f'{self.url_api}/users/{self.get_user().id}/manga_rates'
         params = {"limit": 50, "page": req_params.page}
         html = self.session.get(url, params)
-        manga = []
+        mangas = []
         if html and html.status_code == 200 and html.json():
             for i in html.json():
                 if not i.get("status") == req_params.mylist:
                     continue
                 i = i.get("manga")
-                manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
-                                   i.get('kind'), i.get('description'), float(i.get('score'))))
-        return manga
+                mangas.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
+                                    i.get('kind'), i.get('description'), float(i.get('score'))))
+        return mangas
+
+    def get_relations(self, manga: Manga) -> list[Manga]:
+        url = f'{self.url_api}/mangas/{manga.id}/related'
+        html = get_html(url, headers=self.headers)
+        mangas = []
+        if html and html.status_code == 200 and html.json():
+            for i in html.json():
+                if i.get('manga'):
+                    i = i.get('manga')
+                    mangas.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
+                                        i.get('kind'), i.get('description'), float(i.get('score'))))
+        return mangas
 
     def get_user(self) -> User:
         whoami = self.session.get('https://shikimori.one/api/users/whoami')

@@ -8,11 +8,17 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize, Qt)
-from PySide6.QtGui import (QIcon)
-from PySide6.QtWidgets import (QComboBox, QFrame, QHBoxLayout,
-                               QLabel, QListWidget, QPushButton,
-                               QSizePolicy, QSpacerItem, QTextEdit, QVBoxLayout)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QHBoxLayout,
+    QLabel, QListWidget, QListWidgetItem, QPushButton,
+    QSizePolicy, QSpacerItem, QTextEdit, QVBoxLayout,
+    QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -222,9 +228,38 @@ class Ui_Form(object):
 
         self.verticalLayout_2.addWidget(self.rate_frame)
 
+        self.related_frame = QFrame(Form)
+        self.related_frame.setObjectName(u"related_frame")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.related_frame.sizePolicy().hasHeightForWidth())
+        self.related_frame.setSizePolicy(sizePolicy2)
+        self.related_frame.setFrameShape(QFrame.StyledPanel)
+        self.related_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_5 = QVBoxLayout(self.related_frame)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.label = QLabel(self.related_frame)
+        self.label.setObjectName(u"label")
+
+        self.verticalLayout_5.addWidget(self.label)
+
+        self.manga_relations = QListWidget(self.related_frame)
+        self.manga_relations.setObjectName(u"manga_relations")
+        sizePolicy1.setHeightForWidth(self.manga_relations.sizePolicy().hasHeightForWidth())
+        self.manga_relations.setSizePolicy(sizePolicy1)
+
+        self.verticalLayout_5.addWidget(self.manga_relations)
+
+
+        self.verticalLayout_2.addWidget(self.related_frame)
+
         self.description = QTextEdit(Form)
         self.description.setObjectName(u"description")
         self.description.setEnabled(True)
+        sizePolicy1.setHeightForWidth(self.description.sizePolicy().hasHeightForWidth())
+        self.description.setSizePolicy(sizePolicy1)
         self.description.setFocusPolicy(Qt.ClickFocus)
         self.description.setUndoRedoEnabled(True)
         self.description.setReadOnly(True)
@@ -267,5 +302,6 @@ class Ui_Form(object):
         self.star_3.setText("")
         self.star_4.setText("")
         self.star_5.setText("")
+        self.label.setText(QCoreApplication.translate("Form", u"\u0421\u0432\u044f\u0437\u0430\u043d\u043d\u043e\u0435:", None))
     # retranslateUi
 
