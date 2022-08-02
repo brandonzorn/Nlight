@@ -19,7 +19,7 @@ class Desu(Parser):
     def search_manga(self, params: RequestForm):
         url = f'{self.url_api}'
         params = {'limit': params.limit, 'search': params.search, 'genres': ','.join([i.name for i in params.genres]),
-                   'order': params.order.name, 'kinds': ','.join([i.name for i in params.kinds]), 'page': params.page}
+                  'order': params.order.name, 'kinds': ','.join([i.name for i in params.kinds]), 'page': params.page}
         html = get_html(url, self.headers, params)
         manga = []
         if html and html.status_code == 200 and len(html.json()):
