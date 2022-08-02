@@ -137,6 +137,7 @@ class FormInfo(QWidget):
     def get_relations(self):
         self.ui.manga_relations.clear()
         self.related_mangas = self.catalog.get_relations(self.manga)
+        self.ui.related_frame.setVisible(bool(self.related_mangas))
         for manga in self.related_mangas:
             item = QListWidgetItem(manga.get_name())
             self.ui.manga_relations.addItem(item)
