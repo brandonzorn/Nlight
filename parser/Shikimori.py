@@ -1,14 +1,15 @@
 from requests_oauthlib import OAuth2Session
 
+from const.shikimori_items import ORDERS, KINDS
 from const.urls import URL_SHIKIMORI_API, URL_SHIKIMORI_TOKEN, URL_SHIKIMORI, SHIKIMORI_HEADERS
-from items import Manga, RequestForm, Genre, Kind, User, UserRate
+from items import Manga, RequestForm, Genre, Kind, User, UserRate, Order
 from keys import SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID
 from parser.Parser import Parser
 from utils import get_html, TokenManager, singleton
 
 
 class Shikimori(Parser):
-    catalog_name = 'Shikimori'
+    catalog_name = 'Shikimori(Manga)'
     is_primary = True
 
     def __init__(self):
@@ -33,7 +34,7 @@ class Shikimori(Parser):
     def search_manga(self, params: RequestForm):
         url = f'{self.url_api}/mangas'
         params = {'limit': params.limit, 'search': params.search, 'genre': ','.join([i.id for i in params.genres]),
-                  'order': 'popularity', 'kind': ','.join(params.kinds), 'page': params.page}
+                  'order': params.order.name, 'kind': ','.join([i.name for i in params.kinds]), 'page': params.page}
         html = get_html(url, self.headers, params)
         manga = []
         if html and html.status_code == 200 and html.json():
@@ -52,12 +53,11 @@ class Shikimori(Parser):
             return [Genre(i.get('id'), i.get('name'), i.get('russian'), i.get('kind')) for i in html.json()]
         return []
 
+    def get_orders(self) -> list[Order]:
+        return [Order('', i['name'], i['russian']) for i in ORDERS]
+
     def get_kinds(self):
-        url = f'{self.url_api}/constants/manga'
-        html = get_html(url, headers=self.headers)
-        if html and html.status_code == 200 and html.json():
-            return [Kind(0, i, '') for i in html.json().get('kind')]
-        return []
+        return [Kind('', i['name'], i['russian']) for i in KINDS]
 
     def get_manga_login(self, req_params: RequestForm):
         url = f'{self.url_api}/users/{self.get_user().id}/manga_rates'
@@ -165,8 +165,8 @@ class Auth:
         self.client.refresh_token(URL_SHIKIMORI_TOKEN,
                                   refresh_token=TokenManager.load_token(Shikimori.catalog_name).get('refresh_token'))
         self.update_token(self.token)
-        self.client.headers.update({'Authorization': f'Bearer'
-                                                     f'{TokenManager.load_token(Shikimori.catalog_name).get("access_token")}'})
+        self.client.headers.update({
+            'Authorization': f'Bearer {TokenManager.load_token(Shikimori.catalog_name).get("access_token")}'})
         return self.token
 
     def get(self, url, params=None):

@@ -128,9 +128,6 @@ class FormInfo(QWidget):
                     item.setIcon(QIcon(get_language_icon(chapter.language)))
                 self.ui.chapters.addItem(item)
 
-    def filter_chapters(self):
-        pass
-
     def open_reader(self):
         self.reader = Reader()
         self.reader.setup(self.manga, self.chapters, self.ui.chapters.currentIndex().row() + 1)

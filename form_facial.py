@@ -25,9 +25,9 @@ class FormFacial(QWidget):
         self.ui.btn_search.setIcon(QIcon(search_icon_path))
         self.ui.prev_page.clicked.connect(lambda: self.change_page('-'))
         self.ui.next_page.clicked.connect(lambda: self.change_page('+'))
-        self.ui.btn_genres_list.clicked.connect(self.clicked_genres)
-        self.ui.filter_apply.clicked.connect(self.filter_apply)
-        self.ui.filter_reset.clicked.connect(self.filter_reset)
+        self.ui.btn_genres_list.clicked.connect(lambda: self.Form_genres.show())
+        self.ui.filter_apply.clicked.connect(self.apply_filter)
+        self.ui.filter_reset.clicked.connect(self.reset_filter)
         self.ui.btn_search.clicked.connect(self.search)
         self.ui.btn_catalogs.clicked.connect(lambda: self.ui.catalog_list.setVisible(
             not self.ui.catalog_list.isVisible()))
@@ -36,7 +36,6 @@ class FormFacial(QWidget):
         self.mangas = []
         self.order_items = {}
         self.kind_items = {}
-        self.cur_page = 1
         self.setup_catalogs()
         self.ui.catalog_list.hide()
         self.Form_genres = FormGenres()
@@ -44,9 +43,6 @@ class FormFacial(QWidget):
         self.db: Database = Database()
         self.catalog = None
         self.update_catalog(0)
-
-    def clicked_genres(self):
-        self.Form_genres.show()
 
     def get_current_manga(self):
         return self.catalog.get_manga(self.mangas[self.ui.list_manga.currentIndex().row()])
@@ -56,7 +52,7 @@ class FormFacial(QWidget):
         self.catalog = catalog()
         self.Form_genres.catalog = catalog()
         self.setup_filters()
-        self.get_content()
+        self.apply_filter()
 
     def setup_filters(self):
         self.clear_filters_items()
@@ -92,48 +88,47 @@ class FormFacial(QWidget):
         ui_to_lock = [self.ui.filters_frame, self.ui.search_frame]
         with lock_ui(ui_to_lock):
             self.ui.list_manga.clear()
-            self.request_params.page = self.cur_page
             self.mangas = self.catalog.search_manga(self.request_params)
             for i in self.mangas:
                 item = QListWidgetItem(i.get_name())
                 if self.db.check_manga_library(i):
                     item.setBackground(QColor("ORANGE"))
                 self.ui.list_manga.addItem(item)
-            self.ui.label_page.setText(f'Страница {self.cur_page}')
+            self.ui.label_page.setText(f'Страница {self.request_params.page}')
 
     def search(self):
-        self.cur_page = 1
+        self.request_params.page = 1
         self.request_params.search = self.ui.line_search.text()
         self.get_content()
 
     def change_page(self, page):
         match page:
             case '+':
-                self.cur_page += 1
+                self.request_params.page += 1
             case '-':
-                if self.cur_page > 1:
-                    self.cur_page -= 1
+                if self.request_params.page > 1:
+                    self.request_params.page -= 1
                 else:
                     return
-        self.ui.label_page.setText(f'Страница {self.cur_page}')
+        self.ui.label_page.setText(f'Страница {self.request_params.page}')
         Thread(target=self.get_content, daemon=True).start()
 
-    def filter_apply(self):
-        self.cur_page = 1
+    def apply_filter(self):
         self.request_params.clear()
-        self.request_params.order = [self.order_items[i].name for i in self.order_items if i.isChecked()]
-        self.request_params.kinds = [self.kind_items[i].name for i in self.kind_items if i.isChecked()]
+        if self.order_items:
+            self.request_params.order = [self.order_items[i] for i in self.order_items if i.isChecked()][-1]
+        self.request_params.kinds = [self.kind_items[i] for i in self.kind_items if i.isChecked()]
         self.request_params.search = self.ui.line_search.text()
         self.Form_genres.accept_genres()
         self.request_params.genres = self.Form_genres.selected_genres
         self.get_content()
 
-    def filter_reset(self):
-        self.cur_page = 1
+    def reset_filter(self):
         self.request_params.clear()
         self.Form_genres.clear_genres()
         if self.order_items:
             list(self.order_items.keys())[0].setChecked(True)
         [i.setChecked(False) for i in self.kind_items]
+        self.request_params.order = [self.order_items[i] for i in self.order_items if i.isChecked()][-1]
         self.ui.line_search.clear()
         self.get_content()
