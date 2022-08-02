@@ -42,7 +42,7 @@ class MangaDex(Parser):
 
     def search_manga(self, params: RequestForm):
         url = f'{self.url_api}/manga'
-        params = {'limit': 50, 'title': params.search, 'offset': params.offset(),
+        params = {'limit': 50, 'title': params.search, 'offset': params.offset,
                   'includedTags[]': [i.id for i in params.genres]}
         manga = []
         html = get_html(url, self.headers, params)
@@ -113,7 +113,7 @@ class MangaDex(Parser):
             case 'rewatching':
                 params.mylist = 're_reading'
         html_statuses = self.session.get(f'{self.url_api}/manga/status', params={'status': params.mylist})
-        params = {'limit': params.limit, 'offset': params.offset()}
+        params = {'limit': params.limit, 'offset': params.offset}
         html = self.session.get(f'{self.url_api}/user/follows/manga', params=params)
         if html and html.status_code == 200 and html.json():
             for i in html.json().get('data'):
