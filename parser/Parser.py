@@ -32,5 +32,8 @@ class Parser:
     def get_orders(self) -> list[Order]:
         return []
 
+    def get_relations(self, manga: Manga) -> list[Manga]:
+        return []
+
     def get_user(self) -> User:
         return User(None, None, None)
