@@ -57,19 +57,21 @@ class RequestForm:
         self.limit: int = 50
         self.search: str = ''
         self.page: int = 1
-        self.offset = lambda: (self.page - 1) * 50
-        self.genres: [Genre] = []
-        self.order = ''
-        self.kinds = []
+        self.genres: list[Genre] = []
+        self.order: Order = Order('', '', '')
+        self.kinds: list[Kind] = []
         self.mylist = 'planned'
 
+    @property
+    def offset(self):
+        return (self.page - 1) * 50
+
     def clear(self):
-        self.limit: int = 50
-        self.search: str = ''
-        self.page: int = 1
-        # self.offset: int = (self.page - 1) * 50
-        self.genres: [Genre] = []
-        self.order = ''
+        self.limit = 50
+        self.search = ''
+        self.page = 1
+        self.genres = []
+        self.order = Order('', '', '')
         self.kinds = []
         self.mylist = 'planned'
 
