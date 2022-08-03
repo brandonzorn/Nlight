@@ -8,16 +8,14 @@ from parser.Parser import Parser
 from utils import get_html, TokenManager, singleton
 
 
-class Shikimori(Parser):
-    catalog_name = 'Shikimori(Manga)'
-    is_primary = True
+class ShikimoriBase(Parser):
+    catalog_name = 'Shikimori'
 
     def __init__(self):
         self.url_api = URL_SHIKIMORI_API
         self.headers = SHIKIMORI_HEADERS
         self.catalog_id = 1
-        self.fields = 1
-        self.session: Auth = Auth()
+        self.is_primary = True
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f'{self.url_api}/mangas/{manga.id}'
@@ -29,18 +27,6 @@ class Shikimori(Parser):
             if data.get('chapters'):
                 manga.chapters = int(data.get('chapters'))
             manga.description = data.get('description')
-        return manga
-
-    def search_manga(self, params: RequestForm):
-        url = f'{self.url_api}/mangas'
-        params = {'limit': params.limit, 'search': params.search, 'genre': ','.join([i.id for i in params.genres]),
-                  'order': params.order.name, 'kind': ','.join([i.name for i in params.kinds]), 'page': params.page}
-        html = get_html(url, self.headers, params)
-        manga = []
-        if html and html.status_code == 200 and html.json():
-            for i in html.json():
-                manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
-                                   i.get('kind'), i.get('description'), float(i.get('score'))))
         return manga
 
     def get_preview(self, manga: Manga):
@@ -56,10 +42,68 @@ class Shikimori(Parser):
     def get_orders(self) -> list[Order]:
         return [Order('', i['name'], i['russian']) for i in ORDERS]
 
+    def get_relations(self, manga: Manga) -> list[Manga]:
+        url = f'{self.url_api}/mangas/{manga.id}/related'
+        html = get_html(url, headers=self.headers)
+        mangas = []
+        if html and html.status_code == 200 and html.json():
+            for i in html.json():
+                if i.get('manga'):
+                    i = i.get('manga')
+                    mangas.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
+                                        i.get('kind'), i.get('description'), float(i.get('score'))))
+        return mangas
+
+
+class ShikimoriManga(ShikimoriBase):
+    catalog_name = 'Shikimori(Manga)'
+
+    def __init__(self):
+        super().__init__()
+
+    def search_manga(self, params: RequestForm):
+        url = f'{self.url_api}/mangas'
+        params = {'limit': params.limit, 'search': params.search, 'genre': ','.join([i.id for i in params.genres]),
+                  'order': params.order.name, 'kind': ','.join([i.name for i in params.kinds]), 'page': params.page}
+        html = get_html(url, self.headers, params)
+        manga = []
+        if html and html.status_code == 200 and html.json():
+            for i in html.json():
+                manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
+                                   i.get('kind'), i.get('description'), float(i.get('score'))))
+        return manga
+
     def get_kinds(self):
         return [Kind('', i['name'], i['russian']) for i in KINDS]
 
-    def get_manga_login(self, req_params: RequestForm):
+
+class ShikimoriRanobe(ShikimoriBase):
+    catalog_name = 'Shikimori(Ranobe)'
+
+    def __init__(self):
+        super().__init__()
+
+    def search_manga(self, params: RequestForm):
+        url = f'{self.url_api}/ranobe'
+        params = {'limit': params.limit, 'search': params.search, 'genre': ','.join([i.id for i in params.genres]),
+                  'order': params.order.name, 'kind': ','.join([i.name for i in params.kinds]), 'page': params.page}
+        html = get_html(url, self.headers, params)
+        manga = []
+        if html and html.status_code == 200 and html.json():
+            for i in html.json():
+                manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
+                                   i.get('kind'), i.get('description'), float(i.get('score'))))
+        return manga
+
+
+class ShikimoriLib(ShikimoriBase):
+
+    def __init__(self):
+        super().__init__()
+        self.fields = 1
+        self.session: Auth = Auth()
+
+    def search_manga(self, req_params: RequestForm):
         url = f'{self.url_api}/users/{self.get_user().id}/manga_rates'
         params = {"limit": 50, "page": req_params.page}
         html = self.session.get(url, params)
@@ -71,18 +115,6 @@ class Shikimori(Parser):
                 i = i.get("manga")
                 mangas.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
                                     i.get('kind'), i.get('description'), float(i.get('score'))))
-        return mangas
-
-    def get_relations(self, manga: Manga) -> list[Manga]:
-        url = f'{self.url_api}/mangas/{manga.id}/related'
-        html = get_html(url, headers=self.headers)
-        mangas = []
-        if html and html.status_code == 200 and html.json():
-            for i in html.json():
-                if i.get('manga'):
-                    i = i.get('manga')
-                    mangas.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
-                                        i.get('kind'), i.get('description'), float(i.get('score'))))
         return mangas
 
     def get_user(self) -> User:
@@ -134,7 +166,7 @@ class Auth:
         self.client_secret = SHIKIMORI_CLIENT_SECRET
         self.redirect_uri = 'urn:ietf:wg:oauth:2.0:oob'
         self.extra = {'client_id': self.client_id, 'client_secret': self.client_secret}
-        self.tokens = TokenManager.load_token(Shikimori.catalog_name)
+        self.tokens = TokenManager.load_token(ShikimoriLib.catalog_name)
         self.headers = {'User-Agent': 'Shikimori', 'Authorization': f'Bearer {self.tokens.get("access_token")}'}
         self.client = self.get_client(scope, self.redirect_uri, token)
         self.refresh_token()
@@ -161,24 +193,24 @@ class Auth:
             self.client.fetch_token(URL_SHIKIMORI_TOKEN, code, client_secret=self.client_secret)
         except Exception as e:
             print(e)
-        TokenManager.save_token(self.token, Shikimori.catalog_name)
+        TokenManager.save_token(self.token, ShikimoriLib.catalog_name)
         return self.token
 
     def update_token(self, token):
         if token:
-            TokenManager.save_token(token, Shikimori.catalog_name)
+            TokenManager.save_token(token, ShikimoriLib.catalog_name)
             self.tokens = token
 
     def refresh_token(self):
-        if not TokenManager.load_token(Shikimori.catalog_name):
+        if not TokenManager.load_token(ShikimoriLib.catalog_name):
             return False
         self.client.headers.clear()
         self.client.headers.update({'User-Agent': 'Shikimori'})
         self.client.refresh_token(URL_SHIKIMORI_TOKEN,
-                                  refresh_token=TokenManager.load_token(Shikimori.catalog_name).get('refresh_token'))
+                                  refresh_token=TokenManager.load_token(ShikimoriLib.catalog_name).get('refresh_token'))
         self.update_token(self.token)
         self.client.headers.update({
-            'Authorization': f'Bearer {TokenManager.load_token(Shikimori.catalog_name).get("access_token")}'})
+            'Authorization': f'Bearer {TokenManager.load_token(ShikimoriLib.catalog_name).get("access_token")}'})
         return self.token
 
     def get(self, url, params=None):
