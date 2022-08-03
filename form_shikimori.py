@@ -3,11 +3,11 @@ from threading import Thread, Lock
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 
-from catalog_manager import get_catalog
 from const.icons import search_icon_path, next_page_icon_path, prev_page_icon_path
 from form_auth import FormAuth
 from forms.shikimoriUI import Ui_Form
 from items import Manga, RequestForm, User
+from parser.Shikimori import ShikimoriLib
 from utils import with_lock_thread, lock_ui
 
 
@@ -23,7 +23,7 @@ class FormShikimori(QWidget):
         self.ui.prev_page.setIcon(QIcon(prev_page_icon_path))
         self.ui.next_page.setIcon(QIcon(next_page_icon_path))
         self.mangas: list[Manga] = []
-        self.catalog = get_catalog(1)()
+        self.catalog = ShikimoriLib()
         self.Form_auth = FormAuth(self.catalog)
         self.request_params = RequestForm()
         self.ui.b_planned.clicked.connect(lambda: self.change_list('planned'))
@@ -83,7 +83,7 @@ class FormShikimori(QWidget):
         ui_to_lock = [self.ui.search_frame, self.ui.lists_frame]
         with lock_ui(ui_to_lock):
             self.ui.list_manga.clear()
-            self.mangas = self.catalog.get_manga_login(self.request_params)
+            self.mangas = self.catalog.search_manga(self.request_params)
             self.ui.label_page.setText(f'Страница {self.request_params.page}')
             for manga in self.mangas:
                 item = QListWidgetItem(manga.get_name())

@@ -1,4 +1,4 @@
-from items import Manga, Chapter, Image, User, RequestForm, Genre, Kind, Order
+from items import Manga, Chapter, Image, RequestForm, Genre, Kind, Order
 
 
 class Parser:
@@ -34,6 +34,3 @@ class Parser:
 
     def get_relations(self, manga: Manga) -> list[Manga]:
         return []
-
-    def get_user(self) -> User:
-        return User(None, None, None)
