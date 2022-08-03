@@ -14,7 +14,6 @@ class MangaDex(Parser):
         self.headers = DEFAULT_HEADERS
         self.catalog_id = 2
         self.fields = 2
-        self.session = Auth()
 
     def get_manga(self, manga: Manga) -> Manga:
         return manga
@@ -103,7 +102,13 @@ class MangaDex(Parser):
                 genres.append(Genre(i.get('id'), i.get('attributes').get('name').get('en'), '', ''))
         return genres
 
-    def get_manga_login(self, params: RequestForm):
+
+class MangaDexLib(MangaDex):
+    def __init__(self):
+        super().__init__()
+        self.session = Auth()
+
+    def search_manga(self, params: RequestForm):
         mangas = []
         match params.mylist:
             case 'planned':

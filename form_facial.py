@@ -3,7 +3,7 @@ from threading import Thread, Lock
 from PySide6.QtGui import QIcon, QColor
 from PySide6.QtWidgets import QWidget, QListWidgetItem, QCheckBox, QRadioButton
 
-from catalog_manager import get_catalog, CATALOGS
+from catalog_manager import USER_CATALOGS
 from const.icons import search_icon_path, prev_page_icon_path, next_page_icon_path
 from database import Database
 from form_genres import FormGenres
@@ -48,7 +48,7 @@ class FormFacial(QWidget):
         return self.catalog.get_manga(self.mangas[self.ui.list_manga.currentIndex().row()])
 
     def update_catalog(self, index: int):
-        catalog = get_catalog(index)
+        catalog = USER_CATALOGS[index]
         self.catalog = catalog()
         self.Form_genres.catalog = catalog()
         self.setup_filters()
@@ -81,7 +81,7 @@ class FormFacial(QWidget):
 
     def setup_catalogs(self):
         self.ui.catalog_list.clear()
-        self.ui.catalog_list.addItems([i.catalog_name for i in CATALOGS.values()])
+        self.ui.catalog_list.addItems([i.catalog_name for i in USER_CATALOGS])
 
     @with_lock_thread(lock)
     def get_content(self):
