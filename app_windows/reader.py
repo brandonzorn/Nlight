@@ -2,20 +2,20 @@ from threading import Thread
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon, QPixmap
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QMainWindow
 
 from catalog_manager import get_catalog
 from const.icons import app_icon_path
 from database import Database
 from file_manager import check_file_exists, get_file, save_file
-from forms.desu_readerUI import Ui_Dialog
+from forms.desu_readerUI import Ui_MainWindow
 from items import Manga, Chapter
 
 
-class Reader(QWidget):
+class Reader(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.ui = Ui_Dialog()
+        self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
         self.setWindowIcon(QIcon(app_icon_path))
@@ -42,10 +42,10 @@ class Reader(QWidget):
         self.showMaximized()
         self.manga = manga
         if self.manga.kind == 'ranobe':
-            self.ui.text_size_slider.show()
+            self.ui.slider_frame.show()
         else:
             self.ui.img.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-            self.ui.text_size_slider.hide()
+            self.ui.slider_frame.hide()
         self.chapters = chapters
         self.cur_chapter = cur_chapter
         self.max_chapters = len(chapters)
@@ -68,6 +68,8 @@ class Reader(QWidget):
                 self.press_key('prev_ch')
             case Qt.Key.Key_Up:
                 self.press_key('next_ch')
+            case Qt.Key.Key_F11:
+                self.change_fullscreen()
         event.accept()
 
     def press_key(self, e):

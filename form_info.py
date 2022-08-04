@@ -58,15 +58,12 @@ class FormInfo(QWidget):
             self.ui.add_lib_frame.setVisible(not self.catalog.is_primary)
             self.ui.add_shikimrori_frame.setVisible(self.catalog.is_primary)
             self.db.add_manga(self.manga)
-            pixmap = self.get_preview()
-            pixmap = pixmap.scaled(self.ui.image.size(), Qt.AspectRatioMode.KeepAspectRatio,
-                                   Qt.TransformationMode.SmoothTransformation)
-            self.ui.image.setPixmap(pixmap)
             self.ui.description.setText(self.manga.description)
             self.ui.name.setText(self.manga.name)
             self.ui.russian.setText(self.manga.russian)
             self.ui.rate_frame.setVisible(bool(self.manga.score))
             self.set_score(self.manga.score)
+            self.resizeEvent(None)
             if self.db.check_manga_library(self.manga):
                 self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
                 self.ui.btn_add_to_lib.setIcon(QIcon(favorite1_icon_path))

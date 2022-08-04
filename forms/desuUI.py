@@ -28,9 +28,26 @@ class Ui_Dialog(object):
         Dialog.setStyleSheet(u"QFrame {\n"
 "	border-radius: 10px;\n"
 "	background-color: rgb(45, 45, 45);\n"
-"}\n"
-"QAbstractButton{\n"
 "	color: rgb(255, 255, 255);\n"
+"}\n"
+"QDialog{\n"
+"	background-color: rgb(32, 32, 32);\n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"	padding: 5px 1px;\n"
+"	border-radius: 10px;\n"
+"	font-weight: bold;\n"
+"	background-color: rgb(0, 133, 52);\n"
+"	color: rgb(255, 255, 255);\n"
+"}\n"
+"\n"
+"QPushButton:hover:!pressed {\n"
+"	border-left: 3px solid white;\n"
+"}\n"
+"\n"
+"QPushButton:checked {\n"
+"	border-left: 3px solid white;\n"
 "}")
         self.horizontalLayout = QHBoxLayout(Dialog)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -157,6 +174,34 @@ class Ui_Dialog(object):
 
         self.frame_2 = QFrame(Dialog)
         self.frame_2.setObjectName(u"frame_2")
+        self.frame_2.setStyleSheet(u"QFrame {\n"
+"	border-radius: 10px;\n"
+"	background-color: rgb(45, 45, 45);\n"
+"	color: rgb(255, 255, 255);\n"
+"}\n"
+"QDialog{\n"
+"	background-color: rgb(32, 32, 32);\n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"	padding: 5px 1px;\n"
+"	border-radius: 10px;\n"
+"	font-weight: bold;\n"
+"	background-color: rgb(0, 133, 52);\n"
+"	color: rgb(255, 255, 255);\n"
+"}\n"
+"\n"
+"QPushButton:hover:!pressed {\n"
+"	border-left: 3px solid white;\n"
+"}\n"
+"\n"
+"QPushButton:checked {\n"
+"	border-left: 3px solid white;\n"
+"}\n"
+"\n"
+"QAbstractButton{\n"
+"	color: rgb(255, 255, 255);\n"
+"}")
         self.frame_2.setFrameShape(QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QFrame.Raised)
         self.verticalLayout_3 = QVBoxLayout(self.frame_2)
@@ -164,7 +209,10 @@ class Ui_Dialog(object):
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.filters_frame = QFrame(self.frame_2)
         self.filters_frame.setObjectName(u"filters_frame")
-        self.filters_frame.setStyleSheet(u"")
+        self.filters_frame.setStyleSheet(u"QAbstractButton{\n"
+"	background-color: rgb(45, 45, 45);\n"
+"	color: rgb(255, 255, 255);\n"
+"}")
         self.filters_frame.setFrameShape(QFrame.StyledPanel)
         self.filters_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_6 = QVBoxLayout(self.filters_frame)
@@ -192,6 +240,18 @@ class Ui_Dialog(object):
 
         self.kind_frame = QFrame(self.filters_frame)
         self.kind_frame.setObjectName(u"kind_frame")
+        self.kind_frame.setStyleSheet(u"QFrame {\n"
+"	border-radius: 10px;\n"
+"	background-color: rgb(45, 45, 45);\n"
+"	color: rgb(255, 255, 255);\n"
+"}\n"
+"QDialog{\n"
+"	background-color: rgb(32, 32, 32);\n"
+"}\n"
+"\n"
+"QAbstractButton{\n"
+"	color: rgb(255, 255, 255);\n"
+"}")
         self.kind_frame.setFrameShape(QFrame.StyledPanel)
         self.kind_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_4 = QVBoxLayout(self.kind_frame)
