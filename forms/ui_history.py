@@ -8,12 +8,17 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize, Qt)
-from PySide6.QtGui import (QBrush, QColor, QIcon,
-                           QPalette)
-from PySide6.QtWidgets import (QHBoxLayout, QListWidget,
-                               QPushButton, QSizePolicy, QSpacerItem,
-                               QVBoxLayout)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QListWidget,
+    QListWidgetItem, QPushButton, QSizePolicy, QSpacerItem,
+    QVBoxLayout, QWidget)
+import desu_res_rc
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -77,7 +82,7 @@ class Ui_Dialog(object):
         self.btn_delete.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
         icon = QIcon()
-        icon.addFile(u"../images/delete.png", QSize(), QIcon.Normal, QIcon.On)
+        icon.addFile(u":/icons/images/delete.png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_delete.setIcon(icon)
 
         self.verticalLayout.addWidget(self.btn_delete)

@@ -204,14 +204,17 @@ class Auth:
     def refresh_token(self):
         if not TokenManager.load_token(ShikimoriLib.catalog_name):
             return False
-        self.client.headers.clear()
-        self.client.headers.update({'User-Agent': 'Shikimori'})
-        self.client.refresh_token(URL_SHIKIMORI_TOKEN,
-                                  refresh_token=TokenManager.load_token(ShikimoriLib.catalog_name).get('refresh_token'))
-        self.update_token(self.token)
-        self.client.headers.update({
-            'Authorization': f'Bearer {TokenManager.load_token(ShikimoriLib.catalog_name).get("access_token")}'})
-        return self.token
+        try:
+            self.client.headers.clear()
+            self.client.headers.update({'User-Agent': 'Shikimori'})
+            self.client.refresh_token(URL_SHIKIMORI_TOKEN,
+                                      refresh_token=TokenManager.load_token(ShikimoriLib.catalog_name).get('refresh_token'))
+            self.update_token(self.token)
+            self.client.headers.update({
+                'Authorization': f'Bearer {TokenManager.load_token(ShikimoriLib.catalog_name).get("access_token")}'})
+            return self.token
+        except Exception as e:
+            print(e)
 
     def get(self, url, params=None):
         if not self.is_authorized:

@@ -8,13 +8,17 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QRect,
-                            QSize, Qt)
-from PySide6.QtGui import (QBrush, QColor, QIcon,
-                           QPalette)
-from PySide6.QtWidgets import (QHBoxLayout, QLabel,
-                               QPushButton, QScrollArea, QSizePolicy, QSlider,
-                               QVBoxLayout, QWidget)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QLabel,
+    QPushButton, QScrollArea, QSizePolicy, QSlider,
+    QVBoxLayout, QWidget)
+import desu_res_rc
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -106,7 +110,7 @@ class Ui_Dialog(object):
         self.prev_page.setFocusPolicy(Qt.NoFocus)
         self.prev_page.setStyleSheet(u"background-color: rgb(0, 133, 52);")
         icon = QIcon()
-        icon.addFile(u"../images/prev.png", QSize(), QIcon.Normal, QIcon.On)
+        icon.addFile(u":/icons/images/prev.png", QSize(), QIcon.Normal, QIcon.Off)
         self.prev_page.setIcon(icon)
 
         self.horizontalLayout_3.addWidget(self.prev_page)
@@ -121,7 +125,7 @@ class Ui_Dialog(object):
         self.next_page.setFocusPolicy(Qt.NoFocus)
         self.next_page.setStyleSheet(u"background-color: rgb(0, 133, 52);")
         icon1 = QIcon()
-        icon1.addFile(u"../images/next.png", QSize(), QIcon.Normal, QIcon.On)
+        icon1.addFile(u":/icons/images/next.png", QSize(), QIcon.Normal, QIcon.Off)
         self.next_page.setIcon(icon1)
 
         self.horizontalLayout_3.addWidget(self.next_page)
@@ -136,7 +140,7 @@ class Ui_Dialog(object):
         self.prev_chp.setFocusPolicy(Qt.NoFocus)
         self.prev_chp.setStyleSheet(u"background-color: rgb(0, 133, 52);")
         icon2 = QIcon()
-        icon2.addFile(u"../images/double_prev.png", QSize(), QIcon.Normal, QIcon.On)
+        icon2.addFile(u":/icons/images/double_prev.png", QSize(), QIcon.Normal, QIcon.Off)
         self.prev_chp.setIcon(icon2)
 
         self.horizontalLayout_2.addWidget(self.prev_chp)
@@ -151,7 +155,7 @@ class Ui_Dialog(object):
         self.next_chp.setFocusPolicy(Qt.NoFocus)
         self.next_chp.setStyleSheet(u"background-color: rgb(0, 133, 52);")
         icon3 = QIcon()
-        icon3.addFile(u"../images/double_next.png", QSize(), QIcon.Normal, QIcon.On)
+        icon3.addFile(u":/icons/images/double_next.png", QSize(), QIcon.Normal, QIcon.Off)
         self.next_chp.setIcon(icon3)
 
         self.horizontalLayout_2.addWidget(self.next_chp)
@@ -166,7 +170,7 @@ class Ui_Dialog(object):
         self.btn_fullscreen.setFocusPolicy(Qt.NoFocus)
         self.btn_fullscreen.setStyleSheet(u"background-color: rgb(0, 133, 52);")
         icon4 = QIcon()
-        icon4.addFile(u"../images/fullscreen.png", QSize(), QIcon.Normal, QIcon.On)
+        icon4.addFile(u":/icons/images/fullscreen.png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_fullscreen.setIcon(icon4)
 
         self.horizontalLayout_2.addWidget(self.btn_fullscreen)
