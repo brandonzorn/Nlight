@@ -1,10 +1,9 @@
 from threading import Thread, Lock
 
-from PySide6.QtGui import QIcon, QColor
+from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QWidget, QListWidgetItem, QCheckBox, QRadioButton
 
 from catalog_manager import USER_CATALOGS
-from const.icons import search_icon_path, prev_page_icon_path, next_page_icon_path
 from database import Database
 from form_genres import FormGenres
 from forms.desuUI import Ui_Dialog
@@ -20,9 +19,6 @@ class FormFacial(QWidget):
         super().__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.ui.prev_page.setIcon(QIcon(prev_page_icon_path))
-        self.ui.next_page.setIcon(QIcon(next_page_icon_path))
-        self.ui.btn_search.setIcon(QIcon(search_icon_path))
         self.ui.prev_page.clicked.connect(lambda: self.change_page('-'))
         self.ui.next_page.clicked.connect(lambda: self.change_page('+'))
         self.ui.btn_genres_list.clicked.connect(lambda: self.Form_genres.show())

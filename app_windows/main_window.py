@@ -1,6 +1,5 @@
-from PySide6.QtWidgets import QMainWindow, QStackedWidget
+from PySide6.QtWidgets import QMainWindow
 
-from app_widgets.side_widget import SideMenu
 from form_facial import FormFacial
 from form_history import FormHistory
 from form_info import FormInfo
@@ -16,12 +15,11 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.Side_menu = SideMenu()
-        self.Side_menu.ui.btn_main.clicked.connect(self.clicked_main)
-        self.Side_menu.ui.btn_mylist.clicked.connect(self.clicked_library)
-        self.Side_menu.ui.btn_shikimori.clicked.connect(self.clicked_shikimori)
-        self.Side_menu.ui.btn_history.clicked.connect(self.clicked_history)
-        self.Side_menu.ui.btn_settings.clicked.connect(self.clicked_settings)
+        self.ui.btn_main.clicked.connect(self.clicked_main)
+        self.ui.btn_mylist.clicked.connect(self.clicked_library)
+        self.ui.btn_shikimori.clicked.connect(self.clicked_shikimori)
+        self.ui.btn_history.clicked.connect(self.clicked_history)
+        self.ui.btn_settings.clicked.connect(self.clicked_settings)
 
         self.Form_facial = FormFacial()
         self.Form_facial.ui.list_manga.doubleClicked.connect(
@@ -44,34 +42,31 @@ class MainWindow(QMainWindow):
 
         self.Form_settings = FormSettings()
 
-        self.top_item = QStackedWidget()
-        self.add_widget(self.Side_menu)
-        self.add_widget(self.top_item)
-        self.top_item.addWidget(self.Form_facial)
+        self.ui.top_item.addWidget(self.Form_facial)
 
     def clicked_main(self):
-        self.top_item.removeWidget(self.top_item.currentWidget())
-        self.top_item.addWidget(self.Form_facial)
+        self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
+        self.ui.top_item.addWidget(self.Form_facial)
 
     def clicked_chapters(self, manga):
-        self.Side_menu.hide()
-        self.top_item.addWidget(self.Form_info)
-        self.top_item.setCurrentWidget(self.Form_info)
+        self.ui.side_menu_widget.hide()
+        self.ui.top_item.addWidget(self.Form_info)
+        self.ui.top_item.setCurrentWidget(self.Form_info)
         self.Form_info.setup(manga)
 
     def clicked_shikimori(self):
-        self.top_item.removeWidget(self.top_item.currentWidget())
-        self.top_item.addWidget(self.Form_shikimori)
+        self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
+        self.ui.top_item.addWidget(self.Form_shikimori)
         self.Form_shikimori.setup()
 
     def clicked_library(self):
-        self.top_item.removeWidget(self.top_item.currentWidget())
-        self.top_item.addWidget(self.Form_library)
+        self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
+        self.ui.top_item.addWidget(self.Form_library)
         self.Form_library.update_list()
 
     def clicked_history(self):
-        self.top_item.removeWidget(self.top_item.currentWidget())
-        self.top_item.addWidget(self.Form_history)
+        self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
+        self.ui.top_item.addWidget(self.Form_history)
         self.Form_history.setup()
 
     def clicked_catalogs(self):
@@ -82,8 +77,8 @@ class MainWindow(QMainWindow):
             self.Form_facial.ui.catalog_list.hide()
 
     def back(self):
-        self.Side_menu.show()
-        self.top_item.removeWidget(self.top_item.currentWidget())
+        self.ui.side_menu_widget.show()
+        self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
 
     def clicked_settings(self):
         self.Form_settings.hide()
