@@ -40,16 +40,17 @@ class Ui_MainWindow(object):
 "    background: transparent;\n"
 "	border-top-left-radius: 10px;\n"
 "	border-bottom-left-radius: 10px;\n"
-"	\n"
 "	font-weight: bold;\n"
+"	icon-size: 24px;\n"
 "}\n"
-"QPushButton:hover:!pressed\n"
-"{\n"
-"  border-left: 3px solid green;\n"
+"\n"
+"QPushButton:hover:!pressed {\n"
+"	border-left: 3px solid green;\n"
+"	background-color: gray;\n"
 "}\n"
-"QPushButton:checked\n"
-"{\n"
-"  border-left: 3px solid green;\n"
+"\n"
+"QPushButton:checked {\n"
+"	border-left: 3px solid green;\n"
 "}")
         self.verticalLayout = QVBoxLayout(self.side_menu_widget)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -148,6 +149,11 @@ class Ui_MainWindow(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.top_item_widget.sizePolicy().hasHeightForWidth())
         self.top_item_widget.setSizePolicy(sizePolicy1)
+        self.top_item_widget.setStyleSheet(u"QPushButton {\n"
+"	padding: 5px 1px;\n"
+"	border-radius: 10px;\n"
+"	font-weight: bold;\n"
+"}")
         self.verticalLayout_2 = QVBoxLayout(self.top_item_widget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
