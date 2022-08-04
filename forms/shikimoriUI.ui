@@ -364,6 +364,22 @@ color: rgb(255, 255, 255);</string>
    </item>
    <item>
     <widget class="QFrame" name="lists_frame">
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	padding: 5px 1px;
+	border-radius: 10px;
+	font-weight: bold;
+	background-color: rgb(0, 133, 52);
+}
+
+QPushButton:hover:!pressed {
+	border-left: 3px solid white;
+}
+
+QPushButton:checked {
+	border-left: 3px solid white;
+}</string>
+     </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>

@@ -145,6 +145,20 @@ class Ui_Form(object):
 
         self.lists_frame = QFrame(Form)
         self.lists_frame.setObjectName(u"lists_frame")
+        self.lists_frame.setStyleSheet(u"QPushButton {\n"
+"	padding: 5px 1px;\n"
+"	border-radius: 10px;\n"
+"	font-weight: bold;\n"
+"	background-color: rgb(0, 133, 52);\n"
+"}\n"
+"\n"
+"QPushButton:hover:!pressed {\n"
+"	border-left: 3px solid white;\n"
+"}\n"
+"\n"
+"QPushButton:checked {\n"
+"	border-left: 3px solid white;\n"
+"}")
         self.lists_frame.setFrameShape(QFrame.StyledPanel)
         self.lists_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_2 = QVBoxLayout(self.lists_frame)
