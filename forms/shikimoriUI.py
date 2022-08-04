@@ -63,9 +63,10 @@ class Ui_Form(object):
         palette.setBrush(QPalette.Disabled, QPalette.PlaceholderText, brush)
 #endif
         Form.setPalette(palette)
-        Form.setStyleSheet(u"color: rgb(255, 255, 255);\n"
-"selection-background-color: rgb(0, 133, 52);\n"
-"background-color: rgb(32, 32, 32);")
+        Form.setStyleSheet(u"QFrame {\n"
+"	border-radius: 10px;\n"
+"	background-color: rgb(45, 45, 45);\n"
+"}")
         self.horizontalLayout_2 = QHBoxLayout(Form)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -166,8 +167,7 @@ class Ui_Form(object):
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.b_planned = QPushButton(self.lists_frame)
         self.b_planned.setObjectName(u"b_planned")
-        self.b_planned.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
+        self.b_planned.setStyleSheet(u"")
         self.b_planned.setCheckable(True)
         self.b_planned.setChecked(True)
         self.b_planned.setAutoExclusive(True)
@@ -176,8 +176,7 @@ class Ui_Form(object):
 
         self.b_completed = QPushButton(self.lists_frame)
         self.b_completed.setObjectName(u"b_completed")
-        self.b_completed.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
+        self.b_completed.setStyleSheet(u"")
         self.b_completed.setCheckable(True)
         self.b_completed.setAutoExclusive(True)
 
@@ -185,8 +184,7 @@ class Ui_Form(object):
 
         self.b_watching = QPushButton(self.lists_frame)
         self.b_watching.setObjectName(u"b_watching")
-        self.b_watching.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
+        self.b_watching.setStyleSheet(u"")
         self.b_watching.setCheckable(True)
         self.b_watching.setAutoExclusive(True)
 
@@ -194,8 +192,7 @@ class Ui_Form(object):
 
         self.b_rewatching = QPushButton(self.lists_frame)
         self.b_rewatching.setObjectName(u"b_rewatching")
-        self.b_rewatching.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
+        self.b_rewatching.setStyleSheet(u"")
         self.b_rewatching.setCheckable(True)
         self.b_rewatching.setAutoExclusive(True)
 
@@ -203,8 +200,7 @@ class Ui_Form(object):
 
         self.b_on_hold = QPushButton(self.lists_frame)
         self.b_on_hold.setObjectName(u"b_on_hold")
-        self.b_on_hold.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
+        self.b_on_hold.setStyleSheet(u"")
         self.b_on_hold.setCheckable(True)
         self.b_on_hold.setAutoExclusive(True)
 
@@ -212,8 +208,7 @@ class Ui_Form(object):
 
         self.b_dropped = QPushButton(self.lists_frame)
         self.b_dropped.setObjectName(u"b_dropped")
-        self.b_dropped.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
+        self.b_dropped.setStyleSheet(u"")
         self.b_dropped.setCheckable(True)
         self.b_dropped.setAutoExclusive(True)
 
@@ -225,8 +220,7 @@ class Ui_Form(object):
 
         self.btn_auth = QPushButton(self.lists_frame)
         self.btn_auth.setObjectName(u"btn_auth")
-        self.btn_auth.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
+        self.btn_auth.setStyleSheet(u"")
 
         self.verticalLayout_2.addWidget(self.btn_auth)
 

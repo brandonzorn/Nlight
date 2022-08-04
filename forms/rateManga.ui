@@ -14,12 +14,20 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">color: rgb(255, 255, 255);
-background-color: rgb(32, 32, 32);</string>
+   <string notr="true">QFrame {
+	border-radius: 10px;
+	background-color: rgb(45, 45, 45);
+	color: rgb(255, 255, 255);
+}
+QDialog{
+	background-color: rgb(32, 32, 32);
+}
+
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QFrame" name="frame">
+    <widget class="QFrame" name="chapters_frame">
      <property name="frameShape">
       <enum>QFrame::Panel</enum>
      </property>
@@ -67,7 +75,7 @@ background-color: rgb(32, 32, 32);</string>
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="frame_2">
+    <widget class="QFrame" name="score_frame">
      <property name="frameShape">
       <enum>QFrame::Panel</enum>
      </property>
@@ -106,7 +114,7 @@ background-color: rgb(32, 32, 32);</string>
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="frame_4">
+    <widget class="QFrame" name="status_frame">
      <property name="frameShape">
       <enum>QFrame::Panel</enum>
      </property>
@@ -145,7 +153,24 @@ background-color: rgb(32, 32, 32);</string>
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="frame_3">
+    <widget class="QFrame" name="actions_frame">
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	padding: 5px 1px;
+	border-radius: 10px;
+	font-weight: bold;
+	color: rgb(255, 255, 255);
+}
+
+QPushButton:hover:!pressed {
+	border-left: 3px solid green;
+	background-color: gray;
+}
+
+QPushButton:checked {
+	border-left: 3px solid green;
+}</string>
+     </property>
      <property name="frameShape">
       <enum>QFrame::Panel</enum>
      </property>

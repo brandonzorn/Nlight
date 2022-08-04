@@ -8,32 +8,74 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, Qt)
-from PySide6.QtWidgets import (QDialogButtonBox,
-                               QGridLayout)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QAbstractButton, QApplication, QDialog, QDialogButtonBox,
+    QFrame, QGridLayout, QSizePolicy, QVBoxLayout,
+    QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(780, 456)
-        Dialog.setStyleSheet(u"color: rgb(255, 255, 255);\n"
-"background-color: rgb(32, 32, 32);")
-        self.gridLayout_2 = QGridLayout(Dialog)
-        self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.buttonBox = QDialogButtonBox(Dialog)
+        Dialog.resize(510, 372)
+        Dialog.setStyleSheet(u"QFrame {\n"
+"	border-radius: 10px;\n"
+"	background-color: rgb(45, 45, 45);\n"
+"	color: rgb(255, 255, 255);\n"
+"}\n"
+"QDialog{\n"
+"	background-color: rgb(32, 32, 32);\n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"	padding: 5px 1px;\n"
+"	border-radius: 10px;\n"
+"	font-weight: bold;\n"
+"	background-color: rgb(0, 133, 52);\n"
+"	color: rgb(255, 255, 255);\n"
+"}\n"
+"\n"
+"QPushButton:hover:!pressed {\n"
+"	border-left: 3px solid white;\n"
+"}\n"
+"\n"
+"QPushButton:checked {\n"
+"	border-left: 3px solid white;\n"
+"}\n"
+"\n"
+"QAbstractButton{\n"
+"	color: rgb(255, 255, 255);\n"
+"}")
+        self.verticalLayout_2 = QVBoxLayout(Dialog)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.frame = QFrame(Dialog)
+        self.frame.setObjectName(u"frame")
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout = QVBoxLayout(self.frame)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.gridLayout = QGridLayout()
+        self.gridLayout.setObjectName(u"gridLayout")
+
+        self.verticalLayout.addLayout(self.gridLayout)
+
+        self.buttonBox = QDialogButtonBox(self.frame)
         self.buttonBox.setObjectName(u"buttonBox")
         self.buttonBox.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
         self.buttonBox.setOrientation(Qt.Horizontal)
         self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
 
-        self.gridLayout_2.addWidget(self.buttonBox, 1, 0, 1, 1)
+        self.verticalLayout.addWidget(self.buttonBox)
 
-        self.gridLayout = QGridLayout()
-        self.gridLayout.setObjectName(u"gridLayout")
 
-        self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
+        self.verticalLayout_2.addWidget(self.frame)
 
 
         self.retranslateUi(Dialog)

@@ -240,9 +240,10 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">color: rgb(255, 255, 255);
-selection-background-color: rgb(0, 133, 52);
-background-color: rgb(32, 32, 32);</string>
+   <string notr="true">QFrame {
+	border-radius: 10px;
+	background-color: rgb(45, 45, 45);
+}</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <property name="leftMargin">
@@ -402,8 +403,7 @@ QPushButton:checked {
       <item>
        <widget class="QPushButton" name="b_planned">
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 133, 52);
-color: rgb(255, 255, 255);</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Запланировано</string>
@@ -422,8 +422,7 @@ color: rgb(255, 255, 255);</string>
       <item>
        <widget class="QPushButton" name="b_completed">
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 133, 52);
-color: rgb(255, 255, 255);</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Прочитано</string>
@@ -439,8 +438,7 @@ color: rgb(255, 255, 255);</string>
       <item>
        <widget class="QPushButton" name="b_watching">
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 133, 52);
-color: rgb(255, 255, 255);</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Читаю</string>
@@ -456,8 +454,7 @@ color: rgb(255, 255, 255);</string>
       <item>
        <widget class="QPushButton" name="b_rewatching">
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 133, 52);
-color: rgb(255, 255, 255);</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Перечитываю</string>
@@ -473,8 +470,7 @@ color: rgb(255, 255, 255);</string>
       <item>
        <widget class="QPushButton" name="b_on_hold">
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 133, 52);
-color: rgb(255, 255, 255);</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Отложено</string>
@@ -490,8 +486,7 @@ color: rgb(255, 255, 255);</string>
       <item>
        <widget class="QPushButton" name="b_dropped">
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 133, 52);
-color: rgb(255, 255, 255);</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Брошено</string>
@@ -520,8 +515,7 @@ color: rgb(255, 255, 255);</string>
       <item>
        <widget class="QPushButton" name="btn_auth">
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 133, 52);
-color: rgb(255, 255, 255);</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Войти</string>

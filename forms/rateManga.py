@@ -8,28 +8,42 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject)
-from PySide6.QtWidgets import (QComboBox, QFrame,
-                               QHBoxLayout, QLabel, QPushButton, QSizePolicy,
-                               QSpacerItem, QSpinBox, QVBoxLayout)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QComboBox, QDialog, QFrame,
+    QHBoxLayout, QLabel, QPushButton, QSizePolicy,
+    QSpacerItem, QSpinBox, QVBoxLayout, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
         Dialog.resize(569, 525)
-        Dialog.setStyleSheet(u"color: rgb(255, 255, 255);\n"
-"background-color: rgb(32, 32, 32);")
+        Dialog.setStyleSheet(u"QFrame {\n"
+"	border-radius: 10px;\n"
+"	background-color: rgb(45, 45, 45);\n"
+"	color: rgb(255, 255, 255);\n"
+"}\n"
+"QDialog{\n"
+"	background-color: rgb(32, 32, 32);\n"
+"}\n"
+"\n"
+"")
         self.verticalLayout = QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.frame = QFrame(Dialog)
-        self.frame.setObjectName(u"frame")
-        self.frame.setFrameShape(QFrame.Panel)
-        self.frame.setFrameShadow(QFrame.Plain)
-        self.frame.setLineWidth(1)
-        self.horizontalLayout = QHBoxLayout(self.frame)
+        self.chapters_frame = QFrame(Dialog)
+        self.chapters_frame.setObjectName(u"chapters_frame")
+        self.chapters_frame.setFrameShape(QFrame.Panel)
+        self.chapters_frame.setFrameShadow(QFrame.Plain)
+        self.chapters_frame.setLineWidth(1)
+        self.horizontalLayout = QHBoxLayout(self.chapters_frame)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.label = QLabel(self.frame)
+        self.label = QLabel(self.chapters_frame)
         self.label.setObjectName(u"label")
 
         self.horizontalLayout.addWidget(self.label)
@@ -38,22 +52,22 @@ class Ui_Dialog(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
-        self.chapters = QSpinBox(self.frame)
+        self.chapters = QSpinBox(self.chapters_frame)
         self.chapters.setObjectName(u"chapters")
         self.chapters.setMaximum(999)
 
         self.horizontalLayout.addWidget(self.chapters)
 
 
-        self.verticalLayout.addWidget(self.frame)
+        self.verticalLayout.addWidget(self.chapters_frame)
 
-        self.frame_2 = QFrame(Dialog)
-        self.frame_2.setObjectName(u"frame_2")
-        self.frame_2.setFrameShape(QFrame.Panel)
-        self.frame_2.setFrameShadow(QFrame.Plain)
-        self.horizontalLayout_3 = QHBoxLayout(self.frame_2)
+        self.score_frame = QFrame(Dialog)
+        self.score_frame.setObjectName(u"score_frame")
+        self.score_frame.setFrameShape(QFrame.Panel)
+        self.score_frame.setFrameShadow(QFrame.Plain)
+        self.horizontalLayout_3 = QHBoxLayout(self.score_frame)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.label_2 = QLabel(self.frame_2)
+        self.label_2 = QLabel(self.score_frame)
         self.label_2.setObjectName(u"label_2")
 
         self.horizontalLayout_3.addWidget(self.label_2)
@@ -62,22 +76,22 @@ class Ui_Dialog(object):
 
         self.horizontalLayout_3.addItem(self.horizontalSpacer_2)
 
-        self.score = QSpinBox(self.frame_2)
+        self.score = QSpinBox(self.score_frame)
         self.score.setObjectName(u"score")
         self.score.setMaximum(10)
 
         self.horizontalLayout_3.addWidget(self.score)
 
 
-        self.verticalLayout.addWidget(self.frame_2)
+        self.verticalLayout.addWidget(self.score_frame)
 
-        self.frame_4 = QFrame(Dialog)
-        self.frame_4.setObjectName(u"frame_4")
-        self.frame_4.setFrameShape(QFrame.Panel)
-        self.frame_4.setFrameShadow(QFrame.Plain)
-        self.horizontalLayout_4 = QHBoxLayout(self.frame_4)
+        self.status_frame = QFrame(Dialog)
+        self.status_frame.setObjectName(u"status_frame")
+        self.status_frame.setFrameShape(QFrame.Panel)
+        self.status_frame.setFrameShadow(QFrame.Plain)
+        self.horizontalLayout_4 = QHBoxLayout(self.status_frame)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.label_3 = QLabel(self.frame_4)
+        self.label_3 = QLabel(self.status_frame)
         self.label_3.setObjectName(u"label_3")
 
         self.horizontalLayout_4.addWidget(self.label_3)
@@ -86,41 +100,56 @@ class Ui_Dialog(object):
 
         self.horizontalLayout_4.addItem(self.horizontalSpacer_3)
 
-        self.lib_list = QComboBox(self.frame_4)
+        self.lib_list = QComboBox(self.status_frame)
         self.lib_list.setObjectName(u"lib_list")
         self.lib_list.setStyleSheet(u"background-color: rgb(0, 133, 52);")
 
         self.horizontalLayout_4.addWidget(self.lib_list)
 
 
-        self.verticalLayout.addWidget(self.frame_4)
+        self.verticalLayout.addWidget(self.status_frame)
 
-        self.frame_3 = QFrame(Dialog)
-        self.frame_3.setObjectName(u"frame_3")
-        self.frame_3.setFrameShape(QFrame.Panel)
-        self.frame_3.setFrameShadow(QFrame.Plain)
-        self.horizontalLayout_2 = QHBoxLayout(self.frame_3)
+        self.actions_frame = QFrame(Dialog)
+        self.actions_frame.setObjectName(u"actions_frame")
+        self.actions_frame.setStyleSheet(u"QPushButton {\n"
+"	padding: 5px 1px;\n"
+"	border-radius: 10px;\n"
+"	font-weight: bold;\n"
+"	color: rgb(255, 255, 255);\n"
+"}\n"
+"\n"
+"QPushButton:hover:!pressed {\n"
+"	border-left: 3px solid green;\n"
+"	background-color: gray;\n"
+"}\n"
+"\n"
+"QPushButton:checked {\n"
+"	border-left: 3px solid green;\n"
+"}")
+        self.actions_frame.setFrameShape(QFrame.Panel)
+        self.actions_frame.setFrameShadow(QFrame.Plain)
+        self.horizontalLayout_2 = QHBoxLayout(self.actions_frame)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.btn_cancel = QPushButton(self.frame_3)
+        self.btn_cancel = QPushButton(self.actions_frame)
         self.btn_cancel.setObjectName(u"btn_cancel")
         self.btn_cancel.setStyleSheet(u"background-color: rgb(0, 133, 52);")
 
         self.horizontalLayout_2.addWidget(self.btn_cancel)
 
-        self.btn_delete = QPushButton(self.frame_3)
+        self.btn_delete = QPushButton(self.actions_frame)
         self.btn_delete.setObjectName(u"btn_delete")
         self.btn_delete.setStyleSheet(u"background-color: rgb(0, 133, 52);")
 
         self.horizontalLayout_2.addWidget(self.btn_delete)
 
-        self.btn_add = QPushButton(self.frame_3)
+        self.btn_add = QPushButton(self.actions_frame)
         self.btn_add.setObjectName(u"btn_add")
         self.btn_add.setStyleSheet(u"background-color: rgb(0, 133, 52);")
 
         self.horizontalLayout_2.addWidget(self.btn_add)
 
 
-        self.verticalLayout.addWidget(self.frame_3)
+        self.verticalLayout.addWidget(self.actions_frame)
 
 
         self.retranslateUi(Dialog)

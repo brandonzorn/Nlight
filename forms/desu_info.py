@@ -25,10 +25,12 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(672, 549)
-        Form.setStyleSheet(u"color: rgb(255, 255, 255);\n"
-"selection-background-color: rgb(0, 133, 52);\n"
-"background-color: rgb(32, 32, 32);")
+        Form.resize(672, 545)
+        Form.setStyleSheet(u"QFrame {\n"
+"	border-radius: 10px;\n"
+"	background-color: rgb(45, 45, 45);\n"
+"}\n"
+"")
         self.horizontalLayout_6 = QHBoxLayout(Form)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
@@ -117,20 +119,30 @@ class Ui_Form(object):
 
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.image = QLabel(Form)
+        self.frame_2 = QFrame(Form)
+        self.frame_2.setObjectName(u"frame_2")
+        self.frame_2.setFrameShape(QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_7 = QHBoxLayout(self.frame_2)
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.image = QLabel(self.frame_2)
         self.image.setObjectName(u"image")
-        sizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Minimum)
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.image.sizePolicy().hasHeightForWidth())
         self.image.setSizePolicy(sizePolicy)
-        self.image.setScaledContents(True)
+        self.image.setStyleSheet(u"")
+        self.image.setScaledContents(False)
 
-        self.horizontalLayout_3.addWidget(self.image)
+        self.horizontalLayout_7.addWidget(self.image)
+
+
+        self.horizontalLayout_3.addWidget(self.frame_2)
 
         self.name_frame = QFrame(Form)
         self.name_frame.setObjectName(u"name_frame")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.name_frame.sizePolicy().hasHeightForWidth())
@@ -159,15 +171,12 @@ class Ui_Form(object):
 
         self.horizontalLayout_3.addWidget(self.name_frame)
 
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_3.addItem(self.horizontalSpacer_2)
-
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_3)
 
         self.rate_frame = QFrame(Form)
         self.rate_frame.setObjectName(u"rate_frame")
+        self.rate_frame.setStyleSheet(u"")
         self.rate_frame.setFrameShape(QFrame.StyledPanel)
         self.rate_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_3 = QVBoxLayout(self.rate_frame)
@@ -183,8 +192,7 @@ class Ui_Form(object):
         self.star_1 = QPushButton(self.rate_frame)
         self.star_1.setObjectName(u"star_1")
         self.star_1.setEnabled(False)
-        self.star_1.setStyleSheet(u"color: rgb(255, 255, 255);\n"
-"background-color: rgb(45, 45, 45);")
+        self.star_1.setStyleSheet(u"")
         self.star_1.setAutoDefault(False)
         self.star_1.setFlat(True)
 
@@ -234,11 +242,8 @@ class Ui_Form(object):
 
         self.related_frame = QFrame(Form)
         self.related_frame.setObjectName(u"related_frame")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.related_frame.sizePolicy().hasHeightForWidth())
-        self.related_frame.setSizePolicy(sizePolicy2)
+        sizePolicy.setHeightForWidth(self.related_frame.sizePolicy().hasHeightForWidth())
+        self.related_frame.setSizePolicy(sizePolicy)
         self.related_frame.setFrameShape(QFrame.StyledPanel)
         self.related_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_5 = QVBoxLayout(self.related_frame)
@@ -251,8 +256,11 @@ class Ui_Form(object):
 
         self.manga_relations = QListWidget(self.related_frame)
         self.manga_relations.setObjectName(u"manga_relations")
-        sizePolicy1.setHeightForWidth(self.manga_relations.sizePolicy().hasHeightForWidth())
-        self.manga_relations.setSizePolicy(sizePolicy1)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.manga_relations.sizePolicy().hasHeightForWidth())
+        self.manga_relations.setSizePolicy(sizePolicy2)
 
         self.verticalLayout_5.addWidget(self.manga_relations)
 
@@ -262,8 +270,8 @@ class Ui_Form(object):
         self.description = QTextEdit(Form)
         self.description.setObjectName(u"description")
         self.description.setEnabled(True)
-        sizePolicy1.setHeightForWidth(self.description.sizePolicy().hasHeightForWidth())
-        self.description.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.description.sizePolicy().hasHeightForWidth())
+        self.description.setSizePolicy(sizePolicy2)
         self.description.setFocusPolicy(Qt.ClickFocus)
         self.description.setUndoRedoEnabled(True)
         self.description.setReadOnly(True)
@@ -273,11 +281,20 @@ class Ui_Form(object):
 
         self.horizontalLayout_6.addLayout(self.verticalLayout_2)
 
-        self.chapters = QListWidget(Form)
+        self.chapters_frame = QFrame(Form)
+        self.chapters_frame.setObjectName(u"chapters_frame")
+        self.chapters_frame.setFrameShape(QFrame.StyledPanel)
+        self.chapters_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_6 = QVBoxLayout(self.chapters_frame)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.chapters = QListWidget(self.chapters_frame)
         self.chapters.setObjectName(u"chapters")
         self.chapters.setEnabled(True)
 
-        self.horizontalLayout_6.addWidget(self.chapters)
+        self.verticalLayout_6.addWidget(self.chapters)
+
+
+        self.horizontalLayout_6.addWidget(self.chapters_frame)
 
 
         self.retranslateUi(Form)

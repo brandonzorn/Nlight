@@ -24,9 +24,10 @@ class Ui_Dialog(object):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
         Dialog.resize(569, 366)
-        Dialog.setStyleSheet(u"color: rgb(255, 255, 255);\n"
-"selection-background-color: rgb(0, 133, 52);\n"
-"background-color: rgb(32, 32, 32);")
+        Dialog.setStyleSheet(u"QFrame {\n"
+"	border-radius: 10px;\n"
+"	background-color: rgb(45, 45, 45);\n"
+"}")
         self.horizontalLayout = QHBoxLayout(Dialog)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -36,7 +37,7 @@ class Ui_Dialog(object):
         brush = QBrush(QColor(255, 255, 255, 255))
         brush.setStyle(Qt.SolidPattern)
         palette.setBrush(QPalette.Active, QPalette.WindowText, brush)
-        brush1 = QBrush(QColor(32, 32, 32, 255))
+        brush1 = QBrush(QColor(45, 45, 45, 255))
         brush1.setStyle(Qt.SolidPattern)
         palette.setBrush(QPalette.Active, QPalette.Button, brush1)
         palette.setBrush(QPalette.Active, QPalette.Text, brush)

@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QMainWindow, QPushButton,
-    QSizePolicy, QSpacerItem, QStackedWidget, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QMainWindow,
+    QPushButton, QSizePolicy, QSpacerItem, QStackedWidget,
+    QVBoxLayout, QWidget)
 import desu_res_rc
 
 class Ui_MainWindow(object):
@@ -34,7 +34,12 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.side_menu_widget = QWidget(self.centralwidget)
         self.side_menu_widget.setObjectName(u"side_menu_widget")
-        self.side_menu_widget.setStyleSheet(u"QPushButton {\n"
+        self.side_menu_widget.setStyleSheet(u"QFrame {\n"
+"	border-radius: 10px;\n"
+"	background-color: rgb(45, 45, 45);\n"
+"}\n"
+"\n"
+"QPushButton {\n"
 "	text-align: left;\n"
 "	padding: 5px 1px;\n"
 "    background: transparent;\n"
@@ -55,7 +60,14 @@ class Ui_MainWindow(object):
         self.verticalLayout = QVBoxLayout(self.side_menu_widget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.btn_mylist = QPushButton(self.side_menu_widget)
+        self.frame = QFrame(self.side_menu_widget)
+        self.frame.setObjectName(u"frame")
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_3 = QVBoxLayout(self.frame)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.btn_mylist = QPushButton(self.frame)
         self.btn_mylist.setObjectName(u"btn_mylist")
         sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
@@ -71,9 +83,9 @@ class Ui_MainWindow(object):
         self.btn_mylist.setAutoRepeat(False)
         self.btn_mylist.setAutoExclusive(True)
 
-        self.verticalLayout.addWidget(self.btn_mylist)
+        self.verticalLayout_3.addWidget(self.btn_mylist)
 
-        self.btn_main = QPushButton(self.side_menu_widget)
+        self.btn_main = QPushButton(self.frame)
         self.btn_main.setObjectName(u"btn_main")
         sizePolicy.setHeightForWidth(self.btn_main.sizePolicy().hasHeightForWidth())
         self.btn_main.setSizePolicy(sizePolicy)
@@ -87,9 +99,9 @@ class Ui_MainWindow(object):
         self.btn_main.setAutoRepeat(False)
         self.btn_main.setAutoExclusive(True)
 
-        self.verticalLayout.addWidget(self.btn_main)
+        self.verticalLayout_3.addWidget(self.btn_main)
 
-        self.btn_shikimori = QPushButton(self.side_menu_widget)
+        self.btn_shikimori = QPushButton(self.frame)
         self.btn_shikimori.setObjectName(u"btn_shikimori")
         sizePolicy.setHeightForWidth(self.btn_shikimori.sizePolicy().hasHeightForWidth())
         self.btn_shikimori.setSizePolicy(sizePolicy)
@@ -102,9 +114,9 @@ class Ui_MainWindow(object):
         self.btn_shikimori.setAutoRepeat(False)
         self.btn_shikimori.setAutoExclusive(True)
 
-        self.verticalLayout.addWidget(self.btn_shikimori)
+        self.verticalLayout_3.addWidget(self.btn_shikimori)
 
-        self.btn_history = QPushButton(self.side_menu_widget)
+        self.btn_history = QPushButton(self.frame)
         self.btn_history.setObjectName(u"btn_history")
         sizePolicy.setHeightForWidth(self.btn_history.sizePolicy().hasHeightForWidth())
         self.btn_history.setSizePolicy(sizePolicy)
@@ -118,13 +130,13 @@ class Ui_MainWindow(object):
         self.btn_history.setAutoExclusive(True)
         self.btn_history.setAutoDefault(False)
 
-        self.verticalLayout.addWidget(self.btn_history)
+        self.verticalLayout_3.addWidget(self.btn_history)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer = QSpacerItem(17, 17, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.verticalLayout.addItem(self.verticalSpacer)
+        self.verticalLayout_3.addItem(self.verticalSpacer)
 
-        self.btn_settings = QPushButton(self.side_menu_widget)
+        self.btn_settings = QPushButton(self.frame)
         self.btn_settings.setObjectName(u"btn_settings")
         sizePolicy.setHeightForWidth(self.btn_settings.sizePolicy().hasHeightForWidth())
         self.btn_settings.setSizePolicy(sizePolicy)
@@ -137,10 +149,13 @@ class Ui_MainWindow(object):
         self.btn_settings.setAutoRepeat(False)
         self.btn_settings.setAutoExclusive(False)
 
-        self.verticalLayout.addWidget(self.btn_settings)
+        self.verticalLayout_3.addWidget(self.btn_settings)
 
 
-        self.horizontalLayout.addWidget(self.side_menu_widget, 0, Qt.AlignLeft)
+        self.verticalLayout.addWidget(self.frame)
+
+
+        self.horizontalLayout.addWidget(self.side_menu_widget)
 
         self.top_item_widget = QWidget(self.centralwidget)
         self.top_item_widget.setObjectName(u"top_item_widget")
@@ -168,6 +183,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.top_item = QStackedWidget(self.top_item_widget)
         self.top_item.setObjectName(u"top_item")
+        self.top_item.setStyleSheet(u"")
 
         self.verticalLayout_2.addWidget(self.top_item)
 
