@@ -31,16 +31,17 @@ background-color: rgb(32, 32, 32);</string>
     background: transparent;
 	border-top-left-radius: 10px;
 	border-bottom-left-radius: 10px;
-	
 	font-weight: bold;
+	icon-size: 24px;
 }
-QPushButton:hover:!pressed
-{
-  border-left: 3px solid green;
+
+QPushButton:hover:!pressed {
+	border-left: 3px solid green;
+	background-color: gray;
 }
-QPushButton:checked
-{
-  border-left: 3px solid green;
+
+QPushButton:checked {
+	border-left: 3px solid green;
 }</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -245,6 +246,13 @@ QPushButton:checked
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	padding: 5px 1px;
+	border-radius: 10px;
+	font-weight: bold;
+}</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <property name="leftMargin">
