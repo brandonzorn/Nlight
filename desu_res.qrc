@@ -1,0 +1,23 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>images/back.png</file>
+    <file>images/delete.png</file>
+    <file>images/double_next.png</file>
+    <file>images/double_prev.png</file>
+    <file>images/favorite.png</file>
+    <file>images/favorite1.png</file>
+    <file>images/favorite2.png</file>
+    <file>images/fullscreen.png</file>
+    <file>images/history.png</file>
+    <file>images/library.png</file>
+    <file>images/library_filled.png</file>
+    <file>images/main.png</file>
+    <file>images/main_filled.png</file>
+    <file>images/next.png</file>
+    <file>images/prev.png</file>
+    <file>images/search.png</file>
+    <file>images/settings.png</file>
+    <file>images/settings_filled.png</file>
+    <file>images/shikimori.png</file>
+  </qresource>
+</RCC>

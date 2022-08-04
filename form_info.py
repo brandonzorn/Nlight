@@ -6,8 +6,7 @@ from PySide6.QtWidgets import QWidget, QListWidgetItem
 
 from app_windows.reader import Reader
 from catalog_manager import get_catalog
-from const.icons import back_icon_path, favorite_icon_path, favorite1_icon_path, favorite2_icon_path, \
-    shikimori_icon_path
+from const.icons import favorite_icon_path, favorite1_icon_path, favorite2_icon_path
 from const.lists import lib_lists_en
 from database import Database
 from file_manager import check_file_exists, get_file, save_file
@@ -27,8 +26,6 @@ class FormInfo(QWidget):
         self.ui.setupUi(self)
         self.ui.chapters.doubleClicked.connect(self.open_reader)
         self.ui.btn_add_to_lib.clicked.connect(self.add_to_favorites)
-        self.ui.btn_back.setIcon(QIcon(back_icon_path))
-        self.ui.btn_shikimori.setIcon(QIcon(shikimori_icon_path))
         self.ui.lib_list.currentIndexChanged.connect(self.change_lib_list)
         self.ui.btn_shikimori.clicked.connect(self.open_rate)
         self.ui.manga_relations.doubleClicked.connect(lambda: self.setup(self.get_current_manga()))

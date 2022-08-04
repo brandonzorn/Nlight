@@ -8,11 +8,18 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize, Qt)
-from PySide6.QtGui import (QIcon)
-from PySide6.QtWidgets import (QComboBox, QFrame, QHBoxLayout,
-                               QLabel, QListWidget, QPushButton,
-                               QSizePolicy, QSpacerItem, QTextEdit, QVBoxLayout)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QHBoxLayout,
+    QLabel, QListWidget, QListWidgetItem, QPushButton,
+    QSizePolicy, QSpacerItem, QTextEdit, QVBoxLayout,
+    QWidget)
+import desu_res_rc
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -39,7 +46,7 @@ class Ui_Form(object):
         self.btn_back.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
         icon = QIcon()
-        icon.addFile(u"images/back.png", QSize(), QIcon.Normal, QIcon.On)
+        icon.addFile(u":/icons/images/back.png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_back.setIcon(icon)
 
         self.horizontalLayout.addWidget(self.btn_back)
@@ -74,7 +81,7 @@ class Ui_Form(object):
         self.btn_add_to_lib.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
         icon1 = QIcon()
-        icon1.addFile(u"images/favorite.png", QSize(), QIcon.Normal, QIcon.On)
+        icon1.addFile(u"../images/favorite.png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_add_to_lib.setIcon(icon1)
 
         self.horizontalLayout_4.addWidget(self.btn_add_to_lib)
@@ -93,6 +100,9 @@ class Ui_Form(object):
         self.btn_shikimori.setObjectName(u"btn_shikimori")
         self.btn_shikimori.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/images/shikimori.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_shikimori.setIcon(icon2)
 
         self.horizontalLayout_5.addWidget(self.btn_shikimori)
 

@@ -312,9 +312,8 @@ background-color: rgb(32, 32, 32);</string>
           <string/>
          </property>
          <property name="icon">
-          <iconset>
-           <normalon>../images/prev.png</normalon>
-          </iconset>
+          <iconset resource="../desu_res.qrc">
+           <normaloff>:/icons/images/prev.png</normaloff>:/icons/images/prev.png</iconset>
          </property>
         </widget>
        </item>
@@ -337,9 +336,8 @@ background-color: rgb(32, 32, 32);</string>
           <string/>
          </property>
          <property name="icon">
-          <iconset>
-           <normalon>../images/next.png</normalon>
-          </iconset>
+          <iconset resource="../desu_res.qrc">
+           <normaloff>:/icons/images/next.png</normaloff>:/icons/images/next.png</iconset>
          </property>
         </widget>
        </item>
@@ -359,9 +357,8 @@ background-color: rgb(32, 32, 32);</string>
           <string/>
          </property>
          <property name="icon">
-          <iconset>
-           <normalon>../images/double_prev.png</normalon>
-          </iconset>
+          <iconset resource="../desu_res.qrc">
+           <normaloff>:/icons/images/double_prev.png</normaloff>:/icons/images/double_prev.png</iconset>
          </property>
         </widget>
        </item>
@@ -384,9 +381,8 @@ background-color: rgb(32, 32, 32);</string>
           <string/>
          </property>
          <property name="icon">
-          <iconset>
-           <normalon>../images/double_next.png</normalon>
-          </iconset>
+          <iconset resource="../desu_res.qrc">
+           <normaloff>:/icons/images/double_next.png</normaloff>:/icons/images/double_next.png</iconset>
          </property>
         </widget>
        </item>
@@ -408,9 +404,8 @@ background-color: rgb(32, 32, 32);</string>
           <string/>
          </property>
          <property name="icon">
-          <iconset>
-           <normalon>../images/fullscreen.png</normalon>
-          </iconset>
+          <iconset resource="../desu_res.qrc">
+           <normaloff>:/icons/images/fullscreen.png</normaloff>:/icons/images/fullscreen.png</iconset>
          </property>
         </widget>
        </item>
@@ -420,6 +415,8 @@ background-color: rgb(32, 32, 32);</string>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../desu_res.qrc"/>
+ </resources>
  <connections/>
 </ui>

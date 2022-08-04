@@ -64,9 +64,8 @@ color: rgb(255, 255, 255);</string>
            <string/>
           </property>
           <property name="icon">
-           <iconset>
-            <normalon>images/back.png</normalon>
-           </iconset>
+           <iconset resource="../desu_res.qrc">
+            <normaloff>:/icons/images/back.png</normaloff>:/icons/images/back.png</iconset>
           </property>
          </widget>
         </item>
@@ -154,8 +153,7 @@ color: rgb(255, 255, 255);</string>
                </property>
                <property name="icon">
                 <iconset>
-                 <normalon>images/favorite.png</normalon>
-                </iconset>
+                 <normaloff>../images/favorite.png</normaloff>../images/favorite.png</iconset>
                </property>
               </widget>
              </item>
@@ -191,6 +189,10 @@ color: rgb(255, 255, 255);</string>
                </property>
                <property name="text">
                 <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../desu_res.qrc">
+                 <normaloff>:/icons/images/shikimori.png</normaloff>:/icons/images/shikimori.png</iconset>
                </property>
               </widget>
              </item>
@@ -510,6 +512,8 @@ background-color: rgb(45, 45, 45);</string>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../desu_res.qrc"/>
+ </resources>
  <connections/>
 </ui>

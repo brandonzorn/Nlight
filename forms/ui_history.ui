@@ -275,9 +275,8 @@ color: rgb(255, 255, 255);</string>
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normalon>../images/delete.png</normalon>
-        </iconset>
+        <iconset resource="../desu_res.qrc">
+         <normaloff>:/icons/images/delete.png</normaloff>:/icons/images/delete.png</iconset>
        </property>
       </widget>
      </item>
@@ -298,6 +297,8 @@ color: rgb(255, 255, 255);</string>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../desu_res.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -8,11 +8,17 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, Qt)
-from PySide6.QtGui import (QBrush, QColor, QPalette)
-from PySide6.QtWidgets import (QFrame, QHBoxLayout, QLabel,
-                               QLineEdit, QListWidget, QPushButton,
-                               QSizePolicy, QSpacerItem, QVBoxLayout)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
+    QLineEdit, QListWidget, QListWidgetItem, QPushButton,
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
+import desu_res_rc
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -90,6 +96,9 @@ class Ui_Form(object):
         self.btn_search.setObjectName(u"btn_search")
         self.btn_search.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        icon = QIcon()
+        icon.addFile(u":/icons/images/search.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_search.setIcon(icon)
 
         self.horizontalLayout_3.addWidget(self.btn_search)
 
@@ -102,6 +111,9 @@ class Ui_Form(object):
         self.prev_page.setObjectName(u"prev_page")
         self.prev_page.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/images/prev.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.prev_page.setIcon(icon1)
 
         self.horizontalLayout.addWidget(self.prev_page)
 
@@ -116,6 +128,9 @@ class Ui_Form(object):
         self.next_page.setObjectName(u"next_page")
         self.next_page.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
 "color: rgb(255, 255, 255);")
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/images/next.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.next_page.setIcon(icon2)
 
         self.horizontalLayout.addWidget(self.next_page)
 
