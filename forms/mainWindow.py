@@ -153,6 +153,15 @@ class Ui_MainWindow(object):
 "	padding: 5px 1px;\n"
 "	border-radius: 10px;\n"
 "	font-weight: bold;\n"
+"}\n"
+"\n"
+"QPushButton:hover:!pressed {\n"
+"	border-left: 3px solid green;\n"
+"	background-color: gray;\n"
+"}\n"
+"\n"
+"QPushButton:checked {\n"
+"	border-left: 3px solid green;\n"
 "}")
         self.verticalLayout_2 = QVBoxLayout(self.top_item_widget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")

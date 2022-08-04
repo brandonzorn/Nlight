@@ -252,6 +252,15 @@ QPushButton:checked {
 	padding: 5px 1px;
 	border-radius: 10px;
 	font-weight: bold;
+}
+
+QPushButton:hover:!pressed {
+	border-left: 3px solid green;
+	background-color: gray;
+}
+
+QPushButton:checked {
+	border-left: 3px solid green;
 }</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
