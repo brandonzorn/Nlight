@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>569</width>
-    <height>525</height>
+    <width>555</width>
+    <height>467</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,53 +19,87 @@
 	background-color: rgb(45, 45, 45);
 	color: rgb(255, 255, 255);
 }
+
 QDialog{
 	background-color: rgb(32, 32, 32);
 }
 
-</string>
+QComboBox {
+	padding: 5px 1px;
+	border-radius: 10px;
+	font-weight: bold;
+	background-color: rgb(0, 133, 52);
+	color: rgb(255, 255, 255);
+}
+
+QSpinBox {
+	padding: 5px 5px;
+	border-radius: 10px;
+	font-weight: bold;
+	background-color: rgb(0, 133, 52);
+	color: rgb(255, 255, 255);
+}
+
+QPushButton {
+	padding: 5px 1px;
+	border-radius: 10px;
+	font-weight: bold;
+	background-color: rgb(0, 133, 52);
+	color: rgb(255, 255, 255);
+}
+
+QPushButton:hover:!pressed {
+	border-left: 3px solid white;
+}
+
+QPushButton:checked {
+	border-left: 3px solid white;
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QFrame" name="chapters_frame">
      <property name="frameShape">
-      <enum>QFrame::Panel</enum>
+      <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
+      <enum>QFrame::Raised</enum>
      </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Прочитано глав</string>
         </property>
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer">
+       <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>433</width>
+          <width>391</width>
           <height>20</height>
          </size>
         </property>
        </spacer>
       </item>
       <item>
-       <widget class="QSpinBox" name="chapters">
-        <property name="suffix">
-         <string/>
-        </property>
-        <property name="prefix">
-         <string/>
-        </property>
+       <widget class="QSpinBox" name="chapters_box">
         <property name="maximum">
          <number>999</number>
         </property>
@@ -77,34 +111,34 @@ QDialog{
    <item>
     <widget class="QFrame" name="score_frame">
      <property name="frameShape">
-      <enum>QFrame::Panel</enum>
+      <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
+      <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Оценка</string>
         </property>
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_2">
+       <spacer name="horizontalSpacer_3">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>450</width>
+          <width>444</width>
           <height>20</height>
          </size>
         </property>
        </spacer>
       </item>
       <item>
-       <widget class="QSpinBox" name="score">
+       <widget class="QSpinBox" name="score_box">
         <property name="maximum">
          <number>10</number>
         </property>
@@ -116,93 +150,63 @@ QDialog{
    <item>
     <widget class="QFrame" name="status_frame">
      <property name="frameShape">
-      <enum>QFrame::Panel</enum>
+      <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
+      <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="label">
         <property name="text">
-         <string>Статус</string>
+         <string>Список</string>
         </property>
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_3">
+       <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
+          <width>414</width>
           <height>20</height>
          </size>
         </property>
        </spacer>
       </item>
       <item>
-       <widget class="QComboBox" name="lib_list">
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 133, 52);</string>
-        </property>
-       </widget>
+       <widget class="QComboBox" name="lib_list_box"/>
       </item>
      </layout>
     </widget>
    </item>
    <item>
     <widget class="QFrame" name="actions_frame">
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
-	padding: 5px 1px;
-	border-radius: 10px;
-	font-weight: bold;
-	color: rgb(255, 255, 255);
-}
-
-QPushButton:hover:!pressed {
-	border-left: 3px solid green;
-	background-color: gray;
-}
-
-QPushButton:checked {
-	border-left: 3px solid green;
-}</string>
-     </property>
      <property name="frameShape">
-      <enum>QFrame::Panel</enum>
+      <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
+      <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="btn_cancel">
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 133, 52);</string>
-        </property>
+       <widget class="QPushButton" name="cancel_btn">
         <property name="text">
          <string>Отмена</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btn_delete">
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 133, 52);</string>
-        </property>
+       <widget class="QPushButton" name="delete_btn">
         <property name="text">
          <string>Удалить</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btn_add">
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 133, 52);</string>
-        </property>
+       <widget class="QPushButton" name="update_btn">
         <property name="text">
          <string>Обновить</string>
         </property>
