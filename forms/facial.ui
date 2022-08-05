@@ -131,7 +131,7 @@
            <item>
             <widget class="QLabel" name="page_label">
              <property name="text">
-              <string>Page 1</string>
+              <string>Страница 1</string>
              </property>
             </widget>
            </item>

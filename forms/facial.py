@@ -244,7 +244,7 @@ class Ui_Form(object):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.search_btn.setText("")
         self.prev_btn.setText("")
-        self.page_label.setText(QCoreApplication.translate("Form", u"Page 1", None))
+        self.page_label.setText(QCoreApplication.translate("Form", u"\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 1", None))
         self.next_btn.setText("")
         self.label.setText(QCoreApplication.translate("Form", u"\u0421\u043e\u0440\u0442\u0438\u0440\u043e\u0432\u043a\u0430", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"\u0422\u0438\u043f", None))
