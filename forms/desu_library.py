@@ -31,7 +31,13 @@ class Ui_Dialog(object):
         self.horizontalLayout = QHBoxLayout(Dialog)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.list_manga = QListWidget(Dialog)
+        self.items_frame = QFrame(Dialog)
+        self.items_frame.setObjectName(u"items_frame")
+        self.items_frame.setFrameShape(QFrame.StyledPanel)
+        self.items_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_2 = QVBoxLayout(self.items_frame)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.list_manga = QListWidget(self.items_frame)
         self.list_manga.setObjectName(u"list_manga")
         palette = QPalette()
         brush = QBrush(QColor(255, 255, 255, 255))
@@ -73,7 +79,10 @@ class Ui_Dialog(object):
         self.list_manga.setPalette(palette)
         self.list_manga.setAutoFillBackground(False)
 
-        self.horizontalLayout.addWidget(self.list_manga)
+        self.verticalLayout_2.addWidget(self.list_manga)
+
+
+        self.horizontalLayout.addWidget(self.items_frame)
 
         self.lists_frame = QFrame(Dialog)
         self.lists_frame.setObjectName(u"lists_frame")
