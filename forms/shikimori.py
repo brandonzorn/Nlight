@@ -43,6 +43,7 @@ class Ui_Form(object):
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.items_list = QListWidget(self.items_frame)
         self.items_list.setObjectName(u"items_list")
+        self.items_list.setWordWrap(True)
 
         self.verticalLayout_3.addWidget(self.items_list)
 
