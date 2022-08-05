@@ -207,7 +207,7 @@ class Auth:
             return False
         try:
             self.client.headers.clear()
-            self.client.headers.update({'User-Agent': 'Shikimori'})
+            self.client.headers.update(SHIKIMORI_HEADERS)
             self.client.refresh_token(URL_SHIKIMORI_TOKEN, refresh_token=TokenManager.load_token(
                 ShikimoriLib.catalog_name).get('refresh_token'))
             self.update_token(self.token)
