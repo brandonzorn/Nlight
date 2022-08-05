@@ -124,7 +124,7 @@ class FormFacial(QWidget):
         self.Form_genres.clear_genres()
         if self.order_items:
             list(self.order_items.keys())[0].setChecked(True)
+            self.request_params.order = [self.order_items[i] for i in self.order_items if i.isChecked()][0]
         [i.setChecked(False) for i in self.kind_items]
-        self.request_params.order = [self.order_items[i] for i in self.order_items if i.isChecked()][-1]
         self.ui.title_line.clear()
         self.get_content()
