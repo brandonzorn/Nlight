@@ -116,7 +116,7 @@ class FormInfo(QWidget):
             self.chapters: list[Chapter] = self.catalog.get_chapters(self.manga)
             self.chapters.reverse()
             self.chapters.sort(key=lambda ch: ch.language if ch.language else False)
-            self.ui.chapters.setVisible(bool(self.chapters))
+            self.ui.chapters_frame.setVisible(bool(self.chapters))
             self.db.add_chapters(self.chapters, self.manga)
             for chapter in self.chapters:
                 item = QListWidgetItem(chapter.get_name())

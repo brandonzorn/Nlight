@@ -25,7 +25,7 @@ class FormFacial(QWidget):
         self.ui.filter_apply.clicked.connect(self.apply_filter)
         self.ui.filter_reset.clicked.connect(self.reset_filter)
         self.ui.btn_search.clicked.connect(self.search)
-        self.ui.btn_catalogs.clicked.connect(lambda: self.ui.catalog_list.setVisible(
+        self.ui.btn_catalogs.clicked.connect(lambda: self.ui.catalogs_frame.setVisible(
             not self.ui.catalog_list.isVisible()))
         self.ui.catalog_list.doubleClicked.connect(
             lambda: self.update_catalog(self.ui.catalog_list.currentIndex().row()))
@@ -33,7 +33,7 @@ class FormFacial(QWidget):
         self.order_items = {}
         self.kind_items = {}
         self.setup_catalogs()
-        self.ui.catalog_list.hide()
+        self.ui.catalogs_frame.hide()
         self.Form_genres = FormGenres()
         self.request_params = RequestForm()
         self.db: Database = Database()
