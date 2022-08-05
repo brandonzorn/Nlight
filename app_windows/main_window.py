@@ -68,6 +68,3 @@ class MainWindow(QMainWindow):
     def back(self):
         self.ui.side_menu_widget.show()
         self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
-
-    def add_widget(self, widget):
-        self.ui.horizontalLayout.addWidget(widget)
