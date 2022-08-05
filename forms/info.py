@@ -234,6 +234,7 @@ class Ui_Form(object):
 
         self.related_list = QListWidget(self.related_frame)
         self.related_list.setObjectName(u"related_list")
+        self.related_list.setWordWrap(True)
 
         self.verticalLayout_2.addWidget(self.related_list)
 
@@ -266,6 +267,7 @@ class Ui_Form(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.items_list = QListWidget(self.items_frame)
         self.items_list.setObjectName(u"items_list")
+        self.items_list.setWordWrap(True)
 
         self.verticalLayout.addWidget(self.items_list)
 
