@@ -1,3 +1,4 @@
+from PySide6.QtWidgets import QApplication
 from requests_oauthlib import OAuth2Session
 
 from const.shikimori_items import ORDERS, KINDS
@@ -106,7 +107,7 @@ class ShikimoriLib(ShikimoriBase):
     def search_manga(self, req_params: RequestForm):
         url = f'{self.url_api}/users/{self.get_user().id}/manga_rates'
         params = {"limit": 50, "page": req_params.page}
-        html = self.session.get(url, params)
+        html = self.session.request('GET', url, params)
         mangas = []
         if html and html.status_code == 200 and html.json():
             for i in html.json():
@@ -118,7 +119,7 @@ class ShikimoriLib(ShikimoriBase):
         return mangas
 
     def get_user(self) -> User:
-        whoami = self.session.get('https://shikimori.one/api/users/whoami')
+        whoami = self.session.request('GET', 'https://shikimori.one/api/users/whoami')
         if whoami and whoami.status_code == 200:
             data = whoami.json()
             return User(data.get('id'), data.get('nickname'), data.get('avatar'))
@@ -127,12 +128,12 @@ class ShikimoriLib(ShikimoriBase):
     def create_user_rate(self, manga: Manga):
         url = f'{self.url_api}/v2/user_rates'
         data = {"user_rate": {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.id}}
-        self.session.post(url, data)
+        self.session.request('POST', url, json=data)
 
     def check_user_rate(self, manga: Manga):
         url = f'{self.url_api}/v2/user_rates'
         params = {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.id}
-        html = self.session.get(url, params)
+        html = self.session.request('GET', url, params)
         if html and html.status_code == 200 and html.json():
             for i in html.json():
                 if manga.id == i.get('target_id'):
@@ -141,12 +142,12 @@ class ShikimoriLib(ShikimoriBase):
 
     def delete_user_rate(self, user_rate: UserRate):
         url = f'{self.url_api}/v2/user_rates/{user_rate.id}'
-        self.session.delete(url)
+        self.session.request('DELETE', url)
 
     def get_user_rate(self, manga: Manga) -> UserRate:
         url = f'{self.url_api}/v2/user_rates'
         params = {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.id}
-        html = self.session.get(url, params)
+        html = self.session.request('GET', url, params)
         if html and html.status_code == 200 and html.json():
             for i in html.json():
                 return UserRate(i.get('id'), i.get('user_id'), i.get('target_id'),
@@ -156,7 +157,7 @@ class ShikimoriLib(ShikimoriBase):
         url = f'{self.url_api}/v2/user_rates/{user_rate.id}'
         data = {"user_rate": {"chapters": f"{user_rate.chapters}", "score": f"{user_rate.score}",
                               "status": f"{user_rate.status}"}}
-        self.session.patch(url, data).json()
+        self.session.request('PATCH', url, data).json()
 
 
 @singleton
@@ -207,8 +208,8 @@ class Auth:
         try:
             self.client.headers.clear()
             self.client.headers.update({'User-Agent': 'Shikimori'})
-            self.client.refresh_token(URL_SHIKIMORI_TOKEN,
-                                      refresh_token=TokenManager.load_token(ShikimoriLib.catalog_name).get('refresh_token'))
+            self.client.refresh_token(URL_SHIKIMORI_TOKEN, refresh_token=TokenManager.load_token(
+                ShikimoriLib.catalog_name).get('refresh_token'))
             self.update_token(self.token)
             self.client.headers.update({
                 'Authorization': f'Bearer {TokenManager.load_token(ShikimoriLib.catalog_name).get("access_token")}'})
@@ -216,46 +217,19 @@ class Auth:
         except Exception as e:
             print(e)
 
-    def get(self, url, params=None):
-        if not self.is_authorized:
+    def request(self, method, url, params=None, json=None, ignore_authorize=False):
+        if (not self.is_authorized and not ignore_authorize) or QApplication.arguments()[-1] == '-debug':
+            print(f"SHIKIMORI REQUEST IGNORED")
             return
-        resp = self.client.request('GET', url, params)
-        match resp.status_code:
-            case 401:
-                if self.token:
-                    self.get(url, params)
-        return resp
-
-    def patch(self, url, data):
-        if not self.is_authorized:
-            return
-        resp = self.client.patch(url, json=data)
-        return resp
-
-    def post(self, url, data):
-        if not self.is_authorized:
-            return
-        resp = self.client.post(url, json=data)
-        return resp
-
-    def delete(self, url):
-        if not self.is_authorized:
-            return
-        resp = self.client.delete(url)
-        return resp
-
-    def get_request(self, url, params=None):
         try:
-            resp = self.client.request('GET', url, params)
-            return resp
+            return self.client.request(method, url, params, json=json)
         except Exception as e:
             print(e)
-            print(url)
-            print(params)
+            print(f"Request data: {method=}, {url=}, {params=}, {json=}")
 
     def check_auth(self):
         url = 'https://shikimori.one/api/users/whoami'
-        whoami = self.get_request(url)
+        whoami = self.request('GET', url, ignore_authorize=True)
         self.is_authorized = whoami and whoami.json()
         return self.is_authorized
 

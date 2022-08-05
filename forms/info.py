@@ -25,7 +25,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(539, 462)
+        Form.resize(668, 452)
         Form.setStyleSheet(u"QFrame {\n"
 "	border-radius: 10px;\n"
 "	background-color: rgb(45, 45, 45);\n"
@@ -34,8 +34,8 @@ class Ui_Form(object):
         self.horizontalLayout_5 = QHBoxLayout(Form)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_8 = QVBoxLayout()
-        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.verticalLayout_10 = QVBoxLayout()
+        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
         self.header_frame = QFrame(Form)
         self.header_frame.setObjectName(u"header_frame")
         self.header_frame.setFrameShape(QFrame.StyledPanel)
@@ -64,6 +64,10 @@ class Ui_Form(object):
         self.horizontalLayout = QHBoxLayout(self.lib_frame)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout.addItem(self.horizontalSpacer_3)
+
         self.lib_list_box = QComboBox(self.lib_frame)
         self.lib_list_box.setObjectName(u"lib_list_box")
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
@@ -104,64 +108,45 @@ class Ui_Form(object):
         self.horizontalLayout_3.addLayout(self.verticalLayout_7)
 
 
-        self.verticalLayout_8.addWidget(self.header_frame)
+        self.verticalLayout_10.addWidget(self.header_frame)
 
+        self.verticalLayout_9 = QVBoxLayout()
+        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.verticalLayout_8 = QVBoxLayout()
+        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.image_frame = QFrame(Form)
         self.image_frame.setObjectName(u"image_frame")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.image_frame.sizePolicy().hasHeightForWidth())
+        self.image_frame.setSizePolicy(sizePolicy1)
         self.image_frame.setFrameShape(QFrame.StyledPanel)
         self.image_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_6 = QVBoxLayout(self.image_frame)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.image = QLabel(self.image_frame)
         self.image.setObjectName(u"image")
-        sizePolicy1 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Preferred)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.image.sizePolicy().hasHeightForWidth())
-        self.image.setSizePolicy(sizePolicy1)
+        sizePolicy2 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.image.sizePolicy().hasHeightForWidth())
+        self.image.setSizePolicy(sizePolicy2)
 
         self.verticalLayout_6.addWidget(self.image)
 
 
-        self.horizontalLayout_4.addWidget(self.image_frame)
-
-        self.title_frame = QFrame(Form)
-        self.title_frame.setObjectName(u"title_frame")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.title_frame.sizePolicy().hasHeightForWidth())
-        self.title_frame.setSizePolicy(sizePolicy2)
-        self.title_frame.setFrameShape(QFrame.StyledPanel)
-        self.title_frame.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_5 = QVBoxLayout(self.title_frame)
-        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.name_label = QLabel(self.title_frame)
-        self.name_label.setObjectName(u"name_label")
-        self.name_label.setWordWrap(True)
-
-        self.verticalLayout_5.addWidget(self.name_label)
-
-        self.russian_label = QLabel(self.title_frame)
-        self.russian_label.setObjectName(u"russian_label")
-        self.russian_label.setWordWrap(True)
-
-        self.verticalLayout_5.addWidget(self.russian_label)
-
-        self.verticalSpacer = QSpacerItem(20, 76, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.verticalLayout_5.addItem(self.verticalSpacer)
-
-
-        self.horizontalLayout_4.addWidget(self.title_frame)
-
-
-        self.verticalLayout_8.addLayout(self.horizontalLayout_4)
+        self.verticalLayout_8.addWidget(self.image_frame)
 
         self.score_frame = QFrame(Form)
         self.score_frame.setObjectName(u"score_frame")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.score_frame.sizePolicy().hasHeightForWidth())
+        self.score_frame.setSizePolicy(sizePolicy3)
         self.score_frame.setStyleSheet(u"QPushButton {\n"
 "	padding: 5px 1px;\n"
 "    background: transparent;\n"
@@ -221,6 +206,42 @@ class Ui_Form(object):
 
         self.verticalLayout_8.addWidget(self.score_frame)
 
+
+        self.horizontalLayout_4.addLayout(self.verticalLayout_8)
+
+        self.title_frame = QFrame(Form)
+        self.title_frame.setObjectName(u"title_frame")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.title_frame.sizePolicy().hasHeightForWidth())
+        self.title_frame.setSizePolicy(sizePolicy4)
+        self.title_frame.setFrameShape(QFrame.StyledPanel)
+        self.title_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_5 = QVBoxLayout(self.title_frame)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.name_label = QLabel(self.title_frame)
+        self.name_label.setObjectName(u"name_label")
+        self.name_label.setWordWrap(True)
+
+        self.verticalLayout_5.addWidget(self.name_label)
+
+        self.russian_label = QLabel(self.title_frame)
+        self.russian_label.setObjectName(u"russian_label")
+        self.russian_label.setWordWrap(True)
+
+        self.verticalLayout_5.addWidget(self.russian_label)
+
+        self.verticalSpacer = QSpacerItem(20, 76, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_5.addItem(self.verticalSpacer)
+
+
+        self.horizontalLayout_4.addWidget(self.title_frame)
+
+
+        self.verticalLayout_9.addLayout(self.horizontalLayout_4)
+
         self.related_frame = QFrame(Form)
         self.related_frame.setObjectName(u"related_frame")
         self.related_frame.setFrameShape(QFrame.StyledPanel)
@@ -239,7 +260,7 @@ class Ui_Form(object):
         self.verticalLayout_2.addWidget(self.related_list)
 
 
-        self.verticalLayout_8.addWidget(self.related_frame)
+        self.verticalLayout_9.addWidget(self.related_frame)
 
         self.description_frame = QFrame(Form)
         self.description_frame.setObjectName(u"description_frame")
@@ -254,10 +275,13 @@ class Ui_Form(object):
         self.verticalLayout_3.addWidget(self.description_text)
 
 
-        self.verticalLayout_8.addWidget(self.description_frame)
+        self.verticalLayout_9.addWidget(self.description_frame)
 
 
-        self.horizontalLayout_5.addLayout(self.verticalLayout_8)
+        self.verticalLayout_10.addLayout(self.verticalLayout_9)
+
+
+        self.horizontalLayout_5.addLayout(self.verticalLayout_10)
 
         self.items_frame = QFrame(Form)
         self.items_frame.setObjectName(u"items_frame")
@@ -286,14 +310,14 @@ class Ui_Form(object):
         self.add_btn.setText("")
         self.shikimori_btn.setText("")
         self.image.setText("")
-        self.name_label.setText(QCoreApplication.translate("Form", u"name", None))
-        self.russian_label.setText(QCoreApplication.translate("Form", u"russian", None))
         self.score_label.setText(QCoreApplication.translate("Form", u"\u0420\u0435\u0439\u0442\u0438\u043d\u0433", None))
         self.star_1.setText("")
         self.star_2.setText("")
         self.star_3.setText("")
         self.star_4.setText("")
         self.star_5.setText("")
+        self.name_label.setText(QCoreApplication.translate("Form", u"name", None))
+        self.russian_label.setText(QCoreApplication.translate("Form", u"russian", None))
         self.label.setText(QCoreApplication.translate("Form", u"\u0421\u0432\u044f\u0437\u0430\u043d\u043d\u043e\u0435", None))
     # retranslateUi
 
