@@ -4,7 +4,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QDialog
 
 from const.icons import app_icon_path
-from forms.authUI import Ui_Dialog
+from forms.auth import Ui_Dialog
 
 
 class FormAuth(QDialog):
@@ -12,7 +12,7 @@ class FormAuth(QDialog):
         super().__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.ui.lbl_shikimori.setText(catalog.catalog_name)
+        self.ui.catalog_label.setText(catalog.catalog_name)
         self.session = catalog.session
         self.setup_form(catalog.fields)
 
@@ -21,15 +21,15 @@ class FormAuth(QDialog):
         self.setWindowIcon(QIcon(app_icon_path))
         self.setFixedSize(self.minimumSize())
         if fields == 1:
-            self.ui.btn_get.clicked.connect(self.login)
-            self.ui.btn_login.clicked.connect(self.clicked_account_login)
+            self.ui.get_code_btn.clicked.connect(self.login)
+            self.ui.auth_btn.clicked.connect(self.clicked_account_login)
             self.ui.two_frame.hide()
         else:
-            self.ui.btn_login.clicked.connect(self.verify_user_data)
+            self.ui.auth_btn.clicked.connect(self.verify_user_data)
             self.ui.one_frame.hide()
 
     def clicked_account_login(self):
-        code = self.ui.auth_code.text()
+        code = self.ui.auth_code_line.text()
         if not code:
             return
         self.session.fetch_token(code)
@@ -37,11 +37,11 @@ class FormAuth(QDialog):
             self.accept()
 
     def verify_user_data(self):
-        if self.ui.username.text() and self.ui.password.text():
+        if self.ui.login_line.text() and self.ui.password_line.text():
             self.accept()
 
     def get_user_data(self):
-        return {'username': self.ui.username.text(), 'password': self.ui.password.text()}
+        return {'username': self.ui.login_line.text(), 'password': self.ui.password_line.text()}
 
     def login(self):
         webbrowser.open_new_tab(self.session.get_auth_url())

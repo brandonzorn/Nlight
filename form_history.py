@@ -2,17 +2,17 @@ from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 
 from database import Database
-from forms.ui_history import Ui_Dialog
+from forms.history import Ui_Form
 from items import HistoryNote
 
 
 class FormHistory(QWidget):
     def __init__(self):
         super().__init__()
-        self.ui = Ui_Dialog()
+        self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.db: Database = Database()
-        self.ui.btn_delete.clicked.connect(self.delete_note)
+        self.ui.delete_btn.clicked.connect(self.delete_note)
         self.notes: list[HistoryNote] = []
 
     def setup(self):

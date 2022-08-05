@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QDialog
 
 from catalog_manager import get_catalog, get_lib_catalog
 from const.lists import lib_lists_en, lib_lists_ru
-from forms.rateManga import Ui_Dialog
+from forms.rate import Ui_Dialog
 from items import Manga
 
 
@@ -11,10 +11,10 @@ class FormRate(QDialog):
         super().__init__(None)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.ui.lib_list.addItems(lib_lists_ru)
-        self.ui.btn_add.clicked.connect(self.send_rate)
-        self.ui.btn_cancel.clicked.connect(lambda: self.close())
-        self.ui.btn_delete.clicked.connect(self.delete_rate)
+        self.ui.lib_list_box.addItems([i.capitalize() for i in lib_lists_ru])
+        self.ui.update_btn.clicked.connect(self.send_rate)
+        self.ui.cancel_btn.clicked.connect(lambda: self.close())
+        self.ui.delete_btn.clicked.connect(self.delete_rate)
         self.catalog = None
         self.manga = None
         self.user_rate = None
@@ -26,16 +26,16 @@ class FormRate(QDialog):
         if not self.catalog.check_user_rate(self.manga):
             self.catalog.create_user_rate(self.manga)
         self.user_rate = self.catalog.get_user_rate(manga)
-        self.ui.score.setValue(self.user_rate.score)
-        self.ui.chapters.setValue(self.user_rate.chapters)
+        self.ui.score_box.setValue(self.user_rate.score)
+        self.ui.chapters_box.setValue(self.user_rate.chapters)
         if self.manga.chapters:
-            self.ui.chapters.setMaximum(self.manga.chapters)
-        self.ui.lib_list.setCurrentIndex(lib_lists_en.index(self.user_rate.status))
+            self.ui.chapters_box.setMaximum(self.manga.chapters)
+        self.ui.lib_list_box.setCurrentIndex(lib_lists_en.index(self.user_rate.status))
 
     def send_rate(self):
-        self.user_rate.score = self.ui.score.value()
-        self.user_rate.chapters = self.ui.chapters.value()
-        self.user_rate.status = lib_lists_en[self.ui.lib_list.currentIndex()]
+        self.user_rate.score = self.ui.score_box.value()
+        self.user_rate.chapters = self.ui.chapters_box.value()
+        self.user_rate.status = lib_lists_en[self.ui.lib_list_box.currentIndex()]
         self.catalog.update_user_rate(self.user_rate)
         self.close()
 
