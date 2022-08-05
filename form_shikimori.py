@@ -3,7 +3,7 @@ from threading import Thread, Lock
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 
 from form_auth import FormAuth
-from forms.shikimoriUI import Ui_Form
+from forms.shikimori import Ui_Form
 from items import Manga, RequestForm, User
 from parser.Shikimori import ShikimoriLib
 from utils import with_lock_thread, lock_ui
@@ -21,30 +21,30 @@ class FormShikimori(QWidget):
         self.catalog = ShikimoriLib()
         self.Form_auth = FormAuth(self.catalog)
         self.request_params = RequestForm()
-        self.ui.b_planned.clicked.connect(lambda: self.change_list('planned'))
-        self.ui.b_watching.clicked.connect(lambda: self.change_list('watching'))
-        self.ui.b_on_hold.clicked.connect(lambda: self.change_list('on_hold'))
-        self.ui.b_completed.clicked.connect(lambda: self.change_list('completed'))
-        self.ui.b_dropped.clicked.connect(lambda: self.change_list('dropped'))
-        self.ui.b_rewatching.clicked.connect(lambda: self.change_list('rewatching'))
-        self.ui.prev_page.clicked.connect(lambda: self.change_page('-'))
-        self.ui.next_page.clicked.connect(lambda: self.change_page('+'))
-        self.ui.btn_search.clicked.connect(self.search)
-        self.ui.btn_auth.clicked.connect(self.authorize)
+        self.ui.planned_btn.clicked.connect(lambda: self.change_list('planned'))
+        self.ui.reading_btn.clicked.connect(lambda: self.change_list('watching'))
+        self.ui.on_hold_btn.clicked.connect(lambda: self.change_list('on_hold'))
+        self.ui.completed_btn.clicked.connect(lambda: self.change_list('completed'))
+        self.ui.dropped_btn.clicked.connect(lambda: self.change_list('dropped'))
+        self.ui.re_reading_btn.clicked.connect(lambda: self.change_list('rewatching'))
+        self.ui.prev_btn.clicked.connect(lambda: self.change_page('-'))
+        self.ui.next_btn.clicked.connect(lambda: self.change_page('+'))
+        self.ui.search_btn.clicked.connect(self.search)
+        self.ui.auth_btn.clicked.connect(self.authorize)
         self.Form_auth.accepted.connect(self.auth_accept)
 
     def setup(self):
         try:
-            self.ui.btn_auth.setText(self.get_whoami().nickname)
+            self.ui.auth_btn.setText(self.get_whoami().nickname)
         except AttributeError:
-            self.ui.btn_auth.setText("Войти")
+            self.ui.auth_btn.setText("Войти")
 
     def get_current_manga(self):
-        return self.catalog.get_manga(self.mangas[self.ui.list_manga.currentIndex().row()])
+        return self.catalog.get_manga(self.mangas[self.ui.items_list.currentIndex().row()])
 
     def auth_accept(self):
         self.catalog.session.auth_login(self.Form_auth.get_user_data())
-        self.ui.btn_auth.setText(self.get_whoami().nickname)
+        self.ui.auth_btn.setText(self.get_whoami().nickname)
 
     def authorize(self):
         self.Form_auth.hide()
@@ -61,12 +61,12 @@ class FormShikimori(QWidget):
                 if self.request_params.page == 1:
                     return
                 self.request_params.page -= 1
-        self.ui.label_page.setText(f"Страница {self.request_params.page}")
+        self.ui.page_label.setText(f"Страница {self.request_params.page}")
         Thread(target=self.update_list, daemon=True).start()
 
     def search(self):
         self.request_params.page = 1
-        self.request_params.search = self.ui.line_search.text()
+        self.request_params.search = self.ui.title_line.text()
         self.update_list()
 
     def change_list(self, list_name: str):
@@ -77,9 +77,9 @@ class FormShikimori(QWidget):
     def update_list(self):
         ui_to_lock = [self.ui.search_frame, self.ui.lists_frame]
         with lock_ui(ui_to_lock):
-            self.ui.list_manga.clear()
+            self.ui.items_list.clear()
             self.mangas = self.catalog.search_manga(self.request_params)
-            self.ui.label_page.setText(f'Страница {self.request_params.page}')
+            self.ui.page_label.setText(f'Страница {self.request_params.page}')
             for manga in self.mangas:
                 item = QListWidgetItem(manga.get_name())
-                self.ui.list_manga.addItem(item)
+                self.ui.items_list.addItem(item)

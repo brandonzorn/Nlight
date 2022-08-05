@@ -24,12 +24,12 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(669, 472)
-        MainWindow.setStyleSheet(u"color: rgb(255, 255, 255);\n"
-"background-color: rgb(32, 32, 32);")
+        MainWindow.resize(669, 384)
+        MainWindow.setStyleSheet(u"")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.centralwidget.setStyleSheet(u"")
+        self.centralwidget.setStyleSheet(u"color: rgb(255, 255, 255);\n"
+"background-color: rgb(32, 32, 32);")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.side_menu_widget = QWidget(self.centralwidget)
@@ -136,21 +136,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addItem(self.verticalSpacer)
 
-        self.btn_settings = QPushButton(self.frame)
-        self.btn_settings.setObjectName(u"btn_settings")
-        sizePolicy.setHeightForWidth(self.btn_settings.sizePolicy().hasHeightForWidth())
-        self.btn_settings.setSizePolicy(sizePolicy)
-        self.btn_settings.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_settings.setStyleSheet(u"")
-        icon4 = QIcon()
-        icon4.addFile(u":/icons/images/settings.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_settings.setIcon(icon4)
-        self.btn_settings.setCheckable(False)
-        self.btn_settings.setAutoRepeat(False)
-        self.btn_settings.setAutoExclusive(False)
-
-        self.verticalLayout_3.addWidget(self.btn_settings)
-
 
         self.verticalLayout.addWidget(self.frame)
 
@@ -175,27 +160,17 @@ class Ui_MainWindow(object):
         palette.setBrush(QPalette.Active, QPalette.ButtonText, brush)
         palette.setBrush(QPalette.Active, QPalette.Base, brush1)
         palette.setBrush(QPalette.Active, QPalette.Window, brush1)
-        brush2 = QBrush(QColor(0, 133, 52, 255))
-        brush2.setStyle(Qt.SolidPattern)
-        palette.setBrush(QPalette.Active, QPalette.Highlight, brush2)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
         palette.setBrush(QPalette.Active, QPalette.PlaceholderText, brush)
 #endif
-        brush3 = QBrush(QColor(0, 0, 0, 255))
-        brush3.setStyle(Qt.SolidPattern)
-        palette.setBrush(QPalette.Inactive, QPalette.WindowText, brush3)
-        brush4 = QBrush(QColor(240, 240, 240, 255))
-        brush4.setStyle(Qt.SolidPattern)
-        palette.setBrush(QPalette.Inactive, QPalette.Button, brush4)
-        palette.setBrush(QPalette.Inactive, QPalette.Text, brush3)
-        palette.setBrush(QPalette.Inactive, QPalette.ButtonText, brush3)
-        palette.setBrush(QPalette.Inactive, QPalette.Base, brush)
-        palette.setBrush(QPalette.Inactive, QPalette.Window, brush4)
-        palette.setBrush(QPalette.Inactive, QPalette.Highlight, brush4)
-        brush5 = QBrush(QColor(0, 0, 0, 128))
-        brush5.setStyle(Qt.SolidPattern)
+        palette.setBrush(QPalette.Inactive, QPalette.WindowText, brush)
+        palette.setBrush(QPalette.Inactive, QPalette.Button, brush1)
+        palette.setBrush(QPalette.Inactive, QPalette.Text, brush)
+        palette.setBrush(QPalette.Inactive, QPalette.ButtonText, brush)
+        palette.setBrush(QPalette.Inactive, QPalette.Base, brush1)
+        palette.setBrush(QPalette.Inactive, QPalette.Window, brush1)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
-        palette.setBrush(QPalette.Inactive, QPalette.PlaceholderText, brush5)
+        palette.setBrush(QPalette.Inactive, QPalette.PlaceholderText, brush)
 #endif
         palette.setBrush(QPalette.Disabled, QPalette.WindowText, brush)
         palette.setBrush(QPalette.Disabled, QPalette.Button, brush1)
@@ -203,33 +178,39 @@ class Ui_MainWindow(object):
         palette.setBrush(QPalette.Disabled, QPalette.ButtonText, brush)
         palette.setBrush(QPalette.Disabled, QPalette.Base, brush1)
         palette.setBrush(QPalette.Disabled, QPalette.Window, brush1)
-        brush6 = QBrush(QColor(0, 120, 215, 255))
-        brush6.setStyle(Qt.SolidPattern)
-        palette.setBrush(QPalette.Disabled, QPalette.Highlight, brush6)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
-        palette.setBrush(QPalette.Disabled, QPalette.PlaceholderText, brush5)
+        palette.setBrush(QPalette.Disabled, QPalette.PlaceholderText, brush)
 #endif
         self.top_item_widget.setPalette(palette)
-        self.top_item_widget.setStyleSheet(u"QPushButton {\n"
-"	padding: 5px 1px;\n"
-"	border-radius: 10px;\n"
-"	font-weight: bold;\n"
-"}\n"
-"\n"
-"QPushButton:hover:!pressed {\n"
-"	border-left: 3px solid green;\n"
-"	background-color: gray;\n"
-"}\n"
-"\n"
-"QPushButton:checked {\n"
-"	border-left: 3px solid green;\n"
-"}")
+        self.top_item_widget.setStyleSheet(u"color: rgb(255, 255, 255);")
         self.verticalLayout_2 = QVBoxLayout(self.top_item_widget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.top_item = QStackedWidget(self.top_item_widget)
         self.top_item.setObjectName(u"top_item")
-        self.top_item.setStyleSheet(u"")
+        self.top_item.setStyleSheet(u"QComboBox {\n"
+"	padding: 5px 1px;\n"
+"	border-radius: 10px;\n"
+"	font-weight: bold;\n"
+"	background-color: rgb(0, 133, 52);\n"
+"	color: rgb(255, 255, 255);\n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"	padding: 5px 1px;\n"
+"	border-radius: 10px;\n"
+"	font-weight: bold;\n"
+"	background-color: rgb(0, 133, 52);\n"
+"	color: rgb(255, 255, 255);\n"
+"}\n"
+"\n"
+"QPushButton:hover:!pressed {\n"
+"	border-left: 3px solid white;\n"
+"}\n"
+"\n"
+"QPushButton:checked {\n"
+"	border-left: 3px solid white;\n"
+"}")
 
         self.verticalLayout_2.addWidget(self.top_item)
 
@@ -252,6 +233,5 @@ class Ui_MainWindow(object):
         self.btn_main.setText(QCoreApplication.translate("MainWindow", u"Main", None))
         self.btn_shikimori.setText(QCoreApplication.translate("MainWindow", u"Shikimori", None))
         self.btn_history.setText(QCoreApplication.translate("MainWindow", u"History", None))
-        self.btn_settings.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
     # retranslateUi
 

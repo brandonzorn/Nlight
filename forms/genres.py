@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'desu_genresUI.ui'
+## Form generated from reading UI file 'genres.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.3.1
 ##
@@ -23,12 +23,13 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(510, 372)
+        Dialog.resize(489, 239)
         Dialog.setStyleSheet(u"QFrame {\n"
 "	border-radius: 10px;\n"
 "	background-color: rgb(45, 45, 45);\n"
 "	color: rgb(255, 255, 255);\n"
 "}\n"
+"\n"
 "QDialog{\n"
 "	background-color: rgb(32, 32, 32);\n"
 "}\n"
@@ -47,15 +48,13 @@ class Ui_Dialog(object):
 "\n"
 "QPushButton:checked {\n"
 "	border-left: 3px solid white;\n"
-"}\n"
-"\n"
-"QAbstractButton{\n"
-"	color: rgb(255, 255, 255);\n"
 "}")
         self.verticalLayout_2 = QVBoxLayout(Dialog)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.frame = QFrame(Dialog)
         self.frame.setObjectName(u"frame")
+        self.frame.setStyleSheet(u"color: rgb(255, 255, 255);")
         self.frame.setFrameShape(QFrame.StyledPanel)
         self.frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout = QVBoxLayout(self.frame)
@@ -67,8 +66,6 @@ class Ui_Dialog(object):
 
         self.buttonBox = QDialogButtonBox(self.frame)
         self.buttonBox.setObjectName(u"buttonBox")
-        self.buttonBox.setStyleSheet(u"background-color: rgb(0, 133, 52);\n"
-"color: rgb(255, 255, 255);")
         self.buttonBox.setOrientation(Qt.Horizontal)
         self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
 
