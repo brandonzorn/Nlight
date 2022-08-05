@@ -65,13 +65,6 @@ class MainWindow(QMainWindow):
         self.ui.top_item.addWidget(self.Form_history)
         self.Form_history.setup()
 
-    def clicked_catalogs(self):
-        if self.Form_facial.ui.catalog_list.isHidden():
-            self.Form_facial.setup_catalogs()
-            self.Form_facial.ui.catalog_list.show()
-        else:
-            self.Form_facial.ui.catalog_list.hide()
-
     def back(self):
         self.ui.side_menu_widget.show()
         self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
