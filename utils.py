@@ -3,7 +3,6 @@ import json
 import os
 
 import requests
-from PySide6.QtWidgets import QApplication
 
 from const.icons import ru_icon_path, gb_icon_path, jp_icon_path
 from const.lists import lib_lists_en, lib_lists_ru
@@ -12,9 +11,6 @@ from items import Manga, Chapter, Image
 
 
 def get_html(url: str, headers: dict = DEFAULT_HEADERS, params=None):
-    if QApplication.arguments()[-1] == '-debug':
-        print(f"REQUEST IGNORED")
-        return
     try:
         return requests.get(url, headers=headers, params=params)
     except Exception as e:
