@@ -1,4 +1,4 @@
-from items import Manga, Chapter, Image, RequestForm, Genre, Kind, Order
+from items import Manga, Chapter, Image, RequestForm, Genre, Kind, Order, Character
 
 
 class Parser:
@@ -7,6 +7,9 @@ class Parser:
 
     def get_manga(self, manga: Manga) -> Manga:
         return manga
+
+    def get_character(self, character: Character) -> Character:
+        return character
 
     def search_manga(self, params: RequestForm) -> list[Manga]:
         return []
@@ -23,6 +26,9 @@ class Parser:
     def get_preview(self, manga: Manga):
         return
 
+    def get_character_preview(self, character: Character):
+        return
+
     def get_genres(self) -> list[Genre]:
         return []
 
@@ -33,4 +39,7 @@ class Parser:
         return []
 
     def get_relations(self, manga: Manga) -> list[Manga]:
+        return []
+
+    def get_characters(self, manga: Manga) -> list[Character]:
         return []
