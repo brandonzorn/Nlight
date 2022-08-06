@@ -24,8 +24,8 @@ class Desu(Parser):
         manga = []
         if html and html.status_code == 200 and len(html.json()):
             for i in html.json().get('response'):
-                manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
-                                   i.get('kind'), i.get('description'), i.get('score')))
+                manga.append(Manga(i.get('id'), i.get('name'), i.get('russian'), i.get('kind'), i.get('description'),
+                                   i.get('score'), self.catalog_id))
         return manga
 
     def get_chapters(self, manga: Manga):

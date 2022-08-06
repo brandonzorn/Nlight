@@ -18,6 +18,10 @@ class ShikimoriBase(Parser):
         self.catalog_id = 1
         self.is_primary = True
 
+    def setup_manga(self, data: dict) -> Manga:
+        return Manga(data.get('id'), data.get('name'), data.get('russian'), data.get('kind'),
+                     data.get('description'), float(data.get('score')), self.catalog_id)
+
     def get_manga(self, manga: Manga) -> Manga:
         url = f'{self.url_api}/mangas/{manga.id}'
         html = get_html(url, self.headers)
@@ -62,8 +66,7 @@ class ShikimoriBase(Parser):
             for i in html.json():
                 if i.get('manga'):
                     i = i.get('manga')
-                    mangas.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
-                                        i.get('kind'), i.get('description'), float(i.get('score'))))
+                    mangas.append(self.setup_manga(i))
         return mangas
 
     def get_characters(self, manga: Manga) -> list[Character]:
@@ -94,12 +97,11 @@ class ShikimoriManga(ShikimoriBase):
         params = {'limit': params.limit, 'search': params.search, 'genre': ','.join([i.id for i in params.genres]),
                   'order': params.order.name, 'kind': ','.join([i.name for i in params.kinds]), 'page': params.page}
         html = get_html(url, self.headers, params)
-        manga = []
+        mangas = []
         if html and html.status_code == 200 and html.json():
             for i in html.json():
-                manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
-                                   i.get('kind'), i.get('description'), float(i.get('score'))))
-        return manga
+                mangas.append(self.setup_manga(i))
+        return mangas
 
     def get_kinds(self):
         return [Kind('', i['name'], i['russian']) for i in KINDS]
@@ -116,12 +118,11 @@ class ShikimoriRanobe(ShikimoriBase):
         params = {'limit': params.limit, 'search': params.search, 'genre': ','.join([i.id for i in params.genres]),
                   'order': params.order.name, 'kind': ','.join([i.name for i in params.kinds]), 'page': params.page}
         html = get_html(url, self.headers, params)
-        manga = []
+        mangas = []
         if html and html.status_code == 200 and html.json():
             for i in html.json():
-                manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
-                                   i.get('kind'), i.get('description'), float(i.get('score'))))
-        return manga
+                mangas.append(self.setup_manga(i))
+        return mangas
 
 
 class ShikimoriLib(ShikimoriBase):
@@ -141,8 +142,7 @@ class ShikimoriLib(ShikimoriBase):
                 if not i.get("status") == req_params.mylist:
                     continue
                 i = i.get("manga")
-                mangas.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
-                                    i.get('kind'), i.get('description'), float(i.get('score'))))
+                mangas.append(self.setup_manga(i))
         return mangas
 
     def get_user(self) -> User:
