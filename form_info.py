@@ -166,7 +166,7 @@ class FormInfo(QWidget):
         self.reader_window.setup(self.manga, self.chapters, self.ui.items_list.currentIndex().row() + 1)
 
     def get_preview(self) -> QPixmap:
-        path = f'Desu/images/{self.catalog.catalog_name}/{self.manga.id}'
+        path = f'Desu/images/{self.catalog.catalog_name}/manga/{self.manga.id}'
         if not check_file_exists(path, 'preview.jpg'):
             save_file(path, 'preview.jpg', self.catalog.get_preview(self.manga))
         return QPixmap(get_file(path, 'preview.jpg'))

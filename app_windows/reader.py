@@ -144,14 +144,14 @@ class Reader(QMainWindow):
         self.ui.img.setFont(font)
 
     def get_image(self, chapter, image) -> QPixmap:
-        path = f'Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
+        path = f'Desu/images/{self.catalog.catalog_name}/manga/{self.manga.id}/{chapter.id}'
         file_name = f'{image.page}.jpg'
         if not check_file_exists(path, file_name):
             save_file(path, file_name, self.catalog.get_image(image))
         return QPixmap(get_file(path, file_name))
 
     def get_text(self, chapter, image):
-        path = f'Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
+        path = f'Desu/images/{self.catalog.catalog_name}/manga/{self.manga.id}/{chapter.id}'
         file_name = f'{image.page}.txt'
         if not check_file_exists(path, file_name):
             save_file(path, file_name, self.catalog.get_image(image))
@@ -187,7 +187,7 @@ class Reader(QMainWindow):
         for image in images:
             if form.isHidden() or chapter.id != self.chapters[self.cur_chapter - 1].id or self.manga.kind == 'ranobe':
                 break
-            path = f'Desu/images/{self.catalog.catalog_name}/{self.manga.id}/{chapter.id}'
+            path = f'Desu/images/{self.catalog.catalog_name}/manga/{self.manga.id}/{chapter.id}'
             file_name = f'{image.page}.jpg'
             if not check_file_exists(path, file_name):
                 save_file(path, file_name, self.catalog.get_image(image))
