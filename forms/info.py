@@ -25,7 +25,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(668, 452)
+        Form.resize(400, 503)
         Form.setStyleSheet(u"QFrame {\n"
 "	border-radius: 10px;\n"
 "	background-color: rgb(45, 45, 45);\n"
@@ -33,7 +33,6 @@ class Ui_Form(object):
 "}")
         self.horizontalLayout_5 = QHBoxLayout(Form)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_10 = QVBoxLayout()
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
         self.header_frame = QFrame(Form)
@@ -110,8 +109,8 @@ class Ui_Form(object):
 
         self.verticalLayout_10.addWidget(self.header_frame)
 
-        self.verticalLayout_9 = QVBoxLayout()
-        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
+        self.manga_layout = QVBoxLayout()
+        self.manga_layout.setObjectName(u"manga_layout")
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.verticalLayout_8 = QVBoxLayout()
@@ -240,8 +239,10 @@ class Ui_Form(object):
         self.horizontalLayout_4.addWidget(self.title_frame)
 
 
-        self.verticalLayout_9.addLayout(self.horizontalLayout_4)
+        self.manga_layout.addLayout(self.horizontalLayout_4)
 
+        self.related_layout = QHBoxLayout()
+        self.related_layout.setObjectName(u"related_layout")
         self.related_frame = QFrame(Form)
         self.related_frame.setObjectName(u"related_frame")
         self.related_frame.setFrameShape(QFrame.StyledPanel)
@@ -255,12 +256,45 @@ class Ui_Form(object):
 
         self.related_list = QListWidget(self.related_frame)
         self.related_list.setObjectName(u"related_list")
+        sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.related_list.sizePolicy().hasHeightForWidth())
+        self.related_list.setSizePolicy(sizePolicy5)
         self.related_list.setWordWrap(True)
 
         self.verticalLayout_2.addWidget(self.related_list)
 
 
-        self.verticalLayout_9.addWidget(self.related_frame)
+        self.related_layout.addWidget(self.related_frame)
+
+        self.characters_frame = QFrame(Form)
+        self.characters_frame.setObjectName(u"characters_frame")
+        sizePolicy6 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy6.setHorizontalStretch(0)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(self.characters_frame.sizePolicy().hasHeightForWidth())
+        self.characters_frame.setSizePolicy(sizePolicy6)
+        self.characters_frame.setMinimumSize(QSize(0, 0))
+        self.characters_frame.setFrameShape(QFrame.StyledPanel)
+        self.characters_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_11 = QVBoxLayout(self.characters_frame)
+        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
+        self.label_2 = QLabel(self.characters_frame)
+        self.label_2.setObjectName(u"label_2")
+
+        self.verticalLayout_11.addWidget(self.label_2)
+
+        self.characters_list = QListWidget(self.characters_frame)
+        self.characters_list.setObjectName(u"characters_list")
+
+        self.verticalLayout_11.addWidget(self.characters_list)
+
+
+        self.related_layout.addWidget(self.characters_frame)
+
+
+        self.manga_layout.addLayout(self.related_layout)
 
         self.description_frame = QFrame(Form)
         self.description_frame.setObjectName(u"description_frame")
@@ -275,10 +309,10 @@ class Ui_Form(object):
         self.verticalLayout_3.addWidget(self.description_text)
 
 
-        self.verticalLayout_9.addWidget(self.description_frame)
+        self.manga_layout.addWidget(self.description_frame)
 
 
-        self.verticalLayout_10.addLayout(self.verticalLayout_9)
+        self.verticalLayout_10.addLayout(self.manga_layout)
 
 
         self.horizontalLayout_5.addLayout(self.verticalLayout_10)
@@ -319,5 +353,6 @@ class Ui_Form(object):
         self.name_label.setText(QCoreApplication.translate("Form", u"name", None))
         self.russian_label.setText(QCoreApplication.translate("Form", u"russian", None))
         self.label.setText(QCoreApplication.translate("Form", u"\u0421\u0432\u044f\u0437\u0430\u043d\u043d\u043e\u0435", None))
+        self.label_2.setText(QCoreApplication.translate("Form", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u0436\u0438", None))
     # retranslateUi
 

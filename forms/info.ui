@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>668</width>
-    <height>452</height>
+    <width>400</width>
+    <height>503</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,18 +21,6 @@
 }</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_5">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_10">
      <item>
@@ -177,7 +165,7 @@
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_9">
+      <layout class="QVBoxLayout" name="manga_layout">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
@@ -371,30 +359,74 @@
         </layout>
        </item>
        <item>
-        <widget class="QFrame" name="related_frame">
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <item>
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Связанное</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QListWidget" name="related_list">
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
+        <layout class="QHBoxLayout" name="related_layout">
+         <item>
+          <widget class="QFrame" name="related_frame">
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Связанное</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QListWidget" name="related_list">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="characters_frame">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_11">
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>Персонажи</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QListWidget" name="characters_list"/>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QFrame" name="description_frame">
