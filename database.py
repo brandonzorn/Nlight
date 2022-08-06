@@ -16,7 +16,7 @@ class Database:
         self.__con = sqlite3.connect(f'{os.getcwd()}/Desu/data.db', check_same_thread=False)
         self.__cur = self.__con.cursor()
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS manga (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
-        catalog_id INTEGER, name STRING, russian STRING, kind STRING, description TEXT, score FLOAT);""")
+        name STRING, russian STRING, kind STRING, description TEXT, score FLOAT, catalog_id INTEGER);""")
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS chapters (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
         vol STRING, ch STRING, title STRING, language STRING, manga_id INTEGER, index_n INTEGER);""")
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS images (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
@@ -30,16 +30,16 @@ class Database:
     @with_lock_thread(lock)
     def add_manga(self, manga: Manga):
         self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?);",
-                           (manga.id, manga.catalog_id, manga.name, manga.russian, manga.kind, manga.description,
-                            manga.score))
+                           (manga.id, manga.name, manga.russian, manga.kind, manga.description, manga.score,
+                            manga.catalog_id))
         self.__con.commit()
 
     @with_lock_thread(lock)
     def add_mangas(self, mangas: list[Manga]):
         for manga in mangas:
             self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?);",
-                               (manga.id, manga.catalog_id, manga.name, manga.russian, manga.kind, manga.description,
-                                manga.score))
+                               (manga.id, manga.name, manga.russian, manga.kind, manga.description, manga.score,
+                                manga.catalog_id))
         self.__con.commit()
 
     def get_manga(self, manga_id):

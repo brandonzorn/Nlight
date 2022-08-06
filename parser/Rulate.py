@@ -33,7 +33,7 @@ class Rulate(Parser):
             for i in hranobe:
                 name = i.text.strip()
                 ranobe_id = i.unwrap()['data-tooltip-content'].split('#book-tooltip-')[-1]
-                ranobe.append(Manga(ranobe_id, self.catalog_id, name, '', 'ranobe', '', 0))
+                ranobe.append(Manga(ranobe_id, name, '', 'ranobe', '', 0, self.catalog_id))
         return ranobe
 
     def get_chapters(self, manga: Manga):

@@ -30,7 +30,7 @@ class Ranobehub(Parser):
                 name = i.get('names').get('eng')
                 russian = i.get('names').get('rus')
                 score = i.get('rating')
-                manga.append(Manga(manga_id, self.catalog_id, name, russian, "ranobe", '', score))
+                manga.append(Manga(manga_id, name, russian, "ranobe", '', score, self.catalog_id))
         return manga
 
     def get_preview(self, manga: Manga):
