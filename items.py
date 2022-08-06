@@ -1,9 +1,21 @@
+class MangaBaseItem:
+    def __init__(self, item_id, name, russian):
+        self.id = item_id
+        self.name = name
+        self.russian = russian
+
+    def get_name(self) -> str:
+        if self.russian:
+            return self.russian
+        return self.name
+
+
 class Manga:
     def __init__(self, manga_id, catalog_id, name, russian, kind, description, score):
         self.id = manga_id
-        self.catalog_id = catalog_id
         self.name = name
         self.russian = russian
+        self.catalog_id = catalog_id
         self.kind = kind
         self.description = description
         self.score = score
@@ -39,17 +51,27 @@ class Image:
         self.img = img
 
 
-class Genre:
-    def __init__(self, genre_id, name, russian, kind):
-        self.id: str = genre_id
-        self.name = name
-        self.russian = russian
+class Genre(MangaBaseItem):
+    def __init__(self, item_id, name, russian, kind):
+        super().__init__(item_id, name, russian)
         self.kind = kind
 
-    def get_name(self) -> str:
-        if self.russian:
-            return self.russian
-        return self.name
+
+class Order(MangaBaseItem):
+    def __init__(self, item_id, name, russian):
+        super().__init__(item_id, name, russian)
+
+
+class Kind(MangaBaseItem):
+    def __init__(self, item_id, name, russian):
+        super().__init__(item_id, name, russian)
+
+
+class Character(MangaBaseItem):
+    def __init__(self, item_id, name, russian, description, role):
+        super().__init__(item_id, name, russian)
+        self.description = description
+        self.role = role
 
 
 class RequestForm:
@@ -91,30 +113,6 @@ class UserRate:
         self.score = score
         self.status = status
         self.chapters = chapters
-
-
-class Order:
-    def __init__(self, order_id, name, russian):
-        self.id: str = order_id
-        self.name: str = name
-        self.russian: str = russian
-
-    def get_name(self):
-        if self.russian:
-            return self.russian
-        return self.name
-
-
-class Kind:
-    def __init__(self, kind_id, name, russian):
-        self.id: str = kind_id
-        self.name: str = name
-        self.russian: str = russian
-
-    def get_name(self):
-        if self.russian:
-            return self.russian
-        return self.name
 
 
 class HistoryNote:

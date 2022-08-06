@@ -3,7 +3,7 @@ from requests_oauthlib import OAuth2Session
 
 from const.shikimori_items import ORDERS, KINDS
 from const.urls import URL_SHIKIMORI_API, URL_SHIKIMORI_TOKEN, URL_SHIKIMORI, SHIKIMORI_HEADERS
-from items import Manga, RequestForm, Genre, Kind, User, UserRate, Order
+from items import Manga, RequestForm, Genre, Kind, User, UserRate, Order, Character
 from keys import SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID
 from parser.Parser import Parser
 from utils import get_html, TokenManager, singleton
@@ -30,8 +30,19 @@ class ShikimoriBase(Parser):
             manga.description = data.get('description')
         return manga
 
+    def get_character(self, character: Character) -> Character:
+        url = f'{self.url_api}/characters/{character.id}'
+        html = get_html(url, self.headers)
+        if html and html.status_code == 200 and html.json():
+            data = html.json()
+            character.description = data.get('description')
+        return character
+
     def get_preview(self, manga: Manga):
         return get_html(f'https://shikimori.one/system/mangas/preview/{manga.id}.jpg')
+
+    def get_character_preview(self, character: Character):
+        return get_html(f'https://shikimori.one/system/characters/preview/{character.id}.jpg')
 
     def get_genres(self):
         url = f'{self.url_api}/genres'
@@ -44,9 +55,9 @@ class ShikimoriBase(Parser):
         return [Order('', i['name'], i['russian']) for i in ORDERS]
 
     def get_relations(self, manga: Manga) -> list[Manga]:
+        mangas = []
         url = f'{self.url_api}/mangas/{manga.id}/related'
         html = get_html(url, headers=self.headers)
-        mangas = []
         if html and html.status_code == 200 and html.json():
             for i in html.json():
                 if i.get('manga'):
@@ -54,6 +65,22 @@ class ShikimoriBase(Parser):
                     mangas.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian'),
                                         i.get('kind'), i.get('description'), float(i.get('score'))))
         return mangas
+
+    def get_characters(self, manga: Manga) -> list[Character]:
+        characters = []
+        url = f'{self.url_api}/mangas/{manga.id}/roles'
+        html = get_html(url, headers=self.headers)
+        if html and html.status_code == 200 and html.json():
+            for i in html.json():
+                if i.get('roles'):
+                    role = i.get('roles')[0]
+                    if role in ['Supporting', 'Main']:
+                        data = i.get('character')
+                        if data:
+                            characters.append(Character(
+                                data.get('id'), data.get('name'), data.get('russian'), '', role))
+            characters.reverse()
+        return characters
 
 
 class ShikimoriManga(ShikimoriBase):

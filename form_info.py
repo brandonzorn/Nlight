@@ -10,6 +10,7 @@ from const.icons import favorite_icon_path, favorite1_icon_path, favorite2_icon_
 from const.lists import lib_lists_en, lib_lists_ru
 from database import Database
 from file_manager import check_file_exists, get_file, save_file
+from form_character import FormCharacter
 from form_rate import FormRate
 from forms.info import Ui_Form
 from items import Manga, Chapter
@@ -26,18 +27,21 @@ class FormInfo(QWidget):
         self.ui.setupUi(self)
         self.ui.lib_list_box.addItems([i.capitalize() for i in lib_lists_ru])
         self.ui.items_list.doubleClicked.connect(self.open_reader)
+        self.ui.shikimori_btn.clicked.connect(self.open_rate)
+        self.ui.characters_list.doubleClicked.connect(self.open_character)
         self.ui.add_btn.clicked.connect(self.add_to_favorites)
         self.ui.lib_list_box.currentIndexChanged.connect(self.change_lib_list)
-        self.ui.shikimori_btn.clicked.connect(self.open_rate)
         self.ui.related_list.doubleClicked.connect(lambda: self.setup(self.get_current_manga()))
         self.db: Database = Database()
         self.catalog = None
         self.manga = None
         self.related_mangas = []
+        self.related_characters = []
         self.chapters: list[Chapter] = []
         self.lock = Lock()
-        self.reader = None
-        self.rate = FormRate()
+        self.reader_window = None
+        self.rate_window = FormRate()
+        self.character_window = None
 
     def resizeEvent(self, a0):
         self.ui.image.clear()
@@ -72,10 +76,16 @@ class FormInfo(QWidget):
                 self.ui.add_btn.setIcon(QIcon(favorite_icon_path))
             Thread(target=self.get_chapters, daemon=True).start()
             Thread(target=self.get_relations, daemon=True).start()
+            Thread(target=self.get_characters, daemon=True).start()
 
     def open_rate(self):
-        self.rate.setup(self.manga)
-        self.rate.show()
+        self.rate_window.setup(self.manga)
+        self.rate_window.show()
+
+    def open_character(self):
+        character = self.catalog.get_character(self.related_characters[self.ui.characters_list.currentIndex().row()])
+        self.character_window = FormCharacter(character, self.manga.catalog_id)
+        self.character_window.show()
 
     def set_score(self, score: float):
         stars = [self.ui.star_1, self.ui.star_2, self.ui.star_3, self.ui.star_4, self.ui.star_5]
@@ -138,9 +148,22 @@ class FormInfo(QWidget):
             item = QListWidgetItem(manga.get_name())
             self.ui.related_list.addItem(item)
 
+    def get_characters(self):
+        self.ui.characters_list.clear()
+        self.related_characters = self.catalog.get_characters(self.manga)
+        self.ui.characters_frame.setVisible(bool(self.related_characters))
+        for character in self.related_characters:
+            item = QListWidgetItem(character.get_name())
+            # match character.role:
+            #     case 'Main':
+            #         item.setBackground(QColor("GREEN"))
+            #     case 'Supporting':
+            #        item.setBackground(QColor("ORANGE"))
+            self.ui.characters_list.addItem(item)
+
     def open_reader(self):
-        self.reader = Reader()
-        self.reader.setup(self.manga, self.chapters, self.ui.items_list.currentIndex().row() + 1)
+        self.reader_window = Reader()
+        self.reader_window.setup(self.manga, self.chapters, self.ui.items_list.currentIndex().row() + 1)
 
     def get_preview(self) -> QPixmap:
         path = f'Desu/images/{self.catalog.catalog_name}/{self.manga.id}'
