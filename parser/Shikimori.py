@@ -1,4 +1,3 @@
-from PySide6.QtWidgets import QApplication
 from requests_oauthlib import OAuth2Session
 
 from const.shikimori_items import ORDERS, KINDS
@@ -245,7 +244,7 @@ class Auth:
             print(e)
 
     def request(self, method, url, params=None, json=None, ignore_authorize=False):
-        if (not self.is_authorized and not ignore_authorize) or QApplication.arguments()[-1] == '-debug':
+        if not self.is_authorized and not ignore_authorize:
             print(f"SHIKIMORI REQUEST IGNORED")
             return
         try:
