@@ -1,6 +1,6 @@
 from threading import Thread, Lock
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QIcon, QPixmap, QColor
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 
@@ -48,7 +48,7 @@ class FormInfo(QWidget):
         if not self.catalog:
             return
         pixmap = self.get_preview()
-        pixmap = pixmap.scaled(self.ui.image.size(), Qt.AspectRatioMode.KeepAspectRatio,
+        pixmap = pixmap.scaled(QSize(512, 320), Qt.AspectRatioMode.KeepAspectRatio,
                                Qt.TransformationMode.SmoothTransformation)
         self.ui.image.setPixmap(pixmap)
 
@@ -68,12 +68,12 @@ class FormInfo(QWidget):
             self.ui.russian_label.setText(self.manga.russian)
             self.ui.score_frame.setVisible(bool(self.manga.score))
             self.set_score(self.manga.score)
-            self.resizeEvent(None)
             if self.db.check_manga_library(self.manga):
                 self.ui.lib_list_box.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
                 self.ui.add_btn.setIcon(QIcon(favorite1_icon_path))
             else:
                 self.ui.add_btn.setIcon(QIcon(favorite_icon_path))
+            self.resizeEvent(None)
             Thread(target=self.get_chapters, daemon=True).start()
             Thread(target=self.get_relations, daemon=True).start()
             Thread(target=self.get_characters, daemon=True).start()
