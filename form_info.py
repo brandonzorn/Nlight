@@ -154,11 +154,6 @@ class FormInfo(QWidget):
         self.ui.characters_frame.setVisible(bool(self.related_characters))
         for character in self.related_characters:
             item = QListWidgetItem(character.get_name())
-            # match character.role:
-            #     case 'Main':
-            #         item.setBackground(QColor("GREEN"))
-            #     case 'Supporting':
-            #        item.setBackground(QColor("ORANGE"))
             self.ui.characters_list.addItem(item)
 
     def open_reader(self):
