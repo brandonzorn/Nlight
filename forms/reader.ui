@@ -182,6 +182,9 @@ QPushButton:checked {
         <layout class="QHBoxLayout" name="page_actions_btn">
          <item>
           <widget class="QPushButton" name="prev_page_btn">
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -200,6 +203,9 @@ QPushButton:checked {
          </item>
          <item>
           <widget class="QPushButton" name="next_page_btn">
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -215,6 +221,9 @@ QPushButton:checked {
         <layout class="QHBoxLayout" name="chapter_actions_label">
          <item>
           <widget class="QPushButton" name="prev_chapter_btn">
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -233,6 +242,9 @@ QPushButton:checked {
          </item>
          <item>
           <widget class="QPushButton" name="next_chapter_btn">
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -249,6 +261,9 @@ QPushButton:checked {
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
            </property>
            <property name="text">
             <string/>
