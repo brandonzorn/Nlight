@@ -25,7 +25,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(400, 503)
+        Form.resize(451, 432)
         Form.setStyleSheet(u"QFrame {\n"
 "	border-radius: 10px;\n"
 "	background-color: rgb(45, 45, 45);\n"
@@ -114,8 +114,6 @@ class Ui_Form(object):
         self.manga_layout.setObjectName(u"manga_layout")
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.verticalLayout_8 = QVBoxLayout()
-        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.image_frame = QFrame(Form)
         self.image_frame.setObjectName(u"image_frame")
         sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
@@ -129,24 +127,55 @@ class Ui_Form(object):
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.image = QLabel(self.image_frame)
         self.image.setObjectName(u"image")
-        sizePolicy2 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Preferred)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.image.sizePolicy().hasHeightForWidth())
         self.image.setSizePolicy(sizePolicy2)
+        self.image.setScaledContents(True)
 
         self.verticalLayout_6.addWidget(self.image)
 
 
-        self.verticalLayout_8.addWidget(self.image_frame)
+        self.horizontalLayout_4.addWidget(self.image_frame)
+
+        self.title_frame = QFrame(Form)
+        self.title_frame.setObjectName(u"title_frame")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.title_frame.sizePolicy().hasHeightForWidth())
+        self.title_frame.setSizePolicy(sizePolicy3)
+        self.title_frame.setFrameShape(QFrame.StyledPanel)
+        self.title_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_5 = QVBoxLayout(self.title_frame)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.name_label = QLabel(self.title_frame)
+        self.name_label.setObjectName(u"name_label")
+        self.name_label.setWordWrap(True)
+
+        self.verticalLayout_5.addWidget(self.name_label)
+
+        self.russian_label = QLabel(self.title_frame)
+        self.russian_label.setObjectName(u"russian_label")
+        self.russian_label.setWordWrap(True)
+
+        self.verticalLayout_5.addWidget(self.russian_label)
+
+        self.verticalSpacer = QSpacerItem(20, 76, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_5.addItem(self.verticalSpacer)
+
+
+        self.horizontalLayout_4.addWidget(self.title_frame)
+
+
+        self.manga_layout.addLayout(self.horizontalLayout_4)
 
         self.score_frame = QFrame(Form)
         self.score_frame.setObjectName(u"score_frame")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.score_frame.sizePolicy().hasHeightForWidth())
-        self.score_frame.setSizePolicy(sizePolicy3)
+        sizePolicy2.setHeightForWidth(self.score_frame.sizePolicy().hasHeightForWidth())
+        self.score_frame.setSizePolicy(sizePolicy2)
         self.score_frame.setStyleSheet(u"QPushButton {\n"
 "	padding: 5px 1px;\n"
 "    background: transparent;\n"
@@ -204,43 +233,7 @@ class Ui_Form(object):
         self.verticalLayout_4.addLayout(self.stars_layout)
 
 
-        self.verticalLayout_8.addWidget(self.score_frame)
-
-
-        self.horizontalLayout_4.addLayout(self.verticalLayout_8)
-
-        self.title_frame = QFrame(Form)
-        self.title_frame.setObjectName(u"title_frame")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.title_frame.sizePolicy().hasHeightForWidth())
-        self.title_frame.setSizePolicy(sizePolicy4)
-        self.title_frame.setFrameShape(QFrame.StyledPanel)
-        self.title_frame.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_5 = QVBoxLayout(self.title_frame)
-        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.name_label = QLabel(self.title_frame)
-        self.name_label.setObjectName(u"name_label")
-        self.name_label.setWordWrap(True)
-
-        self.verticalLayout_5.addWidget(self.name_label)
-
-        self.russian_label = QLabel(self.title_frame)
-        self.russian_label.setObjectName(u"russian_label")
-        self.russian_label.setWordWrap(True)
-
-        self.verticalLayout_5.addWidget(self.russian_label)
-
-        self.verticalSpacer = QSpacerItem(20, 76, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.verticalLayout_5.addItem(self.verticalSpacer)
-
-
-        self.horizontalLayout_4.addWidget(self.title_frame)
-
-
-        self.manga_layout.addLayout(self.horizontalLayout_4)
+        self.manga_layout.addWidget(self.score_frame)
 
         self.related_layout = QHBoxLayout()
         self.related_layout.setObjectName(u"related_layout")
@@ -257,11 +250,11 @@ class Ui_Form(object):
 
         self.related_list = QListWidget(self.related_frame)
         self.related_list.setObjectName(u"related_list")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy5.setHorizontalStretch(0)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.related_list.sizePolicy().hasHeightForWidth())
-        self.related_list.setSizePolicy(sizePolicy5)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.related_list.sizePolicy().hasHeightForWidth())
+        self.related_list.setSizePolicy(sizePolicy4)
         self.related_list.setWordWrap(True)
 
         self.verticalLayout_2.addWidget(self.related_list)
@@ -271,11 +264,8 @@ class Ui_Form(object):
 
         self.characters_frame = QFrame(Form)
         self.characters_frame.setObjectName(u"characters_frame")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy6.setHorizontalStretch(0)
-        sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(self.characters_frame.sizePolicy().hasHeightForWidth())
-        self.characters_frame.setSizePolicy(sizePolicy6)
+        sizePolicy2.setHeightForWidth(self.characters_frame.sizePolicy().hasHeightForWidth())
+        self.characters_frame.setSizePolicy(sizePolicy2)
         self.characters_frame.setMinimumSize(QSize(0, 0))
         self.characters_frame.setFrameShape(QFrame.StyledPanel)
         self.characters_frame.setFrameShadow(QFrame.Raised)
@@ -345,14 +335,14 @@ class Ui_Form(object):
         self.add_btn.setText("")
         self.shikimori_btn.setText("")
         self.image.setText("")
+        self.name_label.setText(QCoreApplication.translate("Form", u"name", None))
+        self.russian_label.setText(QCoreApplication.translate("Form", u"russian", None))
         self.score_label.setText(QCoreApplication.translate("Form", u"\u0420\u0435\u0439\u0442\u0438\u043d\u0433", None))
         self.star_1.setText("")
         self.star_2.setText("")
         self.star_3.setText("")
         self.star_4.setText("")
         self.star_5.setText("")
-        self.name_label.setText(QCoreApplication.translate("Form", u"name", None))
-        self.russian_label.setText(QCoreApplication.translate("Form", u"russian", None))
         self.label.setText(QCoreApplication.translate("Form", u"\u0421\u0432\u044f\u0437\u0430\u043d\u043d\u043e\u0435", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u0436\u0438", None))
     # retranslateUi
