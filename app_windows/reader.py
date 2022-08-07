@@ -8,7 +8,7 @@ from catalog_manager import get_catalog
 from const.icons import app_icon_path
 from database import Database
 from file_manager import check_file_exists, get_file, save_file
-from forms.desu_readerUI import Ui_MainWindow
+from forms.reader import Ui_MainWindow
 from items import Manga, Chapter
 
 
@@ -20,12 +20,12 @@ class Reader(QMainWindow):
 
         self.setWindowIcon(QIcon(app_icon_path))
 
-        self.ui.prev_page.clicked.connect(lambda: self.press_key('prev_page'))
-        self.ui.next_page.clicked.connect(lambda: self.press_key('next_page'))
-        self.ui.prev_chp.clicked.connect(lambda: self.press_key('prev_ch'))
-        self.ui.next_chp.clicked.connect(lambda: self.press_key('next_ch'))
+        self.ui.prev_page_btn.clicked.connect(lambda: self.press_key('prev_page'))
+        self.ui.next_page_btn.clicked.connect(lambda: self.press_key('next_page'))
+        self.ui.prev_chapter_btn.clicked.connect(lambda: self.press_key('prev_ch'))
+        self.ui.next_chapter_btn.clicked.connect(lambda: self.press_key('next_ch'))
 
-        self.ui.btn_fullscreen.clicked.connect(self.change_fullscreen)
+        self.ui.fullscreen_btn.clicked.connect(self.change_fullscreen)
         self.ui.text_size_slider.valueChanged.connect(self.update_text_size)
 
         self.db: Database = Database()
@@ -42,10 +42,10 @@ class Reader(QMainWindow):
         self.showMaximized()
         self.manga = manga
         if self.manga.kind == 'ranobe':
-            self.ui.slider_frame.show()
+            self.ui.size_frame.show()
         else:
             self.ui.img.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-            self.ui.slider_frame.hide()
+            self.ui.size_frame.hide()
         self.chapters = chapters
         self.cur_chapter = cur_chapter
         self.max_chapters = len(chapters)
@@ -54,6 +54,7 @@ class Reader(QMainWindow):
         self.change_chapter()
 
     def resizeEvent(self, a0):
+        self.ui.img.clear()
         self.attach_image()
 
     def keyPressEvent(self, event):
@@ -100,7 +101,7 @@ class Reader(QMainWindow):
                 else:
                     self.cur_page -= 1
         self.attach_image()
-        self.ui.lbl_page.setText(f'Страница {self.cur_page} / {self.max_page}')
+        self.ui.page_label.setText(f'Страница {self.cur_page} / {self.max_page}')
 
     def change_chapter(self, page=None):
         match page:
@@ -118,7 +119,7 @@ class Reader(QMainWindow):
         self.cur_page = 1
         self.get_images()
         self.change_page()
-        self.ui.lbl_chp.setText(self.chapters[self.cur_chapter - 1].get_name())
+        self.ui.chapter_label.setText(self.chapters[self.cur_chapter - 1].get_name())
 
     def change_fullscreen(self):
         if self.isFullScreen():
