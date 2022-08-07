@@ -20,6 +20,7 @@ class App(MainWindow):
 
 if __name__ == '__main__':
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
+    QApplication.setStyle('Fusion')
     app = QApplication(sys.argv)
     app_paths = ['Desu']
     init_app_paths(app_paths)
