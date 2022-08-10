@@ -131,6 +131,14 @@
                <property name="text">
                 <string/>
                </property>
+               <property name="icon">
+                <iconset resource="../desu_res.qrc">
+                 <normaloff>:/icons/images/star.png</normaloff>
+                 <normalon>:/icons/images/star_filled.png</normalon>:/icons/images/star.png</iconset>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
               </widget>
              </item>
             </layout>

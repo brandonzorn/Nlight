@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QWidget, QListWidgetItem
 
 from app_windows.reader import Reader
 from catalog_manager import get_catalog
-from const.icons import favorite_icon_path, favorite1_icon_path, favorite2_icon_path
+from const.icons import star_icon_path, star_half_icon_path, star_filled_icon_path
 from const.lists import lib_lists_en, lib_lists_ru
 from database import Database
 from file_manager import check_file_exists, get_file, save_file
@@ -70,9 +70,9 @@ class FormInfo(QWidget):
             self.set_score(self.manga.score)
             if self.db.check_manga_library(self.manga):
                 self.ui.lib_list_box.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
-                self.ui.add_btn.setIcon(QIcon(favorite1_icon_path))
+                self.ui.add_btn.setChecked(True)
             else:
-                self.ui.add_btn.setIcon(QIcon(favorite_icon_path))
+                self.ui.add_btn.setChecked(False)
             self.resizeEvent(None)
             Thread(target=self.get_chapters, daemon=True).start()
             Thread(target=self.get_relations, daemon=True).start()
@@ -89,7 +89,7 @@ class FormInfo(QWidget):
 
     def set_score(self, score: float):
         stars = [self.ui.star_1, self.ui.star_2, self.ui.star_3, self.ui.star_4, self.ui.star_5]
-        [i.setIcon(QIcon(favorite_icon_path)) for i in stars]
+        [i.setIcon(QIcon(star_icon_path)) for i in stars]
         self.ui.score_label.setText(f'Рейтинг: {score}')
         if score > 10:
             return
@@ -97,21 +97,19 @@ class FormInfo(QWidget):
         for i in range(int(score)):
             a = stars[i]
             a.show()
-            a.setIcon(QIcon(favorite1_icon_path))
+            a.setIcon(QIcon(star_filled_icon_path))
         if score - int(score) >= 0.75:
-            stars[int(score)].setIcon(QIcon(favorite1_icon_path))
+            stars[int(score)].setIcon(QIcon(star_filled_icon_path))
             stars[int(score)].show()
         elif 0.25 <= score - int(score) <= 0.5:
-            stars[int(score)].setIcon(QIcon(favorite2_icon_path))
+            stars[int(score)].setIcon(QIcon(star_half_icon_path))
             stars[int(score)].show()
 
     def add_to_favorites(self):
         if self.db.check_manga_library(self.manga):
             self.db.rem_manga_library(self.manga)
-            self.ui.add_btn.setIcon(QIcon(favorite_icon_path))
         else:
             self.db.add_manga_library(self.manga)
-            self.ui.add_btn.setIcon(QIcon(favorite1_icon_path))
             self.change_lib_list()
 
     def change_lib_list(self):

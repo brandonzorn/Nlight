@@ -75,7 +75,7 @@ class FormShikimori(QWidget):
 
     @with_lock_thread(lock)
     def update_list(self):
-        ui_to_lock = [self.ui.search_frame, self.ui.lists_frame]
+        ui_to_lock = [self]
         with lock_ui(ui_to_lock):
             self.ui.items_list.clear()
             self.mangas = self.catalog.search_manga(self.request_params)
