@@ -80,6 +80,11 @@ class Ui_Form(object):
 
         self.add_btn = QPushButton(self.lib_frame)
         self.add_btn.setObjectName(u"add_btn")
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/images/star.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(u":/icons/images/star_filled.png", QSize(), QIcon.Normal, QIcon.On)
+        self.add_btn.setIcon(icon1)
+        self.add_btn.setCheckable(True)
 
         self.horizontalLayout.addWidget(self.add_btn)
 
@@ -95,9 +100,9 @@ class Ui_Form(object):
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.shikimori_btn = QPushButton(self.shikimori_frame)
         self.shikimori_btn.setObjectName(u"shikimori_btn")
-        icon1 = QIcon()
-        icon1.addFile(u":/icons/images/shikimori.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.shikimori_btn.setIcon(icon1)
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/images/shikimori.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.shikimori_btn.setIcon(icon2)
 
         self.horizontalLayout_2.addWidget(self.shikimori_btn)
 

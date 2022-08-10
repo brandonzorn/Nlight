@@ -78,6 +78,7 @@ class Ui_MainWindow(object):
         self.btn_mylist.setStyleSheet(u"")
         icon = QIcon()
         icon.addFile(u":/icons/images/library.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u":/icons/images/library_filled.png", QSize(), QIcon.Normal, QIcon.On)
         self.btn_mylist.setIcon(icon)
         self.btn_mylist.setCheckable(True)
         self.btn_mylist.setAutoRepeat(False)
@@ -93,6 +94,7 @@ class Ui_MainWindow(object):
         self.btn_main.setStyleSheet(u"")
         icon1 = QIcon()
         icon1.addFile(u":/icons/images/main.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(u":/icons/images/main_filled.png", QSize(), QIcon.Normal, QIcon.On)
         self.btn_main.setIcon(icon1)
         self.btn_main.setCheckable(True)
         self.btn_main.setChecked(True)
@@ -164,6 +166,7 @@ class Ui_MainWindow(object):
 "	background-color: rgb(0, 133, 52);\n"
 "	color: rgb(255, 255, 255);\n"
 "}\n"
+"\n"
 "\n"
 "QPushButton {\n"
 "	padding: 5px 1px;\n"

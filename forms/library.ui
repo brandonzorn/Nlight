@@ -54,13 +54,16 @@
    </item>
    <item>
     <widget class="QFrame" name="lists_frame">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QVBoxLayout" name="check_button_layout">
       <item>
        <widget class="QPushButton" name="planned_btn">
         <property name="text">

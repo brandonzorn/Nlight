@@ -49,56 +49,57 @@ class Ui_Form(object):
 
         self.lists_frame = QFrame(Form)
         self.lists_frame.setObjectName(u"lists_frame")
+        self.lists_frame.setStyleSheet(u"")
         self.lists_frame.setFrameShape(QFrame.StyledPanel)
         self.lists_frame.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_2 = QVBoxLayout(self.lists_frame)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.check_button_layout = QVBoxLayout(self.lists_frame)
+        self.check_button_layout.setObjectName(u"check_button_layout")
         self.planned_btn = QPushButton(self.lists_frame)
         self.planned_btn.setObjectName(u"planned_btn")
         self.planned_btn.setCheckable(True)
         self.planned_btn.setChecked(True)
         self.planned_btn.setAutoExclusive(True)
 
-        self.verticalLayout_2.addWidget(self.planned_btn)
+        self.check_button_layout.addWidget(self.planned_btn)
 
         self.completed_btn = QPushButton(self.lists_frame)
         self.completed_btn.setObjectName(u"completed_btn")
         self.completed_btn.setCheckable(True)
         self.completed_btn.setAutoExclusive(True)
 
-        self.verticalLayout_2.addWidget(self.completed_btn)
+        self.check_button_layout.addWidget(self.completed_btn)
 
         self.reading_btn = QPushButton(self.lists_frame)
         self.reading_btn.setObjectName(u"reading_btn")
         self.reading_btn.setCheckable(True)
         self.reading_btn.setAutoExclusive(True)
 
-        self.verticalLayout_2.addWidget(self.reading_btn)
+        self.check_button_layout.addWidget(self.reading_btn)
 
         self.re_reading_btn = QPushButton(self.lists_frame)
         self.re_reading_btn.setObjectName(u"re_reading_btn")
         self.re_reading_btn.setCheckable(True)
         self.re_reading_btn.setAutoExclusive(True)
 
-        self.verticalLayout_2.addWidget(self.re_reading_btn)
+        self.check_button_layout.addWidget(self.re_reading_btn)
 
         self.on_hold_btn = QPushButton(self.lists_frame)
         self.on_hold_btn.setObjectName(u"on_hold_btn")
         self.on_hold_btn.setCheckable(True)
         self.on_hold_btn.setAutoExclusive(True)
 
-        self.verticalLayout_2.addWidget(self.on_hold_btn)
+        self.check_button_layout.addWidget(self.on_hold_btn)
 
         self.dropped_btn = QPushButton(self.lists_frame)
         self.dropped_btn.setObjectName(u"dropped_btn")
         self.dropped_btn.setCheckable(True)
         self.dropped_btn.setAutoExclusive(True)
 
-        self.verticalLayout_2.addWidget(self.dropped_btn)
+        self.check_button_layout.addWidget(self.dropped_btn)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.verticalLayout_2.addItem(self.verticalSpacer)
+        self.check_button_layout.addItem(self.verticalSpacer)
 
 
         self.horizontalLayout.addWidget(self.lists_frame)
