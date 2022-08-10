@@ -32,9 +32,29 @@ class Ui_Dialog(object):
 "\n"
 "QDialog{\n"
 "	background-color: rgb(32, 32, 32);\n"
+"}")
+        self.verticalLayout_2 = QVBoxLayout(Dialog)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.frame = QFrame(Dialog)
+        self.frame.setObjectName(u"frame")
+        self.frame.setStyleSheet(u"QAbstractButton {\n"
+"	background-color: rgb(45, 45, 45);\n"
+"	color: rgb(255, 255, 255);\n"
 "}\n"
-"\n"
-"QPushButton {\n"
+"")
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout = QVBoxLayout(self.frame)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.gridLayout = QGridLayout()
+        self.gridLayout.setObjectName(u"gridLayout")
+
+        self.verticalLayout.addLayout(self.gridLayout)
+
+        self.buttonBox = QDialogButtonBox(self.frame)
+        self.buttonBox.setObjectName(u"buttonBox")
+        self.buttonBox.setStyleSheet(u"QPushButton {\n"
 "	padding: 5px 1px;\n"
 "	border-radius: 10px;\n"
 "	font-weight: bold;\n"
@@ -49,23 +69,6 @@ class Ui_Dialog(object):
 "QPushButton:checked {\n"
 "	border-left: 3px solid white;\n"
 "}")
-        self.verticalLayout_2 = QVBoxLayout(Dialog)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.frame = QFrame(Dialog)
-        self.frame.setObjectName(u"frame")
-        self.frame.setStyleSheet(u"color: rgb(255, 255, 255);")
-        self.frame.setFrameShape(QFrame.StyledPanel)
-        self.frame.setFrameShadow(QFrame.Raised)
-        self.verticalLayout = QVBoxLayout(self.frame)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.gridLayout = QGridLayout()
-        self.gridLayout.setObjectName(u"gridLayout")
-
-        self.verticalLayout.addLayout(self.gridLayout)
-
-        self.buttonBox = QDialogButtonBox(self.frame)
-        self.buttonBox.setObjectName(u"buttonBox")
         self.buttonBox.setOrientation(Qt.Horizontal)
         self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
 
