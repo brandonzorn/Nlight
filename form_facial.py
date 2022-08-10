@@ -81,7 +81,7 @@ class FormFacial(QWidget):
 
     @with_lock_thread(lock)
     def get_content(self):
-        ui_to_lock = [self.ui.filters, self.ui.search_frame]
+        ui_to_lock = [self]
         with lock_ui(ui_to_lock):
             self.ui.items_list.clear()
             self.mangas = self.catalog.search_manga(self.request_params)
@@ -117,7 +117,7 @@ class FormFacial(QWidget):
         self.request_params.search = self.ui.title_line.text()
         self.Form_genres.accept_genres()
         self.request_params.genres = self.Form_genres.selected_genres
-        self.get_content()
+        Thread(target=self.get_content).start()
 
     def reset_filter(self):
         self.request_params.clear()
@@ -127,4 +127,4 @@ class FormFacial(QWidget):
             self.request_params.order = [self.order_items[i] for i in self.order_items if i.isChecked()][0]
         [i.setChecked(False) for i in self.kind_items]
         self.ui.title_line.clear()
-        self.get_content()
+        Thread(target=self.get_content).start()

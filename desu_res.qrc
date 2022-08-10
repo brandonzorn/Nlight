@@ -4,10 +4,10 @@
     <file>images/delete.png</file>
     <file>images/double_next.png</file>
     <file>images/double_prev.png</file>
-    <file>images/favorite.png</file>
-    <file>images/favorite1.png</file>
-    <file>images/favorite2.png</file>
     <file>images/fullscreen.png</file>
+    <file>images/star.png</file>
+    <file>images/star_filled.png</file>
+    <file>images/star_half.png</file>
     <file>images/history.png</file>
     <file>images/library.png</file>
     <file>images/library_filled.png</file>
