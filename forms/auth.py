@@ -30,6 +30,11 @@ class Ui_Dialog(object):
 "	color: rgb(255, 255, 255);\n"
 "}\n"
 "\n"
+"QLineEdit {\n"
+"	color: rgb(255, 255, 255);\n"
+"	background-color: rgb(32, 32, 32);\n"
+"}\n"
+"\n"
 "QDialog{\n"
 "	background-color: rgb(32, 32, 32);\n"
 "}\n"
@@ -72,6 +77,7 @@ class Ui_Dialog(object):
 
         self.one_frame = QFrame(Dialog)
         self.one_frame.setObjectName(u"one_frame")
+        self.one_frame.setStyleSheet(u"")
         self.one_frame.setFrameShape(QFrame.StyledPanel)
         self.one_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout = QVBoxLayout(self.one_frame)
