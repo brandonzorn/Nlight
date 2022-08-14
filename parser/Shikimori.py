@@ -18,19 +18,20 @@ class ShikimoriBase(Parser):
         self.is_primary = True
 
     def setup_manga(self, data: dict) -> Manga:
-        return Manga(data.get('id'), data.get('name'), data.get('russian'), data.get('kind'),
-                     data.get('description'), float(data.get('score')), self.catalog_id)
+        return Manga(data.get('id'), self.catalog_id, data.get('name'), data.get('russian'))
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f'{self.url_api}/mangas/{manga.id}'
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
             data = html.json()
+            manga.description = data.get('description')
+            manga.kind = data.get('kind')
+            manga.score = float(data.get('score'))
             if data.get('volumes'):
                 manga.volumes = int(data.get('volumes'))
             if data.get('chapters'):
                 manga.chapters = int(data.get('chapters'))
-            manga.description = data.get('description')
         return manga
 
     def get_character(self, character: Character) -> Character:

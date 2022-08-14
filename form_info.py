@@ -6,7 +6,6 @@ from PySide6.QtWidgets import QWidget, QListWidgetItem
 
 from app_windows.reader import Reader
 from catalog_manager import get_catalog
-from const.icons import star_icon_path, star_half_icon_path, star_filled_icon_path
 from const.lists import lib_lists_en, lib_lists_ru
 from database import Database
 from file_manager import check_file_exists, get_file, save_file
@@ -62,12 +61,8 @@ class FormInfo(QWidget):
             self.catalog = get_catalog(self.manga.catalog_id)()
             self.ui.lib_frame.setVisible(not self.catalog.is_primary)
             self.ui.shikimori_frame.setVisible(self.catalog.is_primary)
-            self.db.add_manga(self.manga)
-            self.ui.description_text.setText(self.manga.description)
-            self.ui.name_label.setText(self.manga.name)
-            self.ui.russian_label.setText(self.manga.russian)
             self.ui.score_frame.setVisible(bool(self.manga.score))
-            self.set_score(self.manga.score)
+            self.set_info()
             if self.db.check_manga_library(self.manga):
                 self.ui.lib_list_box.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
                 self.ui.add_btn.setChecked(True)
@@ -87,23 +82,14 @@ class FormInfo(QWidget):
         self.character_window = FormCharacter(character, self.manga.catalog_id)
         self.character_window.show()
 
-    def set_score(self, score: float):
-        stars = [self.ui.star_1, self.ui.star_2, self.ui.star_3, self.ui.star_4, self.ui.star_5]
-        [i.setIcon(QIcon(star_icon_path)) for i in stars]
-        self.ui.score_label.setText(f'Рейтинг: {score}')
-        if score > 10:
-            return
-        score = round(score) / 2
-        for i in range(int(score)):
-            a = stars[i]
-            a.show()
-            a.setIcon(QIcon(star_filled_icon_path))
-        if score - int(score) >= 0.75:
-            stars[int(score)].setIcon(QIcon(star_filled_icon_path))
-            stars[int(score)].show()
-        elif 0.25 <= score - int(score) <= 0.5:
-            stars[int(score)].setIcon(QIcon(star_half_icon_path))
-            stars[int(score)].show()
+    def set_info(self):
+        self.ui.name_label.setText(self.manga.name)
+        self.ui.russian_label.setText(self.manga.russian)
+        self.ui.description_text.setText(self.manga.description)
+        self.ui.volumes_label.setText(f"Томов: {self.manga.volumes}")
+        self.ui.chapters_label.setText(f"Глав: {self.manga.chapters}")
+        self.ui.catalog_name_label.setText(self.catalog.catalog_name)
+        self.ui.catalog_score_label.setText(f"{self.manga.score}")
 
     def add_to_favorites(self):
         if self.db.check_manga_library(self.manga):

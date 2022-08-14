@@ -20,6 +20,7 @@ class Rulate(Parser):
             soup = BeautifulSoup(html.text, "html.parser")
             hranobe = soup.find('div', style="margin: 20px 0 0 0")
             description = hranobe.findAll('p')[0].text
+            manga.kind = 'ranobe'
             manga.description = description
         return manga
 
@@ -33,7 +34,7 @@ class Rulate(Parser):
             for i in hranobe:
                 name = i.text.strip()
                 ranobe_id = i.unwrap()['data-tooltip-content'].split('#book-tooltip-')[-1]
-                ranobe.append(Manga(ranobe_id, name, '', 'ranobe', '', 0, self.catalog_id))
+                ranobe.append(Manga(ranobe_id, self.catalog_id, name, ''))
         return ranobe
 
     def get_chapters(self, manga: Manga):
