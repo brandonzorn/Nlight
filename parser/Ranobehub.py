@@ -16,7 +16,10 @@ class Ranobehub(Parser):
         url = f'{self.url_api}/ranobe/{manga.id}'
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
-            manga.description = html.json().get('data').get('description')
+            data = html.json().get('data')
+            manga.kind = "ranobe"
+            manga.score = data.get('rating')
+            manga.description = data.get('description')
         return manga
 
     def search_manga(self, params: RequestForm):
@@ -29,8 +32,7 @@ class Ranobehub(Parser):
                 manga_id = i.get('id')
                 name = i.get('names').get('eng')
                 russian = i.get('names').get('rus')
-                score = i.get('rating')
-                manga.append(Manga(manga_id, name, russian, "ranobe", '', score, self.catalog_id))
+                manga.append(Manga(manga_id, self.catalog_id, name, russian))
         return manga
 
     def get_preview(self, manga: Manga):

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>451</width>
-    <height>432</height>
+    <width>639</width>
+    <height>603</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
 	color: rgb(255, 255, 255);
 }</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_5">
+  <layout class="QHBoxLayout" name="horizontalLayout_4">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -187,7 +187,7 @@
      <item>
       <layout class="QVBoxLayout" name="manga_layout">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <layout class="QHBoxLayout" name="info_layout">
          <item>
           <widget class="QFrame" name="image_frame">
            <property name="sizePolicy">
@@ -258,6 +258,13 @@
              </widget>
             </item>
             <item>
+             <widget class="QLabel" name="status_label">
+              <property name="text">
+               <string>status</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <spacer name="verticalSpacer">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
@@ -270,21 +277,47 @@
               </property>
              </spacer>
             </item>
+            <item>
+             <widget class="QLabel" name="volumes_label">
+              <property name="text">
+               <string>volumes</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="chapters_label">
+              <property name="text">
+               <string>chapters</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
          </item>
         </layout>
        </item>
        <item>
+        <layout class="QHBoxLayout" name="score_layout"/>
+       </item>
+       <item>
         <widget class="QFrame" name="score_frame">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
          </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QFrame" name="catalog_score_frame">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
 	padding: 5px 1px;
     background: transparent;
 	border-top-left-radius: 10px;
@@ -292,87 +325,72 @@
 	font-weight: bold;
 	icon-size: 24px;
 }</string>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_4">
-          <item>
-           <widget class="QLabel" name="score_label">
-            <property name="text">
-             <string>Рейтинг</string>
             </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <widget class="QLabel" name="catalog_name_label">
+               <property name="text">
+                <string>catalog_name</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="catalog_score_label">
+               <property name="text">
+                <string>score</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="stars_layout">
-            <item>
-             <widget class="QPushButton" name="star_1">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="star_2">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="star_3">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="star_4">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="star_5">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
+           <widget class="QFrame" name="shikimori_score_frame">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	padding: 5px 1px;
+    background: transparent;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	font-weight: bold;
+	icon-size: 24px;
+}</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_8">
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>Shikimori</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="shikimori_score_label">
+               <property name="text">
+                <string>score</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
           </item>
          </layout>
         </widget>

@@ -11,12 +11,14 @@ class MangaBaseItem:
 
 
 class Manga(MangaBaseItem):
-    def __init__(self, item_id, name, russian, kind, description, score, catalog_id):
+    def __init__(self, item_id, catalog_id, name, russian):
         super().__init__(item_id, name, russian)
         self.catalog_id = catalog_id
-        self.kind = kind
-        self.description = description
-        self.score = score
+        self.kind = None
+        self.description = None
+        self.score = 0
+        self.status = None
+        self.genres: list[Genre] = []
         self.volumes = 0
         self.chapters = 0
 

@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QMainWindow
 
+from database import Database
 from form_facial import FormFacial
 from form_history import FormHistory
 from form_info import FormInfo
@@ -13,6 +14,7 @@ class MainWindow(QMainWindow):
         super().__init__(parent, *args, **kwargs)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.db: Database = Database()
 
         self.ui.btn_main.clicked.connect(self.clicked_main)
         self.ui.btn_mylist.clicked.connect(self.clicked_library)
@@ -48,6 +50,7 @@ class MainWindow(QMainWindow):
         self.ui.side_menu_widget.hide()
         self.ui.top_item.addWidget(self.Form_info)
         self.ui.top_item.setCurrentWidget(self.Form_info)
+        self.db.add_manga(manga)
         self.Form_info.setup(manga)
 
     def clicked_shikimori(self):
