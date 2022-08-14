@@ -14,6 +14,18 @@ class Desu(Parser):
         self.catalog_id = 0
 
     def get_manga(self, manga: Manga):
+        url = f'{self.url_api}/{manga.id}'
+        html = get_html(url, self.headers)
+        if html and html.status_code == 200 and len(html.json()):
+            data = html.json().get('response')
+            manga.genres = [Genre(i.get('id'), i.get('text'), i.get('russian'), i.get('kind'))
+                            for i in data.get("genres")]
+            manga.score = data.get("score")
+            manga.kind = data.get("kind")
+            manga.description = data.get("description")
+            manga.shikimori_id = data.get("shikimori_id")
+            manga.volumes = data.get("chapters").get("last").get("vol")
+            manga.chapters = data.get("chapters").get("last").get("ch")
         return manga
 
     def search_manga(self, params: RequestForm):
@@ -24,8 +36,7 @@ class Desu(Parser):
         manga = []
         if html and html.status_code == 200 and len(html.json()):
             for i in html.json().get('response'):
-                manga.append(Manga(i.get('id'), i.get('name'), i.get('russian'), i.get('kind'), i.get('description'),
-                                   i.get('score'), self.catalog_id))
+                manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian')))
         return manga
 
     def get_chapters(self, manga: Manga):

@@ -16,7 +16,8 @@ class Database:
         self.__con = sqlite3.connect(f'{os.getcwd()}/Desu/data.db', check_same_thread=False)
         self.__cur = self.__con.cursor()
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS manga (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
-        name STRING, russian STRING, kind STRING, description TEXT, score FLOAT, catalog_id INTEGER);""")
+        catalog_id INTEGER, name STRING, russian STRING, kind STRING, description TEXT, score FLOAT, status STRING,
+        volumes INTEGER, chapters INTEGER);""")
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS chapters (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
         vol STRING, ch STRING, title STRING, language STRING, manga_id INTEGER, index_n INTEGER);""")
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS images (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
@@ -29,22 +30,33 @@ class Database:
 
     @with_lock_thread(lock)
     def add_manga(self, manga: Manga):
-        self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?);",
-                           (manga.id, manga.name, manga.russian, manga.kind, manga.description, manga.score,
-                            manga.catalog_id))
+        self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+                           (manga.id, manga.catalog_id, manga.name, manga.russian, manga.kind,
+                            manga.description, manga.score, manga.status, manga.volumes, manga.chapters))
         self.__con.commit()
 
     @with_lock_thread(lock)
     def add_mangas(self, mangas: list[Manga]):
         for manga in mangas:
-            self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?);",
-                               (manga.id, manga.name, manga.russian, manga.kind, manga.description, manga.score,
-                                manga.catalog_id))
+            self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+                               (manga.id, manga.catalog_id, manga.name, manga.russian, manga.kind,
+                                manga.description, manga.score, manga.status, manga.volumes, manga.chapters))
         self.__con.commit()
 
     def get_manga(self, manga_id):
         x = self.__cur.execute(f"SELECT * FROM manga WHERE id = '{manga_id}'").fetchone()
-        return Manga(x[0], x[1], x[2], x[3], x[4], x[5], x[6])
+        item_id = x[0]
+        catalog_id = x[1]
+        name = x[2]
+        russian = x[3]
+        manga = Manga(item_id, catalog_id, name, russian)
+        manga.kind = x[4]
+        manga.description = x[5]
+        manga.score = x[6]
+        manga.status = x[7]
+        manga.volumes = x[8]
+        manga.chapters = x[9]
+        return manga
 
     @with_lock_thread(lock)
     def add_chapters(self, chapters: list[Chapter], manga: Manga):
@@ -83,11 +95,10 @@ class Database:
     @with_lock_thread(lock)
     def get_manga_library(self, lib_list) -> list[Manga]:
         a = self.__cur.execute(f"SELECT id FROM library WHERE list = '{lib_list}';").fetchall()
-        manga = []
+        mangas = []
         for i in a[::-1]:
-            x = self.__cur.execute(f"SELECT * FROM manga WHERE id = '{i[0]}'").fetchall()[0]
-            manga.append(Manga(x[0], x[1], x[2], x[3], x[4], x[5], x[6]))
-        return manga
+            mangas.append(self.get_manga(i[0]))
+        return mangas
 
     @with_lock_thread(lock)
     def check_manga_library(self, manga: Manga):

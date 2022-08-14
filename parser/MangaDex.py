@@ -16,11 +16,22 @@ class MangaDex(Parser):
         self.fields = 2
 
     def get_manga(self, manga: Manga) -> Manga:
+        url = f'{self.url_api}/manga/{manga.id}'
+        html = get_html(url, self.headers)
+        if html and html.status_code == 200 and html.json():
+            data = html.json().get("data")
+            manga.kind = data.get('type')
+            description = data.get('attributes').get('description')
+            if description:
+                if description.get('ru'):
+                    description = description.get('ru')
+                else:
+                    description = description.get('en')
+            manga.description = description
         return manga
 
     def setup_manga(self, data: dict):
         manga_id = data.get('id')
-        kind = data.get('type')
         name = data.get('attributes').get('title').get('en')
         russian = None
         if data.get('attributes').get('altTitles'):
@@ -29,15 +40,7 @@ class MangaDex(Parser):
                     russian = j.get('ru')
                 if not name and 'en' in j.keys():
                     name = j.get('en')
-        description = data.get('attributes').get('description')
-        if description:
-            if description.get('ru'):
-                description = description.get('ru')
-            else:
-                description = description.get('en')
-        else:
-            description = None
-        return Manga(manga_id, name, russian, kind, description, 0, self.catalog_id)
+        return Manga(manga_id, self.catalog_id, name, russian)
 
     def search_manga(self, params: RequestForm):
         url = f'{self.url_api}/manga'
