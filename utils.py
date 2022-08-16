@@ -14,9 +14,10 @@ def get_html(url: str, headers: dict = DEFAULT_HEADERS, params=None):
     try:
         return requests.get(url, headers=headers, params=params)
     except Exception as e:
-        print(e)
-        print(url)
-        print(params)
+        print(f"{e=}")
+        print(f"{url=}")
+        print(f"{params=}")
+        print(f"{headers=}")
 
 
 def get_lib_list_en(lib_list_ru):
