@@ -67,7 +67,6 @@ class Ui_Dialog(object):
 "}")
         self.verticalLayout = QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.chapters_frame = QFrame(Dialog)
         self.chapters_frame.setObjectName(u"chapters_frame")
         self.chapters_frame.setFrameShape(QFrame.StyledPanel)

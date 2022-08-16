@@ -13,7 +13,7 @@ from form_character import FormCharacter
 from form_rate import FormRate
 from forms.info import Ui_Form
 from items import Manga, Chapter
-from utils import get_language_icon, with_lock_thread, lock_ui
+from utils import get_language_icon, with_lock_thread, lock_ui, get_status
 
 
 class FormInfo(QWidget):
@@ -61,7 +61,6 @@ class FormInfo(QWidget):
             self.catalog = get_catalog(self.manga.catalog_id)()
             self.ui.lib_frame.setVisible(not self.catalog.is_primary)
             self.ui.shikimori_frame.setVisible(self.catalog.is_primary)
-            self.ui.score_frame.setVisible(bool(self.manga.score))
             self.set_info()
             if self.db.check_manga_library(self.manga):
                 self.ui.lib_list_box.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
@@ -85,19 +84,14 @@ class FormInfo(QWidget):
     def set_info(self):
         self.ui.name_label.setText(self.manga.name)
         self.ui.russian_label.setText(self.manga.russian)
-
         self.ui.status_label.setVisible(bool(self.manga.status))
-        self.ui.status_label.setText(f"Статус: {self.manga.status}")
-
+        self.ui.status_label.setText(f"Статус: {get_status(self.manga.status)}")
         self.ui.volumes_label.setVisible(bool(self.manga.volumes))
         self.ui.chapters_label.setVisible(bool(self.manga.chapters))
-
         self.ui.volumes_label.setText(f"Томов: {self.manga.volumes}")
         self.ui.chapters_label.setText(f"Глав: {self.manga.chapters}")
-
-        self.ui.catalog_name_label.setText(self.catalog.catalog_name)
-        self.ui.catalog_score_label.setText(f"{self.manga.score}")
-
+        self.ui.catalog_score_label.setVisible(bool(self.manga.score))
+        self.ui.catalog_score_label.setText(f"Рейтинг: {self.manga.score}")
         self.ui.description_text.setText(self.manga.description)
 
     def add_to_favorites(self):

@@ -20,6 +20,11 @@
 	color: rgb(255, 255, 255);
 }
 
+QScrollBar {
+	color: rgb(255, 255, 255);
+	background-color: rgb(32, 32, 32);
+}
+
 QDialog{
 	background-color: rgb(32, 32, 32);
 }
@@ -136,6 +141,16 @@ QPushButton:checked {
    </item>
    <item>
     <widget class="QFrame" name="description_frame">
+     <property name="styleSheet">
+      <string notr="true">QComboBox {
+	padding: 5px 1px;
+	border-radius: 10px;
+	font-weight: bold;
+	background-color: rgb(0, 133, 52);
+	color: rgb(255, 255, 255);
+}
+</string>
+     </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
@@ -145,8 +160,19 @@ QPushButton:checked {
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
        <widget class="QTextEdit" name="description">
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
+        </property>
+        <property name="html">
+         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
