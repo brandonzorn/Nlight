@@ -28,6 +28,13 @@ class MangaDex(Parser):
                 else:
                     description = description.get('en')
             manga.description = description
+            volumes = data.get("attributes").get('lastVolume')
+            chapters = data.get("attributes").get('lastChapter')
+            if volumes:
+                manga.volumes = volumes
+            if chapters:
+                manga.chapters = chapters
+            manga.status = data.get("attributes").get('status')
         return manga
 
     def setup_manga(self, data: dict):

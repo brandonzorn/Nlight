@@ -28,6 +28,7 @@ class ShikimoriBase(Parser):
             manga.description = data.get('description')
             manga.kind = data.get('kind')
             manga.score = float(data.get('score'))
+            manga.status = data.get('status')
             if data.get('volumes'):
                 manga.volumes = int(data.get('volumes'))
             if data.get('chapters'):
