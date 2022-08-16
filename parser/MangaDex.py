@@ -46,12 +46,12 @@ class MangaDex(Parser):
         url = f'{self.url_api}/manga'
         params = {'limit': 50, 'title': params.search, 'offset': params.offset,
                   'includedTags[]': [i.id for i in params.genres]}
-        manga = []
+        mangas = []
         html = get_html(url, self.headers, params)
         if html and html.status_code == 200 and html.json():
             for i in html.json().get('data'):
-                manga.append(self.setup_manga(i))
-        return manga
+                mangas.append(self.setup_manga(i))
+        return mangas
 
     def get_chapters(self, manga: Manga):
         url = f'{self.url_api}/chapter'

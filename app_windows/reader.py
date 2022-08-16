@@ -136,6 +136,7 @@ class Reader(QMainWindow):
             text = self.get_text(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
             self.ui.img.setText(text)
         else:
+            self.ui.scrollAreaWidgetContents.resize(0, 0)
             pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
             self.ui.img.setPixmap(pixmap)
 

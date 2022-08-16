@@ -11,6 +11,6 @@ URL_RANOBEHUB_API = 'https://ranobehub.org/api'
 
 
 DEFAULT_HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:99.0) Gecko/20100101 Firefox/99.0'}
-DESU_HEADERS = {'User-Agent': 'Desu'}
+DESU_HEADERS = {'User-Agent': 'DesuMangaReader'}
 SHIKIMORI_HEADERS = {'User-Agent': 'DesuMangaReader'}
 MANGA_DEX_HEADERS = {'User-Agent': 'Shikimori'}
