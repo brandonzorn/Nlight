@@ -62,6 +62,17 @@ class Kind(MangaBaseItem):
         super().__init__(item_id, name, russian)
 
 
+class Status:
+    def __init__(self, name, russian):
+        self.name = name
+        self.russian = russian
+
+    def get_name(self) -> str:
+        if self.russian:
+            return self.russian
+        return self.name
+
+
 class Character(MangaBaseItem):
     def __init__(self, item_id, name, russian, description, role):
         super().__init__(item_id, name, russian)

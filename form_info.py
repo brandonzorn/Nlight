@@ -85,11 +85,20 @@ class FormInfo(QWidget):
     def set_info(self):
         self.ui.name_label.setText(self.manga.name)
         self.ui.russian_label.setText(self.manga.russian)
-        self.ui.description_text.setText(self.manga.description)
+
+        self.ui.status_label.setVisible(bool(self.manga.status))
+        self.ui.status_label.setText(f"Статус: {self.manga.status}")
+
+        self.ui.volumes_label.setVisible(bool(self.manga.volumes))
+        self.ui.chapters_label.setVisible(bool(self.manga.chapters))
+
         self.ui.volumes_label.setText(f"Томов: {self.manga.volumes}")
         self.ui.chapters_label.setText(f"Глав: {self.manga.chapters}")
+
         self.ui.catalog_name_label.setText(self.catalog.catalog_name)
         self.ui.catalog_score_label.setText(f"{self.manga.score}")
+
+        self.ui.description_text.setText(self.manga.description)
 
     def add_to_favorites(self):
         if self.db.check_manga_library(self.manga):

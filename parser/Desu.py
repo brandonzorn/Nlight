@@ -26,6 +26,7 @@ class Desu(Parser):
             manga.shikimori_id = data.get("shikimori_id")
             manga.volumes = data.get("chapters").get("last").get("vol")
             manga.chapters = data.get("chapters").get("last").get("ch")
+            manga.status = data.get("status")
         return manga
 
     def search_manga(self, params: RequestForm):
