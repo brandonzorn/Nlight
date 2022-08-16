@@ -25,7 +25,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(639, 603)
+        Form.resize(605, 504)
         Form.setStyleSheet(u"QFrame {\n"
 "	border-radius: 10px;\n"
 "	background-color: rgb(45, 45, 45);\n"
@@ -172,6 +172,11 @@ class Ui_Form(object):
 
         self.verticalLayout_5.addWidget(self.status_label)
 
+        self.catalog_score_label = QLabel(self.title_frame)
+        self.catalog_score_label.setObjectName(u"catalog_score_label")
+
+        self.verticalLayout_5.addWidget(self.catalog_score_label)
+
         self.verticalSpacer = QSpacerItem(20, 76, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_5.addItem(self.verticalSpacer)
@@ -191,78 +196,6 @@ class Ui_Form(object):
 
 
         self.manga_layout.addLayout(self.info_layout)
-
-        self.score_layout = QHBoxLayout()
-        self.score_layout.setObjectName(u"score_layout")
-
-        self.manga_layout.addLayout(self.score_layout)
-
-        self.score_frame = QFrame(Form)
-        self.score_frame.setObjectName(u"score_frame")
-        self.score_frame.setFrameShape(QFrame.StyledPanel)
-        self.score_frame.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_5 = QHBoxLayout(self.score_frame)
-        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.catalog_score_frame = QFrame(self.score_frame)
-        self.catalog_score_frame.setObjectName(u"catalog_score_frame")
-        sizePolicy2.setHeightForWidth(self.catalog_score_frame.sizePolicy().hasHeightForWidth())
-        self.catalog_score_frame.setSizePolicy(sizePolicy2)
-        self.catalog_score_frame.setStyleSheet(u"QPushButton {\n"
-"	padding: 5px 1px;\n"
-"    background: transparent;\n"
-"	border-top-left-radius: 10px;\n"
-"	border-bottom-left-radius: 10px;\n"
-"	font-weight: bold;\n"
-"	icon-size: 24px;\n"
-"}")
-        self.catalog_score_frame.setFrameShape(QFrame.StyledPanel)
-        self.catalog_score_frame.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_4 = QVBoxLayout(self.catalog_score_frame)
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.catalog_name_label = QLabel(self.catalog_score_frame)
-        self.catalog_name_label.setObjectName(u"catalog_name_label")
-
-        self.verticalLayout_4.addWidget(self.catalog_name_label)
-
-        self.catalog_score_label = QLabel(self.catalog_score_frame)
-        self.catalog_score_label.setObjectName(u"catalog_score_label")
-
-        self.verticalLayout_4.addWidget(self.catalog_score_label)
-
-
-        self.horizontalLayout_5.addWidget(self.catalog_score_frame)
-
-        self.shikimori_score_frame = QFrame(self.score_frame)
-        self.shikimori_score_frame.setObjectName(u"shikimori_score_frame")
-        sizePolicy2.setHeightForWidth(self.shikimori_score_frame.sizePolicy().hasHeightForWidth())
-        self.shikimori_score_frame.setSizePolicy(sizePolicy2)
-        self.shikimori_score_frame.setStyleSheet(u"QPushButton {\n"
-"	padding: 5px 1px;\n"
-"    background: transparent;\n"
-"	border-top-left-radius: 10px;\n"
-"	border-bottom-left-radius: 10px;\n"
-"	font-weight: bold;\n"
-"	icon-size: 24px;\n"
-"}")
-        self.shikimori_score_frame.setFrameShape(QFrame.StyledPanel)
-        self.shikimori_score_frame.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_8 = QVBoxLayout(self.shikimori_score_frame)
-        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.label_3 = QLabel(self.shikimori_score_frame)
-        self.label_3.setObjectName(u"label_3")
-
-        self.verticalLayout_8.addWidget(self.label_3)
-
-        self.shikimori_score_label = QLabel(self.shikimori_score_frame)
-        self.shikimori_score_label.setObjectName(u"shikimori_score_label")
-
-        self.verticalLayout_8.addWidget(self.shikimori_score_label)
-
-
-        self.horizontalLayout_5.addWidget(self.shikimori_score_frame)
-
-
-        self.manga_layout.addWidget(self.score_frame)
 
         self.related_layout = QHBoxLayout()
         self.related_layout.setObjectName(u"related_layout")
@@ -367,12 +300,9 @@ class Ui_Form(object):
         self.name_label.setText(QCoreApplication.translate("Form", u"name", None))
         self.russian_label.setText(QCoreApplication.translate("Form", u"russian", None))
         self.status_label.setText(QCoreApplication.translate("Form", u"status", None))
+        self.catalog_score_label.setText(QCoreApplication.translate("Form", u"score", None))
         self.volumes_label.setText(QCoreApplication.translate("Form", u"volumes", None))
         self.chapters_label.setText(QCoreApplication.translate("Form", u"chapters", None))
-        self.catalog_name_label.setText(QCoreApplication.translate("Form", u"catalog_name", None))
-        self.catalog_score_label.setText(QCoreApplication.translate("Form", u"score", None))
-        self.label_3.setText(QCoreApplication.translate("Form", u"Shikimori", None))
-        self.shikimori_score_label.setText(QCoreApplication.translate("Form", u"score", None))
         self.label.setText(QCoreApplication.translate("Form", u"\u0421\u0432\u044f\u0437\u0430\u043d\u043d\u043e\u0435", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u0436\u0438", None))
     # retranslateUi

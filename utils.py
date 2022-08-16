@@ -36,6 +36,16 @@ def get_language_icon(language: str):
             return ''
 
 
+def get_status(status: str) -> str:
+    match status:
+        case 'ongoing':
+            return "Выходит"
+        case 'completed' | 'released':
+            return "Издано"
+        case _:
+            return status
+
+
 def get_url(manga: Manga, chapter: Chapter = None, image: Image = None):
     url = f'https://desu.me/manga/api/'
     url += f'/{manga.id}'
