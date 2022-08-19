@@ -20,10 +20,10 @@ class Reader(QMainWindow):
 
         self.setWindowIcon(QIcon(app_icon_path))
 
-        self.ui.prev_page_btn.clicked.connect(lambda: self.press_key('prev_page'))
-        self.ui.next_page_btn.clicked.connect(lambda: self.press_key('next_page'))
-        self.ui.prev_chapter_btn.clicked.connect(lambda: self.press_key('prev_ch'))
-        self.ui.next_chapter_btn.clicked.connect(lambda: self.press_key('next_ch'))
+        self.ui.prev_page_btn.clicked.connect(lambda: self.change_page('-'))
+        self.ui.next_page_btn.clicked.connect(lambda: self.change_page('+'))
+        self.ui.prev_chapter_btn.clicked.connect(lambda: self.change_chapter('-'))
+        self.ui.next_chapter_btn.clicked.connect(lambda: self.change_chapter('+'))
 
         self.ui.fullscreen_btn.clicked.connect(self.change_fullscreen)
         self.ui.text_size_slider.valueChanged.connect(self.update_text_size)
@@ -53,37 +53,9 @@ class Reader(QMainWindow):
         self.setWindowTitle(self.manga.name)
         self.change_chapter()
 
-    def resizeEvent(self, a0):
+    def resizeEvent(self, event):
         self.ui.img.clear()
         self.attach_image()
-
-    def keyPressEvent(self, event):
-        match event.key():
-            case Qt.Key.Key_Escape:
-                self.hide()
-            case Qt.Key.Key_Left:
-                self.press_key('prev_page')
-            case Qt.Key.Key_Right:
-                self.press_key('next_page')
-            case Qt.Key.Key_Down:
-                self.press_key('prev_ch')
-            case Qt.Key.Key_Up:
-                self.press_key('next_ch')
-            case Qt.Key.Key_F11:
-                self.change_fullscreen()
-        event.accept()
-
-    def press_key(self, e):
-        if self.isActiveWindow():
-            match e:
-                case 'next_page':
-                    self.change_page('+')
-                case 'prev_page':
-                    self.change_page('-')
-                case 'next_ch':
-                    self.change_chapter('+')
-                case 'prev_ch':
-                    self.change_chapter('-')
 
     def change_page(self, page=None):
         self.db.add_history_note(self.manga, self.chapters[self.cur_chapter - 1], False)
@@ -91,13 +63,13 @@ class Reader(QMainWindow):
             case '+':
                 if self.cur_page == self.max_page:
                     self.db.add_history_note(self.manga, self.chapters[self.cur_chapter - 1], True)
-                    self.press_key('next_ch')
+                    self.change_chapter('+')
                 else:
                     self.cur_page += 1
             case '-':
                 if self.cur_page == 1:
                     self.db.del_history_note(self.chapters[self.cur_chapter - 1])
-                    self.press_key('prev_ch')
+                    self.change_chapter('-')
                 else:
                     self.cur_page -= 1
         self.attach_image()
