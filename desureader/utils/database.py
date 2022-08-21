@@ -15,7 +15,8 @@ class Database:
     def __init__(self):
         self.__con = sqlite3.connect(f'{os.getcwd()}/Desu/data.db', check_same_thread=False)
         self.__cur = self.__con.cursor()
-        self.__cur.execute("""CREATE TABLE IF NOT EXISTS manga (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
+        self.__cur.execute("""CREATE TABLE IF NOT EXISTS manga (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL
+        UNIQUE ON CONFLICT REPLACE,
         catalog_id INTEGER, name STRING, russian STRING, kind STRING, description TEXT, score FLOAT, status STRING,
         volumes INTEGER, chapters INTEGER);""")
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS chapters (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,

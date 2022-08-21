@@ -16,6 +16,9 @@ class FormHistory(BaseWidget):
         self.ui.delete_btn.clicked.connect(self.delete_note)
         self.notes: list[HistoryNote] = []
 
+    def setup(self):
+        self.get_content()
+
     def get_current_manga(self):
         return self.notes[self.ui.items_list.currentIndex().row()].manga
 

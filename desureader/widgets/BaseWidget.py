@@ -6,9 +6,6 @@ class BaseWidget(QWidget):
         super().__init__()
 
     def setup(self):
-        self.get_content()
-
-    def get_content(self):
         pass
 
     def get_current_manga(self):
