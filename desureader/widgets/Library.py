@@ -21,6 +21,9 @@ class FormLibrary(BaseWidget):
         self.ui.dropped_btn.clicked.connect(lambda: self.change_list('dropped'))
         self.ui.re_reading_btn.clicked.connect(lambda: self.change_list('rewatching'))
 
+    def setup(self):
+        self.get_content()
+
     def get_current_manga(self) -> Manga:
         return self.mangas[self.ui.items_list.currentIndex().row()]
 
