@@ -29,7 +29,7 @@ class FormFacial(BaseWidget):
         self.ui.catalogs_btn.clicked.connect(lambda: self.ui.catalogs_frame.setVisible(
             not self.ui.catalogs_list.isVisible()))
         self.ui.catalogs_list.doubleClicked.connect(
-            lambda: self.update_catalog(self.ui.catalogs_list.currentIndex().row()))
+            lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row()))
         self.mangas = []
         self.order_items = {}
         self.kind_items = {}
@@ -39,19 +39,11 @@ class FormFacial(BaseWidget):
         self.request_params = RequestForm()
         self.db: Database = Database()
         self.catalog = None
+        self.change_catalog(0)
 
-    def setup(self):
-        self.update_catalog(0)
-
-    def get_current_manga(self):
-        return self.catalog.get_manga(self.mangas[self.ui.items_list.currentIndex().row()])
-
-    def update_catalog(self, index: int):
-        catalog = USER_CATALOGS[index]
-        self.catalog = catalog()
-        self.Form_genres.catalog = catalog()
-        self.setup_filters()
-        self.apply_filter()
+    def setup_catalogs(self):
+        self.ui.catalogs_list.clear()
+        self.ui.catalogs_list.addItems([i.catalog_name for i in USER_CATALOGS])
 
     def setup_filters(self):
         self.clear_filters_items()
@@ -70,17 +62,15 @@ class FormFacial(BaseWidget):
             self.ui.kinds_grid.addWidget(item)
             self.kind_items.update({item: i})
 
-    def clear_filters_items(self):
-        self.kind_items.clear()
-        self.order_items.clear()
-        for i in reversed(range(self.ui.orders_grid.count())):
-            self.ui.orders_grid.itemAt(i).widget().deleteLater()
-        for i in reversed(range(self.ui.kinds_grid.count())):
-            self.ui.kinds_grid.itemAt(i).widget().deleteLater()
+    def get_current_manga(self):
+        return self.catalog.get_manga(self.mangas[self.ui.items_list.currentIndex().row()])
 
-    def setup_catalogs(self):
-        self.ui.catalogs_list.clear()
-        self.ui.catalogs_list.addItems([i.catalog_name for i in USER_CATALOGS])
+    def change_catalog(self, index: int):
+        catalog = USER_CATALOGS[index]
+        self.catalog = catalog()
+        self.Form_genres.catalog = catalog()
+        self.setup_filters()
+        self.apply_filter()
 
     @with_lock_thread(lock)
     def get_content(self):
@@ -132,3 +122,11 @@ class FormFacial(BaseWidget):
         [i.setChecked(False) for i in self.kind_items]
         self.ui.title_line.clear()
         Thread(target=self.get_content).start()
+
+    def clear_filters_items(self):
+        self.kind_items.clear()
+        self.order_items.clear()
+        for i in reversed(range(self.ui.orders_grid.count())):
+            self.ui.orders_grid.itemAt(i).widget().deleteLater()
+        for i in reversed(range(self.ui.kinds_grid.count())):
+            self.ui.kinds_grid.itemAt(i).widget().deleteLater()

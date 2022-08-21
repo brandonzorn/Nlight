@@ -58,6 +58,7 @@ class FormInfo(QWidget):
         ui_to_lock = [self.ui.back_btn]
         with lock_ui(ui_to_lock):
             self.manga = manga
+            self.db.add_manga(self.manga)
             self.catalog = get_catalog(self.manga.catalog_id)()
             self.ui.lib_frame.setVisible(not self.catalog.is_primary)
             self.ui.shikimori_frame.setVisible(self.catalog.is_primary)
