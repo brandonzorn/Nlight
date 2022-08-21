@@ -53,6 +53,12 @@ class Reader(QMainWindow):
         self.setWindowTitle(self.manga.name)
         self.change_chapter()
 
+    def keyPressEvent(self, event):
+        match event.key():
+            case Qt.Key.Key_Escape:
+                self.close()
+        event.accept()
+
     def resizeEvent(self, event):
         self.ui.img.clear()
         self.attach_image()
