@@ -1,11 +1,12 @@
-from PySide6.QtWidgets import QWidget, QListWidgetItem
+from PySide6.QtWidgets import QListWidgetItem
 
 from data.ui.library import Ui_Form
 from desureader.parsers.LocalLib import LocalLib
+from desureader.widgets.BaseWidget import BaseWidget
 from items import Manga, RequestForm
 
 
-class FormLibrary(QWidget):
+class FormLibrary(BaseWidget):
     def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
@@ -25,9 +26,9 @@ class FormLibrary(QWidget):
 
     def change_list(self, list_name: str):
         self.request_params.mylist = list_name
-        self.update_list()
+        self.get_content()
 
-    def update_list(self):
+    def get_content(self):
         self.ui.items_list.clear()
         self.mangas = self.catalog.search_manga(self.request_params)
         for manga in self.mangas:
