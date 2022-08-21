@@ -67,24 +67,24 @@ class Ui_MainWindow(object):
         self.verticalLayout_3 = QVBoxLayout(self.frame)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.btn_mylist = QPushButton(self.frame)
-        self.btn_mylist.setObjectName(u"btn_mylist")
+        self.btn_library = QPushButton(self.frame)
+        self.btn_library.setObjectName(u"btn_library")
         sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_mylist.sizePolicy().hasHeightForWidth())
-        self.btn_mylist.setSizePolicy(sizePolicy)
-        self.btn_mylist.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_mylist.setStyleSheet(u"")
+        sizePolicy.setHeightForWidth(self.btn_library.sizePolicy().hasHeightForWidth())
+        self.btn_library.setSizePolicy(sizePolicy)
+        self.btn_library.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_library.setStyleSheet(u"")
         icon = QIcon()
         icon.addFile(u":/icons/data/icons/library.png", QSize(), QIcon.Normal, QIcon.Off)
         icon.addFile(u":/icons/data/icons/library_filled.png", QSize(), QIcon.Normal, QIcon.On)
-        self.btn_mylist.setIcon(icon)
-        self.btn_mylist.setCheckable(True)
-        self.btn_mylist.setAutoRepeat(False)
-        self.btn_mylist.setAutoExclusive(True)
+        self.btn_library.setIcon(icon)
+        self.btn_library.setCheckable(True)
+        self.btn_library.setAutoRepeat(False)
+        self.btn_library.setAutoExclusive(True)
 
-        self.verticalLayout_3.addWidget(self.btn_mylist)
+        self.verticalLayout_3.addWidget(self.btn_library)
 
         self.btn_main = QPushButton(self.frame)
         self.btn_main.setObjectName(u"btn_main")
@@ -151,6 +151,13 @@ class Ui_MainWindow(object):
         self.verticalSpacer = QSpacerItem(17, 17, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_3.addItem(self.verticalSpacer)
+
+        self.btn_settings = QPushButton(self.frame)
+        self.btn_settings.setObjectName(u"btn_settings")
+        self.btn_settings.setCheckable(True)
+        self.btn_settings.setAutoExclusive(True)
+
+        self.verticalLayout_3.addWidget(self.btn_settings)
 
 
         self.verticalLayout.addWidget(self.frame)
@@ -246,12 +253,13 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.btn_mylist.setText(QCoreApplication.translate("MainWindow", u"\u0411\u0438\u0431\u043b\u0438\u043e\u0442\u0435\u043a\u0430", None))
+        self.btn_library.setText(QCoreApplication.translate("MainWindow", u"\u0411\u0438\u0431\u043b\u0438\u043e\u0442\u0435\u043a\u0430", None))
         self.btn_main.setText(QCoreApplication.translate("MainWindow", u"\u0413\u043b\u0430\u0432\u043d\u0430\u044f", None))
         self.btn_shikimori.setText(QCoreApplication.translate("MainWindow", u"\u0428\u0438\u043a\u0438\u043c\u043e\u0440\u0438", None))
         self.btn_history.setText(QCoreApplication.translate("MainWindow", u"\u0418\u0441\u0442\u043e\u0440\u0438\u044f", None))
         self.btn_downloads.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0438", None))
         self.btn_ongoings.setText(QCoreApplication.translate("MainWindow", u"\u041a\u0430\u043b\u0435\u043d\u0434\u0430\u0440\u044c \n"
 "\u043e\u043d\u0433\u043e\u0438\u043d\u0433\u043e\u0432", None))
+        self.btn_settings.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438", None))
     # retranslateUi
 

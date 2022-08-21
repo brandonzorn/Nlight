@@ -84,7 +84,7 @@ QPushButton:checked {
            <number>0</number>
           </property>
           <item>
-           <widget class="QPushButton" name="btn_mylist">
+           <widget class="QPushButton" name="btn_library">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
               <horstretch>0</horstretch>
@@ -258,6 +258,19 @@ QPushButton:checked {
              </size>
             </property>
            </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_settings">
+            <property name="text">
+             <string>Настройки</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="autoExclusive">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

@@ -1,15 +1,17 @@
 from threading import Thread, Lock
 
-from PySide6.QtWidgets import QWidget, QListWidgetItem
+from PySide6.QtWidgets import QListWidgetItem
 
 from data.ui.shikimori import Ui_Form
 from desureader.dialogs.auth import FormAuth
 from desureader.parsers.Shikimori import ShikimoriLib
+from desureader.utils.database import Database
 from desureader.utils.utils import lock_ui, with_lock_thread
+from desureader.widgets.BaseWidget import BaseWidget
 from items import Manga, RequestForm, User
 
 
-class FormShikimori(QWidget):
+class FormShikimori(BaseWidget):
 
     lock = Lock()
 
@@ -21,6 +23,7 @@ class FormShikimori(QWidget):
         self.catalog = ShikimoriLib()
         self.Form_auth = FormAuth(self.catalog)
         self.request_params = RequestForm()
+        self.db: Database = Database()
         self.ui.planned_btn.clicked.connect(lambda: self.change_list('planned'))
         self.ui.reading_btn.clicked.connect(lambda: self.change_list('watching'))
         self.ui.on_hold_btn.clicked.connect(lambda: self.change_list('on_hold'))
@@ -62,23 +65,24 @@ class FormShikimori(QWidget):
                     return
                 self.request_params.page -= 1
         self.ui.page_label.setText(f"Страница {self.request_params.page}")
-        Thread(target=self.update_list, daemon=True).start()
+        Thread(target=self.get_content, daemon=True).start()
 
     def search(self):
         self.request_params.page = 1
         self.request_params.search = self.ui.title_line.text()
-        self.update_list()
+        self.get_content()
 
     def change_list(self, list_name: str):
         self.request_params.mylist = list_name
-        self.update_list()
+        self.get_content()
 
     @with_lock_thread(lock)
-    def update_list(self):
+    def get_content(self):
         ui_to_lock = [self]
         with lock_ui(ui_to_lock):
             self.ui.items_list.clear()
             self.mangas = self.catalog.search_manga(self.request_params)
+            self.db.add_mangas(self.mangas)
             self.ui.page_label.setText(f'Страница {self.request_params.page}')
             for manga in self.mangas:
                 item = QListWidgetItem(manga.get_name())

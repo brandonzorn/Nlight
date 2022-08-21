@@ -1,17 +1,18 @@
 from threading import Thread, Lock
 
 from PySide6.QtGui import QColor
-from PySide6.QtWidgets import QWidget, QListWidgetItem, QCheckBox, QRadioButton
+from PySide6.QtWidgets import QListWidgetItem, QCheckBox, QRadioButton
 
 from data.ui.facial import Ui_Form
 from desureader.dialogs.genres import FormGenres
 from desureader.utils.catalog_manager import USER_CATALOGS
 from desureader.utils.database import Database
 from desureader.utils.utils import lock_ui, with_lock_thread
+from desureader.widgets.BaseWidget import BaseWidget
 from items import RequestForm
 
 
-class FormFacial(QWidget):
+class FormFacial(BaseWidget):
 
     lock = Lock()
 
@@ -38,6 +39,8 @@ class FormFacial(QWidget):
         self.request_params = RequestForm()
         self.db: Database = Database()
         self.catalog = None
+
+    def setup(self):
         self.update_catalog(0)
 
     def get_current_manga(self):
@@ -85,6 +88,7 @@ class FormFacial(QWidget):
         with lock_ui(ui_to_lock):
             self.ui.items_list.clear()
             self.mangas = self.catalog.search_manga(self.request_params)
+            self.db.add_mangas(self.mangas)
             for i in self.mangas:
                 item = QListWidgetItem(i.get_name())
                 if self.db.check_manga_library(i):
