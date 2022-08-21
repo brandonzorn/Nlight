@@ -1,23 +1,23 @@
 <RCC>
   <qresource prefix="icons">
-    <file>images/back.png</file>
-    <file>images/delete.png</file>
-    <file>images/double_next.png</file>
-    <file>images/double_prev.png</file>
-    <file>images/fullscreen.png</file>
-    <file>images/star.png</file>
-    <file>images/star_filled.png</file>
-    <file>images/star_half.png</file>
-    <file>images/history.png</file>
-    <file>images/library.png</file>
-    <file>images/library_filled.png</file>
-    <file>images/main.png</file>
-    <file>images/main_filled.png</file>
-    <file>images/next.png</file>
-    <file>images/prev.png</file>
-    <file>images/search.png</file>
-    <file>images/settings.png</file>
-    <file>images/settings_filled.png</file>
-    <file>images/shikimori.png</file>
+    <file>data/icons/back.png</file>
+    <file>data/icons/delete.png</file>
+    <file>data/icons/double_next.png</file>
+    <file>data/icons/double_prev.png</file>
+    <file>data/icons/fullscreen.png</file>
+    <file>data/icons/history.png</file>
+    <file>data/icons/library.png</file>
+    <file>data/icons/library_filled.png</file>
+    <file>data/icons/main.png</file>
+    <file>data/icons/main_filled.png</file>
+    <file>data/icons/next.png</file>
+    <file>data/icons/prev.png</file>
+    <file>data/icons/search.png</file>
+    <file>data/icons/settings.png</file>
+    <file>data/icons/settings_filled.png</file>
+    <file>data/icons/shikimori.png</file>
+    <file>data/icons/star.png</file>
+    <file>data/icons/star_filled.png</file>
+    <file>data/icons/star_half.png</file>
   </qresource>
 </RCC>

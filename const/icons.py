@@ -8,12 +8,8 @@ def get_resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-app_icon_path = get_resource_path("images/icon.png")
+app_icon_path = get_resource_path("data/icons/icon.png")
 
-star_icon_path = get_resource_path("images/star.png")
-star_half_icon_path = get_resource_path("images/star_half.png")
-star_filled_icon_path = get_resource_path("images/star_filled.png")
-
-gb_icon_path = get_resource_path("images/gb.svg")
-ru_icon_path = get_resource_path("images/ru.svg")
-jp_icon_path = get_resource_path("images/jp.svg")
+gb_icon_path = get_resource_path("data/icons/lang/gb.svg")
+ru_icon_path = get_resource_path("data/icons/lang/ru.svg")
+jp_icon_path = get_resource_path("data/icons/lang/jp.svg")
