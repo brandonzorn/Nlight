@@ -37,7 +37,6 @@ class FormInfo(QWidget):
         self.related_mangas = []
         self.related_characters = []
         self.chapters: list[Chapter] = []
-        self.lock = Lock()
         self.reader_window = None
         self.rate_window = FormRate()
         self.character_window = None

@@ -78,7 +78,6 @@ class FormFacial(BaseWidget):
         with lock_ui(ui_to_lock):
             self.ui.items_list.clear()
             self.mangas = self.catalog.search_manga(self.request_params)
-            self.db.add_mangas(self.mangas)
             for i in self.mangas:
                 item = QListWidgetItem(i.get_name())
                 if self.db.check_manga_library(i):
