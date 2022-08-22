@@ -82,7 +82,6 @@ class FormShikimori(BaseWidget):
         with lock_ui(ui_to_lock):
             self.ui.items_list.clear()
             self.mangas = self.catalog.search_manga(self.request_params)
-            self.db.add_mangas(self.mangas)
             self.ui.page_label.setText(f'Страница {self.request_params.page}')
             for manga in self.mangas:
                 item = QListWidgetItem(manga.get_name())
