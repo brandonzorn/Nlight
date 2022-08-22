@@ -1,12 +1,11 @@
 from threading import Thread
 
 from PySide6.QtCore import QSize
-from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QDialog
 
 from data.ui.character import Ui_Dialog
 from desureader.utils.catalog_manager import get_catalog
-from desureader.utils.file_manager import check_file_exists, save_file, get_file
+from desureader.utils.file_manager import get_character_preview
 
 
 class FormCharacter(QDialog):
@@ -24,11 +23,4 @@ class FormCharacter(QDialog):
         Thread(target=self.setup_image, daemon=True).start()
 
     def setup_image(self):
-        pixmap = self.get_preview()
-        self.ui.image.setPixmap(pixmap)
-
-    def get_preview(self) -> QPixmap:
-        path = f'Desu/images/{self.catalog.catalog_name}/characters/{self.character.id}'
-        if not check_file_exists(path, 'preview.jpg'):
-            save_file(path, 'preview.jpg', self.catalog.get_character_preview(self.character))
-        return QPixmap(get_file(path, 'preview.jpg'))
+        self.ui.image.setPixmap(get_character_preview(self.character, self.catalog))
