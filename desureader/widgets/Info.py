@@ -13,7 +13,7 @@ from desureader.utils.database import Database
 from desureader.utils.file_manager import check_file_exists, get_file, save_file
 from desureader.utils.utils import lock_ui, get_status, get_language_icon, with_lock_thread
 from desureader.windows.reader import Reader
-from items import Manga, Chapter
+from items import Manga, Chapter, Character
 
 
 class FormInfo(QWidget):
@@ -34,8 +34,8 @@ class FormInfo(QWidget):
         self.db: Database = Database()
         self.catalog = None
         self.manga = None
-        self.related_mangas = []
-        self.related_characters = []
+        self.related_mangas: list[Manga] = []
+        self.related_characters: list[Character] = []
         self.chapters: list[Chapter] = []
         self.reader_window = None
         self.rate_window = FormRate()
