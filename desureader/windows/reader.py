@@ -8,7 +8,7 @@ from const.icons import app_icon_path
 from data.ui.reader import Ui_MainWindow
 from desureader.utils.catalog_manager import get_catalog
 from desureader.utils.database import Database
-from desureader.utils.file_manager import check_file_exists, get_file, save_file
+from desureader.utils.file_manager import get_chapter_image, get_chapter_text
 from items import Manga, Chapter
 
 
@@ -111,7 +111,8 @@ class Reader(QMainWindow):
         if not self.images:
             return
         if self.manga.kind == 'ranobe':
-            text = self.get_text(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
+            text = get_chapter_text(self.manga, self.chapters[self.cur_chapter - 1],
+                                    self.images[self.cur_page - 1], self.catalog)
             self.ui.img.setText(text)
         else:
             self.ui.scrollAreaWidgetContents.resize(0, 0)
@@ -123,26 +124,8 @@ class Reader(QMainWindow):
         font.setPointSize(self.ui.text_size_slider.value())
         self.ui.img.setFont(font)
 
-    def get_image(self, chapter, image) -> QPixmap:
-        path = f'Desu/images/{self.catalog.catalog_name}/manga/{self.manga.id}/{chapter.id}'
-        file_name = f'{image.page}.jpg'
-        if not check_file_exists(path, file_name):
-            save_file(path, file_name, self.catalog.get_image(image))
-        return QPixmap(get_file(path, file_name))
-
-    def get_text(self, chapter, image):
-        path = f'Desu/images/{self.catalog.catalog_name}/manga/{self.manga.id}/{chapter.id}'
-        file_name = f'{image.page}.txt'
-        if not check_file_exists(path, file_name):
-            save_file(path, file_name, self.catalog.get_image(image))
-        with open(f'{path}/{file_name}', encoding="utf8") as f:
-            text = f.read()
-            text = text.replace('&nbsp;', u'\xa0')
-            text = text.replace('&mdash;', '—')
-            return text
-
     def get_pixmap(self, chapter, image):
-        pixmap = self.get_image(chapter, image)
+        pixmap = get_chapter_image(self.manga, chapter, image, self.catalog)
         if pixmap.isNull():
             return QPixmap()
         if 0.5 < pixmap.width() / pixmap.height() < 2:
@@ -167,7 +150,4 @@ class Reader(QMainWindow):
         for image in images:
             if form.isHidden() or chapter.id != self.chapters[self.cur_chapter - 1].id or self.manga.kind == 'ranobe':
                 break
-            path = f'Desu/images/{self.catalog.catalog_name}/manga/{self.manga.id}/{chapter.id}'
-            file_name = f'{image.page}.jpg'
-            if not check_file_exists(path, file_name):
-                save_file(path, file_name, self.catalog.get_image(image))
+            get_chapter_image(self.manga, chapter, image, self.catalog)

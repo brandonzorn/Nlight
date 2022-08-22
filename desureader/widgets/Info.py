@@ -1,7 +1,7 @@
 from threading import Thread, Lock
 
 from PySide6.QtCore import Qt, QSize
-from PySide6.QtGui import QIcon, QPixmap, QColor
+from PySide6.QtGui import QIcon, QColor
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 
 from const.lists import lib_lists_en, lib_lists_ru
@@ -10,7 +10,7 @@ from desureader.dialogs.character import FormCharacter
 from desureader.dialogs.rate import FormRate
 from desureader.utils.catalog_manager import get_catalog
 from desureader.utils.database import Database
-from desureader.utils.file_manager import check_file_exists, get_file, save_file
+from desureader.utils.file_manager import get_manga_preview
 from desureader.utils.utils import lock_ui, get_status, get_language_icon, with_lock_thread
 from desureader.windows.reader import Reader
 from items import Manga, Chapter, Character
@@ -45,7 +45,7 @@ class FormInfo(QWidget):
         self.ui.image.clear()
         if not self.catalog:
             return
-        pixmap = self.get_preview()
+        pixmap = get_manga_preview(self.manga, self.catalog)
         pixmap = pixmap.scaled(QSize(512, 320), Qt.AspectRatioMode.KeepAspectRatio,
                                Qt.TransformationMode.SmoothTransformation)
         self.ui.image.setPixmap(pixmap)
@@ -146,9 +146,3 @@ class FormInfo(QWidget):
     def open_reader(self):
         self.reader_window = Reader()
         self.reader_window.setup(self.manga, self.chapters, self.ui.items_list.currentIndex().row() + 1)
-
-    def get_preview(self) -> QPixmap:
-        path = f'Desu/images/{self.catalog.catalog_name}/manga/{self.manga.id}'
-        if not check_file_exists(path, 'preview.jpg'):
-            save_file(path, 'preview.jpg', self.catalog.get_preview(self.manga))
-        return QPixmap(get_file(path, 'preview.jpg'))
