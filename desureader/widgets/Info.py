@@ -4,7 +4,7 @@ from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QIcon, QColor
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 
-from const.lists import lib_lists_en, lib_lists_ru
+from const.lists import lib_lists_en, lib_lists_ru, LibList
 from data.ui.info import Ui_Form
 from desureader.dialogs.character import FormCharacter
 from desureader.dialogs.rate import FormRate
@@ -26,11 +26,11 @@ class FormInfo(QWidget):
         self.ui.setupUi(self)
         self.ui.lib_list_box.addItems([i.capitalize() for i in lib_lists_ru])
         self.ui.items_list.doubleClicked.connect(self.open_reader)
-        self.ui.shikimori_btn.clicked.connect(self.open_rate)
         self.ui.characters_list.doubleClicked.connect(self.open_character)
+        self.ui.related_list.doubleClicked.connect(lambda: self.setup(self.get_current_manga()))
+        self.ui.shikimori_btn.clicked.connect(self.open_rate)
         self.ui.add_btn.clicked.connect(self.add_to_favorites)
         self.ui.lib_list_box.currentIndexChanged.connect(self.change_lib_list)
-        self.ui.related_list.doubleClicked.connect(lambda: self.setup(self.get_current_manga()))
         self.db: Database = Database()
         self.catalog = None
         self.manga = None
@@ -63,7 +63,7 @@ class FormInfo(QWidget):
             self.ui.shikimori_frame.setVisible(self.catalog.is_primary)
             self.set_info()
             if self.db.check_manga_library(self.manga):
-                self.ui.lib_list_box.setCurrentIndex(lib_lists_en.index(self.db.check_manga_library(self.manga)))
+                self.ui.lib_list_box.setCurrentIndex(self.db.check_manga_library(self.manga).value)
                 self.ui.add_btn.setChecked(True)
             else:
                 self.ui.add_btn.setChecked(False)
@@ -103,7 +103,7 @@ class FormInfo(QWidget):
 
     def change_lib_list(self):
         if self.db.check_manga_library(self.manga):
-            lib_list = lib_lists_en[self.ui.lib_list_box.currentIndex()]
+            lib_list = LibList[lib_lists_en[self.ui.lib_list_box.currentIndex()]]
             self.db.add_manga_library(self.manga, lib_list)
 
     @with_lock_thread(lock)

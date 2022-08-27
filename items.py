@@ -1,3 +1,6 @@
+from const.lists import LibList
+
+
 class MangaBaseItem:
     def __init__(self, item_id, name, russian):
         self.id = item_id
@@ -88,7 +91,7 @@ class RequestForm:
         self.genres: list[Genre] = []
         self.order: Order = Order('', '', '')
         self.kinds: list[Kind] = []
-        self.mylist = 'planned'
+        self.lib_list = LibList.planned
 
     @property
     def offset(self):
@@ -101,7 +104,7 @@ class RequestForm:
         self.genres = []
         self.order = Order('', '', '')
         self.kinds = []
-        self.mylist = 'planned'
+        self.lib_list = LibList.planned
 
 
 class User:
