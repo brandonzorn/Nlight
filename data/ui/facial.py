@@ -71,6 +71,7 @@ class Ui_Form(object):
 
         self.search_btn = QPushButton(self.text_frame)
         self.search_btn.setObjectName(u"search_btn")
+        self.search_btn.setCursor(QCursor(Qt.PointingHandCursor))
         icon = QIcon()
         icon.addFile(u":/icons/data/icons/search.png", QSize(), QIcon.Normal, QIcon.Off)
         self.search_btn.setIcon(icon)
@@ -89,6 +90,7 @@ class Ui_Form(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.prev_btn = QPushButton(self.page_frame)
         self.prev_btn.setObjectName(u"prev_btn")
+        self.prev_btn.setCursor(QCursor(Qt.PointingHandCursor))
         icon1 = QIcon()
         icon1.addFile(u":/icons/data/icons/prev.png", QSize(), QIcon.Normal, QIcon.Off)
         self.prev_btn.setIcon(icon1)
@@ -102,6 +104,7 @@ class Ui_Form(object):
 
         self.next_btn = QPushButton(self.page_frame)
         self.next_btn.setObjectName(u"next_btn")
+        self.next_btn.setCursor(QCursor(Qt.PointingHandCursor))
         icon2 = QIcon()
         icon2.addFile(u":/icons/data/icons/next.png", QSize(), QIcon.Normal, QIcon.Off)
         self.next_btn.setIcon(icon2)
@@ -190,6 +193,7 @@ class Ui_Form(object):
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.genres_btn = QPushButton(self.genres_frame)
         self.genres_btn.setObjectName(u"genres_btn")
+        self.genres_btn.setCursor(QCursor(Qt.PointingHandCursor))
 
         self.verticalLayout_6.addWidget(self.genres_btn)
 
@@ -204,6 +208,7 @@ class Ui_Form(object):
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.catalogs_btn = QPushButton(self.filter_catalog_frame)
         self.catalogs_btn.setObjectName(u"catalogs_btn")
+        self.catalogs_btn.setCursor(QCursor(Qt.PointingHandCursor))
 
         self.verticalLayout_7.addWidget(self.catalogs_btn)
 
@@ -222,11 +227,13 @@ class Ui_Form(object):
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.reset_btn = QPushButton(self.filter_actions_frame)
         self.reset_btn.setObjectName(u"reset_btn")
+        self.reset_btn.setCursor(QCursor(Qt.PointingHandCursor))
 
         self.horizontalLayout_4.addWidget(self.reset_btn)
 
         self.apply_btn = QPushButton(self.filter_actions_frame)
         self.apply_btn.setObjectName(u"apply_btn")
+        self.apply_btn.setCursor(QCursor(Qt.PointingHandCursor))
 
         self.horizontalLayout_4.addWidget(self.apply_btn)
 
