@@ -181,6 +181,9 @@ QPushButton:checked {
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QPushButton" name="cancel_btn">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="text">
          <string>Отмена</string>
         </property>
@@ -188,6 +191,9 @@ QPushButton:checked {
       </item>
       <item>
        <widget class="QPushButton" name="delete_btn">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="text">
          <string>Удалить</string>
         </property>
@@ -195,6 +201,9 @@ QPushButton:checked {
       </item>
       <item>
        <widget class="QPushButton" name="update_btn">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="text">
          <string>Обновить</string>
         </property>
