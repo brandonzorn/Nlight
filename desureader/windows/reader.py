@@ -137,17 +137,16 @@ class Reader(QMainWindow):
         chapter = self.chapters[self.cur_chapter - 1]
         self.images = self.catalog.get_images(self.manga, chapter)
         self.max_page = self.get_chapter_pages()
-        Thread(target=lambda: self.download(self), daemon=True).start()
+        Thread(target=lambda: self.download(self.chapters[self.cur_chapter - 1]), daemon=True).start()
 
     def get_chapter_pages(self) -> int:
         if not self.images:
             return 1
         return self.images[-1].page
 
-    def download(self, form):
+    def download(self, chapter: Chapter):
         images = self.images
-        chapter = self.chapters[self.cur_chapter - 1]
         for image in images:
-            if form.isHidden() or chapter.id != self.chapters[self.cur_chapter - 1].id or self.manga.kind == 'ranobe':
+            if self.isHidden() or chapter.id != self.chapters[self.cur_chapter - 1].id or self.manga.kind == 'ranobe':
                 break
             get_chapter_image(self.manga, chapter, image, self.catalog)

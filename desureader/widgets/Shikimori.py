@@ -2,6 +2,7 @@ from threading import Thread, Lock
 
 from PySide6.QtWidgets import QListWidgetItem
 
+from const.lists import LibList
 from data.ui.shikimori import Ui_Form
 from desureader.dialogs.auth import FormAuth
 from desureader.parsers.Shikimori import ShikimoriLib
@@ -24,12 +25,12 @@ class FormShikimori(BaseWidget):
         self.Form_auth = FormAuth(self.catalog)
         self.request_params = RequestForm()
         self.db: Database = Database()
-        self.ui.planned_btn.clicked.connect(lambda: self.change_list('planned'))
-        self.ui.reading_btn.clicked.connect(lambda: self.change_list('watching'))
-        self.ui.on_hold_btn.clicked.connect(lambda: self.change_list('on_hold'))
-        self.ui.completed_btn.clicked.connect(lambda: self.change_list('completed'))
-        self.ui.dropped_btn.clicked.connect(lambda: self.change_list('dropped'))
-        self.ui.re_reading_btn.clicked.connect(lambda: self.change_list('rewatching'))
+        self.ui.planned_btn.clicked.connect(lambda: self.change_list(LibList.planned))
+        self.ui.reading_btn.clicked.connect(lambda: self.change_list(LibList.watching))
+        self.ui.on_hold_btn.clicked.connect(lambda: self.change_list(LibList.on_hold))
+        self.ui.completed_btn.clicked.connect(lambda: self.change_list(LibList.completed))
+        self.ui.dropped_btn.clicked.connect(lambda: self.change_list(LibList.dropped))
+        self.ui.re_reading_btn.clicked.connect(lambda: self.change_list(LibList.rewatching))
         self.ui.prev_btn.clicked.connect(lambda: self.change_page('-'))
         self.ui.next_btn.clicked.connect(lambda: self.change_page('+'))
         self.ui.search_btn.clicked.connect(self.search)
@@ -72,8 +73,8 @@ class FormShikimori(BaseWidget):
         self.request_params.search = self.ui.title_line.text()
         self.get_content()
 
-    def change_list(self, list_name: str):
-        self.request_params.mylist = list_name
+    def change_list(self, lib_list: LibList):
+        self.request_params.lib_list = lib_list
         self.get_content()
 
     @with_lock_thread(lock)

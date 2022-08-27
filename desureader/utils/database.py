@@ -2,7 +2,7 @@ import os
 import sqlite3
 from threading import Lock
 
-from const.lists import lib_lists_en
+from const.lists import LibList, lib_lists_en
 from desureader.utils.utils import with_lock_thread, singleton
 from items import Chapter, Image, Manga, HistoryNote
 
@@ -24,7 +24,7 @@ class Database:
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS images (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
         page INTEGER, img STRING, chapter_id INTEGER);""")
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS library (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
-        list STRING)""")
+        list INTEGER)""")
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS chapter_history
         (chapter_id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL, manga_id STRING NOT NULL, is_completed BOOLEAN)""")
         self.__con.commit()
@@ -89,23 +89,23 @@ class Database:
         return [Image(i[0], i[1], i[2]) for i in a]
 
     @with_lock_thread(lock)
-    def add_manga_library(self, manga: Manga, lib_list: str = "planned"):
-        self.__cur.execute(f"INSERT INTO library VALUES(?, ?);", (manga.id, lib_list))
+    def add_manga_library(self, manga: Manga, lib_list: LibList = LibList.planned):
+        self.__cur.execute(f"INSERT INTO library VALUES(?, ?);", (manga.id, lib_list.value))
         self.__con.commit()
 
     @with_lock_thread(lock)
-    def get_manga_library(self, lib_list) -> list[Manga]:
-        a = self.__cur.execute(f"SELECT id FROM library WHERE list = '{lib_list}';").fetchall()
+    def get_manga_library(self, lib_list: LibList) -> list[Manga]:
+        a = self.__cur.execute(f"SELECT id FROM library WHERE list = '{lib_list.value}';").fetchall()
         mangas = []
         for i in a[::-1]:
             mangas.append(self.get_manga(i[0]))
         return mangas
 
     @with_lock_thread(lock)
-    def check_manga_library(self, manga: Manga):
+    def check_manga_library(self, manga: Manga) -> LibList:
         a = self.__cur.execute(f"SELECT list FROM library WHERE id = '{manga.id}';").fetchall()
-        if a and a[0][0] in lib_lists_en:
-            return a[0][0]
+        if a and a[0]:
+            return LibList[lib_lists_en[a[0][0]]]
 
     @with_lock_thread(lock)
     def rem_manga_library(self, manga: Manga):

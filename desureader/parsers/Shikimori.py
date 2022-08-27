@@ -140,7 +140,7 @@ class ShikimoriLib(ShikimoriBase):
         mangas = []
         if html and html.status_code == 200 and html.json():
             for i in html.json():
-                if not i.get("status") == req_params.mylist:
+                if not i.get("status") == req_params.lib_list.name:
                     continue
                 i = i.get("manga")
                 mangas.append(self.setup_manga(i))
