@@ -136,6 +136,7 @@ class Ui_MainWindow(object):
 
         self.btn_downloads = QPushButton(self.frame)
         self.btn_downloads.setObjectName(u"btn_downloads")
+        self.btn_downloads.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_downloads.setCheckable(True)
         self.btn_downloads.setAutoExclusive(True)
 
@@ -143,6 +144,7 @@ class Ui_MainWindow(object):
 
         self.btn_ongoings = QPushButton(self.frame)
         self.btn_ongoings.setObjectName(u"btn_ongoings")
+        self.btn_ongoings.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_ongoings.setCheckable(True)
         self.btn_ongoings.setAutoExclusive(True)
 
@@ -154,6 +156,7 @@ class Ui_MainWindow(object):
 
         self.btn_settings = QPushButton(self.frame)
         self.btn_settings.setObjectName(u"btn_settings")
+        self.btn_settings.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_settings.setCheckable(True)
         self.btn_settings.setAutoExclusive(True)
 

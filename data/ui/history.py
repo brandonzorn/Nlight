@@ -56,6 +56,7 @@ class Ui_Form(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.delete_btn = QPushButton(self.frame)
         self.delete_btn.setObjectName(u"delete_btn")
+        self.delete_btn.setCursor(QCursor(Qt.PointingHandCursor))
         icon = QIcon()
         icon.addFile(u":/icons/data/icons/delete.png", QSize(), QIcon.Normal, QIcon.Off)
         self.delete_btn.setIcon(icon)

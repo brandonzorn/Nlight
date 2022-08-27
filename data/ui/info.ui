@@ -58,6 +58,9 @@
         </property>
         <item>
          <widget class="QPushButton" name="back_btn">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -128,6 +131,9 @@
              </item>
              <item>
               <widget class="QPushButton" name="add_btn">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="text">
                 <string/>
                </property>
@@ -167,6 +173,9 @@
              </property>
              <item>
               <widget class="QPushButton" name="shikimori_btn">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="text">
                 <string/>
                </property>

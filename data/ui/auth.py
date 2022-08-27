@@ -101,6 +101,7 @@ class Ui_Dialog(object):
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.get_code_btn = QPushButton(self.one_frame)
         self.get_code_btn.setObjectName(u"get_code_btn")
+        self.get_code_btn.setCursor(QCursor(Qt.PointingHandCursor))
 
         self.horizontalLayout_3.addWidget(self.get_code_btn)
 
@@ -161,6 +162,7 @@ class Ui_Dialog(object):
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.auth_btn = QPushButton(self.frame)
         self.auth_btn.setObjectName(u"auth_btn")
+        self.auth_btn.setCursor(QCursor(Qt.PointingHandCursor))
 
         self.horizontalLayout_4.addWidget(self.auth_btn)
 

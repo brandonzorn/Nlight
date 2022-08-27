@@ -45,6 +45,7 @@ class Ui_Form(object):
         self.horizontalLayout_3.setContentsMargins(9, 9, 9, 9)
         self.back_btn = QPushButton(self.header_frame)
         self.back_btn.setObjectName(u"back_btn")
+        self.back_btn.setCursor(QCursor(Qt.PointingHandCursor))
         icon = QIcon()
         icon.addFile(u":/icons/data/icons/back.png", QSize(), QIcon.Normal, QIcon.Off)
         self.back_btn.setIcon(icon)
@@ -80,6 +81,7 @@ class Ui_Form(object):
 
         self.add_btn = QPushButton(self.lib_frame)
         self.add_btn.setObjectName(u"add_btn")
+        self.add_btn.setCursor(QCursor(Qt.PointingHandCursor))
         icon1 = QIcon()
         icon1.addFile(u":/icons/data/icons/star.png", QSize(), QIcon.Normal, QIcon.Off)
         icon1.addFile(u":/icons/data/icons/star_filled.png", QSize(), QIcon.Normal, QIcon.On)
@@ -100,6 +102,7 @@ class Ui_Form(object):
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.shikimori_btn = QPushButton(self.shikimori_frame)
         self.shikimori_btn.setObjectName(u"shikimori_btn")
+        self.shikimori_btn.setCursor(QCursor(Qt.PointingHandCursor))
         icon2 = QIcon()
         icon2.addFile(u":/icons/data/icons/shikimori.png", QSize(), QIcon.Normal, QIcon.Off)
         self.shikimori_btn.setIcon(icon2)
