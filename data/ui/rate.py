@@ -146,16 +146,19 @@ class Ui_Dialog(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.cancel_btn = QPushButton(self.actions_frame)
         self.cancel_btn.setObjectName(u"cancel_btn")
+        self.cancel_btn.setCursor(QCursor(Qt.PointingHandCursor))
 
         self.horizontalLayout.addWidget(self.cancel_btn)
 
         self.delete_btn = QPushButton(self.actions_frame)
         self.delete_btn.setObjectName(u"delete_btn")
+        self.delete_btn.setCursor(QCursor(Qt.PointingHandCursor))
 
         self.horizontalLayout.addWidget(self.delete_btn)
 
         self.update_btn = QPushButton(self.actions_frame)
         self.update_btn.setObjectName(u"update_btn")
+        self.update_btn.setCursor(QCursor(Qt.PointingHandCursor))
 
         self.horizontalLayout.addWidget(self.update_btn)
 
