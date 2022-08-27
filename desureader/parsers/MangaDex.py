@@ -120,14 +120,14 @@ class MangaDexLib(MangaDex):
 
     def search_manga(self, params: RequestForm):
         mangas = []
-        match params.mylist:
+        match params.lib_list.name:
             case 'planned':
-                params.mylist = 'plan_to_read'
+                params.lib_list = 'plan_to_read'
             case 'watching':
-                params.mylist = 'reading'
+                params.lib_list = 'reading'
             case 'rewatching':
-                params.mylist = 're_reading'
-        html_statuses = self.session.get(f'{self.url_api}/manga/status', params={'status': params.mylist})
+                params.lib_list = 're_reading'
+        html_statuses = self.session.get(f'{self.url_api}/manga/status', params={'status': params.lib_list})
         params = {'limit': params.limit, 'offset': params.offset}
         html = self.session.get(f'{self.url_api}/user/follows/manga', params=params)
         if html and html.status_code == 200 and html.json():
