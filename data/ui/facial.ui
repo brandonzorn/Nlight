@@ -91,6 +91,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="search_btn">
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -126,6 +129,9 @@
            </property>
            <item>
             <widget class="QPushButton" name="prev_btn">
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -144,6 +150,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="next_btn">
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -250,6 +259,9 @@
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
          <widget class="QPushButton" name="genres_btn">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
           <property name="text">
            <string>Список жанров</string>
           </property>
@@ -269,6 +281,9 @@
        <layout class="QVBoxLayout" name="verticalLayout_7">
         <item>
          <widget class="QPushButton" name="catalogs_btn">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
           <property name="text">
            <string>Каталоги</string>
           </property>
@@ -301,6 +316,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
          <widget class="QPushButton" name="reset_btn">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
           <property name="text">
            <string>Сбросить</string>
           </property>
@@ -308,6 +326,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="apply_btn">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
           <property name="text">
            <string>Применить</string>
           </property>

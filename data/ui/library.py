@@ -56,6 +56,7 @@ class Ui_Form(object):
         self.check_button_layout.setObjectName(u"check_button_layout")
         self.planned_btn = QPushButton(self.lists_frame)
         self.planned_btn.setObjectName(u"planned_btn")
+        self.planned_btn.setCursor(QCursor(Qt.PointingHandCursor))
         self.planned_btn.setCheckable(True)
         self.planned_btn.setChecked(True)
         self.planned_btn.setAutoExclusive(True)
@@ -64,6 +65,7 @@ class Ui_Form(object):
 
         self.completed_btn = QPushButton(self.lists_frame)
         self.completed_btn.setObjectName(u"completed_btn")
+        self.completed_btn.setCursor(QCursor(Qt.PointingHandCursor))
         self.completed_btn.setCheckable(True)
         self.completed_btn.setAutoExclusive(True)
 
@@ -71,6 +73,7 @@ class Ui_Form(object):
 
         self.reading_btn = QPushButton(self.lists_frame)
         self.reading_btn.setObjectName(u"reading_btn")
+        self.reading_btn.setCursor(QCursor(Qt.PointingHandCursor))
         self.reading_btn.setCheckable(True)
         self.reading_btn.setAutoExclusive(True)
 
@@ -78,6 +81,7 @@ class Ui_Form(object):
 
         self.re_reading_btn = QPushButton(self.lists_frame)
         self.re_reading_btn.setObjectName(u"re_reading_btn")
+        self.re_reading_btn.setCursor(QCursor(Qt.PointingHandCursor))
         self.re_reading_btn.setCheckable(True)
         self.re_reading_btn.setAutoExclusive(True)
 
@@ -85,6 +89,7 @@ class Ui_Form(object):
 
         self.on_hold_btn = QPushButton(self.lists_frame)
         self.on_hold_btn.setObjectName(u"on_hold_btn")
+        self.on_hold_btn.setCursor(QCursor(Qt.PointingHandCursor))
         self.on_hold_btn.setCheckable(True)
         self.on_hold_btn.setAutoExclusive(True)
 
@@ -92,6 +97,7 @@ class Ui_Form(object):
 
         self.dropped_btn = QPushButton(self.lists_frame)
         self.dropped_btn.setObjectName(u"dropped_btn")
+        self.dropped_btn.setCursor(QCursor(Qt.PointingHandCursor))
         self.dropped_btn.setCheckable(True)
         self.dropped_btn.setAutoExclusive(True)
 

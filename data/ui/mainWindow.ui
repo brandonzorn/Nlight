@@ -221,6 +221,9 @@ QPushButton:checked {
           </item>
           <item>
            <widget class="QPushButton" name="btn_downloads">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
             <property name="text">
              <string>Загрузки</string>
             </property>
@@ -234,6 +237,9 @@ QPushButton:checked {
           </item>
           <item>
            <widget class="QPushButton" name="btn_ongoings">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
             <property name="text">
              <string>Календарь 
 онгоингов</string>
@@ -261,6 +267,9 @@ QPushButton:checked {
           </item>
           <item>
            <widget class="QPushButton" name="btn_settings">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
             <property name="text">
              <string>Настройки</string>
             </property>
