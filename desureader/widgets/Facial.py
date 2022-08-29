@@ -4,10 +4,8 @@ from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QListWidgetItem, QCheckBox, QRadioButton
 
 from data.ui.facial import Ui_Form
-from desureader.dialogs.genres import FormGenres
-from desureader.utils.catalog_manager import USER_CATALOGS
-from desureader.utils.database import Database
-from desureader.utils.utils import lock_ui, with_lock_thread
+from desureader.dialogs import FormGenres
+from desureader.utils import Database, USER_CATALOGS, lock_ui, with_lock_thread
 from desureader.widgets.BaseWidget import BaseWidget
 from items import RequestForm
 

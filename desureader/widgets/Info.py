@@ -6,13 +6,10 @@ from PySide6.QtWidgets import QWidget, QListWidgetItem
 
 from const.lists import lib_lists_en, lib_lists_ru, LibList
 from data.ui.info import Ui_Form
-from desureader.dialogs.character import FormCharacter
-from desureader.dialogs.rate import FormRate
-from desureader.utils.catalog_manager import get_catalog
-from desureader.utils.database import Database
-from desureader.utils.file_manager import get_manga_preview
-from desureader.utils.utils import lock_ui, get_status, get_language_icon, with_lock_thread
-from desureader.windows.reader import Reader
+from desureader.dialogs import FormRate, FormCharacter
+from desureader.utils import Database, get_manga_preview, lock_ui, get_catalog, get_status, with_lock_thread, \
+    get_language_icon, TextFormatter
+from desureader.windows.Reader import Reader
 from items import Manga, Chapter, Character
 
 
@@ -92,7 +89,8 @@ class FormInfo(QWidget):
         self.ui.chapters_label.setText(f"Глав: {self.manga.chapters}")
         self.ui.catalog_score_label.setVisible(bool(self.manga.score))
         self.ui.catalog_score_label.setText(f"Рейтинг: {self.manga.score}")
-        self.ui.description_text.setText(self.manga.description)
+        if self.manga.description:
+            self.ui.description_text.insertHtml(TextFormatter.description_to_html(self.manga.description))
 
     def add_to_favorites(self):
         if self.db.check_manga_library(self.manga):

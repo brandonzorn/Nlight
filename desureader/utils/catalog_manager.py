@@ -1,8 +1,5 @@
-from desureader.parsers.Desu import Desu
-from desureader.parsers.MangaDex import MangaDex, MangaDexLib
-from desureader.parsers.Ranobehub import Ranobehub
-from desureader.parsers.Rulate import Rulate
-from desureader.parsers.Shikimori import ShikimoriBase, ShikimoriLib, ShikimoriRanobe, ShikimoriManga
+from desureader.parsers import Desu, ShikimoriBase, MangaDex, Rulate, Ranobehub, MangaDexLib, ShikimoriRanobe, \
+    ShikimoriManga, ShikimoriLib
 
 CATALOGS = {0: Desu, 1: ShikimoriBase, 2: MangaDex, 3: Rulate, 4: Ranobehub}
 USER_CATALOGS = [Desu, ShikimoriManga, ShikimoriRanobe, MangaDex, Rulate, Ranobehub]
