@@ -19,8 +19,7 @@ class FormCharacter(QDialog):
         self.setWindowTitle(self.character.get_name())
         self.ui.name_label.setText(self.character.name)
         self.ui.russian_label.setText(self.character.russian)
-        if self.character.description:
-            self.ui.description.insertHtml(TextFormatter.description_to_html(self.character.description))
+        self.ui.description.insertHtml(TextFormatter.description_to_html(self.character.description))
         self.catalog = get_catalog(catalog_id)()
         Thread(target=self.setup_image, daemon=True).start()
 
