@@ -89,8 +89,7 @@ class FormInfo(QWidget):
         self.ui.chapters_label.setText(f"Глав: {self.manga.chapters}")
         self.ui.catalog_score_label.setVisible(bool(self.manga.score))
         self.ui.catalog_score_label.setText(f"Рейтинг: {self.manga.score}")
-        if self.manga.description:
-            self.ui.description_text.insertHtml(TextFormatter.description_to_html(self.manga.description))
+        self.ui.description_text.insertHtml(TextFormatter.description_to_html(self.manga.description))
 
     def add_to_favorites(self):
         if self.db.check_manga_library(self.manga):
