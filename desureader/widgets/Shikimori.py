@@ -4,10 +4,9 @@ from PySide6.QtWidgets import QListWidgetItem
 
 from const.lists import LibList
 from data.ui.shikimori import Ui_Form
-from desureader.dialogs.auth import FormAuth
-from desureader.parsers.Shikimori import ShikimoriLib
-from desureader.utils.database import Database
-from desureader.utils.utils import lock_ui, with_lock_thread
+from desureader.dialogs import FormAuth
+from desureader.parsers import ShikimoriLib
+from desureader.utils import Database, lock_ui, with_lock_thread
 from desureader.widgets.BaseWidget import BaseWidget
 from items import Manga, RequestForm, User
 

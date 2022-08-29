@@ -6,9 +6,7 @@ from PySide6.QtWidgets import QMainWindow
 
 from const.icons import app_icon_path
 from data.ui.reader import Ui_MainWindow
-from desureader.utils.catalog_manager import get_catalog
-from desureader.utils.database import Database
-from desureader.utils.file_manager import get_chapter_image, get_chapter_text
+from desureader.utils import Database, get_catalog, get_chapter_text, get_chapter_image
 from items import Manga, Chapter
 
 

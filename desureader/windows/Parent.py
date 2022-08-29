@@ -1,12 +1,7 @@
 from PySide6.QtWidgets import QMainWindow
 
 from data.ui.mainWindow import Ui_MainWindow
-from desureader.widgets.Facial import FormFacial
-from desureader.widgets.History import FormHistory
-from desureader.widgets.Info import FormInfo
-from desureader.widgets.Library import FormLibrary
-from desureader.widgets.Settings import FormSettings
-from desureader.widgets.Shikimori import FormShikimori
+from desureader.widgets import FormFacial, FormLibrary, FormShikimori, FormHistory, FormInfo, FormSettings
 
 
 class ParentWindow(QMainWindow):

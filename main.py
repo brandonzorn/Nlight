@@ -5,8 +5,8 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 
 from const.icons import app_icon_path
-from desureader.utils.file_manager import init_app_paths
-from desureader.windows.main_window import ParentWindow
+from desureader import ParentWindow
+from desureader.utils import init_app_paths
 
 
 class App(ParentWindow):

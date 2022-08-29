@@ -2,7 +2,7 @@ from const.lists import LibList
 
 
 class MangaBaseItem:
-    def __init__(self, item_id, name, russian):
+    def __init__(self, item_id: str, name: str, russian: str):
         self.id = item_id
         self.name = name
         self.russian = russian
@@ -18,7 +18,7 @@ class Manga(MangaBaseItem):
         super().__init__(item_id, name, russian)
         self.catalog_id = catalog_id
         self.kind = None
-        self.description = None
+        self.description: str = ""
         self.score = 0
         self.status = None
         self.genres: list[Genre] = []
