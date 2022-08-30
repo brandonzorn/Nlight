@@ -14,15 +14,22 @@ class FormCharacter(QDialog):
         super().__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+        self.ui.show_spoilers.clicked.connect(self.update_description)
         self.setFixedSize(QSize(550, 800))
         self.character = character
         self.setWindowTitle(self.character.get_name())
-        self.ui.name_label.setText(self.character.name)
-        self.ui.russian_label.setText(self.character.russian)
-        self.ui.description.clear()
-        self.ui.description.insertHtml(TextFormatter.description_to_html(self.character.description))
         self.catalog = get_catalog(catalog_id)()
         Thread(target=self.setup_image, daemon=True).start()
+
+    def setup(self):
+        self.ui.name_label.setText(self.character.name)
+        self.ui.russian_label.setText(self.character.russian)
+        self.update_description()
+
+    def update_description(self):
+        self.ui.description.clear()
+        self.ui.description.insertHtml(TextFormatter.description_to_html(self.character.description,
+                                                                         self.ui.show_spoilers.isChecked()))
 
     def setup_image(self):
         self.ui.image.setPixmap(get_character_preview(self.character, self.catalog))

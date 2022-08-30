@@ -94,6 +94,12 @@ QPushButton:checked {
      </item>
      <item>
       <widget class="QFrame" name="title_frame">
+       <property name="styleSheet">
+        <string notr="true">QAbstractButton {
+	background-color: rgb(45, 45, 45);
+	color: rgb(255, 255, 255);
+}</string>
+       </property>
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
        </property>
@@ -133,6 +139,14 @@ QPushButton:checked {
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="show_spoilers">
+          <property name="text">
+           <string>Показывать
+спойлеры</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
