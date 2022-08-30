@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QHBoxLayout,
-    QLabel, QSizePolicy, QSpacerItem, QTextEdit,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QDialog, QFrame,
+    QHBoxLayout, QLabel, QSizePolicy, QSpacerItem,
+    QTextEdit, QVBoxLayout, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -96,6 +96,10 @@ class Ui_Dialog(object):
 
         self.title_frame = QFrame(Dialog)
         self.title_frame.setObjectName(u"title_frame")
+        self.title_frame.setStyleSheet(u"QAbstractButton {\n"
+"	background-color: rgb(45, 45, 45);\n"
+"	color: rgb(255, 255, 255);\n"
+"}")
         self.title_frame.setFrameShape(QFrame.StyledPanel)
         self.title_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_2 = QVBoxLayout(self.title_frame)
@@ -115,6 +119,11 @@ class Ui_Dialog(object):
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_2.addItem(self.verticalSpacer)
+
+        self.show_spoilers = QCheckBox(self.title_frame)
+        self.show_spoilers.setObjectName(u"show_spoilers")
+
+        self.verticalLayout_2.addWidget(self.show_spoilers)
 
 
         self.horizontalLayout.addWidget(self.title_frame)
@@ -157,6 +166,8 @@ class Ui_Dialog(object):
         self.image.setText("")
         self.name_label.setText(QCoreApplication.translate("Dialog", u"name", None))
         self.russian_label.setText(QCoreApplication.translate("Dialog", u"russian", None))
+        self.show_spoilers.setText(QCoreApplication.translate("Dialog", u"\u041f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0442\u044c\n"
+"\u0441\u043f\u043e\u0439\u043b\u0435\u0440\u044b", None))
         self.description.setHtml(QCoreApplication.translate("Dialog", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
