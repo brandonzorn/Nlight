@@ -16,7 +16,7 @@ class Desu(Parser):
     def get_manga(self, manga: Manga):
         url = f'{self.url_api}/{manga.id}'
         html = get_html(url, self.headers)
-        if html and html.status_code == 200 and len(html.json()):
+        if html and html.status_code == 200 and html.json():
             data = html.json().get('response')
             manga.genres = [Genre(i.get('id'), i.get('text'), i.get('russian'), i.get('kind'))
                             for i in data.get("genres")]
@@ -35,7 +35,7 @@ class Desu(Parser):
                   'order': params.order.name, 'kinds': ','.join([i.name for i in params.kinds]), 'page': params.page}
         html = get_html(url, self.headers, params)
         manga = []
-        if html and html.status_code == 200 and len(html.json()):
+        if html and html.status_code == 200 and html.json():
             for i in html.json().get('response'):
                 manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian')))
         return manga
@@ -44,7 +44,7 @@ class Desu(Parser):
         url = f'{self.url_api}/{manga.id}'
         html = get_html(url, self.headers)
         chapters = []
-        if html and html.status_code == 200 and len(html.json()):
+        if html and html.status_code == 200 and html.json():
             for i in html.json().get('response').get('chapters').get('list'):
                 chapters.append(Chapter(i.get('id'), i.get('vol'), i.get('ch'), i.get('title'), 'ru'))
         return chapters
@@ -52,7 +52,7 @@ class Desu(Parser):
     def get_images(self, manga: Manga, chapter: Chapter):
         url = f'{URL_DESU_API}/{manga.id}/chapter/{chapter.id}'
         html = get_html(url, headers=self.headers)
-        if html and html.status_code == 200 and len(html.json()):
+        if html and html.status_code == 200 and html.json():
             return [Image(i.get('id'), i.get('page'), i.get('img'))
                     for i in html.json().get('response').get('pages').get('list')]
         return []
