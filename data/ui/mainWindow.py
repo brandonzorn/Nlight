@@ -134,33 +134,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.btn_history)
 
-        self.btn_downloads = QPushButton(self.frame)
-        self.btn_downloads.setObjectName(u"btn_downloads")
-        self.btn_downloads.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_downloads.setCheckable(True)
-        self.btn_downloads.setAutoExclusive(True)
-
-        self.verticalLayout_3.addWidget(self.btn_downloads)
-
-        self.btn_ongoings = QPushButton(self.frame)
-        self.btn_ongoings.setObjectName(u"btn_ongoings")
-        self.btn_ongoings.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_ongoings.setCheckable(True)
-        self.btn_ongoings.setAutoExclusive(True)
-
-        self.verticalLayout_3.addWidget(self.btn_ongoings)
-
         self.verticalSpacer = QSpacerItem(17, 17, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_3.addItem(self.verticalSpacer)
-
-        self.btn_settings = QPushButton(self.frame)
-        self.btn_settings.setObjectName(u"btn_settings")
-        self.btn_settings.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_settings.setCheckable(True)
-        self.btn_settings.setAutoExclusive(True)
-
-        self.verticalLayout_3.addWidget(self.btn_settings)
 
 
         self.verticalLayout.addWidget(self.frame)
@@ -260,9 +236,5 @@ class Ui_MainWindow(object):
         self.btn_main.setText(QCoreApplication.translate("MainWindow", u"\u0413\u043b\u0430\u0432\u043d\u0430\u044f", None))
         self.btn_shikimori.setText(QCoreApplication.translate("MainWindow", u"\u0428\u0438\u043a\u0438\u043c\u043e\u0440\u0438", None))
         self.btn_history.setText(QCoreApplication.translate("MainWindow", u"\u0418\u0441\u0442\u043e\u0440\u0438\u044f", None))
-        self.btn_downloads.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0438", None))
-        self.btn_ongoings.setText(QCoreApplication.translate("MainWindow", u"\u041a\u0430\u043b\u0435\u043d\u0434\u0430\u0440\u044c \n"
-"\u043e\u043d\u0433\u043e\u0438\u043d\u0433\u043e\u0432", None))
-        self.btn_settings.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438", None))
     # retranslateUi
 
