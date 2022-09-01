@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QMainWindow
 
 from data.ui.mainWindow import Ui_MainWindow
-from desureader.widgets import FormFacial, FormLibrary, FormShikimori, FormHistory, FormInfo, FormSettings
+from desureader.widgets import FormFacial, FormLibrary, FormShikimori, FormHistory, FormInfo
 
 
 class ParentWindow(QMainWindow):
@@ -16,13 +16,11 @@ class ParentWindow(QMainWindow):
         self.Form_history = FormHistory()
 
         self.Form_info = FormInfo()
-        self.Form_settings = FormSettings()
 
         self.ui.btn_main.clicked.connect(lambda: self.change_widget(self.Form_facial))
         self.ui.btn_library.clicked.connect(lambda: self.change_widget(self.Form_library))
         self.ui.btn_shikimori.clicked.connect(lambda: self.change_widget(self.Form_shikimori))
         self.ui.btn_history.clicked.connect(lambda: self.change_widget(self.Form_history))
-        self.ui.btn_settings.clicked.connect(self.open_settings)
 
         self.Form_info.ui.back_btn.clicked.connect(self.back)
 
@@ -43,11 +41,6 @@ class ParentWindow(QMainWindow):
         self.ui.side_menu_widget.hide()
         self.ui.top_item.addWidget(self.Form_info)
         self.ui.top_item.setCurrentWidget(self.Form_info)
-
-    def open_settings(self):
-        self.Form_settings.setup()
-        self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
-        self.ui.top_item.addWidget(self.Form_settings)
 
     def back(self):
         self.ui.side_menu_widget.show()
