@@ -1,4 +1,4 @@
-from items import Manga, Chapter, Image, RequestForm, Genre, Kind, Order, Character
+from items import Manga, Chapter, Image, RequestForm, Genre, Kind, Order, Character, User, UserRate
 
 
 class Parser:
@@ -43,3 +43,29 @@ class Parser:
 
     def get_characters(self, manga: Manga) -> list[Character]:
         return []
+
+
+class LibParser:
+    def __init__(self):
+        pass
+
+    def search_manga(self, params: RequestForm) -> list[Manga]:
+        return []
+
+    def get_user(self) -> User:
+        return User(None, 'Войти', None)
+
+    def create_user_rate(self, manga: Manga):
+        pass
+
+    def check_user_rate(self, manga: Manga):
+        pass
+
+    def delete_user_rate(self, user_rate: UserRate):
+        pass
+
+    def get_user_rate(self, manga: Manga) -> UserRate:
+        pass
+
+    def update_user_rate(self, user_rate: UserRate):
+        pass
