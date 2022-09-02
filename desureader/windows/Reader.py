@@ -55,6 +55,8 @@ class Reader(QMainWindow):
         match event.key():
             case Qt.Key.Key_Escape:
                 self.close()
+                self.destroy()
+                self.deleteLater()
         event.accept()
 
     def resizeEvent(self, event):

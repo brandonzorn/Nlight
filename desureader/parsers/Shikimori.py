@@ -2,7 +2,7 @@ from requests_oauthlib import OAuth2Session
 
 from const.shikimori_items import ORDERS, KINDS
 from const.urls import URL_SHIKIMORI_API, URL_SHIKIMORI_TOKEN, URL_SHIKIMORI, SHIKIMORI_HEADERS
-from desureader.parsers.Parser import Parser
+from desureader.parsers.Parser import Parser, LibParser
 from desureader.utils.utils import get_html, singleton, TokenManager
 from items import Manga, RequestForm, Genre, Kind, User, UserRate, Order, Character
 from keys import SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID
@@ -126,8 +126,7 @@ class ShikimoriRanobe(ShikimoriBase):
         return mangas
 
 
-class ShikimoriLib(ShikimoriBase):
-
+class ShikimoriLib(ShikimoriBase, LibParser):
     def __init__(self):
         super().__init__()
         self.fields = 1
@@ -146,7 +145,7 @@ class ShikimoriLib(ShikimoriBase):
                 mangas.append(self.setup_manga(i))
         return mangas
 
-    def get_user(self) -> User:
+    def get_user(self):
         whoami = self.session.request('GET', 'https://shikimori.one/api/users/whoami')
         if whoami and whoami.status_code == 200:
             data = whoami.json()
@@ -172,7 +171,7 @@ class ShikimoriLib(ShikimoriBase):
         url = f'{self.url_api}/v2/user_rates/{user_rate.id}'
         self.session.request('DELETE', url)
 
-    def get_user_rate(self, manga: Manga) -> UserRate:
+    def get_user_rate(self, manga: Manga):
         url = f'{self.url_api}/v2/user_rates'
         params = {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.id}
         html = self.session.request('GET', url, params)
