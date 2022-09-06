@@ -1,7 +1,7 @@
 from const.lists import LibList
 
 
-class MangaBaseItem:
+class BaseItem:
     def __init__(self, item_id: str, name: str, russian: str):
         self.id = item_id
         self.name = name
@@ -13,7 +13,7 @@ class MangaBaseItem:
         return self.name
 
 
-class Manga(MangaBaseItem):
+class Manga(BaseItem):
     def __init__(self, item_id, catalog_id, name, russian):
         super().__init__(item_id, name, russian)
         self.catalog_id = catalog_id
@@ -49,18 +49,18 @@ class Image:
         self.img = img
 
 
-class Genre(MangaBaseItem):
+class Genre(BaseItem):
     def __init__(self, item_id, name, russian, kind):
         super().__init__(item_id, name, russian)
         self.kind = kind
 
 
-class Order(MangaBaseItem):
+class Order(BaseItem):
     def __init__(self, item_id, name, russian):
         super().__init__(item_id, name, russian)
 
 
-class Kind(MangaBaseItem):
+class Kind(BaseItem):
     def __init__(self, item_id, name, russian):
         super().__init__(item_id, name, russian)
 
@@ -76,7 +76,7 @@ class Status:
         return self.name
 
 
-class Character(MangaBaseItem):
+class Character(BaseItem):
     def __init__(self, item_id, name, russian, description, role):
         super().__init__(item_id, name, russian)
         self.description = description

@@ -487,6 +487,34 @@ QPushButton:hover:!pressed {
 
 QPushButton:checked {
 	border-left: 3px solid white;
+}
+QScrollBar {
+    background: #292b2e;
+    border-radius: 10px;
+}
+QScrollBar:horizontal {
+    height: 14px;
+}
+QScrollBar:vertical {
+    width: 14px;
+}
+QScrollBar::handle {
+    background: rgba(84.000, 86.000, 86.000, 0.737);
+    border-radius: 5px;
+}
+QScrollBar::handle:hover {
+    background: rgba(114.000, 115.000, 115.000, 0.827);
+}
+QScrollBar::handle:pressed {
+    background: rgba(143.000, 145.000, 145.000, 0.933);
+}
+QScrollBar::sub-page, QScrollBar::add-page {
+    background: transparent;
+}
+QScrollBar::sub-line, QScrollBar::add-line {
+    background: transparent;
+    width: 0px;
+    height: 0px;
 }</string>
          </property>
          <property name="currentIndex">
