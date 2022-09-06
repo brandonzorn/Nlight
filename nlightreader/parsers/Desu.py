@@ -1,9 +1,8 @@
-from nlightreader.parsers.Parser import Parser
-from nlightreader.utils.utils import get_html
-
 from const.desu_items import DESU_GENRES, DESU_KINDS, DESU_ORDERS
 from const.urls import DESU_HEADERS, URL_DESU_API
 from items import Manga, Chapter, Image, Genre, RequestForm, Kind, Order
+from nlightreader.parsers.Parser import Parser
+from nlightreader.utils.utils import get_html
 
 
 class Desu(Parser):

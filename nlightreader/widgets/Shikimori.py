@@ -1,14 +1,14 @@
 from threading import Thread, Lock
 
 from PySide6.QtWidgets import QListWidgetItem
-from nlightreader.dialogs import FormAuth
-from nlightreader.parsers import ShikimoriLib
-from nlightreader.utils import Database, lock_ui, with_lock_thread
-from nlightreader.widgets.BaseWidget import BaseWidget
 
 from const.lists import LibList
 from data.ui.shikimori import Ui_Form
 from items import Manga, RequestForm, User
+from nlightreader.dialogs import FormAuth
+from nlightreader.parsers import ShikimoriLib
+from nlightreader.utils import Database, lock_ui, with_lock_thread
+from nlightreader.widgets.BaseWidget import BaseWidget
 
 
 class FormShikimori(BaseWidget):
