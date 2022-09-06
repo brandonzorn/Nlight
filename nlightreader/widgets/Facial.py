@@ -2,11 +2,11 @@ from threading import Thread, Lock
 
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QListWidgetItem, QCheckBox, QRadioButton
+from nlightreader.dialogs import FormGenres
+from nlightreader.utils import Database, USER_CATALOGS, lock_ui, with_lock_thread
+from nlightreader.widgets.BaseWidget import BaseWidget
 
 from data.ui.facial import Ui_Form
-from desureader.dialogs import FormGenres
-from desureader.utils import Database, USER_CATALOGS, lock_ui, with_lock_thread
-from desureader.widgets.BaseWidget import BaseWidget
 from items import RequestForm
 
 
