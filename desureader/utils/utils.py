@@ -4,6 +4,7 @@ import os
 
 import requests
 
+from const.app import APP_NAME
 from const.icons import ru_icon_path, gb_icon_path, jp_icon_path
 from const.lists import lib_lists_en, lib_lists_ru
 from const.urls import DEFAULT_HEADERS
@@ -52,7 +53,7 @@ def get_url(manga: Manga, chapter: Chapter = None, image: Image = None):
     if chapter:
         url += f'/chapter/{chapter.id}'
         if image:
-            return f'{os.getcwd()}/Desu/images/{manga.id}/{chapter.id}/{image.page}.jpg'
+            return f'{os.getcwd()}/{APP_NAME}/images/{manga.id}/{chapter.id}/{image.page}.jpg'
     return url
 
 
@@ -83,7 +84,7 @@ def lock_ui(ui_to_lock: list):
 
 
 class TokenManager:
-    path = f'Desu/tokens'
+    path = f'{APP_NAME}/tokens'
 
     @staticmethod
     def save_token(token, catalog_name='Shikimori'):
