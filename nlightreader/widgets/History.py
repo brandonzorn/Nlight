@@ -1,9 +1,9 @@
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QListWidgetItem
+from nlightreader.utils import Database
+from nlightreader.widgets.BaseWidget import BaseWidget
 
 from data.ui.history import Ui_Form
-from desureader.utils import Database
-from desureader.widgets.BaseWidget import BaseWidget
 from items import HistoryNote
 
 

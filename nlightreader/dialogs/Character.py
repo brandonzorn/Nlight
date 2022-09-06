@@ -4,9 +4,9 @@ from PySide6.QtCore import QSize
 from PySide6.QtWidgets import QDialog
 
 from data.ui.character import Ui_Dialog
-from desureader.utils import TextFormatter
-from desureader.utils.catalog_manager import get_catalog
-from desureader.utils.file_manager import get_character_preview
+from nlightreader.utils import TextFormatter
+from nlightreader.utils.catalog_manager import get_catalog
+from nlightreader.utils.file_manager import get_character_preview
 
 
 class FormCharacter(QDialog):

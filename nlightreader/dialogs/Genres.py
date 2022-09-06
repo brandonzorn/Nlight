@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QDialog, QCheckBox
 
 from const.icons import app_icon_path
 from data.ui.genres import Ui_Dialog
-from desureader.utils.catalog_manager import get_catalog
+from nlightreader.utils.catalog_manager import get_catalog
 
 
 class FormGenres(QDialog):

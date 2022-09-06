@@ -3,13 +3,13 @@ from threading import Thread, Lock
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QIcon, QColor
 from PySide6.QtWidgets import QWidget, QListWidgetItem
+from nlightreader.dialogs import FormRate, FormCharacter
+from nlightreader.utils import Database, get_manga_preview, lock_ui, get_catalog, get_status, with_lock_thread, \
+    get_language_icon, TextFormatter
+from nlightreader.windows.Reader import Reader
 
 from const.lists import lib_lists_en, lib_lists_ru, LibList
 from data.ui.info import Ui_Form
-from desureader.dialogs import FormRate, FormCharacter
-from desureader.utils import Database, get_manga_preview, lock_ui, get_catalog, get_status, with_lock_thread, \
-    get_language_icon, TextFormatter
-from desureader.windows.Reader import Reader
 from items import Manga, Chapter, Character
 
 
