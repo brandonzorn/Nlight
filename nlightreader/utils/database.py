@@ -2,9 +2,10 @@ import os
 import sqlite3
 from threading import Lock
 
+from const.app import APP_NAME
 from const.lists import LibList, lib_lists_en
-from desureader.utils.utils import with_lock_thread, singleton
 from items import Chapter, Image, Manga, HistoryNote
+from nlightreader.utils.utils import with_lock_thread, singleton
 
 
 @singleton
@@ -13,7 +14,7 @@ class Database:
     lock = Lock()
 
     def __init__(self):
-        self.__con = sqlite3.connect(f'{os.getcwd()}/Desu/data.db', check_same_thread=False)
+        self.__con = sqlite3.connect(f'{os.getcwd()}/{APP_NAME}/data.db', check_same_thread=False)
         self.__cur = self.__con.cursor()
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS manga (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL
         UNIQUE ON CONFLICT REPLACE,

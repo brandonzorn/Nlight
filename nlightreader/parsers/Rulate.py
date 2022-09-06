@@ -1,9 +1,9 @@
 from bs4 import BeautifulSoup
 
 from const.urls import URL_RULATE, DEFAULT_HEADERS
-from desureader.parsers.Parser import Parser
-from desureader.utils.utils import get_html
 from items import Manga, Chapter, Image, RequestForm
+from nlightreader.parsers.Parser import Parser
+from nlightreader.utils.utils import get_html
 
 
 class Rulate(Parser):

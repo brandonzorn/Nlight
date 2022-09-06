@@ -6,8 +6,8 @@ from PySide6.QtWidgets import QMainWindow
 
 from const.icons import app_icon_path
 from data.ui.reader import Ui_MainWindow
-from desureader.utils import Database, get_catalog, get_chapter_text, get_chapter_image
 from items import Manga, Chapter
+from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image
 
 
 class Reader(QMainWindow):

@@ -1,5 +1,5 @@
-from desureader.utils.database import Database
 from items import RequestForm
+from nlightreader.utils.database import Database
 
 
 class LocalLib:
