@@ -1,1 +1,0 @@
-pyinstaller --noconfirm --onefile --windowed --icon "data/icons/icon.ico" --name "Desu" --add-data "data/icons/icon.svg;data/icons/." --add-data "data/icons/lang;data/icons/lang/"  "main.py"
