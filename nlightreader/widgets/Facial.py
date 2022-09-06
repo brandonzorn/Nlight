@@ -2,12 +2,12 @@ from threading import Thread, Lock
 
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QListWidgetItem, QCheckBox, QRadioButton
-from nlightreader.dialogs import FormGenres
-from nlightreader.utils import Database, USER_CATALOGS, lock_ui, with_lock_thread
-from nlightreader.widgets.BaseWidget import BaseWidget
 
 from data.ui.facial import Ui_Form
 from items import RequestForm
+from nlightreader.dialogs import FormGenres
+from nlightreader.utils import Database, USER_CATALOGS, lock_ui, with_lock_thread
+from nlightreader.widgets.BaseWidget import BaseWidget
 
 
 class FormFacial(BaseWidget):

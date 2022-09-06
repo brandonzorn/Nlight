@@ -1,10 +1,10 @@
 from PySide6.QtWidgets import QListWidgetItem
-from nlightreader.parsers import LocalLib
-from nlightreader.widgets.BaseWidget import BaseWidget
 
 from const.lists import LibList
 from data.ui.library import Ui_Form
 from items import Manga, RequestForm
+from nlightreader.parsers import LocalLib
+from nlightreader.widgets.BaseWidget import BaseWidget
 
 
 class FormLibrary(BaseWidget):
