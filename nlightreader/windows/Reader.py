@@ -3,11 +3,11 @@ from threading import Thread
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import QMainWindow
-from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image
 
 from const.icons import app_icon_path
 from data.ui.reader import Ui_MainWindow
 from items import Manga, Chapter
+from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image
 
 
 class Reader(QMainWindow):
