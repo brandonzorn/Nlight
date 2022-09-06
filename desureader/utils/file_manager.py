@@ -2,6 +2,8 @@ import os
 
 from PySide6.QtGui import QPixmap
 
+from const.app import APP_NAME
+
 
 def get_file(path, file_name):
     path = f'{os.getcwd()}/{path}/{file_name}'
@@ -29,21 +31,21 @@ def init_app_paths(paths: list[str]):
 
 
 def get_character_preview(character, catalog) -> QPixmap:
-    path = f'Desu/images/{catalog.catalog_name}/characters/{character.id}'
+    path = f'{APP_NAME}/images/{catalog.catalog_name}/characters/{character.id}'
     if not check_file_exists(path, 'preview.jpg'):
         save_file(path, 'preview.jpg', catalog.get_character_preview(character))
     return QPixmap(get_file(path, 'preview.jpg'))
 
 
 def get_manga_preview(manga, catalog) -> QPixmap:
-    path = f'Desu/images/{catalog.catalog_name}/manga/{manga.id}'
+    path = f'{APP_NAME}/images/{catalog.catalog_name}/manga/{manga.id}'
     if not check_file_exists(path, 'preview.jpg'):
         save_file(path, 'preview.jpg', catalog.get_preview(manga))
     return QPixmap(get_file(path, 'preview.jpg'))
 
 
 def get_chapter_image(manga, chapter, image, catalog) -> QPixmap:
-    path = f'Desu/images/{catalog.catalog_name}/manga/{manga.id}/{chapter.id}'
+    path = f'{APP_NAME}/images/{catalog.catalog_name}/manga/{manga.id}/{chapter.id}'
     file_name = f'{image.page}.jpg'
     if not check_file_exists(path, file_name):
         save_file(path, file_name, catalog.get_image(image))
