@@ -6,8 +6,8 @@ from PySide6.QtWidgets import QApplication
 
 from const.app import APP_NAME
 from const.icons import app_icon_path
-from desureader import ParentWindow
-from desureader.utils import init_app_paths
+from nlightreader import ParentWindow
+from nlightreader.utils import init_app_paths
 
 
 class App(ParentWindow):
