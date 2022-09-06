@@ -1,7 +1,8 @@
 /.idea
 /venv
-/Desu
+/Nlight
 /dist
 /build
-/Desu.spec
+/Nlight.spec
 /keys.py
+/compile_exe.bat

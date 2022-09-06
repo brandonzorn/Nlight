@@ -1,9 +1,9 @@
 import requests
 
 from const.urls import URL_MANGA_DEX_API, DEFAULT_HEADERS
-from desureader.parsers.Parser import Parser, LibParser
-from desureader.utils.utils import get_html, TokenManager
 from items import Manga, Chapter, Image, Genre, RequestForm, User
+from nlightreader.parsers.Parser import Parser, LibParser
+from nlightreader.utils.utils import get_html, TokenManager
 
 
 class MangaDex(Parser):
