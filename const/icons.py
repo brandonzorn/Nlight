@@ -8,7 +8,7 @@ def get_resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-app_icon_path = get_resource_path("data/icons/icon.svg")
+app_icon_path = get_resource_path("data/icons/icon.png")
 
 gb_icon_path = get_resource_path("data/icons/lang/gb.svg")
 ru_icon_path = get_resource_path("data/icons/lang/ru.svg")
