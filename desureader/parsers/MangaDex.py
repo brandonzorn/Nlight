@@ -1,7 +1,7 @@
 import requests
 
 from const.urls import URL_MANGA_DEX_API, DEFAULT_HEADERS
-from desureader.parsers.Parser import Parser
+from desureader.parsers.Parser import Parser, LibParser
 from desureader.utils.utils import get_html, TokenManager
 from items import Manga, Chapter, Image, Genre, RequestForm, User
 
@@ -13,7 +13,6 @@ class MangaDex(Parser):
         self.url_api = URL_MANGA_DEX_API
         self.headers = DEFAULT_HEADERS
         self.catalog_id = 2
-        self.fields = 2
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f'{self.url_api}/manga/{manga.id}'
@@ -113,9 +112,10 @@ class MangaDex(Parser):
         return genres
 
 
-class MangaDexLib(MangaDex):
+class MangaDexLib(MangaDex, LibParser):
     def __init__(self):
         super().__init__()
+        self.fields = 2
         self.session = Auth()
 
     def search_manga(self, params: RequestForm):
@@ -137,7 +137,7 @@ class MangaDexLib(MangaDex):
                     mangas.append(manga)
         return mangas
 
-    def get_user(self) -> User:
+    def get_user(self):
         whoami = self.session.get(f'{self.url_api}/user/me')
         if whoami and whoami.status_code == 200:
             data = whoami.json().get('data')

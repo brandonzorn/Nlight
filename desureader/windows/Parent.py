@@ -32,7 +32,8 @@ class ParentWindow(QMainWindow):
         widget.setup()
         widget.ui.items_list.doubleClicked.disconnect()
         widget.ui.items_list.doubleClicked.connect(lambda: self.open_info(widget.get_current_manga()))
-        self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
+        if self.ui.top_item.currentWidget():
+            self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
         self.ui.top_item.addWidget(widget)
         self.ui.top_item.setCurrentWidget(widget)
 
