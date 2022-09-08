@@ -53,7 +53,7 @@ def get_chapter_image(manga, chapter, image, catalog) -> QPixmap:
 
 
 def get_chapter_text(manga, chapter, image, catalog) -> str:
-    path = f'Desu/images/{catalog.catalog_name}/manga/{manga.id}/{chapter.id}'
+    path = f'{APP_NAME}/images/{catalog.catalog_name}/manga/{manga.id}/{chapter.id}'
     file_name = f'{image.page}.txt'
     if not check_file_exists(path, file_name):
         save_file(path, file_name, catalog.get_image(image))
