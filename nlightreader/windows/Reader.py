@@ -84,6 +84,7 @@ class Reader(QMainWindow):
     def change_chapter(self, page=None):
         match page:
             case '+':
+                self.db.add_history_note(self.manga, self.chapters[self.cur_chapter - 1], True)
                 if self.cur_chapter == self.max_chapters:
                     self.hide()
                     return
@@ -106,6 +107,7 @@ class Reader(QMainWindow):
             self.showFullScreen()
 
     def attach_image(self):
+        self.ui.img.clear()
         self.ui.scrollArea.verticalScrollBar().setValue(0)
         self.ui.scrollArea.horizontalScrollBar().setValue(0)
         if not self.images:
