@@ -152,37 +152,6 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.top_item_widget.sizePolicy().hasHeightForWidth())
         self.top_item_widget.setSizePolicy(sizePolicy1)
         palette = QPalette()
-        brush = QBrush(QColor(255, 255, 255, 255))
-        brush.setStyle(Qt.SolidPattern)
-        palette.setBrush(QPalette.Active, QPalette.WindowText, brush)
-        brush1 = QBrush(QColor(32, 32, 32, 255))
-        brush1.setStyle(Qt.SolidPattern)
-        palette.setBrush(QPalette.Active, QPalette.Button, brush1)
-        palette.setBrush(QPalette.Active, QPalette.Text, brush)
-        palette.setBrush(QPalette.Active, QPalette.ButtonText, brush)
-        palette.setBrush(QPalette.Active, QPalette.Base, brush1)
-        palette.setBrush(QPalette.Active, QPalette.Window, brush1)
-#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
-        palette.setBrush(QPalette.Active, QPalette.PlaceholderText, brush)
-#endif
-        palette.setBrush(QPalette.Inactive, QPalette.WindowText, brush)
-        palette.setBrush(QPalette.Inactive, QPalette.Button, brush1)
-        palette.setBrush(QPalette.Inactive, QPalette.Text, brush)
-        palette.setBrush(QPalette.Inactive, QPalette.ButtonText, brush)
-        palette.setBrush(QPalette.Inactive, QPalette.Base, brush1)
-        palette.setBrush(QPalette.Inactive, QPalette.Window, brush1)
-#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
-        palette.setBrush(QPalette.Inactive, QPalette.PlaceholderText, brush)
-#endif
-        palette.setBrush(QPalette.Disabled, QPalette.WindowText, brush)
-        palette.setBrush(QPalette.Disabled, QPalette.Button, brush1)
-        palette.setBrush(QPalette.Disabled, QPalette.Text, brush)
-        palette.setBrush(QPalette.Disabled, QPalette.ButtonText, brush)
-        palette.setBrush(QPalette.Disabled, QPalette.Base, brush1)
-        palette.setBrush(QPalette.Disabled, QPalette.Window, brush1)
-#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
-        palette.setBrush(QPalette.Disabled, QPalette.PlaceholderText, brush)
-#endif
         self.top_item_widget.setPalette(palette)
         self.top_item_widget.setStyleSheet(u"color: rgb(255, 255, 255);")
         self.verticalLayout_2 = QVBoxLayout(self.top_item_widget)
@@ -223,23 +192,27 @@ class Ui_MainWindow(object):
 "}\n"
 "QScrollBar:vertical {\n"
 "    width: 14px;\n"
+"	margin: 0px 0px 0px 0px;\n"
 "}\n"
 "QScrollBar::handle {\n"
 "    background: rgba(84.000, 86.000, 86.000, 0.737);\n"
 "    border-radius: 5px;\n"
+"	min-height: 0px;\n"
 "}\n"
 "QScrollBar::handle:hover {\n"
 "    background: rgba(114.000, 115.000, 115.000, 0.827);\n"
 "}\n"
 "QScrollBar::handle:pressed {\n"
-"    background: rgba(143.000, 145.000, 145.000, 0.933);\n"
+"    background: rgba(143.000, 145.000, 1"
+                        "45.000, 0.933);\n"
 "}\n"
-"QScrollBar::sub-page, QScr"
-                        "ollBar::add-page {\n"
+"QScrollBar::sub-page, QScrollBar::add-page {\n"
 "    background: transparent;\n"
 "}\n"
 "QScrollBar::sub-line, QScrollBar::add-line {\n"
 "    background: transparent;\n"
+"	subcontrol-position: top;\n"
+"    subcontrol-origin: margin;\n"
 "    width: 0px;\n"
 "    height: 0px;\n"
 "}")

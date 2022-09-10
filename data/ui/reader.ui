@@ -68,10 +68,12 @@ QScrollBar:horizontal {
 }
 QScrollBar:vertical {
     width: 14px;
+	margin: 0px 0px 0px 0px;
 }
 QScrollBar::handle {
     background: rgba(84.000, 86.000, 86.000, 0.737);
     border-radius: 5px;
+	min-height: 0px;
 }
 QScrollBar::handle:hover {
     background: rgba(114.000, 115.000, 115.000, 0.827);
@@ -84,6 +86,8 @@ QScrollBar::sub-page, QScrollBar::add-page {
 }
 QScrollBar::sub-line, QScrollBar::add-line {
     background: transparent;
+	subcontrol-position: top;
+    subcontrol-origin: margin;
     width: 0px;
     height: 0px;
 }</string>
