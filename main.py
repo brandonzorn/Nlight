@@ -15,6 +15,7 @@ class App(ParentWindow):
         super().__init__()
         self.setMinimumSize(QSize(self.screen().size().width() // 2, self.screen().size().height() // 2))
         self.setWindowTitle(APP_NAME)
+        self.setAttribute(Qt.WA_DeleteOnClose)
         self.show()
 
 
