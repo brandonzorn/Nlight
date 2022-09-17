@@ -15,14 +15,10 @@ class ParentWindow(QMainWindow):
         self.Form_shikimori = FormShikimori()
         self.Form_history = FormHistory()
 
-        self.Form_info = FormInfo()
-
         self.ui.btn_main.clicked.connect(lambda: self.change_widget(self.Form_facial))
         self.ui.btn_library.clicked.connect(lambda: self.change_widget(self.Form_library))
         self.ui.btn_shikimori.clicked.connect(lambda: self.change_widget(self.Form_shikimori))
         self.ui.btn_history.clicked.connect(lambda: self.change_widget(self.Form_history))
-
-        self.Form_info.ui.back_btn.clicked.connect(self.back)
 
         self.change_widget(self.Form_facial)
 
@@ -38,11 +34,14 @@ class ParentWindow(QMainWindow):
         self.ui.top_item.setCurrentWidget(widget)
 
     def open_info(self, manga):
-        self.Form_info.setup(manga)
+        info = FormInfo()
+        info.setup(manga)
+        info.ui.back_btn.clicked.connect(self.back)
         self.ui.side_menu_widget.hide()
-        self.ui.top_item.addWidget(self.Form_info)
-        self.ui.top_item.setCurrentWidget(self.Form_info)
+        self.ui.top_item.addWidget(info)
+        self.ui.top_item.setCurrentWidget(info)
 
     def back(self):
         self.ui.side_menu_widget.show()
+        self.ui.top_item.currentWidget().deleteLater()
         self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
