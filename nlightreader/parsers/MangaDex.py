@@ -127,6 +127,8 @@ class MangaDexLib(MangaDex, LibParser):
                 params.lib_list = 'reading'
             case 'rewatching':
                 params.lib_list = 're_reading'
+            case _:
+                params.lib_list = params.lib_list.name
         html_statuses = self.session.get(f'{self.url_api}/manga/status', params={'status': params.lib_list})
         params = {'limit': params.limit, 'offset': params.offset}
         html = self.session.get(f'{self.url_api}/user/follows/manga', params=params)
