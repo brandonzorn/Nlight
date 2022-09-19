@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'info.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.3.1
+## Created by: Qt User Interface Compiler version 6.3.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -25,8 +25,13 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(605, 504)
+        Form.resize(605, 547)
         Form.setStyleSheet(u"QFrame {\n"
+"	border-radius: 10px;\n"
+"	background-color: rgb(45, 45, 45);\n"
+"	color: rgb(255, 255, 255);\n"
+"}\n"
+"QMenu {\n"
 "	border-radius: 10px;\n"
 "	background-color: rgb(45, 45, 45);\n"
 "	color: rgb(255, 255, 255);\n"
