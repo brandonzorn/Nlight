@@ -45,6 +45,10 @@ class FormInfo(QWidget):
         remove_read_state = QAction('Удалить отметку о прочтении')
         if event.type() == QEvent.ContextMenu and source is self.ui.items_list:
             menu = QMenu()
+            menu.setStyleSheet("""
+            QMenu{background-color: rgb(45, 45, 45);color: rgb(255, 255, 255);}
+            QMenu::item{background-color: rgb(45, 45, 45);color: rgb(255, 255, 255);}
+            QMenu::item:selected{background-color: gray;}""")
             selected_item: QListWidgetItem = source.itemAt(event.pos())
             if not self.db.check_complete_chapter(
                     self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()]):
@@ -52,6 +56,7 @@ class FormInfo(QWidget):
                 menu.addAction(set_as_read_all)
             else:
                 menu.addAction(remove_read_state)
+                menu.addAction(set_as_read_all)
             selected_action = menu.exec(event.globalPos())
             if selected_action == set_as_read:
                 self.db.add_history_note(
