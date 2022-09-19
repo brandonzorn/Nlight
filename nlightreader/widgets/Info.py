@@ -1,8 +1,8 @@
 from threading import Thread, Lock
 
-from PySide6.QtCore import Qt, QSize
-from PySide6.QtGui import QIcon, QColor
-from PySide6.QtWidgets import QWidget, QListWidgetItem
+from PySide6.QtCore import Qt, QSize, QEvent
+from PySide6.QtGui import QIcon, QColor, QAction
+from PySide6.QtWidgets import QWidget, QListWidgetItem, QMenu
 
 from const.lists import lib_lists_en, lib_lists_ru, LibList
 from data.ui.info import Ui_Form
@@ -28,6 +28,7 @@ class FormInfo(QWidget):
         self.ui.shikimori_btn.clicked.connect(self.open_rate)
         self.ui.add_btn.clicked.connect(self.add_to_favorites)
         self.ui.lib_list_box.currentIndexChanged.connect(self.change_lib_list)
+        self.ui.items_list.installEventFilter(self)
         self.db: Database = Database()
         self.catalog = None
         self.manga = None
@@ -37,6 +38,36 @@ class FormInfo(QWidget):
         self.reader_window = None
         self.rate_window = FormRate()
         self.character_window = None
+
+    def eventFilter(self, source, event):
+        set_as_read = QAction('Отметить прочитанным')
+        set_as_read_all = QAction('Отметить прочитанным все предыдущие')
+        remove_read_state = QAction('Удалить отметку о прочтении')
+        if event.type() == QEvent.ContextMenu and source is self.ui.items_list:
+            menu = QMenu()
+            selected_item: QListWidgetItem = source.itemAt(event.pos())
+            if not self.db.check_complete_chapter(
+                    self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()]):
+                menu.addAction(set_as_read)
+                menu.addAction(set_as_read_all)
+            else:
+                menu.addAction(remove_read_state)
+            selected_action = menu.exec(event.globalPos())
+            if selected_action == set_as_read:
+                self.db.add_history_note(
+                    self.manga, self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()], True)
+                selected_item.setBackground(QColor("GREEN"))
+            elif selected_action == set_as_read_all:
+                for item in [selected_item.listWidget().item(i) for i in range(
+                        selected_item.listWidget().indexFromItem(selected_item).row())]:
+                    self.db.add_history_note(self.manga, self.chapters[
+                        selected_item.listWidget().indexFromItem(item).row()], True)
+                    item.setBackground(QColor("GREEN"))
+            elif selected_action == remove_read_state:
+                self.db.del_history_note(self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()])
+                selected_item.setBackground(QColor(255, 255, 255, 0))
+            return True
+        return super().eventFilter(source, event)
 
     def resizeEvent(self, a0):
         self.ui.image.clear()
