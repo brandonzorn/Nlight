@@ -22,8 +22,8 @@ if __name__ == '__main__':
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
     QApplication.setStyle('Fusion')
     app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon(app_icon_path))
     app_paths = [APP_NAME]
     init_app_paths(app_paths)
     a = App()
-    QApplication.setWindowIcon(QIcon(app_icon_path))
     sys.exit(app.exec())
