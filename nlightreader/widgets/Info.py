@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QWidget, QListWidgetItem, QMenu
 
 from const.lists import lib_lists_en, lib_lists_ru, LibList
 from data.ui.info import Ui_Form
-from items import Manga, Chapter, Character
+from items import Manga, Chapter, Character, HistoryNote
 from nlightreader.dialogs import FormRate, FormCharacter
 from nlightreader.utils import Database, get_manga_preview, lock_ui, get_catalog, get_status, with_lock_thread, \
     get_language_icon, TextFormatter
@@ -50,12 +50,12 @@ class FormInfo(QWidget):
             QMenu::item{background-color: rgb(45, 45, 45);color: rgb(255, 255, 255);}
             QMenu::item:selected{background-color: gray;}""")
             selected_item: QListWidgetItem = source.itemAt(event.pos())
-            chapter = self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()]
-            if not self.db.check_complete_chapter(chapter):
+            selected_chapter = self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()]
+            if not self.db.check_complete_chapter(selected_chapter):
                 menu.addAction(set_as_read)
                 menu.addAction(set_as_read_all)
             else:
-                if not self.db.get_complete_status(chapter):
+                if not self.db.get_complete_status(selected_chapter):
                     menu.addAction(set_as_read)
                 menu.addAction(remove_read_state)
                 menu.addAction(set_as_read_all)
@@ -65,11 +65,13 @@ class FormInfo(QWidget):
                     self.manga, self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()], True)
                 selected_item.setBackground(QColor("GREEN"))
             elif selected_action == set_as_read_all:
+                history_notes = []
                 for item in [selected_item.listWidget().item(i) for i in range(
                         selected_item.listWidget().indexFromItem(selected_item).row())]:
-                    self.db.add_history_note(self.manga, self.chapters[
-                        selected_item.listWidget().indexFromItem(item).row()], True)
+                    history_notes.append(HistoryNote(0, self.chapters[
+                        selected_item.listWidget().indexFromItem(item).row()], self.manga, True))
                     item.setBackground(QColor("GREEN"))
+                self.db.add_history_notes(history_notes)
             elif selected_action == remove_read_state:
                 self.db.del_history_note(self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()])
                 selected_item.setBackground(QColor(255, 255, 255, 0))
