@@ -50,11 +50,13 @@ class FormInfo(QWidget):
             QMenu::item{background-color: rgb(45, 45, 45);color: rgb(255, 255, 255);}
             QMenu::item:selected{background-color: gray;}""")
             selected_item: QListWidgetItem = source.itemAt(event.pos())
-            if not self.db.check_complete_chapter(
-                    self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()]):
+            chapter = self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()]
+            if not self.db.check_complete_chapter(chapter):
                 menu.addAction(set_as_read)
                 menu.addAction(set_as_read_all)
             else:
+                if not self.db.get_complete_status(chapter):
+                    menu.addAction(set_as_read)
                 menu.addAction(remove_read_state)
                 menu.addAction(set_as_read_all)
             selected_action = menu.exec(event.globalPos())
@@ -111,8 +113,9 @@ class FormInfo(QWidget):
 
     def open_character(self):
         character = self.catalog.get_character(self.related_characters[self.ui.characters_list.currentIndex().row()])
+        if self.character_window:
+            self.character_window.close()
         self.character_window = FormCharacter(character, self.manga.catalog_id)
-        self.character_window.setup()
         self.character_window.show()
 
     def set_info(self):
