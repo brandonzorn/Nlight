@@ -131,6 +131,13 @@ class Database:
         self.__con.commit()
 
     @with_lock_thread(lock)
+    def add_history_notes(self, history_notes: list[HistoryNote]):
+        for note in history_notes:
+            self.__cur.execute(f"INSERT INTO chapter_history VALUES(?, ?, ?);", (
+                note.chapter.id, note.manga.id, note.is_completed))
+        self.__con.commit()
+
+    @with_lock_thread(lock)
     def get_history_notes(self) -> list[HistoryNote]:
         notes = []
         a = self.__cur.execute(f"SELECT * FROM chapter_history;").fetchall()
