@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QMainWindow
 
 from const.icons import app_icon_path
 from data.ui.reader import Ui_MainWindow
-from items import Manga, Chapter
+from items import Manga, Chapter, Image
 from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image
 
 
@@ -28,12 +28,12 @@ class Reader(QMainWindow):
 
         self.db: Database = Database()
         self.manga = None
-        self.chapters = None
-        self.images = None
-        self.cur_chapter: int = 1
-        self.max_chapters: int = 1
-        self.cur_page: int = 1
-        self.max_page: int = 1
+        self.chapters: list[Chapter] = []
+        self.images: list[Image] = []
+        self.cur_chapter = 1
+        self.max_chapters = 1
+        self.cur_page = 1
+        self.max_page = 1
         self.catalog = None
 
     def setup(self, manga: Manga, chapters: list[Chapter], cur_chapter=1):
