@@ -4,7 +4,7 @@ from PySide6.QtCore import QSize, Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 
-from const.app import APP_NAME
+from const.app import APP_NAME, APP_VERSION
 from const.icons import app_icon_path
 from nlightreader import ParentWindow
 from nlightreader.utils import init_app_paths
@@ -22,6 +22,8 @@ if __name__ == '__main__':
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
     QApplication.setStyle('Fusion')
     app = QApplication(sys.argv)
+    app.setApplicationDisplayName(APP_NAME)
+    app.setApplicationVersion(APP_VERSION)
     app.setWindowIcon(QIcon(app_icon_path))
     app_paths = [APP_NAME]
     init_app_paths(app_paths)
