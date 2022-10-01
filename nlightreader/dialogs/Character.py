@@ -19,16 +19,14 @@ class FormCharacter(QDialog):
         self.character = character
         self.setWindowTitle(self.character.get_name())
         self.catalog = get_catalog(catalog_id)()
+        self.ui.name_label.setText(self.character.name)
+        self.ui.russian_label.setText(self.character.russian)
+        self.update_description()
         Thread(target=self.setup_image, daemon=True).start()
 
     def closeEvent(self, arg__1) -> None:
         self.destroy()
         self.deleteLater()
-
-    def setup(self):
-        self.ui.name_label.setText(self.character.name)
-        self.ui.russian_label.setText(self.character.russian)
-        self.update_description()
 
     def update_description(self):
         self.ui.description.clear()
