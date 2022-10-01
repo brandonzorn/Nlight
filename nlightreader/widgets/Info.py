@@ -115,8 +115,6 @@ class FormInfo(QWidget):
 
     def open_character(self):
         character = self.catalog.get_character(self.related_characters[self.ui.characters_list.currentIndex().row()])
-        if self.character_window:
-            self.character_window.close()
         self.character_window = FormCharacter(character, self.manga.catalog_id)
         self.character_window.show()
 

@@ -15,4 +15,8 @@ class TextFormatter:
                 spoiler = ""
             text = text.replace(f"[spoiler={i}]{spoiler_text}[/spoiler]",
                                 f'<span style=" color:#951a00;">{spoiler}</span>')
+        for url, url_text in re.findall(r"\[url=(.+?)](.+?)\[/url]", text):
+            text = text.replace(f"[url={url}]{url_text}[/url]",
+                                f'<a href="{url}">'
+                                f'<span style="text-decoration: underline;color:#0000ff;">{url_text}</span></a>')
         return text
