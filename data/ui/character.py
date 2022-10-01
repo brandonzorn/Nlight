@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'character.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.3.1
+## Created by: Qt User Interface Compiler version 6.3.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -182,6 +182,7 @@ class Ui_Dialog(object):
         self.description.setObjectName(u"description")
         self.description.setStyleSheet(u"")
         self.description.setReadOnly(True)
+        self.description.setTextInteractionFlags(Qt.LinksAccessibleByMouse|Qt.TextSelectableByMouse)
 
         self.verticalLayout_4.addWidget(self.description)
 
