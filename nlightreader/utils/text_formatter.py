@@ -20,3 +20,8 @@ class TextFormatter:
                                 f'<a href="{url}">'
                                 f'<span style="text-decoration: underline;color:#0000ff;">{url_text}</span></a>')
         return text
+
+    @staticmethod
+    def get_marks(text: str):
+        marks = {}
+        return marks

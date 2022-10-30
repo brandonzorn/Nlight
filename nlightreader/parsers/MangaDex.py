@@ -3,7 +3,7 @@ import requests
 from const.urls import URL_MANGA_DEX_API, DEFAULT_HEADERS
 from items import Manga, Chapter, Image, Genre, RequestForm, User
 from nlightreader.parsers.Parser import Parser, LibParser
-from nlightreader.utils.utils import get_html, TokenManager
+from nlightreader.utils.utils import get_html, TokenManager, get_data
 
 
 class MangaDex(Parser):
@@ -18,34 +18,34 @@ class MangaDex(Parser):
         url = f'{self.url_api}/manga/{manga.id}'
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
-            data = html.json().get("data")
+            data = get_data(html.json(), ['data'])
             manga.kind = data.get('type')
-            description = data.get('attributes').get('description')
+            description = get_data(data, ['attributes', 'description'])
             if description:
                 if description.get('ru'):
                     description = description.get('ru')
                 else:
                     description = description.get('en')
             manga.description = description
-            volumes = data.get("attributes").get('lastVolume')
-            chapters = data.get("attributes").get('lastChapter')
+            volumes = get_data(data, ['attributes', 'lastVolume'])
+            chapters = get_data(data, ['attributes', 'lastChapter'])
             if volumes:
                 manga.volumes = volumes
             if chapters:
                 manga.chapters = chapters
-            manga.status = data.get("attributes").get('status')
+            manga.status = get_data(data, ['attributes', 'status'])
         return manga
 
     def setup_manga(self, data: dict):
         manga_id = data.get('id')
-        name = data.get('attributes').get('title').get('en')
+        name = get_data(data, ['attributes', 'title', 'en'])
         russian = None
-        if data.get('attributes').get('altTitles'):
-            for j in data.get('attributes').get('altTitles'):
-                if 'ru' in j.keys():
-                    russian = j.get('ru')
-                if not name and 'en' in j.keys():
-                    name = j.get('en')
+        alt_titles = get_data(data, ['attributes', 'altTitles'])
+        for j in alt_titles:
+            if 'ru' in j.keys():
+                russian = j.get('ru')
+            if not name and 'en' in j.keys():
+                name = j.get('en')
         return Manga(manga_id, self.catalog_id, name, russian)
 
     def search_manga(self, params: RequestForm):
@@ -55,7 +55,7 @@ class MangaDex(Parser):
         mangas = []
         html = get_html(url, self.headers, params)
         if html and html.status_code == 200 and html.json():
-            for i in html.json().get('data'):
+            for i in get_data(html.json(), ['data']):
                 mangas.append(self.setup_manga(i))
         return mangas
 
@@ -69,7 +69,7 @@ class MangaDex(Parser):
             for j in range(html.json().get('total') // 100 + 1):
                 params.update({'offset': j * 100})
                 html = get_html(url, self.headers, params)
-                for i in html.json().get('data'):
+                for i in get_data(html.json(), ['data']):
                     attr = i.get('attributes')
                     chapters.append(Chapter(i.get('id'), attr.get('volume'), attr.get('chapter'), attr.get('title'),
                                             attr.get('translatedLanguage')))

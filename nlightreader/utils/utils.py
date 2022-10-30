@@ -8,7 +8,6 @@ from const.app import APP_NAME
 from const.icons import ru_icon_path, gb_icon_path, jp_icon_path
 from const.lists import lib_lists_en, lib_lists_ru
 from const.urls import DEFAULT_HEADERS
-from items import Manga, Chapter, Image
 
 
 def get_html(url: str, headers: dict = DEFAULT_HEADERS, params=None):
@@ -44,14 +43,17 @@ def get_status(status: str) -> str:
             return status
 
 
-def get_url(manga: Manga, chapter: Chapter = None, image: Image = None):
-    url = f'https://desu.me/manga/api/'
-    url += f'/{manga.id}'
-    if chapter:
-        url += f'/chapter/{chapter.id}'
-        if image:
-            return f'{os.getcwd()}/{APP_NAME}/images/{manga.id}/{chapter.id}/{image.page}.jpg'
-    return url
+def get_data(a: dict, path: list, default_val=None):
+    if default_val is None:
+        default_val = {}
+    data = a
+    for p in path:
+        try:
+            data = data.get(p)
+        except Exception as e:
+            data = default_val
+            print("Get data error\t", e)
+    return data
 
 
 def singleton(cls):
