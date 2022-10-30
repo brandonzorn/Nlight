@@ -2,7 +2,7 @@ from const.desu_items import DESU_GENRES, DESU_KINDS, DESU_ORDERS
 from const.urls import DESU_HEADERS, URL_DESU_API
 from items import Manga, Chapter, Image, Genre, RequestForm, Kind, Order
 from nlightreader.parsers.Parser import Parser
-from nlightreader.utils.utils import get_html
+from nlightreader.utils.utils import get_html, get_data
 
 
 class Desu(Parser):
@@ -17,7 +17,7 @@ class Desu(Parser):
         url = f'{self.url_api}/{manga.id}'
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
-            data = html.json().get('response')
+            data = get_data(html.json(), ['response'], {})
             manga.genres = [Genre(i.get('id'), i.get('text'), i.get('russian'), i.get('kind'))
                             for i in data.get("genres")]
             manga.score = data.get("score")
@@ -36,7 +36,7 @@ class Desu(Parser):
         html = get_html(url, self.headers, params)
         manga = []
         if html and html.status_code == 200 and html.json():
-            for i in html.json().get('response'):
+            for i in get_data(html.json(), ['response']):
                 manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian')))
         return manga
 
@@ -45,7 +45,7 @@ class Desu(Parser):
         html = get_html(url, self.headers)
         chapters = []
         if html and html.status_code == 200 and html.json():
-            for i in html.json().get('response').get('chapters').get('list'):
+            for i in get_data(html.json(), ['response', 'chapters', 'list']):
                 chapters.append(Chapter(i.get('id'), i.get('vol'), i.get('ch'), i.get('title'), 'ru'))
         return chapters
 
@@ -54,7 +54,7 @@ class Desu(Parser):
         html = get_html(url, headers=self.headers)
         if html and html.status_code == 200 and html.json():
             return [Image(i.get('id'), i.get('page'), i.get('img'))
-                    for i in html.json().get('response').get('pages').get('list')]
+                    for i in get_data(html.json(), ['response', 'pages', 'list'])]
         return []
 
     def get_image(self, image: Image):
