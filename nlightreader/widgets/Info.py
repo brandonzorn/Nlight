@@ -1,12 +1,14 @@
 from threading import Thread, Lock
 
 from PySide6.QtCore import Qt, QSize, QEvent
-from PySide6.QtGui import QIcon, QColor, QAction
-from PySide6.QtWidgets import QWidget, QListWidgetItem, QMenu
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QWidget, QListWidgetItem
 
+from const.colors import ItemsColors
 from const.lists import lib_lists_en, lib_lists_ru, LibList
 from data.ui.info import Ui_Form
 from items import Manga, Chapter, Character, HistoryNote
+from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
 from nlightreader.utils import Database, get_manga_preview, lock_ui, get_catalog, get_status, with_lock_thread, \
     get_language_icon, TextFormatter
@@ -40,41 +42,34 @@ class FormInfo(QWidget):
         self.character_window = None
 
     def eventFilter(self, source, event):
-        set_as_read = QAction('Отметить прочитанным')
-        set_as_read_all = QAction('Отметить прочитанным все предыдущие')
-        remove_read_state = QAction('Удалить отметку о прочтении')
         if event.type() == QEvent.ContextMenu and source is self.ui.items_list:
-            menu = QMenu()
-            menu.setStyleSheet("""
-            QMenu{background-color: rgb(45, 45, 45);color: rgb(255, 255, 255);}
-            QMenu::item{background-color: rgb(45, 45, 45);color: rgb(255, 255, 255);}
-            QMenu::item:selected{background-color: gray;}""")
+            menu = ReadMarkMenu()
             selected_item: QListWidgetItem = source.itemAt(event.pos())
             selected_chapter = self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()]
             if not self.db.check_complete_chapter(selected_chapter):
-                menu.addAction(set_as_read)
-                menu.addAction(set_as_read_all)
+                menu.addAction(menu.set_as_read)
+                menu.addAction(menu.set_as_read_all)
             else:
                 if not self.db.get_complete_status(selected_chapter):
-                    menu.addAction(set_as_read)
-                menu.addAction(remove_read_state)
-                menu.addAction(set_as_read_all)
+                    menu.addAction(menu.set_as_read)
+                menu.addAction(menu.remove_read_state)
+                menu.addAction(menu.set_as_read_all)
             selected_action = menu.exec(event.globalPos())
-            if selected_action == set_as_read:
+            if selected_action == menu.set_as_read:
                 self.db.add_history_note(
                     self.manga, self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()], True)
-                selected_item.setBackground(QColor("GREEN"))
-            elif selected_action == set_as_read_all:
+                selected_item.setBackground(ItemsColors.READ)
+            elif selected_action == menu.set_as_read_all:
                 history_notes = []
                 for item in [selected_item.listWidget().item(i) for i in range(
                         selected_item.listWidget().indexFromItem(selected_item).row())]:
                     history_notes.append(HistoryNote(0, self.chapters[
                         selected_item.listWidget().indexFromItem(item).row()], self.manga, True))
-                    item.setBackground(QColor("GREEN"))
+                    item.setBackground(ItemsColors.READ)
                 self.db.add_history_notes(history_notes)
-            elif selected_action == remove_read_state:
+            elif selected_action == menu.remove_read_state:
                 self.db.del_history_note(self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()])
-                selected_item.setBackground(QColor(255, 255, 255, 0))
+                selected_item.setBackground(ItemsColors.EMPTY)
             return True
         return super().eventFilter(source, event)
 
@@ -158,9 +153,9 @@ class FormInfo(QWidget):
                 item = QListWidgetItem(chapter.get_name())
                 if self.db.check_complete_chapter(chapter):
                     if self.db.get_complete_status(chapter):
-                        item.setBackground(QColor("GREEN"))
+                        item.setBackground(ItemsColors.READ)
                     else:
-                        item.setBackground(QColor("RED"))
+                        item.setBackground(ItemsColors.UNREAD)
                 if chapter.language:
                     item.setIcon(QIcon(get_language_icon(chapter.language)))
                 self.ui.items_list.addItem(item)
