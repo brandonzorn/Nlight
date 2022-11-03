@@ -1,6 +1,7 @@
 import contextlib
 import json
 import os
+from functools import wraps
 
 import requests
 
@@ -59,6 +60,7 @@ def get_data(a: dict, path: list, default_val=None):
 def singleton(cls):
     instance = [None]
 
+    @wraps(cls)
     def wrapper(*args, **kwargs):
         if instance[0] is None:
             instance[0] = cls(*args, **kwargs)
@@ -68,6 +70,8 @@ def singleton(cls):
 
 def with_lock_thread(locker):
     def decorator(func):
+
+        @wraps(func)
         def wrapper(*args, **kwargs):
             with locker:
                 return func(*args, **kwargs)

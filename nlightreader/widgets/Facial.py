@@ -3,6 +3,7 @@ from threading import Thread, Lock
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QListWidgetItem, QCheckBox, QRadioButton
 
+from const.colors import ItemsColors
 from data.ui.facial import Ui_Form
 from items import RequestForm
 from nlightreader.dialogs import FormGenres
@@ -79,7 +80,7 @@ class FormFacial(BaseWidget):
             for i in self.mangas:
                 item = QListWidgetItem(i.get_name())
                 if self.db.check_manga_library(i):
-                    item.setBackground(QColor("ORANGE"))
+                    item.setBackground(ItemsColors.IN_LIBRARY)
                 self.ui.items_list.addItem(item)
             self.ui.page_label.setText(f'Страница {self.request_params.page}')
 

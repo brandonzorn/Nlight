@@ -1,6 +1,6 @@
-from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QListWidgetItem
 
+from const.colors import ItemsColors
 from data.ui.history import Ui_Form
 from items import HistoryNote
 from nlightreader.utils import Database
@@ -33,7 +33,7 @@ class FormHistory(BaseWidget):
         for note in self.notes:
             item = QListWidgetItem(note.get_name())
             if note.is_completed:
-                item.setBackground(QColor("GREEN"))
+                item.setBackground(ItemsColors.READ)
             else:
-                item.setBackground(QColor("RED"))
+                item.setBackground(ItemsColors.UNREAD)
             self.ui.items_list.addItem(item)
