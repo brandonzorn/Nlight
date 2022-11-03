@@ -1,6 +1,5 @@
 from threading import Thread, Lock
 
-from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QListWidgetItem, QCheckBox, QRadioButton
 
 from const.colors import ItemsColors
