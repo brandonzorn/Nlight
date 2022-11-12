@@ -42,34 +42,43 @@ class FormInfo(QWidget):
         self.character_window = None
 
     def eventFilter(self, source, event):
+        def set_as_read_all():
+            history_notes = []
+            for item in [selected_item.listWidget().item(i) for i in range(
+                    selected_item.listWidget().indexFromItem(selected_item).row())]:
+                history_notes.append(HistoryNote(0, self.chapters[
+                    selected_item.listWidget().indexFromItem(item).row()], self.manga, True))
+                item.setBackground(ItemsColors.READ)
+            self.db.add_history_notes(history_notes)
+
+        def set_as_read():
+            self.db.add_history_note(
+                self.manga, self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()], True)
+            selected_item.setBackground(ItemsColors.READ)
+
+        def remove_read_state():
+            self.db.del_history_note(self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()])
+            selected_item.setBackground(ItemsColors.EMPTY)
+
         if event.type() == QEvent.ContextMenu and source is self.ui.items_list:
             menu = ReadMarkMenu()
             selected_item: QListWidgetItem = source.itemAt(event.pos())
             selected_chapter = self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()]
             if not self.db.check_complete_chapter(selected_chapter):
-                menu.addAction(menu.set_as_read)
-                menu.addAction(menu.set_as_read_all)
+                menu.set_mode(0)
             else:
-                if not self.db.get_complete_status(selected_chapter):
-                    menu.addAction(menu.set_as_read)
-                menu.addAction(menu.remove_read_state)
-                menu.addAction(menu.set_as_read_all)
+                if self.db.get_complete_status(selected_chapter):
+                    menu.set_mode(1)
+                else:
+                    menu.set_mode(2)
             selected_action = menu.exec(event.globalPos())
-            if selected_action == menu.set_as_read:
-                self.db.add_history_note(
-                    self.manga, self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()], True)
-                selected_item.setBackground(ItemsColors.READ)
-            elif selected_action == menu.set_as_read_all:
-                history_notes = []
-                for item in [selected_item.listWidget().item(i) for i in range(
-                        selected_item.listWidget().indexFromItem(selected_item).row())]:
-                    history_notes.append(HistoryNote(0, self.chapters[
-                        selected_item.listWidget().indexFromItem(item).row()], self.manga, True))
-                    item.setBackground(ItemsColors.READ)
-                self.db.add_history_notes(history_notes)
-            elif selected_action == menu.remove_read_state:
-                self.db.del_history_note(self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()])
-                selected_item.setBackground(ItemsColors.EMPTY)
+            match selected_action:
+                case menu.set_as_read:
+                    set_as_read()
+                case menu.set_as_read_all:
+                    set_as_read_all()
+                case menu.remove_read_state:
+                    remove_read_state()
             return True
         return super().eventFilter(source, event)
 

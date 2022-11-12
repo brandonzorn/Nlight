@@ -24,8 +24,7 @@ class FormCharacter(QDialog):
         self.update_description()
         Thread(target=self.setup_image, daemon=True).start()
 
-    def closeEvent(self, arg__1) -> None:
-        self.destroy()
+    def closeEvent(self, arg__1):
         self.deleteLater()
 
     def update_description(self):
