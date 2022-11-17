@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
 from const.urls import URL_RULATE, DEFAULT_HEADERS
-from items import Manga, Chapter, Image, RequestForm
+from nlightreader.items import Manga, Chapter, Image, RequestForm
 from nlightreader.parsers.Parser import Parser
 from nlightreader.utils.utils import get_html
 

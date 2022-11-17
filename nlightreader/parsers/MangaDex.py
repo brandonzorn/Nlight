@@ -1,9 +1,9 @@
 import requests
 
 from const.urls import URL_MANGA_DEX_API, DEFAULT_HEADERS
-from items import Manga, Chapter, Image, Genre, RequestForm, User
+from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User
 from nlightreader.parsers.Parser import Parser, LibParser
-from nlightreader.utils.utils import get_html, TokenManager, get_data
+from nlightreader.utils.utils import get_html, TokenManager, get_data, singleton
 
 
 class MangaDex(Parser):
@@ -146,6 +146,7 @@ class MangaDexLib(MangaDex, LibParser):
             return User(data.get('id'), data.get('attributes').get('username'), '')
 
 
+@singleton
 class Auth:
     def __init__(self):
         self.url_api = URL_MANGA_DEX_API

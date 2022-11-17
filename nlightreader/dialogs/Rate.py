@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QDialog
 
 from const.lists import lib_lists_en, lib_lists_ru
 from data.ui.rate import Ui_Dialog
-from items import Manga
+from nlightreader.items import Manga
 from nlightreader.utils.catalog_manager import get_catalog, get_lib_catalog
 
 

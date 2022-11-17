@@ -9,4 +9,4 @@ class BaseWidget(QWidget):
         pass
 
     def get_current_manga(self):
-        print("// Method called from BaseClass")
+        pass

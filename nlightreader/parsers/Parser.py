@@ -1,4 +1,4 @@
-from items import Manga, Chapter, Image, RequestForm, Genre, Kind, Order, Character, User, UserRate
+from nlightreader.items import Manga, Chapter, Image, RequestForm, Genre, Kind, Order, Character, User, UserRate
 
 
 class Parser:
