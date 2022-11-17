@@ -1,4 +1,4 @@
-from items import RequestForm
+from nlightreader.items import RequestForm
 from nlightreader.utils.database import Database
 
 

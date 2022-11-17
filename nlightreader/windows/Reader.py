@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QMainWindow
 
 from const.icons import app_icon_path
 from data.ui.reader import Ui_MainWindow
-from items import Manga, Chapter, Image
+from nlightreader.items import Manga, Chapter, Image
 from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image
 
 

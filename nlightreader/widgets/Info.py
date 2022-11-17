@@ -7,9 +7,9 @@ from PySide6.QtWidgets import QWidget, QListWidgetItem
 from const.colors import ItemsColors
 from const.lists import lib_lists_en, lib_lists_ru, LibList
 from data.ui.info import Ui_Form
-from items import Manga, Chapter, Character, HistoryNote
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
+from nlightreader.items import Manga, Character, Chapter, HistoryNote
 from nlightreader.utils import Database, get_manga_preview, lock_ui, get_catalog, get_status, with_lock_thread, \
     get_language_icon, TextFormatter
 from nlightreader.windows.Reader import Reader

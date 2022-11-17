@@ -4,7 +4,7 @@ from threading import Lock
 
 from const.app import APP_NAME
 from const.lists import LibList, lib_lists_en
-from items import Chapter, Image, Manga, HistoryNote
+from nlightreader.items import Chapter, Image, Manga, HistoryNote
 from nlightreader.utils.utils import with_lock_thread, singleton
 
 
@@ -147,6 +147,11 @@ class Database:
             is_completed = bool(i[2])
             notes.append(HistoryNote(0, chapter, manga, is_completed))
         return notes
+
+    @with_lock_thread(lock)
+    def del_history_notes(self, manga: Manga):
+        self.__cur.execute(f"DELETE FROM chapter_history WHERE manga_id = '{manga.id}';")
+        self.__con.commit()
 
     @with_lock_thread(lock)
     def del_history_note(self, chapter: Chapter):
