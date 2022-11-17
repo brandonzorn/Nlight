@@ -2,7 +2,7 @@ from requests_oauthlib import OAuth2Session
 
 from const.shikimori_items import ORDERS, KINDS
 from const.urls import URL_SHIKIMORI_API, URL_SHIKIMORI_TOKEN, URL_SHIKIMORI, SHIKIMORI_HEADERS
-from items import Manga, RequestForm, Genre, Kind, User, UserRate, Order, Character
+from nlightreader.items import Manga, RequestForm, Genre, Kind, User, UserRate, Order, Character
 from keys import SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID
 from nlightreader.parsers.Parser import Parser, LibParser
 from nlightreader.utils.utils import get_html, singleton, TokenManager
