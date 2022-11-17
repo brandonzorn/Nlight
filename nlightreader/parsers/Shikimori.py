@@ -184,7 +184,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         url = f'{self.url_api}/v2/user_rates/{user_rate.id}'
         data = {"user_rate": {"chapters": f"{user_rate.chapters}", "score": f"{user_rate.score}",
                               "status": f"{user_rate.status}"}}
-        self.session.request('PATCH', url, data).json()
+        self.session.request('PATCH', url, json=data)
 
 
 @singleton
