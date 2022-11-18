@@ -60,7 +60,7 @@ class FormInfo(QWidget):
             self.db.del_history_note(self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()])
             selected_item.setBackground(ItemsColors.EMPTY)
 
-        if event.type() == QEvent.ContextMenu and source is self.ui.items_list:
+        if event and event.type() == QEvent.ContextMenu and source is self.ui.items_list and source.itemAt(event.pos()):
             menu = ReadMarkMenu()
             selected_item: QListWidgetItem = source.itemAt(event.pos())
             selected_chapter = self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()]
