@@ -28,7 +28,7 @@ class FormHistory(BaseWidget):
             self.db.del_history_notes(self.notes[selected_item.listWidget().indexFromItem(selected_item).row()].manga)
             self.get_content()
 
-        if event.type() == QEvent.ContextMenu and source is self.ui.items_list:
+        if event and event.type() == QEvent.ContextMenu and source is self.ui.items_list and source.itemAt(event.pos()):
             menu = HistoryNoteMenu()
             selected_item: QListWidgetItem = source.itemAt(event.pos())
             selected_note = self.notes[selected_item.listWidget().indexFromItem(selected_item).row()]
