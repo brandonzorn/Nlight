@@ -65,3 +65,6 @@ class Rulate(Parser):
             soup = BeautifulSoup(html.text, "html.parser")
             himage = soup.find('meta', property="og:image")
             return get_html(himage['content'])
+
+    def get_manga_url(self, manga: Manga) -> str:
+        return f'{URL_RULATE}/book/{manga.id}'

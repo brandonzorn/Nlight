@@ -1,6 +1,6 @@
 import requests
 
-from const.urls import URL_MANGA_DEX_API, DEFAULT_HEADERS
+from const.urls import URL_MANGA_DEX_API, DEFAULT_HEADERS, URL_MANGA_DEX
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User
 from nlightreader.parsers.Parser import Parser, LibParser
 from nlightreader.utils.utils import get_html, TokenManager, get_data, singleton
@@ -110,6 +110,9 @@ class MangaDex(Parser):
                     continue
                 genres.append(Genre(i.get('id'), i.get('attributes').get('name').get('en'), '', ''))
         return genres
+
+    def get_manga_url(self, manga: Manga) -> str:
+        return f'{URL_MANGA_DEX}/title/{manga.id}'
 
 
 class MangaDexLib(MangaDex, LibParser):
