@@ -1,3 +1,4 @@
+import webbrowser
 from threading import Thread, Lock
 
 from PySide6.QtCore import QEvent
@@ -8,7 +9,7 @@ from data.ui.facial import Ui_Form
 from nlightreader.contexts.LibraryManga import LibraryMangaMenu
 from nlightreader.items import RequestForm
 from nlightreader.dialogs import FormGenres
-from nlightreader.utils import Database, USER_CATALOGS, lock_ui, with_lock_thread
+from nlightreader.utils import Database, USER_CATALOGS, lock_ui, with_lock_thread, get_catalog
 from nlightreader.widgets.BaseWidget import BaseWidget
 
 
@@ -54,7 +55,7 @@ class FormFacial(BaseWidget):
             selected_item.setBackground(ItemsColors.EMPTY)
 
         def open_in_browser():
-            print("Open in browser")
+            webbrowser.open_new_tab(get_catalog(selected_manga.catalog_id)().get_manga_url(selected_manga))
 
         if event and event.type() == QEvent.ContextMenu and source is self.ui.items_list and source.itemAt(event.pos()):
             menu = LibraryMangaMenu()
