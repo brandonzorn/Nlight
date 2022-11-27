@@ -1,13 +1,16 @@
+import webbrowser
 from threading import Thread, Lock
 
+from PySide6.QtCore import QEvent
 from PySide6.QtWidgets import QListWidgetItem
 
 from const.lists import LibList
 from data.ui.shikimori import Ui_Form
+from nlightreader.contexts.LibraryManga import LibraryMangaMenu
 from nlightreader.items import Manga, RequestForm, User
 from nlightreader.dialogs import FormAuth
 from nlightreader.parsers import ShikimoriLib
-from nlightreader.utils import Database, lock_ui, with_lock_thread
+from nlightreader.utils import Database, lock_ui, with_lock_thread, get_catalog
 from nlightreader.widgets.BaseWidget import BaseWidget
 
 
@@ -35,6 +38,23 @@ class FormShikimori(BaseWidget):
         self.ui.search_btn.clicked.connect(self.search)
         self.ui.auth_btn.clicked.connect(self.authorize)
         self.Form_auth.accepted.connect(self.auth_accept)
+        self.ui.items_list.installEventFilter(self)
+
+    def eventFilter(self, source, event):
+        def open_in_browser():
+            webbrowser.open_new_tab(get_catalog(selected_manga.catalog_id)().get_manga_url(selected_manga))
+
+        if event and event.type() == QEvent.ContextMenu and source is self.ui.items_list and source.itemAt(event.pos()):
+            menu = LibraryMangaMenu()
+            selected_item: QListWidgetItem = source.itemAt(event.pos())
+            selected_manga = self.mangas[selected_item.listWidget().indexFromItem(selected_item).row()]
+            menu.set_mode(2)
+            selected_action = menu.exec(event.globalPos())
+            match selected_action:
+                case menu.open_in_browser:
+                    open_in_browser()
+            return True
+        return super().eventFilter(source, event)
 
     def setup(self):
         try:
