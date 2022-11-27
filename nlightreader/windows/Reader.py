@@ -1,10 +1,9 @@
 from threading import Thread
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QIcon, QPixmap
+from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QMainWindow
 
-from const.icons import app_icon_path
 from data.ui.reader import Ui_MainWindow
 from nlightreader.items import Manga, Chapter, Image
 from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image
@@ -15,8 +14,6 @@ class Reader(QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-
-        self.setWindowIcon(QIcon(app_icon_path))
 
         self.ui.prev_page_btn.clicked.connect(lambda: self.change_page('-'))
         self.ui.next_page_btn.clicked.connect(lambda: self.change_page('+'))
