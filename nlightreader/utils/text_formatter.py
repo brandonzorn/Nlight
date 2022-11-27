@@ -4,6 +4,7 @@ import re
 class TextFormatter:
     @staticmethod
     def description_to_html(text: str, show_spoilers=False) -> str:
+        text = ' '.join(text.splitlines())
         if not text:
             return ""
         for ch_id, name in re.findall(r"\[character=(\w+)](.+?)\[/character]", text):
@@ -20,8 +21,3 @@ class TextFormatter:
                                 f'<a href="{url}">'
                                 f'<span style="text-decoration: underline;color:#0000ff;">{url_text}</span></a>')
         return text
-
-    @staticmethod
-    def get_marks(text: str):
-        marks = {}
-        return marks
