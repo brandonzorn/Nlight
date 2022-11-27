@@ -1,3 +1,5 @@
+import webbrowser
+
 from PySide6.QtCore import QEvent
 from PySide6.QtWidgets import QListWidgetItem
 
@@ -6,6 +8,7 @@ from data.ui.library import Ui_Form
 from nlightreader.contexts.LibraryManga import LibraryMangaMenu
 from nlightreader.items import Manga, RequestForm
 from nlightreader.parsers import LocalLib
+from nlightreader.utils import get_catalog
 from nlightreader.widgets.BaseWidget import BaseWidget
 
 
@@ -31,7 +34,7 @@ class FormLibrary(BaseWidget):
             self.get_content()
 
         def open_in_browser():
-            print("Open in browser")
+            webbrowser.open_new_tab(get_catalog(selected_manga.catalog_id)().get_manga_url(selected_manga))
 
         if event and event.type() == QEvent.ContextMenu and source is self.ui.items_list and source.itemAt(event.pos()):
             menu = LibraryMangaMenu()

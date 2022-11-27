@@ -1,4 +1,4 @@
-from const.urls import URL_RANOBEHUB_API, DEFAULT_HEADERS
+from const.urls import URL_RANOBEHUB_API, DEFAULT_HEADERS, URL_RANOBEHUB
 from nlightreader.items import RequestForm, Manga
 from nlightreader.parsers.Parser import Parser
 from nlightreader.utils.utils import get_html
@@ -41,3 +41,6 @@ class Ranobehub(Parser):
         if html and html.status_code == 200 and html.json():
             img = html.json().get('data').get('posters').get('big')
             return get_html(img)
+
+    def get_manga_url(self, manga: Manga) -> str:
+        return f'{URL_RANOBEHUB}/ranobe/{manga.id}'

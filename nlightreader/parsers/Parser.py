@@ -44,6 +44,9 @@ class Parser:
     def get_characters(self, manga: Manga) -> list[Character]:
         return []
 
+    def get_manga_url(self, manga: Manga) -> str:
+        pass
+
 
 class LibParser:
     def __init__(self):

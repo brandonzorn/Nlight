@@ -86,6 +86,9 @@ class ShikimoriBase(Parser):
             characters.reverse()
         return characters
 
+    def get_manga_url(self, manga: Manga) -> str:
+        return f'{URL_SHIKIMORI}/mangas/{manga.id}'
+
 
 class ShikimoriManga(ShikimoriBase):
     catalog_name = 'Shikimori(Manga)'
