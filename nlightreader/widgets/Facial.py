@@ -1,9 +1,11 @@
 from threading import Thread, Lock
 
+from PySide6.QtCore import QEvent
 from PySide6.QtWidgets import QListWidgetItem, QCheckBox, QRadioButton
 
 from const.colors import ItemsColors
 from data.ui.facial import Ui_Form
+from nlightreader.contexts.LibraryManga import LibraryMangaMenu
 from nlightreader.items import RequestForm
 from nlightreader.dialogs import FormGenres
 from nlightreader.utils import Database, USER_CATALOGS, lock_ui, with_lock_thread
@@ -28,6 +30,7 @@ class FormFacial(BaseWidget):
             not self.ui.catalogs_list.isVisible()))
         self.ui.catalogs_list.doubleClicked.connect(
             lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row()))
+        self.ui.items_list.installEventFilter(self)
         self.mangas = []
         self.order_items = {}
         self.kind_items = {}
@@ -38,6 +41,47 @@ class FormFacial(BaseWidget):
         self.db: Database = Database()
         self.catalog = None
         self.change_catalog(0)
+
+    def eventFilter(self, source, event):
+        def add_to_lib():
+            manga = self.catalog.get_manga(selected_manga)
+            self.db.add_manga(manga)
+            self.db.add_manga_library(manga)
+            selected_item.setBackground(ItemsColors.IN_LIBRARY)
+
+        def remove_from_lib():
+            self.db.rem_manga_library(selected_manga)
+            selected_item.setBackground(ItemsColors.EMPTY)
+
+        def open_in_browser():
+            print("Open in browser")
+
+        if event and event.type() == QEvent.ContextMenu and source is self.ui.items_list and source.itemAt(event.pos()):
+            menu = LibraryMangaMenu()
+            selected_item: QListWidgetItem = source.itemAt(event.pos())
+            selected_manga = self.mangas[selected_item.listWidget().indexFromItem(selected_item).row()]
+            if self.db.check_manga_library(selected_manga):
+                menu.set_mode(1)
+            else:
+                menu.set_mode(0)
+            selected_action = menu.exec(event.globalPos())
+            match selected_action:
+                case menu.add_to_lib:
+                    add_to_lib()
+                case menu.remove_from_lib:
+                    remove_from_lib()
+                case menu.open_in_browser:
+                    open_in_browser()
+            return True
+        return super().eventFilter(source, event)
+
+    def setup(self):
+        self.ui.items_list.clear()
+        for i in self.mangas:
+            item = QListWidgetItem(i.get_name())
+            if self.db.check_manga_library(i):
+                item.setBackground(ItemsColors.IN_LIBRARY)
+            self.ui.items_list.addItem(item)
 
     def setup_catalogs(self):
         self.ui.catalogs_list.clear()
