@@ -1,7 +1,7 @@
 import requests
 
 from const.urls import URL_MANGA_DEX_API, DEFAULT_HEADERS, URL_MANGA_DEX
-from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User
+from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
 from nlightreader.parsers.Parser import Parser, LibParser
 from nlightreader.utils.utils import get_html, TokenManager, get_data, singleton
 
@@ -51,7 +51,7 @@ class MangaDex(Parser):
     def search_manga(self, params: RequestForm):
         url = f'{self.url_api}/manga'
         params = {'limit': 50, 'title': params.search, 'offset': params.offset,
-                  'includedTags[]': [i.id for i in params.genres]}
+                  'includedTags[]': [i.id for i in params.genres] + [i.id for i in params.kinds]}
         mangas = []
         html = get_html(url, self.headers, params)
         if html and html.status_code == 200 and html.json():
@@ -110,6 +110,17 @@ class MangaDex(Parser):
                     continue
                 genres.append(Genre(i.get('id'), i.get('attributes').get('name').get('en'), '', ''))
         return genres
+
+    def get_kinds(self):
+        url = f'{self.url_api}/manga/tag'
+        html = get_html(url, headers=self.headers)
+        kinds = []
+        if html and html.status_code == 200 and html.json():
+            for i in html.json().get('data'):
+                if i.get('attributes').get('group') not in ['format']:
+                    continue
+                kinds.append(Kind(i.get('id'), i.get('attributes').get('name').get('en'), ''))
+        return kinds
 
     def get_manga_url(self, manga: Manga) -> str:
         return f'{URL_MANGA_DEX}/title/{manga.id}'
