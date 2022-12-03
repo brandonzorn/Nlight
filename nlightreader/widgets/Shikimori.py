@@ -39,6 +39,7 @@ class FormShikimori(BaseWidget):
         self.ui.auth_btn.clicked.connect(self.authorize)
         self.Form_auth.accepted.connect(self.auth_accept)
         self.ui.items_list.installEventFilter(self)
+        self.get_content()
 
     def eventFilter(self, source, event):
         def open_in_browser():
