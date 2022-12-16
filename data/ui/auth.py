@@ -183,10 +183,10 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
         self.catalog_label.setText(QCoreApplication.translate("Dialog", u"Shikimori", None))
-        self.label.setText(QCoreApplication.translate("Dialog", u"\u041a\u043e\u0434 \u0430\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u0438", None))
+        self.label.setText(QCoreApplication.translate("Dialog", u"Authorization code", None))
         self.get_code_btn.setText(QCoreApplication.translate("Dialog", u"Get code", None))
-        self.label_2.setText(QCoreApplication.translate("Dialog", u"\u041b\u043e\u0433\u0438\u043d", None))
-        self.label_3.setText(QCoreApplication.translate("Dialog", u"\u041f\u0430\u0440\u043e\u043b\u044c", None))
-        self.auth_btn.setText(QCoreApplication.translate("Dialog", u"\u0412\u043e\u0439\u0442\u0438", None))
+        self.label_2.setText(QCoreApplication.translate("Dialog", u"Login", None))
+        self.label_3.setText(QCoreApplication.translate("Dialog", u"Password", None))
+        self.auth_btn.setText(QCoreApplication.translate("Dialog", u"Sign in", None))
     # retranslateUi
 
