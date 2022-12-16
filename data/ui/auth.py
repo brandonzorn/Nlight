@@ -54,6 +54,7 @@ class Ui_Dialog(object):
 "QPushButton:checked {\n"
 "	border-left: 3px solid white;\n"
 "}")
+        Dialog.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.verticalLayout_2 = QVBoxLayout(Dialog)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.catalog_frame = QFrame(Dialog)
@@ -183,7 +184,7 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
         self.catalog_label.setText(QCoreApplication.translate("Dialog", u"Shikimori", None))
         self.label.setText(QCoreApplication.translate("Dialog", u"\u041a\u043e\u0434 \u0430\u0432\u0442\u043e\u0440\u0438\u0437\u0430\u0446\u0438\u0438", None))
-        self.get_code_btn.setText(QCoreApplication.translate("Dialog", u"\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u043a\u043e\u0434", None))
+        self.get_code_btn.setText(QCoreApplication.translate("Dialog", u"Get code", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"\u041b\u043e\u0433\u0438\u043d", None))
         self.label_3.setText(QCoreApplication.translate("Dialog", u"\u041f\u0430\u0440\u043e\u043b\u044c", None))
         self.auth_btn.setText(QCoreApplication.translate("Dialog", u"\u0412\u043e\u0439\u0442\u0438", None))

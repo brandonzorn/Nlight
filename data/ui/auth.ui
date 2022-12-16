@@ -45,6 +45,9 @@ QPushButton:checked {
 	border-left: 3px solid white;
 }</string>
   </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QFrame" name="catalog_frame">
@@ -106,7 +109,7 @@ QPushButton:checked {
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="text">
-           <string>Получить код</string>
+           <string>Get code</string>
           </property>
          </widget>
         </item>
