@@ -8,6 +8,7 @@ import requests
 from const.app import APP_NAME
 from const.icons import ru_icon_path, gb_icon_path, jp_icon_path
 from const.lists import lib_lists_en, lib_lists_ru, MangaKinds
+from const.translations import uk_trans_path, en_trans_path, ru_trans_path
 from const.urls import DEFAULT_HEADERS
 
 
@@ -54,11 +55,11 @@ def get_manga_kind(kind: str) -> None:
 def get_locale_path(locale: str) -> str:
     match locale:
         case 'English_United States':
-            return ""
+            return en_trans_path
         case 'Russian_Russia':
-            return "data/translations/ru/ru.qm"
+            return ru_trans_path
         case 'Ukrainian_Ukraine':
-            return "data/translations/uk/uk.qm"
+            return uk_trans_path
 
 
 def get_data(a: dict, path: list, default_val=None):
