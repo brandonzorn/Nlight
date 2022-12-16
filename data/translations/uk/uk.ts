@@ -24,6 +24,7 @@
         <translation>Шикимори</translation>
     </message>
 </context>
+
 <context>
     <name>Form</name>
     <message>
@@ -55,6 +56,7 @@
         <translation>Каталоги</translation>
     </message>
 </context>
+
 <context>
     <name>Form</name>
     <message>
@@ -82,6 +84,7 @@
         <translation>Кинуто</translation>
     </message>
 </context>
+
 <context>
     <name>Dialog</name>
     <message>
@@ -115,6 +118,22 @@
     <message>
         <source>Get code</source>
         <translation>Отримати код</translation>
+    </message>
+    <message>
+        <source>Authorization code</source>
+        <translation>Код авторизації</translation>
+    </message>
+    <message>
+        <source>Login</source>
+        <translation>Логін</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Пароль</translation>
+    </message>
+    <message>
+        <source>Sign in</source>
+        <translation>Увійти</translation>
     </message>
 </context>
 </TS>

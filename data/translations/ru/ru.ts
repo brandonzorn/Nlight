@@ -24,6 +24,7 @@
         <translation>Шикимори</translation>
     </message>
 </context>
+
 <context>
     <name>Form</name>
     <message>
@@ -54,6 +55,10 @@
         <source>Catalogs</source>
         <translation>Каталоги</translation>
     </message>
+</context>
+
+<context>
+    <name>Form</name>
     <message>
         <source>Planned</source>
         <translation>Запланированно</translation>
@@ -79,6 +84,7 @@
         <translation>Брошено</translation>
     </message>
 </context>
+
 <context>
     <name>Dialog</name>
     <message>
@@ -112,6 +118,22 @@
     <message>
         <source>Get code</source>
         <translation>Получить код</translation>
+    </message>
+    <message>
+        <source>Authorization code</source>
+        <translation>Код авторизации</translation>
+    </message>
+    <message>
+        <source>Login</source>
+        <translation>Логин</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Пароль</translation>
+    </message>
+    <message>
+        <source>Sign in</source>
+        <translation>Войти</translation>
     </message>
 </context>
 </TS>
