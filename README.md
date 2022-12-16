@@ -14,6 +14,7 @@ Open source manga and ranobe reading application
     - Browse, search, and read.
     - Filter by genre, kind and sort order
     - Shikimori support
+    - Available in 🇷🇺Russian 🇺🇦Ukrainian and 🇬🇧English languages
 
 ## Currently, supported catalogs
     Manga:
