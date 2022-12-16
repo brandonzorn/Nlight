@@ -30,6 +30,7 @@ class Ui_Form(object):
 "	border-radius: 10px;\n"
 "	background-color: rgb(45, 45, 45);\n"
 "}")
+        Form.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.horizontalLayout_5 = QHBoxLayout(Form)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
@@ -255,11 +256,11 @@ class Ui_Form(object):
         self.prev_btn.setText("")
         self.page_label.setText(QCoreApplication.translate("Form", u"\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 1", None))
         self.next_btn.setText("")
-        self.label.setText(QCoreApplication.translate("Form", u"\u0421\u043e\u0440\u0442\u0438\u0440\u043e\u0432\u043a\u0430", None))
-        self.label_2.setText(QCoreApplication.translate("Form", u"\u0422\u0438\u043f", None))
-        self.genres_btn.setText(QCoreApplication.translate("Form", u"\u0421\u043f\u0438\u0441\u043e\u043a \u0436\u0430\u043d\u0440\u043e\u0432", None))
+        self.label.setText(QCoreApplication.translate("Form", u"Order", None))
+        self.label_2.setText(QCoreApplication.translate("Form", u"Kind", None))
+        self.genres_btn.setText(QCoreApplication.translate("Form", u"Genres list", None))
         self.catalogs_btn.setText(QCoreApplication.translate("Form", u"\u041a\u0430\u0442\u0430\u043b\u043e\u0433\u0438", None))
-        self.reset_btn.setText(QCoreApplication.translate("Form", u"\u0421\u0431\u0440\u043e\u0441\u0438\u0442\u044c", None))
-        self.apply_btn.setText(QCoreApplication.translate("Form", u"\u041f\u0440\u0438\u043c\u0435\u043d\u0438\u0442\u044c", None))
+        self.reset_btn.setText(QCoreApplication.translate("Form", u"Reset", None))
+        self.apply_btn.setText(QCoreApplication.translate("Form", u"Apply", None))
     # retranslateUi
 

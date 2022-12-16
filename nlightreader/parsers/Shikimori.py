@@ -53,7 +53,7 @@ class ShikimoriBase(Parser):
         url = f'{self.url_api}/genres'
         html = get_html(url, headers=self.headers)
         if html and html.status_code == 200 and html.json():
-            return [Genre(str(i.get('id')), i.get('name'), i.get('russian'), i.get('kind')) for i in html.json()]
+            return [Genre(str(i.get('id')), i.get('name'), i.get('russian')) for i in html.json()]
         return []
 
     def get_orders(self) -> list[Order]:

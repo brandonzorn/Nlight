@@ -2,6 +2,5 @@ from nlightreader.items.BaseItem import BaseItem
 
 
 class Genre(BaseItem):
-    def __init__(self, item_id, name, russian, kind):
+    def __init__(self, item_id, name, russian):
         super().__init__(item_id, name, russian)
-        self.kind = kind

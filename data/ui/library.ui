@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Library</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QFrame {
@@ -70,7 +70,7 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>Запланированно</string>
+         <string>Planned</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -89,7 +89,7 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>Прочитано</string>
+         <string>Completed</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -105,7 +105,7 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>Читаю</string>
+         <string>Reading</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -121,7 +121,7 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>Перечитываю</string>
+         <string>Re-reading</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -137,7 +137,7 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>Отложено</string>
+         <string>On hold</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -153,7 +153,7 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>Брошено</string>
+         <string>Dropped</string>
         </property>
         <property name="checkable">
          <bool>true</bool>

@@ -1,13 +1,13 @@
 import sys
-
-from PySide6.QtCore import QSize, Qt
+import locale
+from PySide6.QtCore import QSize, Qt, QTranslator
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 
 from const.app import APP_NAME, APP_VERSION
 from const.icons import app_icon_path
 from nlightreader import ParentWindow
-from nlightreader.utils import init_app_paths
+from nlightreader.utils import init_app_paths, get_locale_path
 
 
 class App(ParentWindow):
@@ -22,6 +22,9 @@ if __name__ == '__main__':
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
     QApplication.setStyle('Fusion')
     app = QApplication(sys.argv)
+    trans = QTranslator()
+    trans.load(get_locale_path(locale.getlocale()[0]))
+    app.installTranslator(trans)
     app.setApplicationDisplayName(APP_NAME)
     app.setApplicationVersion(APP_VERSION)
     app.setWindowIcon(QIcon(app_icon_path))
