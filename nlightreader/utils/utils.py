@@ -56,7 +56,9 @@ def get_locale_path(locale: str) -> str:
         case 'English_United States':
             return ""
         case 'Russian_Russia':
-            return "data/translations/ru.qm"
+            return "data/translations/ru/ru.qm"
+        case 'Ukrainian_Ukraine':
+            return "data/translations/ukr/ukr.qm"
 
 
 def get_data(a: dict, path: list, default_val=None):

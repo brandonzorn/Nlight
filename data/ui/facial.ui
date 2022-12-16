@@ -288,7 +288,7 @@
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="text">
-           <string>Каталоги</string>
+           <string>Catalogs</string>
           </property>
          </widget>
         </item>
