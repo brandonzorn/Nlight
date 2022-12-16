@@ -82,4 +82,39 @@
         <translation>Кинуто</translation>
     </message>
 </context>
+<context>
+    <name>Dialog</name>
+    <message>
+        <source>Show spoilers</source>
+        <translation>Показувати спойлери</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Скасування</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Вилучити</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>Оновити</translation>
+    </message>
+    <message>
+        <source>List</source>
+        <translation>Перелік</translation>
+    </message>
+    <message>
+        <source>Chapters read</source>
+        <translation>Прочитано розділів</translation>
+    </message>
+    <message>
+        <source>Rating</source>
+        <translation>Рейтинг</translation>
+    </message>
+    <message>
+        <source>Get code</source>
+        <translation>Отримати код</translation>
+    </message>
+</context>
 </TS>

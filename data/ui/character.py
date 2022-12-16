@@ -24,6 +24,7 @@ class Ui_Dialog(object):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
         Dialog.resize(269, 430)
+        Dialog.setWindowTitle(u"Dialog")
         Dialog.setStyleSheet(u"QFrame {\n"
 "	border-radius: 10px;\n"
 "	background-color: rgb(45, 45, 45);\n"
@@ -103,6 +104,7 @@ class Ui_Dialog(object):
 "    width: 0px;\n"
 "    height: 0px;\n"
 "}")
+        Dialog.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.verticalLayout_3 = QVBoxLayout(Dialog)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.horizontalLayout = QHBoxLayout()
@@ -155,6 +157,7 @@ class Ui_Dialog(object):
 
         self.show_spoilers = QCheckBox(self.title_frame)
         self.show_spoilers.setObjectName(u"show_spoilers")
+        self.show_spoilers.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
 
         self.verticalLayout_2.addWidget(self.show_spoilers)
 
@@ -196,17 +199,18 @@ class Ui_Dialog(object):
     # setupUi
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
         self.image.setText("")
         self.name_label.setText(QCoreApplication.translate("Dialog", u"name", None))
         self.russian_label.setText(QCoreApplication.translate("Dialog", u"russian", None))
-        self.show_spoilers.setText(QCoreApplication.translate("Dialog", u"\u041f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0442\u044c\n"
-"\u0441\u043f\u043e\u0439\u043b\u0435\u0440\u044b", None))
+        self.show_spoilers.setText(QCoreApplication.translate("Dialog", u"Show spoilers", None))
         self.description.setHtml(QCoreApplication.translate("Dialog", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"
+"li.unchecked::marker { content: \"\\2610\"; }\n"
+"li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
+        pass
     # retranslateUi
 

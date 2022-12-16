@@ -54,9 +54,6 @@
         <source>Catalogs</source>
         <translation>Каталоги</translation>
     </message>
-</context>
-<context>
-    <name>Form</name>
     <message>
         <source>Planned</source>
         <translation>Запланированно</translation>
@@ -80,6 +77,41 @@
     <message>
         <source>Dropped</source>
         <translation>Брошено</translation>
+    </message>
+</context>
+<context>
+    <name>Dialog</name>
+    <message>
+        <source>Show spoilers</source>
+        <translation>Показывать спойлеры</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Удалить</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>Обновить</translation>
+    </message>
+    <message>
+        <source>List</source>
+        <translation>Список</translation>
+    </message>
+    <message>
+        <source>Chapters read</source>
+        <translation>Прочитано глав</translation>
+    </message>
+    <message>
+        <source>Rating</source>
+        <translation>Рейтинг</translation>
+    </message>
+    <message>
+        <source>Get code</source>
+        <translation>Получить код</translation>
     </message>
 </context>
 </TS>

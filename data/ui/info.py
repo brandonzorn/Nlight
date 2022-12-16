@@ -76,6 +76,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lib_list_box.sizePolicy().hasHeightForWidth())
         self.lib_list_box.setSizePolicy(sizePolicy)
+        self.lib_list_box.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
 
         self.horizontalLayout.addWidget(self.lib_list_box)
 
@@ -296,6 +297,7 @@ class Ui_Form(object):
     # setupUi
 
     def retranslateUi(self, Form):
+        Form.setWindowTitle(QCoreApplication.translate("Form", u"Info", None))
         self.back_btn.setText("")
         self.add_btn.setText("")
         self.shikimori_btn.setText("")
@@ -308,6 +310,5 @@ class Ui_Form(object):
         self.chapters_label.setText(QCoreApplication.translate("Form", u"chapters", None))
         self.label.setText(QCoreApplication.translate("Form", u"\u0421\u0432\u044f\u0437\u0430\u043d\u043d\u043e\u0435", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u0436\u0438", None))
-        pass
     # retranslateUi
 
