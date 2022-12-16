@@ -58,17 +58,24 @@ class FormShikimori(BaseWidget):
         return super().eventFilter(source, event)
 
     def setup(self):
-        try:
-            self.ui.auth_btn.setText(self.get_whoami().nickname)
-        except AttributeError:
-            self.ui.auth_btn.setText("Войти")
+        whoami = self.get_whoami()
+        if whoami.nickname:
+            self.ui.auth_btn.setText(whoami.nickname)
+        else:
+            self.ui.auth_btn.setText("Sign in")
+            self.ui.retranslateUi(self)
 
     def get_current_manga(self):
         return self.catalog.get_manga(self.mangas[self.ui.items_list.currentIndex().row()])
 
     def auth_accept(self):
         self.catalog.session.auth_login(self.Form_auth.get_user_data())
-        self.ui.auth_btn.setText(self.get_whoami().nickname)
+        whoami = self.get_whoami()
+        if whoami.nickname:
+            self.ui.auth_btn.setText(whoami.nickname)
+        else:
+            self.ui.auth_btn.setText("Sign in")
+            self.ui.retranslateUi(self)
 
     def authorize(self):
         self.Form_auth.hide()

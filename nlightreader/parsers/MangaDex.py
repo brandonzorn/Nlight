@@ -157,6 +157,7 @@ class MangaDexLib(MangaDex, LibParser):
         if whoami and whoami.status_code == 200:
             data = whoami.json().get('data')
             return User(data.get('id'), data.get('attributes').get('username'), '')
+        return User(None, None, None)
 
 
 @singleton

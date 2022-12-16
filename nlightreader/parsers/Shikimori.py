@@ -153,7 +153,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         if whoami and whoami.status_code == 200:
             data = whoami.json()
             return User(data.get('id'), data.get('nickname'), data.get('avatar'))
-        return User(None, 'Войти', None)
+        return User(None, None, None)
 
     def create_user_rate(self, manga: Manga):
         url = f'{self.url_api}/v2/user_rates'

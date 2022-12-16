@@ -55,6 +55,10 @@
         <source>Catalogs</source>
         <translation>Каталоги</translation>
     </message>
+    <message>
+        <source>Sign in</source>
+        <translation>Увійти</translation>
+    </message>
 </context>
 
 <context>
