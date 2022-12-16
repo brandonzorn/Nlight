@@ -4,9 +4,9 @@ import re
 class TextFormatter:
     @staticmethod
     def description_to_html(text: str, show_spoilers=False) -> str:
-        text = ' '.join(text.splitlines())
         if not text:
             return ""
+        text = ' '.join(text.splitlines())
         for ch_id, name in re.findall(r"\[character=(\w+)](.+?)\[/character]", text):
             text = text.replace(f"[character={ch_id}]{name}[/character]",
                                 f'<span style=" color:#177e00;">{name}</span>')

@@ -65,6 +65,7 @@ class Ui_Dialog(object):
 "QPushButton:checked {\n"
 "	border-left: 3px solid white;\n"
 "}")
+        Dialog.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.verticalLayout = QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.chapters_frame = QFrame(Dialog)
@@ -173,11 +174,11 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
-        self.label_2.setText(QCoreApplication.translate("Dialog", u"\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u043e \u0433\u043b\u0430\u0432", None))
-        self.label_3.setText(QCoreApplication.translate("Dialog", u"\u041e\u0446\u0435\u043d\u043a\u0430", None))
-        self.label.setText(QCoreApplication.translate("Dialog", u"\u0421\u043f\u0438\u0441\u043e\u043a", None))
-        self.cancel_btn.setText(QCoreApplication.translate("Dialog", u"\u041e\u0442\u043c\u0435\u043d\u0430", None))
-        self.delete_btn.setText(QCoreApplication.translate("Dialog", u"\u0423\u0434\u0430\u043b\u0438\u0442\u044c", None))
-        self.update_btn.setText(QCoreApplication.translate("Dialog", u"\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c", None))
+        self.label_2.setText(QCoreApplication.translate("Dialog", u"Chapters read", None))
+        self.label_3.setText(QCoreApplication.translate("Dialog", u"Rating", None))
+        self.label.setText(QCoreApplication.translate("Dialog", u"List", None))
+        self.cancel_btn.setText(QCoreApplication.translate("Dialog", u"Cancel", None))
+        self.delete_btn.setText(QCoreApplication.translate("Dialog", u"Delete", None))
+        self.update_btn.setText(QCoreApplication.translate("Dialog", u"Update", None))
     # retranslateUi
 
