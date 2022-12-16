@@ -208,6 +208,6 @@ class Ui_Form(object):
         self.re_reading_btn.setText(QCoreApplication.translate("Form", u"Re-reading", None))
         self.on_hold_btn.setText(QCoreApplication.translate("Form", u"On hold", None))
         self.dropped_btn.setText(QCoreApplication.translate("Form", u"Dropped", None))
-        self.auth_btn.setText("")
+        self.auth_btn.setText(QCoreApplication.translate("Form", u"Sign in", None))
     # retranslateUi
 
