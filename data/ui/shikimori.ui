@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Shikimori</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QFrame {
@@ -19,6 +19,9 @@
 	background-color: rgb(45, 45, 45);
 	color: rgb(255, 255, 255);
 }</string>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
    <property name="leftMargin">
@@ -183,7 +186,7 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>Запланированно</string>
+         <string>Planned</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -202,7 +205,7 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>Прочитано</string>
+         <string>Completed</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -221,7 +224,7 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>Читаю</string>
+         <string>Reading</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -240,7 +243,7 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>Перечитываю</string>
+         <string>Re-reading</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -256,7 +259,7 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>Отложено</string>
+         <string>On hold</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -272,7 +275,7 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>Брошено</string>
+         <string>Dropped</string>
         </property>
         <property name="checkable">
          <bool>true</bool>

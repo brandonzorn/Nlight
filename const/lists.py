@@ -12,3 +12,13 @@ class LibList(Enum):
     rewatching = 3
     on_hold = 4
     dropped = 5
+
+
+@unique
+class MangaKinds(Enum):
+    manga = 0
+    manhwa = 1
+    manhua = 2
+    one_shot = 3
+    doujin = 4
+    ranobe = 5

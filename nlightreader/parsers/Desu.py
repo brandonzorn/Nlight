@@ -18,7 +18,7 @@ class Desu(Parser):
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
             data = get_data(html.json(), ['response'], {})
-            manga.genres = [Genre(i.get('id'), i.get('text'), i.get('russian'), i.get('kind'))
+            manga.genres = [Genre(i.get('id'), i.get('text'), i.get('russian'))
                             for i in data.get("genres")]
             manga.score = data.get("score")
             manga.kind = data.get("kind")
@@ -64,7 +64,7 @@ class Desu(Parser):
         return get_html(f'https://desu.me/data/manga/covers/preview/{manga.id}.jpg')
 
     def get_genres(self):
-        return [Genre('', i['name'], i['russian'], '') for i in DESU_GENRES]
+        return [Genre('', i['name'], i['russian']) for i in DESU_GENRES]
 
     def get_kinds(self) -> list[Kind]:
         return [Kind('', i['name'], i['russian']) for i in DESU_KINDS]

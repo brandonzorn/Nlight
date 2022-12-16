@@ -1,3 +1,4 @@
+from nlightreader.items import Genre
 from nlightreader.items.BaseItem import BaseItem
 
 
