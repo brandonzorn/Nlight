@@ -7,7 +7,7 @@ import requests
 
 from const.app import APP_NAME
 from const.icons import ru_icon_path, gb_icon_path, jp_icon_path
-from const.lists import lib_lists_en, lib_lists_ru
+from const.lists import lib_lists_en, lib_lists_ru, MangaKinds
 from const.urls import DEFAULT_HEADERS
 
 
@@ -42,6 +42,21 @@ def get_status(status: str) -> str:
             return "Издано"
         case _:
             return status
+
+
+def get_manga_kind(kind: str) -> None:
+    kinds_matches = {'manga': MangaKinds.manga, 'manhwa': MangaKinds.manhwa, 'manhua': MangaKinds.manhua,
+                     'one_shot': MangaKinds.one_shot, 'doujin': MangaKinds.doujin, 'ranobe': MangaKinds.ranobe}
+    assert kind in kinds_matches, f"Not fond matches for {kind}"
+    return kinds_matches[kind]
+
+
+def get_locale_path(locale: str) -> str:
+    match locale:
+        case 'English_United States':
+            return ""
+        case 'Russian_Russia':
+            return "data/translations/ru.qm"
 
 
 def get_data(a: dict, path: list, default_val=None):

@@ -1,5 +1,4 @@
 import requests
-
 from const.urls import URL_MANGA_DEX_API, DEFAULT_HEADERS, URL_MANGA_DEX
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
 from nlightreader.parsers.Parser import Parser, LibParser
@@ -108,7 +107,7 @@ class MangaDex(Parser):
             for i in html.json().get('data'):
                 if i.get('attributes').get('group') not in ['genre', 'theme']:
                     continue
-                genres.append(Genre(i.get('id'), i.get('attributes').get('name').get('en'), '', ''))
+                genres.append(Genre(i.get('id'), get_data(i, ['attributes', 'name', 'en']), ''))
         return genres
 
     def get_kinds(self):

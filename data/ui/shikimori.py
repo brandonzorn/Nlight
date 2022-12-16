@@ -30,6 +30,7 @@ class Ui_Form(object):
 "	background-color: rgb(45, 45, 45);\n"
 "	color: rgb(255, 255, 255);\n"
 "}")
+        Form.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.horizontalLayout_4 = QHBoxLayout(Form)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -196,17 +197,17 @@ class Ui_Form(object):
     # setupUi
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
+        Form.setWindowTitle(QCoreApplication.translate("Form", u"Shikimori", None))
         self.search_btn.setText("")
         self.prev_btn.setText("")
         self.page_label.setText(QCoreApplication.translate("Form", u"\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 1", None))
         self.next_btn.setText("")
-        self.planned_btn.setText(QCoreApplication.translate("Form", u"\u0417\u0430\u043f\u043b\u0430\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u043e", None))
-        self.completed_btn.setText(QCoreApplication.translate("Form", u"\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u043e", None))
-        self.reading_btn.setText(QCoreApplication.translate("Form", u"\u0427\u0438\u0442\u0430\u044e", None))
-        self.re_reading_btn.setText(QCoreApplication.translate("Form", u"\u041f\u0435\u0440\u0435\u0447\u0438\u0442\u044b\u0432\u0430\u044e", None))
-        self.on_hold_btn.setText(QCoreApplication.translate("Form", u"\u041e\u0442\u043b\u043e\u0436\u0435\u043d\u043e", None))
-        self.dropped_btn.setText(QCoreApplication.translate("Form", u"\u0411\u0440\u043e\u0448\u0435\u043d\u043e", None))
+        self.planned_btn.setText(QCoreApplication.translate("Form", u"Planned", None))
+        self.completed_btn.setText(QCoreApplication.translate("Form", u"Completed", None))
+        self.reading_btn.setText(QCoreApplication.translate("Form", u"Reading", None))
+        self.re_reading_btn.setText(QCoreApplication.translate("Form", u"Re-reading", None))
+        self.on_hold_btn.setText(QCoreApplication.translate("Form", u"On hold", None))
+        self.dropped_btn.setText(QCoreApplication.translate("Form", u"Dropped", None))
         self.auth_btn.setText("")
     # retranslateUi
 

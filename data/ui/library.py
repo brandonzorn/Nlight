@@ -117,12 +117,12 @@ class Ui_Form(object):
     # setupUi
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.planned_btn.setText(QCoreApplication.translate("Form", u"\u0417\u0430\u043f\u043b\u0430\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u043e", None))
-        self.completed_btn.setText(QCoreApplication.translate("Form", u"\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u043e", None))
-        self.reading_btn.setText(QCoreApplication.translate("Form", u"\u0427\u0438\u0442\u0430\u044e", None))
-        self.re_reading_btn.setText(QCoreApplication.translate("Form", u"\u041f\u0435\u0440\u0435\u0447\u0438\u0442\u044b\u0432\u0430\u044e", None))
-        self.on_hold_btn.setText(QCoreApplication.translate("Form", u"\u041e\u0442\u043b\u043e\u0436\u0435\u043d\u043e", None))
-        self.dropped_btn.setText(QCoreApplication.translate("Form", u"\u0411\u0440\u043e\u0448\u0435\u043d\u043e", None))
+        Form.setWindowTitle(QCoreApplication.translate("Form", u"Library", None))
+        self.planned_btn.setText(QCoreApplication.translate("Form", u"Planned", None))
+        self.completed_btn.setText(QCoreApplication.translate("Form", u"Completed", None))
+        self.reading_btn.setText(QCoreApplication.translate("Form", u"Reading", None))
+        self.re_reading_btn.setText(QCoreApplication.translate("Form", u"Re-reading", None))
+        self.on_hold_btn.setText(QCoreApplication.translate("Form", u"On hold", None))
+        self.dropped_btn.setText(QCoreApplication.translate("Form", u"Dropped", None))
     # retranslateUi
 
