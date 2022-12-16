@@ -259,7 +259,7 @@ class Ui_Form(object):
         self.label.setText(QCoreApplication.translate("Form", u"Order", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"Kind", None))
         self.genres_btn.setText(QCoreApplication.translate("Form", u"Genres list", None))
-        self.catalogs_btn.setText(QCoreApplication.translate("Form", u"\u041a\u0430\u0442\u0430\u043b\u043e\u0433\u0438", None))
+        self.catalogs_btn.setText(QCoreApplication.translate("Form", u"Catalogs", None))
         self.reset_btn.setText(QCoreApplication.translate("Form", u"Reset", None))
         self.apply_btn.setText(QCoreApplication.translate("Form", u"Apply", None))
     # retranslateUi

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU" sourcelanguage="en_US">
+<TS version="2.1" language="uk_UA" sourcelanguage="en_US">
 <context>
     <name>MainWindow</name>
     <message>
@@ -9,15 +9,15 @@
     </message>
     <message>
         <source>Main</source>
-        <translation>Главная</translation>
+        <translation>Головна</translation>
     </message>
     <message>
         <source>Library</source>
-        <translation>Библиотека</translation>
+        <translation>Бібліотека</translation>
     </message>
     <message>
         <source>History</source>
-        <translation>История</translation>
+        <translation>Історія</translation>
     </message>
     <message>
         <source>Shikimori</source>
@@ -36,7 +36,7 @@
     </message>
     <message>
         <source>Order</source>
-        <translation>Сортировка</translation>
+        <translation>Сортування</translation>
     </message>
     <message>
         <source>Apply</source>
@@ -44,18 +44,22 @@
     </message>
     <message>
         <source>Reset</source>
-        <translation>Сбросить</translation>
+        <translation>Застосувати</translation>
     </message>
     <message>
         <source>Genres list</source>
-        <translation>Список жанров</translation>
+        <translation>Список жанрів</translation>
+    </message>
+    <message>
+        <source>Catalogs</source>
+        <translation>Каталоги</translation>
     </message>
 </context>
 <context>
     <name>Form</name>
     <message>
         <source>Planned</source>
-        <translation>Запланированно</translation>
+        <translation>Заплановано</translation>
     </message>
     <message>
         <source>Completed</source>
@@ -67,15 +71,15 @@
     </message>
     <message>
         <source>Re-reading</source>
-        <translation>Перечитываю</translation>
+        <translation>Перечитую</translation>
     </message>
     <message>
         <source>On hold</source>
-        <translation>Отложено</translation>
+        <translation>Відкладено</translation>
     </message>
     <message>
         <source>Dropped</source>
-        <translation>Брошено</translation>
+        <translation>Кинуто</translation>
     </message>
 </context>
 </TS>
