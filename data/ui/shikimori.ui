@@ -304,7 +304,7 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string/>
+         <string>Sign in</string>
         </property>
        </widget>
       </item>
