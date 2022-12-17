@@ -7,6 +7,7 @@ from PySide6.QtWidgets import QApplication
 
 from const.app import APP_NAME, APP_VERSION
 from const.icons import app_icon_path
+from const.styles import dark_style, light_style
 from nlightreader import ParentWindow
 from nlightreader.utils import init_app_paths, get_locale_path
 
@@ -20,8 +21,8 @@ class App(ParentWindow):
         self.show()
 
     def update_style(self):
-        dark = open("data/styles/dark/widget_dark.qss").read()
-        light = open("data/styles/light/widget_light.qss").read()
+        dark = open(dark_style).read()
+        light = open(light_style).read()
         if darkdetect.isDark():
             self.setStyleSheet(dark)
         else:
