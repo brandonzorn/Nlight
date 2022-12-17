@@ -24,16 +24,16 @@ if __name__ == '__main__':
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
     QApplication.setStyle('Fusion')
     app = QApplication(sys.argv)
-    dark = open(dark_style).read()
-    light = open(light_style).read()
     trans = QTranslator()
     trans.load(get_locale_path(locale.getlocale()[0]))
     app.installTranslator(trans)
     app.setApplicationDisplayName(APP_NAME)
     app.setApplicationVersion(APP_VERSION)
     if darkdetect.isDark():
+        dark = open(dark_style).read()
         app.setStyleSheet(dark)
     else:
+        light = open(light_style).read()
         app.setStyleSheet(light)
     app.setWindowIcon(QIcon(app_icon_path))
     app_paths = [APP_NAME]
