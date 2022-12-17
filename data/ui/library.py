@@ -25,6 +25,7 @@ class Ui_Form(object):
             Form.setObjectName(u"Form")
         Form.resize(390, 334)
         Form.setStyleSheet(u"")
+        Form.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.horizontalLayout = QHBoxLayout(Form)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
