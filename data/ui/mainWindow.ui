@@ -27,29 +27,7 @@
     <item>
      <widget class="QWidget" name="side_menu_widget" native="true">
       <property name="styleSheet">
-       <string notr="true">QFrame {
-	border-radius: 10px;
-	background-color: rgb(45, 45, 45);
-}
-
-QPushButton {
-	text-align: left;
-	padding: 5px 1px;
-    background: transparent;
-	border-top-left-radius: 10px;
-	border-bottom-left-radius: 10px;
-	font-weight: bold;
-	icon-size: 24px;
-}
-
-QPushButton:hover:!pressed {
-	border-left: 3px solid green;
-	background-color: gray;
-}
-
-QPushButton:checked {
-	border-left: 3px solid green;
-}</string>
+       <string notr="true"/>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <property name="leftMargin">
