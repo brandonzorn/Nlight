@@ -14,11 +14,7 @@
    <string>Shikimori</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QFrame {
-	border-radius: 10px;
-	background-color: rgb(45, 45, 45);
-	color: rgb(255, 255, 255);
-}</string>
+   <string notr="true"/>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
