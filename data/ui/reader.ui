@@ -16,6 +16,9 @@
   <property name="styleSheet">
    <string notr="true"/>
   </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
     <string notr="true"/>
