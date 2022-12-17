@@ -4,6 +4,7 @@ import os
 from functools import wraps
 
 import requests
+from PySide6.QtWidgets import QApplication
 
 from const.app import APP_NAME
 from const.icons import ru_icon_path, gb_icon_path, jp_icon_path
@@ -14,6 +15,7 @@ from const.urls import DEFAULT_HEADERS
 
 def get_html(url: str, headers: dict = DEFAULT_HEADERS, params=None):
     try:
+        assert "test" not in QApplication.arguments(), "Test mode"
         return requests.get(url, headers=headers, params=params)
     except Exception as e:
         print(f"{e=}", f"{url=}", f"{params=}", f"{headers=}", sep="\n")
