@@ -1,5 +1,6 @@
 import sys
 import locale
+import darkdetect
 from PySide6.QtCore import QSize, Qt, QTranslator
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
@@ -15,7 +16,16 @@ class App(ParentWindow):
         super().__init__()
         self.setMinimumSize(QSize(self.screen().size().width() // 2, self.screen().size().height() // 2))
         self.setWindowTitle(APP_NAME)
+        self.update_style()
         self.show()
+
+    def update_style(self):
+        dark = open("data/styles/dark/widget_dark.qss").read()
+        light = open("data/styles/light/widget_light.qss").read()
+        if darkdetect.isDark():
+            self.setStyleSheet(dark)
+        else:
+            self.setStyleSheet(light)
 
 
 if __name__ == '__main__':

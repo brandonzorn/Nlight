@@ -29,8 +29,7 @@ class Ui_MainWindow(object):
         MainWindow.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.centralwidget.setStyleSheet(u"color: rgb(255, 255, 255);\n"
-"background-color: rgb(32, 32, 32);")
+        self.centralwidget.setStyleSheet(u"")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.side_menu_widget = QWidget(self.centralwidget)
@@ -186,69 +185,13 @@ class Ui_MainWindow(object):
         palette.setBrush(QPalette.Disabled, QPalette.PlaceholderText, brush)
 #endif
         self.top_item_widget.setPalette(palette)
-        self.top_item_widget.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.top_item_widget.setStyleSheet(u"")
         self.verticalLayout_2 = QVBoxLayout(self.top_item_widget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.top_item = QStackedWidget(self.top_item_widget)
         self.top_item.setObjectName(u"top_item")
-        self.top_item.setStyleSheet(u"QComboBox {\n"
-"	padding: 5px 1px;\n"
-"	border-radius: 10px;\n"
-"	font-weight: bold;\n"
-"	background-color: rgb(0, 133, 52);\n"
-"	color: rgb(255, 255, 255);\n"
-"}\n"
-"\n"
-"\n"
-"QPushButton {\n"
-"	padding: 5px 1px;\n"
-"	border-radius: 10px;\n"
-"	font-weight: bold;\n"
-"	background-color: rgb(0, 133, 52);\n"
-"	color: rgb(255, 255, 255);\n"
-"}\n"
-"\n"
-"QPushButton:hover:!pressed {\n"
-"	border-left: 3px solid white;\n"
-"}\n"
-"\n"
-"QPushButton:checked {\n"
-"	border-left: 3px solid white;\n"
-"}\n"
-"QScrollBar {\n"
-"    background: #292b2e;\n"
-"    border-radius: 10px;\n"
-"}\n"
-"QScrollBar:horizontal {\n"
-"    height: 14px;\n"
-"}\n"
-"QScrollBar:vertical {\n"
-"    width: 14px;\n"
-"	margin: 0px 0px 0px 0px;\n"
-"}\n"
-"QScrollBar::handle {\n"
-"    background: rgba(84.000, 86.000, 86.000, 0.737);\n"
-"    border-radius: 5px;\n"
-"	min-height: 0px;\n"
-"}\n"
-"QScrollBar::handle:hover {\n"
-"    background: rgba(114.000, 115.000, 115.000, 0.827);\n"
-"}\n"
-"QScrollBar::handle:pressed {\n"
-"    background: rgba(143.000, 145.000, 1"
-                        "45.000, 0.933);\n"
-"}\n"
-"QScrollBar::sub-page, QScrollBar::add-page {\n"
-"    background: transparent;\n"
-"}\n"
-"QScrollBar::sub-line, QScrollBar::add-line {\n"
-"    background: transparent;\n"
-"	subcontrol-position: top;\n"
-"    subcontrol-origin: margin;\n"
-"    width: 0px;\n"
-"    height: 0px;\n"
-"}")
+        self.top_item.setStyleSheet(u"")
 
         self.verticalLayout_2.addWidget(self.top_item)
 

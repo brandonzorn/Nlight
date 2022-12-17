@@ -26,10 +26,7 @@ class Ui_Form(object):
         if not Form.objectName():
             Form.setObjectName(u"Form")
         Form.resize(617, 494)
-        Form.setStyleSheet(u"QFrame {\n"
-"	border-radius: 10px;\n"
-"	background-color: rgb(45, 45, 45);\n"
-"}")
+        Form.setStyleSheet(u"")
         Form.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.horizontalLayout_5 = QHBoxLayout(Form)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
@@ -144,9 +141,7 @@ class Ui_Form(object):
         self.filters.setObjectName(u"filters")
         self.orders_frame = QFrame(Form)
         self.orders_frame.setObjectName(u"orders_frame")
-        self.orders_frame.setStyleSheet(u"QAbstractButton {\n"
-"	background-color: rgb(45, 45, 45);\n"
-"}")
+        self.orders_frame.setStyleSheet(u"")
         self.orders_frame.setFrameShape(QFrame.StyledPanel)
         self.orders_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_5 = QVBoxLayout(self.orders_frame)
@@ -166,9 +161,7 @@ class Ui_Form(object):
 
         self.kinds_frame = QFrame(Form)
         self.kinds_frame.setObjectName(u"kinds_frame")
-        self.kinds_frame.setStyleSheet(u"QAbstractButton {\n"
-"	background-color: rgb(45, 45, 45);\n"
-"}")
+        self.kinds_frame.setStyleSheet(u"")
         self.kinds_frame.setFrameShape(QFrame.StyledPanel)
         self.kinds_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_4 = QVBoxLayout(self.kinds_frame)

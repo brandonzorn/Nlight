@@ -1,17 +1,17 @@
 QMainWindow {
-    color: rgb(255, 255, 255);
-    background-color: rgb(32, 32, 32);
+    color: rgb(0, 0, 0);
+    background-color: rgb(223, 223, 223);
 }
 
 QStackedWidget > QWidget > QFrame {
     border-radius: 10px;
-    background-color: rgb(45, 45, 45);
+    background-color: rgb(210, 210, 210);
 }
 
 QStackedWidget > QWidget > QFrame > QFrame {
     border-radius: 10px;
-    background-color: rgb(45, 45, 45);
-    color: rgb(255, 255, 255);
+    background-color: rgb(210, 210, 210);
+    color: rgb(0, 0, 0);
 }
 
 
@@ -20,7 +20,7 @@ QComboBox {
 	border-radius: 10px;
 	font-weight: bold;
 	background-color: rgb(0, 133, 52);
-	color: rgb(255, 255, 255);
+	color: rgb(0, 0, 0);
 }
 
 QPushButton {
@@ -28,7 +28,7 @@ QPushButton {
 	border-radius: 10px;
 	font-weight: bold;
 	background-color: rgb(0, 133, 52);
-	color: rgb(255, 255, 255);
+	color: rgb(0, 0, 0);
 }
 QPushButton:hover:!pressed {
 	border-left: 3px solid white;
@@ -38,8 +38,8 @@ QPushButton:checked {
 }
 
 QRadioButton, QCheckBox {
-    color: rgb(255, 255, 255);
-    background-color: rgb(45, 45, 45);
+    color: rgb(0, 0, 0);
+    background-color: rgb(210, 210, 210);
 }
 
 QScrollBar {
@@ -77,8 +77,8 @@ QScrollBar::sub-line, QScrollBar::add-line {
 
 
 QLineEdit {
-	color: rgb(255, 255, 255);
-	background-color: rgb(32, 32, 32);
+	color: rgb(0, 0, 0);
+	background-color: rgb(223, 223, 223);
 }
 
 
@@ -87,10 +87,10 @@ QSpinBox {
 	border-radius: 10px;
 	font-weight: bold;
 	background-color: rgb(0, 133, 52);
-	color: rgb(255, 255, 255);
+	color: rgb(0, 0, 0);
 }
 
 QLabel {
-    color: rgb(255, 255, 255);
-    background-color: rgb(45, 45, 45);
+    color: rgb(0, 0, 0);
+    background-color: rgb(210, 210, 210);
 }
