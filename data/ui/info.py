@@ -26,11 +26,7 @@ class Ui_Form(object):
         if not Form.objectName():
             Form.setObjectName(u"Form")
         Form.resize(543, 465)
-        Form.setStyleSheet(u"QFrame {\n"
-"	border-radius: 10px;\n"
-"	background-color: rgb(45, 45, 45);\n"
-"	color: rgb(255, 255, 255);\n"
-"}")
+        Form.setStyleSheet(u"")
         self.horizontalLayout_4 = QHBoxLayout(Form)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
