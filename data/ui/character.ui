@@ -113,14 +113,7 @@
    <item>
     <widget class="QFrame" name="description_frame">
      <property name="styleSheet">
-      <string notr="true">QComboBox {
-	padding: 5px 1px;
-	border-radius: 10px;
-	font-weight: bold;
-	background-color: rgb(0, 133, 52);
-	color: rgb(255, 255, 255);
-}
-</string>
+      <string notr="true"/>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -138,7 +131,7 @@
          <bool>true</bool>
         </property>
         <property name="html">
-         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+         <string notr="true">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 hr { height: 1px; border-width: 0; }
