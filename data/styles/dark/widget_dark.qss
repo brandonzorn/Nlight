@@ -32,6 +32,9 @@ QComboBox {
 	background-color: rgb(0, 133, 52);
 	color: rgb(255, 255, 255);
 }
+QComboBox QAbstractItemView {
+    background-color: rgb(45, 45, 45);
+}
 
 QPushButton {
 	padding: 5px 1px;
