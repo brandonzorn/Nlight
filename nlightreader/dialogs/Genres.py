@@ -1,7 +1,5 @@
-from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QDialog, QCheckBox
 
-from const.icons import app_icon_path
 from data.ui.genres import Ui_Dialog
 from nlightreader.utils.catalog_manager import get_catalog
 
@@ -13,7 +11,6 @@ class FormGenres(QDialog):
         self.ui_ge.setupUi(self)
         self.setFixedSize(self.minimumSize())
         self.setWindowTitle('Genres')
-        self.setWindowIcon(QIcon(app_icon_path))
         self.ui_ge.buttonBox.accepted.connect(self.accept_genres)
         self.ui_ge.buttonBox.rejected.connect(self.reject_genres)
         self.catalog = get_catalog()()
