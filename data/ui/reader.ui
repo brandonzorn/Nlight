@@ -14,331 +14,279 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(32, 32, 32);</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
-    <string notr="true">QFrame {
-	border-radius: 10px;
-	background-color: rgb(45, 45, 45);
-	color: rgb(255, 255, 255);
-}
-
-QDialog{
-	background-color: rgb(32, 32, 32);
-}
-
-QComboBox {
-	padding: 5px 1px;
-	border-radius: 10px;
-	font-weight: bold;
-	background-color: rgb(0, 133, 52);
-	color: rgb(255, 255, 255);
-}
-
-QSpinBox {
-	padding: 5px 5px;
-	border-radius: 10px;
-	font-weight: bold;
-	background-color: rgb(0, 133, 52);
-	color: rgb(255, 255, 255);
-}
-
-QPushButton {
-	padding: 5px 1px;
-	border-radius: 10px;
-	font-weight: bold;
-	background-color: rgb(0, 133, 52);
-	color: rgb(255, 255, 255);
-}
-
-QPushButton:hover:!pressed {
-	border-left: 3px solid white;
-}
-
-QPushButton:checked {
-	border-left: 3px solid white;
-}
-QScrollBar {
-    background: #292b2e;
-    border-radius: 10px;
-}
-QScrollBar:horizontal {
-    height: 14px;
-}
-QScrollBar:vertical {
-    width: 14px;
-	margin: 0px 0px 0px 0px;
-}
-QScrollBar::handle {
-    background: rgba(84.000, 86.000, 86.000, 0.737);
-    border-radius: 5px;
-	min-height: 0px;
-}
-QScrollBar::handle:hover {
-    background: rgba(114.000, 115.000, 115.000, 0.827);
-}
-QScrollBar::handle:pressed {
-    background: rgba(143.000, 145.000, 145.000, 0.933);
-}
-QScrollBar::sub-page, QScrollBar::add-page {
-    background: transparent;
-}
-QScrollBar::sub-line, QScrollBar::add-line {
-    background: transparent;
-	subcontrol-position: top;
-    subcontrol-origin: margin;
-    width: 0px;
-    height: 0px;
-}</string>
+    <string notr="true"/>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <widget class="QFrame" name="size_frame">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QSlider" name="text_size_slider">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="minimum">
-          <number>9</number>
-         </property>
-         <property name="maximum">
-          <number>25</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QFrame" name="content_frame">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
-        <widget class="QScrollArea" name="scrollArea">
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="widgetResizable">
-          <bool>true</bool>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <widget class="QWidget" name="scrollAreaWidgetContents">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>306</width>
-            <height>436</height>
-           </rect>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <widget class="QWidget" name="page">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QFrame" name="size_frame">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
           </property>
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(32, 32, 32);</string>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_5">
-           <property name="spacing">
-            <number>6</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
+          <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
-            <widget class="QLabel" name="img">
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(45, 45, 45);</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignJustify|Qt::AlignVCenter</set>
-             </property>
-             <property name="wordWrap">
+            <widget class="QSlider" name="text_size_slider">
+             <property name="enabled">
               <bool>true</bool>
              </property>
-             <property name="openExternalLinks">
-              <bool>false</bool>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="minimum">
+              <number>9</number>
+             </property>
+             <property name="maximum">
+              <number>25</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
           </layout>
          </widget>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QFrame" name="actions_frame">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <layout class="QHBoxLayout" name="page_actions_btn">
-         <item>
-          <widget class="QPushButton" name="prev_page_btn">
-           <property name="cursor">
-            <cursorShape>PointingHandCursor</cursorShape>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="../../desu_res.qrc">
-             <normaloff>:/icons/data/icons/prev.png</normaloff>:/icons/data/icons/prev.png</iconset>
-           </property>
-           <property name="shortcut">
-            <string>Left</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="page_label">
-           <property name="text">
-            <string>Страница 1</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="next_page_btn">
-           <property name="cursor">
-            <cursorShape>PointingHandCursor</cursorShape>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="../../desu_res.qrc">
-             <normaloff>:/icons/data/icons/next.png</normaloff>:/icons/data/icons/next.png</iconset>
-           </property>
-           <property name="shortcut">
-            <string>Right</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="chapter_actions_label">
-         <item>
-          <widget class="QPushButton" name="prev_chapter_btn">
-           <property name="cursor">
-            <cursorShape>PointingHandCursor</cursorShape>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="../../desu_res.qrc">
-             <normaloff>:/icons/data/icons/double_prev.png</normaloff>:/icons/data/icons/double_prev.png</iconset>
-           </property>
-           <property name="shortcut">
-            <string>Down</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="chapter_label">
-           <property name="text">
-            <string>Глава 1</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="next_chapter_btn">
-           <property name="cursor">
-            <cursorShape>PointingHandCursor</cursorShape>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="../../desu_res.qrc">
-             <normaloff>:/icons/data/icons/double_next.png</normaloff>:/icons/data/icons/double_next.png</iconset>
-           </property>
-           <property name="shortcut">
-            <string>Up</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="fullscreen_btn">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="cursor">
-            <cursorShape>PointingHandCursor</cursorShape>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="../../desu_res.qrc">
-             <normaloff>:/icons/data/icons/fullscreen.png</normaloff>:/icons/data/icons/fullscreen.png</iconset>
-           </property>
-           <property name="shortcut">
-            <string>F11</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
+        </item>
+        <item>
+         <widget class="QFrame" name="content_frame">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QScrollArea" name="scrollArea">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <widget class="QWidget" name="scrollAreaWidgetContents">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>302</width>
+                <height>432</height>
+               </rect>
+              </property>
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_5">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="img">
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignJustify|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>true</bool>
+                 </property>
+                 <property name="openExternalLinks">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="actions_frame">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <layout class="QHBoxLayout" name="page_actions_btn">
+             <item>
+              <widget class="QPushButton" name="prev_page_btn">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../../desu_res.qrc">
+                 <normaloff>:/icons/data/icons/prev.png</normaloff>:/icons/data/icons/prev.png</iconset>
+               </property>
+               <property name="shortcut">
+                <string>Left</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="page_label">
+               <property name="text">
+                <string>Страница 1</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="next_page_btn">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../../desu_res.qrc">
+                 <normaloff>:/icons/data/icons/next.png</normaloff>:/icons/data/icons/next.png</iconset>
+               </property>
+               <property name="shortcut">
+                <string>Right</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="chapter_actions_label">
+             <item>
+              <widget class="QPushButton" name="prev_chapter_btn">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../../desu_res.qrc">
+                 <normaloff>:/icons/data/icons/double_prev.png</normaloff>:/icons/data/icons/double_prev.png</iconset>
+               </property>
+               <property name="shortcut">
+                <string>Down</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="chapter_label">
+               <property name="text">
+                <string>Глава 1</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="next_chapter_btn">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../../desu_res.qrc">
+                 <normaloff>:/icons/data/icons/double_next.png</normaloff>:/icons/data/icons/double_next.png</iconset>
+               </property>
+               <property name="shortcut">
+                <string>Up</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="fullscreen_btn">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../../desu_res.qrc">
+                 <normaloff>:/icons/data/icons/fullscreen.png</normaloff>:/icons/data/icons/fullscreen.png</iconset>
+               </property>
+               <property name="shortcut">
+                <string>F11</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>

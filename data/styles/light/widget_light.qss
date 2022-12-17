@@ -3,6 +3,16 @@ QMainWindow {
     background-color: rgb(223, 223, 223);
 }
 
+QDialog {
+    color: rgb(0, 0, 0);
+    background-color: rgb(223, 223, 223);
+}
+
+QDialog > QFrame {
+    border-radius: 10px;
+    background-color: rgb(210, 210, 210);
+}
+
 QStackedWidget > QWidget > QFrame {
     border-radius: 10px;
     background-color: rgb(210, 210, 210);

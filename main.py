@@ -17,27 +17,24 @@ class App(ParentWindow):
         super().__init__()
         self.setMinimumSize(QSize(self.screen().size().width() // 2, self.screen().size().height() // 2))
         self.setWindowTitle(APP_NAME)
-        self.update_style()
         self.show()
-
-    def update_style(self):
-        dark = open(dark_style).read()
-        light = open(light_style).read()
-        if darkdetect.isDark():
-            self.setStyleSheet(dark)
-        else:
-            self.setStyleSheet(light)
 
 
 if __name__ == '__main__':
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
     QApplication.setStyle('Fusion')
     app = QApplication(sys.argv)
+    dark = open(dark_style).read()
+    light = open(light_style).read()
     trans = QTranslator()
     trans.load(get_locale_path(locale.getlocale()[0]))
     app.installTranslator(trans)
     app.setApplicationDisplayName(APP_NAME)
     app.setApplicationVersion(APP_VERSION)
+    if darkdetect.isDark():
+        app.setStyleSheet(dark)
+    else:
+        app.setStyleSheet(light)
     app.setWindowIcon(QIcon(app_icon_path))
     app_paths = [APP_NAME]
     init_app_paths(app_paths)
