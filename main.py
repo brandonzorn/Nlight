@@ -26,16 +26,14 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     trans = QTranslator()
     trans.load(get_locale_path(locale.getlocale()[0]))
+    dark = open(dark_style).read()
+    light = open(light_style).read()
+    themes = {"Dark": dark, "Light": light}
     app.installTranslator(trans)
     app.setApplicationDisplayName(APP_NAME)
     app.setApplicationVersion(APP_VERSION)
-    if darkdetect.isDark():
-        dark = open(dark_style).read()
-        app.setStyleSheet(dark)
-    else:
-        light = open(light_style).read()
-        app.setStyleSheet(light)
     app.setWindowIcon(QIcon(app_icon_path))
+    app.setStyleSheet(themes[darkdetect.theme()])
     app_paths = [APP_NAME]
     init_app_paths(app_paths)
     a = App()
