@@ -1,3 +1,4 @@
+from PySide6.QtWidgets import QApplication
 from requests_oauthlib import OAuth2Session
 
 from const.shikimori_items import ORDERS, KINDS
@@ -252,6 +253,7 @@ class Auth:
             print(f"SHIKIMORI REQUEST IGNORED")
             return
         try:
+            assert "test" not in QApplication.arguments(), "Test mode"
             return self.client.request(method, url, params, json=json)
         except Exception as e:
             print(e)

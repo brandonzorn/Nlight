@@ -34,29 +34,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.side_menu_widget = QWidget(self.centralwidget)
         self.side_menu_widget.setObjectName(u"side_menu_widget")
-        self.side_menu_widget.setStyleSheet(u"QFrame {\n"
-"	border-radius: 10px;\n"
-"	background-color: rgb(45, 45, 45);\n"
-"}\n"
-"\n"
-"QPushButton {\n"
-"	text-align: left;\n"
-"	padding: 5px 1px;\n"
-"    background: transparent;\n"
-"	border-top-left-radius: 10px;\n"
-"	border-bottom-left-radius: 10px;\n"
-"	font-weight: bold;\n"
-"	icon-size: 24px;\n"
-"}\n"
-"\n"
-"QPushButton:hover:!pressed {\n"
-"	border-left: 3px solid green;\n"
-"	background-color: gray;\n"
-"}\n"
-"\n"
-"QPushButton:checked {\n"
-"	border-left: 3px solid green;\n"
-"}")
+        self.side_menu_widget.setStyleSheet(u"")
         self.verticalLayout = QVBoxLayout(self.side_menu_widget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
