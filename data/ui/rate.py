@@ -24,47 +24,7 @@ class Ui_Dialog(object):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
         Dialog.resize(555, 467)
-        Dialog.setStyleSheet(u"QFrame {\n"
-"	border-radius: 10px;\n"
-"	background-color: rgb(45, 45, 45);\n"
-"	color: rgb(255, 255, 255);\n"
-"}\n"
-"\n"
-"QDialog{\n"
-"	background-color: rgb(32, 32, 32);\n"
-"}\n"
-"\n"
-"QComboBox {\n"
-"	padding: 5px 1px;\n"
-"	border-radius: 10px;\n"
-"	font-weight: bold;\n"
-"	background-color: rgb(0, 133, 52);\n"
-"	color: rgb(255, 255, 255);\n"
-"}\n"
-"\n"
-"QSpinBox {\n"
-"	padding: 5px 5px;\n"
-"	border-radius: 10px;\n"
-"	font-weight: bold;\n"
-"	background-color: rgb(0, 133, 52);\n"
-"	color: rgb(255, 255, 255);\n"
-"}\n"
-"\n"
-"QPushButton {\n"
-"	padding: 5px 1px;\n"
-"	border-radius: 10px;\n"
-"	font-weight: bold;\n"
-"	background-color: rgb(0, 133, 52);\n"
-"	color: rgb(255, 255, 255);\n"
-"}\n"
-"\n"
-"QPushButton:hover:!pressed {\n"
-"	border-left: 3px solid white;\n"
-"}\n"
-"\n"
-"QPushButton:checked {\n"
-"	border-left: 3px solid white;\n"
-"}")
+        Dialog.setStyleSheet(u"")
         Dialog.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.verticalLayout = QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(u"verticalLayout")

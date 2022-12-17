@@ -17,7 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
     QMainWindow, QPushButton, QScrollArea, QSizePolicy,
-    QSlider, QVBoxLayout, QWidget)
+    QSlider, QStackedWidget, QVBoxLayout, QWidget)
 import desu_res_rc
 
 class Ui_MainWindow(object):
@@ -25,86 +25,20 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(342, 600)
-        MainWindow.setStyleSheet(u"background-color: rgb(32, 32, 32);")
+        MainWindow.setStyleSheet(u"")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.centralwidget.setStyleSheet(u"QFrame {\n"
-"	border-radius: 10px;\n"
-"	background-color: rgb(45, 45, 45);\n"
-"	color: rgb(255, 255, 255);\n"
-"}\n"
-"\n"
-"QDialog{\n"
-"	background-color: rgb(32, 32, 32);\n"
-"}\n"
-"\n"
-"QComboBox {\n"
-"	padding: 5px 1px;\n"
-"	border-radius: 10px;\n"
-"	font-weight: bold;\n"
-"	background-color: rgb(0, 133, 52);\n"
-"	color: rgb(255, 255, 255);\n"
-"}\n"
-"\n"
-"QSpinBox {\n"
-"	padding: 5px 5px;\n"
-"	border-radius: 10px;\n"
-"	font-weight: bold;\n"
-"	background-color: rgb(0, 133, 52);\n"
-"	color: rgb(255, 255, 255);\n"
-"}\n"
-"\n"
-"QPushButton {\n"
-"	padding: 5px 1px;\n"
-"	border-radius: 10px;\n"
-"	font-weight: bold;\n"
-"	background-color: rgb(0, 133, 52);\n"
-"	color: rgb(255, 255, 255);\n"
-"}\n"
-"\n"
-"QPushButton:hover:!pressed {\n"
-"	border-left: 3px solid white;\n"
-"}\n"
-"\n"
-"QPushButton:checked {\n"
-"	border-left: 3px solid white;\n"
-"}\n"
-"QScrollBar {\n"
-"    background: #292b2e;\n"
-"    border-radius: 10px;\n"
-"}\n"
-"QScrollBar:horizontal {\n"
-"    height: 14px;\n"
-"}\n"
-"QScrollBar:vertical {\n"
-"    width: 14"
-                        "px;\n"
-"	margin: 0px 0px 0px 0px;\n"
-"}\n"
-"QScrollBar::handle {\n"
-"    background: rgba(84.000, 86.000, 86.000, 0.737);\n"
-"    border-radius: 5px;\n"
-"	min-height: 0px;\n"
-"}\n"
-"QScrollBar::handle:hover {\n"
-"    background: rgba(114.000, 115.000, 115.000, 0.827);\n"
-"}\n"
-"QScrollBar::handle:pressed {\n"
-"    background: rgba(143.000, 145.000, 145.000, 0.933);\n"
-"}\n"
-"QScrollBar::sub-page, QScrollBar::add-page {\n"
-"    background: transparent;\n"
-"}\n"
-"QScrollBar::sub-line, QScrollBar::add-line {\n"
-"    background: transparent;\n"
-"	subcontrol-position: top;\n"
-"    subcontrol-origin: margin;\n"
-"    width: 0px;\n"
-"    height: 0px;\n"
-"}")
+        self.centralwidget.setStyleSheet(u"")
         self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.size_frame = QFrame(self.centralwidget)
+        self.stackedWidget = QStackedWidget(self.centralwidget)
+        self.stackedWidget.setObjectName(u"stackedWidget")
+        self.page = QWidget()
+        self.page.setObjectName(u"page")
+        self.verticalLayout_3 = QVBoxLayout(self.page)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.size_frame = QFrame(self.page)
         self.size_frame.setObjectName(u"size_frame")
         self.size_frame.setFrameShape(QFrame.StyledPanel)
         self.size_frame.setFrameShadow(QFrame.Raised)
@@ -121,9 +55,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.text_size_slider)
 
 
-        self.verticalLayout_2.addWidget(self.size_frame)
+        self.verticalLayout_3.addWidget(self.size_frame)
 
-        self.content_frame = QFrame(self.centralwidget)
+        self.content_frame = QFrame(self.page)
         self.content_frame.setObjectName(u"content_frame")
         self.content_frame.setFrameShape(QFrame.StyledPanel)
         self.content_frame.setFrameShadow(QFrame.Raised)
@@ -137,15 +71,15 @@ class Ui_MainWindow(object):
         self.scrollArea.setAlignment(Qt.AlignCenter)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 306, 436))
-        self.scrollAreaWidgetContents.setStyleSheet(u"background-color: rgb(32, 32, 32);")
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 302, 432))
+        self.scrollAreaWidgetContents.setStyleSheet(u"")
         self.verticalLayout_5 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_5.setSpacing(6)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.img = QLabel(self.scrollAreaWidgetContents)
         self.img.setObjectName(u"img")
-        self.img.setStyleSheet(u"background-color: rgb(45, 45, 45);")
+        self.img.setStyleSheet(u"")
         self.img.setAlignment(Qt.AlignJustify|Qt.AlignVCenter)
         self.img.setWordWrap(True)
         self.img.setOpenExternalLinks(False)
@@ -157,9 +91,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.scrollArea)
 
 
-        self.verticalLayout_2.addWidget(self.content_frame)
+        self.verticalLayout_3.addWidget(self.content_frame)
 
-        self.actions_frame = QFrame(self.centralwidget)
+        self.actions_frame = QFrame(self.page)
         self.actions_frame.setObjectName(u"actions_frame")
         self.actions_frame.setFrameShape(QFrame.StyledPanel)
         self.actions_frame.setFrameShadow(QFrame.Raised)
@@ -241,7 +175,11 @@ class Ui_MainWindow(object):
         self.verticalLayout.addLayout(self.chapter_actions_label)
 
 
-        self.verticalLayout_2.addWidget(self.actions_frame)
+        self.verticalLayout_3.addWidget(self.actions_frame)
+
+        self.stackedWidget.addWidget(self.page)
+
+        self.verticalLayout_2.addWidget(self.stackedWidget)
 
         MainWindow.setCentralWidget(self.centralwidget)
 
