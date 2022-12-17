@@ -7,8 +7,8 @@ from PySide6.QtWidgets import QListWidgetItem
 from const.lists import LibList
 from data.ui.shikimori import Ui_Form
 from nlightreader.contexts.LibraryManga import LibraryMangaMenu
-from nlightreader.items import Manga, RequestForm, User
 from nlightreader.dialogs import FormAuth
+from nlightreader.items import Manga, RequestForm, User
 from nlightreader.parsers import ShikimoriLib
 from nlightreader.utils import Database, lock_ui, with_lock_thread, get_catalog
 from nlightreader.widgets.BaseWidget import BaseWidget
