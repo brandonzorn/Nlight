@@ -134,6 +134,7 @@
         <translation>Шикимори</translation>
     </message>
 </context>
+
 <context>
     <name>Menu</name>
     <message>
@@ -163,6 +164,18 @@
     <message>
         <source>Remove read mark</source>
         <translation>Удалить отметку о прочтении</translation>
+    </message>
+</context>
+
+<context>
+    <name>Other</name>
+    <message>
+        <source>Page</source>
+        <translation>Страница</translation>
+    </message>
+    <message>
+        <source>Sign in</source>
+        <translation>Войти</translation>
     </message>
 </context>
 </TS>
