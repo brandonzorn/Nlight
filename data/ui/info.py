@@ -313,7 +313,7 @@ class Ui_Form(object):
         self.catalog_score_label.setText(QCoreApplication.translate("Form", u"score", None))
         self.volumes_label.setText(QCoreApplication.translate("Form", u"volumes", None))
         self.chapters_label.setText(QCoreApplication.translate("Form", u"chapters", None))
-        self.label.setText(QCoreApplication.translate("Form", u"\u0421\u0432\u044f\u0437\u0430\u043d\u043d\u043e\u0435", None))
-        self.label_2.setText(QCoreApplication.translate("Form", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u0436\u0438", None))
+        self.label.setText(QCoreApplication.translate("Form", u"Related", None))
+        self.label_2.setText(QCoreApplication.translate("Form", u"Characters", None))
     # retranslateUi
 
