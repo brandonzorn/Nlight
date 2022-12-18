@@ -76,11 +76,23 @@
         <translation>Читаю</translation>
     </message>
     <message>
+        <source>Watching</source>
+        <translation>Читаю</translation>
+    </message>
+    <message>
         <source>Re-reading</source>
         <translation>Перечитую</translation>
     </message>
     <message>
+        <source>Rewatching</source>
+        <translation>Перечитую</translation>
+    </message>
+    <message>
         <source>On hold</source>
+        <translation>Відкладено</translation>
+    </message>
+    <message>
+        <source>On_hold</source>
         <translation>Відкладено</translation>
     </message>
     <message>
@@ -182,6 +194,30 @@
     <message>
         <source>Sign in</source>
         <translation>Увійти</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>Статус</translation>
+    </message>
+    <message>
+        <source>Volumes</source>
+        <translation>Томів</translation>
+    </message>
+    <message>
+        <source>Chapters</source>
+        <translation>Глав</translation>
+    </message>
+    <message>
+        <source>Rating</source>
+        <translation>Рейтинг</translation>
+    </message>
+    <message>
+        <source>Ongoing</source>
+        <translation>Виходить</translation>
+    </message>
+    <message>
+        <source>Completed</source>
+        <translation>Видано</translation>
     </message>
 </context>
 </TS>

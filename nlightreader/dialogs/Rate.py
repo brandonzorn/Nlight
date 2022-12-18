@@ -1,8 +1,9 @@
 from PySide6.QtWidgets import QDialog
 
-from const.lists import lib_lists_en, lib_lists_ru
+from const.lists import lib_lists_en
 from data.ui.rate import Ui_Dialog
 from nlightreader.items import Manga
+from nlightreader.utils import translate
 from nlightreader.utils.catalog_manager import get_catalog, get_lib_catalog
 
 
@@ -11,7 +12,7 @@ class FormRate(QDialog):
         super().__init__(None)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.ui.lib_list_box.addItems([i.capitalize() for i in lib_lists_ru])
+        self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in lib_lists_en])
         self.ui.update_btn.clicked.connect(self.send_rate)
         self.ui.cancel_btn.clicked.connect(lambda: self.close())
         self.ui.delete_btn.clicked.connect(self.delete_rate)
