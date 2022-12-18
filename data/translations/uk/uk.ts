@@ -140,4 +140,36 @@
         <translation>Увійти</translation>
     </message>
 </context>
+
+<context>
+    <name>Menu</name>
+    <message>
+        <source>Open in browser</source>
+        <translation>Відкрити в браузері</translation>
+    </message>
+    <message>
+        <source>Remove from library</source>
+        <translation>Видалити з бібліотеки</translation>
+    </message>
+    <message>
+        <source>Add to Library</source>
+        <translation>Додати до бібліотеки</translation>
+    </message>
+    <message>
+        <source>Mark as read</source>
+        <translation>Відзначити прочитаним</translation>
+    </message>
+    <message>
+        <source>Remove all</source>
+        <translation>Видалити все</translation>
+    </message>
+    <message>
+        <source>Mark as read all previous</source>
+        <translation>Відзначити прочитаним усі попередні</translation>
+    </message>
+    <message>
+        <source>Remove read mark</source>
+        <translation>Видалити відмітку про прочитання</translation>
+    </message>
+</context>
 </TS>
