@@ -5,13 +5,13 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 
 from const.colors import ItemsColors
-from const.lists import lib_lists_en, lib_lists_ru, LibList
+from const.lists import lib_lists_en, LibList
 from data.ui.info import Ui_Form
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
 from nlightreader.items import Manga, Character, Chapter, HistoryNote
 from nlightreader.utils import Database, get_manga_preview, lock_ui, get_catalog, get_status, with_lock_thread, \
-    get_language_icon, TextFormatter
+    get_language_icon, TextFormatter, translate
 from nlightreader.windows.Reader import Reader
 
 
@@ -23,7 +23,7 @@ class FormInfo(QWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.ui.lib_list_box.addItems([i.capitalize() for i in lib_lists_ru])
+        self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in lib_lists_en])
         self.ui.items_list.doubleClicked.connect(self.open_reader)
         self.ui.characters_list.doubleClicked.connect(self.open_character)
         self.ui.related_list.doubleClicked.connect(lambda: self.setup(self.get_current_manga()))
@@ -126,13 +126,13 @@ class FormInfo(QWidget):
         self.ui.name_label.setText(self.manga.name)
         self.ui.russian_label.setText(self.manga.russian)
         self.ui.status_label.setVisible(bool(self.manga.status))
-        self.ui.status_label.setText(f"Статус: {get_status(self.manga.status)}")
+        self.ui.status_label.setText(f"{translate('Other', 'Status')}: {get_status(self.manga.status)}")
         self.ui.volumes_label.setVisible(bool(self.manga.volumes))
         self.ui.chapters_label.setVisible(bool(self.manga.chapters))
-        self.ui.volumes_label.setText(f"Томов: {self.manga.volumes}")
-        self.ui.chapters_label.setText(f"Глав: {self.manga.chapters}")
+        self.ui.volumes_label.setText(f"{translate('Other', 'Volumes')}: {self.manga.volumes}")
+        self.ui.chapters_label.setText(f"{translate('Other', 'Chapters')}: {self.manga.chapters}")
         self.ui.catalog_score_label.setVisible(bool(self.manga.score))
-        self.ui.catalog_score_label.setText(f"Рейтинг: {self.manga.score}")
+        self.ui.catalog_score_label.setText(f"{translate('Other', 'Rating')}: {self.manga.score}")
         self.ui.description_text.clear()
         self.ui.description_text.insertHtml(TextFormatter.description_to_html(self.manga.description))
 

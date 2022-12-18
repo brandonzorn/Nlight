@@ -8,7 +8,7 @@ from PySide6.QtWidgets import QApplication
 
 from const.app import APP_NAME
 from const.icons import ru_icon_path, gb_icon_path, jp_icon_path
-from const.lists import lib_lists_en, lib_lists_ru, MangaKinds
+from const.lists import MangaKinds
 from const.translations import uk_trans_path, en_trans_path, ru_trans_path
 from const.urls import DEFAULT_HEADERS
 
@@ -19,10 +19,6 @@ def get_html(url: str, headers: dict = DEFAULT_HEADERS, params=None):
         return requests.get(url, headers=headers, params=params)
     except Exception as e:
         print(f"{e=}", f"{url=}", f"{params=}", f"{headers=}", sep="\n")
-
-
-def get_lib_list_en(lib_list_ru):
-    return lib_lists_en[lib_lists_ru.index(lib_list_ru)]
 
 
 def get_language_icon(language: str):
@@ -40,11 +36,12 @@ def get_language_icon(language: str):
 def get_status(status: str) -> str:
     match status:
         case 'ongoing':
-            return "Выходит"
+            return translate("Other", status.capitalize())
         case 'completed' | 'released':
-            return "Издано"
+            return translate("Other", 'completed'.capitalize())
         case _:
-            return status
+            if status:
+                return status.capitalize()
 
 
 def get_manga_kind(kind: str) -> None:

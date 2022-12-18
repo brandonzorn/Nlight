@@ -99,11 +99,23 @@
         <translation>Читаю</translation>
     </message>
     <message>
+        <source>Watching</source>
+        <translation>Читаю</translation>
+    </message>
+    <message>
         <source>Re-reading</source>
         <translation>Перечитываю</translation>
     </message>
     <message>
+        <source>Rewatching</source>
+        <translation>Перечитываю</translation>
+    </message>
+    <message>
         <source>On hold</source>
+        <translation>Отложено</translation>
+    </message>
+    <message>
+        <source>On_hold</source>
         <translation>Отложено</translation>
     </message>
     <message>
@@ -176,6 +188,30 @@
     <message>
         <source>Sign in</source>
         <translation>Войти</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>Статус</translation>
+    </message>
+    <message>
+        <source>Volumes</source>
+        <translation>Томов</translation>
+    </message>
+    <message>
+        <source>Chapters</source>
+        <translation>Глав</translation>
+    </message>
+    <message>
+        <source>Rating</source>
+        <translation>Рейтинг</translation>
+    </message>
+    <message>
+        <source>Ongoing</source>
+        <translation>Выходит</translation>
+    </message>
+    <message>
+        <source>Completed</source>
+        <translation>Издано</translation>
     </message>
 </context>
 </TS>
