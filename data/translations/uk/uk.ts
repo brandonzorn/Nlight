@@ -59,6 +59,14 @@
         <source>Sign in</source>
         <translation>Увійти</translation>
     </message>
+    <message>
+        <source>Related</source>
+        <translation>Пов'язане</translation>
+    </message>
+    <message>
+        <source>Characters</source>
+        <translation>Персонажі</translation>
+    </message>
 </context>
 
 <context>

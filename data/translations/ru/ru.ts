@@ -87,6 +87,18 @@
         <translation>Войти</translation>
     </message>
     <message>
+        <source>Related</source>
+        <translation>Связанное</translation>
+    </message>
+    <message>
+        <source>Characters</source>
+        <translation>Персонажи</translation>
+    </message>
+</context>
+
+<context>
+    <name>Form</name>
+    <message>
         <source>Planned</source>
         <translation>Запланированно</translation>
     </message>
@@ -123,6 +135,7 @@
         <translation>Брошено</translation>
     </message>
 </context>
+
 <context>
     <name>MainWindow</name>
     <message>
