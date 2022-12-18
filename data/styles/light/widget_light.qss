@@ -115,3 +115,15 @@ QLabel {
     color: rgb(0, 0, 0);
     background-color: rgb(230, 230, 230);
 }
+
+QMenu {
+    background-color: rgb(230, 230, 230);
+    color: rgb(0, 0, 0);
+}
+QMenu::item {
+    background-color: rgb(230, 230, 230);
+    color: rgb(0, 0, 0);
+}
+QMenu::item:selected {
+    background-color: rgb(204, 204, 204);
+}
