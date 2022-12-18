@@ -328,7 +328,7 @@
             <item>
              <widget class="QLabel" name="label">
               <property name="text">
-               <string>Связанное</string>
+               <string>Related</string>
               </property>
              </widget>
             </item>
@@ -372,7 +372,7 @@
             <item>
              <widget class="QLabel" name="label_2">
               <property name="text">
-               <string>Персонажи</string>
+               <string>Characters</string>
               </property>
              </widget>
             </item>
