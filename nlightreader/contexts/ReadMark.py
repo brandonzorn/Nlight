@@ -1,13 +1,15 @@
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QMenu
 
+from nlightreader.utils import translate
+
 
 class ReadMarkMenu(QMenu):
     def __init__(self):
         super().__init__()
-        self.set_as_read = QAction('Отметить прочитанным')
-        self.set_as_read_all = QAction('Отметить прочитанным все предыдущие')
-        self.remove_read_state = QAction('Удалить отметку о прочтении')
+        self.set_as_read = QAction(translate("Menu", "Mark as read"))
+        self.set_as_read_all = QAction(translate("Menu", "Mark as read all previous"))
+        self.remove_read_state = QAction(translate("Menu", "Remove read mark"))
 
     def set_mode(self, mode: int):
         match mode:
