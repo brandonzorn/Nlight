@@ -10,7 +10,7 @@ from nlightreader.contexts.LibraryManga import LibraryMangaMenu
 from nlightreader.dialogs import FormAuth
 from nlightreader.items import Manga, RequestForm, User
 from nlightreader.parsers import ShikimoriLib
-from nlightreader.utils import Database, lock_ui, with_lock_thread, get_catalog
+from nlightreader.utils import Database, lock_ui, with_lock_thread, get_catalog, translate
 from nlightreader.widgets.BaseWidget import BaseWidget
 
 
@@ -62,8 +62,7 @@ class FormShikimori(BaseWidget):
         if whoami.nickname:
             self.ui.auth_btn.setText(whoami.nickname)
         else:
-            self.ui.auth_btn.setText("Sign in")
-            self.ui.retranslateUi(self)
+            self.ui.auth_btn.setText(translate("Other", "Sign in"))
 
     def get_current_manga(self):
         return self.catalog.get_manga(self.mangas[self.ui.items_list.currentIndex().row()])
@@ -74,8 +73,7 @@ class FormShikimori(BaseWidget):
         if whoami.nickname:
             self.ui.auth_btn.setText(whoami.nickname)
         else:
-            self.ui.auth_btn.setText("Sign in")
-            self.ui.retranslateUi(self)
+            self.ui.auth_btn.setText(translate("Other", "Sign in"))
 
     def authorize(self):
         self.Form_auth.hide()
@@ -92,7 +90,7 @@ class FormShikimori(BaseWidget):
                 if self.request_params.page == 1:
                     return
                 self.request_params.page -= 1
-        self.ui.page_label.setText(f"Страница {self.request_params.page}")
+        self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
         Thread(target=self.get_content, daemon=True).start()
 
     def search(self):
@@ -110,7 +108,7 @@ class FormShikimori(BaseWidget):
         with lock_ui(ui_to_lock):
             self.ui.items_list.clear()
             self.mangas = self.catalog.search_manga(self.request_params)
-            self.ui.page_label.setText(f'Страница {self.request_params.page}')
+            self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
             for manga in self.mangas:
                 item = QListWidgetItem(manga.get_name())
                 self.ui.items_list.addItem(item)

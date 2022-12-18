@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QMainWindow
 
 from data.ui.reader import Ui_MainWindow
 from nlightreader.items import Manga, Chapter, Image
-from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image
+from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image, translate
 
 
 class Reader(QMainWindow):
@@ -76,7 +76,7 @@ class Reader(QMainWindow):
                 else:
                     self.cur_page -= 1
         self.attach_image()
-        self.ui.page_label.setText(f'Страница {self.cur_page} / {self.max_page}')
+        self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.cur_page} / {self.max_page}")
 
     def change_chapter(self, page=None):
         match page:

@@ -172,4 +172,16 @@
         <translation>Видалити відмітку про прочитання</translation>
     </message>
 </context>
+
+<context>
+    <name>Other</name>
+    <message>
+        <source>Page</source>
+        <translation>Сторінка</translation>
+    </message>
+    <message>
+        <source>Sign in</source>
+        <translation>Увійти</translation>
+    </message>
+</context>
 </TS>
