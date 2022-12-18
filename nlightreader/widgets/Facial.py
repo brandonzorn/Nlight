@@ -9,7 +9,7 @@ from data.ui.facial import Ui_Form
 from nlightreader.contexts.LibraryManga import LibraryMangaMenu
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import RequestForm
-from nlightreader.utils import Database, USER_CATALOGS, lock_ui, with_lock_thread, get_catalog
+from nlightreader.utils import Database, USER_CATALOGS, lock_ui, with_lock_thread, get_catalog, translate
 from nlightreader.widgets.BaseWidget import BaseWidget
 
 
@@ -126,7 +126,7 @@ class FormFacial(BaseWidget):
                 if self.db.check_manga_library(i):
                     item.setBackground(ItemsColors.IN_LIBRARY)
                 self.ui.items_list.addItem(item)
-            self.ui.page_label.setText(f'Страница {self.request_params.page}')
+            self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
 
     def search(self):
         self.request_params.page = 1
@@ -142,7 +142,7 @@ class FormFacial(BaseWidget):
                     self.request_params.page -= 1
                 else:
                     return
-        self.ui.page_label.setText(f'Страница {self.request_params.page}')
+        self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
         Thread(target=self.get_content, daemon=True).start()
 
     def apply_filter(self):
