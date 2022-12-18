@@ -64,6 +64,10 @@ def get_locale_path(locale: str) -> str:
             return uk_trans_path
 
 
+def translate(context, string):
+    return QApplication.translate(context, string, None)
+
+
 def get_data(a: dict, path: list, default_val=None):
     if default_val is None:
         default_val = {}
