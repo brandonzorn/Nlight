@@ -1,94 +1,131 @@
-QMainWindow {
+QMainWindow
+{
     color: rgb(0, 0, 0);
     background-color: rgb(255, 255, 255);
 }
 
-QDialog {
+
+QDialog
+{
     color: rgb(0, 0, 0);
     background-color: rgb(255, 255, 255);
 }
-
-QDialog > QFrame {
+QDialog > QFrame
+{
     border-radius: 10px;
     background-color: rgb(230, 230, 230);
 }
-
-QDialog > QFrame > QFrame {
+QDialog > QFrame > QFrame
+{
     color: rgb(0, 0, 0);
     border-radius: 10px;
     background-color: rgb(230, 230, 230);
 }
 
-QWidget#side_menu_widget > QFrame {
+
+QWidget#side_menu_widget > QFrame
+{
     border-radius: 10px;
     background-color: rgb(230, 230, 230);
 }
+QWidget#side_menu_widget > QFrame > QPushButton
+{
+    text-align: left;
+    icon-size: 24px;
+}
 
-QStackedWidget > QWidget > QFrame {
+
+QStackedWidget > QWidget > QFrame
+{
     border-radius: 10px;
     background-color: rgb(230, 230, 230);
 }
-
-QStackedWidget > QWidget > QFrame > QFrame {
+QStackedWidget > QWidget > QFrame > QFrame
+{
     border-radius: 10px;
     background-color: rgb(230, 230, 230);
     color: rgb(0, 0, 0);
 }
 
 
-QComboBox {
+QPushButton
+{
+    padding: 5px 1px;
+    background-color: rgb(204, 204, 204);
+    border-radius: 10px;
+    font-weight: bold;
+}
+QPushButton:hover:!pressed
+{
+    background-color: rgb(122, 122, 122);
+	border: 2px solid rgb(122, 122, 122);
+}
+QPushButton:hover:pressed
+{
+    background-color: rgb(204, 204, 204);
+	border: 2px solid rgb(122, 122, 122);
+}
+QPushButton:checked
+{
+	border: 2px solid rgb(122, 122, 122);
+}
+
+
+QRadioButton, QCheckBox
+{
+    color: rgb(0, 0, 0);
+    background-color: rgb(230, 230, 230);
+}
+
+
+QComboBox
+{
 	padding: 5px 1px;
 	border-radius: 10px;
 	font-weight: bold;
 	background-color: rgb(204, 204, 204);
 	color: rgb(0, 0, 0);
 }
-
-QPushButton {
-    padding: 5px 1px;
-    background-color: rgb(204, 204, 204);
-    border-radius: 10px;
-    font-weight: bold;
-    icon-size: 24px;
-}
-QPushButton:hover:!pressed {
-	border: 2px solid rgb(122, 122, 122);
-}
-QPushButton:checked {
-	border: 2px solid rgb(122, 122, 122);
-}
-
-QRadioButton, QCheckBox {
-    color: rgb(0, 0, 0);
+QComboBox QAbstractItemView
+{
     background-color: rgb(230, 230, 230);
 }
 
-QScrollBar {
+
+QScrollBar
+{
     background: rgb(233, 233, 233);
     border-radius: 10px;
 }
-QScrollBar:horizontal {
+QScrollBar:horizontal
+{
     height: 14px;
 }
-QScrollBar:vertical {
+QScrollBar:vertical
+{
     width: 14px;
 	margin: 0px 0px 0px 0px;
 }
-QScrollBar::handle {
+QScrollBar::handle
+{
     background: rgb(186, 186, 186);
     border-radius: 5px;
 	min-height: 0px;
 }
-QScrollBar::handle:hover {
+QScrollBar::handle:hover
+{
     background: rgba(114.000, 115.000, 115.000, 0.827);
 }
-QScrollBar::handle:pressed {
+QScrollBar::handle:pressed
+{
     background: rgba(143.000, 145.000, 145.000, 0.933);
 }
-QScrollBar::sub-page, QScrollBar::add-page {
+QScrollBar::sub-page, QScrollBar::add-page
+{
     background: transparent;
 }
-QScrollBar::sub-line, QScrollBar::add-line {
+QScrollBar::sub-line, QScrollBar::add-line
+{
     background: transparent;
 	subcontrol-position: top;
     subcontrol-origin: margin;
@@ -97,13 +134,15 @@ QScrollBar::sub-line, QScrollBar::add-line {
 }
 
 
-QLineEdit {
+QLineEdit
+{
 	color: rgb(0, 0, 0);
 	background-color: rgb(255, 255, 255);
 }
 
 
-QSpinBox {
+QSpinBox
+{
 	padding: 5px 5px;
 	border-radius: 10px;
 	font-weight: bold;
@@ -111,19 +150,25 @@ QSpinBox {
 	color: rgb(0, 0, 0);
 }
 
-QLabel {
+
+QLabel
+{
     color: rgb(0, 0, 0);
     background-color: rgb(230, 230, 230);
 }
 
-QMenu {
+
+QMenu
+{
     background-color: rgb(230, 230, 230);
     color: rgb(0, 0, 0);
 }
-QMenu::item {
+QMenu::item
+{
     background-color: rgb(230, 230, 230);
     color: rgb(0, 0, 0);
 }
-QMenu::item:selected {
+QMenu::item:selected
+{
     background-color: rgb(204, 204, 204);
 }
