@@ -4,7 +4,7 @@ import os
 from functools import wraps
 
 import requests
-from PySide6.QtCore import QRunnable, Slot, QThreadPool
+from PySide6.QtCore import QRunnable, Slot, QThreadPool, QLocale
 from PySide6.QtWidgets import QApplication
 
 from const.app import APP_NAME
@@ -52,14 +52,14 @@ def get_manga_kind(kind: str) -> None:
     return kinds_matches[kind]
 
 
-def get_locale_path(locale: str) -> str:
+def get_locale_path(locale: QLocale.Language) -> str:
     match locale:
-        case 'English_United States':
-            return en_trans_path
-        case 'Russian_Russia':
+        case QLocale.Language.Russian:
             return ru_trans_path
-        case 'Ukrainian_Ukraine':
+        case QLocale.Language.Ukrainian:
             return uk_trans_path
+        case _:
+            return en_trans_path
 
 
 def translate(context, string):

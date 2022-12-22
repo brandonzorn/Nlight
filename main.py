@@ -1,7 +1,6 @@
 import sys
-import locale
 import darkdetect
-from PySide6.QtCore import QSize, Qt, QTranslator
+from PySide6.QtCore import QSize, Qt, QTranslator, QLocale
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 
@@ -25,7 +24,7 @@ if __name__ == '__main__':
     QApplication.setStyle('Fusion')
     app = QApplication(sys.argv)
     trans = QTranslator()
-    trans.load(get_locale_path(locale.getlocale()[0]))
+    trans.load(get_locale_path(QLocale.system().language()))
     dark = open(dark_style).read()
     light = open(light_style).read()
     themes = {"Dark": dark, "Light": light}
