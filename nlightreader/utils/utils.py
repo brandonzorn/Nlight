@@ -114,7 +114,7 @@ class Worker(QRunnable):
 
 
 def start_thread(thread: Worker):
-    QThreadPool().globalInstance().start(thread)
+    QThreadPool.globalInstance().start(thread)
 
 
 @contextlib.contextmanager
