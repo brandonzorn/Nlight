@@ -4,6 +4,7 @@ import os
 from functools import wraps
 
 import requests
+from PySide6.QtCore import QRunnable, Slot, QThreadPool
 from PySide6.QtWidgets import QApplication
 
 from const.app import APP_NAME
@@ -98,6 +99,22 @@ def with_lock_thread(locker):
                 return func(*args, **kwargs)
         return wrapper
     return decorator
+
+
+class Worker(QRunnable):
+    def __init__(self, func, *args, **kwargs):
+        super(Worker, self).__init__()
+        self.func = func
+        self.args = args
+        self.kwargs = kwargs
+
+    @Slot()
+    def run(self):
+        self.func(*self.args, **self.kwargs)
+
+
+def start_thread(thread: Worker):
+    QThreadPool().globalInstance().start(thread)
 
 
 @contextlib.contextmanager

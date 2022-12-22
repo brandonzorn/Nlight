@@ -1,5 +1,3 @@
-from threading import Thread, Lock
-
 from PySide6.QtCore import Qt, QSize, QEvent
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget, QListWidgetItem
@@ -10,15 +8,12 @@ from data.ui.info import Ui_Form
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
 from nlightreader.items import Manga, Character, Chapter, HistoryNote
-from nlightreader.utils import Database, get_manga_preview, lock_ui, get_catalog, get_status, with_lock_thread, \
-    get_language_icon, TextFormatter, translate
+from nlightreader.utils import Database, get_manga_preview, lock_ui, get_catalog, get_status, get_language_icon, \
+    TextFormatter, translate, Worker, start_thread
 from nlightreader.windows.Reader import Reader
 
 
 class FormInfo(QWidget):
-
-    lock = Lock()
-
     def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
@@ -109,9 +104,12 @@ class FormInfo(QWidget):
             else:
                 self.ui.add_btn.setChecked(False)
             self.resizeEvent(None)
-            Thread(target=self.get_chapters, daemon=True).start()
-            Thread(target=self.get_relations, daemon=True).start()
-            Thread(target=self.get_characters, daemon=True).start()
+            thread_1 = Worker(self.get_chapters)
+            thread_2 = Worker(self.get_relations)
+            thread_3 = Worker(self.get_characters)
+            start_thread(thread_1)
+            start_thread(thread_2)
+            start_thread(thread_3)
 
     def open_rate(self):
         self.rate_window.setup(self.manga)
@@ -148,7 +146,6 @@ class FormInfo(QWidget):
             lib_list = LibList[lib_lists_en[self.ui.lib_list_box.currentIndex()]]
             self.db.add_manga_library(self.manga, lib_list)
 
-    @with_lock_thread(lock)
     def get_chapters(self):
         ui_to_lock = [self.ui.back_btn]
         with lock_ui(ui_to_lock):
