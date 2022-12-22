@@ -1,7 +1,6 @@
 import webbrowser
-from threading import Thread, Lock
 
-from PySide6.QtCore import QEvent
+from PySide6.QtCore import QEvent, QThreadPool
 from PySide6.QtWidgets import QListWidgetItem, QCheckBox, QRadioButton
 
 from const.colors import ItemsColors
@@ -9,14 +8,11 @@ from data.ui.facial import Ui_Form
 from nlightreader.contexts.LibraryManga import LibraryMangaMenu
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import RequestForm
-from nlightreader.utils import Database, USER_CATALOGS, lock_ui, with_lock_thread, get_catalog, translate
+from nlightreader.utils import Database, USER_CATALOGS, lock_ui, get_catalog, translate, Worker, start_thread
 from nlightreader.widgets.BaseWidget import BaseWidget
 
 
 class FormFacial(BaseWidget):
-
-    lock = Lock()
-
     def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
@@ -40,6 +36,7 @@ class FormFacial(BaseWidget):
         self.Form_genres = FormGenres()
         self.request_params = RequestForm()
         self.db: Database = Database()
+        self.threadpool = QThreadPool()
         self.catalog = None
         self.change_catalog(0)
 
@@ -115,7 +112,6 @@ class FormFacial(BaseWidget):
         self.setup_filters()
         self.apply_filter()
 
-    @with_lock_thread(lock)
     def get_content(self):
         ui_to_lock = [self]
         with lock_ui(ui_to_lock):
@@ -143,7 +139,8 @@ class FormFacial(BaseWidget):
                 else:
                     return
         self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
-        Thread(target=self.get_content, daemon=True).start()
+        thread_1 = Worker(self.get_content)
+        start_thread(thread_1)
 
     def apply_filter(self):
         self.request_params.clear()
@@ -153,7 +150,8 @@ class FormFacial(BaseWidget):
         self.request_params.search = self.ui.title_line.text()
         self.Form_genres.accept_genres()
         self.request_params.genres = self.Form_genres.selected_genres
-        Thread(target=self.get_content).start()
+        thread_1 = Worker(self.get_content)
+        start_thread(thread_1)
 
     def reset_filter(self):
         self.request_params.clear()
@@ -163,7 +161,8 @@ class FormFacial(BaseWidget):
             self.request_params.order = [self.order_items[i] for i in self.order_items if i.isChecked()][0]
         [i.setChecked(False) for i in self.kind_items]
         self.ui.title_line.clear()
-        Thread(target=self.get_content).start()
+        thread_1 = Worker(self.get_content)
+        start_thread(thread_1)
 
     def clear_filters_items(self):
         self.kind_items.clear()

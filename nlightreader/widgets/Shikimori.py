@@ -1,5 +1,4 @@
 import webbrowser
-from threading import Thread, Lock
 
 from PySide6.QtCore import QEvent
 from PySide6.QtWidgets import QListWidgetItem
@@ -10,14 +9,11 @@ from nlightreader.contexts.LibraryManga import LibraryMangaMenu
 from nlightreader.dialogs import FormAuth
 from nlightreader.items import Manga, RequestForm, User
 from nlightreader.parsers import ShikimoriLib
-from nlightreader.utils import Database, lock_ui, with_lock_thread, get_catalog, translate
+from nlightreader.utils import Database, lock_ui, get_catalog, translate, Worker, start_thread
 from nlightreader.widgets.BaseWidget import BaseWidget
 
 
 class FormShikimori(BaseWidget):
-
-    lock = Lock()
-
     def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
@@ -91,7 +87,8 @@ class FormShikimori(BaseWidget):
                     return
                 self.request_params.page -= 1
         self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
-        Thread(target=self.get_content, daemon=True).start()
+        thread_1 = Worker(self.get_content)
+        start_thread(thread_1)
 
     def search(self):
         self.request_params.page = 1
@@ -102,7 +99,6 @@ class FormShikimori(BaseWidget):
         self.request_params.lib_list = lib_list
         self.get_content()
 
-    @with_lock_thread(lock)
     def get_content(self):
         ui_to_lock = [self]
         with lock_ui(ui_to_lock):
