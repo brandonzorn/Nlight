@@ -6,7 +6,8 @@ from PySide6.QtWidgets import QMainWindow
 
 from data.ui.reader import Ui_MainWindow
 from nlightreader.items import Manga, Chapter, Image
-from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image, translate
+from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image, translate, Worker, \
+    start_thread
 
 
 class Reader(QMainWindow):
@@ -75,7 +76,10 @@ class Reader(QMainWindow):
                     self.change_chapter('-')
                 else:
                     self.cur_page -= 1
-        self.attach_image()
+
+        thread = Worker(self.attach_image)
+        start_thread(thread)
+
         self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.cur_page} / {self.max_page}")
 
     def change_chapter(self, page=None):
@@ -105,6 +109,7 @@ class Reader(QMainWindow):
 
     def attach_image(self):
         self.ui.img.clear()
+        page = self.cur_page
         self.ui.scrollArea.verticalScrollBar().setValue(0)
         self.ui.scrollArea.horizontalScrollBar().setValue(0)
         if not self.images:
@@ -116,7 +121,8 @@ class Reader(QMainWindow):
         else:
             self.ui.scrollAreaWidgetContents.resize(0, 0)
             pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
-            self.ui.img.setPixmap(pixmap)
+            if page == self.cur_page:
+                self.ui.img.setPixmap(pixmap)
 
     def update_text_size(self):
         font = self.ui.img.font()
