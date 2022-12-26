@@ -24,7 +24,7 @@ if __name__ == '__main__':
     QApplication.setStyle('Fusion')
     app = QApplication(sys.argv)
     trans = QTranslator()
-    trans.load(get_locale_path(QLocale.system().language()))
+    trans.load(get_locale_path(QLocale().language()))
     dark = open(dark_style).read()
     light = open(light_style).read()
     themes = {"Dark": dark, "Light": light}
