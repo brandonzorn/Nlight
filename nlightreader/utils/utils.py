@@ -8,7 +8,7 @@ from PySide6.QtCore import QRunnable, Slot, QThreadPool, QLocale
 from PySide6.QtWidgets import QApplication
 
 from const.app import APP_NAME
-from const.icons import ru_icon_path, gb_icon_path, jp_icon_path
+from const.icons import ru_icon_path, gb_icon_path, jp_icon_path, ua_icon_path
 from const.lists import MangaKinds
 from const.translations import uk_trans_path, en_trans_path, ru_trans_path
 from const.urls import DEFAULT_HEADERS
@@ -30,6 +30,8 @@ def get_language_icon(language: str):
             return gb_icon_path
         case 'jp':
             return jp_icon_path
+        case 'ua':
+            return ua_icon_path
         case _:
             return ''
 
