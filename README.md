@@ -15,7 +15,7 @@ Open source manga and ranobe reading application
     - Light and dark themes
     - Available in 🇷🇺Russian 🇺🇦Ukrainian and 🇬🇧English languages
 
-## Currently, supported catalogs
+## Currently supported catalogs
     Manga:
      - Desu (🇷🇺)
      - Shikimori (🇷🇺)
