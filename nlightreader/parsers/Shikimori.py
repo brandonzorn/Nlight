@@ -144,14 +144,14 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         mangas = []
         match req_params.lib_list:
             case LibList.reading:
-                req_params.lib_list = 'watching'
+                lib_list = 'watching'
             case LibList.re_reading:
-                req_params.lib_list = 'rewatching'
+                lib_list = 'rewatching'
             case _:
-                req_params.lib_list = req_params.lib_list.name
+                lib_list = req_params.lib_list.name
         if html and html.status_code == 200 and html.json():
             for i in html.json():
-                if not i.get("status") == req_params.lib_list:
+                if not i.get("status") == lib_list:
                     continue
                 i = i.get("manga")
                 mangas.append(self.setup_manga(i))

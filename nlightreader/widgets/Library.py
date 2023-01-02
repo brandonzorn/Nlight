@@ -46,6 +46,13 @@ class FormLibrary(BaseWidget):
     def setup(self):
         self.get_content()
 
+    def update_content(self):
+        self.ui.items_list.clear()
+        self.mangas = self.catalog.search_manga(self.request_params)
+        for manga in self.mangas:
+            item = QListWidgetItem(manga.get_name())
+            self.ui.items_list.addItem(item)
+
     def get_current_manga(self) -> Manga:
         return self.mangas[self.ui.items_list.currentIndex().row()]
 
@@ -54,8 +61,4 @@ class FormLibrary(BaseWidget):
         self.get_content()
 
     def get_content(self):
-        self.ui.items_list.clear()
-        self.mangas = self.catalog.search_manga(self.request_params)
-        for manga in self.mangas:
-            item = QListWidgetItem(manga.get_name())
-            self.ui.items_list.addItem(item)
+        self.update_content()

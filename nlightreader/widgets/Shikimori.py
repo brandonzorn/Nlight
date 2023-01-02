@@ -34,7 +34,6 @@ class FormShikimori(BaseWidget):
         self.ui.auth_btn.clicked.connect(self.authorize)
         self.Form_auth.accepted.connect(self.auth_accept)
         self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
-        self.get_content()
 
     def on_context_menu(self, pos):
         def open_in_browser():
@@ -53,6 +52,13 @@ class FormShikimori(BaseWidget):
             self.ui.auth_btn.setText(whoami.nickname)
         else:
             self.ui.auth_btn.setText(translate("Other", "Sign in"))
+        self.get_content()
+
+    def update_content(self):
+        self.ui.items_list.clear()
+        for manga in self.mangas:
+            item = QListWidgetItem(manga.get_name())
+            self.ui.items_list.addItem(item)
 
     def get_current_manga(self):
         return self.catalog.get_manga(self.mangas[self.ui.items_list.currentIndex().row()])
@@ -95,9 +101,6 @@ class FormShikimori(BaseWidget):
     def get_content(self):
         ui_to_lock = [self]
         with lock_ui(ui_to_lock):
-            self.ui.items_list.clear()
             self.mangas = self.catalog.search_manga(self.request_params)
+            self.update_content()
             self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
-            for manga in self.mangas:
-                item = QListWidgetItem(manga.get_name())
-                self.ui.items_list.addItem(item)

@@ -137,10 +137,10 @@ class MangaDexLib(MangaDex, LibParser):
         mangas = []
         match req_params.lib_list:
             case LibList.planned:
-                req_params.lib_list = 'plan_to_read'
+                lib_list = 'plan_to_read'
             case _:
-                req_params.lib_list = req_params.lib_list.name
-        html_statuses = self.session.get(f'{self.url_api}/manga/status', params={'status': req_params.lib_list})
+                lib_list = req_params.lib_list.name
+        html_statuses = self.session.get(f'{self.url_api}/manga/status', params={'status': lib_list})
         params = {'limit': req_params.limit, 'offset': req_params.offset}
         html = self.session.get(f'{self.url_api}/user/follows/manga', params=params)
         if html and html.status_code == 200 and html.json():
