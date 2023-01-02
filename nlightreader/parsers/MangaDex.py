@@ -1,5 +1,6 @@
 import requests
 
+from const.lists import LibList
 from const.urls import URL_MANGA_DEX_API, DEFAULT_HEADERS, URL_MANGA_DEX
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
 from nlightreader.parsers.Parser import Parser, LibParser
@@ -132,19 +133,15 @@ class MangaDexLib(MangaDex, LibParser):
         self.fields = 2
         self.session = Auth()
 
-    def search_manga(self, params: RequestForm):
+    def search_manga(self, req_params: RequestForm):
         mangas = []
-        match params.lib_list.name:
-            case 'planned':
-                params.lib_list = 'plan_to_read'
-            case 'watching':
-                params.lib_list = 'reading'
-            case 'rewatching':
-                params.lib_list = 're_reading'
+        match req_params.lib_list:
+            case LibList.planned:
+                req_params.lib_list = 'plan_to_read'
             case _:
-                params.lib_list = params.lib_list.name
-        html_statuses = self.session.get(f'{self.url_api}/manga/status', params={'status': params.lib_list})
-        params = {'limit': params.limit, 'offset': params.offset}
+                req_params.lib_list = req_params.lib_list.name
+        html_statuses = self.session.get(f'{self.url_api}/manga/status', params={'status': req_params.lib_list})
+        params = {'limit': req_params.limit, 'offset': req_params.offset}
         html = self.session.get(f'{self.url_api}/user/follows/manga', params=params)
         if html and html.status_code == 200 and html.json():
             for i in html.json().get('data'):

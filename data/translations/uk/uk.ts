@@ -84,23 +84,11 @@
         <translation>Читаю</translation>
     </message>
     <message>
-        <source>Watching</source>
-        <translation>Читаю</translation>
-    </message>
-    <message>
         <source>Re-reading</source>
         <translation>Перечитую</translation>
     </message>
     <message>
-        <source>Rewatching</source>
-        <translation>Перечитую</translation>
-    </message>
-    <message>
         <source>On hold</source>
-        <translation>Відкладено</translation>
-    </message>
-    <message>
-        <source>On_hold</source>
         <translation>Відкладено</translation>
     </message>
     <message>

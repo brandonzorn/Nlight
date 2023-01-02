@@ -106,7 +106,7 @@ class Database:
     def check_manga_library(self, manga: Manga) -> LibList:
         a = self.__cur.execute(f"SELECT list FROM library WHERE id = '{manga.id}';").fetchall()
         if a and a[0]:
-            return LibList[lib_lists_en[a[0][0]]]
+            return LibList(a[0][0])
 
     @with_lock_thread(lock)
     def rem_manga_library(self, manga: Manga):

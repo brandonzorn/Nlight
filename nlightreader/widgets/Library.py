@@ -21,11 +21,11 @@ class FormLibrary(BaseWidget):
         self.catalog = LocalLib()
         self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.planned_btn.clicked.connect(lambda: self.change_list(LibList.planned))
-        self.ui.reading_btn.clicked.connect(lambda: self.change_list(LibList.watching))
+        self.ui.reading_btn.clicked.connect(lambda: self.change_list(LibList.reading))
         self.ui.on_hold_btn.clicked.connect(lambda: self.change_list(LibList.on_hold))
         self.ui.completed_btn.clicked.connect(lambda: self.change_list(LibList.completed))
         self.ui.dropped_btn.clicked.connect(lambda: self.change_list(LibList.dropped))
-        self.ui.re_reading_btn.clicked.connect(lambda: self.change_list(LibList.rewatching))
+        self.ui.re_reading_btn.clicked.connect(lambda: self.change_list(LibList.re_reading))
 
     def on_context_menu(self, pos):
         def remove_from_lib():
