@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QDialog
 
-from const.lists import lib_lists_en
+from const.lists import lib_lists_en, parse_lib_list
 from data.ui.rate import Ui_Dialog
 from nlightreader.items import Manga
 from nlightreader.utils import translate
@@ -31,7 +31,7 @@ class FormRate(QDialog):
         self.ui.chapters_box.setValue(self.user_rate.chapters)
         if self.manga.chapters:
             self.ui.chapters_box.setMaximum(self.manga.chapters)
-        self.ui.lib_list_box.setCurrentIndex(lib_lists_en.index(self.user_rate.status))
+        self.ui.lib_list_box.setCurrentIndex(lib_lists_en.index(parse_lib_list(self.user_rate.status)))
 
     def send_rate(self):
         self.user_rate.score = self.ui.score_box.value()
