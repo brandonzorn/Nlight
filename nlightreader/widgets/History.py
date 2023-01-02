@@ -41,15 +41,7 @@ class FormHistory(BaseWidget):
     def setup(self):
         self.get_content()
 
-    def get_current_manga(self):
-        return self.notes[self.ui.items_list.currentIndex().row()].manga
-
-    def delete_note(self):
-        if self.ui.items_list.currentIndex().row() >= 0:
-            self.db.del_history_note(self.notes[self.ui.items_list.currentIndex().row()].chapter)
-            self.setup()
-
-    def get_content(self):
+    def update_content(self):
         self.ui.items_list.clear()
         self.notes: list[HistoryNote] = self.db.get_history_notes()
         for note in self.notes:
@@ -59,3 +51,14 @@ class FormHistory(BaseWidget):
             else:
                 item.setBackground(ItemsColors.UNREAD)
             self.ui.items_list.addItem(item)
+
+    def get_current_manga(self):
+        return self.notes[self.ui.items_list.currentIndex().row()].manga
+
+    def delete_note(self):
+        if self.ui.items_list.currentIndex().row() >= 0:
+            self.db.del_history_note(self.notes[self.ui.items_list.currentIndex().row()].chapter)
+            self.setup()
+
+    def get_content(self):
+        self.update_content()
