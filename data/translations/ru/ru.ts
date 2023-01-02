@@ -112,23 +112,11 @@
         <translation>Читаю</translation>
     </message>
     <message>
-        <source>Watching</source>
-        <translation>Читаю</translation>
-    </message>
-    <message>
         <source>Re-reading</source>
         <translation>Перечитываю</translation>
     </message>
     <message>
-        <source>Rewatching</source>
-        <translation>Перечитываю</translation>
-    </message>
-    <message>
         <source>On hold</source>
-        <translation>Отложено</translation>
-    </message>
-    <message>
-        <source>On_hold</source>
         <translation>Отложено</translation>
     </message>
     <message>

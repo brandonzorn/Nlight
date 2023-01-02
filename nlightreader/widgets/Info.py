@@ -133,7 +133,7 @@ class FormInfo(QWidget):
 
     def change_lib_list(self):
         if self.db.check_manga_library(self.manga):
-            lib_list = LibList[lib_lists_en[self.ui.lib_list_box.currentIndex()]]
+            lib_list = LibList(self.ui.lib_list_box.currentIndex())
             self.db.add_manga_library(self.manga, lib_list)
 
     def get_chapters(self):

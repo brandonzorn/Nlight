@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QApplication
 from requests_oauthlib import OAuth2Session
 
+from const.lists import LibList
 from const.shikimori_items import ORDERS, KINDS
 from const.urls import URL_SHIKIMORI_API, URL_SHIKIMORI_TOKEN, URL_SHIKIMORI, SHIKIMORI_HEADERS
 from keys import SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID
@@ -141,9 +142,16 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         params = {"limit": 50, "page": req_params.page}
         html = self.session.request('GET', url, params)
         mangas = []
+        match req_params.lib_list:
+            case LibList.reading:
+                req_params.lib_list = 'watching'
+            case LibList.re_reading:
+                req_params.lib_list = 'rewatching'
+            case _:
+                req_params.lib_list = req_params.lib_list.name
         if html and html.status_code == 200 and html.json():
             for i in html.json():
-                if not i.get("status") == req_params.lib_list.name:
+                if not i.get("status") == req_params.lib_list:
                     continue
                 i = i.get("manga")
                 mangas.append(self.setup_manga(i))
