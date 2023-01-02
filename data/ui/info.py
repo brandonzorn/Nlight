@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'info.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.0
+## Created by: Qt User Interface Compiler version 6.4.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -287,7 +287,7 @@ class Ui_Form(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.items_list = QListWidget(self.items_frame)
         self.items_list.setObjectName(u"items_list")
-        self.items_list.setContextMenuPolicy(Qt.DefaultContextMenu)
+        self.items_list.setContextMenuPolicy(Qt.CustomContextMenu)
         self.items_list.setWordWrap(True)
 
         self.verticalLayout.addWidget(self.items_list)

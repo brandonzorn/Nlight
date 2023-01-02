@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, QSize, QEvent
+from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 
@@ -9,7 +9,7 @@ from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
 from nlightreader.items import Manga, Character, Chapter, HistoryNote
 from nlightreader.utils import Database, get_manga_preview, lock_ui, get_catalog, get_status, get_language_icon, \
-    TextFormatter, translate, Worker, start_thread
+    TextFormatter, translate, Worker
 from nlightreader.windows.Reader import Reader
 
 
@@ -25,7 +25,7 @@ class FormInfo(QWidget):
         self.ui.shikimori_btn.clicked.connect(self.open_rate)
         self.ui.add_btn.clicked.connect(self.add_to_favorites)
         self.ui.lib_list_box.currentIndexChanged.connect(self.change_lib_list)
-        self.ui.items_list.installEventFilter(self)
+        self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
         self.db: Database = Database()
         self.catalog = None
         self.manga = None
@@ -36,7 +36,7 @@ class FormInfo(QWidget):
         self.rate_window = FormRate()
         self.character_window = None
 
-    def eventFilter(self, source, event):
+    def on_context_menu(self, pos):
         def set_as_read_all():
             history_notes = []
             for item in [selected_item.listWidget().item(i) for i in range(
@@ -55,27 +55,20 @@ class FormInfo(QWidget):
             self.db.del_history_note(self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()])
             selected_item.setBackground(ItemsColors.EMPTY)
 
-        if event and event.type() == QEvent.ContextMenu and source is self.ui.items_list and source.itemAt(event.pos()):
-            menu = ReadMarkMenu()
-            selected_item: QListWidgetItem = source.itemAt(event.pos())
-            selected_chapter = self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()]
-            if not self.db.check_complete_chapter(selected_chapter):
-                menu.set_mode(0)
+        menu = ReadMarkMenu()
+        selected_item = self.ui.items_list.itemAt(pos)
+        selected_chapter = self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()]
+        if not self.db.check_complete_chapter(selected_chapter):
+            menu.set_mode(0)
+        else:
+            if self.db.get_complete_status(selected_chapter):
+                menu.set_mode(1)
             else:
-                if self.db.get_complete_status(selected_chapter):
-                    menu.set_mode(1)
-                else:
-                    menu.set_mode(2)
-            selected_action = menu.exec(event.globalPos())
-            match selected_action:
-                case menu.set_as_read:
-                    set_as_read()
-                case menu.set_as_read_all:
-                    set_as_read_all()
-                case menu.remove_read_state:
-                    remove_read_state()
-            return True
-        return super().eventFilter(source, event)
+                menu.set_mode(2)
+        menu.set_as_read.triggered.connect(set_as_read)
+        menu.set_as_read_all.triggered.connect(set_as_read_all)
+        menu.remove_read_state.triggered.connect(remove_read_state)
+        menu.exec(self.ui.items_list.mapToGlobal(pos))
 
     def resizeEvent(self, a0):
         self.ui.image.clear()
@@ -104,12 +97,9 @@ class FormInfo(QWidget):
             else:
                 self.ui.add_btn.setChecked(False)
             self.resizeEvent(None)
-            thread_1 = Worker(self.get_chapters)
-            thread_2 = Worker(self.get_relations)
-            thread_3 = Worker(self.get_characters)
-            start_thread(thread_1)
-            start_thread(thread_2)
-            start_thread(thread_3)
+            Worker(self.get_chapters).start()
+            Worker(self.get_characters).start()
+            Worker(self.get_relations).start()
 
     def open_rate(self):
         self.rate_window.setup(self.manga)

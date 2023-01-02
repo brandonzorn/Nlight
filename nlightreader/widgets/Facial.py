@@ -1,6 +1,6 @@
 import webbrowser
 
-from PySide6.QtCore import QEvent, QThreadPool
+from PySide6.QtCore import QThreadPool
 from PySide6.QtWidgets import QListWidgetItem, QCheckBox, QRadioButton
 
 from const.colors import ItemsColors
@@ -8,7 +8,7 @@ from data.ui.facial import Ui_Form
 from nlightreader.contexts.LibraryManga import LibraryMangaMenu
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import RequestForm
-from nlightreader.utils import Database, USER_CATALOGS, lock_ui, get_catalog, translate, Worker, start_thread
+from nlightreader.utils import Database, USER_CATALOGS, lock_ui, get_catalog, translate, Worker
 from nlightreader.widgets.BaseWidget import BaseWidget
 
 
@@ -27,7 +27,7 @@ class FormFacial(BaseWidget):
             not self.ui.catalogs_list.isVisible()))
         self.ui.catalogs_list.doubleClicked.connect(
             lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row()))
-        self.ui.items_list.installEventFilter(self)
+        self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
         self.mangas = []
         self.order_items = {}
         self.kind_items = {}
@@ -40,7 +40,7 @@ class FormFacial(BaseWidget):
         self.catalog = None
         self.change_catalog(0)
 
-    def eventFilter(self, source, event):
+    def on_context_menu(self, pos):
         def add_to_lib():
             manga = self.catalog.get_manga(selected_manga)
             self.db.add_manga(manga)
@@ -54,24 +54,17 @@ class FormFacial(BaseWidget):
         def open_in_browser():
             webbrowser.open_new_tab(get_catalog(selected_manga.catalog_id)().get_manga_url(selected_manga))
 
-        if event and event.type() == QEvent.ContextMenu and source is self.ui.items_list and source.itemAt(event.pos()):
-            menu = LibraryMangaMenu()
-            selected_item: QListWidgetItem = source.itemAt(event.pos())
-            selected_manga = self.mangas[selected_item.listWidget().indexFromItem(selected_item).row()]
-            if self.db.check_manga_library(selected_manga):
-                menu.set_mode(1)
-            else:
-                menu.set_mode(0)
-            selected_action = menu.exec(event.globalPos())
-            match selected_action:
-                case menu.add_to_lib:
-                    add_to_lib()
-                case menu.remove_from_lib:
-                    remove_from_lib()
-                case menu.open_in_browser:
-                    open_in_browser()
-            return True
-        return super().eventFilter(source, event)
+        menu = LibraryMangaMenu()
+        selected_item = self.ui.items_list.itemAt(pos)
+        selected_manga = self.mangas[selected_item.listWidget().indexFromItem(selected_item).row()]
+        if self.db.check_manga_library(selected_manga):
+            menu.set_mode(1)
+        else:
+            menu.set_mode(0)
+        menu.add_to_lib.triggered.connect(add_to_lib)
+        menu.remove_from_lib.triggered.connect(remove_from_lib)
+        menu.open_in_browser.triggered.connect(open_in_browser)
+        menu.exec(self.ui.items_list.mapToGlobal(pos))
 
     def setup(self):
         self.ui.items_list.clear()
@@ -139,8 +132,7 @@ class FormFacial(BaseWidget):
                 else:
                     return
         self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
-        thread_1 = Worker(self.get_content)
-        start_thread(thread_1)
+        Worker(self.get_content).start()
 
     def apply_filter(self):
         self.request_params.clear()
@@ -150,8 +142,7 @@ class FormFacial(BaseWidget):
         self.request_params.search = self.ui.title_line.text()
         self.Form_genres.accept_genres()
         self.request_params.genres = self.Form_genres.selected_genres
-        thread_1 = Worker(self.get_content)
-        start_thread(thread_1)
+        Worker(self.get_content).start()
 
     def reset_filter(self):
         self.request_params.clear()
@@ -161,8 +152,7 @@ class FormFacial(BaseWidget):
             self.request_params.order = [self.order_items[i] for i in self.order_items if i.isChecked()][0]
         [i.setChecked(False) for i in self.kind_items]
         self.ui.title_line.clear()
-        thread_1 = Worker(self.get_content)
-        start_thread(thread_1)
+        Worker(self.get_content).start()
 
     def clear_filters_items(self):
         self.kind_items.clear()

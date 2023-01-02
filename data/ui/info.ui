@@ -429,7 +429,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <item>
        <widget class="QListWidget" name="items_list">
         <property name="contextMenuPolicy">
-         <enum>Qt::DefaultContextMenu</enum>
+         <enum>Qt::CustomContextMenu</enum>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

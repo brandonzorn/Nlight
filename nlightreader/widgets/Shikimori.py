@@ -1,6 +1,5 @@
 import webbrowser
 
-from PySide6.QtCore import QEvent
 from PySide6.QtWidgets import QListWidgetItem
 
 from const.lists import LibList
@@ -9,7 +8,7 @@ from nlightreader.contexts.LibraryManga import LibraryMangaMenu
 from nlightreader.dialogs import FormAuth
 from nlightreader.items import Manga, RequestForm, User
 from nlightreader.parsers import ShikimoriLib
-from nlightreader.utils import Database, lock_ui, get_catalog, translate, Worker, start_thread
+from nlightreader.utils import Database, lock_ui, get_catalog, translate, Worker
 from nlightreader.widgets.BaseWidget import BaseWidget
 
 
@@ -34,24 +33,19 @@ class FormShikimori(BaseWidget):
         self.ui.search_btn.clicked.connect(self.search)
         self.ui.auth_btn.clicked.connect(self.authorize)
         self.Form_auth.accepted.connect(self.auth_accept)
-        self.ui.items_list.installEventFilter(self)
+        self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
         self.get_content()
 
-    def eventFilter(self, source, event):
+    def on_context_menu(self, pos):
         def open_in_browser():
             webbrowser.open_new_tab(get_catalog(selected_manga.catalog_id)().get_manga_url(selected_manga))
 
-        if event and event.type() == QEvent.ContextMenu and source is self.ui.items_list and source.itemAt(event.pos()):
-            menu = LibraryMangaMenu()
-            selected_item: QListWidgetItem = source.itemAt(event.pos())
-            selected_manga = self.mangas[selected_item.listWidget().indexFromItem(selected_item).row()]
-            menu.set_mode(2)
-            selected_action = menu.exec(event.globalPos())
-            match selected_action:
-                case menu.open_in_browser:
-                    open_in_browser()
-            return True
-        return super().eventFilter(source, event)
+        menu = LibraryMangaMenu()
+        selected_item = self.ui.items_list.itemAt(pos)
+        selected_manga = self.mangas[selected_item.listWidget().indexFromItem(selected_item).row()]
+        menu.set_mode(2)
+        menu.open_in_browser.triggered.connect(open_in_browser)
+        menu.exec(self.ui.items_list.mapToGlobal(pos))
 
     def setup(self):
         whoami = self.get_whoami()
@@ -87,8 +81,7 @@ class FormShikimori(BaseWidget):
                     return
                 self.request_params.page -= 1
         self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
-        thread_1 = Worker(self.get_content)
-        start_thread(thread_1)
+        Worker(self.get_content).start()
 
     def search(self):
         self.request_params.page = 1
