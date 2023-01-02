@@ -49,8 +49,6 @@ class Reader(QMainWindow):
     def keyPressEvent(self, event):
         match event.key():
             case Qt.Key.Key_Escape:
-                self.close()
-                self.destroy()
                 self.deleteLater()
         event.accept()
 
