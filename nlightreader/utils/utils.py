@@ -2,6 +2,7 @@ import contextlib
 import json
 import os
 from functools import wraps
+from typing import Callable
 
 import requests
 from PySide6.QtCore import QRunnable, Slot, QThreadPool, QLocale
@@ -93,7 +94,7 @@ def singleton(cls):
 
 
 def with_lock_thread(locker):
-    def decorator(func):
+    def decorator(func: Callable):
 
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -104,7 +105,7 @@ def with_lock_thread(locker):
 
 
 class Worker(QRunnable):
-    def __init__(self, func, *args, **kwargs):
+    def __init__(self, func: Callable, *args, **kwargs):
         super(Worker, self).__init__()
         self.func = func
         self.args = args
@@ -114,9 +115,8 @@ class Worker(QRunnable):
     def run(self):
         self.func(*self.args, **self.kwargs)
 
-
-def start_thread(thread: Worker):
-    QThreadPool.globalInstance().start(thread)
+    def start(self):
+        QThreadPool.globalInstance().start(self)
 
 
 @contextlib.contextmanager
