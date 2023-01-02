@@ -1,4 +1,3 @@
-from PySide6.QtCore import QEvent
 from PySide6.QtWidgets import QListWidgetItem
 
 from const.colors import ItemsColors
@@ -14,12 +13,12 @@ class FormHistory(BaseWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.ui.items_list.installEventFilter(self)
+        self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
         self.db: Database = Database()
         self.ui.delete_btn.clicked.connect(self.delete_note)
         self.notes: list[HistoryNote] = []
 
-    def eventFilter(self, source, event):
+    def on_context_menu(self, pos):
         def set_as_read():
             self.db.add_history_note(selected_note.manga, selected_note.chapter, True)
             selected_item.setBackground("GREEN")
@@ -28,22 +27,16 @@ class FormHistory(BaseWidget):
             self.db.del_history_notes(self.notes[selected_item.listWidget().indexFromItem(selected_item).row()].manga)
             self.get_content()
 
-        if event and event.type() == QEvent.ContextMenu and source is self.ui.items_list and source.itemAt(event.pos()):
-            menu = HistoryNoteMenu()
-            selected_item: QListWidgetItem = source.itemAt(event.pos())
-            selected_note = self.notes[selected_item.listWidget().indexFromItem(selected_item).row()]
-            if not selected_note.is_completed:
-                menu.set_mode(0)
-            else:
-                menu.set_mode(1)
-            selected_action = menu.exec(event.globalPos())
-            match selected_action:
-                case menu.set_as_read:
-                    set_as_read()
-                case menu.remove_all:
-                    remove_all()
-            return True
-        return super().eventFilter(source, event)
+        menu = HistoryNoteMenu()
+        selected_item = self.ui.items_list.itemAt(pos)
+        selected_note = self.notes[selected_item.listWidget().indexFromItem(selected_item).row()]
+        if not selected_note.is_completed:
+            menu.set_mode(0)
+        else:
+            menu.set_mode(1)
+        menu.set_as_read.triggered.connect(set_as_read)
+        menu.remove_all.triggered.connect(remove_all)
+        menu.exec(self.ui.items_list.mapToGlobal(pos))
 
     def setup(self):
         self.get_content()

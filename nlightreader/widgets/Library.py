@@ -1,6 +1,5 @@
 import webbrowser
 
-from PySide6.QtCore import QEvent
 from PySide6.QtWidgets import QListWidgetItem
 
 from const.lists import LibList
@@ -20,7 +19,7 @@ class FormLibrary(BaseWidget):
         self.mangas: list[Manga] = []
         self.request_params = RequestForm()
         self.catalog = LocalLib()
-        self.ui.items_list.installEventFilter(self)
+        self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.planned_btn.clicked.connect(lambda: self.change_list(LibList.planned))
         self.ui.reading_btn.clicked.connect(lambda: self.change_list(LibList.watching))
         self.ui.on_hold_btn.clicked.connect(lambda: self.change_list(LibList.on_hold))
@@ -28,7 +27,7 @@ class FormLibrary(BaseWidget):
         self.ui.dropped_btn.clicked.connect(lambda: self.change_list(LibList.dropped))
         self.ui.re_reading_btn.clicked.connect(lambda: self.change_list(LibList.rewatching))
 
-    def eventFilter(self, source, event):
+    def on_context_menu(self, pos):
         def remove_from_lib():
             self.catalog.db.rem_manga_library(selected_manga)
             self.get_content()
@@ -36,19 +35,13 @@ class FormLibrary(BaseWidget):
         def open_in_browser():
             webbrowser.open_new_tab(get_catalog(selected_manga.catalog_id)().get_manga_url(selected_manga))
 
-        if event and event.type() == QEvent.ContextMenu and source is self.ui.items_list and source.itemAt(event.pos()):
-            menu = LibraryMangaMenu()
-            selected_item: QListWidgetItem = source.itemAt(event.pos())
-            selected_manga = self.mangas[selected_item.listWidget().indexFromItem(selected_item).row()]
-            menu.set_mode(1)
-            selected_action = menu.exec(event.globalPos())
-            match selected_action:
-                case menu.remove_from_lib:
-                    remove_from_lib()
-                case menu.open_in_browser:
-                    open_in_browser()
-            return True
-        return super().eventFilter(source, event)
+        menu = LibraryMangaMenu()
+        selected_item = self.ui.items_list.itemAt(pos)
+        selected_manga = self.mangas[selected_item.listWidget().indexFromItem(selected_item).row()]
+        menu.set_mode(1)
+        menu.remove_from_lib.triggered.connect(remove_from_lib)
+        menu.open_in_browser.triggered.connect(open_in_browser)
+        menu.exec(self.ui.items_list.mapToGlobal(pos))
 
     def setup(self):
         self.get_content()

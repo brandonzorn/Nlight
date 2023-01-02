@@ -1,13 +1,10 @@
-from threading import Thread
-
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QMainWindow
 
 from data.ui.reader import Ui_MainWindow
 from nlightreader.items import Manga, Chapter, Image
-from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image, translate, Worker, \
-    start_thread
+from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image, translate, Worker
 
 
 class Reader(QMainWindow):
@@ -76,10 +73,7 @@ class Reader(QMainWindow):
                     self.change_chapter('-')
                 else:
                     self.cur_page -= 1
-
-        thread = Worker(self.attach_image)
-        start_thread(thread)
-
+        Worker(self.attach_image).start()
         self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.cur_page} / {self.max_page}")
 
     def change_chapter(self, page=None):
@@ -142,7 +136,7 @@ class Reader(QMainWindow):
         chapter = self.chapters[self.cur_chapter - 1]
         self.images = self.catalog.get_images(self.manga, chapter)
         self.max_page = self.get_chapter_pages()
-        Thread(target=lambda: self.download(self.chapters[self.cur_chapter - 1]), daemon=True).start()
+        Worker(self.download, self.chapters[self.cur_chapter - 1]).start()
 
     def get_chapter_pages(self) -> int:
         if not self.images:
