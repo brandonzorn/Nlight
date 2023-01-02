@@ -10,3 +10,6 @@ class BaseWidget(QWidget):
 
     def get_current_manga(self):
         pass
+
+    def update_content(self):
+        pass

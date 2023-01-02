@@ -45,3 +45,4 @@ class ParentWindow(QMainWindow):
         self.ui.side_menu_widget.show()
         self.ui.top_item.currentWidget().deleteLater()
         self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
+        self.ui.top_item.currentWidget().update_content()

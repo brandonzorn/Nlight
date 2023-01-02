@@ -5,9 +5,9 @@ from nlightreader.items.Order import Order
 
 class RequestForm:
     def __init__(self):
-        self.limit: int = 50
-        self.search: str = ''
-        self.page: int = 1
+        self.limit = 50
+        self.search = ''
+        self.page = 1
         self.genres: list[Genre] = []
         self.order: Order = Order('', '', '')
         self.kinds: list[Kind] = []

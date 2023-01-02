@@ -67,6 +67,9 @@ class FormFacial(BaseWidget):
         menu.exec(self.ui.items_list.mapToGlobal(pos))
 
     def setup(self):
+        self.update_content()
+
+    def update_content(self):
         self.ui.items_list.clear()
         for i in self.mangas:
             item = QListWidgetItem(i.get_name())
@@ -108,13 +111,8 @@ class FormFacial(BaseWidget):
     def get_content(self):
         ui_to_lock = [self]
         with lock_ui(ui_to_lock):
-            self.ui.items_list.clear()
             self.mangas = self.catalog.search_manga(self.request_params)
-            for i in self.mangas:
-                item = QListWidgetItem(i.get_name())
-                if self.db.check_manga_library(i):
-                    item.setBackground(ItemsColors.IN_LIBRARY)
-                self.ui.items_list.addItem(item)
+            self.update_content()
             self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
 
     def search(self):
