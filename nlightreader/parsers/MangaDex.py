@@ -1,10 +1,11 @@
 import requests
 
-from const.lists import LibList
-from const.urls import URL_MANGA_DEX_API, DEFAULT_HEADERS, URL_MANGA_DEX
+from nlightreader.consts import URL_MANGA_DEX_API, DEFAULT_HEADERS, URL_MANGA_DEX, LibList
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
 from nlightreader.parsers.Parser import Parser, LibParser
-from nlightreader.utils.utils import get_html, TokenManager, get_data, singleton
+from nlightreader.utils.decorators import singleton
+from nlightreader.utils.token import TokenManager
+from nlightreader.utils.utils import get_data, get_html
 
 
 class MangaDex(Parser):

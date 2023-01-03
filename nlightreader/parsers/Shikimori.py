@@ -1,13 +1,15 @@
 from PySide6.QtWidgets import QApplication
 from requests_oauthlib import OAuth2Session
 
-from const.lists import LibList
-from const.shikimori_items import ORDERS, KINDS
-from const.urls import URL_SHIKIMORI_API, URL_SHIKIMORI_TOKEN, URL_SHIKIMORI, SHIKIMORI_HEADERS
+
 from keys import SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID
+from nlightreader.consts import URL_SHIKIMORI_API, SHIKIMORI_HEADERS, SHIKIMORI_ORDERS, URL_SHIKIMORI, SHIKIMORI_KINDS, \
+    LibList, URL_SHIKIMORI_TOKEN
 from nlightreader.items import Manga, RequestForm, Genre, Kind, User, UserRate, Order, Character
 from nlightreader.parsers.Parser import Parser, LibParser
-from nlightreader.utils.utils import get_html, singleton, TokenManager
+from nlightreader.utils.decorators import singleton
+from nlightreader.utils.token import TokenManager
+from nlightreader.utils.utils import get_html
 
 
 class ShikimoriBase(Parser):
@@ -59,7 +61,7 @@ class ShikimoriBase(Parser):
         return []
 
     def get_orders(self) -> list[Order]:
-        return [Order('', i['name'], i['russian']) for i in ORDERS]
+        return [Order('', i['name'], i['russian']) for i in SHIKIMORI_ORDERS]
 
     def get_relations(self, manga: Manga) -> list[Manga]:
         mangas = []
@@ -110,7 +112,7 @@ class ShikimoriManga(ShikimoriBase):
         return mangas
 
     def get_kinds(self):
-        return [Kind('', i['name'], i['russian']) for i in KINDS]
+        return [Kind('', i['name'], i['russian']) for i in SHIKIMORI_KINDS]
 
 
 class ShikimoriRanobe(ShikimoriBase):

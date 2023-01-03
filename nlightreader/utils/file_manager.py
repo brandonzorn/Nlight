@@ -2,7 +2,7 @@ import os
 
 from PySide6.QtGui import QPixmap
 
-from const.app import APP_NAME
+from nlightreader.consts import APP_NAME
 
 
 def get_file(path, file_name):

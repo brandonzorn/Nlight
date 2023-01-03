@@ -3,8 +3,8 @@ import webbrowser
 from PySide6.QtCore import QThreadPool
 from PySide6.QtWidgets import QListWidgetItem, QCheckBox, QRadioButton
 
-from const.colors import ItemsColors
 from data.ui.facial import Ui_Form
+from nlightreader.consts import ItemsColors
 from nlightreader.contexts.LibraryManga import LibraryMangaMenu
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import RequestForm

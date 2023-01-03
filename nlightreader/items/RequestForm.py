@@ -1,4 +1,4 @@
-from const.lists import LibList
+from nlightreader.consts import LibList
 from nlightreader.items import Genre, Kind
 from nlightreader.items.Order import Order
 

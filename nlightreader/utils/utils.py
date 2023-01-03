@@ -1,18 +1,12 @@
 import contextlib
-import json
-import os
-from functools import wraps
 from typing import Callable
 
 import requests
 from PySide6.QtCore import QRunnable, Slot, QThreadPool, QLocale
 from PySide6.QtWidgets import QApplication
 
-from const.app import APP_NAME
-from const.icons import ru_icon_path, gb_icon_path, jp_icon_path, ua_icon_path
-from const.lists import MangaKinds
-from const.translations import uk_trans_path, en_trans_path, ru_trans_path
-from const.urls import DEFAULT_HEADERS
+from nlightreader.consts import DEFAULT_HEADERS, ru_icon_path, gb_icon_path, jp_icon_path, ua_icon_path, MangaKinds, \
+    ru_trans_path, uk_trans_path, en_trans_path, light_style, dark_style
 
 
 def get_html(url: str, headers: dict = DEFAULT_HEADERS, params=None):
@@ -37,17 +31,6 @@ def get_language_icon(language: str):
             return ''
 
 
-def get_status(status: str) -> str:
-    match status:
-        case 'ongoing':
-            return translate("Other", status.capitalize())
-        case 'completed' | 'released':
-            return translate("Other", 'completed'.capitalize())
-        case _:
-            if status:
-                return status.capitalize()
-
-
 def get_manga_kind(kind: str) -> None:
     kinds_matches = {'manga': MangaKinds.manga, 'manhwa': MangaKinds.manhwa, 'manhua': MangaKinds.manhua,
                      'one_shot': MangaKinds.one_shot, 'doujin': MangaKinds.doujin, 'ranobe': MangaKinds.ranobe}
@@ -65,10 +48,6 @@ def get_locale_path(locale: QLocale.Language) -> str:
             return en_trans_path
 
 
-def translate(context, string):
-    return QApplication.translate(context, string, None)
-
-
 def get_data(a: dict, path: list, default_val=None):
     if default_val is None:
         default_val = {}
@@ -82,26 +61,11 @@ def get_data(a: dict, path: list, default_val=None):
     return data
 
 
-def singleton(cls):
-    instance = [None]
-
-    @wraps(cls)
-    def wrapper(*args, **kwargs):
-        if instance[0] is None:
-            instance[0] = cls(*args, **kwargs)
-        return instance[0]
-    return wrapper
-
-
-def with_lock_thread(locker):
-    def decorator(func: Callable):
-
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            with locker:
-                return func(*args, **kwargs)
-        return wrapper
-    return decorator
+def get_ui_style(style: str):
+    dark = open(dark_style).read()
+    light = open(light_style).read()
+    themes = {"Dark": dark, "Light": light}
+    return themes[style]
 
 
 class Worker(QRunnable):
@@ -124,25 +88,3 @@ def lock_ui(ui_to_lock: list):
     [i.setEnabled(False) for i in ui_to_lock]
     yield
     [i.setEnabled(True) for i in ui_to_lock]
-
-
-class TokenManager:
-    path = f'{APP_NAME}/tokens'
-
-    @staticmethod
-    def save_token(token, catalog_name='Shikimori'):
-        path = f'{TokenManager.path}/{catalog_name}'
-        if not os.path.exists(path):
-            os.makedirs(path, exist_ok=True)
-        with open(f'{path}/token.json', 'w') as f:
-            f.write(json.dumps(token))
-
-    @staticmethod
-    def load_token(catalog_name):
-        path = f'{TokenManager.path}/{catalog_name}'
-        if os.path.exists(f'{path}/token.json'):
-            with open(f'{path}/token.json') as f:
-                data = json.load(f)
-                if data:
-                    return data
-        return {}
