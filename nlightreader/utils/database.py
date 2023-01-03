@@ -2,10 +2,9 @@ import os
 import sqlite3
 from threading import Lock
 
-from const.app import APP_NAME
-from const.lists import LibList, lib_lists_en
+from nlightreader.consts import APP_NAME, LibList
 from nlightreader.items import Chapter, Image, Manga, HistoryNote
-from nlightreader.utils.utils import with_lock_thread, singleton
+from nlightreader.utils.decorators import with_lock_thread, singleton
 
 
 @singleton

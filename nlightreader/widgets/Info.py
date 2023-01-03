@@ -1,15 +1,13 @@
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget, QListWidgetItem
-
-from const.colors import ItemsColors
-from const.lists import lib_lists_en, LibList
 from data.ui.info import Ui_Form
+from nlightreader.consts import lib_lists_en, ItemsColors, LibList
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
 from nlightreader.items import Manga, Character, Chapter, HistoryNote
 from nlightreader.utils import Database, get_manga_preview, lock_ui, get_catalog, get_status, get_language_icon, \
-    TextFormatter, translate, Worker
+    translate, Worker, description_to_html
 from nlightreader.windows.Reader import Reader
 
 
@@ -122,7 +120,7 @@ class FormInfo(QWidget):
         self.ui.catalog_score_label.setVisible(bool(self.manga.score))
         self.ui.catalog_score_label.setText(f"{translate('Other', 'Rating')}: {self.manga.score}")
         self.ui.description_text.clear()
-        self.ui.description_text.insertHtml(TextFormatter.description_to_html(self.manga.description))
+        self.ui.description_text.insertHtml(description_to_html(self.manga.description))
 
     def add_to_favorites(self):
         if self.db.check_manga_library(self.manga):
