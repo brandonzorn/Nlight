@@ -1,4 +1,4 @@
-from const.urls import URL_RANOBEHUB_API, DEFAULT_HEADERS, URL_RANOBEHUB
+from nlightreader.consts import URL_RANOBEHUB_API, URL_RANOBEHUB, DEFAULT_HEADERS
 from nlightreader.items import RequestForm, Manga
 from nlightreader.parsers.Parser import Parser
 from nlightreader.utils.utils import get_html

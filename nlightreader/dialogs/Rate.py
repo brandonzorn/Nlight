@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import QDialog
 
-from const.lists import lib_lists_en, parse_lib_list
+
 from data.ui.rate import Ui_Dialog
+from nlightreader.consts import lib_lists_en, parse_lib_list
 from nlightreader.items import Manga
 from nlightreader.utils import translate
 from nlightreader.utils.catalog_manager import get_catalog, get_lib_catalog

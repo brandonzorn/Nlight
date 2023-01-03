@@ -2,8 +2,9 @@ import webbrowser
 
 from PySide6.QtWidgets import QListWidgetItem
 
-from const.lists import LibList
+
 from data.ui.shikimori import Ui_Form
+from nlightreader.consts import LibList
 from nlightreader.contexts.LibraryManga import LibraryMangaMenu
 from nlightreader.dialogs import FormAuth
 from nlightreader.items import Manga, RequestForm, User
