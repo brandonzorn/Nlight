@@ -58,6 +58,12 @@ def check_chapter_image(manga, chapter, image, catalog):
     return check_file_exists(path, file_name)
 
 
+def check_chapter_text(manga, chapter, image, catalog):
+    path = f'{APP_NAME}/images/{catalog.catalog_name}/manga/{manga.id}/{chapter.id}'
+    file_name = f'{image.page}.txt'
+    return check_file_exists(path, file_name)
+
+
 def get_chapter_text(manga, chapter, image, catalog) -> str:
     path = f'{APP_NAME}/images/{catalog.catalog_name}/manga/{manga.id}/{chapter.id}'
     file_name = f'{image.page}.txt'
