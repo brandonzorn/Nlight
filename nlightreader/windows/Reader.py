@@ -7,7 +7,7 @@ from PySide6.QtWidgets import QMainWindow
 from data.ui.reader import Ui_MainWindow
 from nlightreader.items import Manga, Chapter, Image
 from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image, translate, Worker, \
-    check_chapter_image
+    check_chapter_image, check_chapter_text
 
 
 class Reader(QMainWindow):
@@ -57,7 +57,7 @@ class Reader(QMainWindow):
         event.accept()
 
     def resizeEvent(self, event):
-        if not self.chapters:
+        if (not self.chapters) or (self.manga and self.manga.kind == 'ranobe'):
             return
         self.reset_reader_area()
         self.set_image()
@@ -127,24 +127,33 @@ class Reader(QMainWindow):
         if not self.images:
             return
         if self.manga.kind == 'ranobe':
-            self.set_text()
+            Worker(self.set_text, True).start()
         else:
             Worker(self.set_image, True).start()
 
-    def set_text(self):
-        text = get_chapter_text(self.manga, self.chapters[self.cur_chapter - 1],
-                                self.images[self.cur_page - 1], self.catalog)
-        self.ui.img.setText(text)
+    def set_text(self, check_wait=False):
+        page = self.cur_page
+        chapter = self.cur_chapter
+        if check_wait and not check_chapter_text(self.manga, self.chapters[chapter - 1],
+                                                 self.images[page - 1], self.catalog):
+            time.sleep(0.25)
+            if page != self.cur_page or chapter != self.cur_chapter:
+                return
+        text = get_chapter_text(self.manga, self.chapters[chapter - 1],
+                                self.images[page - 1], self.catalog)
+        if page == self.cur_page and chapter == self.cur_chapter:
+            self.ui.img.setText(text)
 
     def set_image(self, check_wait=False):
         page = self.cur_page
-        if check_wait and not check_chapter_image(self.manga, self.chapters[self.cur_chapter - 1],
-                                                  self.images[self.cur_page - 1], self.catalog):
+        chapter = self.cur_chapter
+        if check_wait and not check_chapter_image(self.manga, self.chapters[chapter - 1],
+                                                  self.images[page - 1], self.catalog):
             time.sleep(0.25)
-            if page != self.cur_page:
+            if page != self.cur_page or chapter != self.cur_chapter:
                 return
-        pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
-        if page == self.cur_page:
+        pixmap = self.get_pixmap(self.chapters[chapter - 1], self.images[page - 1])
+        if page == self.cur_page and chapter == self.cur_chapter:
             pixmap = self.resize_pixmap(pixmap)
             self.ui.img.setPixmap(pixmap)
 
@@ -154,7 +163,7 @@ class Reader(QMainWindow):
         font.setPointSize(self.ui.text_size_slider.value())
         self.ui.img.setFont(font)
 
-    def resize_pixmap(self, pixmap: QPixmap):
+    def resize_pixmap(self, pixmap: QPixmap) -> QPixmap:
         if pixmap.isNull():
             return QPixmap()
         if 0.5 < pixmap.width() / pixmap.height() < 2:
@@ -172,6 +181,6 @@ class Reader(QMainWindow):
             return 1
         return self.images[-1].page
 
-    def get_pixmap(self, chapter, image):
+    def get_pixmap(self, chapter, image) -> QPixmap:
         pixmap = get_chapter_image(self.manga, chapter, image, self.catalog)
         return pixmap
