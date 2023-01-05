@@ -1,4 +1,6 @@
-from PySide6.QtCore import Qt
+import time
+
+from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QMainWindow
 
@@ -13,10 +15,11 @@ class Reader(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.ui.prev_page_btn.clicked.connect(lambda: self.change_page('-'))
-        self.ui.next_page_btn.clicked.connect(lambda: self.change_page('+'))
-        self.ui.prev_chapter_btn.clicked.connect(lambda: self.change_chapter('-'))
-        self.ui.next_chapter_btn.clicked.connect(lambda: self.change_chapter('+'))
+        self.ui.next_page_btn.clicked.connect(self.turn_page_next)
+        self.ui.prev_page_btn.clicked.connect(self.turn_page_prev)
+
+        self.ui.next_chapter_btn.clicked.connect(self.turn_chapter_next)
+        self.ui.prev_chapter_btn.clicked.connect(self.turn_chapter_prev)
 
         self.ui.fullscreen_btn.clicked.connect(self.change_fullscreen)
         self.ui.text_size_slider.valueChanged.connect(self.update_text_size)
@@ -44,7 +47,7 @@ class Reader(QMainWindow):
         self.max_chapters = len(chapters)
         self.catalog = get_catalog(manga.catalog_id)()
         self.setWindowTitle(self.manga.name)
-        self.change_chapter()
+        self.update_chapter()
 
     def keyPressEvent(self, event):
         match event.key():
@@ -53,57 +56,73 @@ class Reader(QMainWindow):
         event.accept()
 
     def resizeEvent(self, event):
-        self.ui.img.clear()
-        self.attach_image()
+        if not self.chapters:
+            return
+        self.reset_reader_area()
+        self.set_image()
 
-    def change_page(self, page=None):
-        self.db.add_history_note(self.manga, self.chapters[self.cur_chapter - 1], False)
-        match page:
-            case '+':
-                if self.cur_page == self.max_page:
-                    self.db.add_history_note(self.manga, self.chapters[self.cur_chapter - 1], True)
-                    self.change_chapter('+')
-                else:
-                    self.cur_page += 1
-            case '-':
-                if self.cur_page == 1:
-                    self.db.del_history_note(self.chapters[self.cur_chapter - 1])
-                    self.change_chapter('-')
-                else:
-                    self.cur_page -= 1
-        Worker(self.attach_image).start()
-        self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.cur_page} / {self.max_page}")
-
-    def change_chapter(self, page=None):
-        match page:
-            case '+':
-                self.db.add_history_note(self.manga, self.chapters[self.cur_chapter - 1], True)
-                if self.cur_chapter == self.max_chapters:
-                    self.hide()
-                    return
-                else:
-                    self.cur_chapter += 1
-            case '-':
-                if self.cur_chapter == 1:
-                    return
-                else:
-                    self.cur_chapter -= 1
-        self.cur_page = 1
-        self.get_images()
-        self.change_page()
-        self.ui.chapter_label.setText(self.chapters[self.cur_chapter - 1].get_name())
-
+    @Slot()
     def change_fullscreen(self):
         if self.isFullScreen():
             self.showMaximized()
         else:
             self.showFullScreen()
 
-    def attach_image(self):
+    @Slot()
+    def turn_page_next(self):
+        self.db.add_history_note(self.manga, self.chapters[self.cur_chapter - 1], False)
+        if self.cur_page == self.max_page:
+            self.db.add_history_note(self.manga, self.chapters[self.cur_chapter - 1], True)
+            self.turn_chapter_next()
+        else:
+            self.cur_page += 1
+            self.update_page()
+
+    @Slot()
+    def turn_page_prev(self):
+        self.db.add_history_note(self.manga, self.chapters[self.cur_chapter - 1], False)
+        if self.cur_page == 1:
+            self.db.del_history_note(self.chapters[self.cur_chapter - 1])
+            self.turn_chapter_prev()
+        else:
+            self.cur_page -= 1
+            self.update_page()
+
+    def update_page(self):
+        self.attach_image()
+        self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.cur_page} / {self.max_page}")
+
+    @Slot()
+    def turn_chapter_next(self):
+        self.db.add_history_note(self.manga, self.chapters[self.cur_chapter - 1], True)
+        if self.cur_chapter == self.max_chapters:
+            self.deleteLater()
+        else:
+            self.cur_chapter += 1
+        self.update_chapter()
+
+    @Slot()
+    def turn_chapter_prev(self):
+        if self.cur_chapter == 1:
+            return
+        else:
+            self.cur_chapter -= 1
+        self.update_chapter()
+
+    def update_chapter(self):
+        self.cur_page = 1
+        self.get_images()
+        self.update_page()
+        self.ui.chapter_label.setText(self.chapters[self.cur_chapter - 1].get_name())
+
+    def reset_reader_area(self):
         self.ui.img.clear()
-        page = self.cur_page
         self.ui.scrollArea.verticalScrollBar().setValue(0)
         self.ui.scrollArea.horizontalScrollBar().setValue(0)
+        self.ui.scrollAreaWidgetContents.resize(0, 0)
+
+    def attach_image(self):
+        self.reset_reader_area()
         if not self.images:
             return
         if self.manga.kind == 'ranobe':
@@ -111,18 +130,27 @@ class Reader(QMainWindow):
                                     self.images[self.cur_page - 1], self.catalog)
             self.ui.img.setText(text)
         else:
-            self.ui.scrollAreaWidgetContents.resize(0, 0)
-            pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
-            if page == self.cur_page:
-                self.ui.img.setPixmap(pixmap)
+            Worker(self.set_image, True).start()
 
+    def set_image(self, check_wait=False):
+        page = self.cur_page
+        if check_wait:
+            time.sleep(0.25)
+            if page != self.cur_page:
+                return
+        pixmap = get_chapter_image(self.manga, self.chapters[self.cur_chapter - 1],
+                                   self.images[self.cur_page - 1], self.catalog)
+        if page == self.cur_page:
+            pixmap = self.resize_pixmap(pixmap)
+            self.ui.img.setPixmap(pixmap)
+
+    @Slot()
     def update_text_size(self):
         font = self.ui.img.font()
         font.setPointSize(self.ui.text_size_slider.value())
         self.ui.img.setFont(font)
 
-    def get_pixmap(self, chapter, image):
-        pixmap = get_chapter_image(self.manga, chapter, image, self.catalog)
+    def resize_pixmap(self, pixmap: QPixmap):
         if pixmap.isNull():
             return QPixmap()
         if 0.5 < pixmap.width() / pixmap.height() < 2:
@@ -134,16 +162,30 @@ class Reader(QMainWindow):
         chapter = self.chapters[self.cur_chapter - 1]
         self.images = self.catalog.get_images(self.manga, chapter)
         self.max_page = self.get_chapter_pages()
-        Worker(self.download, self.chapters[self.cur_chapter - 1]).start()
+        Worker(self.download_images, self.chapters[self.cur_chapter - 1]).start()
 
     def get_chapter_pages(self) -> int:
         if not self.images:
             return 1
         return self.images[-1].page
 
-    def download(self, chapter: Chapter):
-        images = self.images
-        for image in images:
+    def download_image(self, chapter, image):
+        get_chapter_image(self.manga, chapter, image, self.catalog)
+
+    def download_images(self, chapter: Chapter):
+        images = self.images.copy()
+        page = self.cur_page
+        while True:
             if self.isHidden() or chapter.id != self.chapters[self.cur_chapter - 1].id or self.manga.kind == 'ranobe':
                 break
-            get_chapter_image(self.manga, chapter, image, self.catalog)
+            if page == self.cur_page:
+                diff = len(images) - page
+                if diff == 1:
+                    self.download_image(chapter, images[self.cur_page])
+                elif diff > 1:
+                    self.download_image(chapter, images[self.cur_page])
+                    self.download_image(chapter, images[self.cur_page + 1])
+            image = images[self.cur_page - 1]
+            page = self.cur_page
+            self.download_image(chapter, image)
+            time.sleep(0.35)

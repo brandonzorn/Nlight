@@ -2,7 +2,7 @@ import contextlib
 from typing import Callable
 
 import requests
-from PySide6.QtCore import QRunnable, Slot, QThreadPool, QLocale
+from PySide6.QtCore import QRunnable, Slot, QThreadPool, QLocale, Signal, QObject
 from PySide6.QtWidgets import QApplication
 
 from nlightreader.consts import DEFAULT_HEADERS, ru_icon_path, gb_icon_path, jp_icon_path, ua_icon_path, MangaKinds, \
@@ -68,16 +68,25 @@ def get_ui_style(style: str):
     return themes[style]
 
 
+class Signals(QObject):
+    finished = Signal(int)
+
+    def __init__(self):
+        super().__init__()
+
+
 class Worker(QRunnable):
     def __init__(self, func: Callable, *args, **kwargs):
         super(Worker, self).__init__()
         self.func = func
         self.args = args
         self.kwargs = kwargs
+        self.signals = Signals()
 
     @Slot()
     def run(self):
         self.func(*self.args, **self.kwargs)
+        self.signals.finished.emit()
 
     def start(self):
         QThreadPool.globalInstance().start(self)
