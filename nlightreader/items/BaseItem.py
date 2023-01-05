@@ -12,3 +12,8 @@ class BaseItem:
             if self.russian:
                 return self.russian
         return self.name.capitalize()
+
+    @staticmethod
+    def get_empty_instance():
+        item_name = 'base_item'
+        return BaseItem(item_name, item_name, item_name)

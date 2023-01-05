@@ -3,3 +3,8 @@ class Image:
         self.id = image_id
         self.page = page
         self.img = img
+
+    @staticmethod
+    def get_empty_instance():
+        item_name = 'image'
+        return Image(item_name, 1, '')
