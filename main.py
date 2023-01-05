@@ -20,6 +20,7 @@ class App(ParentWindow):
 if __name__ == '__main__':
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
     QApplication.setStyle('Fusion')
+    QLocale().setDefault(QLocale.Language.English)
     app = QApplication(sys.argv)
     trans = QTranslator()
     trans.load(get_locale_path(QLocale().language()))

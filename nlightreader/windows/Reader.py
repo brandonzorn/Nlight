@@ -174,11 +174,11 @@ class Reader(QMainWindow):
     def get_images(self):
         chapter = self.chapters[self.cur_chapter - 1]
         self.images = self.catalog.get_images(self.manga, chapter)
+        if not self.images:
+            self.images = [Image.get_empty_instance()]
         self.max_page = self.get_chapter_pages()
 
     def get_chapter_pages(self) -> int:
-        if not self.images:
-            return 1
         return self.images[-1].page
 
     def get_pixmap(self, chapter, image) -> QPixmap:
