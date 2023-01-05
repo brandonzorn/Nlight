@@ -69,7 +69,7 @@ def get_ui_style(style: str):
 
 
 class Signals(QObject):
-    finished = Signal(int)
+    finished = Signal()
 
     def __init__(self):
         super().__init__()
