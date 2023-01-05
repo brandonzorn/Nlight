@@ -6,7 +6,8 @@ from PySide6.QtWidgets import QMainWindow
 
 from data.ui.reader import Ui_MainWindow
 from nlightreader.items import Manga, Chapter, Image
-from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image, translate, Worker
+from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image, translate, Worker, \
+    check_chapter_image
 
 
 class Reader(QMainWindow):
@@ -126,20 +127,23 @@ class Reader(QMainWindow):
         if not self.images:
             return
         if self.manga.kind == 'ranobe':
-            text = get_chapter_text(self.manga, self.chapters[self.cur_chapter - 1],
-                                    self.images[self.cur_page - 1], self.catalog)
-            self.ui.img.setText(text)
+            self.set_text()
         else:
             Worker(self.set_image, True).start()
 
+    def set_text(self):
+        text = get_chapter_text(self.manga, self.chapters[self.cur_chapter - 1],
+                                self.images[self.cur_page - 1], self.catalog)
+        self.ui.img.setText(text)
+
     def set_image(self, check_wait=False):
         page = self.cur_page
-        if check_wait:
+        if check_wait and not check_chapter_image(self.manga, self.chapters[self.cur_chapter - 1],
+                                                  self.images[self.cur_page - 1], self.catalog):
             time.sleep(0.25)
             if page != self.cur_page:
                 return
-        pixmap = get_chapter_image(self.manga, self.chapters[self.cur_chapter - 1],
-                                   self.images[self.cur_page - 1], self.catalog)
+        pixmap = self.get_pixmap(self.chapters[self.cur_chapter - 1], self.images[self.cur_page - 1])
         if page == self.cur_page:
             pixmap = self.resize_pixmap(pixmap)
             self.ui.img.setPixmap(pixmap)
@@ -162,30 +166,12 @@ class Reader(QMainWindow):
         chapter = self.chapters[self.cur_chapter - 1]
         self.images = self.catalog.get_images(self.manga, chapter)
         self.max_page = self.get_chapter_pages()
-        Worker(self.download_images, self.chapters[self.cur_chapter - 1]).start()
 
     def get_chapter_pages(self) -> int:
         if not self.images:
             return 1
         return self.images[-1].page
 
-    def download_image(self, chapter, image):
-        get_chapter_image(self.manga, chapter, image, self.catalog)
-
-    def download_images(self, chapter: Chapter):
-        images = self.images.copy()
-        page = self.cur_page
-        while True:
-            if self.isHidden() or chapter.id != self.chapters[self.cur_chapter - 1].id or self.manga.kind == 'ranobe':
-                break
-            if page == self.cur_page:
-                diff = len(images) - page
-                if diff == 1:
-                    self.download_image(chapter, images[self.cur_page])
-                elif diff > 1:
-                    self.download_image(chapter, images[self.cur_page])
-                    self.download_image(chapter, images[self.cur_page + 1])
-            image = images[self.cur_page - 1]
-            page = self.cur_page
-            self.download_image(chapter, image)
-            time.sleep(0.35)
+    def get_pixmap(self, chapter, image):
+        pixmap = get_chapter_image(self.manga, chapter, image, self.catalog)
+        return pixmap
