@@ -1,5 +1,6 @@
 import webbrowser
 
+from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QListWidgetItem
 
 
@@ -29,12 +30,12 @@ class FormShikimori(BaseWidget):
         self.ui.completed_btn.clicked.connect(lambda: self.change_list(LibList.completed))
         self.ui.dropped_btn.clicked.connect(lambda: self.change_list(LibList.dropped))
         self.ui.re_reading_btn.clicked.connect(lambda: self.change_list(LibList.re_reading))
-        self.ui.prev_btn.clicked.connect(lambda: self.change_page('-'))
-        self.ui.next_btn.clicked.connect(lambda: self.change_page('+'))
+        self.ui.next_btn.clicked.connect(self.turn_page_next)
+        self.ui.prev_btn.clicked.connect(self.turn_page_prev)
         self.ui.search_btn.clicked.connect(self.search)
         self.ui.auth_btn.clicked.connect(self.authorize)
-        self.Form_auth.accepted.connect(self.auth_accept)
         self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
+        self.Form_auth.accepted.connect(self.auth_accept)
 
     def on_context_menu(self, pos):
         def open_in_browser():
@@ -79,17 +80,21 @@ class FormShikimori(BaseWidget):
     def get_whoami(self) -> User:
         return self.catalog.get_user()
 
-    def change_page(self, page):
-        match page:
-            case '+':
-                self.request_params.page += 1
-            case '-':
-                if self.request_params.page == 1:
-                    return
-                self.request_params.page -= 1
-        self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
+    @Slot()
+    def turn_page_next(self):
+        if self.request_params.page == 999:
+            return
+        self.request_params.page += 1
         Worker(self.get_content).start()
 
+    @Slot()
+    def turn_page_prev(self):
+        if self.request_params.page == 1:
+            return
+        self.request_params.page -= 1
+        Worker(self.get_content).start()
+
+    @Slot()
     def search(self):
         self.request_params.page = 1
         self.request_params.search = self.ui.title_line.text()
