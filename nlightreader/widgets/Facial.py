@@ -1,6 +1,6 @@
 import webbrowser
 
-from PySide6.QtCore import QThreadPool
+from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QListWidgetItem, QCheckBox, QRadioButton
 
 from data.ui.facial import Ui_Form
@@ -17,8 +17,8 @@ class FormFacial(BaseWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.ui.prev_btn.clicked.connect(lambda: self.change_page('-'))
-        self.ui.next_btn.clicked.connect(lambda: self.change_page('+'))
+        self.ui.next_btn.clicked.connect(self.turn_page_next)
+        self.ui.prev_btn.clicked.connect(self.turn_page_prev)
         self.ui.genres_btn.clicked.connect(lambda: self.Form_genres.show())
         self.ui.apply_btn.clicked.connect(self.apply_filter)
         self.ui.reset_btn.clicked.connect(self.reset_filter)
@@ -36,7 +36,6 @@ class FormFacial(BaseWidget):
         self.Form_genres = FormGenres()
         self.request_params = RequestForm()
         self.db: Database = Database()
-        self.threadpool = QThreadPool()
         self.catalog = None
         self.change_catalog(0)
 
@@ -81,23 +80,6 @@ class FormFacial(BaseWidget):
         self.ui.catalogs_list.clear()
         self.ui.catalogs_list.addItems([i.catalog_name for i in USER_CATALOGS])
 
-    def setup_filters(self):
-        self.clear_filters_items()
-        self.Form_genres.setup()
-        self.ui.genres_frame.setVisible(bool(self.Form_genres.genres_items))
-        self.ui.kinds_frame.setVisible(bool(self.catalog.get_kinds()))
-        self.ui.orders_frame.setVisible(bool(self.catalog.get_orders()))
-        for i in self.catalog.get_orders():
-            item = QRadioButton(i.get_name())
-            if not self.order_items:
-                item.setChecked(True)
-            self.ui.orders_grid.addWidget(item)
-            self.order_items.update({item: i})
-        for i in self.catalog.get_kinds():
-            item = QCheckBox(i.get_name())
-            self.ui.kinds_grid.addWidget(item)
-            self.kind_items.update({item: i})
-
     def get_current_manga(self):
         return self.catalog.get_manga(self.mangas[self.ui.items_list.currentIndex().row()])
 
@@ -115,23 +97,27 @@ class FormFacial(BaseWidget):
             self.update_content()
             self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
 
+    @Slot()
+    def turn_page_next(self):
+        if self.request_params.page == 999:
+            return
+        self.request_params.page += 1
+        Worker(self.get_content).start()
+
+    @Slot()
+    def turn_page_prev(self):
+        if self.request_params.page == 1:
+            return
+        self.request_params.page -= 1
+        Worker(self.get_content).start()
+
+    @Slot()
     def search(self):
         self.request_params.page = 1
         self.request_params.search = self.ui.title_line.text()
         self.get_content()
 
-    def change_page(self, page):
-        match page:
-            case '+':
-                self.request_params.page += 1
-            case '-':
-                if self.request_params.page > 1:
-                    self.request_params.page -= 1
-                else:
-                    return
-        self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
-        Worker(self.get_content).start()
-
+    @Slot()
     def apply_filter(self):
         self.request_params.clear()
         if self.order_items:
@@ -142,6 +128,7 @@ class FormFacial(BaseWidget):
         self.request_params.genres = self.Form_genres.selected_genres
         Worker(self.get_content).start()
 
+    @Slot()
     def reset_filter(self):
         self.request_params.clear()
         self.Form_genres.clear_genres()
@@ -151,6 +138,23 @@ class FormFacial(BaseWidget):
         [i.setChecked(False) for i in self.kind_items]
         self.ui.title_line.clear()
         Worker(self.get_content).start()
+
+    def setup_filters(self):
+        self.clear_filters_items()
+        self.Form_genres.setup()
+        self.ui.genres_frame.setVisible(bool(self.Form_genres.genres_items))
+        self.ui.kinds_frame.setVisible(bool(self.catalog.get_kinds()))
+        self.ui.orders_frame.setVisible(bool(self.catalog.get_orders()))
+        for i in self.catalog.get_orders():
+            item = QRadioButton(i.get_name())
+            if not self.order_items:
+                item.setChecked(True)
+            self.ui.orders_grid.addWidget(item)
+            self.order_items.update({item: i})
+        for i in self.catalog.get_kinds():
+            item = QCheckBox(i.get_name())
+            self.ui.kinds_grid.addWidget(item)
+            self.kind_items.update({item: i})
 
     def clear_filters_items(self):
         self.kind_items.clear()
