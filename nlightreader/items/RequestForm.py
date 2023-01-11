@@ -9,7 +9,7 @@ class RequestForm:
         self.search = ''
         self.page = 1
         self.genres: list[Genre] = []
-        self.order: Order = Order('', '', '')
+        self.order: Order = Order.get_empty_instance()
         self.kinds: list[Kind] = []
         self.lib_list = LibList.planned
 
@@ -22,6 +22,6 @@ class RequestForm:
         self.search = ''
         self.page = 1
         self.genres = []
-        self.order = Order('', '', '')
+        self.order = Order.get_empty_instance()
         self.kinds = []
         self.lib_list = LibList.planned
