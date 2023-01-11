@@ -10,7 +10,7 @@ from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chap
     check_chapter_image, check_chapter_text
 
 
-class Reader(QMainWindow):
+class ReaderWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()

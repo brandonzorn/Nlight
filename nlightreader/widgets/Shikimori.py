@@ -3,10 +3,9 @@ import webbrowser
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QListWidgetItem
 
-
 from data.ui.shikimori import Ui_Form
 from nlightreader.consts import LibList
-from nlightreader.contexts.LibraryManga import LibraryMangaMenu
+from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.dialogs import FormAuth
 from nlightreader.items import Manga, RequestForm, User
 from nlightreader.parsers import ShikimoriLib

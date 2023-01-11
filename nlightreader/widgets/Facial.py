@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QListWidgetItem, QCheckBox, QRadioButton
 
 from data.ui.facial import Ui_Form
 from nlightreader.consts import ItemsColors
-from nlightreader.contexts.LibraryManga import LibraryMangaMenu
+from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import RequestForm
 from nlightreader.utils import Database, USER_CATALOGS, lock_ui, get_catalog, translate, Worker

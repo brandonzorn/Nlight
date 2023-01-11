@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget, QListWidgetItem
+
 from data.ui.info import Ui_Form
 from nlightreader.consts import lib_lists_en, ItemsColors, LibList
 from nlightreader.contexts import ReadMarkMenu
@@ -8,7 +9,7 @@ from nlightreader.dialogs import FormRate, FormCharacter
 from nlightreader.items import Manga, Character, Chapter, HistoryNote
 from nlightreader.utils import Database, get_manga_preview, lock_ui, get_catalog, get_status, get_language_icon, \
     translate, Worker, description_to_html
-from nlightreader.windows.Reader import Reader
+from nlightreader.windows.Reader import ReaderWindow
 
 
 class FormInfo(QWidget):
@@ -171,5 +172,5 @@ class FormInfo(QWidget):
             self.ui.characters_list.addItem(item)
 
     def open_reader(self):
-        self.reader_window = Reader()
+        self.reader_window = ReaderWindow()
         self.reader_window.setup(self.manga, self.chapters, self.ui.items_list.currentIndex().row() + 1)
