@@ -36,6 +36,8 @@ class FormShikimori(BaseWidget):
         self.ui.auth_btn.clicked.connect(self.authorize)
         self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
         self.Form_auth.accepted.connect(self.auth_accept)
+        self.update_user_info()
+        self.get_content()
 
     def on_context_menu(self, pos):
         def open_in_browser():
@@ -49,12 +51,14 @@ class FormShikimori(BaseWidget):
         menu.exec(self.ui.items_list.mapToGlobal(pos))
 
     def setup(self):
+        self.update_content()
+
+    def update_user_info(self):
         whoami = self.get_whoami()
         if whoami.nickname:
             self.ui.auth_btn.setText(whoami.nickname)
         else:
             self.ui.auth_btn.setText(translate("Other", "Sign in"))
-        self.get_content()
 
     def update_content(self):
         self.ui.items_list.clear()
