@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QApplication
 from requests_oauthlib import OAuth2Session
 
-
 from keys import SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID
 from nlightreader.consts import URL_SHIKIMORI_API, SHIKIMORI_HEADERS, SHIKIMORI_ORDERS, URL_SHIKIMORI, SHIKIMORI_KINDS, \
     LibList, URL_SHIKIMORI_TOKEN

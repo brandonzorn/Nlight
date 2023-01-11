@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QListWidgetItem
 
-
 from data.ui.history import Ui_Form
 from nlightreader.consts import ItemsColors
 from nlightreader.contexts import HistoryNoteMenu
