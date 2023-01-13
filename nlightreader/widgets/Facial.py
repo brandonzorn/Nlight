@@ -115,7 +115,7 @@ class FormFacial(BaseWidget):
     def search(self):
         self.request_params.page = 1
         self.request_params.search = self.ui.title_line.text()
-        self.get_content()
+        Worker(self.get_content).start()
 
     @Slot()
     def apply_filter(self):
