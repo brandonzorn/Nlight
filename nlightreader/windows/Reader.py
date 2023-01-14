@@ -53,7 +53,7 @@ class ReaderWindow(QMainWindow):
     def keyPressEvent(self, event):
         match event.key():
             case Qt.Key.Key_Escape:
-                self.deleteLater()
+                self.close()
         event.accept()
 
     def resizeEvent(self, event):
@@ -61,6 +61,9 @@ class ReaderWindow(QMainWindow):
             return
         self.reset_reader_area()
         self.set_image()
+
+    def closeEvent(self, event):
+        self.deleteLater()
 
     @Slot()
     def change_fullscreen(self):
