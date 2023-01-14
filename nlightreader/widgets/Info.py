@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, QSize
+from PySide6.QtCore import Qt, QSize, Slot
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 
@@ -123,6 +123,7 @@ class FormInfo(QWidget):
         self.ui.description_text.clear()
         self.ui.description_text.insertHtml(description_to_html(self.manga.description))
 
+    @Slot()
     def add_to_favorites(self):
         if self.db.check_manga_library(self.manga):
             self.db.rem_manga_library(self.manga)
@@ -171,6 +172,9 @@ class FormInfo(QWidget):
             item = QListWidgetItem(character.get_name())
             self.ui.characters_list.addItem(item)
 
+    @Slot()
     def open_reader(self):
+        if self.reader_window:
+            self.reader_window.close()
         self.reader_window = ReaderWindow()
         self.reader_window.setup(self.manga, self.chapters, self.ui.items_list.currentIndex().row() + 1)
