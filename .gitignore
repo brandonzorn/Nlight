@@ -6,3 +6,4 @@
 /Nlight.spec
 /keys.py
 /compile_to_exe.bat
+*.pyc

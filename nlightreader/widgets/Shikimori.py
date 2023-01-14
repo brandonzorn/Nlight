@@ -36,7 +36,7 @@ class FormShikimori(BaseWidget):
         self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
         self.Form_auth.accepted.connect(self.auth_accept)
         self.update_user_info()
-        self.get_content()
+        Worker(self.get_content).start()
 
     def on_context_menu(self, pos):
         def open_in_browser():
@@ -101,7 +101,7 @@ class FormShikimori(BaseWidget):
     def search(self):
         self.request_params.page = 1
         self.request_params.search = self.ui.title_line.text()
-        self.get_content()
+        Worker(self.get_content).start()
 
     def change_list(self, lib_list: LibList):
         self.request_params.lib_list = lib_list
