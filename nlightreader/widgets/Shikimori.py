@@ -68,6 +68,7 @@ class FormShikimori(BaseWidget):
     def get_current_manga(self):
         return self.catalog.get_manga(self.mangas[self.ui.items_list.currentIndex().row()])
 
+    @Slot()
     def auth_accept(self):
         self.catalog.session.auth_login(self.Form_auth.get_user_data())
         whoami = self.get_whoami()
@@ -76,6 +77,7 @@ class FormShikimori(BaseWidget):
         else:
             self.ui.auth_btn.setText(translate("Other", "Sign in"))
 
+    @Slot()
     def authorize(self):
         self.Form_auth.hide()
         self.Form_auth.show()

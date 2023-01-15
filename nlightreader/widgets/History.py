@@ -1,3 +1,4 @@
+from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QListWidgetItem
 
 from data.ui.history import Ui_Form
@@ -55,6 +56,7 @@ class FormHistory(BaseWidget):
     def get_current_manga(self):
         return self.notes[self.ui.items_list.currentIndex().row()].manga
 
+    @Slot()
     def delete_note(self):
         if self.ui.items_list.currentIndex().row() >= 0:
             self.db.del_history_note(self.notes[self.ui.items_list.currentIndex().row()].chapter)
