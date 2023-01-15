@@ -137,24 +137,22 @@ class FormInfo(QWidget):
             self.db.add_manga_library(self.manga, lib_list)
 
     def get_chapters(self):
-        ui_to_lock = [self.ui.back_btn]
-        with lock_ui(ui_to_lock):
-            self.ui.items_list.clear()
-            self.chapters: list[Chapter] = self.catalog.get_chapters(self.manga)
-            self.chapters.reverse()
-            self.chapters.sort(key=lambda ch: ch.language if ch.language else False)
-            self.ui.items_frame.setVisible(bool(self.chapters))
-            self.db.add_chapters(self.chapters, self.manga)
-            for chapter in self.chapters:
-                item = QListWidgetItem(chapter.get_name())
-                if self.db.check_complete_chapter(chapter):
-                    if self.db.get_complete_status(chapter):
-                        item.setBackground(ItemsColors.READ)
-                    else:
-                        item.setBackground(ItemsColors.UNREAD)
-                if chapter.language:
-                    item.setIcon(QIcon(get_language_icon(chapter.language)))
-                self.ui.items_list.addItem(item)
+        self.ui.items_list.clear()
+        self.chapters: list[Chapter] = self.catalog.get_chapters(self.manga)
+        self.chapters.reverse()
+        self.chapters.sort(key=lambda ch: ch.language if ch.language else False)
+        self.ui.items_frame.setVisible(bool(self.chapters))
+        self.db.add_chapters(self.chapters, self.manga)
+        for chapter in self.chapters:
+            item = QListWidgetItem(chapter.get_name())
+            if self.db.check_complete_chapter(chapter):
+                if self.db.get_complete_status(chapter):
+                    item.setBackground(ItemsColors.READ)
+                else:
+                    item.setBackground(ItemsColors.UNREAD)
+            if chapter.language:
+                item.setIcon(QIcon(get_language_icon(chapter.language)))
+            self.ui.items_list.addItem(item)
 
     def get_relations(self):
         self.ui.related_list.clear()
