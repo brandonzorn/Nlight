@@ -44,6 +44,7 @@ class ParentWindow(QMainWindow):
         self.ui.top_item.addWidget(info)
         self.ui.top_item.setCurrentWidget(info)
 
+    @Slot()
     def back(self):
         self.ui.side_menu_widget.show()
         self.ui.top_item.currentWidget().deleteLater()
