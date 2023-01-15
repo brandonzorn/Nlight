@@ -100,10 +100,12 @@ class FormInfo(QWidget):
             Worker(self.get_characters).start()
             Worker(self.get_relations).start()
 
+    @Slot()
     def open_rate(self):
         self.rate_window.setup(self.manga)
         self.rate_window.show()
 
+    @Slot()
     def open_character(self):
         character = self.catalog.get_character(self.related_characters[self.ui.characters_list.currentIndex().row()])
         self.character_window = FormCharacter(character, self.manga.catalog_id)
@@ -128,9 +130,10 @@ class FormInfo(QWidget):
         if self.db.check_manga_library(self.manga):
             self.db.rem_manga_library(self.manga)
         else:
-            self.db.add_manga_library(self.manga)
-            self.change_lib_list()
+            lib_list = LibList(self.ui.lib_list_box.currentIndex())
+            self.db.add_manga_library(self.manga, lib_list)
 
+    @Slot()
     def change_lib_list(self):
         if self.db.check_manga_library(self.manga):
             lib_list = LibList(self.ui.lib_list_box.currentIndex())
