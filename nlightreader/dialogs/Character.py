@@ -1,10 +1,8 @@
-from threading import Thread
-
-from PySide6.QtCore import QSize
+from PySide6.QtCore import QSize, Slot
 from PySide6.QtWidgets import QDialog
 
 from data.ui.character import Ui_Dialog
-from nlightreader.utils import description_to_html
+from nlightreader.utils import description_to_html, Worker
 from nlightreader.utils.catalog_manager import get_catalog
 from nlightreader.utils.file_manager import get_character_preview
 
@@ -22,11 +20,12 @@ class FormCharacter(QDialog):
         self.ui.name_label.setText(self.character.name)
         self.ui.russian_label.setText(self.character.russian)
         self.update_description()
-        Thread(target=self.setup_image, daemon=True).start()
+        Worker(self.setup_image).start()
 
     def closeEvent(self, arg__1):
         self.deleteLater()
 
+    @Slot()
     def update_description(self):
         self.ui.description.clear()
         self.ui.description.insertHtml(description_to_html(self.character.description,
