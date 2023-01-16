@@ -1,5 +1,6 @@
 import webbrowser
 
+from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QListWidgetItem
 
 from data.ui.library import Ui_Form
@@ -56,6 +57,7 @@ class FormLibrary(BaseWidget):
     def get_current_manga(self) -> Manga:
         return self.mangas[self.ui.items_list.currentIndex().row()]
 
+    @Slot(LibList)
     def change_list(self, lst: LibList):
         self.request_params.lib_list = lst
         self.get_content()
