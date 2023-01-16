@@ -1,3 +1,4 @@
+from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QDialog
 
 from data.ui.rate import Ui_Dialog
@@ -33,6 +34,7 @@ class FormRate(QDialog):
             self.ui.chapters_box.setMaximum(self.manga.chapters)
         self.ui.lib_list_box.setCurrentIndex(lib_lists_en.index(parse_lib_list(self.user_rate.status)))
 
+    @Slot()
     def send_rate(self):
         self.user_rate.score = self.ui.score_box.value()
         self.user_rate.chapters = self.ui.chapters_box.value()
@@ -40,6 +42,7 @@ class FormRate(QDialog):
         self.catalog.update_user_rate(self.user_rate)
         self.close()
 
+    @Slot()
     def delete_rate(self):
         self.catalog.delete_user_rate(self.user_rate)
         self.close()

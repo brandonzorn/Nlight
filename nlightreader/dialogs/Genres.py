@@ -1,3 +1,4 @@
+from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QDialog, QCheckBox
 
 from data.ui.genres import Ui_Dialog
@@ -29,9 +30,11 @@ class FormGenres(QDialog):
             self.genres_items.update({check_box: genres[i]})
             self.ui_ge.gridLayout.addWidget(check_box, i // 5, i % 5)
 
+    @Slot()
     def accept_genres(self):
         self.selected_genres = [self.genres_items.get(i) for i in self.genres_items if i.isChecked()]
 
+    @Slot()
     def reject_genres(self):
         for i in self.genres_items:
             if self.genres_items.get(i) not in self.selected_genres:
