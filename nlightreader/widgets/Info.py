@@ -31,6 +31,7 @@ class FormInfo(QWidget):
         self.related_mangas: list[Manga] = []
         self.related_characters: list[Character] = []
         self.chapters: list[Chapter] = []
+        self.manga_pixmap = None
         self.reader_window = None
         self.rate_window = FormRate()
         self.character_window = None
@@ -70,13 +71,9 @@ class FormInfo(QWidget):
         menu.exec(self.ui.items_list.mapToGlobal(pos))
 
     def resizeEvent(self, a0):
-        self.ui.image.clear()
         if not self.catalog:
             return
-        pixmap = get_manga_preview(self.manga, self.catalog)
-        pixmap = pixmap.scaled(QSize(512, 320), Qt.AspectRatioMode.KeepAspectRatio,
-                               Qt.TransformationMode.SmoothTransformation)
-        self.ui.image.setPixmap(pixmap)
+        self.update_manga_preview()
 
     def get_current_manga(self):
         return self.catalog.get_manga(self.related_mangas[self.ui.related_list.currentIndex().row()])
@@ -95,7 +92,7 @@ class FormInfo(QWidget):
                 self.ui.add_btn.setChecked(True)
             else:
                 self.ui.add_btn.setChecked(False)
-            self.resizeEvent(None)
+            self.update_manga_preview()
             Worker(self.get_chapters).start()
             Worker(self.get_characters).start()
             Worker(self.get_relations).start()
@@ -110,6 +107,15 @@ class FormInfo(QWidget):
         character = self.catalog.get_character(self.related_characters[self.ui.characters_list.currentIndex().row()])
         self.character_window = FormCharacter(character, self.manga.catalog_id)
         self.character_window.show()
+
+    def update_manga_preview(self):
+        self.ui.image.clear()
+        if not self.manga_pixmap:
+            self.manga_pixmap = get_manga_preview(self.manga, self.catalog)
+        image_size = QSize(self.width() // 5, self.height() // 2)
+        pixmap = self.manga_pixmap.scaled(image_size, Qt.AspectRatioMode.KeepAspectRatio,
+                                          Qt.TransformationMode.SmoothTransformation)
+        self.ui.image.setPixmap(pixmap)
 
     def set_info(self):
         self.ui.name_label.setText(self.manga.name)
