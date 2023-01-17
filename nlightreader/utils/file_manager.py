@@ -3,6 +3,7 @@ import os
 from PySide6.QtGui import QPixmap
 
 from nlightreader.consts import APP_NAME
+from nlightreader.items import Manga, Chapter, Character
 
 
 def get_file(path, file_name):
@@ -30,38 +31,38 @@ def init_app_paths(paths: list[str]):
             os.makedirs(path, exist_ok=True)
 
 
-def get_character_preview(character, catalog) -> QPixmap:
-    path = f'{APP_NAME}/images/{catalog.catalog_name}/characters/{character.id}'
+def get_character_preview(character: Character, catalog) -> QPixmap:
+    path = f'{APP_NAME}/images/{catalog.catalog_name}/characters/{character.content_id}'
     if not check_file_exists(path, 'preview.jpg'):
         save_file(path, 'preview.jpg', catalog.get_character_preview(character))
     return QPixmap(get_file(path, 'preview.jpg'))
 
 
-def get_manga_preview(manga, catalog) -> QPixmap:
-    path = f'{APP_NAME}/images/{catalog.catalog_name}/manga/{manga.id}'
+def get_manga_preview(manga: Manga, catalog) -> QPixmap:
+    path = f'{APP_NAME}/images/{catalog.catalog_name}/manga/{manga.content_id}'
     if not check_file_exists(path, 'preview.jpg'):
         save_file(path, 'preview.jpg', catalog.get_preview(manga))
     return QPixmap(get_file(path, 'preview.jpg'))
 
 
-def get_chapter_image(manga, chapter, image, catalog) -> QPixmap:
-    path = f'{APP_NAME}/images/{catalog.catalog_name}/manga/{manga.id}/{chapter.id}'
+def get_chapter_image(manga: Manga, chapter: Chapter, image, catalog) -> QPixmap:
+    path = f'{APP_NAME}/images/{catalog.catalog_name}/manga/{manga.content_id}/{chapter.content_id}'
     file_name = f'{image.page}.jpg'
     if not check_file_exists(path, file_name):
         save_file(path, file_name, catalog.get_image(image))
     return QPixmap(get_file(path, file_name))
 
 
-def check_chapter_image(manga, chapter, image, catalog):
-    path = f'{APP_NAME}/images/{catalog.catalog_name}/manga/{manga.id}/{chapter.id}'
+def check_chapter_image(manga: Manga, chapter: Chapter, image, catalog):
+    path = f'{APP_NAME}/images/{catalog.catalog_name}/manga/{manga.content_id}/{chapter.content_id}'
     file_name = f'{image.page}.jpg'
     if manga.kind == 'ranobe':
         file_name = f'{image.page}.txt'
     return check_file_exists(path, file_name)
 
 
-def get_chapter_text(manga, chapter, image, catalog) -> str:
-    path = f'{APP_NAME}/images/{catalog.catalog_name}/manga/{manga.id}/{chapter.id}'
+def get_chapter_text(manga: Manga, chapter: Chapter, image, catalog) -> str:
+    path = f'{APP_NAME}/images/{catalog.catalog_name}/manga/{manga.content_id}/{chapter.content_id}'
     file_name = f'{image.page}.txt'
     if not check_file_exists(path, file_name):
         save_file(path, file_name, catalog.get_image(image))

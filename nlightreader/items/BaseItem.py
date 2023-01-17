@@ -2,8 +2,10 @@ from PySide6.QtCore import QLocale
 
 
 class BaseItem:
-    def __init__(self, item_id: str, name: str, russian: str):
+    def __init__(self, item_id: str, content_id: str, catalog_id: int, name: str, russian: str):
         self.id = item_id
+        self.content_id = content_id
+        self.catalog_id = catalog_id
         self.name = name
         self.russian = russian
 
@@ -16,4 +18,4 @@ class BaseItem:
     @staticmethod
     def get_empty_instance():
         item_name = 'base_item'
-        return BaseItem(item_name, item_name, item_name)
+        return BaseItem(item_name, item_name, -1, item_name, item_name)

@@ -1,6 +1,8 @@
 class Chapter:
-    def __init__(self, chapter_id: str, vol: str, ch: str, title: str, language: str):
-        self.id = chapter_id
+    def __init__(self, item_id: str, content_id: str, catalog_id: int, vol: str, ch: str, title: str, language: str):
+        self.id = item_id
+        self.content_id = content_id
+        self.catalog_id = catalog_id
         self.vol = vol
         self.ch = ch
         self.title = title
