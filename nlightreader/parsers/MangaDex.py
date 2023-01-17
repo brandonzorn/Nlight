@@ -5,7 +5,7 @@ from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, 
 from nlightreader.parsers.Parser import Parser, LibParser
 from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
-from nlightreader.utils.utils import get_data, get_html
+from nlightreader.utils.utils import get_data, get_html, create_item_id
 
 
 class MangaDex(Parser):
@@ -17,7 +17,7 @@ class MangaDex(Parser):
         self.catalog_id = 2
 
     def get_manga(self, manga: Manga) -> Manga:
-        url = f'{self.url_api}/manga/{manga.id}'
+        url = f'{self.url_api}/manga/{manga.content_id}'
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
             data = get_data(html.json(), ['data'])
@@ -48,12 +48,12 @@ class MangaDex(Parser):
                 russian = j.get('ru')
             if not name and 'en' in j.keys():
                 name = j.get('en')
-        return Manga(manga_id, self.catalog_id, name, russian)
+        return Manga(create_item_id(self.catalog_id, manga_id), manga_id, self.catalog_id, name, russian)
 
     def search_manga(self, params: RequestForm):
         url = f'{self.url_api}/manga'
         params = {'limit': 50, 'title': params.search, 'offset': params.offset,
-                  'includedTags[]': [i.id for i in params.genres] + [i.id for i in params.kinds]}
+                  'includedTags[]': [i.content_id for i in params.genres] + [i.content_id for i in params.kinds]}
         mangas = []
         html = get_html(url, self.headers, params)
         if html and html.status_code == 200 and html.json():
@@ -63,7 +63,7 @@ class MangaDex(Parser):
 
     def get_chapters(self, manga: Manga):
         url = f'{self.url_api}/chapter'
-        params = {'manga': manga.id, 'limit': 1, 'translatedLanguage[]': ['ru', 'en'], 'order[chapter]': 'asc'}
+        params = {'manga': manga.content_id, 'limit': 1, 'translatedLanguage[]': ['ru', 'en'], 'order[chapter]': 'asc'}
         html = get_html(url, self.headers, params)
         chapters = []
         if html and html.status_code == 200 and html.json():
@@ -73,13 +73,14 @@ class MangaDex(Parser):
                 html = get_html(url, self.headers, params)
                 for i in get_data(html.json(), ['data']):
                     attr = i.get('attributes')
-                    chapters.append(Chapter(i.get('id'), attr.get('volume'), attr.get('chapter'), attr.get('title'),
-                                            attr.get('translatedLanguage')))
+                    chapters.append(Chapter(create_item_id(self.catalog_id, i.get('id')), i.get('id'), self.catalog_id,
+                                            attr.get('volume'), attr.get('chapter'),
+                                            attr.get('title'), attr.get('translatedLanguage')))
             chapters.reverse()
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter):
-        url = f'{self.url_api}/at-home/server/{chapter.id}'
+        url = f'{self.url_api}/at-home/server/{chapter.content_id}'
         html = get_html(url, self.headers)
         images = []
         if html and html.status_code == 200 and html.json():
@@ -95,12 +96,12 @@ class MangaDex(Parser):
 
     def get_preview(self, manga: Manga):
         url = f'{self.url_api}/cover'
-        params = {'manga[]': manga.id}
+        params = {'manga[]': manga.content_id}
         html = get_html(url, self.headers, params)
         filename = ''
         if html and html.status_code == 200 and len(html.json()):
             filename = html.json().get('data')[0].get('attributes').get('fileName')
-        return get_html(f'https://uploads.mangadex.org/covers/{manga.id}/{filename}.256.jpg')
+        return get_html(f'https://uploads.mangadex.org/covers/{manga.content_id}/{filename}.256.jpg')
 
     def get_genres(self):
         url = f'{self.url_api}/manga/tag'
@@ -110,7 +111,8 @@ class MangaDex(Parser):
             for i in html.json().get('data'):
                 if i.get('attributes').get('group') not in ['genre', 'theme']:
                     continue
-                genres.append(Genre(i.get('id'), get_data(i, ['attributes', 'name', 'en']), ''))
+                genres.append(Genre(create_item_id(self.catalog_id, i.get('id')), i.get('id'), self.catalog_id,
+                                    get_data(i, ['attributes', 'name', 'en']), ''))
         return genres
 
     def get_kinds(self):
@@ -121,11 +123,12 @@ class MangaDex(Parser):
             for i in html.json().get('data'):
                 if i.get('attributes').get('group') not in ['format']:
                     continue
-                kinds.append(Kind(i.get('id'), i.get('attributes').get('name').get('en'), ''))
+                kinds.append(Kind(create_item_id(self.catalog_id, i.get('id')), i.get('id'),
+                                  self.catalog_id, i.get('attributes').get('name').get('en'), ''))
         return kinds
 
     def get_manga_url(self, manga: Manga) -> str:
-        return f'{URL_MANGA_DEX}/title/{manga.id}'
+        return f'{URL_MANGA_DEX}/title/{manga.content_id}'
 
 
 class MangaDexLib(MangaDex, LibParser):
@@ -147,7 +150,7 @@ class MangaDexLib(MangaDex, LibParser):
         if html and html.status_code == 200 and html.json():
             for i in html.json().get('data'):
                 manga = self.setup_manga(i)
-                if manga.id in html_statuses.json().get('statuses'):
+                if manga.content_id in html_statuses.json().get('statuses'):
                     mangas.append(manga)
         return mangas
 

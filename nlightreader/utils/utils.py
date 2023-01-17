@@ -97,3 +97,7 @@ def lock_ui(ui_to_lock: list):
     [i.setEnabled(False) for i in ui_to_lock]
     yield
     [i.setEnabled(True) for i in ui_to_lock]
+
+
+def create_item_id(item_catalog, item_content_id) -> str:
+    return f'|{item_catalog}|_/_/_|{item_content_id}|'
