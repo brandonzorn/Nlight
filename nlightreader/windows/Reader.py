@@ -29,6 +29,7 @@ class ReaderWindow(QMainWindow):
         self.manga = None
         self.chapters: list[Chapter] = []
         self.images: list[Image] = []
+        self.cur_image_pixmap = None
         self.cur_chapter = 1
         self.max_chapters = 1
         self.cur_page = 1
@@ -127,6 +128,7 @@ class ReaderWindow(QMainWindow):
 
     def attach_image(self):
         self.reset_reader_area()
+        self.cur_image_pixmap = None
         if not self.images:
             return
         if self.manga.kind == 'ranobe':
@@ -155,9 +157,10 @@ class ReaderWindow(QMainWindow):
             time.sleep(0.25)
             if page != self.cur_page or chapter != self.cur_chapter:
                 return
-        pixmap = self.get_pixmap(self.chapters[chapter - 1], self.images[page - 1])
+        if not self.cur_image_pixmap:
+            self.cur_image_pixmap = self.get_pixmap(self.chapters[chapter - 1], self.images[page - 1])
         if page == self.cur_page and chapter == self.cur_chapter:
-            pixmap = self.resize_pixmap(pixmap)
+            pixmap = self.resize_pixmap(self.cur_image_pixmap)
             self.ui.img.setPixmap(pixmap)
 
     @Slot()
