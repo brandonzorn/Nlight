@@ -7,7 +7,7 @@ from PySide6.QtWidgets import QMainWindow
 from data.ui.reader import Ui_MainWindow
 from nlightreader.items import Manga, Chapter, Image
 from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image, translate, Worker, \
-    check_chapter_image, check_chapter_text
+    check_chapter_image
 
 
 class ReaderWindow(QMainWindow):
@@ -131,23 +131,7 @@ class ReaderWindow(QMainWindow):
         self.cur_image_pixmap = None
         if not self.images:
             return
-        if self.manga.kind == 'ranobe':
-            Worker(self.set_text, True).start()
-        else:
-            Worker(self.set_image, True).start()
-
-    def set_text(self, check_wait=False):
-        page = self.cur_page
-        chapter = self.cur_chapter
-        if check_wait and not check_chapter_text(self.manga, self.chapters[chapter - 1],
-                                                 self.images[page - 1], self.catalog):
-            time.sleep(0.25)
-            if page != self.cur_page or chapter != self.cur_chapter:
-                return
-        text = get_chapter_text(self.manga, self.chapters[chapter - 1],
-                                self.images[page - 1], self.catalog)
-        if page == self.cur_page and chapter == self.cur_chapter:
-            self.ui.img.setText(text)
+        Worker(self.set_image, True).start()
 
     def set_image(self, check_wait=False):
         page = self.cur_page
@@ -157,11 +141,17 @@ class ReaderWindow(QMainWindow):
             time.sleep(0.25)
             if page != self.cur_page or chapter != self.cur_chapter:
                 return
-        if not self.cur_image_pixmap:
-            self.cur_image_pixmap = self.get_pixmap(self.chapters[chapter - 1], self.images[page - 1])
-        if page == self.cur_page and chapter == self.cur_chapter:
-            pixmap = self.resize_pixmap(self.cur_image_pixmap)
-            self.ui.img.setPixmap(pixmap)
+        if self.manga.kind == 'ranobe':
+            text = get_chapter_text(self.manga, self.chapters[chapter - 1],
+                                    self.images[page - 1], self.catalog)
+            if page == self.cur_page and chapter == self.cur_chapter:
+                self.ui.img.setText(text)
+        else:
+            if not self.cur_image_pixmap:
+                self.cur_image_pixmap = self.get_pixmap(self.chapters[chapter - 1], self.images[page - 1])
+            if page == self.cur_page and chapter == self.cur_chapter:
+                pixmap = self.resize_pixmap(self.cur_image_pixmap)
+                self.ui.img.setPixmap(pixmap)
 
     @Slot()
     def update_text_size(self):
