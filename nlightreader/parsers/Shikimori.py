@@ -2,13 +2,13 @@ from PySide6.QtWidgets import QApplication
 from requests_oauthlib import OAuth2Session
 
 from keys import SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID
-from nlightreader.consts import URL_SHIKIMORI_API, SHIKIMORI_HEADERS, SHIKIMORI_ORDERS, URL_SHIKIMORI, SHIKIMORI_KINDS, \
-    LibList, URL_SHIKIMORI_TOKEN
+from nlightreader.consts import URL_SHIKIMORI_API, SHIKIMORI_HEADERS, SHIKIMORI_ORDERS,\
+    URL_SHIKIMORI, SHIKIMORI_KINDS, LibList, URL_SHIKIMORI_TOKEN
 from nlightreader.items import Manga, RequestForm, Genre, Kind, User, UserRate, Order, Character
 from nlightreader.parsers.Parser import Parser, LibParser
 from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
-from nlightreader.utils.utils import get_html
+from nlightreader.utils.utils import get_html, create_item_id
 
 
 class ShikimoriBase(Parser):
@@ -21,10 +21,11 @@ class ShikimoriBase(Parser):
         self.is_primary = True
 
     def setup_manga(self, data: dict) -> Manga:
-        return Manga(data.get('id'), self.catalog_id, data.get('name'), data.get('russian'))
+        return Manga(create_item_id(self.catalog_id, data.get('id')), data.get('id'), self.catalog_id,
+                     data.get('name'), data.get('russian'))
 
     def get_manga(self, manga: Manga) -> Manga:
-        url = f'{self.url_api}/mangas/{manga.id}'
+        url = f'{self.url_api}/mangas/{manga.content_id}'
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
             data = html.json()
@@ -39,7 +40,7 @@ class ShikimoriBase(Parser):
         return manga
 
     def get_character(self, character: Character) -> Character:
-        url = f'{self.url_api}/characters/{character.id}'
+        url = f'{self.url_api}/characters/{character.content_id}'
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
             data = html.json()
@@ -47,24 +48,26 @@ class ShikimoriBase(Parser):
         return character
 
     def get_preview(self, manga: Manga):
-        return get_html(f'https://shikimori.one/system/mangas/preview/{manga.id}.jpg')
+        return get_html(f'https://shikimori.one/system/mangas/preview/{manga.content_id}.jpg')
 
     def get_character_preview(self, character: Character):
-        return get_html(f'https://shikimori.one/system/characters/preview/{character.id}.jpg')
+        return get_html(f'https://shikimori.one/system/characters/preview/{character.content_id}.jpg')
 
     def get_genres(self):
         url = f'{self.url_api}/genres'
         html = get_html(url, headers=self.headers)
         if html and html.status_code == 200 and html.json():
-            return [Genre(str(i.get('id')), i.get('name'), i.get('russian')) for i in html.json()]
+            return [Genre(create_item_id(self.catalog_id, str(i.get('id'))), str(i.get('id')), self.catalog_id,
+                          i.get('name'), i.get('russian')) for i in html.json()]
         return []
 
     def get_orders(self) -> list[Order]:
-        return [Order('', i['name'], i['russian']) for i in SHIKIMORI_ORDERS]
+        return [Order(create_item_id(self.catalog_id, ''), '', self.catalog_id, i['name'], i['russian'])
+                for i in SHIKIMORI_ORDERS]
 
     def get_relations(self, manga: Manga) -> list[Manga]:
         mangas = []
-        url = f'{self.url_api}/mangas/{manga.id}/related'
+        url = f'{self.url_api}/mangas/{manga.content_id}/related'
         html = get_html(url, headers=self.headers)
         if html and html.status_code == 200 and html.json():
             for i in html.json():
@@ -75,7 +78,7 @@ class ShikimoriBase(Parser):
 
     def get_characters(self, manga: Manga) -> list[Character]:
         characters = []
-        url = f'{self.url_api}/mangas/{manga.id}/roles'
+        url = f'{self.url_api}/mangas/{manga.content_id}/roles'
         html = get_html(url, headers=self.headers)
         if html and html.status_code == 200 and html.json():
             for i in html.json():
@@ -84,13 +87,14 @@ class ShikimoriBase(Parser):
                     if role in ['Supporting', 'Main']:
                         data = i.get('character')
                         if data:
-                            characters.append(Character(
-                                data.get('id'), data.get('name'), data.get('russian'), '', role))
+                            characters.append(Character(create_item_id(self.catalog_id, data.get('id')), data.get('id'),
+                                                        self.catalog_id, data.get('name'), data.get('russian'),
+                                                        '', role))
             characters.reverse()
         return characters
 
     def get_manga_url(self, manga: Manga) -> str:
-        return f'{URL_SHIKIMORI}/mangas/{manga.id}'
+        return f'{URL_SHIKIMORI}/mangas/{manga.content_id}'
 
 
 class ShikimoriManga(ShikimoriBase):
@@ -101,7 +105,8 @@ class ShikimoriManga(ShikimoriBase):
 
     def search_manga(self, params: RequestForm):
         url = f'{self.url_api}/mangas'
-        params = {'limit': params.limit, 'search': params.search, 'genre': ','.join([i.id for i in params.genres]),
+        params = {'limit': params.limit, 'search': params.search,
+                  'genre': ','.join([i.content_id for i in params.genres]),
                   'order': params.order.name, 'kind': ','.join([i.name for i in params.kinds]), 'page': params.page}
         html = get_html(url, self.headers, params)
         mangas = []
@@ -111,7 +116,8 @@ class ShikimoriManga(ShikimoriBase):
         return mangas
 
     def get_kinds(self):
-        return [Kind('', i['name'], i['russian']) for i in SHIKIMORI_KINDS]
+        return [Kind(create_item_id(self.catalog_id, ''), '', self.catalog_id, i['name'], i['russian'])
+                for i in SHIKIMORI_KINDS]
 
 
 class ShikimoriRanobe(ShikimoriBase):
@@ -122,7 +128,8 @@ class ShikimoriRanobe(ShikimoriBase):
 
     def search_manga(self, params: RequestForm):
         url = f'{self.url_api}/ranobe'
-        params = {'limit': params.limit, 'search': params.search, 'genre': ','.join([i.id for i in params.genres]),
+        params = {'limit': params.limit, 'search': params.search,
+                  'genre': ','.join([i.content_id for i in params.genres]),
                   'order': params.order.name, 'kind': ','.join([i.name for i in params.kinds]), 'page': params.page}
         html = get_html(url, self.headers, params)
         mangas = []
@@ -167,16 +174,16 @@ class ShikimoriLib(ShikimoriBase, LibParser):
 
     def create_user_rate(self, manga: Manga):
         url = f'{self.url_api}/v2/user_rates'
-        data = {"user_rate": {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.id}}
+        data = {"user_rate": {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.content_id}}
         self.session.request('POST', url, json=data)
 
     def check_user_rate(self, manga: Manga):
         url = f'{self.url_api}/v2/user_rates'
-        params = {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.id}
+        params = {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.content_id}
         html = self.session.request('GET', url, params)
         if html and html.status_code == 200 and html.json():
             for i in html.json():
-                if manga.id == i.get('target_id'):
+                if manga.content_id == i.get('target_id'):
                     return True
         return False
 
@@ -186,7 +193,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
 
     def get_user_rate(self, manga: Manga):
         url = f'{self.url_api}/v2/user_rates'
-        params = {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.id}
+        params = {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.content_id}
         html = self.session.request('GET', url, params)
         if html and html.status_code == 200 and html.json():
             for i in html.json():
