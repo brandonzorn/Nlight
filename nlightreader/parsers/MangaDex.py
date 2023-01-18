@@ -5,7 +5,7 @@ from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, 
 from nlightreader.parsers.Parser import Parser, LibParser
 from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
-from nlightreader.utils.utils import get_data, get_html, create_item_id
+from nlightreader.utils.utils import get_data, get_html
 
 
 class MangaDex(Parser):
@@ -48,7 +48,7 @@ class MangaDex(Parser):
                 russian = j.get('ru')
             if not name and 'en' in j.keys():
                 name = j.get('en')
-        return Manga(create_item_id(self.catalog_id, manga_id), manga_id, self.catalog_id, name, russian)
+        return Manga(manga_id, self.catalog_id, name, russian)
 
     def search_manga(self, params: RequestForm):
         url = f'{self.url_api}/manga'
@@ -73,8 +73,7 @@ class MangaDex(Parser):
                 html = get_html(url, self.headers, params)
                 for i in get_data(html.json(), ['data']):
                     attr = i.get('attributes')
-                    chapters.append(Chapter(create_item_id(self.catalog_id, i.get('id')), i.get('id'), self.catalog_id,
-                                            attr.get('volume'), attr.get('chapter'),
+                    chapters.append(Chapter(i.get('id'), self.catalog_id, attr.get('volume'), attr.get('chapter'),
                                             attr.get('title'), attr.get('translatedLanguage')))
             chapters.reverse()
         return chapters
@@ -111,8 +110,7 @@ class MangaDex(Parser):
             for i in html.json().get('data'):
                 if i.get('attributes').get('group') not in ['genre', 'theme']:
                     continue
-                genres.append(Genre(create_item_id(self.catalog_id, i.get('id')), i.get('id'), self.catalog_id,
-                                    get_data(i, ['attributes', 'name', 'en']), ''))
+                genres.append(Genre(i.get('id'), self.catalog_id, get_data(i, ['attributes', 'name', 'en']), ''))
         return genres
 
     def get_kinds(self):
@@ -123,8 +121,7 @@ class MangaDex(Parser):
             for i in html.json().get('data'):
                 if i.get('attributes').get('group') not in ['format']:
                     continue
-                kinds.append(Kind(create_item_id(self.catalog_id, i.get('id')), i.get('id'),
-                                  self.catalog_id, i.get('attributes').get('name').get('en'), ''))
+                kinds.append(Kind(i.get('id'), self.catalog_id, i.get('attributes').get('name').get('en'), ''))
         return kinds
 
     def get_manga_url(self, manga: Manga) -> str:

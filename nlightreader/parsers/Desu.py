@@ -1,7 +1,7 @@
 from nlightreader.consts import URL_DESU_API, DESU_HEADERS, DESU_GENRES, DESU_KINDS, DESU_ORDERS, URL_DESU
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, Kind, Order
 from nlightreader.parsers.Parser import Parser
-from nlightreader.utils.utils import get_html, get_data, create_item_id
+from nlightreader.utils.utils import get_html, get_data
 
 
 class Desu(Parser):
@@ -17,8 +17,7 @@ class Desu(Parser):
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
             data = get_data(html.json(), ['response'], {})
-            manga.genres = [Genre(create_item_id(self.catalog_id, i.get('id')), i.get('id'),
-                                  self.catalog_id, i.get('text'), i.get('russian'))
+            manga.genres = [Genre(i.get('id'), self.catalog_id, i.get('text'), i.get('russian'))
                             for i in data.get("genres")]
             manga.score = data.get("score")
             manga.kind = data.get("kind")
@@ -37,8 +36,7 @@ class Desu(Parser):
         manga = []
         if html and html.status_code == 200 and html.json():
             for i in get_data(html.json(), ['response']):
-                manga.append(Manga(create_item_id(self.catalog_id, i.get('id')),
-                                   i.get('id'), self.catalog_id, i.get('name'), i.get('russian')))
+                manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian')))
         return manga
 
     def get_chapters(self, manga: Manga):
@@ -47,8 +45,7 @@ class Desu(Parser):
         chapters = []
         if html and html.status_code == 200 and html.json():
             for i in get_data(html.json(), ['response', 'chapters', 'list']):
-                chapters.append(Chapter(create_item_id(self.catalog_id, i.get('id')), i.get('id'), self.catalog_id,
-                                        i.get('vol'), i.get('ch'), i.get('title'), 'ru'))
+                chapters.append(Chapter(i.get('id'), self.catalog_id, i.get('vol'), i.get('ch'), i.get('title'), 'ru'))
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter):
@@ -66,16 +63,13 @@ class Desu(Parser):
         return get_html(f'https://desu.me/data/manga/covers/preview/{manga.content_id}.jpg')
 
     def get_genres(self):
-        return [Genre(create_item_id(self.catalog_id, ''), '',
-                      self.catalog_id, i['name'], i['russian']) for i in DESU_GENRES]
+        return [Genre('', self.catalog_id, i['name'], i['russian']) for i in DESU_GENRES]
 
     def get_kinds(self) -> list[Kind]:
-        return [Kind(create_item_id(self.catalog_id, ''), '',
-                     self.catalog_id, i['name'], i['russian']) for i in DESU_KINDS]
+        return [Kind('', self.catalog_id, i['name'], i['russian']) for i in DESU_KINDS]
 
     def get_orders(self) -> list[Order]:
-        return [Order(create_item_id(self.catalog_id, ''), '',
-                      self.catalog_id, i['name'], i['russian']) for i in DESU_ORDERS]
+        return [Order('', self.catalog_id, i['name'], i['russian']) for i in DESU_ORDERS]
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{URL_DESU}/manga/{manga.content_id}"

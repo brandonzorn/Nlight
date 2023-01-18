@@ -48,12 +48,11 @@ class Database:
 
     def get_manga(self, manga_id):
         x = self.__cur.execute(f"SELECT * FROM manga WHERE id = '{manga_id}'").fetchone()
-        item_id = x[0]
         content_id = x[1]
         catalog_id = x[2]
         name = x[3]
         russian = x[4]
-        manga = Manga(item_id, content_id, catalog_id, name, russian)
+        manga = Manga(content_id, catalog_id, name, russian)
         manga.kind = x[5]
         manga.description = x[6]
         manga.score = x[7]
@@ -73,12 +72,12 @@ class Database:
 
     def get_chapter(self, chapter_id):
         a = self.__cur.execute(f"SELECT * FROM chapters WHERE id = '{chapter_id}'").fetchone()
-        return Chapter(a[0], a[1], a[2], a[3], a[4], a[5], a[6])
+        return Chapter(a[1], a[2], a[3], a[4], a[5], a[6])
 
     @with_lock_thread(lock)
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         a = self.__cur.execute(f"SELECT * FROM chapters WHERE manga_id = '{manga.id}' ORDER by index_n").fetchall()
-        return [Chapter(i[0], i[1], i[2], i[3], i[4], i[5], a[6]) for i in a[::-1]]
+        return [Chapter(i[1], i[2], i[3], i[4], i[5], a[6]) for i in a[::-1]]
 
     @with_lock_thread(lock)
     def add_manga_library(self, manga: Manga, lib_list: LibList = LibList.planned):
