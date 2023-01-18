@@ -1,7 +1,7 @@
 from nlightreader.consts import URL_RANOBEHUB_API, URL_RANOBEHUB, DEFAULT_HEADERS
 from nlightreader.items import RequestForm, Manga
 from nlightreader.parsers.Parser import Parser
-from nlightreader.utils.utils import get_html, create_item_id
+from nlightreader.utils.utils import get_html
 
 
 class Ranobehub(Parser):
@@ -32,7 +32,7 @@ class Ranobehub(Parser):
                 manga_id = i.get('id')
                 name = i.get('names').get('eng')
                 russian = i.get('names').get('rus')
-                manga.append(Manga(create_item_id(self.catalog_id, manga_id), manga_id, self.catalog_id, name, russian))
+                manga.append(Manga(manga_id, self.catalog_id, name, russian))
         return manga
 
     def get_preview(self, manga: Manga):
