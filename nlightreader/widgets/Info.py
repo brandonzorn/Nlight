@@ -182,7 +182,7 @@ class FormInfo(QWidget):
 
     @Slot()
     def open_reader(self):
-        if self.reader_window:
-            self.reader_window.close()
+        prev_reader = self.reader_window
         self.reader_window = ReaderWindow()
         self.reader_window.setup(self.manga, self.chapters, self.ui.items_list.currentIndex().row() + 1)
+        prev_reader.close()

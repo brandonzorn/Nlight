@@ -8,7 +8,7 @@ from nlightreader.items import Manga, RequestForm, Genre, Kind, User, UserRate, 
 from nlightreader.parsers.Parser import Parser, LibParser
 from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
-from nlightreader.utils.utils import get_html, create_item_id
+from nlightreader.utils.utils import get_html
 
 
 class ShikimoriBase(Parser):
@@ -21,8 +21,7 @@ class ShikimoriBase(Parser):
         self.is_primary = True
 
     def setup_manga(self, data: dict) -> Manga:
-        return Manga(create_item_id(self.catalog_id, data.get('id')), data.get('id'), self.catalog_id,
-                     data.get('name'), data.get('russian'))
+        return Manga(data.get('id'), self.catalog_id, data.get('name'), data.get('russian'))
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f'{self.url_api}/mangas/{manga.content_id}'
@@ -57,13 +56,11 @@ class ShikimoriBase(Parser):
         url = f'{self.url_api}/genres'
         html = get_html(url, headers=self.headers)
         if html and html.status_code == 200 and html.json():
-            return [Genre(create_item_id(self.catalog_id, str(i.get('id'))), str(i.get('id')), self.catalog_id,
-                          i.get('name'), i.get('russian')) for i in html.json()]
+            return [Genre(str(i.get('id')), self.catalog_id, i.get('name'), i.get('russian')) for i in html.json()]
         return []
 
     def get_orders(self) -> list[Order]:
-        return [Order(create_item_id(self.catalog_id, ''), '', self.catalog_id, i['name'], i['russian'])
-                for i in SHIKIMORI_ORDERS]
+        return [Order('', self.catalog_id, i['name'], i['russian']) for i in SHIKIMORI_ORDERS]
 
     def get_relations(self, manga: Manga) -> list[Manga]:
         mangas = []
@@ -87,9 +84,8 @@ class ShikimoriBase(Parser):
                     if role in ['Supporting', 'Main']:
                         data = i.get('character')
                         if data:
-                            characters.append(Character(create_item_id(self.catalog_id, data.get('id')), data.get('id'),
-                                                        self.catalog_id, data.get('name'), data.get('russian'),
-                                                        '', role))
+                            characters.append(Character(data.get('id'), self.catalog_id, data.get('name'),
+                                                        data.get('russian'), '', role))
             characters.reverse()
         return characters
 
@@ -116,8 +112,7 @@ class ShikimoriManga(ShikimoriBase):
         return mangas
 
     def get_kinds(self):
-        return [Kind(create_item_id(self.catalog_id, ''), '', self.catalog_id, i['name'], i['russian'])
-                for i in SHIKIMORI_KINDS]
+        return [Kind('', self.catalog_id, i['name'], i['russian']) for i in SHIKIMORI_KINDS]
 
 
 class ShikimoriRanobe(ShikimoriBase):

@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from nlightreader.consts import URL_RULATE, DEFAULT_HEADERS
 from nlightreader.items import Manga, Chapter, Image, RequestForm
 from nlightreader.parsers.Parser import Parser
-from nlightreader.utils.utils import get_html, create_item_id
+from nlightreader.utils.utils import get_html
 
 
 class Rulate(Parser):
@@ -40,8 +40,7 @@ class Rulate(Parser):
                     name = name_items[0].strip()
                     russian = name_items[1].strip()
                 ranobe_id = i.unwrap()['data-tooltip-content'].split('#book-tooltip-')[-1]
-                ranobe.append(Manga(create_item_id(self.catalog_id, ranobe_id),
-                                    ranobe_id, self.catalog_id, name, russian))
+                ranobe.append(Manga(ranobe_id, self.catalog_id, name, russian))
         return ranobe
 
     def get_chapters(self, manga: Manga):
@@ -54,8 +53,7 @@ class Rulate(Parser):
                 name: str = chapter.find('td', class_='t').text
                 name = name.strip()
                 chapter_id = chapter.unwrap()['data-id']
-                chapters.append(Chapter(create_item_id(self.catalog_id, chapter_id),
-                                        chapter_id, self.catalog_id, '', '', name, 'ru'))
+                chapters.append(Chapter(chapter_id, self.catalog_id, '', '', name, 'ru'))
             chapters.reverse()
         return chapters
 
