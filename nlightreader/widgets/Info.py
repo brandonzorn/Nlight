@@ -7,7 +7,7 @@ from nlightreader.consts import lib_lists_en, ItemsColors, LibList
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
 from nlightreader.items import Manga, Character, Chapter, HistoryNote
-from nlightreader.utils import Database, get_manga_preview, lock_ui, get_catalog, get_status, get_language_icon, \
+from nlightreader.utils import Database, get_manga_preview, get_catalog, get_status, get_language_icon, \
     translate, Worker, description_to_html
 from nlightreader.windows.Reader import ReaderWindow
 
@@ -79,23 +79,21 @@ class FormInfo(QWidget):
         return self.catalog.get_manga(self.related_mangas[self.ui.related_list.currentIndex().row()])
 
     def setup(self, manga: Manga):
-        ui_to_lock = [self.ui.back_btn]
-        with lock_ui(ui_to_lock):
-            self.manga = manga
-            self.db.add_manga(self.manga)
-            self.catalog = get_catalog(self.manga.catalog_id)()
-            self.ui.lib_frame.setVisible(not self.catalog.is_primary)
-            self.ui.shikimori_frame.setVisible(self.catalog.is_primary)
-            self.set_info()
-            if self.db.check_manga_library(self.manga):
-                self.ui.lib_list_box.setCurrentIndex(self.db.check_manga_library(self.manga).value)
-                self.ui.add_btn.setChecked(True)
-            else:
-                self.ui.add_btn.setChecked(False)
-            self.update_manga_preview()
-            Worker(self.get_chapters).start()
-            Worker(self.get_characters).start()
-            Worker(self.get_relations).start()
+        self.manga = manga
+        self.db.add_manga(self.manga)
+        self.catalog = get_catalog(self.manga.catalog_id)()
+        self.ui.lib_frame.setVisible(not self.catalog.is_primary)
+        self.ui.shikimori_frame.setVisible(self.catalog.is_primary)
+        self.set_info()
+        if self.db.check_manga_library(self.manga):
+            self.ui.lib_list_box.setCurrentIndex(self.db.check_manga_library(self.manga).value)
+            self.ui.add_btn.setChecked(True)
+        else:
+            self.ui.add_btn.setChecked(False)
+        self.update_manga_preview()
+        Worker(self.get_chapters).start()
+        Worker(self.get_characters).start()
+        Worker(self.get_relations).start()
 
     @Slot()
     def open_rate(self):
