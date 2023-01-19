@@ -25,8 +25,8 @@ class Database:
         content_id STRING NOT NULL, catalog_id INTEGER NOT NULL, vol STRING, ch STRING, title STRING, language STRING,
         manga_id INTEGER, index_n INTEGER);
             """)
-        self.__cur.execute("""CREATE TABLE IF NOT EXISTS library (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
-        list INTEGER)""")
+        self.__cur.execute("""CREATE TABLE IF NOT EXISTS library
+        (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL, list INTEGER)""")
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS chapter_history
         (chapter_id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL, manga_id STRING NOT NULL, is_completed BOOLEAN)""")
         self.__con.commit()
