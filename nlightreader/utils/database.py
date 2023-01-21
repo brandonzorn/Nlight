@@ -26,9 +26,11 @@ class Database:
         manga_id INTEGER, index_n INTEGER);
             """)
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS library
-        (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL, list INTEGER)""")
+        (manga_id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL, list INTEGER NOT NULL)
+            """)
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS chapter_history
-        (chapter_id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL, manga_id STRING NOT NULL, is_completed BOOLEAN)""")
+        (manga_id STRING NOT NULL, chapter_id STRING NOT NULL, is_completed BOOLEAN)
+            """)
         self.__con.commit()
 
     @with_lock_thread(lock)
@@ -86,7 +88,7 @@ class Database:
 
     @with_lock_thread(lock)
     def get_manga_library(self, lib_list: LibList) -> list[Manga]:
-        a = self.__cur.execute(f"SELECT id FROM library WHERE list = '{lib_list.value}';").fetchall()
+        a = self.__cur.execute(f"SELECT manga_id FROM library WHERE list = '{lib_list.value}';").fetchall()
         mangas = []
         for i in a[::-1]:
             mangas.append(self.get_manga(i[0]))
@@ -94,13 +96,13 @@ class Database:
 
     @with_lock_thread(lock)
     def check_manga_library(self, manga: Manga) -> LibList:
-        a = self.__cur.execute(f"SELECT list FROM library WHERE id = '{manga.id}';").fetchall()
+        a = self.__cur.execute(f"SELECT list FROM library WHERE manga_id = '{manga.id}';").fetchall()
         if a and a[0]:
             return LibList(a[0][0])
 
     @with_lock_thread(lock)
     def rem_manga_library(self, manga: Manga):
-        self.__cur.execute(f"DELETE FROM library WHERE id = '{manga.id}';")
+        self.__cur.execute(f"DELETE FROM library WHERE manga_id = '{manga.id}';")
         self.__con.commit()
 
     @with_lock_thread(lock)
@@ -116,15 +118,16 @@ class Database:
         return bool(a[0][0])
 
     @with_lock_thread(lock)
-    def add_history_note(self, manga: Manga, chapter: Chapter, is_completed: bool):
-        self.__cur.execute(f"INSERT INTO chapter_history VALUES(?, ?, ?);", (chapter.id, manga.id, is_completed))
+    def add_history_note(self, note: HistoryNote):
+        self.__cur.execute(f"INSERT INTO chapter_history VALUES(?, ?, ?);",
+                           (note.manga.id, note.chapter.id, note.is_completed))
         self.__con.commit()
 
     @with_lock_thread(lock)
     def add_history_notes(self, history_notes: list[HistoryNote]):
         for note in history_notes:
-            self.__cur.execute(f"INSERT INTO chapter_history VALUES(?, ?, ?);", (
-                note.chapter.id, note.manga.id, note.is_completed))
+            self.__cur.execute(f"INSERT INTO chapter_history VALUES(?, ?, ?);",
+                               (note.manga.id, note.chapter.id, note.is_completed))
         self.__con.commit()
 
     @with_lock_thread(lock)
@@ -132,10 +135,10 @@ class Database:
         notes = []
         a = self.__cur.execute(f"SELECT * FROM chapter_history;").fetchall()
         for i in a:
-            chapter = self.get_chapter(i[0])
-            manga = self.get_manga(i[1])
+            manga = self.get_manga(i[0])
+            chapter = self.get_chapter(i[1])
             is_completed = bool(i[2])
-            notes.append(HistoryNote(0, chapter, manga, is_completed))
+            notes.append(HistoryNote(chapter, manga, is_completed))
         return notes
 
     @with_lock_thread(lock)
