@@ -5,7 +5,7 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QMainWindow
 
 from data.ui.reader import Ui_MainWindow
-from nlightreader.items import Manga, Chapter, Image
+from nlightreader.items import Manga, Chapter, Image, HistoryNote
 from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image, translate, Worker, \
     check_chapter_image
 
@@ -75,9 +75,9 @@ class ReaderWindow(QMainWindow):
 
     @Slot()
     def turn_page_next(self):
-        self.db.add_history_note(self.manga, self.chapters[self.cur_chapter - 1], False)
+        self.db.add_history_note(HistoryNote(self.chapters[self.cur_chapter - 1], self.manga, False))
         if self.cur_page == self.max_page:
-            self.db.add_history_note(self.manga, self.chapters[self.cur_chapter - 1], True)
+            self.db.add_history_note(HistoryNote(self.chapters[self.cur_chapter - 1], self.manga, True))
             self.turn_chapter_next()
         else:
             self.cur_page += 1
@@ -85,7 +85,7 @@ class ReaderWindow(QMainWindow):
 
     @Slot()
     def turn_page_prev(self):
-        self.db.add_history_note(self.manga, self.chapters[self.cur_chapter - 1], False)
+        self.db.add_history_note(HistoryNote(self.chapters[self.cur_chapter - 1], self.manga, False))
         if self.cur_page == 1:
             self.db.del_history_note(self.chapters[self.cur_chapter - 1])
             self.turn_chapter_prev()
@@ -99,7 +99,7 @@ class ReaderWindow(QMainWindow):
 
     @Slot()
     def turn_chapter_next(self):
-        self.db.add_history_note(self.manga, self.chapters[self.cur_chapter - 1], True)
+        self.db.add_history_note(HistoryNote(self.chapters[self.cur_chapter - 1], self.manga, True))
         if self.cur_chapter == self.max_chapters:
             self.deleteLater()
         else:
