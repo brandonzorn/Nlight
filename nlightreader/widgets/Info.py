@@ -46,14 +46,14 @@ class FormInfo(QWidget):
             history_notes = []
             for item in [selected_item.listWidget().item(i) for i in range(
                     selected_item.listWidget().indexFromItem(selected_item).row())]:
-                history_notes.append(HistoryNote(0, self.chapters[
-                    selected_item.listWidget().indexFromItem(item).row()], self.manga, True))
+                history_notes.append(HistoryNote(
+                    self.chapters[selected_item.listWidget().indexFromItem(item).row()], self.manga, True))
                 item.setBackground(ItemsColors.READ)
             self.db.add_history_notes(history_notes)
 
         def set_as_read():
-            self.db.add_history_note(
-                self.manga, self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()], True)
+            self.db.add_history_note(HistoryNote(
+                self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()], self.manga, True))
             selected_item.setBackground(ItemsColors.READ)
 
         def remove_read_state():
