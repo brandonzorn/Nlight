@@ -22,6 +22,8 @@ class ParentWindow(QMainWindow):
         self.ui.btn_shikimori.clicked.connect(lambda: self.change_widget(self.Form_shikimori))
         self.ui.btn_history.clicked.connect(lambda: self.change_widget(self.Form_history))
 
+        self.ui.top_item.currentChanged.connect(self.widgets_checker)
+
         self.change_widget(self.Form_facial)
 
     def change_widget(self, widget):
@@ -36,17 +38,17 @@ class ParentWindow(QMainWindow):
         self.ui.top_item.setCurrentWidget(widget)
 
     @Slot(Manga)
-    def open_info(self, manga):
-        info = FormInfo()
-        info.setup(manga)
-        info.ui.back_btn.clicked.connect(self.back)
-        self.ui.side_menu_widget.hide()
+    def open_info(self, manga: Manga):
+        info = FormInfo(manga)
+        info.opened_related_manga.connect(lambda x: self.open_info(x))
         self.ui.top_item.addWidget(info)
         self.ui.top_item.setCurrentWidget(info)
 
     @Slot()
-    def back(self):
-        self.ui.side_menu_widget.show()
-        self.ui.top_item.currentWidget().deleteLater()
-        self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
-        self.ui.top_item.currentWidget().update_content()
+    def widgets_checker(self):
+        count = self.ui.top_item.count()
+        if count == 1 and self.ui.side_menu_widget.isHidden():
+            self.ui.top_item.currentWidget().update_content()
+            self.ui.side_menu_widget.show()
+        elif count > 1 and self.ui.side_menu_widget.isVisible():
+            self.ui.side_menu_widget.hide()
