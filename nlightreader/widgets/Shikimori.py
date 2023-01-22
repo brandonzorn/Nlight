@@ -123,4 +123,5 @@ class FormShikimori(BaseWidget):
                 return
             self.mangas = self.catalog.search_manga(self.request_params)
             self.mutex.unlock()
-        Worker(func=get_content, callback=self.update_content, pre=self.update_page).start()
+        self.update_page()
+        Worker(target=get_content, callback=self.update_content).start()
