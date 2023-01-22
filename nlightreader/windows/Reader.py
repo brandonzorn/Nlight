@@ -131,15 +131,14 @@ class ReaderWindow(QMainWindow):
         self.cur_image_pixmap = None
         if not self.images:
             return
-        Worker(target=self.set_image, args=(True,)).start()
+        Worker(target=self.set_image).start()
 
-    def set_image(self, check_wait=False):
+    def set_image(self):
         page = self.cur_page
         chapter = self.cur_chapter
 
         def get_image():
-            if check_wait and not check_chapter_image(self.manga, self.chapters[chapter - 1],
-                                                      self.images[page - 1], self.catalog):
+            if not check_chapter_image(self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog):
                 time.sleep(0.25)
                 if page != self.cur_page or chapter != self.cur_chapter:
                     return
