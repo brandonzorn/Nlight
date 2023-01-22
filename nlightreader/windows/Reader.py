@@ -131,7 +131,7 @@ class ReaderWindow(QMainWindow):
         self.cur_image_pixmap = None
         if not self.images:
             return
-        Worker(self.set_image, True).start()
+        Worker(target=self.set_image, args=(True,)).start()
 
     def set_image(self, check_wait=False):
         page = self.cur_page
