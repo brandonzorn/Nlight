@@ -95,9 +95,9 @@ class FormInfo(QWidget):
         else:
             self.ui.add_btn.setChecked(False)
         self.update_manga_preview()
-        Worker(self.get_chapters).start()
-        Worker(self.get_characters).start()
-        Worker(self.get_relations).start()
+        self.get_chapters()
+        self.get_characters()
+        self.get_relations()
 
     @Slot()
     def open_rate(self):
@@ -149,38 +149,50 @@ class FormInfo(QWidget):
             self.db.add_manga_library(self.manga, lib_list)
 
     def get_chapters(self):
-        self.ui.items_list.clear()
-        self.chapters: list[Chapter] = self.catalog.get_chapters(self.manga)
-        self.chapters.reverse()
-        self.chapters.sort(key=lambda ch: ch.language if ch.language else False)
-        self.ui.items_frame.setVisible(bool(self.chapters))
-        self.db.add_chapters(self.chapters, self.manga)
-        for chapter in self.chapters:
-            item = QListWidgetItem(chapter.get_name())
-            if self.db.check_complete_chapter(chapter):
-                if self.db.get_complete_status(chapter):
-                    item.setBackground(ItemsColors.READ)
-                else:
-                    item.setBackground(ItemsColors.UNREAD)
-            if chapter.language:
-                item.setIcon(QIcon(get_language_icon(chapter.language)))
-            self.ui.items_list.addItem(item)
+        def get_chapters():
+            self.chapters = self.catalog.get_chapters(self.manga)
+            self.chapters.reverse()
+            self.chapters.sort(key=lambda ch: ch.language if ch.language else False)
+            self.db.add_chapters(self.chapters, self.manga)
+
+        def update_chapters():
+            self.ui.items_list.clear()
+            self.ui.items_frame.setVisible(bool(self.chapters))
+            for chapter in self.chapters:
+                item = QListWidgetItem(chapter.get_name())
+                if self.db.check_complete_chapter(chapter):
+                    if self.db.get_complete_status(chapter):
+                        item.setBackground(ItemsColors.READ)
+                    else:
+                        item.setBackground(ItemsColors.UNREAD)
+                if chapter.language:
+                    item.setIcon(QIcon(get_language_icon(chapter.language)))
+                self.ui.items_list.addItem(item)
+        Worker(target=get_chapters, callback=update_chapters).start()
 
     def get_relations(self):
-        self.ui.related_list.clear()
-        self.related_mangas = self.catalog.get_relations(self.manga)
-        self.ui.related_frame.setVisible(bool(self.related_mangas))
-        for manga in self.related_mangas:
-            item = QListWidgetItem(manga.get_name())
-            self.ui.related_list.addItem(item)
+        def get_relations():
+            self.related_mangas = self.catalog.get_relations(self.manga)
+
+        def update_relations():
+            self.ui.related_list.clear()
+            self.ui.related_frame.setVisible(bool(self.related_mangas))
+            for manga in self.related_mangas:
+                item = QListWidgetItem(manga.get_name())
+                self.ui.related_list.addItem(item)
+        Worker(target=get_relations, callback=update_relations).start()
 
     def get_characters(self):
-        self.ui.characters_list.clear()
-        self.related_characters = self.catalog.get_characters(self.manga)
-        self.ui.characters_frame.setVisible(bool(self.related_characters))
-        for character in self.related_characters:
-            item = QListWidgetItem(character.get_name())
-            self.ui.characters_list.addItem(item)
+        def get_characters():
+            self.related_characters = self.catalog.get_characters(self.manga)
+
+        def update_characters():
+            self.ui.characters_list.clear()
+            self.ui.characters_frame.setVisible(bool(self.related_characters))
+            for character in self.related_characters:
+                item = QListWidgetItem(character.get_name())
+                self.ui.characters_list.addItem(item)
+        Worker(target=get_characters, callback=update_characters).start()
 
     @Slot()
     def open_reader(self):
