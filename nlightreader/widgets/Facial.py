@@ -1,6 +1,7 @@
+import time
 import webbrowser
 
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot, QMutex
 from PySide6.QtWidgets import QListWidgetItem, QCheckBox, QRadioButton
 
 from data.ui.facial import Ui_Form
@@ -8,7 +9,7 @@ from nlightreader.consts import ItemsColors
 from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import RequestForm
-from nlightreader.utils import Database, USER_CATALOGS, lock_ui, get_catalog, translate, Worker
+from nlightreader.utils import Database, USER_CATALOGS, get_catalog, translate, Worker
 from nlightreader.widgets.BaseWidget import BaseWidget
 
 
@@ -36,6 +37,7 @@ class FormFacial(BaseWidget):
         self.Form_genres = FormGenres()
         self.request_params = RequestForm()
         self.db: Database = Database()
+        self.mutex = QMutex()
         self.catalog = None
         self.change_catalog(0)
 
@@ -91,31 +93,38 @@ class FormFacial(BaseWidget):
         self.apply_filter()
 
     def get_content(self):
-        ui_to_lock = [self]
-        with lock_ui(ui_to_lock):
+        def get_content():
+            page = self.request_params.page
+            time.sleep(0.25)
+            self.mutex.tryLock()
+            if page != self.request_params.page:
+                return
             self.mangas = self.catalog.search_manga(self.request_params)
-            self.update_content()
-            self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
+            self.mutex.unlock()
+        Worker(func=get_content, callback=self.update_content, pre=self.update_page).start()
 
     @Slot()
     def turn_page_next(self):
         if self.request_params.page == 999:
             return
         self.request_params.page += 1
-        Worker(self.get_content).start()
+        self.get_content()
 
     @Slot()
     def turn_page_prev(self):
         if self.request_params.page == 1:
             return
         self.request_params.page -= 1
-        Worker(self.get_content).start()
+        self.get_content()
+
+    def update_page(self):
+        self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
 
     @Slot()
     def search(self):
         self.request_params.page = 1
         self.request_params.search = self.ui.title_line.text()
-        Worker(self.get_content).start()
+        self.get_content()
 
     @Slot()
     def apply_filter(self):
@@ -126,7 +135,7 @@ class FormFacial(BaseWidget):
         self.request_params.search = self.ui.title_line.text()
         self.Form_genres.accept_genres()
         self.request_params.genres = self.Form_genres.selected_genres
-        Worker(self.get_content).start()
+        self.get_content()
 
     @Slot()
     def reset_filter(self):
@@ -137,7 +146,7 @@ class FormFacial(BaseWidget):
             self.request_params.order = [self.order_items[i] for i in self.order_items if i.isChecked()][0]
         [i.setChecked(False) for i in self.kind_items]
         self.ui.title_line.clear()
-        Worker(self.get_content).start()
+        self.get_content()
 
     def setup_filters(self):
         self.clear_filters_items()

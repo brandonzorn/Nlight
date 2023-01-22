@@ -76,12 +76,15 @@ class Signals(QObject):
 
 
 class Worker(QRunnable):
-    def __init__(self, func: Callable, *args, **kwargs):
+    def __init__(self, func: Callable, callback=None, pre=None, *args, **kwargs):
         super(Worker, self).__init__()
         self.func = func
+        self.pre = pre
         self.args = args
         self.kwargs = kwargs
         self.signals = Signals()
+        if callback:
+            self.signals.finished.connect(callback)
 
     @Slot()
     def run(self):
@@ -89,6 +92,8 @@ class Worker(QRunnable):
         self.signals.finished.emit()
 
     def start(self):
+        if self.pre:
+            self.pre()
         QThreadPool.globalInstance().start(self)
 
 
