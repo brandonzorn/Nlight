@@ -1,6 +1,7 @@
+import time
 import webbrowser
 
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot, QMutex
 from PySide6.QtWidgets import QListWidgetItem
 
 from data.ui.shikimori import Ui_Form
@@ -9,7 +10,7 @@ from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.dialogs import FormAuth
 from nlightreader.items import Manga, RequestForm, User
 from nlightreader.parsers import ShikimoriLib
-from nlightreader.utils import Database, lock_ui, get_catalog, translate, Worker
+from nlightreader.utils import Database, get_catalog, translate, Worker
 from nlightreader.widgets.BaseWidget import BaseWidget
 
 
@@ -23,6 +24,7 @@ class FormShikimori(BaseWidget):
         self.Form_auth = FormAuth(self.catalog)
         self.request_params = RequestForm()
         self.db: Database = Database()
+        self.mutex = QMutex()
         self.ui.planned_btn.clicked.connect(lambda: self.change_list(LibList.planned))
         self.ui.reading_btn.clicked.connect(lambda: self.change_list(LibList.reading))
         self.ui.on_hold_btn.clicked.connect(lambda: self.change_list(LibList.on_hold))
@@ -36,7 +38,7 @@ class FormShikimori(BaseWidget):
         self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
         self.Form_auth.accepted.connect(self.auth_accept)
         self.update_user_info()
-        Worker(self.get_content).start()
+        self.get_content()
 
     def on_context_menu(self, pos):
         def open_in_browser():
@@ -65,6 +67,9 @@ class FormShikimori(BaseWidget):
             item = QListWidgetItem(manga.get_name())
             self.ui.items_list.addItem(item)
 
+    def update_page(self):
+        self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
+
     def get_current_manga(self):
         return self.catalog.get_manga(self.mangas[self.ui.items_list.currentIndex().row()])
 
@@ -90,14 +95,14 @@ class FormShikimori(BaseWidget):
         if self.request_params.page == 999:
             return
         self.request_params.page += 1
-        Worker(self.get_content).start()
+        self.get_content()
 
     @Slot()
     def turn_page_prev(self):
         if self.request_params.page == 1:
             return
         self.request_params.page -= 1
-        Worker(self.get_content).start()
+        self.get_content()
 
     @Slot()
     def search(self):
@@ -110,8 +115,12 @@ class FormShikimori(BaseWidget):
         self.get_content()
 
     def get_content(self):
-        ui_to_lock = [self]
-        with lock_ui(ui_to_lock):
+        def get_content():
+            page = self.request_params.page
+            time.sleep(0.25)
+            self.mutex.tryLock()
+            if page != self.request_params.page:
+                return
             self.mangas = self.catalog.search_manga(self.request_params)
-            self.update_content()
-            self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
+            self.mutex.unlock()
+        Worker(func=get_content, callback=self.update_content, pre=self.update_page).start()
