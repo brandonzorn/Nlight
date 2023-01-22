@@ -117,9 +117,10 @@ class FormShikimori(BaseWidget):
     def get_content(self):
         def get_content():
             page = self.request_params.page
+            lib_list = self.request_params.lib_list
             time.sleep(0.25)
             self.mutex.tryLock()
-            if page != self.request_params.page:
+            if page != self.request_params.page or lib_list != self.request_params.lib_list:
                 return
             self.mangas = self.catalog.search_manga(self.request_params)
             self.mutex.unlock()
