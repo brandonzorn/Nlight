@@ -29,7 +29,7 @@ class Database:
         (manga_id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL, list INTEGER NOT NULL)
             """)
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS chapter_history
-        (manga_id STRING NOT NULL, chapter_id STRING NOT NULL, is_completed BOOLEAN)
+        (manga_id STRING NOT NULL, chapter_id STRING NOT NULL UNIQUE ON CONFLICT REPLACE, is_completed BOOLEAN)
             """)
         self.__con.commit()
 
