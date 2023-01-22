@@ -1,12 +1,13 @@
 import sys
+import time
+
 import darkdetect
 from PySide6.QtCore import QSize, Qt, QTranslator, QLocale
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
-
 from nlightreader import ParentWindow
 from nlightreader.consts import app_icon_path, APP_VERSION, APP_NAME
-from nlightreader.utils import init_app_paths, get_locale_path, get_ui_style
+from nlightreader.utils import init_app_paths, get_locale_path, get_ui_style, Worker
 
 
 class App(ParentWindow):
@@ -14,7 +15,21 @@ class App(ParentWindow):
         super().__init__()
         self.setMinimumSize(QSize(self.screen().size().width() // 2, self.screen().size().height() // 2))
         self.setWindowTitle(APP_NAME)
+        self.update_theme()
         self.show()
+
+    def update_theme(self):
+        def set_style():
+            app.setStyleSheet(get_ui_style(darkdetect.theme()))
+            self.update_theme()
+
+        def theme_updater():
+            theme = darkdetect.theme()
+            while True:
+                time.sleep(1)
+                if darkdetect.theme() != theme or self.isHidden():
+                    return
+        Worker(target=theme_updater, callback=set_style).start()
 
 
 if __name__ == '__main__':
