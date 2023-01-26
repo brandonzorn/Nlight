@@ -15,8 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QListWidget,
-    QListWidgetItem, QPushButton, QSizePolicy, QSpacerItem,
+from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
+    QPushButton, QScrollArea, QSizePolicy, QSpacerItem,
     QVBoxLayout, QWidget)
 
 class Ui_Form(object):
@@ -35,12 +35,24 @@ class Ui_Form(object):
         self.items_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout = QVBoxLayout(self.items_frame)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.items_list = QListWidget(self.items_frame)
-        self.items_list.setObjectName(u"items_list")
-        self.items_list.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.items_list.setWordWrap(True)
+        self.scrollArea = QScrollArea(self.items_frame)
+        self.scrollArea.setObjectName(u"scrollArea")
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 267, 312))
+        self.verticalLayout_2 = QVBoxLayout(self.scrollAreaWidgetContents)
+        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.content_grid = QGridLayout()
+        self.content_grid.setObjectName(u"content_grid")
 
-        self.verticalLayout.addWidget(self.items_list)
+        self.verticalLayout_2.addLayout(self.content_grid)
+
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+
+        self.verticalLayout.addWidget(self.scrollArea)
 
 
         self.horizontalLayout.addWidget(self.items_frame)
