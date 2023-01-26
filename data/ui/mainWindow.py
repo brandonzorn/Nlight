@@ -18,7 +18,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QMainWindow,
     QPushButton, QSizePolicy, QSpacerItem, QStackedWidget,
     QVBoxLayout, QWidget)
-import desu_res_rc
+import nlight_res_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -56,8 +56,8 @@ class Ui_MainWindow(object):
         self.btn_library.setStyleSheet(u"")
         self.btn_library.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         icon = QIcon()
-        icon.addFile(u":/icons/data/icons/library.png", QSize(), QIcon.Normal, QIcon.Off)
-        icon.addFile(u":/icons/data/icons/library_filled.png", QSize(), QIcon.Normal, QIcon.On)
+        icon.addFile(u":/actions_white/data/icons/buttons/svg_24dp_white/actions/library.svg", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u":/actions_white/data/icons/buttons/svg_24dp_white/actions/library_filled.svg", QSize(), QIcon.Normal, QIcon.On)
         self.btn_library.setIcon(icon)
         self.btn_library.setCheckable(True)
         self.btn_library.setAutoRepeat(False)
@@ -72,8 +72,8 @@ class Ui_MainWindow(object):
         self.btn_main.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_main.setStyleSheet(u"")
         icon1 = QIcon()
-        icon1.addFile(u":/icons/data/icons/main.png", QSize(), QIcon.Normal, QIcon.Off)
-        icon1.addFile(u":/icons/data/icons/main_filled.png", QSize(), QIcon.Normal, QIcon.On)
+        icon1.addFile(u":/png_white/data/icons/buttons/png_white/main.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(u":/png_white/data/icons/buttons/png_white/main_filled.png", QSize(), QIcon.Normal, QIcon.On)
         self.btn_main.setIcon(icon1)
         self.btn_main.setCheckable(True)
         self.btn_main.setChecked(True)
@@ -89,7 +89,7 @@ class Ui_MainWindow(object):
         self.btn_shikimori.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_shikimori.setStyleSheet(u"")
         icon2 = QIcon()
-        icon2.addFile(u":/icons/data/icons/shikimori.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon2.addFile(u":/png_white/data/icons/buttons/png_white/shikimori.png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_shikimori.setIcon(icon2)
         self.btn_shikimori.setCheckable(True)
         self.btn_shikimori.setAutoRepeat(False)
@@ -104,7 +104,7 @@ class Ui_MainWindow(object):
         self.btn_history.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_history.setStyleSheet(u"")
         icon3 = QIcon()
-        icon3.addFile(u":/icons/data/icons/history.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon3.addFile(u":/actions_white/data/icons/buttons/svg_24dp_white/actions/history.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_history.setIcon(icon3)
         self.btn_history.setCheckable(True)
         self.btn_history.setAutoRepeat(False)

@@ -4,7 +4,7 @@ from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QMainWindow
 
-from data.ui.reader import Ui_MainWindow
+from data.ui.reader import Ui_ReaderWindow
 from nlightreader.items import Manga, Chapter, Image, HistoryNote
 from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image, translate, Worker, \
     check_chapter_image
@@ -13,7 +13,7 @@ from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chap
 class ReaderWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.ui = Ui_MainWindow()
+        self.ui = Ui_ReaderWindow()
         self.ui.setupUi(self)
 
         self.ui.next_page_btn.clicked.connect(self.turn_page_next)
@@ -62,6 +62,7 @@ class ReaderWindow(QMainWindow):
             return
         self.reset_reader_area()
         self.set_image()
+        event.accept()
 
     def closeEvent(self, event):
         self.deleteLater()
@@ -142,6 +143,7 @@ class ReaderWindow(QMainWindow):
                 time.sleep(0.25)
                 if page != self.cur_page or chapter != self.cur_chapter:
                     return
+                self.ui.img.setText(f'Page is loading')
             if self.manga.kind == 'ranobe':
                 self.cur_image_pixmap = get_chapter_text(
                     self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog)
