@@ -22,6 +22,8 @@ class ParentWindow(QMainWindow):
         self.ui.btn_shikimori.clicked.connect(lambda: self.change_widget(self.Form_shikimori))
         self.ui.btn_history.clicked.connect(lambda: self.change_widget(self.Form_history))
 
+        self.Form_library.signals.manga_open.connect(lambda x: self.open_info(x))
+
         self.ui.top_item.currentChanged.connect(self.widgets_checker)
 
         self.change_widget(self.Form_facial)
@@ -30,8 +32,11 @@ class ParentWindow(QMainWindow):
         if self.ui.top_item.currentWidget() == widget:
             return
         widget.setup()
-        widget.ui.items_list.doubleClicked.disconnect()
-        widget.ui.items_list.doubleClicked.connect(lambda: self.open_info(widget.get_current_manga()))
+        try:
+            widget.ui.items_list.doubleClicked.disconnect()
+            widget.ui.items_list.doubleClicked.connect(lambda: self.open_info(widget.get_current_manga()))
+        except:
+            pass
         if self.ui.top_item.currentWidget():
             self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
         self.ui.top_item.addWidget(widget)
