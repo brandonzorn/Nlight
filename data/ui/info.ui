@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>543</width>
-    <height>465</height>
+    <height>464</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -64,8 +64,8 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="../../desu_res.qrc">
-            <normaloff>:/icons/data/icons/back.png</normaloff>:/icons/data/icons/back.png</iconset>
+           <iconset resource="../../nlight_res.qrc">
+            <normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_back.svg</normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_back.svg</iconset>
           </property>
          </widget>
         </item>
@@ -140,9 +140,9 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../../desu_res.qrc">
-                 <normaloff>:/icons/data/icons/star.png</normaloff>
-                 <normalon>:/icons/data/icons/star_filled.png</normalon>:/icons/data/icons/star.png</iconset>
+                <iconset resource="../../nlight_res.qrc">
+                 <normaloff>:/actions_white/data/icons/buttons/svg_24dp_white/actions/star.svg</normaloff>
+                 <normalon>:/actions_white/data/icons/buttons/svg_24dp_white/actions/star_filled.svg</normalon>:/actions_white/data/icons/buttons/svg_24dp_white/actions/star.svg</iconset>
                </property>
                <property name="checkable">
                 <bool>true</bool>
@@ -182,8 +182,8 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../../desu_res.qrc">
-                 <normaloff>:/icons/data/icons/shikimori.png</normaloff>:/icons/data/icons/shikimori.png</iconset>
+                <iconset resource="../../nlight_res.qrc">
+                 <normaloff>:/png_white/data/icons/buttons/png_white/shikimori.png</normaloff>:/png_white/data/icons/buttons/png_white/shikimori.png</iconset>
                </property>
               </widget>
              </item>
@@ -442,7 +442,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
   </layout>
  </widget>
  <resources>
-  <include location="../../desu_res.qrc"/>
+  <include location="../../nlight_res.qrc"/>
  </resources>
  <connections/>
 </ui>

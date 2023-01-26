@@ -1,0 +1,51 @@
+<RCC>
+  <qresource prefix="arrows_white">
+    <file>data/icons/buttons/svg_24dp_white/arrows/arrow_back.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/arrows/arrow_back_ios.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/arrows/arrow_forward_ios.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/arrows/double_arrow_left.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/arrows/double_arrow_right.svg</file>
+  </qresource>
+  <qresource prefix="png_white">
+    <file>data/icons/buttons/png_white/main.png</file>
+    <file>data/icons/buttons/png_white/main_filled.png</file>
+    <file>data/icons/buttons/png_white/settings.png</file>
+    <file>data/icons/buttons/png_white/settings_filled.png</file>
+    <file>data/icons/buttons/png_white/shikimori.png</file>
+  </qresource>
+  <qresource prefix="actions_white">
+    <file>data/icons/buttons/svg_24dp_white/actions/library.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/actions/library_filled.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/actions/delete.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/actions/expand_less.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/actions/expand_more.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/actions/favorite.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/actions/favorite_filled.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/actions/fullscreen.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/actions/fullscreen_exit.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/actions/history.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/actions/search.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/actions/star.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/actions/star_filled.svg</file>
+  </qresource>
+  <qresource prefix="arrows_black">
+    <file>data/icons/buttons/svg_24dp_black/arrows/arrow_back.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/arrows/arrow_back_ios.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/arrows/arrow_forward_ios.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/arrows/double_arrow_left.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/arrows/double_arrow_right.svg</file>
+  </qresource>
+  <qresource prefix="actions_black">
+    <file>data/icons/buttons/svg_24dp_black/actions/delete.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/actions/expand_less.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/actions/expand_more.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/actions/favorite.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/actions/favorite_filled.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/actions/fullscreen.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/actions/fullscreen_exit.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/actions/history.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/actions/search.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/actions/star.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/actions/star_filled.svg</file>
+  </qresource>
+</RCC>

@@ -18,7 +18,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QListWidget,
     QListWidgetItem, QPushButton, QSizePolicy, QSpacerItem,
     QVBoxLayout, QWidget)
-import desu_res_rc
+import nlight_res_rc
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -56,7 +56,7 @@ class Ui_Form(object):
         self.delete_btn.setObjectName(u"delete_btn")
         self.delete_btn.setCursor(QCursor(Qt.PointingHandCursor))
         icon = QIcon()
-        icon.addFile(u":/icons/data/icons/delete.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u":/actions_white/data/icons/buttons/svg_24dp_white/actions/delete.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.delete_btn.setIcon(icon)
 
         self.verticalLayout.addWidget(self.delete_btn)

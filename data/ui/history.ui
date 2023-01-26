@@ -72,8 +72,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../desu_res.qrc">
-          <normaloff>:/icons/data/icons/delete.png</normaloff>:/icons/data/icons/delete.png</iconset>
+         <iconset resource="../../nlight_res.qrc">
+          <normaloff>:/actions_white/data/icons/buttons/svg_24dp_white/actions/delete.svg</normaloff>:/actions_white/data/icons/buttons/svg_24dp_white/actions/delete.svg</iconset>
         </property>
        </widget>
       </item>
@@ -96,7 +96,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../desu_res.qrc"/>
+  <include location="../../nlight_res.qrc"/>
  </resources>
  <connections/>
 </ui>
