@@ -101,8 +101,8 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="../../desu_res.qrc">
-               <normaloff>:/icons/data/icons/search.png</normaloff>:/icons/data/icons/search.png</iconset>
+              <iconset resource="../../nlight_res.qrc">
+               <normaloff>:/actions_white/data/icons/buttons/svg_24dp_white/actions/search.svg</normaloff>:/actions_white/data/icons/buttons/svg_24dp_white/actions/search.svg</iconset>
              </property>
             </widget>
            </item>
@@ -139,8 +139,8 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="../../desu_res.qrc">
-               <normaloff>:/icons/data/icons/prev.png</normaloff>:/icons/data/icons/prev.png</iconset>
+              <iconset resource="../../nlight_res.qrc">
+               <normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_back_ios.svg</normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_back_ios.svg</iconset>
              </property>
             </widget>
            </item>
@@ -160,8 +160,8 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="../../desu_res.qrc">
-               <normaloff>:/icons/data/icons/next.png</normaloff>:/icons/data/icons/next.png</iconset>
+              <iconset resource="../../nlight_res.qrc">
+               <normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_forward_ios.svg</normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_forward_ios.svg</iconset>
              </property>
             </widget>
            </item>
@@ -347,7 +347,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../desu_res.qrc"/>
+  <include location="../../nlight_res.qrc"/>
  </resources>
  <connections/>
 </ui>

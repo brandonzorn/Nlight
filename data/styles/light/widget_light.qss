@@ -3,6 +3,11 @@ QMainWindow
     color: rgb(0, 0, 0);
     background-color: rgb(255, 255, 255);
 }
+QMainWindow#ReaderWindow QFrame, QWidget#scrollAreaWidgetContents
+{
+    border-radius: 10px;
+    background-color: rgb(230, 230, 230);
+}
 
 
 QDialog
@@ -10,12 +15,7 @@ QDialog
     color: rgb(0, 0, 0);
     background-color: rgb(255, 255, 255);
 }
-QDialog > QFrame
-{
-    border-radius: 10px;
-    background-color: rgb(230, 230, 230);
-}
-QDialog > QFrame > QFrame
+QDialog QFrame
 {
     color: rgb(0, 0, 0);
     border-radius: 10px;
@@ -23,28 +23,24 @@ QDialog > QFrame > QFrame
 }
 
 
-QWidget#side_menu_widget > QFrame
+QWidget#side_menu_widget QFrame
 {
     border-radius: 10px;
     background-color: rgb(230, 230, 230);
 }
-QWidget#side_menu_widget > QFrame > QPushButton
+QWidget#side_menu_widget QPushButton
 {
+
     text-align: left;
     icon-size: 24px;
 }
 
 
-QStackedWidget > QWidget > QFrame
+QStackedWidget QFrame
 {
-    border-radius: 10px;
-    background-color: rgb(230, 230, 230);
-}
-QStackedWidget > QWidget > QFrame > QFrame
-{
-    border-radius: 10px;
-    background-color: rgb(230, 230, 230);
     color: rgb(0, 0, 0);
+    border-radius: 10px;
+    background-color: rgb(230, 230, 230);
 }
 
 
@@ -54,6 +50,7 @@ QPushButton
     background-color: rgb(204, 204, 204);
     border-radius: 10px;
     font-weight: bold;
+    color: rgb(0, 0, 0);
 }
 QPushButton:hover:!pressed
 {
