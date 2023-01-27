@@ -31,7 +31,6 @@ class ParentWindow(QMainWindow):
     def change_widget(self, widget):
         if self.ui.top_item.currentWidget() == widget:
             return
-        widget.setup()
         try:
             widget.ui.items_list.doubleClicked.disconnect()
             widget.ui.items_list.doubleClicked.connect(lambda: self.open_info(widget.get_current_manga()))
@@ -41,6 +40,7 @@ class ParentWindow(QMainWindow):
             self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
         self.ui.top_item.addWidget(widget)
         self.ui.top_item.setCurrentWidget(widget)
+        widget.setup()
 
     @Slot(Manga)
     def open_info(self, manga: Manga):
