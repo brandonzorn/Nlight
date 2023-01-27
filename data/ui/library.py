@@ -41,14 +41,14 @@ class Ui_Form(object):
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
         self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 267, 312))
-        self.verticalLayout_2 = QVBoxLayout(self.scrollAreaWidgetContents)
-        self.verticalLayout_2.setSpacing(0)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.scroll_layout = QVBoxLayout(self.scrollAreaWidgetContents)
+        self.scroll_layout.setSpacing(0)
+        self.scroll_layout.setObjectName(u"scroll_layout")
+        self.scroll_layout.setContentsMargins(0, 0, 0, 0)
         self.content_grid = QGridLayout()
         self.content_grid.setObjectName(u"content_grid")
 
-        self.verticalLayout_2.addLayout(self.content_grid)
+        self.scroll_layout.addLayout(self.content_grid)
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 

@@ -1,12 +1,16 @@
+import webbrowser
+
 from PySide6.QtCore import Qt, QObject, Signal
 from PySide6.QtWidgets import QWidget
 from data.ui.manga_item import Ui_Form
+from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.items import Manga
 from nlightreader.utils import Worker, get_catalog, get_manga_preview
 
 
 class Signals(QObject):
     manga_clicked = Signal(Manga)
+    remove_from_lib = Signal(QWidget)
 
 
 class MangaItem(QWidget):
@@ -17,12 +21,27 @@ class MangaItem(QWidget):
         self.setStyleSheet(
             "QPushButton{padding: 0px;background-color: rgb(0, 133, 52, 255);"
             "border-radius: 0px;font-weight: bold;color: rgb(255, 255, 255, 255);}")
-        self.ui.pushButton.setMaximumSize(128, 228)
+        self.ui.pushButton.setMaximumSize(180, 360)
         self.manga = manga
         self.manga_pixmap = None
         self.signals = Signals()
+        self.ui.frame.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.pushButton.clicked.connect(lambda: self.signals.manga_clicked.emit(self.manga))
         self.set_image()
+
+    def on_context_menu(self, pos):
+        def remove_from_lib():
+            self.signals.remove_from_lib.emit(self)
+            self.deleteLater()
+
+        def open_in_browser():
+            webbrowser.open_new_tab(get_catalog(self.manga.catalog_id)().get_manga_url(self.manga))
+
+        menu = LibraryMangaMenu()
+        menu.set_mode(1)
+        menu.remove_from_lib.triggered.connect(remove_from_lib)
+        menu.open_in_browser.triggered.connect(open_in_browser)
+        menu.exec(self.ui.pushButton.mapToGlobal(pos))
 
     def resizeEvent(self, event):
         self.ui.pushButton.setMaximumSize(self.ui.frame.size())
@@ -36,8 +55,7 @@ class MangaItem(QWidget):
             self.ui.pushButton.setIconSize(pixmap.size())
 
     def set_image(self):
-        self.ui.name_lbl.setText(self.manga.name)
-        self.ui.sub_name_lbl.setText(self.manga.get_name())
+        self.ui.name_lbl.setText(self.manga.get_name())
 
         def get_image():
             catalog = get_catalog(self.manga.catalog_id)()

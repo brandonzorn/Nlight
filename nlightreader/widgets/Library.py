@@ -1,14 +1,10 @@
-import webbrowser
-
 from PySide6.QtCore import Slot, Qt, QObject, Signal
 from PySide6.QtWidgets import QGridLayout
 
 from data.ui.library import Ui_Form
 from nlightreader.consts import LibList
-from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.items import Manga, RequestForm
 from nlightreader.parsers import LocalLib
-from nlightreader.utils import get_catalog
 from nlightreader.widgets.BaseWidget import BaseWidget
 from nlightreader.widgets.MangaItem import MangaItem
 
@@ -23,11 +19,10 @@ class FormLibrary(BaseWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.mangas: list[Manga] = []
-        self.manga_items = []
+        self.manga_items: list[MangaItem] = []
         self.signals = Signals()
         self.request_params = RequestForm()
         self.catalog = LocalLib()
-        # self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.planned_btn.clicked.connect(lambda: self.change_list(LibList.planned))
         self.ui.reading_btn.clicked.connect(lambda: self.change_list(LibList.reading))
         self.ui.on_hold_btn.clicked.connect(lambda: self.change_list(LibList.on_hold))
@@ -35,29 +30,14 @@ class FormLibrary(BaseWidget):
         self.ui.dropped_btn.clicked.connect(lambda: self.change_list(LibList.dropped))
         self.ui.re_reading_btn.clicked.connect(lambda: self.change_list(LibList.re_reading))
 
-    def on_context_menu(self, pos):
-        def remove_from_lib():
-            self.catalog.db.rem_manga_library(selected_manga)
-            self.get_content()
-
-        def open_in_browser():
-            webbrowser.open_new_tab(get_catalog(selected_manga.catalog_id)().get_manga_url(selected_manga))
-
-        menu = LibraryMangaMenu()
-        selected_item = self.ui.items_list.itemAt(pos)
-        selected_manga = self.mangas[selected_item.listWidget().indexFromItem(selected_item).row()]
-        menu.set_mode(1)
-        menu.remove_from_lib.triggered.connect(remove_from_lib)
-        menu.open_in_browser.triggered.connect(open_in_browser)
-        menu.exec(self.ui.items_list.mapToGlobal(pos))
-
-    def resizeEvent(self, event) -> None:
+    def resizeEvent(self, event):
         cols = self.ui.content_grid.columnCount()
         cols_available = (self.ui.scrollArea.size().width() // 200) - 1
         state_1 = cols < cols_available
         state_2 = cols > cols_available
         if (state_1 or state_2) and len(self.manga_items) > cols_available:
-            self.update_content()
+            self.reset_manga_grid()
+            self.update_manga_grid()
         for item in self.manga_items:
             item.setMaximumWidth(self.ui.scrollArea.size().width() // (self.ui.scrollArea.size().width() // 200))
 
@@ -65,11 +45,25 @@ class FormLibrary(BaseWidget):
         self.get_content()
 
     def update_content(self):
+        self.mangas = self.catalog.search_manga(self.request_params)
         for item in self.manga_items:
-            item.setParent(None)
+            item.deleteLater()
+        self.manga_items.clear()
+        for manga in self.mangas:
+            item = self.setup_manga_item(manga)
+            self.manga_items.append(item)
+        self.reset_manga_grid()
+        self.update_manga_grid()
+
+    def reset_manga_grid(self):
+        for manga_item in self.manga_items:
+            self.ui.content_grid.removeWidget(manga_item)
         self.ui.content_grid.deleteLater()
         self.ui.content_grid = QGridLayout()
-        self.ui.verticalLayout_2.addLayout(self.ui.content_grid)
+        self.ui.content_grid.setVerticalSpacing(12)
+        self.ui.scroll_layout.addLayout(self.ui.content_grid)
+
+    def update_manga_grid(self):
         i, j = 0, 0
         for manga_item in self.manga_items:
             manga_item.setMaximumWidth(self.ui.scrollArea.size().width() // (self.ui.scrollArea.size().width() // 200))
@@ -79,18 +73,20 @@ class FormLibrary(BaseWidget):
                 j = 0
                 i += 1
 
+    def delete_manga_item(self, manga_item: MangaItem):
+        self.catalog.db.rem_manga_library(manga_item.manga)
+        self.get_content()
+
+    def setup_manga_item(self, manga: Manga):
+        item = MangaItem(manga)
+        item.signals.manga_clicked.connect(lambda x: self.signals.manga_open.emit(x))
+        item.signals.remove_from_lib.connect(lambda x: self.delete_manga_item(x))
+        return item
+
     @Slot(LibList)
     def change_list(self, lst: LibList):
         self.request_params.lib_list = lst
         self.get_content()
 
     def get_content(self):
-        self.mangas = self.catalog.search_manga(self.request_params)
-        for item in self.manga_items:
-            item.deleteLater()
-        self.manga_items.clear()
-        for manga in self.mangas:
-            item = MangaItem(manga)
-            item.signals.manga_clicked.connect(lambda x: self.signals.manga_open.emit(x))
-            self.manga_items.append(item)
         self.update_content()
