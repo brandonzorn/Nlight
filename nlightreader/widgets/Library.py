@@ -38,8 +38,6 @@ class FormLibrary(BaseWidget):
         if (state_1 or state_2) and len(self.manga_items) > cols_available:
             self.reset_manga_grid()
             self.update_manga_grid()
-        for item in self.manga_items:
-            item.setMaximumWidth(self.ui.scrollArea.size().width() // (self.ui.scrollArea.size().width() // 200))
 
     def setup(self):
         self.get_content()
