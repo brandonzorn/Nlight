@@ -55,7 +55,7 @@
            <height>312</height>
           </rect>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
+         <layout class="QVBoxLayout" name="scroll_layout">
           <property name="spacing">
            <number>0</number>
           </property>

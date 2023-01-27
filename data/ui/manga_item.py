@@ -16,7 +16,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QLabel, QPushButton,
-    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
+    QSizePolicy, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -33,6 +33,7 @@ class Ui_Form(object):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.frame = QFrame(Form)
         self.frame.setObjectName(u"frame")
+        self.frame.setContextMenuPolicy(Qt.CustomContextMenu)
         self.frame.setStyleSheet(u"QFrame\n"
 "{\n"
 "	background-color: rgb(99, 99, 99);\n"
@@ -48,30 +49,16 @@ class Ui_Form(object):
         self.pushButton.setCursor(QCursor(Qt.PointingHandCursor))
         self.pushButton.setStyleSheet(u"")
 
-        self.verticalLayout_2.addWidget(self.pushButton)
-
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.verticalLayout_2.addItem(self.verticalSpacer)
+        self.verticalLayout_2.addWidget(self.pushButton, 0, Qt.AlignHCenter|Qt.AlignTop)
 
         self.name_lbl = QLabel(self.frame)
         self.name_lbl.setObjectName(u"name_lbl")
         self.name_lbl.setWordWrap(True)
 
-        self.verticalLayout_2.addWidget(self.name_lbl)
-
-        self.sub_name_lbl = QLabel(self.frame)
-        self.sub_name_lbl.setObjectName(u"sub_name_lbl")
-        self.sub_name_lbl.setWordWrap(True)
-
-        self.verticalLayout_2.addWidget(self.sub_name_lbl)
+        self.verticalLayout_2.addWidget(self.name_lbl, 0, Qt.AlignBottom)
 
 
         self.verticalLayout.addWidget(self.frame)
-
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Preferred)
-
-        self.verticalLayout.addItem(self.verticalSpacer_2)
 
 
         self.retranslateUi(Form)
@@ -82,7 +69,6 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.pushButton.setText("")
-        self.name_lbl.setText(QCoreApplication.translate("Form", u"TextLabel", None))
-        self.sub_name_lbl.setText(QCoreApplication.translate("Form", u"TextLabel", None))
+        self.name_lbl.setText("")
     # retranslateUi
 
