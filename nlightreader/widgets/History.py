@@ -21,8 +21,8 @@ class FormHistory(BaseWidget):
 
     def on_context_menu(self, pos):
         def set_as_read():
-            self.db.add_history_note(selected_note.manga, selected_note.chapter, True)
-            selected_item.setBackground("GREEN")
+            self.db.add_history_note(HistoryNote(selected_note.chapter, selected_note.manga, True))
+            selected_item.setBackground(ItemsColors.READ)
 
         def remove_all():
             self.db.del_history_notes(self.notes[selected_item.listWidget().indexFromItem(selected_item).row()].manga)
