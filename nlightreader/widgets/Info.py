@@ -16,7 +16,7 @@ class FormInfo(QWidget):
 
     opened_related_manga = Signal(Manga)
 
-    def __init__(self, manga: Manga):
+    def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
@@ -31,7 +31,7 @@ class FormInfo(QWidget):
         self.ui.back_btn.clicked.connect(self.close_widget)
         self.db: Database = Database()
         self.catalog = None
-        self.manga = manga
+        self.manga = None
         self.related_mangas: list[Manga] = []
         self.related_characters: list[Character] = []
         self.chapters: list[Chapter] = []
@@ -39,7 +39,6 @@ class FormInfo(QWidget):
         self.reader_window = None
         self.rate_window = FormRate()
         self.character_window = None
-        self.setup()
 
     def on_context_menu(self, pos):
         def set_as_read_all():
@@ -83,9 +82,10 @@ class FormInfo(QWidget):
     def get_current_manga(self):
         return self.catalog.get_manga(self.related_mangas[self.ui.related_list.currentIndex().row()])
 
-    def setup(self):
+    def setup(self, manga):
+        self.catalog = get_catalog(manga.catalog_id)()
+        self.manga = self.catalog.get_manga(manga)
         self.db.add_manga(self.manga)
-        self.catalog = get_catalog(self.manga.catalog_id)()
         self.ui.lib_frame.setVisible(not self.catalog.is_primary)
         self.ui.shikimori_frame.setVisible(self.catalog.is_primary)
         self.set_info()

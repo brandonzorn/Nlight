@@ -1,17 +1,20 @@
 import time
-import webbrowser
 
-from PySide6.QtCore import Slot, QMutex
-from PySide6.QtWidgets import QListWidgetItem
+from PySide6.QtCore import Slot, QMutex, QObject, Signal, Qt
+from PySide6.QtWidgets import QGridLayout
 
 from data.ui.shikimori import Ui_Form
 from nlightreader.consts import LibList
-from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.dialogs import FormAuth
 from nlightreader.items import Manga, RequestForm, User
 from nlightreader.parsers import ShikimoriLib
-from nlightreader.utils import Database, get_catalog, translate, Worker
+from nlightreader.utils import Database, translate, Worker
 from nlightreader.widgets.BaseWidget import BaseWidget
+from nlightreader.widgets.MangaItem import MangaItem
+
+
+class Signals(QObject):
+    manga_open = Signal(Manga)
 
 
 class FormShikimori(BaseWidget):
@@ -20,7 +23,9 @@ class FormShikimori(BaseWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.mangas: list[Manga] = []
+        self.manga_items = []
         self.catalog = ShikimoriLib()
+        self.signals = Signals()
         self.Form_auth = FormAuth(self.catalog)
         self.request_params = RequestForm()
         self.db: Database = Database()
@@ -35,24 +40,55 @@ class FormShikimori(BaseWidget):
         self.ui.prev_btn.clicked.connect(self.turn_page_prev)
         self.ui.search_btn.clicked.connect(self.search)
         self.ui.auth_btn.clicked.connect(self.authorize)
-        self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
         self.Form_auth.accepted.connect(self.auth_accept)
         self.update_user_info()
-        self.get_content()
-
-    def on_context_menu(self, pos):
-        def open_in_browser():
-            webbrowser.open_new_tab(get_catalog(selected_manga.catalog_id)().get_manga_url(selected_manga))
-
-        menu = LibraryMangaMenu()
-        selected_item = self.ui.items_list.itemAt(pos)
-        selected_manga = self.mangas[selected_item.listWidget().indexFromItem(selected_item).row()]
-        menu.set_mode(2)
-        menu.open_in_browser.triggered.connect(open_in_browser)
-        menu.exec(self.ui.items_list.mapToGlobal(pos))
 
     def setup(self):
         self.update_content()
+
+    def resizeEvent(self, event):
+        cols = self.ui.content_grid.columnCount()
+        cols_available = (self.ui.scrollArea.size().width() // 200) - 1
+        state_1 = cols < cols_available
+        state_2 = cols > cols_available
+        if (state_1 or state_2) and len(self.manga_items) > cols_available:
+            self.reset_manga_grid()
+            self.update_manga_grid()
+        event.accept()
+
+    def update_content(self):
+        self.mangas = self.catalog.search_manga(self.request_params)
+        for item in self.manga_items:
+            item.deleteLater()
+        self.manga_items.clear()
+        for manga in self.mangas:
+            item = self.setup_manga_item(manga)
+            self.manga_items.append(item)
+        self.reset_manga_grid()
+        self.update_manga_grid()
+
+    def reset_manga_grid(self):
+        for manga_item in self.manga_items:
+            self.ui.content_grid.removeWidget(manga_item)
+        self.ui.content_grid.deleteLater()
+        self.ui.content_grid = QGridLayout()
+        self.ui.content_grid.setVerticalSpacing(12)
+        self.ui.scroll_layout.addLayout(self.ui.content_grid)
+
+    def update_manga_grid(self):
+        i, j = 0, 0
+        for manga_item in self.manga_items:
+            manga_item.set_size(self.ui.scrollArea.size().width())
+            self.ui.content_grid.addWidget(manga_item, i, j, Qt.AlignmentFlag.AlignLeft)
+            j += 1
+            if j == (self.ui.scrollArea.size().width() // 200) - 1:
+                j = 0
+                i += 1
+
+    def setup_manga_item(self, manga: Manga):
+        item = MangaItem(manga)
+        item.signals.manga_clicked.connect(lambda x: self.signals.manga_open.emit(x))
+        return item
 
     def update_user_info(self):
         whoami = self.get_whoami()
@@ -61,17 +97,8 @@ class FormShikimori(BaseWidget):
         else:
             self.ui.auth_btn.setText(translate("Other", "Sign in"))
 
-    def update_content(self):
-        self.ui.items_list.clear()
-        for manga in self.mangas:
-            item = QListWidgetItem(manga.get_name())
-            self.ui.items_list.addItem(item)
-
     def update_page(self):
         self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
-
-    def get_current_manga(self):
-        return self.catalog.get_manga(self.mangas[self.ui.items_list.currentIndex().row()])
 
     @Slot()
     def auth_accept(self):
@@ -108,7 +135,7 @@ class FormShikimori(BaseWidget):
     def search(self):
         self.request_params.page = 1
         self.request_params.search = self.ui.title_line.text()
-        Worker(self.get_content).start()
+        self.get_content()
 
     def change_list(self, lib_list: LibList):
         self.request_params.lib_list = lib_list

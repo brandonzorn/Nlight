@@ -22,7 +22,9 @@ class ParentWindow(QMainWindow):
         self.ui.btn_shikimori.clicked.connect(lambda: self.change_widget(self.Form_shikimori))
         self.ui.btn_history.clicked.connect(lambda: self.change_widget(self.Form_history))
 
+        self.Form_facial.signals.manga_open.connect(lambda x: self.open_info(x))
         self.Form_library.signals.manga_open.connect(lambda x: self.open_info(x))
+        self.Form_shikimori.signals.manga_open.connect(lambda x: self.open_info(x))
 
         self.ui.top_item.currentChanged.connect(self.widgets_checker)
 
@@ -44,7 +46,8 @@ class ParentWindow(QMainWindow):
 
     @Slot(Manga)
     def open_info(self, manga: Manga):
-        info = FormInfo(manga)
+        info = FormInfo()
+        info.setup(manga)
         info.opened_related_manga.connect(lambda x: self.open_info(x))
         self.ui.top_item.addWidget(info)
         self.ui.top_item.setCurrentWidget(info)
