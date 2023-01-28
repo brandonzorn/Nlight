@@ -1,16 +1,18 @@
 import time
-import webbrowser
 
-from PySide6.QtCore import Slot, QMutex
-from PySide6.QtWidgets import QListWidgetItem, QCheckBox, QRadioButton
+from PySide6.QtCore import Slot, QMutex, QObject, Signal, Qt
+from PySide6.QtWidgets import QCheckBox, QRadioButton, QGridLayout
 
 from data.ui.facial import Ui_Form
-from nlightreader.consts import ItemsColors
-from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.dialogs import FormGenres
-from nlightreader.items import RequestForm
-from nlightreader.utils import Database, USER_CATALOGS, get_catalog, translate, Worker
+from nlightreader.items import RequestForm, Manga
+from nlightreader.utils import Database, USER_CATALOGS, translate, Worker
 from nlightreader.widgets.BaseWidget import BaseWidget
+from nlightreader.widgets.MangaItem import MangaItem
+
+
+class Signals(QObject):
+    manga_open = Signal(Manga)
 
 
 class FormFacial(BaseWidget):
@@ -28,10 +30,12 @@ class FormFacial(BaseWidget):
             not self.ui.catalogs_list.isVisible()))
         self.ui.catalogs_list.doubleClicked.connect(
             lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row()))
-        self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
+        self.ui.close_filters_btn.clicked.connect(self.change_filters_visible)
         self.mangas = []
+        self.manga_items = []
         self.order_items = {}
         self.kind_items = {}
+        self.signals = Signals()
         self.setup_catalogs()
         self.ui.catalogs_frame.hide()
         self.Form_genres = FormGenres()
@@ -41,49 +45,62 @@ class FormFacial(BaseWidget):
         self.catalog = None
         self.change_catalog(0)
 
-    def on_context_menu(self, pos):
-        def add_to_lib():
-            manga = self.catalog.get_manga(selected_manga)
-            self.db.add_manga(manga)
-            self.db.add_manga_library(manga)
-            selected_item.setBackground(ItemsColors.IN_LIBRARY)
-
-        def remove_from_lib():
-            self.db.rem_manga_library(selected_manga)
-            selected_item.setBackground(ItemsColors.EMPTY)
-
-        def open_in_browser():
-            webbrowser.open_new_tab(get_catalog(selected_manga.catalog_id)().get_manga_url(selected_manga))
-
-        menu = LibraryMangaMenu()
-        selected_item = self.ui.items_list.itemAt(pos)
-        selected_manga = self.mangas[selected_item.listWidget().indexFromItem(selected_item).row()]
-        if self.db.check_manga_library(selected_manga):
-            menu.set_mode(1)
-        else:
-            menu.set_mode(0)
-        menu.add_to_lib.triggered.connect(add_to_lib)
-        menu.remove_from_lib.triggered.connect(remove_from_lib)
-        menu.open_in_browser.triggered.connect(open_in_browser)
-        menu.exec(self.ui.items_list.mapToGlobal(pos))
-
     def setup(self):
-        self.update_content()
+        self.get_content()
+
+    def resizeEvent(self, event):
+        cols = self.ui.content_grid.columnCount()
+        cols_available = (self.ui.scrollArea.size().width() // 200) - 1
+        state_1 = cols < cols_available
+        state_2 = cols > cols_available
+        if (state_1 or state_2) and len(self.manga_items) > cols_available:
+            self.reset_manga_grid()
+            self.update_manga_grid()
+        event.accept()
 
     def update_content(self):
-        self.ui.items_list.clear()
-        for i in self.mangas:
-            item = QListWidgetItem(i.get_name())
-            if self.db.check_manga_library(i):
-                item.setBackground(ItemsColors.IN_LIBRARY)
-            self.ui.items_list.addItem(item)
+        for item in self.manga_items:
+            item.deleteLater()
+        self.manga_items.clear()
+        for manga in self.mangas:
+            item = self.setup_manga_item(manga)
+            self.manga_items.append(item)
+        self.reset_manga_grid()
+        self.update_manga_grid()
+
+    def reset_manga_grid(self):
+        for manga_item in self.manga_items:
+            self.ui.content_grid.removeWidget(manga_item)
+        self.ui.content_grid.deleteLater()
+        self.ui.content_grid = QGridLayout()
+        self.ui.content_grid.setVerticalSpacing(12)
+        self.ui.scroll_layout.addLayout(self.ui.content_grid)
+
+    def update_manga_grid(self):
+        i, j = 0, 0
+        for manga_item in self.manga_items:
+            manga_item.set_size(self.ui.scrollArea.size().width())
+            self.ui.content_grid.addWidget(manga_item, i, j, Qt.AlignmentFlag.AlignLeft)
+            j += 1
+            if j == (self.ui.scrollArea.size().width() // 200) - 1:
+                j = 0
+                i += 1
+
+    def setup_manga_item(self, manga: Manga):
+        item = MangaItem(manga)
+        item.signals.manga_clicked.connect(lambda x: self.signals.manga_open.emit(x))
+        return item
 
     def setup_catalogs(self):
         self.ui.catalogs_list.clear()
         self.ui.catalogs_list.addItems([i.catalog_name for i in USER_CATALOGS])
 
-    def get_current_manga(self):
-        return self.catalog.get_manga(self.mangas[self.ui.items_list.currentIndex().row()])
+    def change_filters_visible(self):
+        if self.ui.close_filters_btn.isChecked():
+            self.ui.filters_widget.setVisible(True)
+        else:
+            self.ui.filters_widget.setVisible(False)
+            self.ui.catalogs_frame.setVisible(False)
 
     def change_catalog(self, index: int):
         catalog = USER_CATALOGS[index]

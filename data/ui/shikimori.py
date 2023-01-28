@@ -15,8 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QLineEdit, QListWidget, QListWidgetItem, QPushButton,
+from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
+    QLabel, QLineEdit, QPushButton, QScrollArea,
     QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 import nlight_res_rc
 
@@ -24,7 +24,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(444, 336)
+        Form.resize(444, 326)
         Form.setStyleSheet(u"")
         Form.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.horizontalLayout_4 = QHBoxLayout(Form)
@@ -38,12 +38,24 @@ class Ui_Form(object):
         self.items_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_3 = QVBoxLayout(self.items_frame)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.items_list = QListWidget(self.items_frame)
-        self.items_list.setObjectName(u"items_list")
-        self.items_list.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.items_list.setWordWrap(True)
+        self.scrollArea = QScrollArea(self.items_frame)
+        self.scrollArea.setObjectName(u"scrollArea")
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 319, 250))
+        self.scroll_layout = QVBoxLayout(self.scrollAreaWidgetContents)
+        self.scroll_layout.setSpacing(0)
+        self.scroll_layout.setObjectName(u"scroll_layout")
+        self.scroll_layout.setContentsMargins(0, 0, 0, 0)
+        self.content_grid = QGridLayout()
+        self.content_grid.setObjectName(u"content_grid")
 
-        self.verticalLayout_3.addWidget(self.items_list)
+        self.scroll_layout.addLayout(self.content_grid)
+
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+
+        self.verticalLayout_3.addWidget(self.scrollArea)
 
 
         self.search.addWidget(self.items_frame)

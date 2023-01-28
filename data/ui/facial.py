@@ -17,8 +17,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
     QLabel, QLineEdit, QListWidget, QListWidgetItem,
-    QPushButton, QSizePolicy, QSpacerItem, QVBoxLayout,
-    QWidget)
+    QPushButton, QScrollArea, QSizePolicy, QSpacerItem,
+    QVBoxLayout, QWidget)
 import nlight_res_rc
 
 class Ui_Form(object):
@@ -39,13 +39,24 @@ class Ui_Form(object):
         self.items_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout = QVBoxLayout(self.items_frame)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.items_list = QListWidget(self.items_frame)
-        self.items_list.setObjectName(u"items_list")
-        self.items_list.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.items_list.setProperty("isWrapping", False)
-        self.items_list.setWordWrap(True)
+        self.scrollArea = QScrollArea(self.items_frame)
+        self.scrollArea.setObjectName(u"scrollArea")
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 281, 418))
+        self.scroll_layout = QVBoxLayout(self.scrollAreaWidgetContents)
+        self.scroll_layout.setSpacing(0)
+        self.scroll_layout.setObjectName(u"scroll_layout")
+        self.scroll_layout.setContentsMargins(0, 0, 0, 0)
+        self.content_grid = QGridLayout()
+        self.content_grid.setObjectName(u"content_grid")
 
-        self.verticalLayout.addWidget(self.items_list)
+        self.scroll_layout.addLayout(self.content_grid)
+
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+
+        self.verticalLayout.addWidget(self.scrollArea)
 
 
         self.search.addWidget(self.items_frame)
@@ -79,6 +90,14 @@ class Ui_Form(object):
 
 
         self.horizontalLayout_3.addWidget(self.text_frame)
+
+        self.close_filters_btn = QPushButton(self.search_frame)
+        self.close_filters_btn.setObjectName(u"close_filters_btn")
+        self.close_filters_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.close_filters_btn.setCheckable(True)
+        self.close_filters_btn.setChecked(True)
+
+        self.horizontalLayout_3.addWidget(self.close_filters_btn)
 
         self.page_frame = QFrame(self.search_frame)
         self.page_frame.setObjectName(u"page_frame")
@@ -119,33 +138,46 @@ class Ui_Form(object):
 
         self.horizontalLayout_5.addLayout(self.search)
 
-        self.catalogs_frame = QFrame(Form)
-        self.catalogs_frame.setObjectName(u"catalogs_frame")
-        sizePolicy = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Minimum)
+        self.all_filters = QWidget(Form)
+        self.all_filters.setObjectName(u"all_filters")
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.catalogs_frame.sizePolicy().hasHeightForWidth())
-        self.catalogs_frame.setSizePolicy(sizePolicy)
+        sizePolicy.setHeightForWidth(self.all_filters.sizePolicy().hasHeightForWidth())
+        self.all_filters.setSizePolicy(sizePolicy)
+        self.horizontalLayout_6 = QHBoxLayout(self.all_filters)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.catalogs_frame = QFrame(self.all_filters)
+        self.catalogs_frame.setObjectName(u"catalogs_frame")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Minimum)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.catalogs_frame.sizePolicy().hasHeightForWidth())
+        self.catalogs_frame.setSizePolicy(sizePolicy1)
         self.catalogs_frame.setFrameShape(QFrame.StyledPanel)
         self.catalogs_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_3 = QVBoxLayout(self.catalogs_frame)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.catalogs_list = QListWidget(self.catalogs_frame)
         self.catalogs_list.setObjectName(u"catalogs_list")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.catalogs_list.sizePolicy().hasHeightForWidth())
-        self.catalogs_list.setSizePolicy(sizePolicy1)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.catalogs_list.sizePolicy().hasHeightForWidth())
+        self.catalogs_list.setSizePolicy(sizePolicy2)
 
         self.verticalLayout_3.addWidget(self.catalogs_list)
 
 
-        self.horizontalLayout_5.addWidget(self.catalogs_frame)
+        self.horizontalLayout_6.addWidget(self.catalogs_frame)
 
-        self.filters = QVBoxLayout()
-        self.filters.setObjectName(u"filters")
-        self.orders_frame = QFrame(Form)
+        self.filters_widget = QWidget(self.all_filters)
+        self.filters_widget.setObjectName(u"filters_widget")
+        self.verticalLayout_2 = QVBoxLayout(self.filters_widget)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.orders_frame = QFrame(self.filters_widget)
         self.orders_frame.setObjectName(u"orders_frame")
         self.orders_frame.setStyleSheet(u"")
         self.orders_frame.setFrameShape(QFrame.StyledPanel)
@@ -163,9 +195,9 @@ class Ui_Form(object):
         self.verticalLayout_5.addLayout(self.orders_grid)
 
 
-        self.filters.addWidget(self.orders_frame)
+        self.verticalLayout_2.addWidget(self.orders_frame)
 
-        self.kinds_frame = QFrame(Form)
+        self.kinds_frame = QFrame(self.filters_widget)
         self.kinds_frame.setObjectName(u"kinds_frame")
         self.kinds_frame.setStyleSheet(u"")
         self.kinds_frame.setFrameShape(QFrame.StyledPanel)
@@ -183,9 +215,9 @@ class Ui_Form(object):
         self.verticalLayout_4.addLayout(self.kinds_grid)
 
 
-        self.filters.addWidget(self.kinds_frame)
+        self.verticalLayout_2.addWidget(self.kinds_frame)
 
-        self.genres_frame = QFrame(Form)
+        self.genres_frame = QFrame(self.filters_widget)
         self.genres_frame.setObjectName(u"genres_frame")
         self.genres_frame.setFrameShape(QFrame.StyledPanel)
         self.genres_frame.setFrameShadow(QFrame.Raised)
@@ -198,9 +230,9 @@ class Ui_Form(object):
         self.verticalLayout_6.addWidget(self.genres_btn)
 
 
-        self.filters.addWidget(self.genres_frame)
+        self.verticalLayout_2.addWidget(self.genres_frame)
 
-        self.filter_catalog_frame = QFrame(Form)
+        self.filter_catalog_frame = QFrame(self.filters_widget)
         self.filter_catalog_frame.setObjectName(u"filter_catalog_frame")
         self.filter_catalog_frame.setFrameShape(QFrame.StyledPanel)
         self.filter_catalog_frame.setFrameShadow(QFrame.Raised)
@@ -213,13 +245,13 @@ class Ui_Form(object):
         self.verticalLayout_7.addWidget(self.catalogs_btn)
 
 
-        self.filters.addWidget(self.filter_catalog_frame)
+        self.verticalLayout_2.addWidget(self.filter_catalog_frame)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.filters.addItem(self.verticalSpacer)
+        self.verticalLayout_2.addItem(self.verticalSpacer)
 
-        self.filter_actions_frame = QFrame(Form)
+        self.filter_actions_frame = QFrame(self.filters_widget)
         self.filter_actions_frame.setObjectName(u"filter_actions_frame")
         self.filter_actions_frame.setFrameShape(QFrame.StyledPanel)
         self.filter_actions_frame.setFrameShadow(QFrame.Raised)
@@ -238,10 +270,13 @@ class Ui_Form(object):
         self.horizontalLayout_4.addWidget(self.apply_btn)
 
 
-        self.filters.addWidget(self.filter_actions_frame, 0, Qt.AlignBottom)
+        self.verticalLayout_2.addWidget(self.filter_actions_frame)
 
 
-        self.horizontalLayout_5.addLayout(self.filters)
+        self.horizontalLayout_6.addWidget(self.filters_widget)
+
+
+        self.horizontalLayout_5.addWidget(self.all_filters)
 
 
         self.retranslateUi(Form)
@@ -252,8 +287,9 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.search_btn.setText("")
+        self.close_filters_btn.setText(QCoreApplication.translate("Form", u"Filters", None))
         self.prev_btn.setText("")
-        self.page_label.setText(QCoreApplication.translate("Form", u"\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 1", None))
+        self.page_label.setText(QCoreApplication.translate("Form", u"Page 1", None))
         self.next_btn.setText("")
         self.label.setText(QCoreApplication.translate("Form", u"Order", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"Kind", None))
