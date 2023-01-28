@@ -27,9 +27,12 @@ class MangaItem(QWidget):
         self.ui.frame.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.pushButton.clicked.connect(lambda: self.signals.manga_clicked.emit(self.manga))
         self.ui.name_lbl.setText(self.manga.get_name())
-        self.set_image()
 
     def on_context_menu(self, pos):
+        def add_to_lib():
+            self.db.add_manga(manga)
+            self.db.add_manga_library(manga)
+
         def remove_from_lib():
             self.signals.remove_from_lib.emit(self)
             self.deleteLater()
@@ -52,15 +55,14 @@ class MangaItem(QWidget):
         self.update_image()
 
     def update_image(self):
-        if self.manga_pixmap:
+        def get_image():
+            if not self.manga_pixmap:
+                catalog = get_catalog(self.manga.catalog_id)()
+                self.manga_pixmap = get_manga_preview(self.manga, catalog)
+
+        def set_image():
             pixmap = self.manga_pixmap.scaled(self.ui.pushButton.maximumSize(), Qt.AspectRatioMode.KeepAspectRatio,
                                               Qt.TransformationMode.SmoothTransformation)
             self.ui.pushButton.setIcon(pixmap)
             self.ui.pushButton.setIconSize(pixmap.size())
-
-    def set_image(self):
-        def get_image():
-            catalog = get_catalog(self.manga.catalog_id)()
-            self.manga_pixmap = get_manga_preview(self.manga, catalog)
-
-        Worker(target=get_image, callback=self.update_image).start()
+        Worker(target=get_image, callback=set_image).start()
