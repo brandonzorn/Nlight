@@ -3,6 +3,11 @@ QMainWindow
     color: rgb(255, 255, 255);
     background-color: rgb(32, 32, 32);
 }
+QMainWindow#ReaderWindow QFrame, QWidget#scrollAreaWidgetContents
+{
+    border-radius: 10px;
+    background-color: rgb(45, 45, 45);
+}
 
 
 QDialog
@@ -10,12 +15,7 @@ QDialog
     color: rgb(255, 255, 255);
     background-color: rgb(32, 32, 32);
 }
-QDialog > QFrame
-{
-    border-radius: 10px;
-    background-color: rgb(45, 45, 45);
-}
-QDialog > QFrame > QFrame
+QDialog QFrame
 {
     color: rgb(255, 255, 255);
     border-radius: 10px;
@@ -23,40 +23,35 @@ QDialog > QFrame > QFrame
 }
 
 
-QStackedWidget > QWidget > QFrame
+QWidget#side_menu_widget QFrame
 {
     border-radius: 10px;
     background-color: rgb(45, 45, 45);
 }
-QStackedWidget > QWidget > QFrame > QFrame
-{
-    border-radius: 10px;
-    background-color: rgb(45, 45, 45);
-    color: rgb(255, 255, 255);
-}
-
-
-QWidget#side_menu_widget > QFrame
-{
-    border-radius: 10px;
-    background-color: rgb(45, 45, 45);
-}
-QWidget#side_menu_widget > QFrame > QPushButton
+QWidget#side_menu_widget QPushButton
 {
     background: transparent;
     text-align: left;
     icon-size: 24px;
 }
-QWidget#side_menu_widget > QFrame > QPushButton:hover:!pressed
+QWidget#side_menu_widget QPushButton:hover:!pressed
 {
     border: 0px;
     border-left: 2px solid green;
     background-color: gray;
 }
-QWidget#side_menu_widget > QFrame > QPushButton:checked
+QWidget#side_menu_widget QPushButton:checked
 {
     border: 0px;
     border-left: 2px solid green;
+}
+
+
+QStackedWidget QFrame
+{
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    background-color: rgb(45, 45, 45);
 }
 
 
