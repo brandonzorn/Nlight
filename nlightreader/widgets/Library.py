@@ -64,7 +64,7 @@ class FormLibrary(BaseWidget):
     def update_manga_grid(self):
         i, j = 0, 0
         for manga_item in self.manga_items:
-            manga_item.setMaximumWidth(self.ui.scrollArea.size().width() // (self.ui.scrollArea.size().width() // 200))
+            manga_item.set_size(self.ui.scrollArea.size().width())
             self.ui.content_grid.addWidget(manga_item, i, j, Qt.AlignmentFlag.AlignLeft)
             j += 1
             if j == (self.ui.scrollArea.size().width() // 200) - 1:
