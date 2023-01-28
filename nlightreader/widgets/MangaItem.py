@@ -21,12 +21,12 @@ class MangaItem(QWidget):
         self.setStyleSheet(
             "QPushButton{padding: 0px;background-color: rgb(0, 133, 52, 255);"
             "border-radius: 0px;font-weight: bold;color: rgb(255, 255, 255, 255);}")
-        self.ui.pushButton.setMaximumSize(180, 360)
         self.manga = manga
         self.manga_pixmap = None
         self.signals = Signals()
         self.ui.frame.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.pushButton.clicked.connect(lambda: self.signals.manga_clicked.emit(self.manga))
+        self.ui.name_lbl.setText(self.manga.get_name())
         self.set_image()
 
     def on_context_menu(self, pos):
@@ -41,10 +41,14 @@ class MangaItem(QWidget):
         menu.set_mode(1)
         menu.remove_from_lib.triggered.connect(remove_from_lib)
         menu.open_in_browser.triggered.connect(open_in_browser)
-        menu.exec(self.ui.pushButton.mapToGlobal(pos))
+        menu.exec(self.ui.frame.mapToGlobal(pos))
 
-    def resizeEvent(self, event):
-        self.ui.pushButton.setMaximumSize(self.ui.frame.size())
+    def set_size(self, area_w: int):
+        if area_w < 200:
+            return
+        self.setMaximumWidth(area_w // (area_w // 200))
+        self.setFixedSize(self.maximumWidth(), self.maximumWidth() * 2)
+        self.ui.pushButton.setMaximumSize(self.maximumWidth(), self.maximumWidth() * 2)
         self.update_image()
 
     def update_image(self):
@@ -55,8 +59,6 @@ class MangaItem(QWidget):
             self.ui.pushButton.setIconSize(pixmap.size())
 
     def set_image(self):
-        self.ui.name_lbl.setText(self.manga.get_name())
-
         def get_image():
             catalog = get_catalog(self.manga.catalog_id)()
             self.manga_pixmap = get_manga_preview(self.manga, catalog)
