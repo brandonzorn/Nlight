@@ -19,8 +19,8 @@ class MangaItem(QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.setStyleSheet(
-            "QPushButton{padding: 0px;background-color: rgb(0, 133, 52, 255);"
-            "border-radius: 0px;font-weight: bold;color: rgb(255, 255, 255, 255);}")
+            "QPushButton{padding: 0px;background-color: rgba(0, 133, 52, 255);"
+            "border-radius: 0px;font-weight: bold;color: rgba(255, 255, 255, 255);}")
         self.manga = manga
         self.manga_pixmap = None
         self.signals = Signals()
