@@ -43,9 +43,6 @@ class FormShikimori(BaseWidget):
         self.ui.scrollAreaWidgetContents.resizeEvent = self.scroll_resize_event
         self.update_user_info()
 
-    def setup(self):
-        self.get_content()
-
     def scroll_resize_event(self, event):
         if event.oldSize().width() != event.size().width():
             self.reset_manga_grid()

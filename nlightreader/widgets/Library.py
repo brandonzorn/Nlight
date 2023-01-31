@@ -37,9 +37,6 @@ class FormLibrary(BaseWidget):
             self.update_manga_grid()
         event.accept()
 
-    def setup(self):
-        self.get_content()
-
     def update_content(self):
         self.mangas = self.catalog.search_manga(self.request_params)
         for item in self.manga_items:
