@@ -48,6 +48,10 @@
         <translation>Застосувати</translation>
     </message>
     <message>
+        <source>Filters</source>
+        <translation>Фільтри</translation>
+    </message>
+    <message>
         <source>Genres list</source>
         <translation>Список жанрів</translation>
     </message>
