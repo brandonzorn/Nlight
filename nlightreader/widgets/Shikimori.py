@@ -40,23 +40,19 @@ class FormShikimori(BaseWidget):
         self.ui.search_btn.clicked.connect(self.search)
         self.ui.auth_btn.clicked.connect(self.authorize)
         self.Form_auth.accepted.connect(self.auth_accept)
+        self.ui.scrollAreaWidgetContents.resizeEvent = self.scroll_resize_event
         self.update_user_info()
 
     def setup(self):
-        self.update_content()
+        self.get_content()
 
-    def resizeEvent(self, event):
-        cols = self.ui.content_grid.columnCount()
-        cols_available = (self.ui.scrollArea.size().width() // 200) - 1
-        state_1 = cols < cols_available
-        state_2 = cols > cols_available
-        if (state_1 or state_2) and len(self.manga_items) > cols_available:
+    def scroll_resize_event(self, event):
+        if event.oldSize().width() != event.size().width():
             self.reset_manga_grid()
             self.update_manga_grid()
         event.accept()
 
     def update_content(self):
-        self.mangas = self.catalog.search_manga(self.request_params)
         for item in self.manga_items:
             item.deleteLater()
         self.manga_items.clear()
@@ -75,12 +71,13 @@ class FormShikimori(BaseWidget):
         self.ui.scroll_layout.addLayout(self.ui.content_grid)
 
     def update_manga_grid(self):
+        col_count = 6
         i, j = 0, 0
         for manga_item in self.manga_items:
-            manga_item.set_size(self.ui.scrollArea.size().width())
+            manga_item.set_size(self.ui.scrollArea.size().width() // col_count)
             self.ui.content_grid.addWidget(manga_item, i, j, Qt.AlignmentFlag.AlignLeft)
             j += 1
-            if j == (self.ui.scrollArea.size().width() // 200) - 1:
+            if j == col_count - 1:
                 j = 0
                 i += 1
 

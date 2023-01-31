@@ -51,10 +51,8 @@ class MangaItem(QWidget):
         menu.open_in_browser.triggered.connect(open_in_browser)
         menu.exec(self.ui.frame.mapToGlobal(pos))
 
-    def set_size(self, area_w: int):
-        if area_w < 200:
-            return
-        self.setMaximumWidth(area_w // (area_w // 200))
+    def set_size(self, size: int):
+        self.setMaximumWidth(size)
         self.setFixedSize(self.maximumWidth(), self.maximumWidth() * 2)
         self.ui.image.setMaximumSize(self.maximumWidth(), self.maximumWidth() * 2)
         self.update_image()
