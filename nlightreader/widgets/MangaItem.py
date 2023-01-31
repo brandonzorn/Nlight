@@ -3,7 +3,7 @@ import webbrowser
 from PySide6.QtCore import Qt, QObject, Signal
 from PySide6.QtWidgets import QWidget
 
-from data.ui.manga_item import Ui_Form
+from data.ui.manga_item import Ui_manga_item_widget
 from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.items import Manga
 from nlightreader.utils import Worker, get_catalog, get_manga_preview
@@ -17,21 +17,31 @@ class Signals(QObject):
 class MangaItem(QWidget):
     def __init__(self, manga: Manga):
         super().__init__()
-        self.ui = Ui_Form()
+        self.ui = Ui_manga_item_widget()
         self.ui.setupUi(self)
-        self.setStyleSheet(
-            "QFrame#frame, QLabel#name_lbl {"
-            "border-radius: 10px;background-color: rgba(84.000, 86.000, 86.000, 0.737);}")
         self.manga = manga
         self.manga_pixmap = None
         self.signals = Signals()
-        self.ui.frame.customContextMenuRequested.connect(self.on_context_menu)
+        self.ui.manga_item_frame.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.name_lbl.setText(self.manga.get_name())
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
-            self.signals.manga_clicked.emit(self.manga)
+            if self.rect().contains(event.pos()):
+                self.signals.manga_clicked.emit(self.manga)
         event.accept()
+
+    def enterEvent(self, event):
+        self.ui.manga_widget.setProperty('is_set', 1)
+        self.style().polish(self.ui.manga_item_frame)
+        self.style().polish(self.ui.name_lbl)
+        self.style().polish(self.ui.image)
+
+    def leaveEvent(self, event):
+        self.ui.manga_widget.setProperty('is_set', 0)
+        self.style().polish(self.ui.manga_item_frame)
+        self.style().polish(self.ui.name_lbl)
+        self.style().polish(self.ui.image)
 
     def on_context_menu(self, pos):
         def add_to_lib():
@@ -49,7 +59,7 @@ class MangaItem(QWidget):
         menu.set_mode(1)
         menu.remove_from_lib.triggered.connect(remove_from_lib)
         menu.open_in_browser.triggered.connect(open_in_browser)
-        menu.exec(self.ui.frame.mapToGlobal(pos))
+        menu.exec(self.ui.manga_item_frame.mapToGlobal(pos))
 
     def set_size(self, size: int):
         self.setMaximumWidth(size)

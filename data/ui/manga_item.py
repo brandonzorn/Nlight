@@ -18,31 +18,38 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QFrame, QLabel, QSizePolicy,
     QSpacerItem, QVBoxLayout, QWidget)
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        if not Form.objectName():
-            Form.setObjectName(u"Form")
-        Form.resize(400, 300)
+class Ui_manga_item_widget(object):
+    def setupUi(self, manga_item_widget):
+        if not manga_item_widget.objectName():
+            manga_item_widget.setObjectName(u"manga_item_widget")
+        manga_item_widget.resize(485, 406)
         sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
-        Form.setSizePolicy(sizePolicy)
-        self.verticalLayout = QVBoxLayout(Form)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.frame = QFrame(Form)
-        self.frame.setObjectName(u"frame")
-        sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
-        self.frame.setSizePolicy(sizePolicy)
-        self.frame.setCursor(QCursor(Qt.PointingHandCursor))
-        self.frame.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.frame.setStyleSheet(u"")
-        self.frame.setFrameShape(QFrame.StyledPanel)
-        self.frame.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_2 = QVBoxLayout(self.frame)
+        sizePolicy.setHeightForWidth(manga_item_widget.sizePolicy().hasHeightForWidth())
+        manga_item_widget.setSizePolicy(sizePolicy)
+        self.verticalLayout_5 = QVBoxLayout(manga_item_widget)
+        self.verticalLayout_5.setSpacing(0)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.manga_widget = QWidget(manga_item_widget)
+        self.manga_widget.setObjectName(u"manga_widget")
+        self.verticalLayout_4 = QVBoxLayout(self.manga_widget)
+        self.verticalLayout_4.setSpacing(0)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.manga_item_frame = QFrame(self.manga_widget)
+        self.manga_item_frame.setObjectName(u"manga_item_frame")
+        sizePolicy.setHeightForWidth(self.manga_item_frame.sizePolicy().hasHeightForWidth())
+        self.manga_item_frame.setSizePolicy(sizePolicy)
+        self.manga_item_frame.setCursor(QCursor(Qt.PointingHandCursor))
+        self.manga_item_frame.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.manga_item_frame.setStyleSheet(u"")
+        self.manga_item_frame.setFrameShape(QFrame.StyledPanel)
+        self.manga_item_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_2 = QVBoxLayout(self.manga_item_frame)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.image = QLabel(self.frame)
+        self.image = QLabel(self.manga_item_frame)
         self.image.setObjectName(u"image")
         self.image.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
 
@@ -52,23 +59,26 @@ class Ui_Form(object):
 
         self.verticalLayout_2.addItem(self.verticalSpacer)
 
-        self.name_lbl = QLabel(self.frame)
+        self.name_lbl = QLabel(self.manga_item_frame)
         self.name_lbl.setObjectName(u"name_lbl")
         self.name_lbl.setWordWrap(True)
 
-        self.verticalLayout_2.addWidget(self.name_lbl, 0, Qt.AlignTop)
+        self.verticalLayout_2.addWidget(self.name_lbl)
 
 
-        self.verticalLayout.addWidget(self.frame)
+        self.verticalLayout_4.addWidget(self.manga_item_frame)
 
 
-        self.retranslateUi(Form)
+        self.verticalLayout_5.addWidget(self.manga_widget)
 
-        QMetaObject.connectSlotsByName(Form)
+
+        self.retranslateUi(manga_item_widget)
+
+        QMetaObject.connectSlotsByName(manga_item_widget)
     # setupUi
 
-    def retranslateUi(self, Form):
-        Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
+    def retranslateUi(self, manga_item_widget):
+        manga_item_widget.setWindowTitle(QCoreApplication.translate("manga_item_widget", u"Form", None))
         self.image.setText("")
         self.name_lbl.setText("")
     # retranslateUi
