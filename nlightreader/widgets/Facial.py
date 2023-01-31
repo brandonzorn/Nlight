@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QCheckBox, QRadioButton, QGridLayout
 from data.ui.facial import Ui_Form
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import RequestForm, Manga
-from nlightreader.utils import Database, USER_CATALOGS, translate, Worker
+from nlightreader.utils import USER_CATALOGS, translate, Worker
 from nlightreader.widgets.BaseWidget import BaseWidget
 from nlightreader.widgets.MangaItem import MangaItem
 
@@ -40,7 +40,6 @@ class FormFacial(BaseWidget):
         self.ui.catalogs_frame.hide()
         self.Form_genres = FormGenres()
         self.request_params = RequestForm()
-        self.db: Database = Database()
         self.mutex = QMutex()
         self.catalog = None
         self.change_catalog(0)
