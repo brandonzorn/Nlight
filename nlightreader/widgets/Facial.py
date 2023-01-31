@@ -45,9 +45,6 @@ class FormFacial(BaseWidget):
         self.catalog = None
         self.change_catalog(0)
 
-    def setup(self):
-        self.get_content()
-
     def scroll_resize_event(self, event):
         if event.oldSize().width() != event.size().width():
             self.reset_manga_grid()
