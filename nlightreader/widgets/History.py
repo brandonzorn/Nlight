@@ -46,9 +46,6 @@ class FormHistory(BaseWidget):
         menu.remove_all.triggered.connect(remove_all)
         menu.exec(self.ui.items_list.mapToGlobal(pos))
 
-    def setup(self):
-        self.get_content()
-
     def update_content(self):
         self.ui.items_list.clear()
         self.notes: list[HistoryNote] = self.db.get_history_notes()
