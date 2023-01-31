@@ -8,7 +8,7 @@ from nlightreader.consts import LibList
 from nlightreader.dialogs import FormAuth
 from nlightreader.items import Manga, RequestForm, User
 from nlightreader.parsers import ShikimoriLib
-from nlightreader.utils import Database, translate, Worker
+from nlightreader.utils import translate, Worker
 from nlightreader.widgets.BaseWidget import BaseWidget
 from nlightreader.widgets.MangaItem import MangaItem
 
@@ -28,7 +28,6 @@ class FormShikimori(BaseWidget):
         self.signals = Signals()
         self.Form_auth = FormAuth(self.catalog)
         self.request_params = RequestForm()
-        self.db: Database = Database()
         self.mutex = QMutex()
         self.ui.planned_btn.clicked.connect(lambda: self.change_list(LibList.planned))
         self.ui.reading_btn.clicked.connect(lambda: self.change_list(LibList.reading))
