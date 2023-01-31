@@ -44,6 +44,20 @@ QStackedWidget QFrame
 }
 
 
+QWidget#manga_widget QFrame
+{
+    background-color: rgb(204, 204, 204);
+}
+QWidget#manga_widget[is_set="0"] QFrame
+{
+    background-color: rgb(204, 204, 204);
+}
+QWidget#manga_widget[is_set="1"] QFrame
+{
+    background-color: rgb(122, 122, 122);
+}
+
+
 QPushButton
 {
     padding: 5px 1px;
