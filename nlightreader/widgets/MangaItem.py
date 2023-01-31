@@ -2,6 +2,7 @@ import webbrowser
 
 from PySide6.QtCore import Qt, QObject, Signal
 from PySide6.QtWidgets import QWidget
+
 from data.ui.manga_item import Ui_Form
 from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.items import Manga
