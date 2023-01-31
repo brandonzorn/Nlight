@@ -1,12 +1,16 @@
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot, QObject, Signal
 from PySide6.QtWidgets import QListWidgetItem
 
 from data.ui.history import Ui_Form
 from nlightreader.consts import ItemsColors
 from nlightreader.contexts import HistoryNoteMenu
-from nlightreader.items import HistoryNote
+from nlightreader.items import HistoryNote, Manga
 from nlightreader.utils import Database
 from nlightreader.widgets.BaseWidget import BaseWidget
+
+
+class Signals(QObject):
+    manga_open = Signal(Manga)
 
 
 class FormHistory(BaseWidget):
@@ -17,7 +21,10 @@ class FormHistory(BaseWidget):
         self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
         self.db: Database = Database()
         self.ui.delete_btn.clicked.connect(self.delete_note)
+        self.ui.items_list.doubleClicked.connect(lambda x: self.signals.manga_open.emit(
+            self.notes[self.ui.items_list.currentIndex().row()].manga))
         self.notes: list[HistoryNote] = []
+        self.signals = Signals()
 
     def on_context_menu(self, pos):
         def set_as_read():
@@ -52,9 +59,6 @@ class FormHistory(BaseWidget):
             else:
                 item.setBackground(ItemsColors.UNREAD)
             self.ui.items_list.addItem(item)
-
-    def get_current_manga(self):
-        return self.notes[self.ui.items_list.currentIndex().row()].manga
 
     @Slot()
     def delete_note(self):
