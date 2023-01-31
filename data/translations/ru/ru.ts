@@ -2,54 +2,26 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU" sourcelanguage="en_US">
 <context>
-    <name>Dialog</name>
+    <name>MainWindow</name>
     <message>
-        <source>Show spoilers</source>
-        <translation>Показывать спойлеры</translation>
+        <source>MainWindow</source>
+        <translation>Nlight</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>Отмена</translation>
+        <source>Main</source>
+        <translation>Главная</translation>
     </message>
     <message>
-        <source>Delete</source>
-        <translation>Удалить</translation>
+        <source>Library</source>
+        <translation>Библиотека</translation>
     </message>
     <message>
-        <source>Update</source>
-        <translation>Обновить</translation>
+        <source>History</source>
+        <translation>История</translation>
     </message>
     <message>
-        <source>List</source>
-        <translation>Список</translation>
-    </message>
-    <message>
-        <source>Chapters read</source>
-        <translation>Прочитано глав</translation>
-    </message>
-    <message>
-        <source>Rating</source>
-        <translation>Рейтинг</translation>
-    </message>
-    <message>
-        <source>Get code</source>
-        <translation>Получить код</translation>
-    </message>
-    <message>
-        <source>Authorization code</source>
-        <translation>Код авторизации</translation>
-    </message>
-    <message>
-        <source>Login</source>
-        <translation>Логин</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Пароль</translation>
-    </message>
-    <message>
-        <source>Sign in</source>
-        <translation>Войти</translation>
+        <source>Shikimori</source>
+        <translation>Шикимори</translation>
     </message>
 </context>
 
@@ -74,6 +46,10 @@
     <message>
         <source>Reset</source>
         <translation>Сбросить</translation>
+    </message>
+    <message>
+        <source>Filters</source>
+        <translation>Фильтры</translation>
     </message>
     <message>
         <source>Genres list</source>
@@ -126,26 +102,54 @@
 </context>
 
 <context>
-    <name>MainWindow</name>
+    <name>Dialog</name>
     <message>
-        <source>MainWindow</source>
-        <translation>Nlight</translation>
+        <source>Show spoilers</source>
+        <translation>Показывать спойлеры</translation>
     </message>
     <message>
-        <source>Main</source>
-        <translation>Главная</translation>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
     </message>
     <message>
-        <source>Library</source>
-        <translation>Библиотека</translation>
+        <source>Delete</source>
+        <translation>Удалить</translation>
     </message>
     <message>
-        <source>History</source>
-        <translation>История</translation>
+        <source>Update</source>
+        <translation>Обновить</translation>
     </message>
     <message>
-        <source>Shikimori</source>
-        <translation>Шикимори</translation>
+        <source>List</source>
+        <translation>Список</translation>
+    </message>
+    <message>
+        <source>Chapters read</source>
+        <translation>Прочитано глав</translation>
+    </message>
+    <message>
+        <source>Rating</source>
+        <translation>Рейтинг</translation>
+    </message>
+    <message>
+        <source>Get code</source>
+        <translation>Получить код</translation>
+    </message>
+    <message>
+        <source>Authorization code</source>
+        <translation>Код авторизации</translation>
+    </message>
+    <message>
+        <source>Login</source>
+        <translation>Логин</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Пароль</translation>
+    </message>
+    <message>
+        <source>Sign in</source>
+        <translation>Войти</translation>
     </message>
 </context>
 
