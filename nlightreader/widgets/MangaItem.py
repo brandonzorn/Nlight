@@ -20,14 +20,18 @@ class MangaItem(QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.setStyleSheet(
-            "QPushButton{padding: 0px;background-color: rgba(0, 133, 52, 255);"
-            "border-radius: 0px;font-weight: bold;color: rgba(255, 255, 255, 255);}")
+            "QFrame#frame, QLabel#name_lbl {"
+            "border-radius: 10px;background-color: rgba(84.000, 86.000, 86.000, 0.737);}")
         self.manga = manga
         self.manga_pixmap = None
         self.signals = Signals()
         self.ui.frame.customContextMenuRequested.connect(self.on_context_menu)
-        self.ui.pushButton.clicked.connect(lambda: self.signals.manga_clicked.emit(self.manga))
         self.ui.name_lbl.setText(self.manga.get_name())
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.signals.manga_clicked.emit(self.manga)
+        event.accept()
 
     def on_context_menu(self, pos):
         def add_to_lib():
@@ -52,7 +56,7 @@ class MangaItem(QWidget):
             return
         self.setMaximumWidth(area_w // (area_w // 200))
         self.setFixedSize(self.maximumWidth(), self.maximumWidth() * 2)
-        self.ui.pushButton.setMaximumSize(self.maximumWidth(), self.maximumWidth() * 2)
+        self.ui.image.setMaximumSize(self.maximumWidth(), self.maximumWidth() * 2)
         self.update_image()
 
     def update_image(self):
@@ -62,8 +66,7 @@ class MangaItem(QWidget):
                 self.manga_pixmap = get_manga_preview(self.manga, catalog)
 
         def set_image():
-            pixmap = self.manga_pixmap.scaled(self.ui.pushButton.maximumSize(), Qt.AspectRatioMode.KeepAspectRatio,
+            pixmap = self.manga_pixmap.scaled(self.ui.image.maximumSize(), Qt.AspectRatioMode.KeepAspectRatio,
                                               Qt.TransformationMode.SmoothTransformation)
-            self.ui.pushButton.setIcon(pixmap)
-            self.ui.pushButton.setIconSize(pixmap.size())
+            self.ui.image.setPixmap(pixmap)
         Worker(target=get_image, callback=set_image).start()
