@@ -1,27 +1,18 @@
-from PySide6.QtCore import Slot, Qt, QObject, Signal
+from PySide6.QtCore import Slot, Qt
 
 from data.ui.library import Ui_Form
 from nlightreader.consts import LibList
-from nlightreader.items import Manga, RequestForm
+from nlightreader.items import Manga
 from nlightreader.parsers import LocalLib
-from nlightreader.widgets.BaseWidget import BaseWidget
+from nlightreader.widgets.BaseWidget import MangaItemBasedWidget
 from nlightreader.widgets.MangaItem import MangaItem
 
 
-class Signals(QObject):
-    manga_open = Signal(Manga)
-
-
-class FormLibrary(BaseWidget):
+class FormLibrary(MangaItemBasedWidget):
     def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.mangas: list[Manga] = []
-        self.manga_items: list[MangaItem] = []
-        self.signals = Signals()
-        self.request_params = RequestForm()
-        self.catalog = LocalLib()
         self.ui.planned_btn.clicked.connect(lambda: self.change_list(LibList.planned))
         self.ui.reading_btn.clicked.connect(lambda: self.change_list(LibList.reading))
         self.ui.on_hold_btn.clicked.connect(lambda: self.change_list(LibList.on_hold))
@@ -29,14 +20,11 @@ class FormLibrary(BaseWidget):
         self.ui.dropped_btn.clicked.connect(lambda: self.change_list(LibList.dropped))
         self.ui.re_reading_btn.clicked.connect(lambda: self.change_list(LibList.re_reading))
         self.ui.scrollAreaWidgetContents.resizeEvent = self.scroll_resize_event
-
-    def scroll_resize_event(self, event):
-        if event.oldSize().width() != event.size().width():
-            self.update_manga_grid()
-        event.accept()
+        self.catalog = LocalLib()
 
     def update_content(self):
         self.mangas = self.catalog.search_manga(self.request_params)
+        self.manga_thread_pool.setMaxThreadCount(len(self.mangas))
         self.delete_manga_items()
         for manga in self.mangas:
             item = self.setup_manga_item(manga)
@@ -64,7 +52,7 @@ class FormLibrary(BaseWidget):
                 i += 1
 
     def setup_manga_item(self, manga: Manga):
-        item = MangaItem(manga)
+        item = MangaItem(manga, pool=self.manga_thread_pool)
         item.signals.manga_clicked.connect(lambda x: self.signals.manga_open.emit(x))
         item.signals.manga_changed.connect(self.get_content)
         return item

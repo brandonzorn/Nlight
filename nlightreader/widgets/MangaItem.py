@@ -15,7 +15,7 @@ class Signals(QObject):
 
 
 class MangaItem(QWidget):
-    def __init__(self, manga: Manga, *, is_added_to_lib=True):
+    def __init__(self, manga: Manga, *, is_added_to_lib=True, pool=None):
         super().__init__()
         self.ui = Ui_manga_item_widget()
         self.ui.setupUi(self)
@@ -23,6 +23,7 @@ class MangaItem(QWidget):
         self.manga_pixmap = None
         self._is_added_to_lib = is_added_to_lib
         self._db: Database = Database()
+        self._pool = pool
         self.signals = Signals()
         self.ui.manga_item_frame.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.name_lbl.setText(self.manga.get_name())
@@ -86,4 +87,4 @@ class MangaItem(QWidget):
             pixmap = self.manga_pixmap.scaled(self.ui.image.maximumSize(), Qt.AspectRatioMode.KeepAspectRatio,
                                               Qt.TransformationMode.SmoothTransformation)
             self.ui.image.setPixmap(pixmap)
-        Worker(target=get_image, callback=set_image).start()
+        Worker(target=get_image, callback=set_image).start(self._pool)

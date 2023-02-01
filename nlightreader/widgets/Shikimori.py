@@ -1,33 +1,22 @@
 import time
 
-from PySide6.QtCore import Slot, QMutex, QObject, Signal, Qt
+from PySide6.QtCore import Slot, QMutex, Qt
 
 from data.ui.shikimori import Ui_Form
 from nlightreader.consts import LibList
 from nlightreader.dialogs import FormAuth
-from nlightreader.items import Manga, RequestForm, User
+from nlightreader.items import Manga, User
 from nlightreader.parsers import ShikimoriLib
 from nlightreader.utils import translate, Worker
-from nlightreader.widgets.BaseWidget import BaseWidget
+from nlightreader.widgets.BaseWidget import MangaItemBasedWidget
 from nlightreader.widgets.MangaItem import MangaItem
 
 
-class Signals(QObject):
-    manga_open = Signal(Manga)
-
-
-class FormShikimori(BaseWidget):
+class FormShikimori(MangaItemBasedWidget):
     def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.mangas: list[Manga] = []
-        self.manga_items: list[MangaItem] = []
-        self.catalog = ShikimoriLib()
-        self.signals = Signals()
-        self.Form_auth = FormAuth(self.catalog)
-        self.request_params = RequestForm()
-        self.mutex = QMutex()
         self.ui.planned_btn.clicked.connect(lambda: self.change_list(LibList.planned))
         self.ui.reading_btn.clicked.connect(lambda: self.change_list(LibList.reading))
         self.ui.on_hold_btn.clicked.connect(lambda: self.change_list(LibList.on_hold))
@@ -38,21 +27,12 @@ class FormShikimori(BaseWidget):
         self.ui.prev_btn.clicked.connect(self.turn_page_prev)
         self.ui.search_btn.clicked.connect(self.search)
         self.ui.auth_btn.clicked.connect(self.authorize)
-        self.Form_auth.accepted.connect(self.auth_accept)
         self.ui.scrollAreaWidgetContents.resizeEvent = self.scroll_resize_event
+        self.catalog = ShikimoriLib()
+        self.mutex = QMutex()
+        self.Form_auth = FormAuth(self.catalog)
+        self.Form_auth.accepted.connect(self.auth_accept)
         self.update_user_info()
-
-    def scroll_resize_event(self, event):
-        if event.oldSize().width() != event.size().width():
-            self.update_manga_grid()
-        event.accept()
-
-    def update_content(self):
-        self.delete_manga_items()
-        for manga in self.mangas:
-            item = self.setup_manga_item(manga)
-            self.manga_items.append(item)
-        self.update_manga_grid()
 
     def delete_manga_items(self):
         for manga_item in self.manga_items:
@@ -75,7 +55,7 @@ class FormShikimori(BaseWidget):
                 i += 1
 
     def setup_manga_item(self, manga: Manga):
-        item = MangaItem(manga, is_added_to_lib=False)
+        item = MangaItem(manga, is_added_to_lib=False, pool=self.manga_thread_pool)
         item.signals.manga_clicked.connect(lambda x: self.signals.manga_open.emit(x))
         return item
 
@@ -139,6 +119,7 @@ class FormShikimori(BaseWidget):
             if page != self.request_params.page or lib_list != self.request_params.lib_list:
                 return
             self.mangas = self.catalog.search_manga(self.request_params)
+            self.manga_thread_pool.setMaxThreadCount(len(self.mangas))
             self.mutex.unlock()
         self.update_page()
         Worker(target=get_content, callback=self.update_content).start()

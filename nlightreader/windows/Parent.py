@@ -34,11 +34,11 @@ class ParentWindow(QMainWindow):
     def change_widget(self, widget):
         if self.ui.top_item.currentWidget() == widget:
             return
+        widget.setup()
         if self.ui.top_item.currentWidget():
             self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
         self.ui.top_item.addWidget(widget)
         self.ui.top_item.setCurrentWidget(widget)
-        widget.setup()
 
     @Slot(Manga)
     def open_info(self, manga: Manga):
