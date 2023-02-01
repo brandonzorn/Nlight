@@ -36,24 +36,27 @@ class FormLibrary(BaseWidget):
         event.accept()
 
     def update_content(self):
-        for manga_item in self.manga_items:
-            if manga_item.parent() == self.ui.scrollAreaWidgetContents:
-                self.ui.content_grid.removeWidget(manga_item)
-            manga_item.deleteLater()
-        self.manga_items.clear()
         self.mangas = self.catalog.search_manga(self.request_params)
+        self.delete_manga_items()
         for manga in self.mangas:
             item = self.setup_manga_item(manga)
             self.manga_items.append(item)
         self.update_manga_grid()
 
+    def delete_manga_items(self):
+        for manga_item in self.manga_items:
+            if manga_item.parent() == self.ui.scrollAreaWidgetContents:
+                self.ui.content_grid.removeWidget(manga_item)
+            manga_item.deleteLater()
+        self.manga_items.clear()
+
     def update_manga_grid(self):
         col_count = 6
         i, j = 0, 0
         for manga_item in self.manga_items:
+            manga_item.set_size(self.ui.scrollArea.size().width() // col_count)
             if manga_item.parent() == self.ui.scrollAreaWidgetContents:
                 self.ui.content_grid.removeWidget(manga_item)
-            manga_item.set_size(self.ui.scrollArea.size().width() // col_count)
             self.ui.content_grid.addWidget(manga_item, i, j, Qt.AlignmentFlag.AlignLeft)
             j += 1
             if j == col_count - 1:
