@@ -72,7 +72,7 @@ class FormShikimori(BaseWidget):
                 i += 1
 
     def setup_manga_item(self, manga: Manga):
-        item = MangaItem(manga)
+        item = MangaItem(manga, is_added_to_lib=False)
         item.signals.manga_clicked.connect(lambda x: self.signals.manga_open.emit(x))
         return item
 

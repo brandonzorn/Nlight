@@ -7,8 +7,7 @@ from PySide6.QtGui import QIcon, QFont
 from PySide6.QtWidgets import QApplication
 
 from nlightreader import ParentWindow
-from nlightreader.consts import APP_VERSION, APP_NAME
-from nlightreader.consts.files import Icons, Fonts
+from nlightreader.consts import APP_VERSION, APP_NAME, APP_PATHS, Icons, Fonts
 from nlightreader.utils import init_app_paths, get_locale_path, get_ui_style, Worker
 
 
@@ -48,7 +47,6 @@ if __name__ == '__main__':
     app.setApplicationVersion(APP_VERSION)
     app.setWindowIcon(QIcon(Icons.App))
     app.setStyleSheet(get_ui_style(darkdetect.theme()))
-    app_paths = [APP_NAME]
-    init_app_paths(app_paths)
+    init_app_paths(APP_PATHS)
     a = App()
     sys.exit(app.exec())

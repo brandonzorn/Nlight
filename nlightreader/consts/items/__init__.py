@@ -1,2 +1,2 @@
-from .desu_items import *
-from .shikimori_items import *
+from .desu_items import DesuItems
+from .shikimori_items import ShikimoriItems
