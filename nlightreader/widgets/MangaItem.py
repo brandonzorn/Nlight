@@ -6,21 +6,23 @@ from PySide6.QtWidgets import QWidget
 from data.ui.manga_item import Ui_manga_item_widget
 from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.items import Manga
-from nlightreader.utils import Worker, get_catalog, get_manga_preview
+from nlightreader.utils import Worker, get_catalog, get_manga_preview, Database
 
 
 class Signals(QObject):
     manga_clicked = Signal(Manga)
-    remove_from_lib = Signal(QWidget)
+    manga_changed = Signal()
 
 
 class MangaItem(QWidget):
-    def __init__(self, manga: Manga):
+    def __init__(self, manga: Manga, *, is_added_to_lib=True):
         super().__init__()
         self.ui = Ui_manga_item_widget()
         self.ui.setupUi(self)
         self.manga = manga
         self.manga_pixmap = None
+        self._is_added_to_lib = is_added_to_lib
+        self._db: Database = Database()
         self.signals = Signals()
         self.ui.manga_item_frame.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.name_lbl.setText(self.manga.get_name())
@@ -45,18 +47,25 @@ class MangaItem(QWidget):
 
     def on_context_menu(self, pos):
         def add_to_lib():
-            self.db.add_manga(manga)
-            self.db.add_manga_library(manga)
+            self._db.add_manga(self.manga)
+            self._db.add_manga_library(self.manga)
 
         def remove_from_lib():
-            self.signals.remove_from_lib.emit(self)
-            self.deleteLater()
+            self._db.rem_manga_library(self.manga)
+            self.signals.manga_changed.emit()
 
         def open_in_browser():
             webbrowser.open_new_tab(get_catalog(self.manga.catalog_id)().get_manga_url(self.manga))
 
         menu = LibraryMangaMenu()
-        menu.set_mode(1)
+        if self._is_added_to_lib:
+            if self._db.check_manga_library(self.manga):
+                menu.set_mode(1)
+            else:
+                menu.set_mode(0)
+        else:
+            menu.set_mode(-1)
+        menu.add_to_lib.triggered.connect(add_to_lib)
         menu.remove_from_lib.triggered.connect(remove_from_lib)
         menu.open_in_browser.triggered.connect(open_in_browser)
         menu.exec(self.ui.manga_item_frame.mapToGlobal(pos))

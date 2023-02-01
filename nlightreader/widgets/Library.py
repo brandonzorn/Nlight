@@ -60,14 +60,10 @@ class FormLibrary(BaseWidget):
                 j = 0
                 i += 1
 
-    def delete_manga_item(self, manga_item: MangaItem):
-        self.catalog.db.rem_manga_library(manga_item.manga)
-        self.get_content()
-
     def setup_manga_item(self, manga: Manga):
         item = MangaItem(manga)
         item.signals.manga_clicked.connect(lambda x: self.signals.manga_open.emit(x))
-        item.signals.remove_from_lib.connect(lambda x: self.delete_manga_item(x))
+        item.signals.manga_changed.connect(self.get_content)
         return item
 
     @Slot(LibList)
