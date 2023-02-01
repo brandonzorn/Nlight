@@ -47,6 +47,7 @@ class Ui_Form(object):
         self.scroll_layout.setContentsMargins(0, 0, 0, 0)
         self.content_grid = QGridLayout()
         self.content_grid.setObjectName(u"content_grid")
+        self.content_grid.setVerticalSpacing(12)
 
         self.scroll_layout.addLayout(self.content_grid)
 

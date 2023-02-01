@@ -5,8 +5,8 @@ import requests
 from PySide6.QtCore import QRunnable, Slot, QThreadPool, QLocale, Signal, QObject
 from PySide6.QtWidgets import QApplication
 
-from nlightreader.consts import DEFAULT_HEADERS, ru_icon_path, gb_icon_path, jp_icon_path, ua_icon_path, MangaKinds, \
-    ru_trans_path, uk_trans_path, en_trans_path, light_style, dark_style
+from nlightreader.consts import DEFAULT_HEADERS, MangaKinds
+from nlightreader.consts.files import LangIcons, Translations, Styles
 
 
 def get_html(url: str, headers: dict = DEFAULT_HEADERS, params=None):
@@ -20,13 +20,13 @@ def get_html(url: str, headers: dict = DEFAULT_HEADERS, params=None):
 def get_language_icon(language: str):
     match language:
         case 'ru':
-            return ru_icon_path
+            return LangIcons.Ru
         case 'en':
-            return gb_icon_path
+            return LangIcons.Gb
         case 'jp':
-            return jp_icon_path
+            return LangIcons.Jp
         case 'ua':
-            return ua_icon_path
+            return LangIcons.Ua
         case _:
             return ''
 
@@ -41,11 +41,11 @@ def get_manga_kind(kind: str) -> None:
 def get_locale_path(locale: QLocale.Language) -> str:
     match locale:
         case QLocale.Language.Russian:
-            return ru_trans_path
+            return Translations.Ru
         case QLocale.Language.Ukrainian:
-            return uk_trans_path
+            return Translations.Uk
         case _:
-            return en_trans_path
+            return Translations.En
 
 
 def get_data(a: dict, path: list, default_val=None):
@@ -62,8 +62,8 @@ def get_data(a: dict, path: list, default_val=None):
 
 
 def get_ui_style(style: str):
-    dark = open(dark_style).read()
-    light = open(light_style).read()
+    dark = Styles.Dark
+    light = Styles.Light
     themes = {"Dark": dark, "Light": light}
     return themes[style]
 
