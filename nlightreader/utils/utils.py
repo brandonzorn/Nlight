@@ -92,8 +92,12 @@ class Worker(QRunnable):
         self._target(*self._args, **self._kwargs)
         self.signals.finished.emit()
 
-    def start(self):
-        QThreadPool.globalInstance().start(self)
+    def start(self, pool=None):
+        if pool is None:
+            pool = QThreadPool.globalInstance()
+        if pool.activeThreadCount() == pool.maxThreadCount():
+            return
+        pool.start(self)
 
 
 @contextlib.contextmanager

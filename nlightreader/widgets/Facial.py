@@ -1,21 +1,17 @@
 import time
 
-from PySide6.QtCore import Slot, QMutex, QObject, Signal, Qt
+from PySide6.QtCore import Slot, QMutex, Qt
 from PySide6.QtWidgets import QCheckBox, QRadioButton
 
 from data.ui.facial import Ui_Form
 from nlightreader.dialogs import FormGenres
-from nlightreader.items import RequestForm, Manga
+from nlightreader.items import Manga
 from nlightreader.utils import USER_CATALOGS, translate, Worker
-from nlightreader.widgets.BaseWidget import BaseWidget
+from nlightreader.widgets.BaseWidget import MangaItemBasedWidget
 from nlightreader.widgets.MangaItem import MangaItem
 
 
-class Signals(QObject):
-    manga_open = Signal(Manga)
-
-
-class FormFacial(BaseWidget):
+class FormFacial(MangaItemBasedWidget):
     def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
@@ -32,35 +28,18 @@ class FormFacial(BaseWidget):
             lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row()))
         self.ui.close_filters_btn.clicked.connect(self.change_filters_visible)
         self.ui.scrollAreaWidgetContents.resizeEvent = self.scroll_resize_event
-        self.mangas: list[Manga] = []
-        self.manga_items: list[MangaItem] = []
         self.order_items = {}
         self.kind_items = {}
-        self.signals = Signals()
-        self.setup_catalogs()
-        self.ui.catalogs_frame.hide()
-        self.Form_genres = FormGenres()
-        self.request_params = RequestForm()
-        self.mutex = QMutex()
         self.catalog = None
+        self.mutex = QMutex()
+        self.Form_genres = FormGenres()
 
     def setup(self):
         if not self.catalog:
+            self.setup_catalogs()
             self.change_catalog(0)
         else:
             self.get_content()
-
-    def scroll_resize_event(self, event):
-        if event.oldSize().width() != event.size().width():
-            self.update_manga_grid()
-        event.accept()
-
-    def update_content(self):
-        self.delete_manga_items()
-        for manga in self.mangas:
-            item = self.setup_manga_item(manga)
-            self.manga_items.append(item)
-        self.update_manga_grid()
 
     def delete_manga_items(self):
         for manga_item in self.manga_items:
@@ -83,11 +62,12 @@ class FormFacial(BaseWidget):
                 i += 1
 
     def setup_manga_item(self, manga: Manga):
-        item = MangaItem(manga)
+        item = MangaItem(manga, pool=self.manga_thread_pool)
         item.signals.manga_clicked.connect(lambda x: self.signals.manga_open.emit(x))
         return item
 
     def setup_catalogs(self):
+        self.ui.catalogs_frame.hide()
         self.ui.catalogs_list.clear()
         self.ui.catalogs_list.addItems([i.catalog_name for i in USER_CATALOGS])
 
@@ -113,6 +93,7 @@ class FormFacial(BaseWidget):
             if page != self.request_params.page:
                 return
             self.mangas = self.catalog.search_manga(self.request_params)
+            self.manga_thread_pool.setMaxThreadCount(len(self.mangas))
             self.mutex.unlock()
         self.delete_manga_items()
         self.update_page()
