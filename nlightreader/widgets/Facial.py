@@ -1,7 +1,7 @@
 import time
 
 from PySide6.QtCore import Slot, QMutex, QObject, Signal, Qt
-from PySide6.QtWidgets import QCheckBox, QRadioButton, QGridLayout
+from PySide6.QtWidgets import QCheckBox, QRadioButton
 
 from data.ui.facial import Ui_Form
 from nlightreader.dialogs import FormGenres
@@ -32,8 +32,8 @@ class FormFacial(BaseWidget):
             lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row()))
         self.ui.close_filters_btn.clicked.connect(self.change_filters_visible)
         self.ui.scrollAreaWidgetContents.resizeEvent = self.scroll_resize_event
-        self.mangas = []
-        self.manga_items = []
+        self.mangas: list[Manga] = []
+        self.manga_items: list[MangaItem] = []
         self.order_items = {}
         self.kind_items = {}
         self.signals = Signals()
@@ -43,36 +43,35 @@ class FormFacial(BaseWidget):
         self.request_params = RequestForm()
         self.mutex = QMutex()
         self.catalog = None
-        self.change_catalog(0)
+
+    def setup(self):
+        if not self.catalog:
+            self.change_catalog(0)
+        else:
+            self.get_content()
 
     def scroll_resize_event(self, event):
         if event.oldSize().width() != event.size().width():
-            self.reset_manga_grid()
             self.update_manga_grid()
         event.accept()
 
     def update_content(self):
-        for item in self.manga_items:
-            item.deleteLater()
+        for manga_item in self.manga_items:
+            if manga_item.parent() == self.ui.scrollAreaWidgetContents:
+                self.ui.content_grid.removeWidget(manga_item)
+            manga_item.deleteLater()
         self.manga_items.clear()
         for manga in self.mangas:
             item = self.setup_manga_item(manga)
             self.manga_items.append(item)
-        self.reset_manga_grid()
         self.update_manga_grid()
-
-    def reset_manga_grid(self):
-        for manga_item in self.manga_items:
-            self.ui.content_grid.removeWidget(manga_item)
-        self.ui.content_grid.deleteLater()
-        self.ui.content_grid = QGridLayout()
-        self.ui.content_grid.setVerticalSpacing(12)
-        self.ui.scroll_layout.addLayout(self.ui.content_grid)
 
     def update_manga_grid(self):
         col_count = 6
         i, j = 0, 0
         for manga_item in self.manga_items:
+            if manga_item.parent() == self.ui.scrollAreaWidgetContents:
+                self.ui.content_grid.removeWidget(manga_item)
             manga_item.set_size(self.ui.scrollArea.size().width() // col_count)
             self.ui.content_grid.addWidget(manga_item, i, j, Qt.AlignmentFlag.AlignLeft)
             j += 1
