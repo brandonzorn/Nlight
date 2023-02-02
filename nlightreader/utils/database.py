@@ -23,7 +23,7 @@ class Database:
         self.__cur.execute(
             """CREATE TABLE IF NOT EXISTS chapters (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
         content_id STRING NOT NULL, catalog_id INTEGER NOT NULL, vol STRING, ch STRING, title STRING, language STRING,
-        manga_id INTEGER, index_n INTEGER);
+        manga_id INTEGER);
             """)
         self.__cur.execute("""CREATE TABLE IF NOT EXISTS library
         (manga_id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL, list INTEGER NOT NULL)
@@ -66,10 +66,9 @@ class Database:
     @with_lock_thread(lock)
     def add_chapters(self, chapters: list[Chapter], manga: Manga):
         for chapter in chapters:
-            index = chapters[::-1].index(chapter)
-            self.__cur.execute("INSERT INTO chapters VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);",
+            self.__cur.execute("INSERT INTO chapters VALUES(?, ?, ?, ?, ?, ?, ?, ?);",
                                (chapter.id, chapter.content_id, chapter.catalog_id, chapter.vol, chapter.ch,
-                                chapter.title, chapter.language, manga.id, index))
+                                chapter.title, chapter.language, manga.id))
         self.__con.commit()
 
     def get_chapter(self, chapter_id: str):
