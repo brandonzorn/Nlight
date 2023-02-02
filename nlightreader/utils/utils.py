@@ -1,4 +1,3 @@
-import contextlib
 from typing import Callable
 
 import requests
@@ -56,8 +55,8 @@ def get_data(a: dict, path: list, default_val=None):
         try:
             data = data.get(p)
         except Exception as e:
+            print(e)
             data = default_val
-            print("Get data error\t", e)
     return data
 
 
@@ -105,10 +104,3 @@ class Worker(QRunnable):
         if pool.activeThreadCount() == pool.maxThreadCount():
             return
         pool.start(self)
-
-
-@contextlib.contextmanager
-def lock_ui(ui_to_lock: list):
-    [i.setEnabled(False) for i in ui_to_lock]
-    yield
-    [i.setEnabled(True) for i in ui_to_lock]
