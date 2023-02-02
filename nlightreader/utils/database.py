@@ -48,7 +48,7 @@ class Database:
                                 manga.description, manga.score, manga.status, manga.volumes, manga.chapters))
         self.__con.commit()
 
-    def get_manga(self, manga_id):
+    def get_manga(self, manga_id: str):
         x = self.__cur.execute(f"SELECT * FROM manga WHERE id = '{manga_id}'").fetchone()
         content_id = x[1]
         catalog_id = x[2]
@@ -72,9 +72,15 @@ class Database:
                                 chapter.title, chapter.language, manga.id, index))
         self.__con.commit()
 
-    def get_chapter(self, chapter_id):
+    def get_chapter(self, chapter_id: str):
         a = self.__cur.execute(f"SELECT * FROM chapters WHERE id = '{chapter_id}'").fetchone()
-        return Chapter(a[1], a[2], a[3], a[4], a[5], a[6])
+        content_id = a[1]
+        catalog_id = a[2]
+        vol = a[3]
+        ch = a[4]
+        title = a[5]
+        language = a[6]
+        return Chapter(content_id, catalog_id, vol, ch, title, language)
 
     @with_lock_thread(lock)
     def get_chapters(self, manga: Manga) -> list[Chapter]:
