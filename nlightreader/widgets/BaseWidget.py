@@ -1,4 +1,4 @@
-from PySide6.QtCore import QThreadPool, QObject, Signal
+from PySide6.QtCore import QThreadPool, QObject, Signal, QMutex
 from PySide6.QtWidgets import QWidget
 
 from nlightreader.items import Manga, RequestForm
@@ -31,6 +31,7 @@ class MangaItemBasedWidget(QWidget):
         self.manga_thread_pool = QThreadPool()
         self.manga_thread_pool.setMaxThreadCount(50)
         self.signals = Signals()
+        self.mutex = QMutex()
         self.request_params = RequestForm()
 
     def setup(self):

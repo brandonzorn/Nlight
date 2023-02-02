@@ -1,6 +1,6 @@
 import time
 
-from PySide6.QtCore import Slot, QMutex, Qt
+from PySide6.QtCore import Slot, Qt
 from PySide6.QtWidgets import QCheckBox, QRadioButton
 
 from data.ui.facial import Ui_Form
@@ -31,7 +31,6 @@ class FormFacial(MangaItemBasedWidget):
         self.order_items = {}
         self.kind_items = {}
         self.catalog = None
-        self.mutex = QMutex()
         self.Form_genres = FormGenres()
 
     def setup(self):
@@ -89,15 +88,13 @@ class FormFacial(MangaItemBasedWidget):
         def get_content():
             page = self.request_params.page
             time.sleep(0.25)
-            self.mutex.tryLock()
             if page != self.request_params.page:
                 return
             self.mangas = self.catalog.search_manga(self.request_params)
             self.manga_thread_pool.setMaxThreadCount(len(self.mangas))
-            self.mutex.unlock()
         self.delete_manga_items()
         self.update_page()
-        Worker(target=get_content, callback=self.update_content).start()
+        Worker(target=get_content, callback=self.update_content, locker=self.mutex).start()
 
     @Slot()
     def turn_page_next(self):
