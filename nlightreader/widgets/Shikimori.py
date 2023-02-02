@@ -1,6 +1,6 @@
 import time
 
-from PySide6.QtCore import Slot, QMutex, Qt
+from PySide6.QtCore import Slot, Qt
 
 from data.ui.shikimori import Ui_Form
 from nlightreader.consts import LibList
@@ -29,7 +29,6 @@ class FormShikimori(MangaItemBasedWidget):
         self.ui.auth_btn.clicked.connect(self.authorize)
         self.ui.scrollAreaWidgetContents.resizeEvent = self.scroll_resize_event
         self.catalog = ShikimoriLib()
-        self.mutex = QMutex()
         self.Form_auth = FormAuth(self.catalog)
         self.Form_auth.accepted.connect(self.auth_accept)
         self.update_user_info()
@@ -115,11 +114,9 @@ class FormShikimori(MangaItemBasedWidget):
             page = self.request_params.page
             lib_list = self.request_params.lib_list
             time.sleep(0.25)
-            self.mutex.tryLock()
             if page != self.request_params.page or lib_list != self.request_params.lib_list:
                 return
             self.mangas = self.catalog.search_manga(self.request_params)
             self.manga_thread_pool.setMaxThreadCount(len(self.mangas))
-            self.mutex.unlock()
         self.update_page()
-        Worker(target=get_content, callback=self.update_content).start()
+        Worker(target=get_content, callback=self.update_content, locker=self.mutex).start()
