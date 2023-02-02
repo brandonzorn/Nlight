@@ -54,7 +54,7 @@ class FormFacial(MangaItemBasedWidget):
             manga_item.set_size(self.ui.scrollArea.size().width() // col_count)
             if manga_item.parent() == self.ui.scrollAreaWidgetContents:
                 self.ui.content_grid.removeWidget(manga_item)
-            self.ui.content_grid.addWidget(manga_item, i, j, Qt.AlignmentFlag.AlignLeft)
+            self.ui.content_grid.addWidget(manga_item, i, j, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
             j += 1
             if j == col_count - 1:
                 j = 0
