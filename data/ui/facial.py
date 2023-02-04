@@ -55,6 +55,10 @@ class Ui_Form(object):
 
         self.scroll_layout.addLayout(self.content_grid)
 
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.scroll_layout.addItem(self.verticalSpacer_2)
+
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
         self.verticalLayout.addWidget(self.scrollArea)
