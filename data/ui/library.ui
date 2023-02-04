@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>390</width>
-    <height>334</height>
+    <height>395</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -52,7 +52,7 @@
            <x>0</x>
            <y>0</y>
            <width>267</width>
-           <height>312</height>
+           <height>373</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="scroll_layout">
@@ -77,6 +77,19 @@
              <number>12</number>
             </property>
            </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>

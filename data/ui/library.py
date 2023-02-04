@@ -23,7 +23,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(390, 334)
+        Form.resize(390, 395)
         Form.setStyleSheet(u"")
         Form.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.horizontalLayout = QHBoxLayout(Form)
@@ -40,7 +40,7 @@ class Ui_Form(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 267, 312))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 267, 373))
         self.scroll_layout = QVBoxLayout(self.scrollAreaWidgetContents)
         self.scroll_layout.setSpacing(0)
         self.scroll_layout.setObjectName(u"scroll_layout")
@@ -50,6 +50,10 @@ class Ui_Form(object):
         self.content_grid.setVerticalSpacing(12)
 
         self.scroll_layout.addLayout(self.content_grid)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.scroll_layout.addItem(self.verticalSpacer_2)
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
