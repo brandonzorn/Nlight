@@ -13,8 +13,8 @@ from nlightreader.windows.Reader import ReaderWindow
 
 
 class FormInfo(QWidget):
-
     opened_related_manga = Signal(Manga)
+    setup_done = Signal()
 
     def __init__(self):
         super().__init__()
@@ -75,7 +75,7 @@ class FormInfo(QWidget):
         menu.exec(self.ui.items_list.mapToGlobal(pos))
 
     def resizeEvent(self, a0):
-        if not self.catalog:
+        if not self.catalog or not self.manga:
             return
         self.update_manga_preview()
 
@@ -83,9 +83,13 @@ class FormInfo(QWidget):
         return self.catalog.get_manga(self.related_mangas[self.ui.related_list.currentIndex().row()])
 
     def setup(self, manga):
-        self.catalog = get_catalog(manga.catalog_id)()
-        self.manga = self.catalog.get_manga(manga)
-        self.db.add_manga(self.manga)
+        def info_setup():
+            self.catalog = get_catalog(manga.catalog_id)()
+            self.manga = self.catalog.get_manga(manga)
+            self.db.add_manga(self.manga)
+        Worker(target=info_setup, callback=self.update_additional_info).start()
+
+    def update_additional_info(self):
         self.ui.lib_frame.setVisible(not self.catalog.is_primary)
         self.ui.shikimori_frame.setVisible(self.catalog.is_primary)
         self.set_info()
@@ -98,6 +102,7 @@ class FormInfo(QWidget):
         self.get_chapters()
         self.get_characters()
         self.get_relations()
+        self.setup_done.emit()
 
     @Slot()
     def open_rate(self):
