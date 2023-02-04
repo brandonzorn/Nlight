@@ -42,11 +42,13 @@ class ParentWindow(QMainWindow):
 
     @Slot(Manga)
     def open_info(self, manga: Manga):
+        def set_info_widget():
+            self.ui.top_item.addWidget(info)
+            self.ui.top_item.setCurrentWidget(info)
         info = FormInfo()
-        info.setup(manga)
         info.opened_related_manga.connect(lambda x: self.open_info(x))
-        self.ui.top_item.addWidget(info)
-        self.ui.top_item.setCurrentWidget(info)
+        info.setup_done.connect(set_info_widget)
+        info.setup(manga)
 
     @Slot()
     def widgets_checker(self):
