@@ -37,7 +37,7 @@ class FormInfo(QWidget):
         self.chapters: list[Chapter] = []
         self.manga_pixmap = None
         self.reader_window = None
-        self.rate_window = FormRate()
+        self.rate_window = None
         self.character_window = None
 
     def on_context_menu(self, pos):
@@ -106,7 +106,7 @@ class FormInfo(QWidget):
 
     @Slot()
     def open_rate(self):
-        self.rate_window.setup(self.manga)
+        self.rate_window = FormRate(self.manga)
         self.rate_window.show()
 
     @Slot()
