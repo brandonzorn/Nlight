@@ -29,31 +29,30 @@ class FormLibrary(MangaItemBasedWidget):
         for manga in self.mangas:
             item = self.setup_manga_item(manga)
             self.manga_items.append(item)
-        self.update_manga_grid()
+        self.add_manga_items()
+        self.update_manga_items()
 
-    def delete_manga_items(self):
-        for manga_item in self.manga_items:
-            if manga_item.parent() == self.ui.scrollAreaWidgetContents:
-                self.ui.content_grid.removeWidget(manga_item)
-            manga_item.deleteLater()
-        self.manga_items.clear()
-
-    def update_manga_grid(self):
-        col_count = 6
+    def add_manga_items(self):
         i, j = 0, 0
         for manga_item in self.manga_items:
-            manga_item.set_size(self.ui.scrollArea.size().width() // col_count)
-            if manga_item.parent() == self.ui.scrollAreaWidgetContents:
-                self.ui.content_grid.removeWidget(manga_item)
             self.ui.content_grid.addWidget(manga_item, i, j, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
             j += 1
-            if j == col_count - 1:
+            if j == self.col_count - 1:
                 j = 0
                 i += 1
 
+    def delete_manga_items(self):
+        for manga_item in self.manga_items:
+            self.ui.content_grid.removeWidget(manga_item)
+            manga_item.deleteLater()
+        self.manga_items.clear()
+
+    def update_manga_items(self):
+        [manga_item.set_size(self.ui.scrollArea.size().width() // self.col_count) for manga_item in self.manga_items]
+
     def setup_manga_item(self, manga: Manga):
         item = MangaItem(manga, pool=self.manga_thread_pool)
-        item.signals.manga_clicked.connect(lambda x: self.signals.manga_open.emit(x))
+        item.signals.manga_clicked.connect(self.manga_open.emit)
         item.signals.manga_changed.connect(self.get_content)
         return item
 
