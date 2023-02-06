@@ -25,7 +25,7 @@ class ParentWindow(QMainWindow):
         self.Form_facial.manga_open.connect(self.open_info)
         self.Form_library.manga_open.connect(self.open_info)
         self.Form_shikimori.manga_open.connect(self.open_info)
-        self.Form_history.signals.manga_open.connect(self.open_info)
+        self.Form_history.manga_open.connect(self.open_info)
 
         self.ui.top_item.currentChanged.connect(self.widgets_checker)
 
