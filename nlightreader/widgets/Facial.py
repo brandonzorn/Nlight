@@ -57,7 +57,7 @@ class FormFacial(MangaItemBasedWidget):
 
     def setup_manga_item(self, manga: Manga):
         item = MangaItem(manga, pool=self.manga_thread_pool)
-        item.signals.manga_clicked.connect(self.manga_open.emit)
+        item.manga_clicked.connect(self.manga_open.emit)
         return item
 
     def setup_catalogs(self):
