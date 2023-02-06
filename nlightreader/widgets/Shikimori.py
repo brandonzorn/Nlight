@@ -82,25 +82,7 @@ class FormShikimori(MangaItemBasedWidget):
         return self.catalog.get_user()
 
     @Slot()
-    def turn_page_next(self):
-        if self.request_params.page == 999:
-            return
-        self.request_params.page += 1
-        self.get_content()
-
-    @Slot()
-    def turn_page_prev(self):
-        if self.request_params.page == 1:
-            return
-        self.request_params.page -= 1
-        self.get_content()
-
-    @Slot()
     def search(self):
         self.request_params.page = 1
         self.request_params.search = self.ui.title_line.text()
-        self.get_content()
-
-    def change_list(self, lib_list: LibList):
-        self.request_params.lib_list = lib_list
         self.get_content()
