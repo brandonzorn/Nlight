@@ -1,6 +1,6 @@
 import webbrowser
 
-from PySide6.QtCore import Qt, QObject, Signal
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QWidget
 
 from data.ui.manga_item import Ui_manga_item_widget
@@ -9,12 +9,10 @@ from nlightreader.items import Manga
 from nlightreader.utils import Worker, get_catalog, get_manga_preview, Database
 
 
-class Signals(QObject):
+class MangaItem(QWidget):
     manga_clicked = Signal(Manga)
     manga_changed = Signal()
 
-
-class MangaItem(QWidget):
     def __init__(self, manga: Manga, *, is_added_to_lib=True, pool=None):
         super().__init__()
         self.ui = Ui_manga_item_widget()
@@ -24,14 +22,13 @@ class MangaItem(QWidget):
         self._is_added_to_lib = is_added_to_lib
         self._db: Database = Database()
         self._pool = pool
-        self.signals = Signals()
         self.ui.manga_item_frame.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.name_lbl.setText(self.manga.get_name())
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
             if self.rect().contains(event.pos()):
-                self.signals.manga_clicked.emit(self.manga)
+                self.manga_clicked.emit(self.manga)
         event.accept()
 
     def enterEvent(self, event):
@@ -53,7 +50,7 @@ class MangaItem(QWidget):
 
         def remove_from_lib():
             self._db.rem_manga_library(self.manga)
-            self.signals.manga_changed.emit()
+            self.manga_changed.emit()
 
         def open_in_browser():
             webbrowser.open_new_tab(get_catalog(self.manga.catalog_id)().get_manga_url(self.manga))

@@ -52,8 +52,8 @@ class FormLibrary(MangaItemBasedWidget):
 
     def setup_manga_item(self, manga: Manga):
         item = MangaItem(manga, pool=self.manga_thread_pool)
-        item.signals.manga_clicked.connect(self.manga_open.emit)
-        item.signals.manga_changed.connect(self.get_content)
+        item.manga_clicked.connect(self.manga_open.emit)
+        item.manga_changed.connect(self.get_content)
         return item
 
     def get_content(self):
