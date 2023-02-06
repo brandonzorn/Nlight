@@ -8,20 +8,6 @@ from nlightreader.utils import Worker
 from nlightreader.widgets.MangaItem import MangaItem
 
 
-class BaseWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-
-    def setup(self):
-        self.get_content()
-
-    def update_content(self):
-        pass
-
-    def get_content(self):
-        pass
-
-
 class MangaItemBasedWidget(QWidget):
     manga_open = Signal(Manga)
 
