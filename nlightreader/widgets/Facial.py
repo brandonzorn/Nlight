@@ -65,33 +65,12 @@ class FormFacial(MangaItemBasedWidget):
         self.ui.catalogs_list.clear()
         self.ui.catalogs_list.addItems([i.catalog_name for i in USER_CATALOGS])
 
-    def change_filters_visible(self):
-        if self.ui.close_filters_btn.isChecked():
-            self.ui.filters_widget.setVisible(True)
-        else:
-            self.ui.filters_widget.setVisible(False)
-            self.ui.catalogs_frame.setVisible(False)
-
     def change_catalog(self, index: int):
         catalog = USER_CATALOGS[index]
         self.catalog = catalog()
         self.Form_genres.catalog = catalog()
         self.setup_filters()
         self.apply_filter()
-
-    @Slot()
-    def turn_page_next(self):
-        if self.request_params.page == 999:
-            return
-        self.request_params.page += 1
-        self.get_content()
-
-    @Slot()
-    def turn_page_prev(self):
-        if self.request_params.page == 1:
-            return
-        self.request_params.page -= 1
-        self.get_content()
 
     def update_page(self):
         self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
@@ -148,3 +127,11 @@ class FormFacial(MangaItemBasedWidget):
             self.ui.orders_grid.itemAt(i).widget().deleteLater()
         for i in reversed(range(self.ui.kinds_grid.count())):
             self.ui.kinds_grid.itemAt(i).widget().deleteLater()
+
+    @Slot()
+    def change_filters_visible(self):
+        if self.ui.close_filters_btn.isChecked():
+            self.ui.filters_widget.setVisible(True)
+        else:
+            self.ui.filters_widget.setVisible(False)
+            self.ui.catalogs_frame.setVisible(False)

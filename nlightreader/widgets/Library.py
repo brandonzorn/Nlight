@@ -1,4 +1,4 @@
-from PySide6.QtCore import Slot, Qt
+from PySide6.QtCore import Qt
 
 from data.ui.library import Ui_Form
 from nlightreader.consts import LibList
@@ -55,11 +55,6 @@ class FormLibrary(MangaItemBasedWidget):
         item.signals.manga_clicked.connect(self.manga_open.emit)
         item.signals.manga_changed.connect(self.get_content)
         return item
-
-    @Slot(LibList)
-    def change_list(self, lst: LibList):
-        self.request_params.lib_list = lst
-        self.get_content()
 
     def get_content(self):
         self.update_content()
