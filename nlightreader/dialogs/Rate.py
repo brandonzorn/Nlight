@@ -9,22 +9,24 @@ from nlightreader.utils.catalog_manager import get_catalog, get_lib_catalog
 
 
 class FormRate(QDialog):
-    def __init__(self):
-        super().__init__(None)
+    def __init__(self, manga: Manga):
+        super().__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in lib_lists_en])
         self.ui.update_btn.clicked.connect(self.send_rate)
-        self.ui.cancel_btn.clicked.connect(lambda: self.close())
+        self.ui.cancel_btn.clicked.connect(self.close)
         self.ui.delete_btn.clicked.connect(self.delete_rate)
-        self.catalog = None
-        self.manga = None
+        self.manga = manga
+        self.catalog = get_lib_catalog(get_catalog(self.manga.catalog_id))()
+
         self.user_rate = None
 
-    def setup(self, manga: Manga):
-        self.manga = manga
         self.setWindowTitle(f'{self.manga.get_name()}')
-        self.catalog = get_lib_catalog(get_catalog(manga.catalog_id))()
+
+        self.setup()
+
+    def setup(self):
         if not self.catalog.check_user_rate(self.manga):
             self.catalog.create_user_rate(self.manga)
         self.user_rate = self.catalog.get_user_rate(self.manga)
@@ -33,6 +35,9 @@ class FormRate(QDialog):
         if self.manga.chapters:
             self.ui.chapters_box.setMaximum(self.manga.chapters)
         self.ui.lib_list_box.setCurrentIndex(lib_lists_en.index(parse_lib_list(self.user_rate.status)))
+
+    def closeEvent(self, arg__1):
+        self.deleteLater()
 
     @Slot()
     def send_rate(self):
