@@ -24,6 +24,7 @@ class MangaItem(QWidget):
         self._pool = pool
         self.ui.manga_item_frame.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.name_lbl.setText(self.manga.get_name())
+        self.update_image()
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
@@ -72,16 +73,17 @@ class MangaItem(QWidget):
         self.setMaximumWidth(size)
         self.setFixedSize(self.maximumWidth(), self.maximumWidth() * 2)
         self.ui.image.setMaximumSize(self.maximumWidth(), self.maximumWidth() * 2)
-        self.update_image()
+        if self.manga_pixmap:
+            self.set_image()
+
+    def get_image(self):
+        catalog = get_catalog(self.manga.catalog_id)()
+        self.manga_pixmap = get_manga_preview(self.manga, catalog)
+
+    def set_image(self):
+        pixmap = self.manga_pixmap.scaled(self.ui.image.maximumSize(), Qt.AspectRatioMode.KeepAspectRatio,
+                                          Qt.TransformationMode.SmoothTransformation)
+        self.ui.image.setPixmap(pixmap)
 
     def update_image(self):
-        def get_image():
-            if not self.manga_pixmap:
-                catalog = get_catalog(self.manga.catalog_id)()
-                self.manga_pixmap = get_manga_preview(self.manga, catalog)
-
-        def set_image():
-            pixmap = self.manga_pixmap.scaled(self.ui.image.maximumSize(), Qt.AspectRatioMode.KeepAspectRatio,
-                                              Qt.TransformationMode.SmoothTransformation)
-            self.ui.image.setPixmap(pixmap)
-        Worker(target=get_image, callback=set_image).start(self._pool)
+        Worker(target=self.get_image, callback=self.set_image).start(self._pool)
