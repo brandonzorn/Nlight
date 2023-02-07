@@ -1,6 +1,6 @@
 import webbrowser
 
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt, Signal, QSize
 from PySide6.QtWidgets import QWidget
 
 from data.ui.manga_item import Ui_manga_item_widget
@@ -70,9 +70,9 @@ class MangaItem(QWidget):
         menu.exec(self.ui.manga_item_frame.mapToGlobal(pos))
 
     def set_size(self, size: int):
-        self.setMaximumWidth(size)
-        self.setFixedSize(self.maximumWidth(), self.maximumWidth() * 2)
-        self.ui.image.setMaximumSize(self.maximumWidth(), self.maximumWidth() * 2)
+        max_size = QSize(size, size * 2)
+        self.setFixedSize(max_size)
+        self.ui.image.setMaximumSize(max_size)
         if self.manga_pixmap:
             self.set_image()
 
