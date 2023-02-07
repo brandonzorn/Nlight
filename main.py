@@ -2,7 +2,7 @@ import sys
 import time
 
 import darkdetect
-from PySide6.QtCore import QSize, Qt, QTranslator, QLocale
+from PySide6.QtCore import QSize, Qt, QTranslator, QLocale, QThreadPool
 from PySide6.QtGui import QIcon, QFont
 from PySide6.QtWidgets import QApplication
 
@@ -36,6 +36,7 @@ class App(ParentWindow):
 if __name__ == '__main__':
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
     QApplication.setStyle('Fusion')
+    QThreadPool.globalInstance().setMaxThreadCount(32)
     app = QApplication(sys.argv)
     trans = QTranslator()
     trans.load(get_locale_path(QLocale().language()))
