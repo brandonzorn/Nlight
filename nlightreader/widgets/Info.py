@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, QSize, Slot, Signal
+from PySide6.QtCore import Qt, QSize, Slot, Signal, QThreadPool
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 
@@ -30,6 +30,8 @@ class FormInfo(QWidget):
         self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.back_btn.clicked.connect(self.close_widget)
         self.db: Database = Database()
+        self.thread_pool = QThreadPool()
+        self.thread_pool.setMaxThreadCount(3)
         self.catalog = None
         self.manga = None
         self.related_mangas: list[Manga] = []
@@ -87,7 +89,7 @@ class FormInfo(QWidget):
             self.catalog = get_catalog(manga.catalog_id)()
             self.manga = self.catalog.get_manga(manga)
             self.db.add_manga(self.manga)
-        Worker(target=info_setup, callback=self.update_additional_info).start()
+        Worker(target=info_setup, callback=self.update_additional_info).start(pool=self.thread_pool)
 
     def update_additional_info(self):
         self.ui.lib_frame.setVisible(not self.catalog.is_primary)
@@ -173,7 +175,7 @@ class FormInfo(QWidget):
                 if chapter.language:
                     item.setIcon(QIcon(get_language_icon(chapter.language)))
                 self.ui.items_list.addItem(item)
-        Worker(target=get_chapters, callback=update_chapters).start()
+        Worker(target=get_chapters, callback=update_chapters).start(pool=self.thread_pool)
 
     def get_relations(self):
         def get_relations():
@@ -185,7 +187,7 @@ class FormInfo(QWidget):
             for manga in self.related_mangas:
                 item = QListWidgetItem(manga.get_name())
                 self.ui.related_list.addItem(item)
-        Worker(target=get_relations, callback=update_relations).start()
+        Worker(target=get_relations, callback=update_relations).start(pool=self.thread_pool)
 
     def get_characters(self):
         def get_characters():
@@ -197,7 +199,7 @@ class FormInfo(QWidget):
             for character in self.related_characters:
                 item = QListWidgetItem(character.get_name())
                 self.ui.characters_list.addItem(item)
-        Worker(target=get_characters, callback=update_characters).start()
+        Worker(target=get_characters, callback=update_characters).start(pool=self.thread_pool)
 
     @Slot()
     def open_reader(self):
