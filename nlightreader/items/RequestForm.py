@@ -1,6 +1,5 @@
 from nlightreader.consts import LibList
-from nlightreader.items import Genre, Kind
-from nlightreader.items.sort_items import Order
+from nlightreader.items.sort_items import Order, Genre, Kind
 
 
 class RequestForm:
