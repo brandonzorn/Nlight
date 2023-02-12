@@ -19,6 +19,8 @@
     <file>data/icons/lang/ua.svg</file>
   </qresource>
   <qresource prefix="actions_white">
+    <file>data/icons/buttons/svg_24dp_white/actions/filter.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/actions/filter_filled.svg</file>
     <file>data/icons/buttons/svg_24dp_white/actions/library.svg</file>
     <file>data/icons/buttons/svg_24dp_white/actions/library_filled.svg</file>
     <file>data/icons/buttons/svg_24dp_white/actions/delete.svg</file>
@@ -41,6 +43,8 @@
     <file>data/icons/buttons/svg_24dp_black/arrows/double_arrow_right.svg</file>
   </qresource>
   <qresource prefix="actions_black">
+    <file>data/icons/buttons/svg_24dp_black/actions/filter.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/actions/filter_filled.svg</file>
     <file>data/icons/buttons/svg_24dp_black/actions/delete.svg</file>
     <file>data/icons/buttons/svg_24dp_black/actions/expand_less.svg</file>
     <file>data/icons/buttons/svg_24dp_black/actions/expand_more.svg</file>
