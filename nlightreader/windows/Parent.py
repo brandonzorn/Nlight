@@ -1,7 +1,7 @@
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QMainWindow
 
-from data.ui.mainWindow import Ui_MainWindow
+from data.ui.windows.mainWindow import Ui_MainWindow
 from nlightreader.items import Manga
 from nlightreader.widgets import FormFacial, FormLibrary, FormShikimori, FormHistory, FormInfo
 
@@ -42,9 +42,12 @@ class ParentWindow(QMainWindow):
 
     @Slot(Manga)
     def open_info(self, manga: Manga):
+        self.ui.top_item.setEnabled(False)
+
         def set_info_widget():
             self.ui.top_item.addWidget(info)
             self.ui.top_item.setCurrentWidget(info)
+            self.ui.top_item.setEnabled(True)
         info = FormInfo()
         info.opened_related_manga.connect(self.open_info)
         info.setup_done.connect(set_info_widget)

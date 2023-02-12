@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt
 
-from data.ui.library import Ui_Form
+from data.ui.widgets.library import Ui_Form
 from nlightreader.consts import LibList
 from nlightreader.items import Manga
 from nlightreader.parsers import LocalLib

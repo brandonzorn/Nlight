@@ -2,7 +2,7 @@ import webbrowser
 
 from PySide6.QtWidgets import QDialog
 
-from data.ui.auth import Ui_Dialog
+from data.ui.dialogs.auth import Ui_Dialog
 
 
 class FormAuth(QDialog):

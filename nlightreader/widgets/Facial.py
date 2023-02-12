@@ -1,7 +1,7 @@
 from PySide6.QtCore import Slot, Qt
 from PySide6.QtWidgets import QCheckBox, QRadioButton
 
-from data.ui.facial import Ui_Form
+from data.ui.widgets.facial import Ui_Form
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import Manga
 from nlightreader.utils import USER_CATALOGS, translate

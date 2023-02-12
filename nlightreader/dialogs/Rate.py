@@ -1,7 +1,7 @@
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QDialog
 
-from data.ui.rate import Ui_Dialog
+from data.ui.dialogs.rate import Ui_Dialog
 from nlightreader.consts import lib_lists_en, parse_lib_list
 from nlightreader.items import Manga
 from nlightreader.utils import translate

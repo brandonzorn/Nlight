@@ -2,7 +2,7 @@ from PySide6.QtCore import Qt, QSize, Slot, Signal, QThreadPool
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 
-from data.ui.info import Ui_Form
+from data.ui.widgets.info import Ui_Form
 from nlightreader.consts import lib_lists_en, ItemsColors, LibList
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
@@ -138,8 +138,7 @@ class FormInfo(QWidget):
         self.ui.catalog_score_label.setVisible(bool(self.manga.score))
         self.ui.catalog_score_label.setText(f"{translate('Other', 'Rating')}: {self.manga.score}")
         self.ui.description_frame.setVisible(bool(self.manga.description))
-        self.ui.description_text.clear()
-        self.ui.description_text.insertHtml(description_to_html(self.manga.description))
+        self.ui.description_text.setHtml(description_to_html(self.manga.description))
 
     @Slot()
     def add_to_favorites(self):
