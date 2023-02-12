@@ -4,7 +4,7 @@ from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QMainWindow
 
-from data.ui.reader import Ui_ReaderWindow
+from data.ui.windows.reader import Ui_ReaderWindow
 from nlightreader.items import Manga, Chapter, Image, HistoryNote
 from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image, translate, Worker, \
     check_chapter_image

@@ -1,7 +1,7 @@
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QDialog, QCheckBox
 
-from data.ui.genres import Ui_Dialog
+from data.ui.dialogs.genres import Ui_Dialog
 from nlightreader.utils.catalog_manager import get_catalog
 
 

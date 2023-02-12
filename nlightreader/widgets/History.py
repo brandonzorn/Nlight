@@ -1,7 +1,7 @@
 from PySide6.QtCore import Slot, Signal
 from PySide6.QtWidgets import QListWidgetItem, QWidget
 
-from data.ui.history import Ui_Form
+from data.ui.widgets.history import Ui_Form
 from nlightreader.consts import ItemsColors
 from nlightreader.contexts import HistoryNoteMenu
 from nlightreader.items import HistoryNote, Manga
