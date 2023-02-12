@@ -1,7 +1,7 @@
 from PySide6.QtCore import QLocale
 
-from nlightreader.items.sort_items import Genre
 from nlightreader.items.BaseItem import BaseItem
+from nlightreader.items.sort_items import Genre
 
 
 class Manga(BaseItem):
