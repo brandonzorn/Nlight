@@ -172,7 +172,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="../../nlight_res.qrc">
+              <iconset resource="../../../nlight_res.qrc">
                <normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_back_ios.svg</normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_back_ios.svg</iconset>
              </property>
              <property name="shortcut">
@@ -199,7 +199,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="../../nlight_res.qrc">
+              <iconset resource="../../../nlight_res.qrc">
                <normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_forward_ios.svg</normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_forward_ios.svg</iconset>
              </property>
              <property name="shortcut">
@@ -223,7 +223,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="../../nlight_res.qrc">
+              <iconset resource="../../../nlight_res.qrc">
                <normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/double_arrow_left.svg</normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/double_arrow_left.svg</iconset>
              </property>
              <property name="shortcut">
@@ -250,7 +250,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="../../nlight_res.qrc">
+              <iconset resource="../../../nlight_res.qrc">
                <normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/double_arrow_right.svg</normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/double_arrow_right.svg</iconset>
              </property>
              <property name="shortcut">
@@ -300,7 +300,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../nlight_res.qrc">
+            <iconset resource="../../../nlight_res.qrc">
              <normaloff>:/actions_white/data/icons/buttons/svg_24dp_white/actions/fullscreen.svg</normaloff>
              <normalon>:/actions_white/data/icons/buttons/svg_24dp_white/actions/fullscreen_exit.svg</normalon>:/actions_white/data/icons/buttons/svg_24dp_white/actions/fullscreen.svg</iconset>
            </property>
@@ -321,7 +321,7 @@
   </widget>
  </widget>
  <resources>
-  <include location="../../nlight_res.qrc"/>
+  <include location="../../../nlight_res.qrc"/>
  </resources>
  <connections/>
 </ui>
