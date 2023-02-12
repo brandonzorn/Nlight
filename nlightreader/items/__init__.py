@@ -1,12 +1,4 @@
-from .Chapter import Chapter
-from .Character import Character
-from .Genre import Genre
-from .HistoryNote import HistoryNote
-from .Image import Image
-from .Kind import Kind
-from .Manga import Manga
-from .Order import Order
+from .manga_items import Manga, Chapter, Image, Character
+from .sort_items import Kind, Genre, Order, Status
+from .other_items import HistoryNote, User, UserRate
 from .RequestForm import RequestForm
-from .Status import Status
-from .User import User
-from .UserRate import UserRate
