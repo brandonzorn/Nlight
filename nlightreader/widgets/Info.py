@@ -77,7 +77,7 @@ class FormInfo(QWidget):
         menu.exec(self.ui.items_list.mapToGlobal(pos))
 
     def resizeEvent(self, a0):
-        if not self.catalog or not self.manga:
+        if not self.catalog or not self.manga or not self.manga_pixmap:
             return
         self.update_manga_preview()
 
