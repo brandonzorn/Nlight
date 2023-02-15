@@ -5,5 +5,5 @@
 /build
 /Nlight.spec
 /keys.py
-/compile_to_exe.bat
+/Nlight*.bat
 *.pyc
