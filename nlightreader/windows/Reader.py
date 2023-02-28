@@ -143,7 +143,7 @@ class ReaderWindow(QMainWindow):
                 time.sleep(0.25)
                 if page != self.cur_page or chapter != self.cur_chapter:
                     return
-                self.ui.img.setText(f'Page is loading')
+                self.ui.img.setText(translate('Other', 'Page is loading'))
             if self.manga.kind == 'ranobe':
                 self.cur_image_pixmap = get_chapter_text(
                     self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog)
