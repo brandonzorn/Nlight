@@ -44,13 +44,21 @@ class ParentWindow(QMainWindow):
     def open_info(self, manga: Manga):
         self.ui.top_item.setEnabled(False)
 
+        @Slot()
         def set_info_widget():
             self.ui.top_item.addWidget(info)
             self.ui.top_item.setCurrentWidget(info)
             self.ui.top_item.setEnabled(True)
+
+        @Slot()
+        def delete_info_widget():
+            info.deleteLater()
+            self.ui.top_item.setEnabled(True)
+
         info = FormInfo()
         info.opened_related_manga.connect(self.open_info)
         info.setup_done.connect(set_info_widget)
+        info.setup_error.connect(delete_info_widget)
         info.setup(manga)
 
     @Slot()
