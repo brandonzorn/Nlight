@@ -15,6 +15,7 @@ from nlightreader.windows.Reader import ReaderWindow
 class FormInfo(QWidget):
     opened_related_manga = Signal(Manga)
     setup_done = Signal()
+    setup_error = Signal()
 
     def __init__(self):
         super().__init__()
@@ -86,9 +87,14 @@ class FormInfo(QWidget):
 
     def setup(self, manga):
         def info_setup():
-            self.catalog = get_catalog(manga.catalog_id)()
-            self.manga = self.catalog.get_manga(manga)
-            self.db.add_manga(self.manga)
+            try:
+                self.catalog = get_catalog(manga.catalog_id)()
+                self.manga = self.catalog.get_manga(manga)
+                self.db.add_manga(self.manga)
+            except Exception as e:
+                print(e)
+                self.setup_error.emit()
+
         Worker(target=info_setup, callback=self.update_additional_info).start(pool=self.thread_pool)
 
     def update_additional_info(self):
@@ -137,8 +143,8 @@ class FormInfo(QWidget):
         self.ui.chapters_label.setText(f"{translate('Other', 'Chapters')}: {self.manga.chapters}")
         self.ui.catalog_score_label.setVisible(bool(self.manga.score))
         self.ui.catalog_score_label.setText(f"{translate('Other', 'Rating')}: {self.manga.score}")
-        self.ui.description_frame.setVisible(bool(self.manga.description))
-        self.ui.description_text.setHtml(description_to_html(self.manga.description))
+        self.ui.description_frame.setVisible(bool(self.manga.descriptions))
+        self.ui.description_text.setHtml(description_to_html(self.manga.get_description()))
 
     @Slot()
     def add_to_favorites(self):
