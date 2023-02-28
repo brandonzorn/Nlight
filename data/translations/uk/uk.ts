@@ -212,6 +212,14 @@
         <translation>Рейтинг</translation>
     </message>
     <message>
+        <source>Page is loading</source>
+        <translation>Сторінка завантажується</translation>
+    </message>
+</context>
+
+<context>
+    <name>Status</name>
+        <message>
         <source>Ongoing</source>
         <translation>Виходить</translation>
     </message>

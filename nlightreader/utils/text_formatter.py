@@ -58,9 +58,9 @@ def translate(context, string):
 def get_status(status: str) -> str:
     match status:
         case 'ongoing':
-            return translate("Other", status.capitalize())
+            return translate("Status", status.capitalize())
         case 'completed' | 'released':
-            return translate("Other", 'completed'.capitalize())
+            return translate("Status", 'completed'.capitalize())
         case _:
             if status:
                 return status.capitalize()
