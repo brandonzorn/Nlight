@@ -143,8 +143,8 @@ class FormInfo(QWidget):
         self.ui.chapters_label.setText(f"{translate('Other', 'Chapters')}: {self.manga.chapters}")
         self.ui.catalog_score_label.setVisible(bool(self.manga.score))
         self.ui.catalog_score_label.setText(f"{translate('Other', 'Rating')}: {self.manga.score}")
-        self.ui.description_frame.setVisible(bool(self.manga.descriptions))
-        self.ui.description_text.setHtml(description_to_html(self.manga.get_description()))
+        self.ui.description_frame.setVisible(bool(self.manga.description))
+        self.ui.description_text.setHtml(description_to_html(self.manga.description))
 
     @Slot()
     def add_to_favorites(self):
