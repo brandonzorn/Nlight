@@ -47,10 +47,9 @@ def get_locale_path(locale: QLocale.Language) -> str:
             return Translations.En
 
 
-def get_data(a: dict, path: list, default_val=None):
+def get_data(data: dict, path: list, default_val=None):
     if default_val is None:
         default_val = {}
-    data = a
     for p in path:
         try:
             data = data.get(p)
