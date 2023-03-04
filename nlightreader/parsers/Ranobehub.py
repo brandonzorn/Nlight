@@ -22,9 +22,9 @@ class Ranobehub(Parser):
             manga.description = data.get('description')
         return manga
 
-    def search_manga(self, params: RequestForm):
+    def search_manga(self, form: RequestForm):
         url = f'{self.url_api}/search'
-        params = {'title-contains': params.search, 'page': params.page}
+        params = {'title-contains': form.search, 'page': form.page}
         html = get_html(url, self.headers, params)
         manga = []
         if html and html.status_code == 200 and html.json():

@@ -50,10 +50,10 @@ class MangaDex(Parser):
                 name = j.get('en')
         return Manga(manga_id, self.catalog_id, name, russian)
 
-    def search_manga(self, params: RequestForm):
+    def search_manga(self, form: RequestForm):
         url = f'{self.url_api}/manga'
-        params = {'limit': 50, 'title': params.search, 'offset': params.offset,
-                  'includedTags[]': [i.content_id for i in params.genres] + [i.content_id for i in params.kinds]}
+        params = {'limit': 50, 'title': form.search, 'offset': form.offset,
+                  'includedTags[]': form.get_genre_id() + form.get_kind_id()}
         mangas = []
         html = get_html(url, self.headers, params)
         if html and html.status_code == 200 and html.json():
@@ -134,15 +134,15 @@ class MangaDexLib(MangaDex, LibParser):
         self.fields = 2
         self.session = Auth()
 
-    def search_manga(self, req_params: RequestForm):
+    def search_manga(self, form: RequestForm):
         mangas = []
-        match req_params.lib_list:
+        match form.lib_list:
             case LibList.planned:
                 lib_list = 'plan_to_read'
             case _:
-                lib_list = req_params.lib_list.name
+                lib_list = form.lib_list.name
         html_statuses = self.session.get(f'{self.url_api}/manga/status', params={'status': lib_list})
-        params = {'limit': req_params.limit, 'offset': req_params.offset}
+        params = {'limit': form.limit, 'offset': form.offset}
         html = self.session.get(f'{self.url_api}/user/follows/manga', params=params)
         if html and html.status_code == 200 and html.json():
             for i in html.json().get('data'):

@@ -30,7 +30,7 @@ def get_language_icon(language: str):
             return ''
 
 
-def get_manga_kind(kind: str) -> None:
+def get_manga_kind(kind: str) -> MangaKinds:
     kinds_matches = {'manga': MangaKinds.manga, 'manhwa': MangaKinds.manhwa, 'manhua': MangaKinds.manhua,
                      'one_shot': MangaKinds.one_shot, 'doujin': MangaKinds.doujin, 'ranobe': MangaKinds.ranobe}
     assert kind in kinds_matches, f"Not fond matches for {kind}"
