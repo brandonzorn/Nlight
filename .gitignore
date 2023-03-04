@@ -7,3 +7,4 @@
 /keys.py
 /Nlight*.bat
 *.pyc
+.dmypy.json
