@@ -19,16 +19,15 @@ class Rulate(Parser):
         if html and html.status_code == 200:
             soup = BeautifulSoup(html.text, "html.parser")
             hranobe = soup.find('div', style="margin: 20px 0 0 0")
-            description = None
             if hranobe:
                 description = hranobe.findAll('p')[0].text
+                manga.description = description
             manga.kind = 'ranobe'
-            manga.description = description
         return manga
 
-    def search_manga(self, params: RequestForm):
+    def search_manga(self, form: RequestForm):
         ranobe = []
-        params = {'t': params.search, 'cat': 12, 'Book_page': params.page, 'sort': 5}
+        params = {'t': form.search, 'cat': 12, 'Book_page': form.page, 'sort': 5}
         html = get_html(f"{self.url_api}/search", params=params)
         if html and html.status_code == 200:
             soup = BeautifulSoup(html.text, "html.parser")
