@@ -37,7 +37,7 @@ def get_manga_kind(kind: str) -> MangaKinds:
     return kinds_matches[kind]
 
 
-def get_locale_path(locale: QLocale.Language) -> str:
+def get_locale(locale: QLocale.Language) -> str:
     match locale:
         case QLocale.Language.Russian:
             return Translations.Ru
