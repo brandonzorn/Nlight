@@ -8,7 +8,7 @@ from PySide6.QtWidgets import QApplication
 
 from nlightreader import ParentWindow
 from nlightreader.consts import APP_VERSION, APP_NAME, APP_PATHS, Icons, Fonts
-from nlightreader.utils import init_app_paths, get_locale_path, get_ui_style, Worker
+from nlightreader.utils import init_app_paths, get_locale, get_ui_style, Worker
 
 
 class App(ParentWindow):
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     QThreadPool.globalInstance().setMaxThreadCount(32)
     app = QApplication(sys.argv)
     trans = QTranslator()
-    trans.load(get_locale_path(QLocale().language()))
+    trans.load(get_locale(QLocale().language()))
     app.installTranslator(trans)
     font = QFont(Fonts.HelveticaRegular, 9)
     app.setFont(font)
