@@ -52,6 +52,8 @@ class Rulate(Parser):
             soup = BeautifulSoup(html.text, "html.parser")
             ranobe_chapters = soup.findAll('tr', class_='chapter_row')
             for chapter in ranobe_chapters:
+                if chapter.find('span', class_='disabled'):
+                    continue
                 name: str = chapter.find('td', class_='t').text
                 name = name.strip()
                 chapter_id = chapter.unwrap()['data-id']
