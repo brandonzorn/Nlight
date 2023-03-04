@@ -8,7 +8,7 @@ class Manga(BaseItem):
     def __init__(self, content_id: str, catalog_id, name, russian):
         super().__init__(content_id, catalog_id, name, russian)
         self.kind = None
-        self.description = ""
+        self.description = None
         self.score = 0
         self.status = None
         self.genres: list[Genre] = []

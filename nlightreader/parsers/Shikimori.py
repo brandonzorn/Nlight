@@ -103,11 +103,10 @@ class ShikimoriManga(ShikimoriBase):
     def __init__(self):
         super().__init__()
 
-    def search_manga(self, params: RequestForm):
+    def search_manga(self, form: RequestForm):
         url = f'{self.url_api}/mangas'
-        params = {'limit': params.limit, 'search': params.search,
-                  'genre': ','.join([i.content_id for i in params.genres]),
-                  'order': params.order.name, 'kind': ','.join([i.name for i in params.kinds]), 'page': params.page}
+        params = {'limit': form.limit, 'search': form.search, 'genre': ','.join(form.get_genre_id()),
+                  'order': form.order.name, 'kind': ','.join([i.name for i in form.kinds]), 'page': form.page}
         html = get_html(url, self.headers, params)
         mangas = []
         if html and html.status_code == 200 and html.json():
@@ -125,11 +124,10 @@ class ShikimoriRanobe(ShikimoriBase):
     def __init__(self):
         super().__init__()
 
-    def search_manga(self, params: RequestForm):
+    def search_manga(self, form: RequestForm):
         url = f'{self.url_api}/ranobe'
-        params = {'limit': params.limit, 'search': params.search,
-                  'genre': ','.join([i.content_id for i in params.genres]),
-                  'order': params.order.name, 'kind': ','.join([i.name for i in params.kinds]), 'page': params.page}
+        params = {'limit': form.limit, 'search': form.search, 'genre': ','.join(form.get_genre_id()),
+                  'order': form.order.name, 'kind': ','.join([i.name for i in form.kinds]), 'page': form.page}
         html = get_html(url, self.headers, params)
         mangas = []
         if html and html.status_code == 200 and html.json():

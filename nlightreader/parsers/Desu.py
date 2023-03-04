@@ -27,10 +27,10 @@ class Desu(Parser):
             manga.status = data.get("status")
         return manga
 
-    def search_manga(self, params: RequestForm):
+    def search_manga(self, form: RequestForm):
         url = f'{self.url_api}'
-        params = {'limit': params.limit, 'search': params.search, 'genres': ','.join([i.name for i in params.genres]),
-                  'order': params.order.name, 'kinds': ','.join([i.name for i in params.kinds]), 'page': params.page}
+        params = {'limit': form.limit, 'search': form.search, 'genres': ','.join([i.name for i in form.genres]),
+                  'order': form.order.name, 'kinds': ','.join([i.name for i in form.kinds]), 'page': form.page}
         html = get_html(url, self.headers, params)
         manga = []
         if html and html.status_code == 200 and html.json():
