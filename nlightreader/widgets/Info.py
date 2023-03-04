@@ -102,7 +102,7 @@ class FormInfo(QWidget):
         self.ui.shikimori_frame.setVisible(self.catalog.is_primary)
         self.set_info()
         if self.db.check_manga_library(self.manga):
-            self.ui.lib_list_box.setCurrentIndex(self.db.check_manga_library(self.manga).value)
+            self.ui.lib_list_box.setCurrentIndex(self.db.get_manga_library_list(self.manga).value)
             self.ui.add_btn.setChecked(True)
         else:
             self.ui.add_btn.setChecked(False)
@@ -208,10 +208,14 @@ class FormInfo(QWidget):
 
     @Slot()
     def open_reader(self):
-        prev_reader = self.reader_window
-        self.reader_window = ReaderWindow()
-        self.reader_window.setup(self.manga, self.chapters, self.ui.items_list.currentIndex().row() + 1)
-        prev_reader.close()
+        try:
+            if self.reader_window is not None:
+                self.reader_window.close()
+        except RuntimeError:
+            pass
+        finally:
+            self.reader_window = ReaderWindow()
+            self.reader_window.setup(self.manga, self.chapters, self.ui.items_list.currentIndex().row() + 1)
 
     @Slot()
     def open_related_manga(self):

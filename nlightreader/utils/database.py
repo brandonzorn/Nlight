@@ -9,7 +9,6 @@ from nlightreader.utils.decorators import with_lock_thread, singleton
 
 @singleton
 class Database:
-
     lock = Lock()
 
     def __init__(self):
@@ -100,10 +99,14 @@ class Database:
         return mangas
 
     @with_lock_thread(lock)
-    def check_manga_library(self, manga: Manga) -> LibList:
-        a = self.__cur.execute(f"SELECT list FROM library WHERE manga_id = '{manga.id}';").fetchall()
-        if a and a[0]:
-            return LibList(a[0][0])
+    def get_manga_library_list(self, manga: Manga) -> LibList:
+        a = self.__cur.execute(f"SELECT list FROM library WHERE manga_id = '{manga.id}';").fetchone()
+        return LibList(a[0])
+
+    @with_lock_thread(lock)
+    def check_manga_library(self, manga: Manga) -> bool:
+        a = self.__cur.execute(f"SELECT list FROM library WHERE manga_id = '{manga.id}';").fetchone()
+        return bool(a)
 
     @with_lock_thread(lock)
     def rem_manga_library(self, manga: Manga):
