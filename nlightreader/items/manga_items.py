@@ -7,10 +7,10 @@ from nlightreader.items.sort_items import Genre
 class Manga(BaseItem):
     def __init__(self, content_id: str, catalog_id, name, russian):
         super().__init__(content_id, catalog_id, name, russian)
-        self.kind = None
-        self.description = None
-        self.score = 0
-        self.status = None
+        self.kind: str | None = None
+        self.description: str | None = None
+        self.score: int | float = 0
+        self.status: str | None = None
         self.genres: list[Genre] = []
         self.volumes = 0
         self.chapters = 0
