@@ -20,8 +20,9 @@ class Rulate(Parser):
             soup = BeautifulSoup(html.text, "html.parser")
             hranobe = soup.find('div', style="margin: 20px 0 0 0")
             if hranobe:
-                description = hranobe.findAll('p')[0].text
-                manga.description = description
+                description_text = hranobe.findAll('p')[0].text
+                if description_text:
+                    manga.description = str(description_text)
             manga.kind = 'ranobe'
         return manga
 
@@ -74,7 +75,7 @@ class Rulate(Parser):
             soup = BeautifulSoup(html.text, "html.parser")
             himage = soup.find('meta', property="og:image")
             if himage:
-                return get_html(himage['content'])
+                return get_html(str(himage['content']))
 
     def get_manga_url(self, manga: Manga) -> str:
         return f'{URL_RULATE}/book/{manga.content_id}'

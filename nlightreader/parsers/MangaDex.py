@@ -39,7 +39,7 @@ class MangaDex(Parser):
         return manga
 
     def setup_manga(self, data: dict):
-        manga_id = data.get('id')
+        manga_id = str(data.get('id'))
         name = get_data(data, ['attributes', 'title', 'en'])
         russian = None
         alt_titles = get_data(data, ['attributes', 'altTitles'])
