@@ -1,8 +1,5 @@
 ## Nlight
 
-![Lines of code](https://img.shields.io/tokei/lines/github.com/brandonzorn/Nlight)
-![Downloads](https://img.shields.io/github/downloads/brandonzorn/Nlight/total)
-
 ![Nlight](./.github/Images/app_icon.png)
 
 Open source manga and ranobe reading application
