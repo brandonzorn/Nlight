@@ -60,7 +60,9 @@ class Desu(Parser):
         return images
 
     def get_image(self, image: Image):
-        return get_html(image.img)
+        headers = self.headers.copy()
+        headers.update({"Referer": "https://desu.me/"})
+        return get_html(image.img, headers=headers)
 
     def get_preview(self, manga: Manga):
         return get_html(f'https://desu.me/data/manga/covers/preview/{manga.content_id}.jpg')
