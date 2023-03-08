@@ -17,7 +17,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
     QMainWindow, QPushButton, QScrollArea, QSizePolicy,
-    QSlider, QSpacerItem, QVBoxLayout, QWidget)
+    QSlider, QSpacerItem, QTextBrowser, QTextEdit,
+    QVBoxLayout, QWidget)
 import nlight_res_rc
 
 class Ui_ReaderWindow(object):
@@ -51,6 +52,14 @@ class Ui_ReaderWindow(object):
 
         self.verticalLayout_2.addWidget(self.size_frame)
 
+        self.text = QTextBrowser(self.centralwidget)
+        self.text.setObjectName(u"text")
+        self.text.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.text.setAutoFormatting(QTextEdit.AutoNone)
+        self.text.setAcceptRichText(False)
+
+        self.verticalLayout_2.addWidget(self.text)
+
         self.content_frame = QFrame(self.centralwidget)
         self.content_frame.setObjectName(u"content_frame")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
@@ -70,7 +79,7 @@ class Ui_ReaderWindow(object):
         self.scrollArea.setAlignment(Qt.AlignCenter)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 302, 418))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 302, 195))
         self.scrollAreaWidgetContents.setAutoFillBackground(True)
         self.scrollAreaWidgetContents.setStyleSheet(u"")
         self.verticalLayout_5 = QVBoxLayout(self.scrollAreaWidgetContents)
@@ -93,8 +102,8 @@ class Ui_ReaderWindow(object):
 
         self.verticalLayout_2.addWidget(self.content_frame)
 
-        self.horizontalLayout_4 = QHBoxLayout()
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.actions_layout = QHBoxLayout()
+        self.actions_layout.setObjectName(u"actions_layout")
         self.actions_frame = QFrame(self.centralwidget)
         self.actions_frame.setObjectName(u"actions_frame")
         sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
@@ -167,7 +176,7 @@ class Ui_ReaderWindow(object):
         self.verticalLayout.addLayout(self.chapter_actions_label)
 
 
-        self.horizontalLayout_4.addWidget(self.actions_frame)
+        self.actions_layout.addWidget(self.actions_frame)
 
         self.frame = QFrame(self.centralwidget)
         self.frame.setObjectName(u"frame")
@@ -192,10 +201,10 @@ class Ui_ReaderWindow(object):
         self.verticalLayout_3.addWidget(self.fullscreen_btn)
 
 
-        self.horizontalLayout_4.addWidget(self.frame)
+        self.actions_layout.addWidget(self.frame)
 
 
-        self.verticalLayout_2.addLayout(self.horizontalLayout_4)
+        self.verticalLayout_2.addLayout(self.actions_layout)
 
         ReaderWindow.setCentralWidget(self.centralwidget)
 

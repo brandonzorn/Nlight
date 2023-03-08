@@ -188,3 +188,9 @@ QMenu::item:selected
 {
     background-color: gray;
 }
+
+
+QTextEdit
+{
+    color: rgb(255, 255, 255);
+}

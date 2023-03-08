@@ -68,6 +68,5 @@ def get_chapter_text(manga: Manga, chapter: Chapter, image, catalog) -> str:
         save_file(path, file_name, catalog.get_image(image))
     with open(f'{path}/{file_name}', encoding="utf8") as f:
         text = f.read()
-        text = text.replace('&nbsp;', u'\xa0')
-        text = text.replace('&mdash;', '—')
+        text = text.replace('\n', '<br>')
         return text
