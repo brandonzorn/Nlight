@@ -56,7 +56,8 @@ class Ui_ReaderWindow(object):
         self.text.setObjectName(u"text")
         self.text.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.text.setAutoFormatting(QTextEdit.AutoNone)
-        self.text.setAcceptRichText(False)
+        self.text.setAcceptRichText(True)
+        self.text.setTextInteractionFlags(Qt.NoTextInteraction)
 
         self.verticalLayout_2.addWidget(self.text)
 
