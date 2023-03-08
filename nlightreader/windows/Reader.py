@@ -60,7 +60,7 @@ class ReaderWindow(QMainWindow):
         event.accept()
 
     def resizeEvent(self, event):
-        if (not self.chapters) or (self.manga and self.manga.kind == 'ranobe'):
+        if (not self.chapters) or (self.manga and self.manga.kind == 'ranobe') or self.cur_image_pixmap is None:
             return
         self.reset_reader_area()
         self.update_image()
@@ -170,7 +170,7 @@ class ReaderWindow(QMainWindow):
         self.ui.text.setFont(font)
 
     def resize_pixmap(self, pixmap: QPixmap) -> QPixmap:
-        if pixmap.isNull():
+        if pixmap is None or pixmap.isNull():
             return QPixmap()
         if 0.5 < pixmap.width() / pixmap.height() < 2:
             pixmap = pixmap.scaled(self.ui.img.size(), Qt.AspectRatioMode.KeepAspectRatio,
