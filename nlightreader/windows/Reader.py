@@ -41,9 +41,11 @@ class ReaderWindow(QMainWindow):
         self.manga = manga
         if self.manga.kind == 'ranobe':
             self.ui.size_frame.show()
+            self.ui.content_frame.hide()
         else:
-            self.ui.img.setAlignment(Qt.AlignmentFlag.AlignHCenter)
             self.ui.size_frame.hide()
+            self.ui.text.hide()
+            self.ui.img.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.chapters = chapters
         self.cur_chapter = cur_chapter
         self.max_chapters = len(chapters)
@@ -61,7 +63,7 @@ class ReaderWindow(QMainWindow):
         if (not self.chapters) or (self.manga and self.manga.kind == 'ranobe'):
             return
         self.reset_reader_area()
-        self.set_image()
+        self.update_image()
         event.accept()
 
     def closeEvent(self, event):
@@ -132,7 +134,7 @@ class ReaderWindow(QMainWindow):
         self.cur_image_pixmap = None
         if not self.images:
             return
-        Worker(target=self.set_image).start()
+        Worker(target=self.set_image, callback=self.update_image).start()
 
     def set_image(self):
         page = self.cur_page
@@ -151,23 +153,21 @@ class ReaderWindow(QMainWindow):
                 if not self.cur_image_pixmap:
                     self.cur_image_pixmap = get_chapter_image(
                         self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog)
-
-        def update_image():
-            if self.manga.kind == 'ranobe':
-                self.ui.img.setText(self.cur_image_pixmap)
-            else:
-                pixmap = self.resize_pixmap(self.cur_image_pixmap)
-                self.ui.img.setPixmap(pixmap)
-
         get_image()
-        if page == self.cur_page and chapter == self.cur_chapter:
-            update_image()
+        assert page == self.cur_page or chapter == self.cur_chapter
+
+    def update_image(self):
+        if self.manga.kind == 'ranobe':
+            self.ui.text.setHtml(self.cur_image_pixmap)
+        else:
+            pixmap = self.resize_pixmap(self.cur_image_pixmap)
+            self.ui.img.setPixmap(pixmap)
 
     @Slot()
     def update_text_size(self):
         font = self.ui.img.font()
         font.setPointSize(self.ui.text_size_slider.value())
-        self.ui.img.setFont(font)
+        self.ui.text.setFont(font)
 
     def resize_pixmap(self, pixmap: QPixmap) -> QPixmap:
         if pixmap.isNull():

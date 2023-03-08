@@ -56,6 +56,19 @@
      </widget>
     </item>
     <item>
+     <widget class="QTextBrowser" name="text">
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="autoFormatting">
+       <set>QTextEdit::AutoNone</set>
+      </property>
+      <property name="acceptRichText">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QFrame" name="content_frame">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -90,7 +103,7 @@
             <x>0</x>
             <y>0</y>
             <width>302</width>
-            <height>418</height>
+            <height>195</height>
            </rect>
           </property>
           <property name="autoFillBackground">
@@ -142,7 +155,7 @@
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <layout class="QHBoxLayout" name="actions_layout">
       <item>
        <widget class="QFrame" name="actions_frame">
         <property name="sizePolicy">
