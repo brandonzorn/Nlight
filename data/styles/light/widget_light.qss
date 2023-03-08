@@ -183,3 +183,9 @@ QMenu::item:selected
 {
     background-color: rgb(204, 204, 204);
 }
+
+
+QTextEdit
+{
+    color: rgb(0, 0, 0);
+}
