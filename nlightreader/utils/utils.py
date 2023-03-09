@@ -48,14 +48,15 @@ def get_locale(locale: QLocale.Language) -> str:
 
 
 def get_data(data: dict, path: list, default_val=None):
+    if not isinstance(data, dict):
+        raise ValueError("Data is not dict")
     if default_val is None:
         default_val = {}
     for p in path:
         try:
-            data = data.get(p)
-        except Exception as e:
-            print(e)
-            data = default_val
+            data = data[p]
+        except KeyError:
+            return default_val
     return data
 
 
