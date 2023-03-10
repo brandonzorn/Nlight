@@ -55,9 +55,6 @@ class Ui_Form(object):
         self.delete_btn = QPushButton(self.frame)
         self.delete_btn.setObjectName(u"delete_btn")
         self.delete_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon = QIcon()
-        icon.addFile(u":/actions_white/data/icons/buttons/svg_24dp_white/actions/delete.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.delete_btn.setIcon(icon)
 
         self.verticalLayout.addWidget(self.delete_btn)
 

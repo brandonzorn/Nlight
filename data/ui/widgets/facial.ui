@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>586</width>
-    <height>417</height>
+    <width>613</width>
+    <height>414</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -53,8 +53,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>281</width>
-             <height>341</height>
+             <width>308</width>
+             <height>338</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scroll_layout">
@@ -141,27 +141,18 @@
              <property name="text">
               <string/>
              </property>
-             <property name="icon">
-              <iconset resource="../../../nlight_res.qrc">
-               <normaloff>:/actions_white/data/icons/buttons/svg_24dp_white/actions/search.svg</normaloff>:/actions_white/data/icons/buttons/svg_24dp_white/actions/search.svg</iconset>
-             </property>
             </widget>
            </item>
           </layout>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="close_filters_btn">
+         <widget class="QPushButton" name="filter_btn">
           <property name="cursor">
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="text">
            <string>Filters</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../../../nlight_res.qrc">
-            <normaloff>:/actions_white/data/icons/buttons/svg_24dp_white/actions/filter.svg</normaloff>
-            <normalon>:/actions_white/data/icons/buttons/svg_24dp_white/actions/filter_filled.svg</normalon>:/actions_white/data/icons/buttons/svg_24dp_white/actions/filter.svg</iconset>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -200,10 +191,6 @@
              <property name="text">
               <string/>
              </property>
-             <property name="icon">
-              <iconset resource="../../../nlight_res.qrc">
-               <normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_back_ios.svg</normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_back_ios.svg</iconset>
-             </property>
             </widget>
            </item>
            <item>
@@ -220,10 +207,6 @@
              </property>
              <property name="text">
               <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../../../nlight_res.qrc">
-               <normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_forward_ios.svg</normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_forward_ios.svg</iconset>
              </property>
             </widget>
            </item>
