@@ -86,9 +86,6 @@ class Ui_Form(object):
         self.search_btn = QPushButton(self.text_frame)
         self.search_btn.setObjectName(u"search_btn")
         self.search_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon = QIcon()
-        icon.addFile(u":/actions_white/data/icons/buttons/svg_24dp_white/actions/search.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.search_btn.setIcon(icon)
 
         self.horizontalLayout_2.addWidget(self.search_btn)
 
@@ -105,9 +102,6 @@ class Ui_Form(object):
         self.prev_btn = QPushButton(self.page_frame)
         self.prev_btn.setObjectName(u"prev_btn")
         self.prev_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon1 = QIcon()
-        icon1.addFile(u":/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_back_ios.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.prev_btn.setIcon(icon1)
 
         self.horizontalLayout.addWidget(self.prev_btn)
 
@@ -119,9 +113,6 @@ class Ui_Form(object):
         self.next_btn = QPushButton(self.page_frame)
         self.next_btn.setObjectName(u"next_btn")
         self.next_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon2 = QIcon()
-        icon2.addFile(u":/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_forward_ios.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.next_btn.setIcon(icon2)
 
         self.horizontalLayout.addWidget(self.next_btn)
 

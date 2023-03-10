@@ -43,9 +43,6 @@ class Ui_Form(object):
         self.back_btn = QPushButton(self.header_frame)
         self.back_btn.setObjectName(u"back_btn")
         self.back_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon = QIcon()
-        icon.addFile(u":/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_back.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.back_btn.setIcon(icon)
 
         self.horizontalLayout_3.addWidget(self.back_btn)
 
@@ -80,10 +77,6 @@ class Ui_Form(object):
         self.add_btn = QPushButton(self.lib_frame)
         self.add_btn.setObjectName(u"add_btn")
         self.add_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon1 = QIcon()
-        icon1.addFile(u":/actions_white/data/icons/buttons/svg_24dp_white/actions/star.svg", QSize(), QIcon.Normal, QIcon.Off)
-        icon1.addFile(u":/actions_white/data/icons/buttons/svg_24dp_white/actions/star_filled.svg", QSize(), QIcon.Normal, QIcon.On)
-        self.add_btn.setIcon(icon1)
         self.add_btn.setCheckable(True)
 
         self.horizontalLayout.addWidget(self.add_btn)
@@ -101,9 +94,6 @@ class Ui_Form(object):
         self.shikimori_btn = QPushButton(self.shikimori_frame)
         self.shikimori_btn.setObjectName(u"shikimori_btn")
         self.shikimori_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon2 = QIcon()
-        icon2.addFile(u":/png_white/data/icons/buttons/png_white/shikimori.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.shikimori_btn.setIcon(icon2)
 
         self.horizontalLayout_2.addWidget(self.shikimori_btn)
 

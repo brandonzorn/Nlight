@@ -8,8 +8,11 @@ def read_file(file: QFile):
 
 
 class Styles:
-    Dark = read_file(QFile(u":/styles/data/styles/dark/widget_dark.qss"))
-    Light = read_file(QFile(u":/styles/data/styles/light/widget_light.qss"))
+    Dark = read_file(QFile(u":/styles/data/styles/dark/widget_dark.qss")) +\
+           read_file(QFile(u":/styles/data/styles/dark/icons_dark.qss"))
+
+    Light = read_file(QFile(u":/styles/data/styles/light/widget_light.qss")) +\
+            read_file(QFile(u":/styles/data/styles/light/icons_light.qss"))
 
 
 class Fonts:
