@@ -24,7 +24,7 @@ class FormFacial(MangaItemBasedWidget):
             not self.ui.catalogs_list.isVisible()))
         self.ui.catalogs_list.doubleClicked.connect(
             lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row()))
-        self.ui.close_filters_btn.clicked.connect(self.change_filters_visible)
+        self.ui.filter_btn.clicked.connect(self.change_filters_visible)
         self.ui.scrollAreaWidgetContents.resizeEvent = self.scroll_resize_event
         self.order_items = {}
         self.kind_items = {}
@@ -130,7 +130,7 @@ class FormFacial(MangaItemBasedWidget):
 
     @Slot()
     def change_filters_visible(self):
-        if self.ui.close_filters_btn.isChecked():
+        if self.ui.filter_btn.isChecked():
             self.ui.filters_widget.setVisible(True)
         else:
             self.ui.filters_widget.setVisible(False)

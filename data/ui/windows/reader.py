@@ -122,9 +122,6 @@ class Ui_ReaderWindow(object):
         self.prev_page_btn.setObjectName(u"prev_page_btn")
         self.prev_page_btn.setCursor(QCursor(Qt.PointingHandCursor))
         self.prev_page_btn.setFocusPolicy(Qt.NoFocus)
-        icon = QIcon()
-        icon.addFile(u":/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_back_ios.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.prev_page_btn.setIcon(icon)
 
         self.page_actions_btn.addWidget(self.prev_page_btn)
 
@@ -137,9 +134,6 @@ class Ui_ReaderWindow(object):
         self.next_page_btn.setObjectName(u"next_page_btn")
         self.next_page_btn.setCursor(QCursor(Qt.PointingHandCursor))
         self.next_page_btn.setFocusPolicy(Qt.NoFocus)
-        icon1 = QIcon()
-        icon1.addFile(u":/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_forward_ios.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.next_page_btn.setIcon(icon1)
 
         self.page_actions_btn.addWidget(self.next_page_btn)
 
@@ -152,9 +146,6 @@ class Ui_ReaderWindow(object):
         self.prev_chapter_btn.setObjectName(u"prev_chapter_btn")
         self.prev_chapter_btn.setCursor(QCursor(Qt.PointingHandCursor))
         self.prev_chapter_btn.setFocusPolicy(Qt.NoFocus)
-        icon2 = QIcon()
-        icon2.addFile(u":/arrows_white/data/icons/buttons/svg_24dp_white/arrows/double_arrow_left.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.prev_chapter_btn.setIcon(icon2)
 
         self.chapter_actions_label.addWidget(self.prev_chapter_btn)
 
@@ -167,9 +158,6 @@ class Ui_ReaderWindow(object):
         self.next_chapter_btn.setObjectName(u"next_chapter_btn")
         self.next_chapter_btn.setCursor(QCursor(Qt.PointingHandCursor))
         self.next_chapter_btn.setFocusPolicy(Qt.NoFocus)
-        icon3 = QIcon()
-        icon3.addFile(u":/arrows_white/data/icons/buttons/svg_24dp_white/arrows/double_arrow_right.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.next_chapter_btn.setIcon(icon3)
 
         self.chapter_actions_label.addWidget(self.next_chapter_btn)
 
@@ -193,10 +181,6 @@ class Ui_ReaderWindow(object):
         self.fullscreen_btn.setObjectName(u"fullscreen_btn")
         self.fullscreen_btn.setCursor(QCursor(Qt.PointingHandCursor))
         self.fullscreen_btn.setFocusPolicy(Qt.NoFocus)
-        icon4 = QIcon()
-        icon4.addFile(u":/actions_white/data/icons/buttons/svg_24dp_white/actions/fullscreen.svg", QSize(), QIcon.Normal, QIcon.Off)
-        icon4.addFile(u":/actions_white/data/icons/buttons/svg_24dp_white/actions/fullscreen_exit.svg", QSize(), QIcon.Normal, QIcon.On)
-        self.fullscreen_btn.setIcon(icon4)
         self.fullscreen_btn.setCheckable(True)
 
         self.verticalLayout_3.addWidget(self.fullscreen_btn)

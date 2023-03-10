@@ -25,7 +25,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(586, 417)
+        Form.resize(613, 414)
         Form.setStyleSheet(u"")
         Form.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.horizontalLayout_5 = QHBoxLayout(Form)
@@ -44,7 +44,7 @@ class Ui_Form(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 281, 341))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 308, 338))
         self.scroll_layout = QVBoxLayout(self.scrollAreaWidgetContents)
         self.scroll_layout.setSpacing(0)
         self.scroll_layout.setObjectName(u"scroll_layout")
@@ -87,26 +87,19 @@ class Ui_Form(object):
         self.search_btn = QPushButton(self.text_frame)
         self.search_btn.setObjectName(u"search_btn")
         self.search_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon = QIcon()
-        icon.addFile(u":/actions_white/data/icons/buttons/svg_24dp_white/actions/search.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.search_btn.setIcon(icon)
 
         self.horizontalLayout_2.addWidget(self.search_btn)
 
 
         self.horizontalLayout_3.addWidget(self.text_frame)
 
-        self.close_filters_btn = QPushButton(self.search_frame)
-        self.close_filters_btn.setObjectName(u"close_filters_btn")
-        self.close_filters_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon1 = QIcon()
-        icon1.addFile(u":/actions_white/data/icons/buttons/svg_24dp_white/actions/filter.svg", QSize(), QIcon.Normal, QIcon.Off)
-        icon1.addFile(u":/actions_white/data/icons/buttons/svg_24dp_white/actions/filter_filled.svg", QSize(), QIcon.Normal, QIcon.On)
-        self.close_filters_btn.setIcon(icon1)
-        self.close_filters_btn.setCheckable(True)
-        self.close_filters_btn.setChecked(True)
+        self.filter_btn = QPushButton(self.search_frame)
+        self.filter_btn.setObjectName(u"filter_btn")
+        self.filter_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.filter_btn.setCheckable(True)
+        self.filter_btn.setChecked(True)
 
-        self.horizontalLayout_3.addWidget(self.close_filters_btn)
+        self.horizontalLayout_3.addWidget(self.filter_btn)
 
         self.page_frame = QFrame(self.search_frame)
         self.page_frame.setObjectName(u"page_frame")
@@ -118,9 +111,6 @@ class Ui_Form(object):
         self.prev_btn = QPushButton(self.page_frame)
         self.prev_btn.setObjectName(u"prev_btn")
         self.prev_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon2 = QIcon()
-        icon2.addFile(u":/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_back_ios.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.prev_btn.setIcon(icon2)
 
         self.horizontalLayout.addWidget(self.prev_btn)
 
@@ -132,9 +122,6 @@ class Ui_Form(object):
         self.next_btn = QPushButton(self.page_frame)
         self.next_btn.setObjectName(u"next_btn")
         self.next_btn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon3 = QIcon()
-        icon3.addFile(u":/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_forward_ios.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.next_btn.setIcon(icon3)
 
         self.horizontalLayout.addWidget(self.next_btn)
 
@@ -296,7 +283,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.search_btn.setText("")
-        self.close_filters_btn.setText(QCoreApplication.translate("Form", u"Filters", None))
+        self.filter_btn.setText(QCoreApplication.translate("Form", u"Filters", None))
         self.prev_btn.setText("")
         self.page_label.setText(QCoreApplication.translate("Form", u"Page 1", None))
         self.next_btn.setText("")

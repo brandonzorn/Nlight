@@ -141,10 +141,6 @@
              <property name="text">
               <string/>
              </property>
-             <property name="icon">
-              <iconset resource="../../../nlight_res.qrc">
-               <normaloff>:/actions_white/data/icons/buttons/svg_24dp_white/actions/search.svg</normaloff>:/actions_white/data/icons/buttons/svg_24dp_white/actions/search.svg</iconset>
-             </property>
             </widget>
            </item>
           </layout>
@@ -179,10 +175,6 @@
              <property name="text">
               <string/>
              </property>
-             <property name="icon">
-              <iconset resource="../../../nlight_res.qrc">
-               <normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_back_ios.svg</normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_back_ios.svg</iconset>
-             </property>
             </widget>
            </item>
            <item>
@@ -199,10 +191,6 @@
              </property>
              <property name="text">
               <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../../../nlight_res.qrc">
-               <normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_forward_ios.svg</normaloff>:/arrows_white/data/icons/buttons/svg_24dp_white/arrows/arrow_forward_ios.svg</iconset>
              </property>
             </widget>
            </item>

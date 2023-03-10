@@ -45,6 +45,8 @@
   <qresource prefix="actions_black">
     <file>data/icons/buttons/svg_24dp_black/actions/filter.svg</file>
     <file>data/icons/buttons/svg_24dp_black/actions/filter_filled.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/actions/library.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/actions/library_filled.svg</file>
     <file>data/icons/buttons/svg_24dp_black/actions/delete.svg</file>
     <file>data/icons/buttons/svg_24dp_black/actions/expand_less.svg</file>
     <file>data/icons/buttons/svg_24dp_black/actions/expand_more.svg</file>
@@ -63,7 +65,9 @@
   </qresource>
   <qresource prefix="styles">
     <file>data/styles/dark/widget_dark.qss</file>
+    <file>data/styles/dark/icons_dark.qss</file>
     <file>data/styles/light/widget_light.qss</file>
+    <file>data/styles/light/icons_light.qss</file>
   </qresource>
   <qresource prefix="fonts">
     <file>data/fonts/helvetica_light.otf</file>

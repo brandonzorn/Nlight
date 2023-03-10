@@ -71,10 +71,6 @@
         <property name="text">
          <string/>
         </property>
-        <property name="icon">
-         <iconset resource="../../../nlight_res.qrc">
-          <normaloff>:/actions_white/data/icons/buttons/svg_24dp_white/actions/delete.svg</normaloff>:/actions_white/data/icons/buttons/svg_24dp_white/actions/delete.svg</iconset>
-        </property>
        </widget>
       </item>
       <item>
