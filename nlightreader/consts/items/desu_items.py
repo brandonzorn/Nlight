@@ -26,7 +26,8 @@ class DesuItems:
               {'name': 'Action', 'russian': 'Экшен'}, {'name': 'Ecchi', 'russian': 'Этти'},
               {'name': 'Yuri', 'russian': 'Юри'}, {'name': 'Yaoi', 'russian': 'Яой'}]
 
-    ORDERS = [{'name': 'popular', 'russian': 'Популярность'}, {'name': 'name', 'russian': 'Название'}]
+    ORDERS = [{'name': 'popular', 'russian': 'Популярность'}, {'name': 'name', 'russian': 'Название'},
+              {'name': 'updated', 'russian': 'По обновлению'}]
 
     KINDS = [{'name': 'manga', 'russian': 'Манга'}, {'name': 'manhwa', 'russian': 'Манхва'},
              {'name': 'manhua', 'russian': 'Маньхуа'}, {'name': 'one_shot', 'russian': 'Ваншот'},
