@@ -4,11 +4,11 @@ QPushButton#btn_library
 }
 QPushButton#btn_main
 {
-    qproperty-icon: url(:/png_white/data/icons/buttons/png_white/main.png);
+    qproperty-icon: url(:/actions_black/data/icons/buttons/svg_24dp_black/actions/main.svg);
 }
-QPushButton#btn_shikimori
+QPushButton#btn_shikimori, #shikimori_btn
 {
-    qproperty-icon: url(:/png_white/data/icons/buttons/png_white/shikimori.png);
+    qproperty-icon: url(:/actions_black/data/icons/buttons/svg_24dp_black/actions/shikimori.svg);
 }
 QPushButton#btn_history
 {
@@ -43,10 +43,6 @@ QPushButton#delete_btn
 QPushButton#back_btn
 {
     qproperty-icon: url(:/arrows_black/data/icons/buttons/svg_24dp_black/arrows/arrow_back.svg);
-}
-QPushButton#shikimori_btn
-{
-    qproperty-icon: url(:/png_white/data/icons/buttons/png_white/shikimori.png);
 }
 QPushButton#add_btn
 {

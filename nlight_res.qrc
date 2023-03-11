@@ -8,9 +8,6 @@
   </qresource>
   <qresource prefix="png_white">
     <file>data/icons/icon.png</file>
-    <file>data/icons/buttons/png_white/main.png</file>
-    <file>data/icons/buttons/png_white/main_filled.png</file>
-    <file>data/icons/buttons/png_white/shikimori.png</file>
   </qresource>
   <qresource prefix="lang_icons">
     <file>data/icons/lang/gb.svg</file>
@@ -34,6 +31,8 @@
     <file>data/icons/buttons/svg_24dp_white/actions/search.svg</file>
     <file>data/icons/buttons/svg_24dp_white/actions/star.svg</file>
     <file>data/icons/buttons/svg_24dp_white/actions/star_filled.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/actions/shikimori.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/actions/main.svg</file>
   </qresource>
   <qresource prefix="arrows_black">
     <file>data/icons/buttons/svg_24dp_black/arrows/arrow_back.svg</file>
@@ -58,6 +57,8 @@
     <file>data/icons/buttons/svg_24dp_black/actions/search.svg</file>
     <file>data/icons/buttons/svg_24dp_black/actions/star.svg</file>
     <file>data/icons/buttons/svg_24dp_black/actions/star_filled.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/actions/shikimori.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/actions/main.svg</file>
   </qresource>
   <qresource prefix="translations">
     <file>data/translations/uk/uk.qm</file>
