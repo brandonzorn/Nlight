@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>342</width>
+    <width>489</width>
     <height>600</height>
    </rect>
   </property>
@@ -23,56 +23,86 @@
    <property name="styleSheet">
     <string notr="true"/>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
-     <widget class="QFrame" name="size_frame">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+     <widget class="QWidget" name="text_reader" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
-        <widget class="QSlider" name="text_size_slider">
-         <property name="enabled">
-          <bool>true</bool>
+        <widget class="QFrame" name="size_frame">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
          </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
          </property>
-         <property name="minimum">
-          <number>9</number>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QSlider" name="text_size_slider">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="minimum">
+             <number>9</number>
+            </property>
+            <property name="maximum">
+             <number>25</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="content_frame">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
          </property>
-         <property name="maximum">
-          <number>25</number>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
          </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <widget class="QTextBrowser" name="text">
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="autoFormatting">
+             <set>QTextEdit::AutoNone</set>
+            </property>
+            <property name="acceptRichText">
+             <bool>true</bool>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::NoTextInteraction</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
      </widget>
     </item>
     <item>
-     <widget class="QTextBrowser" name="text">
-      <property name="horizontalScrollBarPolicy">
-       <enum>Qt::ScrollBarAlwaysOff</enum>
-      </property>
-      <property name="autoFormatting">
-       <set>QTextEdit::AutoNone</set>
-      </property>
-      <property name="acceptRichText">
-       <bool>true</bool>
-      </property>
-      <property name="textInteractionFlags">
-       <set>Qt::NoTextInteraction</set>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QFrame" name="content_frame">
+     <widget class="QFrame" name="image_reader">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -105,8 +135,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>302</width>
-            <height>195</height>
+            <width>449</width>
+            <height>200</height>
            </rect>
           </property>
           <property name="autoFillBackground">
@@ -136,17 +166,11 @@
              <property name="styleSheet">
               <string notr="true"/>
              </property>
-             <property name="text">
-              <string/>
-             </property>
              <property name="alignment">
-              <set>Qt::AlignJustify|Qt::AlignVCenter</set>
+              <set>Qt::AlignCenter</set>
              </property>
-             <property name="wordWrap">
-              <bool>true</bool>
-             </property>
-             <property name="openExternalLinks">
-              <bool>false</bool>
+             <property name="textInteractionFlags">
+              <set>Qt::NoTextInteraction</set>
              </property>
             </widget>
            </item>

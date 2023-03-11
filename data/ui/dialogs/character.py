@@ -17,7 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QDialog, QFrame,
     QHBoxLayout, QLabel, QSizePolicy, QSpacerItem,
-    QTextEdit, QVBoxLayout, QWidget)
+    QTextBrowser, QVBoxLayout, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -93,19 +93,9 @@ class Ui_Dialog(object):
         self.description_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_4 = QVBoxLayout(self.description_frame)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.description = QTextEdit(self.description_frame)
+        self.description = QTextBrowser(self.description_frame)
         self.description.setObjectName(u"description")
-        self.description.setStyleSheet(u"")
-        self.description.setReadOnly(True)
-        self.description.setHtml(u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"hr { height: 1px; border-width: 0; }\n"
-"li.unchecked::marker { content: \"\\2610\"; }\n"
-"li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>")
-        self.description.setTextInteractionFlags(Qt.LinksAccessibleByMouse|Qt.TextSelectableByMouse)
+        self.description.setTextInteractionFlags(Qt.NoTextInteraction)
 
         self.verticalLayout_4.addWidget(self.description)
 

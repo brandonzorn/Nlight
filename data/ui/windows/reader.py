@@ -25,15 +25,20 @@ class Ui_ReaderWindow(object):
     def setupUi(self, ReaderWindow):
         if not ReaderWindow.objectName():
             ReaderWindow.setObjectName(u"ReaderWindow")
-        ReaderWindow.resize(342, 600)
+        ReaderWindow.resize(489, 600)
         ReaderWindow.setStyleSheet(u"")
         ReaderWindow.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.centralwidget = QWidget(ReaderWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.centralwidget.setStyleSheet(u"")
-        self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_4 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.text_reader = QWidget(self.centralwidget)
+        self.text_reader.setObjectName(u"text_reader")
+        self.verticalLayout_2 = QVBoxLayout(self.text_reader)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.size_frame = QFrame(self.centralwidget)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.size_frame = QFrame(self.text_reader)
         self.size_frame.setObjectName(u"size_frame")
         self.size_frame.setFrameShape(QFrame.StyledPanel)
         self.size_frame.setFrameShadow(QFrame.Raised)
@@ -52,27 +57,39 @@ class Ui_ReaderWindow(object):
 
         self.verticalLayout_2.addWidget(self.size_frame)
 
-        self.text = QTextBrowser(self.centralwidget)
+        self.content_frame = QFrame(self.text_reader)
+        self.content_frame.setObjectName(u"content_frame")
+        self.content_frame.setFrameShape(QFrame.StyledPanel)
+        self.content_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_6 = QVBoxLayout(self.content_frame)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.text = QTextBrowser(self.content_frame)
         self.text.setObjectName(u"text")
         self.text.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.text.setAutoFormatting(QTextEdit.AutoNone)
         self.text.setAcceptRichText(True)
         self.text.setTextInteractionFlags(Qt.NoTextInteraction)
 
-        self.verticalLayout_2.addWidget(self.text)
+        self.verticalLayout_6.addWidget(self.text)
 
-        self.content_frame = QFrame(self.centralwidget)
-        self.content_frame.setObjectName(u"content_frame")
+
+        self.verticalLayout_2.addWidget(self.content_frame)
+
+
+        self.verticalLayout_4.addWidget(self.text_reader)
+
+        self.image_reader = QFrame(self.centralwidget)
+        self.image_reader.setObjectName(u"image_reader")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.content_frame.sizePolicy().hasHeightForWidth())
-        self.content_frame.setSizePolicy(sizePolicy)
-        self.content_frame.setFrameShape(QFrame.StyledPanel)
-        self.content_frame.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_2 = QHBoxLayout(self.content_frame)
+        sizePolicy.setHeightForWidth(self.image_reader.sizePolicy().hasHeightForWidth())
+        self.image_reader.setSizePolicy(sizePolicy)
+        self.image_reader.setFrameShape(QFrame.StyledPanel)
+        self.image_reader.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_2 = QHBoxLayout(self.image_reader)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.scrollArea = QScrollArea(self.content_frame)
+        self.scrollArea = QScrollArea(self.image_reader)
         self.scrollArea.setObjectName(u"scrollArea")
         self.scrollArea.setFocusPolicy(Qt.NoFocus)
         self.scrollArea.setStyleSheet(u"")
@@ -80,7 +97,7 @@ class Ui_ReaderWindow(object):
         self.scrollArea.setAlignment(Qt.AlignCenter)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 302, 195))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 449, 200))
         self.scrollAreaWidgetContents.setAutoFillBackground(True)
         self.scrollAreaWidgetContents.setStyleSheet(u"")
         self.verticalLayout_5 = QVBoxLayout(self.scrollAreaWidgetContents)
@@ -90,9 +107,8 @@ class Ui_ReaderWindow(object):
         self.img = QLabel(self.scrollAreaWidgetContents)
         self.img.setObjectName(u"img")
         self.img.setStyleSheet(u"")
-        self.img.setAlignment(Qt.AlignJustify|Qt.AlignVCenter)
-        self.img.setWordWrap(True)
-        self.img.setOpenExternalLinks(False)
+        self.img.setAlignment(Qt.AlignCenter)
+        self.img.setTextInteractionFlags(Qt.NoTextInteraction)
 
         self.verticalLayout_5.addWidget(self.img)
 
@@ -101,7 +117,7 @@ class Ui_ReaderWindow(object):
         self.horizontalLayout_2.addWidget(self.scrollArea)
 
 
-        self.verticalLayout_2.addWidget(self.content_frame)
+        self.verticalLayout_4.addWidget(self.image_reader)
 
         self.actions_layout = QHBoxLayout()
         self.actions_layout.setObjectName(u"actions_layout")
@@ -189,7 +205,7 @@ class Ui_ReaderWindow(object):
         self.actions_layout.addWidget(self.frame)
 
 
-        self.verticalLayout_2.addLayout(self.actions_layout)
+        self.verticalLayout_4.addLayout(self.actions_layout)
 
         ReaderWindow.setCentralWidget(self.centralwidget)
 
@@ -200,7 +216,6 @@ class Ui_ReaderWindow(object):
 
     def retranslateUi(self, ReaderWindow):
         ReaderWindow.setWindowTitle(QCoreApplication.translate("ReaderWindow", u"MainWindow", None))
-        self.img.setText("")
         self.prev_page_btn.setText("")
 #if QT_CONFIG(shortcut)
         self.prev_page_btn.setShortcut(QCoreApplication.translate("ReaderWindow", u"Left", None))

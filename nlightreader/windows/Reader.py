@@ -40,12 +40,9 @@ class ReaderWindow(QMainWindow):
         self.showMaximized()
         self.manga = manga
         if self.manga.kind == 'ranobe':
-            self.ui.size_frame.show()
-            self.ui.content_frame.hide()
+            self.ui.image_reader.hide()
         else:
-            self.ui.size_frame.hide()
-            self.ui.text.hide()
-            self.ui.img.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+            self.ui.text_reader.hide()
         self.chapters = chapters
         self.cur_chapter = cur_chapter
         self.max_chapters = len(chapters)
