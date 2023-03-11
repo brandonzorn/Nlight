@@ -32,7 +32,7 @@ class ShikimoriBase(Parser):
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
             data = html.json()
-            manga.description = data.get('description')
+            manga.description.update({'all': data.get('description')})
             manga.kind = data.get('kind')
             manga.score = float(data.get('score'))
             manga.status = data.get('status')

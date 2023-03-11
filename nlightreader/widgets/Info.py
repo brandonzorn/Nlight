@@ -94,7 +94,6 @@ class FormInfo(QWidget):
             except Exception as e:
                 print(e)
                 self.setup_error.emit()
-
         Worker(target=info_setup, callback=self.update_additional_info).start(pool=self.thread_pool)
 
     def update_additional_info(self):
@@ -143,8 +142,8 @@ class FormInfo(QWidget):
         self.ui.chapters_label.setText(f"{translate('Other', 'Chapters')}: {self.manga.chapters}")
         self.ui.catalog_score_label.setVisible(bool(self.manga.score))
         self.ui.catalog_score_label.setText(f"{translate('Other', 'Rating')}: {self.manga.score}")
-        self.ui.description_frame.setVisible(bool(self.manga.description))
-        self.ui.description_text.setHtml(description_to_html(self.manga.description))
+        self.ui.description_frame.setVisible(bool(self.manga.get_description()))
+        self.ui.description_text.setHtml(description_to_html(self.manga.get_description()))
 
     @Slot()
     def add_to_favorites(self):

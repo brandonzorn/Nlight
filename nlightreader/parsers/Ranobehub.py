@@ -19,7 +19,7 @@ class Ranobehub(Parser):
             data = html.json().get('data')
             manga.kind = "ranobe"
             manga.score = data.get('rating')
-            manga.description = data.get('description')
+            manga.description.update({'all': data.get('description')})
         return manga
 
     def search_manga(self, form: RequestForm):

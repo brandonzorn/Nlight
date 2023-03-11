@@ -24,11 +24,9 @@ class MangaDex(Parser):
             manga.kind = data.get('type')
             description = get_data(data, ['attributes', 'description'])
             if description:
+                manga.description.update({'en': description.get('en')})
                 if description.get('ru'):
-                    description = description.get('ru')
-                else:
-                    description = description.get('en')
-            manga.description = description
+                    manga.description.update({'ru': description.get('ru')})
             volumes = get_data(data, ['attributes', 'lastVolume'])
             chapters = get_data(data, ['attributes', 'lastChapter'])
             if volumes:

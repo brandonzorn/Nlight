@@ -22,7 +22,7 @@ class Rulate(Parser):
             if hranobe:
                 description_text = hranobe.findAll('p')[0].text
                 if description_text:
-                    manga.description = str(description_text)
+                    manga.description.update({'all': str(description_text)})
             manga.kind = 'ranobe'
         return manga
 

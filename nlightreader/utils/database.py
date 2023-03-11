@@ -37,7 +37,7 @@ class Database:
     def add_manga(self, manga: Manga):
         self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
                            (manga.id, manga.content_id, manga.catalog_id, manga.name, manga.russian, manga.kind,
-                            manga.description, manga.score, manga.status, manga.volumes, manga.chapters))
+                            manga.descriptions_to_str(), manga.score, manga.status, manga.volumes, manga.chapters))
         self.__con.commit()
 
     @with_lock_thread(lock)
@@ -45,7 +45,7 @@ class Database:
         for manga in mangas:
             self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
                                (manga.id, manga.content_id, manga.catalog_id, manga.name, manga.russian, manga.kind,
-                                manga.description, manga.score, manga.status, manga.volumes, manga.chapters))
+                                manga.descriptions_to_str(), manga.score, manga.status, manga.volumes, manga.chapters))
         self.__con.commit()
 
     def get_manga(self, manga_id: str):
@@ -56,7 +56,7 @@ class Database:
         russian = x[4]
         manga = Manga(content_id, catalog_id, name, russian)
         manga.kind = x[5]
-        manga.description = x[6]
+        manga.set_description_from_str(x[6])
         manga.score = x[7]
         manga.status = x[8]
         manga.volumes = x[9]
