@@ -1,6 +1,7 @@
-import os
 import sqlite3
 from threading import Lock
+
+import platformdirs
 
 from nlightreader.consts import APP_NAME, LibList
 from nlightreader.items import Chapter, Manga, HistoryNote
@@ -12,7 +13,7 @@ class Database:
     lock = Lock()
 
     def __init__(self):
-        self.__con = sqlite3.connect(f'{os.getcwd()}/{APP_NAME}/data.db', check_same_thread=False)
+        self.__con = sqlite3.connect(f'{platformdirs.user_data_dir()}/{APP_NAME}/data.db', check_same_thread=False)
         self.__cur = self.__con.cursor()
         self.__cur.execute(
             """CREATE TABLE IF NOT EXISTS manga (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
