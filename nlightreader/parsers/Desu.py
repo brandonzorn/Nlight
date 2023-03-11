@@ -21,7 +21,7 @@ class Desu(Parser):
                             for i in data.get("genres")]
             manga.score = data.get("score")
             manga.kind = data.get("kind")
-            manga.description = data.get("description")
+            manga.description.update({'all': data.get("description")})
             manga.volumes = data.get("chapters").get("last").get("vol")
             manga.chapters = data.get("chapters").get("last").get("ch")
             manga.status = data.get("status")

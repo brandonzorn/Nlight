@@ -1,3 +1,5 @@
+import re
+
 from PySide6.QtCore import QLocale
 
 from nlightreader.items.BaseItem import BaseItem
@@ -8,7 +10,7 @@ class Manga(BaseItem):
     def __init__(self, content_id: str, catalog_id, name, russian):
         super().__init__(content_id, catalog_id, name, russian)
         self.kind: str | None = None
-        self.description: str | None = None
+        self.description: dict = {}
         self.score: int | float = 0
         self.status: str | None = None
         self.genres: list[Genre] = []
@@ -20,6 +22,25 @@ class Manga(BaseItem):
             if self.russian:
                 return self.russian
         return self.name
+
+    def get_description(self) -> str:
+        if self.description.get('all'):
+            return self.description.get('all')
+        elif QLocale().language() in (QLocale.Language.Russian, QLocale.Language.Ukrainian)\
+                and self.description.get('ru'):
+            return self.description.get('ru')
+        return self.description.get('en')
+
+    def descriptions_to_str(self) -> str:
+        desc_str = ""
+        for key in self.description:
+            if self.description.get(key):
+                desc_str += f"<lang={key}>{self.description.get(key)}<end>"
+        return desc_str
+
+    def set_description_from_str(self, desc: str):
+        for lang, text in re.findall(r"<lang=(\w+)>(.+?)<end>", desc, re.DOTALL):
+            self.description.update({lang: text})
 
 
 class Chapter:
