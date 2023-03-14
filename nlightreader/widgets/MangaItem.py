@@ -71,8 +71,9 @@ class MangaItem(QWidget):
 
     def set_size(self, size: int):
         max_size = QSize(size, size * 2)
-        self.setFixedSize(max_size)
-        self.ui.image.setMaximumSize(max_size)
+        if self.size() != max_size:
+            self.setFixedSize(max_size)
+            self.ui.image.setMaximumSize(max_size)
         if self.manga_pixmap:
             self.set_image()
 

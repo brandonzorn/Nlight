@@ -47,6 +47,7 @@ class FormFacial(MangaItemBasedWidget):
                 i += 1
 
     def delete_manga_items(self):
+        self.ui.scrollArea.verticalScrollBar().setValue(0)
         for manga_item in self.manga_items:
             self.ui.content_grid.removeWidget(manga_item)
             manga_item.deleteLater()
