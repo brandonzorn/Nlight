@@ -8,10 +8,10 @@ from nlightreader.consts import DEFAULT_HEADERS, MangaKinds
 from nlightreader.consts.files import LangIcons, Translations, Styles
 
 
-def get_html(url: str, headers: dict = DEFAULT_HEADERS, params=None):
+def get_html(url: str, headers: dict = DEFAULT_HEADERS, params=None, cookies=None):
     try:
         assert "test" not in QApplication.arguments(), "Test mode"
-        return requests.get(url, headers=headers, params=params)
+        return requests.get(url, headers=headers, params=params, cookies=cookies)
     except Exception as e:
         print(f"{e=}", f"{url=}", f"{params=}", f"{headers=}", sep="\n")
 

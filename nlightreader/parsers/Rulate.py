@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 
-from nlightreader.consts import URL_RULATE, DEFAULT_HEADERS
+from nlightreader.consts import URL_RULATE, DEFAULT_HEADERS, URL_EROLATE
 from nlightreader.items import Manga, Chapter, Image, RequestForm
 from nlightreader.parsers.Parser import Parser
 from nlightreader.utils.utils import get_html
@@ -47,12 +47,13 @@ class Rulate(Parser):
 
     def get_chapters(self, manga: Manga):
         chapters = []
-        html = get_html(f"{self.url_api}/book/{manga.content_id}")
+        html = get_html(f"{self.url_api}/book/{manga.content_id}",
+                        cookies={"mature": "c3a2ed4b199a1a15f5a5483504c7a75a7030dc4bi%3A1%3B"})
         if html and html.status_code == 200:
             soup = BeautifulSoup(html.text, "html.parser")
             ranobe_chapters = soup.findAll('tr', class_='chapter_row')
             for chapter in ranobe_chapters:
-                if chapter.find('span', class_='disabled'):
+                if chapter.find('span', class_='disabled') or not chapter.find('input', class_='download_chapter'):
                     continue
                 name: str = chapter.find('td', class_='t').text
                 name = name.strip()
@@ -78,4 +79,13 @@ class Rulate(Parser):
                 return get_html(str(himage['content']))
 
     def get_manga_url(self, manga: Manga) -> str:
-        return f'{URL_RULATE}/book/{manga.content_id}'
+        return f'{self.url_api}/book/{manga.content_id}'
+
+
+class Erolate(Rulate):
+    catalog_name = "Erolate"
+
+    def __init__(self):
+        super().__init__()
+        self.url_api = URL_EROLATE
+        self.catalog_id = 5
