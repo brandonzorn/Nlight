@@ -12,6 +12,7 @@ Open source manga and ranobe reading application
     - Light and dark themes
     - Available in 🇷🇺Russian 🇺🇦Ukrainian and 🇬🇧English languages
 
+
 ## Currently supported catalogs
     Manga:
      - Desu (🇷🇺)
@@ -20,7 +21,9 @@ Open source manga and ranobe reading application
 
     Ranobe:
      - Rulate (🇷🇺)
+     - Erolate (🇷🇺)
      - Ranobehub (🇷🇺)
+
 
 ## Screenshots
 | ![desu_1](./.github/Screenshots/nl_1.png) | ![desu_2](./.github/Screenshots/nl_2.png) | ![desu_3](./.github/Screenshots/nl_3.png) |
