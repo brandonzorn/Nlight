@@ -1,9 +1,14 @@
+from nlightreader.consts import DEFAULT_HEADERS
 from nlightreader.items import Manga, Chapter, Image, RequestForm, Genre, Kind, Order, Character, User, UserRate
 
 
 class Parser:
     catalog_name = 'CATALOG'
     is_primary = False
+
+    def __init__(self):
+        self.headers = DEFAULT_HEADERS
+        self.cookies = None
 
     def get_manga(self, manga: Manga) -> Manga:
         return manga
