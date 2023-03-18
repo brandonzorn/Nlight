@@ -202,8 +202,14 @@ class ShikimoriLib(ShikimoriBase, LibParser):
 
     def update_user_rate(self, user_rate: UserRate):
         url = f'{self.url_api}/v2/user_rates/{user_rate.id}'
+        status = user_rate.status
+        match user_rate.status:
+            case 'reading':
+                status = 'watching'
+            case "re-reading":
+                status = 'rewatching'
         data = {"user_rate": {"chapters": f"{user_rate.chapters}", "score": f"{user_rate.score}",
-                              "status": f"{user_rate.status}"}}
+                              "status": status}}
         self.session.request('PATCH', url, json=data)
 
 
