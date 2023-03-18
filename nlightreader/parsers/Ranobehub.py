@@ -1,4 +1,4 @@
-from nlightreader.consts import URL_RANOBEHUB_API, URL_RANOBEHUB, DEFAULT_HEADERS
+from nlightreader.consts import URL_RANOBEHUB_API, URL_RANOBEHUB
 from nlightreader.items import RequestForm, Manga
 from nlightreader.parsers.Parser import Parser
 from nlightreader.utils.utils import get_html
@@ -8,8 +8,8 @@ class Ranobehub(Parser):
     catalog_name = 'Ranobehub'
 
     def __init__(self):
+        super().__init__()
         self.url_api = URL_RANOBEHUB_API
-        self.headers = DEFAULT_HEADERS
         self.catalog_id = 4
 
     def get_manga(self, manga: Manga) -> Manga:

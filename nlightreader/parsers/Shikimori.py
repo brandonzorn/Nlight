@@ -19,6 +19,7 @@ class ShikimoriBase(Parser):
     catalog_name = 'Shikimori'
 
     def __init__(self):
+        super().__init__()
         self.url_api = URL_SHIKIMORI_API
         self.headers = SHIKIMORI_HEADERS
         self.catalog_id = 1
@@ -64,7 +65,7 @@ class ShikimoriBase(Parser):
         return []
 
     def get_orders(self) -> list[Order]:
-        return [Order('', self.catalog_id, i['name'], i['russian']) for i in ShikimoriItems.ORDERS]
+        return [Order(i['name'], self.catalog_id, i['name'], i['russian']) for i in ShikimoriItems.ORDERS]
 
     def get_relations(self, manga: Manga) -> list[Manga]:
         mangas = []
@@ -105,8 +106,10 @@ class ShikimoriManga(ShikimoriBase):
 
     def search_manga(self, form: RequestForm):
         url = f'{self.url_api}/mangas'
-        params = {'limit': form.limit, 'search': form.search, 'genre': ','.join(form.get_genre_id()),
-                  'order': form.order.name, 'kind': ','.join([i.name for i in form.kinds]), 'page': form.page}
+        params = {'limit': form.limit, 'search': form.search, 'page': form.page,
+                  'genre': ','.join(form.get_genre_id()),
+                  'order': form.order.content_id,
+                  'kind': ','.join([i.content_id for i in form.kinds])}
         html = get_html(url, self.headers, params)
         mangas = []
         if html and html.status_code == 200 and html.json():
@@ -115,7 +118,7 @@ class ShikimoriManga(ShikimoriBase):
         return mangas
 
     def get_kinds(self):
-        return [Kind('', self.catalog_id, i['name'], i['russian']) for i in ShikimoriItems.KINDS]
+        return [Kind(i['name'], self.catalog_id, i['name'], i['russian']) for i in ShikimoriItems.KINDS]
 
 
 class ShikimoriRanobe(ShikimoriBase):

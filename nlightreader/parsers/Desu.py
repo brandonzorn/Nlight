@@ -8,6 +8,7 @@ class Desu(Parser):
     catalog_name = 'Desu'
 
     def __init__(self):
+        super().__init__()
         self.url_api = URL_DESU_API
         self.headers = DESU_HEADERS
         self.catalog_id = 0
@@ -29,8 +30,10 @@ class Desu(Parser):
 
     def search_manga(self, form: RequestForm):
         url = f'{self.url_api}'
-        params = {'limit': form.limit, 'search': form.search, 'genres': ','.join([i.name for i in form.genres]),
-                  'order': form.order.name, 'kinds': ','.join([i.name for i in form.kinds]), 'page': form.page}
+        params = {'limit': form.limit, 'search': form.search, 'page': form.page,
+                  'genres': ','.join([i.content_id for i in form.genres]),
+                  'order': form.order.content_id,
+                  'kinds': ','.join([i.content_id for i in form.kinds])}
         html = get_html(url, self.headers, params)
         manga = []
         if html and html.status_code == 200 and html.json():
@@ -68,13 +71,13 @@ class Desu(Parser):
         return get_html(f'https://desu.me/data/manga/covers/preview/{manga.content_id}.jpg')
 
     def get_genres(self):
-        return [Genre('', self.catalog_id, i['name'], i['russian']) for i in DesuItems.GENRES]
+        return [Genre(i['name'], self.catalog_id, i['name'], i['russian']) for i in DesuItems.GENRES]
 
     def get_kinds(self) -> list[Kind]:
-        return [Kind('', self.catalog_id, i['name'], i['russian']) for i in DesuItems.KINDS]
+        return [Kind(i['name'], self.catalog_id, i['name'], i['russian']) for i in DesuItems.KINDS]
 
     def get_orders(self) -> list[Order]:
-        return [Order('', self.catalog_id, i['name'], i['russian']) for i in DesuItems.ORDERS]
+        return [Order(i['name'], self.catalog_id, i['name'], i['russian']) for i in DesuItems.ORDERS]
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{URL_DESU}/manga/{manga.content_id}"
