@@ -6,6 +6,7 @@ URL_SHIKIMORI_TOKEN = 'https://shikimori.one/oauth/token'
 URL_MANGA_DEX = 'https://mangadex.org'
 URL_MANGA_DEX_API = 'https://api.mangadex.org'
 URL_RULATE = 'https://tl.rulate.ru'
+URL_EROLATE = 'https://erolate.com'
 URL_RANOBEHUB = 'https://ranobehub.org'
 URL_RANOBEHUB_API = 'https://ranobehub.org/api'
 
