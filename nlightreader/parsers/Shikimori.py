@@ -52,10 +52,10 @@ class ShikimoriBase(Parser):
         return character
 
     def get_preview(self, manga: Manga):
-        return get_html(f'https://shikimori.one/system/mangas/preview/{manga.content_id}.jpg')
+        return get_html(f'https://shikimori.one/system/mangas/preview/{manga.content_id}.jpg').content
 
     def get_character_preview(self, character: Character):
-        return get_html(f'https://shikimori.one/system/characters/preview/{character.content_id}.jpg')
+        return get_html(f'https://shikimori.one/system/characters/preview/{character.content_id}.jpg').content
 
     def get_genres(self):
         url = f'{self.url_api}/genres'
