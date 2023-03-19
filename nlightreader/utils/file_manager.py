@@ -21,8 +21,10 @@ def save_file(path, file_name, file_content):
     if not os.path.exists(f'{path}/{file_name}'):
         os.makedirs(path, exist_ok=True)
         if file_content:
+            if isinstance(file_content, str):
+                file_content = bytes(file_content, encoding='utf8')
             with open(f'{path}/{file_name}', 'wb') as f:
-                f.write(file_content.content)
+                f.write(file_content)
 
 
 def get_character_preview(character: Character, catalog) -> QPixmap:

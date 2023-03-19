@@ -69,7 +69,7 @@ class Rulate(Parser):
 
     def get_image(self, image: Image):
         html = get_html(image.img)
-        return html
+        return html.content
 
     def get_preview(self, manga: Manga):
         html = get_html(f"{self.url_api}/book/{manga.content_id}", cookies=self.cookies)
@@ -77,7 +77,7 @@ class Rulate(Parser):
             soup = BeautifulSoup(html.text, "html.parser")
             himage = soup.find('meta', property="og:image")
             if himage:
-                return get_html(str(himage['content']))
+                return get_html(str(himage['content'])).content
 
     def get_orders(self):
         return [Order(i['value'], self.catalog_id, i['name'], i['russian']) for i in RulateItems.ORDERS]
