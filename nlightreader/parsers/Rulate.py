@@ -1,8 +1,10 @@
+import base64
+
 from bs4 import BeautifulSoup
 
 from nlightreader.consts import URL_RULATE, URL_EROLATE
 from nlightreader.consts.items import RulateItems
-from nlightreader.items import Manga, Chapter, Image, RequestForm, Order
+from nlightreader.items import Manga, Chapter, Image, RequestForm
 from nlightreader.parsers.Parser import Parser
 from nlightreader.utils.utils import get_html
 
@@ -15,6 +17,7 @@ class Rulate(Parser):
         self.url_api = URL_RULATE
         self.cookies = {"mature": "c3a2ed4b199a1a15f5a5483504c7a75a7030dc4bi%3A1%3B"}
         self.catalog_id = 3
+        self.items = RulateItems
 
     def get_manga(self, manga: Manga) -> Manga:
         html = get_html(f"{self.url_api}/book/{manga.content_id}", cookies=self.cookies)
@@ -64,12 +67,26 @@ class Rulate(Parser):
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter):
-        url = f"{self.url_api}/book/{manga.content_id}/{chapter.content_id}/download?format=t&enc=UTF-8"
+        url = f"{self.url_api}/book/{manga.content_id}/{chapter.content_id}/ready_new"
         return [Image('', 1, url)]
 
     def get_image(self, image: Image):
+        def get_chapter_content_image(media_id):
+            url = f'https://tl.rulate.ru/{media_id}'
+            chapter_image = get_html(url, self.headers).content
+            str_equivalent_image = base64.b64encode(chapter_image).decode()
+            return f"data:image/jpg;base64,{str_equivalent_image}"
         html = get_html(image.img)
-        return html.content
+        content = ""
+        if html and html.status_code == 200:
+            soup = BeautifulSoup(html.text, "html.parser")
+            text_container = soup.find('div', class_="content-text")
+            for p in text_container:
+                if p.find('img') and not isinstance(p.find('img'), int):
+                    content += f'<p><img src="{get_chapter_content_image(p.find("img")["src"])}"></p>'
+                else:
+                    content += f'<p>{p.text}</p>'
+        return content
 
     def get_preview(self, manga: Manga):
         html = get_html(f"{self.url_api}/book/{manga.content_id}", cookies=self.cookies)
@@ -78,9 +95,6 @@ class Rulate(Parser):
             himage = soup.find('meta', property="og:image")
             if himage:
                 return get_html(str(himage['content'])).content
-
-    def get_orders(self):
-        return [Order(i['value'], self.catalog_id, i['name'], i['russian']) for i in RulateItems.ORDERS]
 
     def get_manga_url(self, manga: Manga) -> str:
         return f'{self.url_api}/book/{manga.content_id}'

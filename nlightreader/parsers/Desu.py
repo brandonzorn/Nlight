@@ -1,5 +1,5 @@
 from nlightreader.consts import URL_DESU_API, DESU_HEADERS, URL_DESU, DesuItems
-from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, Kind, Order
+from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm
 from nlightreader.parsers.Parser import Parser
 from nlightreader.utils.utils import get_html, get_data
 
@@ -12,6 +12,7 @@ class Desu(Parser):
         self.url_api = URL_DESU_API
         self.headers = DESU_HEADERS
         self.catalog_id = 0
+        self.items = DesuItems
 
     def get_manga(self, manga: Manga):
         url = f'{self.url_api}/{manga.content_id}'
@@ -69,15 +70,6 @@ class Desu(Parser):
 
     def get_preview(self, manga: Manga):
         return get_html(f'https://desu.me/data/manga/covers/preview/{manga.content_id}.jpg').content
-
-    def get_genres(self):
-        return [Genre(i['name'], self.catalog_id, i['name'], i['russian']) for i in DesuItems.GENRES]
-
-    def get_kinds(self) -> list[Kind]:
-        return [Kind(i['name'], self.catalog_id, i['name'], i['russian']) for i in DesuItems.KINDS]
-
-    def get_orders(self) -> list[Order]:
-        return [Order(i['name'], self.catalog_id, i['name'], i['russian']) for i in DesuItems.ORDERS]
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{URL_DESU}/manga/{manga.content_id}"
