@@ -1,4 +1,7 @@
-class RulateItems:
+from nlightreader.consts.items.parser_items import ParserItems
+
+
+class RulateItems(ParserItems):
     ORDERS = [{'value': '0', 'name': 'By degree of readiness', 'russian': 'По степени готовности'},
               {'value': '1', 'name': 'Title in original language', 'russian': 'По названию на языке оригинала'},
               {'value': '2', 'name': 'By title in target language', 'russian': 'По названию на языке перевода'},

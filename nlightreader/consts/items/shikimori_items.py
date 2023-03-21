@@ -1,8 +1,16 @@
-class ShikimoriItems:
-    ORDERS = [{'name': 'popularity', 'russian': 'Популярность'}, {'name': 'name', 'russian': 'Название'},
-              {'name': 'aired_on', 'russian': 'Дата выхода'}, {'name': 'volumes', 'russian': 'Тома'},
-              {'name': 'chapters', 'russian': 'Главы'}, {'name': 'status', 'russian': 'Статус'}]
+from nlightreader.consts.items.parser_items import ParserItems
 
-    KINDS = [{'name': 'manga', 'russian': 'Манга'}, {'name': 'manhwa', 'russian': 'Манхва'},
-             {'name': 'manhua', 'russian': 'Маньхуа'}, {'name': 'one_shot', 'russian': 'Ваншот'},
-             {'name': 'doujin', 'russian': 'Додзинси'}]
+
+class ShikimoriItems(ParserItems):
+    ORDERS = [{'value': 'popularity', 'name': 'popularity', 'russian': 'Популярность'},
+              {'value': 'name', 'name': 'name', 'russian': 'Название'},
+              {'value': 'aired_on', 'name': 'aired_on', 'russian': 'Дата выхода'},
+              {'value': 'volumes', 'name': 'volumes', 'russian': 'Тома'},
+              {'value': 'chapters', 'name': 'chapters', 'russian': 'Главы'},
+              {'value': 'status', 'name': 'status', 'russian': 'Статус'}]
+
+    KINDS = [{'value': 'manga', 'name': 'manga', 'russian': 'Манга'},
+             {'value': 'manhwa', 'name': 'manhwa', 'russian': 'Манхва'},
+             {'value': 'manhua', 'name': 'manhua', 'russian': 'Маньхуа'},
+             {'value': 'one_shot', 'name': 'one_shot', 'russian': 'Ваншот'},
+             {'value': 'doujin', 'name': 'doujin', 'russian': 'Додзинси'}]

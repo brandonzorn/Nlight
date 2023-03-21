@@ -8,7 +8,7 @@ except ModuleNotFoundError:
     SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID = '', ''
 from nlightreader.consts import URL_SHIKIMORI_API, SHIKIMORI_HEADERS, URL_SHIKIMORI, LibList, URL_SHIKIMORI_TOKEN, \
     ShikimoriItems
-from nlightreader.items import Manga, RequestForm, Genre, Kind, User, UserRate, Order, Character
+from nlightreader.items import Manga, RequestForm, Genre, Kind, User, UserRate, Character, Order
 from nlightreader.parsers.Parser import Parser, LibParser
 from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
@@ -65,7 +65,7 @@ class ShikimoriBase(Parser):
         return []
 
     def get_orders(self) -> list[Order]:
-        return [Order(i['name'], self.catalog_id, i['name'], i['russian']) for i in ShikimoriItems.ORDERS]
+        return [Order(i['value'], self.catalog_id, i['name'], i['russian']) for i in ShikimoriItems.ORDERS]
 
     def get_relations(self, manga: Manga) -> list[Manga]:
         mangas = []
@@ -118,7 +118,7 @@ class ShikimoriManga(ShikimoriBase):
         return mangas
 
     def get_kinds(self):
-        return [Kind(i['name'], self.catalog_id, i['name'], i['russian']) for i in ShikimoriItems.KINDS]
+        return [Kind(i['value'], self.catalog_id, i['name'], i['russian']) for i in ShikimoriItems.KINDS]
 
 
 class ShikimoriRanobe(ShikimoriBase):

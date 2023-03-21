@@ -1,8 +1,8 @@
 import base64
-
 from bs4 import BeautifulSoup
 
 from nlightreader.consts import URL_RANOBEHUB_API, URL_RANOBEHUB
+from nlightreader.consts.items import RanobehubItems
 from nlightreader.items import RequestForm, Manga, Chapter, Image
 from nlightreader.parsers.Parser import Parser
 from nlightreader.utils.utils import get_html, get_data
@@ -15,6 +15,7 @@ class Ranobehub(Parser):
         super().__init__()
         self.url_api = URL_RANOBEHUB_API
         self.catalog_id = 4
+        self.items = RanobehubItems
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f'{self.url_api}/ranobe/{manga.content_id}'
@@ -28,7 +29,8 @@ class Ranobehub(Parser):
 
     def search_manga(self, form: RequestForm):
         url = f'{self.url_api}/search'
-        params = {'title-contains': form.search, 'page': form.page}
+        params = {'title-contains': form.search, 'page': form.page, 'sort': form.order.content_id,
+                  'tags:positive[]': [int(i) for i in form.get_genre_id()]}
         html = get_html(url, self.headers, params)
         manga = []
         if html and html.status_code == 200 and html.json():
