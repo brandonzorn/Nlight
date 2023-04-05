@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'genres.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.2
+## Created by: Qt User Interface Compiler version 6.5.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -28,7 +28,6 @@ class Ui_Dialog(object):
         Dialog.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.verticalLayout_2 = QVBoxLayout(Dialog)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.frame = QFrame(Dialog)
         self.frame.setObjectName(u"frame")
         self.frame.setStyleSheet(u"")
