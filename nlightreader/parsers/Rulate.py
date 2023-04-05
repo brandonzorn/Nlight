@@ -71,8 +71,10 @@ class Rulate(Parser):
         return [Image('', 1, url)]
 
     def get_image(self, image: Image):
-        def get_chapter_content_image(media_id):
-            url = f'https://tl.rulate.ru/{media_id}'
+        def get_chapter_content_image(media_id: str):
+            url = f'{self.url_api}/{media_id}'
+            if media_id.startswith("http"):
+                url = media_id
             chapter_image = get_html(url, self.headers).content
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/jpg;base64,{str_equivalent_image}"
