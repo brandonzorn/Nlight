@@ -2,20 +2,6 @@
 <ui version="4.0">
  <class>Form</class>
  <widget class="QWidget" name="Form">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>613</width>
-    <height>414</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
-  <property name="styleSheet">
-   <string notr="true"/>
-  </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
@@ -54,7 +40,7 @@
              <x>0</x>
              <y>0</y>
              <width>308</width>
-             <height>338</height>
+             <height>214</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scroll_layout">

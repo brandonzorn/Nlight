@@ -26,7 +26,6 @@ class Ui_Form(object):
         if not Form.objectName():
             Form.setObjectName(u"Form")
         Form.resize(543, 464)
-        Form.setStyleSheet(u"")
         Form.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.horizontalLayout_4 = QHBoxLayout(Form)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
@@ -284,7 +283,6 @@ class Ui_Form(object):
     # setupUi
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(QCoreApplication.translate("Form", u"Info", None))
         self.back_btn.setText("")
         self.add_btn.setText("")
         self.shikimori_btn.setText("")
@@ -297,5 +295,6 @@ class Ui_Form(object):
         self.chapters_label.setText(QCoreApplication.translate("Form", u"chapters", None))
         self.label.setText(QCoreApplication.translate("Form", u"Related", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"Characters", None))
+        pass
     # retranslateUi
 
