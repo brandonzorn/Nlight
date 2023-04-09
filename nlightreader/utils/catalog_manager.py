@@ -1,8 +1,8 @@
 from nlightreader.parsers import Desu, ShikimoriBase, MangaDex, Rulate, Ranobehub, MangaDexLib, ShikimoriRanobe, \
-    ShikimoriManga, ShikimoriLib, Erolate
+    ShikimoriManga, ShikimoriLib, Erolate, Remanga
 
-CATALOGS = {0: Desu, 1: ShikimoriBase, 2: MangaDex, 3: Rulate, 4: Ranobehub, 5: Erolate}
-USER_CATALOGS = [Desu, ShikimoriManga, ShikimoriRanobe, MangaDex, Rulate, Erolate, Ranobehub]
+CATALOGS = {0: Desu, 1: ShikimoriBase, 2: MangaDex, 3: Rulate, 4: Ranobehub, 5: Erolate, 6: Remanga}
+USER_CATALOGS = [Desu, ShikimoriManga, ShikimoriRanobe, MangaDex, Rulate, Erolate, Ranobehub, Remanga]
 LIB_CATALOGS = {ShikimoriBase: ShikimoriLib, MangaDex: MangaDexLib}
 
 
