@@ -25,8 +25,6 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(613, 414)
-        Form.setStyleSheet(u"")
         Form.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.horizontalLayout_5 = QHBoxLayout(Form)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
@@ -44,7 +42,7 @@ class Ui_Form(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 308, 338))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 308, 214))
         self.scroll_layout = QVBoxLayout(self.scrollAreaWidgetContents)
         self.scroll_layout.setSpacing(0)
         self.scroll_layout.setObjectName(u"scroll_layout")
@@ -281,7 +279,6 @@ class Ui_Form(object):
     # setupUi
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.search_btn.setText("")
         self.filter_btn.setText(QCoreApplication.translate("Form", u"Filters", None))
         self.prev_btn.setText("")
@@ -293,5 +290,6 @@ class Ui_Form(object):
         self.catalogs_btn.setText(QCoreApplication.translate("Form", u"Catalogs", None))
         self.reset_btn.setText(QCoreApplication.translate("Form", u"Reset", None))
         self.apply_btn.setText(QCoreApplication.translate("Form", u"Apply", None))
+        pass
     # retranslateUi
 
