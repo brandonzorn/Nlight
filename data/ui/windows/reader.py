@@ -26,7 +26,6 @@ class Ui_ReaderWindow(object):
         if not ReaderWindow.objectName():
             ReaderWindow.setObjectName(u"ReaderWindow")
         ReaderWindow.resize(489, 600)
-        ReaderWindow.setStyleSheet(u"")
         ReaderWindow.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.centralwidget = QWidget(ReaderWindow)
         self.centralwidget.setObjectName(u"centralwidget")

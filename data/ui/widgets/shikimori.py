@@ -25,7 +25,6 @@ class Ui_Form(object):
         if not Form.objectName():
             Form.setObjectName(u"Form")
         Form.resize(444, 326)
-        Form.setStyleSheet(u"")
         Form.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.horizontalLayout_4 = QHBoxLayout(Form)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
@@ -202,7 +201,6 @@ class Ui_Form(object):
     # setupUi
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(QCoreApplication.translate("Form", u"Shikimori", None))
         self.search_btn.setText("")
         self.prev_btn.setText("")
         self.page_label.setText(QCoreApplication.translate("Form", u"Page 1", None))
@@ -214,5 +212,6 @@ class Ui_Form(object):
         self.on_hold_btn.setText(QCoreApplication.translate("Form", u"On hold", None))
         self.dropped_btn.setText(QCoreApplication.translate("Form", u"Dropped", None))
         self.auth_btn.setText(QCoreApplication.translate("Form", u"Sign in", None))
+        pass
     # retranslateUi
 
