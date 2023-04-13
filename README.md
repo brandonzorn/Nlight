@@ -18,6 +18,7 @@ Open source manga and ranobe reading application
      - Desu (🇷🇺)
      - Shikimori (🇷🇺)
      - MangaDex (🇷🇺, 🇬🇧)
+     - Remanga (🇷🇺)
 
     Ranobe:
      - Rulate (🇷🇺)
