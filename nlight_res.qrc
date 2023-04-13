@@ -33,6 +33,7 @@
     <file>data/icons/buttons/svg_24dp_white/actions/star_filled.svg</file>
     <file>data/icons/buttons/svg_24dp_white/actions/shikimori.svg</file>
     <file>data/icons/buttons/svg_24dp_white/actions/main.svg</file>
+    <file>data/icons/buttons/svg_24dp_white/actions/list.svg</file>
   </qresource>
   <qresource prefix="arrows_black">
     <file>data/icons/buttons/svg_24dp_black/arrows/arrow_back.svg</file>
@@ -59,6 +60,7 @@
     <file>data/icons/buttons/svg_24dp_black/actions/star_filled.svg</file>
     <file>data/icons/buttons/svg_24dp_black/actions/shikimori.svg</file>
     <file>data/icons/buttons/svg_24dp_black/actions/main.svg</file>
+    <file>data/icons/buttons/svg_24dp_black/actions/list.svg</file>
   </qresource>
   <qresource prefix="translations">
     <file>data/translations/uk/uk.qm</file>
