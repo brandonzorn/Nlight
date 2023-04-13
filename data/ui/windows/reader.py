@@ -16,22 +16,24 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QMainWindow, QPushButton, QScrollArea, QSizePolicy,
-    QSlider, QSpacerItem, QTextBrowser, QTextEdit,
-    QVBoxLayout, QWidget)
+    QListWidget, QListWidgetItem, QMainWindow, QPushButton,
+    QScrollArea, QSizePolicy, QSlider, QTextBrowser,
+    QTextEdit, QVBoxLayout, QWidget)
 import nlight_res_rc
 
 class Ui_ReaderWindow(object):
     def setupUi(self, ReaderWindow):
         if not ReaderWindow.objectName():
             ReaderWindow.setObjectName(u"ReaderWindow")
-        ReaderWindow.resize(489, 600)
+        ReaderWindow.resize(565, 610)
         ReaderWindow.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.centralwidget = QWidget(ReaderWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.centralwidget.setStyleSheet(u"")
-        self.verticalLayout_4 = QVBoxLayout(self.centralwidget)
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.horizontalLayout_3 = QHBoxLayout(self.centralwidget)
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.verticalLayout_7 = QVBoxLayout()
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.text_reader = QWidget(self.centralwidget)
         self.text_reader.setObjectName(u"text_reader")
         self.verticalLayout_2 = QVBoxLayout(self.text_reader)
@@ -75,7 +77,7 @@ class Ui_ReaderWindow(object):
         self.verticalLayout_2.addWidget(self.content_frame)
 
 
-        self.verticalLayout_4.addWidget(self.text_reader)
+        self.verticalLayout_7.addWidget(self.text_reader)
 
         self.image_reader = QFrame(self.centralwidget)
         self.image_reader.setObjectName(u"image_reader")
@@ -96,7 +98,7 @@ class Ui_ReaderWindow(object):
         self.scrollArea.setAlignment(Qt.AlignCenter)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 449, 200))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 247, 220))
         self.scrollAreaWidgetContents.setAutoFillBackground(True)
         self.scrollAreaWidgetContents.setStyleSheet(u"")
         self.verticalLayout_5 = QVBoxLayout(self.scrollAreaWidgetContents)
@@ -116,7 +118,7 @@ class Ui_ReaderWindow(object):
         self.horizontalLayout_2.addWidget(self.scrollArea)
 
 
-        self.verticalLayout_4.addWidget(self.image_reader)
+        self.verticalLayout_7.addWidget(self.image_reader)
 
         self.actions_layout = QHBoxLayout()
         self.actions_layout.setObjectName(u"actions_layout")
@@ -188,9 +190,13 @@ class Ui_ReaderWindow(object):
         self.frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_3 = QVBoxLayout(self.frame)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.ch_list_btn = QPushButton(self.frame)
+        self.ch_list_btn.setObjectName(u"ch_list_btn")
+        self.ch_list_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.ch_list_btn.setFocusPolicy(Qt.NoFocus)
+        self.ch_list_btn.setCheckable(True)
 
-        self.verticalLayout_3.addItem(self.verticalSpacer)
+        self.verticalLayout_3.addWidget(self.ch_list_btn)
 
         self.fullscreen_btn = QPushButton(self.frame)
         self.fullscreen_btn.setObjectName(u"fullscreen_btn")
@@ -204,7 +210,31 @@ class Ui_ReaderWindow(object):
         self.actions_layout.addWidget(self.frame)
 
 
-        self.verticalLayout_4.addLayout(self.actions_layout)
+        self.verticalLayout_7.addLayout(self.actions_layout)
+
+
+        self.horizontalLayout_3.addLayout(self.verticalLayout_7)
+
+        self.chapters_frame = QFrame(self.centralwidget)
+        self.chapters_frame.setObjectName(u"chapters_frame")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.chapters_frame.sizePolicy().hasHeightForWidth())
+        self.chapters_frame.setSizePolicy(sizePolicy2)
+        self.chapters_frame.setFrameShape(QFrame.StyledPanel)
+        self.chapters_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_4 = QVBoxLayout(self.chapters_frame)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.items_list = QListWidget(self.chapters_frame)
+        self.items_list.setObjectName(u"items_list")
+        self.items_list.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.items_list.setWordWrap(True)
+
+        self.verticalLayout_4.addWidget(self.items_list)
+
+
+        self.horizontalLayout_3.addWidget(self.chapters_frame)
 
         ReaderWindow.setCentralWidget(self.centralwidget)
 
@@ -232,6 +262,10 @@ class Ui_ReaderWindow(object):
         self.next_chapter_btn.setText("")
 #if QT_CONFIG(shortcut)
         self.next_chapter_btn.setShortcut(QCoreApplication.translate("ReaderWindow", u"Up", None))
+#endif // QT_CONFIG(shortcut)
+        self.ch_list_btn.setText("")
+#if QT_CONFIG(shortcut)
+        self.ch_list_btn.setShortcut(QCoreApplication.translate("ReaderWindow", u"C", None))
 #endif // QT_CONFIG(shortcut)
         self.fullscreen_btn.setText("")
 #if QT_CONFIG(shortcut)
