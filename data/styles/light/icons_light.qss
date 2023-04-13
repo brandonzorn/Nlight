@@ -53,6 +53,10 @@ QPushButton#fullscreen_btn
 {
     qproperty-icon: url(:/actions_black/data/icons/buttons/svg_24dp_black/actions/fullscreen.svg);
 }
+QPushButton#ch_list_btn
+{
+    qproperty-icon: url(:/actions_black/data/icons/buttons/svg_24dp_black/actions/list.svg);
+}
 
 
 QPushButton#prev_chapter_btn
