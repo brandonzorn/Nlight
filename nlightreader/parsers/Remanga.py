@@ -53,18 +53,17 @@ class Remanga(Parser):
             page = 1
             while True:
                 chapters_data = get_html(f'{self.url_api}/titles/chapters/?branch_id={branch_id}&count=40&page={page}')
-                if chapters_data and chapters_data.status_code == 200 and chapters_data.json():
-                    data = chapters_data.json().get('content')
-                    if not data:
-                        break
-                    for ch in data:
-                        if ch.get('is_paid'):
-                            continue
-                        chapter = Chapter(ch.get('id'), self.catalog_id,
-                                          str(ch.get('tome')), ch.get('chapter'), ch.get('name'), 'ru')
-                        chapters.append(chapter)
-                else:
+                if not (chapters_data and chapters_data.status_code == 200 and chapters_data.json()):
                     break
+                data = chapters_data.json().get('content')
+                if not data:
+                    break
+                for ch in data:
+                    if ch.get('is_paid'):
+                        continue
+                    chapter = Chapter(ch.get('id'), self.catalog_id,
+                                      str(ch.get('tome')), ch.get('chapter'), ch.get('name'), 'ru')
+                    chapters.append(chapter)
                 page += 1
         return chapters
 
