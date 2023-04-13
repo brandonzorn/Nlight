@@ -1,13 +1,14 @@
 import time
 
 from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QMainWindow
+from PySide6.QtGui import QPixmap, QIcon
+from PySide6.QtWidgets import QMainWindow, QListWidgetItem
 
 from data.ui.windows.reader import Ui_ReaderWindow
+from nlightreader.consts import ItemsColors
 from nlightreader.items import Manga, Chapter, Image, HistoryNote
 from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image, translate, Worker, \
-    check_chapter_image
+    check_chapter_image, get_language_icon
 
 
 class ReaderWindow(QMainWindow):
@@ -23,7 +24,10 @@ class ReaderWindow(QMainWindow):
         self.ui.prev_chapter_btn.clicked.connect(self.turn_chapter_prev)
 
         self.ui.fullscreen_btn.clicked.connect(self.change_fullscreen)
+        self.ui.ch_list_btn.clicked.connect(self.change_chapters_list_visible)
         self.ui.text_size_slider.valueChanged.connect(self.update_text_size)
+
+        self.ui.items_list.doubleClicked.connect(self.change_chapter)
 
         self.db: Database = Database()
         self.manga = None
@@ -39,6 +43,7 @@ class ReaderWindow(QMainWindow):
     def setup(self, manga: Manga, chapters: list[Chapter], cur_chapter=1):
         self.showMaximized()
         self.manga = manga
+        self.ui.chapters_frame.hide()
         if self.manga.kind == 'ranobe':
             self.ui.image_reader.hide()
         else:
@@ -48,6 +53,7 @@ class ReaderWindow(QMainWindow):
         self.max_chapters = len(chapters)
         self.catalog = get_catalog(manga.catalog_id)()
         self.setWindowTitle(self.manga.name)
+        self.update_chapters_list()
         self.update_chapter()
 
     def keyPressEvent(self, event):
@@ -72,6 +78,28 @@ class ReaderWindow(QMainWindow):
             self.showMaximized()
         else:
             self.showFullScreen()
+
+    @Slot()
+    def change_chapters_list_visible(self):
+        self.ui.chapters_frame.setVisible(not self.ui.chapters_frame.isVisible())
+
+    @Slot()
+    def change_chapter(self):
+        self.cur_chapter = self.ui.items_list.currentIndex().row() + 1
+        self.update_chapter()
+
+    def update_chapters_list(self):
+        self.ui.items_list.clear()
+        for chapter in self.chapters:
+            item = QListWidgetItem(chapter.get_name())
+            if self.db.check_complete_chapter(chapter):
+                if self.db.get_complete_status(chapter):
+                    item.setBackground(ItemsColors.READ)
+                else:
+                    item.setBackground(ItemsColors.UNREAD)
+            if chapter.language:
+                item.setIcon(QIcon(get_language_icon(chapter.language)))
+            self.ui.items_list.addItem(item)
 
     @Slot()
     def turn_page_next(self):
