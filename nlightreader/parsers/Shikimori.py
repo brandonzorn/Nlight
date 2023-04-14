@@ -52,10 +52,10 @@ class ShikimoriBase(Parser):
         return character
 
     def get_preview(self, manga: Manga):
-        return get_html(f'https://shikimori.one/system/mangas/preview/{manga.content_id}.jpg').content
+        return get_html(f'{URL_SHIKIMORI}/system/mangas/preview/{manga.content_id}.jpg').content
 
     def get_character_preview(self, character: Character):
-        return get_html(f'https://shikimori.one/system/characters/preview/{character.content_id}.jpg').content
+        return get_html(f'{URL_SHIKIMORI}/system/characters/preview/{character.content_id}.jpg').content
 
     def get_genres(self):
         url = f'{self.url_api}/genres'
@@ -166,7 +166,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         return mangas
 
     def get_user(self):
-        whoami = self.session.request('GET', 'https://shikimori.one/api/users/whoami')
+        whoami = self.session.request('GET', f'{self.url_api}/users/whoami')
         if whoami and whoami.status_code == 200:
             data = whoami.json()
             return User(data.get('id'), data.get('nickname'), data.get('avatar'))
@@ -282,7 +282,7 @@ class Auth:
             print(f"Request data: {method=}, {url=}, {params=}, {json=}")
 
     def check_auth(self):
-        url = 'https://shikimori.one/api/users/whoami'
+        url = f'{URL_SHIKIMORI_API}/users/whoami'
         whoami = self.request('GET', url, ignore_authorize=True)
         self.is_authorized = whoami and whoami.json()
         return self.is_authorized
