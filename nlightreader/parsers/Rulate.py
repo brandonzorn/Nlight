@@ -57,7 +57,7 @@ class Rulate(Parser):
             soup = BeautifulSoup(html.text, "html.parser")
             ranobe_chapters = soup.findAll('tr', class_='chapter_row')
             for chapter in ranobe_chapters:
-                if chapter.find('span', class_='disabled') or not chapter.find('input', class_='download_chapter'):
+                if chapter.find('span', class_='disabled') or chapter.find('i', class_='ac_read g'):
                     continue
                 name: str = chapter.find('td', class_='t').text
                 name = name.strip()
@@ -78,11 +78,13 @@ class Rulate(Parser):
             chapter_image = get_html(url, self.headers).content
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/jpg;base64,{str_equivalent_image}"
-        html = get_html(image.img)
+        html = get_html(image.img, cookies=self.cookies)
         content = ""
         if html and html.status_code == 200:
             soup = BeautifulSoup(html.text, "html.parser")
             text_container = soup.find('div', class_="content-text")
+            if not text_container:
+                return
             for p in text_container:
                 if p.find('img') and not isinstance(p.find('img'), int):
                     content += f'<p><img src="{get_chapter_content_image(p.find("img")["src"])}"></p>'
