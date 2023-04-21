@@ -6,5 +6,6 @@
 /Nlight.spec
 /keys.py
 /Nlight*.bat
+/Nlight*.sh
 *.pyc
 .dmypy.json
