@@ -41,6 +41,8 @@ class FilterController:
         frame.setVisible(bool(items))
 
     def clear(self):
+        [item.deleteLater() for item in self.order_items]
+        [item.deleteLater() for item in self.kind_items]
         self.order_items.clear()
         self.kind_items.clear()
 
