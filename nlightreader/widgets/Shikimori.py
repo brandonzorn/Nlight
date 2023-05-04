@@ -48,7 +48,8 @@ class FormShikimori(MangaItemBasedWidget):
         self.manga_items.clear()
 
     def update_manga_items(self):
-        [manga_item.set_size(self.ui.scrollArea.size().width() // self.col_count) for manga_item in self.manga_items]
+        size = self.ui.scrollArea.size().width() // self.col_count
+        [manga_item.set_size(size) for manga_item in self.manga_items]
 
     def setup_manga_item(self, manga: Manga):
         item = MangaItem(manga, is_added_to_lib=False, pool=self.manga_thread_pool)
