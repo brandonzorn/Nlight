@@ -1,8 +1,7 @@
 from PySide6.QtCore import Slot
-from PySide6.QtWidgets import QDialog, QCheckBox
+from PySide6.QtWidgets import QDialog
 
 from data.ui.dialogs.genres import Ui_Dialog
-from nlightreader.utils.catalog_manager import get_catalog
 
 
 class FormGenres(QDialog):
@@ -14,21 +13,8 @@ class FormGenres(QDialog):
         self.setWindowTitle('Genres')
         self.ui_ge.buttonBox.accepted.connect(self.accept_genres)
         self.ui_ge.buttonBox.rejected.connect(self.reject_genres)
-        self.catalog = get_catalog()()
         self.selected_genres = []
         self.genres_items = {}
-        self.setup()
-
-    def setup(self):
-        for i in reversed(range(self.ui_ge.gridLayout.count())):
-            self.ui_ge.gridLayout.itemAt(i).widget().deleteLater()
-        self.genres_items = {}
-        self.selected_genres = []
-        genres = self.catalog.get_genres()
-        for i in range(len(genres)):
-            check_box = QCheckBox(genres[i].get_name())
-            self.genres_items.update({check_box: genres[i]})
-            self.ui_ge.gridLayout.addWidget(check_box, i // 5, i % 5)
 
     @Slot()
     def accept_genres(self):
@@ -42,6 +28,10 @@ class FormGenres(QDialog):
             else:
                 i.setChecked(True)
 
-    def clear_genres(self):
+    def reset_items(self):
         [i.setChecked(False) for i in self.genres_items]
         self.accept_genres()
+
+    def clear(self):
+        self.selected_genres.clear()
+        self.genres_items.clear()
