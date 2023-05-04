@@ -83,7 +83,10 @@ class Remanga(Parser):
         return images
 
     def get_image(self, image: Image):
-        return get_html(image.img, headers={'Referer': f'{URL_REMANGA}/manga/'}).content
+        headers = {'Referer': f'{URL_REMANGA}/manga/'}
+        response = get_html(image.img, headers=headers)
+        if response:
+            return response.content
 
     def get_preview(self, manga: Manga):
         url = f'{self.url_api}/titles/{manga.content_id}'
