@@ -1,7 +1,7 @@
 from PySide6.QtCore import Slot, Qt
-from PySide6.QtWidgets import QCheckBox, QRadioButton
 
 from data.ui.widgets.facial import Ui_Form
+from nlightreader.controlers import FilterController
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import Manga
 from nlightreader.utils import USER_CATALOGS, translate
@@ -16,23 +16,24 @@ class FormFacial(MangaItemBasedWidget):
         self.ui.setupUi(self)
         self.ui.next_btn.clicked.connect(self.turn_page_next)
         self.ui.prev_btn.clicked.connect(self.turn_page_prev)
-        self.ui.genres_btn.clicked.connect(lambda: self.Form_genres.show())
+        self.ui.search_btn.clicked.connect(self.search)
         self.ui.apply_btn.clicked.connect(self.apply_filter)
         self.ui.reset_btn.clicked.connect(self.reset_filter)
-        self.ui.search_btn.clicked.connect(self.search)
+        self.ui.filter_btn.clicked.connect(self.change_filters_visible)
         self.ui.catalogs_btn.clicked.connect(lambda: self.ui.catalogs_frame.setVisible(
             not self.ui.catalogs_list.isVisible()))
         self.ui.catalogs_list.doubleClicked.connect(
             lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row()))
-        self.ui.filter_btn.clicked.connect(self.change_filters_visible)
         self.ui.scrollAreaWidgetContents.resizeEvent = self.scroll_resize_event
-        self.order_items = {}
-        self.kind_items = {}
+        self.__filter_controller = FilterController()
         self.Form_genres = FormGenres()
+        self.ui.genres_btn.clicked.connect(lambda: self.Form_genres.show())
 
     def setup(self):
         if not self.catalog:
-            self.setup_catalogs()
+            self.ui.catalogs_frame.hide()
+            self.ui.catalogs_list.clear()
+            self.ui.catalogs_list.addItems([i.catalog_name for i in USER_CATALOGS])
             self.change_catalog(0)
         else:
             self.get_content()
@@ -54,22 +55,17 @@ class FormFacial(MangaItemBasedWidget):
         self.manga_items.clear()
 
     def update_manga_items(self):
-        [manga_item.set_size(self.ui.scrollArea.size().width() // self.col_count) for manga_item in self.manga_items]
+        size = self.ui.scrollArea.size().width() // self.col_count
+        [manga_item.set_size(size) for manga_item in self.manga_items]
 
     def setup_manga_item(self, manga: Manga):
         item = MangaItem(manga, pool=self.manga_thread_pool)
         item.manga_clicked.connect(self.manga_open.emit)
         return item
 
-    def setup_catalogs(self):
-        self.ui.catalogs_frame.hide()
-        self.ui.catalogs_list.clear()
-        self.ui.catalogs_list.addItems([i.catalog_name for i in USER_CATALOGS])
-
     def change_catalog(self, index: int):
         catalog = USER_CATALOGS[index]
         self.catalog = catalog()
-        self.Form_genres.catalog = catalog()
         self.setup_filters()
         self.apply_filter()
 
@@ -85,49 +81,39 @@ class FormFacial(MangaItemBasedWidget):
     @Slot()
     def apply_filter(self):
         self.request_params.clear()
-        if self.order_items:
-            self.request_params.order = [self.order_items[i] for i in self.order_items if i.isChecked()][-1]
-        self.request_params.kinds = [self.kind_items[i] for i in self.kind_items if i.isChecked()]
-        self.request_params.search = self.ui.title_line.text()
-        self.Form_genres.accept_genres()
+        self.request_params.order = self.__filter_controller.get_active_order()
+        self.request_params.kinds = self.__filter_controller.get_active_kinds()
         self.request_params.genres = self.Form_genres.selected_genres
+        self.request_params.search = self.ui.title_line.text()
         self.get_content()
 
     @Slot()
     def reset_filter(self):
         self.request_params.clear()
-        self.Form_genres.clear_genres()
-        if self.order_items:
-            list(self.order_items.keys())[0].setChecked(True)
-            self.request_params.order = [self.order_items[i] for i in self.order_items if i.isChecked()][0]
-        [i.setChecked(False) for i in self.kind_items]
+        self.Form_genres.reset_items()
+        self.__filter_controller.reset_items()
+        self.request_params.order = self.__filter_controller.get_active_order()
         self.ui.title_line.clear()
         self.get_content()
 
     def setup_filters(self):
         self.clear_filters_items()
-        self.Form_genres.setup()
-        self.ui.genres_frame.setVisible(bool(self.Form_genres.genres_items))
-        self.ui.kinds_frame.setVisible(bool(self.catalog.get_kinds()))
-        self.ui.orders_frame.setVisible(bool(self.catalog.get_orders()))
-        for i in self.catalog.get_orders():
-            item = QRadioButton(i.get_name())
-            if not self.order_items:
-                item.setChecked(True)
-            self.ui.orders_grid.addWidget(item)
-            self.order_items.update({item: i})
-        for i in self.catalog.get_kinds():
-            item = QCheckBox(i.get_name())
-            self.ui.kinds_grid.addWidget(item)
-            self.kind_items.update({item: i})
+        self.__filter_controller.add_orders(
+            frame=self.ui.orders_frame, grid=self.ui.orders_grid, items=self.catalog.get_orders())
+        self.__filter_controller.add_kinds(
+            frame=self.ui.kinds_frame, grid=self.ui.kinds_grid, items=self.catalog.get_kinds())
+        self.__filter_controller.add_genres(
+            frame=self.ui.genres_frame, widget=self.Form_genres, items=self.catalog.get_genres())
 
     def clear_filters_items(self):
-        self.kind_items.clear()
-        self.order_items.clear()
+        self.__filter_controller.clear()
+        self.Form_genres.clear()
         for i in reversed(range(self.ui.orders_grid.count())):
             self.ui.orders_grid.itemAt(i).widget().deleteLater()
         for i in reversed(range(self.ui.kinds_grid.count())):
             self.ui.kinds_grid.itemAt(i).widget().deleteLater()
+        for i in reversed(range(self.Form_genres.ui_ge.gridLayout.count())):
+            self.Form_genres.ui_ge.gridLayout.itemAt(i).widget().deleteLater()
 
     @Slot()
     def change_filters_visible(self):
