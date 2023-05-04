@@ -108,12 +108,6 @@ class FormFacial(MangaItemBasedWidget):
     def clear_filters_items(self):
         self.__filter_controller.clear()
         self.Form_genres.clear()
-        for i in reversed(range(self.ui.orders_grid.count())):
-            self.ui.orders_grid.itemAt(i).widget().deleteLater()
-        for i in reversed(range(self.ui.kinds_grid.count())):
-            self.ui.kinds_grid.itemAt(i).widget().deleteLater()
-        for i in reversed(range(self.Form_genres.ui_ge.gridLayout.count())):
-            self.Form_genres.ui_ge.gridLayout.itemAt(i).widget().deleteLater()
 
     @Slot()
     def change_filters_visible(self):

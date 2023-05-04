@@ -34,4 +34,5 @@ class FormGenres(QDialog):
 
     def clear(self):
         self.selected_genres.clear()
+        [item.deleteLater() for item in self.genres_items]
         self.genres_items.clear()
