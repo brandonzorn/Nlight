@@ -33,13 +33,13 @@ class MangaItem(QWidget):
         event.accept()
 
     def enterEvent(self, event):
-        self.ui.manga_widget.setProperty('is_set', 1)
+        self.setProperty('is_set', 1)
         self.style().polish(self.ui.manga_item_frame)
         self.style().polish(self.ui.name_lbl)
         self.style().polish(self.ui.image)
 
     def leaveEvent(self, event):
-        self.ui.manga_widget.setProperty('is_set', 0)
+        self.setProperty('is_set', 0)
         self.style().polish(self.ui.manga_item_frame)
         self.style().polish(self.ui.name_lbl)
         self.style().polish(self.ui.image)
