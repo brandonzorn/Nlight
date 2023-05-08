@@ -28,17 +28,14 @@ class Ui_manga_item_widget(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(manga_item_widget.sizePolicy().hasHeightForWidth())
         manga_item_widget.setSizePolicy(sizePolicy)
-        self.verticalLayout_5 = QVBoxLayout(manga_item_widget)
-        self.verticalLayout_5.setSpacing(0)
-        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.manga_widget = QWidget(manga_item_widget)
-        self.manga_widget.setObjectName(u"manga_widget")
-        self.verticalLayout_4 = QVBoxLayout(self.manga_widget)
-        self.verticalLayout_4.setSpacing(0)
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
-        self.manga_item_frame = QFrame(self.manga_widget)
+        manga_item_widget.setStyleSheet(u"QWidget#manga_widget QLabel\n"
+"{\n"
+"    font-size: 14px;\n"
+"}")
+        self.verticalLayout = QVBoxLayout(manga_item_widget)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.manga_item_frame = QFrame(manga_item_widget)
         self.manga_item_frame.setObjectName(u"manga_item_frame")
         sizePolicy.setHeightForWidth(self.manga_item_frame.sizePolicy().hasHeightForWidth())
         self.manga_item_frame.setSizePolicy(sizePolicy)
@@ -66,10 +63,7 @@ class Ui_manga_item_widget(object):
         self.verticalLayout_2.addWidget(self.name_lbl)
 
 
-        self.verticalLayout_4.addWidget(self.manga_item_frame)
-
-
-        self.verticalLayout_5.addWidget(self.manga_widget)
+        self.verticalLayout.addWidget(self.manga_item_frame)
 
 
         self.retranslateUi(manga_item_widget)
