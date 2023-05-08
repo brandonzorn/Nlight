@@ -73,7 +73,6 @@
     <file>data/styles/light/icons_light.qss</file>
   </qresource>
   <qresource prefix="fonts">
-    <file>data/fonts/helvetica_light.otf</file>
-    <file>data/fonts/helvetica_regular.otf</file>
+    <file>data/fonts/SegoeUI.ttf</file>
   </qresource>
 </RCC>

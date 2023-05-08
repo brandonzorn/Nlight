@@ -43,7 +43,7 @@ if __name__ == '__main__':
     trans = QTranslator()
     trans.load(get_locale(QLocale().language()))
     app.installTranslator(trans)
-    font = QFont(Fonts.HelveticaRegular, 9)
+    font = QFont(Fonts.SegoeUI, 9)
     app.setFont(font)
     app.setApplicationDisplayName(APP_NAME)
     app.setApplicationVersion(APP_VERSION)

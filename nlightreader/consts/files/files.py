@@ -16,8 +16,7 @@ class Styles:
 
 
 class Fonts:
-    HelveticaLight = u":/fonts/data/fonts/helvetica_light.otf"
-    HelveticaRegular = u":/fonts/data/fonts/helvetica_regular.otf"
+    SegoeUI = u":/fonts/data/fonts/SegoeUI.ttf"
 
 
 class LangIcons:

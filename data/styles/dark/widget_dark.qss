@@ -55,15 +55,15 @@ QStackedWidget QFrame
 }
 
 
-QWidget#manga_widget QFrame
+QWidget#manga_item_widget QFrame
 {
     background-color: rgb(84, 86, 86);
 }
-QWidget#manga_widget[is_set="0"] QFrame
+QWidget#manga_item_widget[is_set="0"] QFrame
 {
     background-color: rgb(84, 86, 86);
 }
-QWidget#manga_widget[is_set="1"] QFrame
+QWidget#manga_item_widget[is_set="1"] QFrame
 {
     background-color: rgb(114, 115, 115);
 }
