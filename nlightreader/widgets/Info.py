@@ -7,7 +7,7 @@ from nlightreader.consts import lib_lists_en, ItemsColors, LibList
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
 from nlightreader.items import Manga, Character, Chapter, HistoryNote
-from nlightreader.utils import Database, get_manga_preview, get_catalog, get_status, get_language_icon, \
+from nlightreader.utils import Database, FileManager, get_catalog, get_status, get_language_icon, \
     translate, Worker, description_to_html
 from nlightreader.windows.Reader import ReaderWindow
 
@@ -125,7 +125,7 @@ class FormInfo(QWidget):
     def update_manga_preview(self):
         self.ui.image.clear()
         if not self.manga_pixmap:
-            self.manga_pixmap = get_manga_preview(self.manga, self.catalog)
+            self.manga_pixmap = FileManager.get_manga_preview(self.manga, self.catalog)
         image_size = QSize(self.width() // 5, self.height() // 2)
         pixmap = self.manga_pixmap.scaled(image_size, Qt.AspectRatioMode.KeepAspectRatio,
                                           Qt.TransformationMode.SmoothTransformation)
