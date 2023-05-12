@@ -7,8 +7,7 @@ from PySide6.QtWidgets import QMainWindow, QListWidgetItem
 from data.ui.windows.reader import Ui_ReaderWindow
 from nlightreader.consts import ItemsColors
 from nlightreader.items import Manga, Chapter, Image, HistoryNote
-from nlightreader.utils import Database, get_catalog, get_chapter_text, get_chapter_image, translate, Worker, \
-    check_chapter_image, get_language_icon
+from nlightreader.utils import Database, get_catalog, FileManager, translate, Worker, get_language_icon
 
 
 class ReaderWindow(QMainWindow):
@@ -166,17 +165,18 @@ class ReaderWindow(QMainWindow):
         chapter = self.cur_chapter
 
         def get_image():
-            if not check_chapter_image(self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog):
+            if not FileManager.check_image_exists(
+                    self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog):
                 time.sleep(0.25)
                 if page != self.cur_page or chapter != self.cur_chapter:
                     return
                 self.ui.img.setText(translate('Other', 'Page is loading'))
             if self.manga.kind == 'ranobe':
-                self.cur_image_pixmap = get_chapter_text(
+                self.cur_image_pixmap = FileManager.get_chapter_text_file(
                     self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog)
             else:
                 if not self.cur_image_pixmap:
-                    self.cur_image_pixmap = get_chapter_image(
+                    self.cur_image_pixmap = FileManager.get_image_file(
                         self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog)
         get_image()
         assert page == self.cur_page or chapter == self.cur_chapter
