@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QWidget
 from data.ui.manga_item import Ui_manga_item_widget
 from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.items import Manga
-from nlightreader.utils import Worker, get_catalog, get_manga_preview, Database
+from nlightreader.utils import Worker, get_catalog, FileManager, Database
 
 
 class MangaItem(QWidget):
@@ -45,6 +45,8 @@ class MangaItem(QWidget):
         self.style().polish(self.ui.image)
 
     def on_context_menu(self, pos):
+        catalog = get_catalog(self.manga.catalog_id)()
+
         def add_to_lib():
             self._db.add_manga(self.manga)
             self._db.add_manga_library(self.manga)
@@ -54,7 +56,13 @@ class MangaItem(QWidget):
             self.manga_changed.emit()
 
         def open_in_browser():
-            webbrowser.open_new_tab(get_catalog(self.manga.catalog_id)().get_manga_url(self.manga))
+            webbrowser.open_new_tab(catalog.get_manga_url(self.manga))
+
+        def remove_files():
+            FileManager.remove_manga_files(self.manga, catalog)
+
+        def open_local_files():
+            FileManager.open_dir_in_explorer(self.manga, catalog)
 
         menu = LibraryMangaMenu()
         if self._is_added_to_lib:
@@ -67,6 +75,8 @@ class MangaItem(QWidget):
         menu.add_to_lib.triggered.connect(add_to_lib)
         menu.remove_from_lib.triggered.connect(remove_from_lib)
         menu.open_in_browser.triggered.connect(open_in_browser)
+        menu.remove_files.triggered.connect(remove_files)
+        menu.open_local_files.triggered.connect(open_local_files)
         menu.exec(self.ui.manga_item_frame.mapToGlobal(pos))
 
     def set_size(self, size: int):
@@ -79,7 +89,7 @@ class MangaItem(QWidget):
 
     def get_image(self):
         catalog = get_catalog(self.manga.catalog_id)()
-        self.manga_pixmap = get_manga_preview(self.manga, catalog)
+        self.manga_pixmap = FileManager.get_manga_preview(self.manga, catalog)
 
     def set_image(self):
         pixmap = self.manga_pixmap.scaled(self.ui.image.maximumSize(), Qt.AspectRatioMode.KeepAspectRatio,
