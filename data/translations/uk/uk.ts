@@ -183,6 +183,14 @@
         <source>Remove read mark</source>
         <translation>Видалити відмітку про прочитання</translation>
     </message>
+    <message>
+        <source>Clear local files</source>
+        <translation>Очистити локальні файли</translation>
+    </message>
+    <message>
+        <source>Open local files</source>
+        <translation>Відкрити локальні файли</translation>
+    </message>
 </context>
 
 <context>
