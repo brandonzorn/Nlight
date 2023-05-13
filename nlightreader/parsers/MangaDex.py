@@ -13,6 +13,7 @@ class MangaDex(Parser):
 
     def __init__(self):
         super().__init__()
+        self.url = URL_MANGA_DEX
         self.url_api = URL_MANGA_DEX_API
         self.catalog_id = 2
 
@@ -126,7 +127,7 @@ class MangaDex(Parser):
         return kinds
 
     def get_manga_url(self, manga: Manga) -> str:
-        return f'{URL_MANGA_DEX}/title/{manga.content_id}'
+        return f'{self.url}/title/{manga.content_id}'
 
 
 class MangaDexLib(MangaDex, LibParser):

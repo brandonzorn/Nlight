@@ -13,6 +13,7 @@ class Ranobehub(Parser):
 
     def __init__(self):
         super().__init__()
+        self.url = URL_RANOBEHUB
         self.url_api = URL_RANOBEHUB_API
         self.catalog_id = 4
         self.items = RanobehubItems
@@ -55,12 +56,12 @@ class Ranobehub(Parser):
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
-        url = f"https://ranobehub.org/ranobe/{manga.content_id}/{chapter.vol}/{chapter.ch}"
+        url = f"{self.url}/ranobe/{manga.content_id}/{chapter.vol}/{chapter.ch}"
         return [Image('', 1, url)]
 
     def get_image(self, image: Image):
         def get_chapter_content_image(media_id):
-            url = f'https://ranobehub.org/api/media/{media_id}'
+            url = f'{self.url_api}/media/{media_id}'
             chapter_image = get_html(url, self.headers).content
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/png;base64,{str_equivalent_image}"

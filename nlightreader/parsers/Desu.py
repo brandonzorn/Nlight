@@ -9,6 +9,7 @@ class Desu(Parser):
 
     def __init__(self):
         super().__init__()
+        self.url = URL_DESU
         self.url_api = URL_DESU_API
         self.headers = DESU_HEADERS
         self.catalog_id = 0
@@ -52,7 +53,7 @@ class Desu(Parser):
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter):
-        url = f'{URL_DESU_API}/{manga.content_id}/chapter/{chapter.content_id}'
+        url = f'{self.url_api}/{manga.content_id}/chapter/{chapter.content_id}'
         html = get_html(url, headers=self.headers)
         images = []
         if html and html.status_code == 200 and html.json():
@@ -65,13 +66,13 @@ class Desu(Parser):
 
     def get_image(self, image: Image):
         headers = self.headers.copy()
-        headers.update({"Referer": "https://desu.me/"})
+        headers.update({"Referer": f"{self.url}/"})
         response = get_html(image.img, headers=headers, content_type='content')
         return response
 
     def get_preview(self, manga: Manga):
-        response = get_html(f'https://desu.me/data/manga/covers/preview/{manga.content_id}.jpg', content_type='content')
+        response = get_html(f'{self.url}/data/manga/covers/preview/{manga.content_id}.jpg', content_type='content')
         return response
 
     def get_manga_url(self, manga: Manga) -> str:
-        return f"{URL_DESU}/manga/{manga.content_id}"
+        return f"{self.url}/manga/{manga.content_id}"
