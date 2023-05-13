@@ -13,8 +13,9 @@ class Remanga(Parser):
 
     def __init__(self):
         super().__init__()
-        self.catalog_id = 6
+        self.url = URL_REMANGA
         self.url_api = URL_REMANGA_API
+        self.catalog_id = 6
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f'{self.url_api}/titles/{manga.content_id}'
@@ -68,7 +69,7 @@ class Remanga(Parser):
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter):
-        url = f'{URL_REMANGA}/manga/{manga.content_id}/{chapter.content_id}'
+        url = f'{self.url}/manga/{manga.content_id}/{chapter.content_id}'
         html = get_html(url, self.headers)
         images = []
         if html and html.status_code == 200:
@@ -83,7 +84,7 @@ class Remanga(Parser):
         return images
 
     def get_image(self, image: Image):
-        headers = {'Referer': f'{URL_REMANGA}/manga/'}
+        headers = {'Referer': f'{self.url}/manga/'}
         response = get_html(image.img, headers=headers, content_type='content')
         return response
 
@@ -92,5 +93,5 @@ class Remanga(Parser):
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
             img = html.json().get('content').get('img').get('high')
-            response = get_html(f"{URL_REMANGA}/{img}", content_type='content')
+            response = get_html(f"{self.url}/{img}", content_type='content')
             return response

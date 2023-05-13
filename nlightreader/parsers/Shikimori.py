@@ -20,6 +20,7 @@ class ShikimoriBase(Parser):
 
     def __init__(self):
         super().__init__()
+        self.url = URL_SHIKIMORI
         self.url_api = URL_SHIKIMORI_API
         self.headers = SHIKIMORI_HEADERS
         self.catalog_id = 1
@@ -52,11 +53,11 @@ class ShikimoriBase(Parser):
         return character
 
     def get_preview(self, manga: Manga):
-        response = get_html(f'{URL_SHIKIMORI}/system/mangas/preview/{manga.content_id}.jpg', content_type='content')
+        response = get_html(f'{self.url}/system/mangas/preview/{manga.content_id}.jpg', content_type='content')
         return response
 
     def get_character_preview(self, character: Character):
-        return get_html(f'{URL_SHIKIMORI}/system/characters/preview/{character.content_id}.jpg').content
+        return get_html(f'{self.url}/system/characters/preview/{character.content_id}.jpg').content
 
     def get_genres(self):
         url = f'{self.url_api}/genres'
@@ -96,7 +97,7 @@ class ShikimoriBase(Parser):
         return characters
 
     def get_manga_url(self, manga: Manga) -> str:
-        return f'{URL_SHIKIMORI}/mangas/{manga.content_id}'
+        return f'{self.url}/mangas/{manga.content_id}'
 
 
 class ShikimoriManga(ShikimoriBase):
