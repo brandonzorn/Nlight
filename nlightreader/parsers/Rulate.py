@@ -98,7 +98,8 @@ class Rulate(Parser):
             soup = BeautifulSoup(html.text, "html.parser")
             himage = soup.find('meta', property="og:image")
             if himage:
-                return get_html(str(himage['content'])).content
+                response = get_html(str(himage['content']), content_type='content')
+                return response
 
     def get_manga_url(self, manga: Manga) -> str:
         return f'{self.url_api}/book/{manga.content_id}'
