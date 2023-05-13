@@ -66,12 +66,12 @@ class Desu(Parser):
     def get_image(self, image: Image):
         headers = self.headers.copy()
         headers.update({"Referer": "https://desu.me/"})
-        response = get_html(image.img, headers=headers)
-        if response:
-            return response.content
+        response = get_html(image.img, headers=headers, content_type='content')
+        return response
 
     def get_preview(self, manga: Manga):
-        return get_html(f'https://desu.me/data/manga/covers/preview/{manga.content_id}.jpg').content
+        response = get_html(f'https://desu.me/data/manga/covers/preview/{manga.content_id}.jpg', content_type='content')
+        return response
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{URL_DESU}/manga/{manga.content_id}"

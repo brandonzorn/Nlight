@@ -84,13 +84,13 @@ class Remanga(Parser):
 
     def get_image(self, image: Image):
         headers = {'Referer': f'{URL_REMANGA}/manga/'}
-        response = get_html(image.img, headers=headers)
-        if response:
-            return response.content
+        response = get_html(image.img, headers=headers, content_type='content')
+        return response
 
     def get_preview(self, manga: Manga):
         url = f'{self.url_api}/titles/{manga.content_id}'
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
             img = html.json().get('content').get('img').get('high')
-            return get_html(f"{URL_REMANGA}/{img}").content
+            response = get_html(f"{URL_REMANGA}/{img}", content_type='content')
+            return response
