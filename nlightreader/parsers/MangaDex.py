@@ -89,9 +89,8 @@ class MangaDex(Parser):
         return images
 
     def get_image(self, image: Image):
-        response = get_html(image.img)
-        if response:
-            return response.content
+        response = get_html(image.img, content_type='content')
+        return response
 
     def get_preview(self, manga: Manga):
         url = f'{self.url_api}/cover'
@@ -100,7 +99,9 @@ class MangaDex(Parser):
         filename = ''
         if html and html.status_code == 200 and len(html.json()):
             filename = html.json().get('data')[0].get('attributes').get('fileName')
-        return get_html(f'https://uploads.mangadex.org/covers/{manga.content_id}/{filename}.256.jpg').content
+        response = get_html(f'https://uploads.mangadex.org/covers/{manga.content_id}/{filename}.256.jpg',
+                            content_type='content')
+        return response
 
     def get_genres(self):
         url = f'{self.url_api}/manga/tag'

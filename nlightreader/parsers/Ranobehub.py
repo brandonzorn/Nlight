@@ -91,7 +91,8 @@ class Ranobehub(Parser):
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
             img = html.json().get('data').get('posters').get('big')
-            return get_html(img).content
+            response = get_html(img, content_type='content')
+            return response
 
     def get_manga_url(self, manga: Manga) -> str:
         return f'{URL_RANOBEHUB}/ranobe/{manga.content_id}'
