@@ -1,4 +1,5 @@
 import base64
+
 from bs4 import BeautifulSoup
 
 from nlightreader.consts import URL_RANOBEHUB_API, URL_RANOBEHUB
