@@ -4,51 +4,72 @@ import time
 
 import darkdetect
 import platformdirs
-from PySide6.QtCore import QSize, Qt, QTranslator, QLocale, QThreadPool
+from PySide6.QtCore import Qt, QTranslator, QLocale, QThreadPool
 from PySide6.QtGui import QIcon, QFont
 from PySide6.QtWidgets import QApplication
 
 from nlightreader import ParentWindow
 from nlightreader.consts import APP_VERSION, APP_NAME, Icons, Fonts
-from nlightreader.utils import get_locale, get_ui_style, Worker
+from nlightreader.utils import get_locale, get_ui_style, Thread
 
 
-class App(ParentWindow):
+class App(QApplication):
+    def __init__(self, argv):
+        super().__init__(argv)
+        self.setApplicationDisplayName(APP_NAME)
+        self.setApplicationVersion(APP_VERSION)
+        self.setWindowIcon(QIcon(Icons.App))
+
+        self.translator = QTranslator()
+
+        self.load_font()
+        self.load_translator()
+        self.update_style()
+
+    def load_translator(self):
+        self.translator.load(get_locale(QLocale().language()))
+        self.installTranslator(self.translator)
+
+    def load_font(self):
+        font = QFont(Fonts.SegoeUI, 9)
+        self.setFont(font)
+
+    def update_style(self):
+        self.setStyleSheet(get_ui_style(darkdetect.theme()))
+
+
+class MainWindow(ParentWindow):
     def __init__(self):
         super().__init__()
-        self.setMinimumSize(QSize(self.screen().size().width() // 2, self.screen().size().height() // 2))
+        self.set_min_size_by_screen()
         self.setWindowTitle(APP_NAME)
-        self.update_theme()
+        self._theme_updater = Thread(target=self.theme_listener, callback=self.update_style)
+        self._theme_updater.start()
         self.show()
 
-    def update_theme(self):
-        def set_style():
-            app.setStyleSheet(get_ui_style(darkdetect.theme()))
-            self.update_theme()
+    @staticmethod
+    def theme_listener():
+        theme = darkdetect.theme()
+        while True:
+            if darkdetect.theme() != theme:
+                return
+            time.sleep(1)
 
-        def theme_updater():
-            theme = darkdetect.theme()
-            while True:
-                time.sleep(1)
-                if darkdetect.theme() != theme or self.isHidden():
-                    return
-        Worker(target=theme_updater, callback=set_style).start()
+    def update_style(self):
+        app.update_style()
+        self._theme_updater.start()
+
+    def closeEvent(self, event):
+        self._theme_updater.terminate()
+        self._theme_updater.wait()
+        event.accept()
 
 
 if __name__ == '__main__':
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
     QApplication.setStyle('Fusion')
     QThreadPool.globalInstance().setMaxThreadCount(32)
-    app = QApplication(sys.argv)
-    trans = QTranslator()
-    trans.load(get_locale(QLocale().language()))
-    app.installTranslator(trans)
-    font = QFont(Fonts.SegoeUI, 9)
-    app.setFont(font)
-    app.setApplicationDisplayName(APP_NAME)
-    app.setApplicationVersion(APP_VERSION)
-    app.setWindowIcon(QIcon(Icons.App))
-    app.setStyleSheet(get_ui_style(darkdetect.theme()))
+    app = App(sys.argv)
     os.makedirs(f'{platformdirs.user_data_dir()}/{APP_NAME}', exist_ok=True)
-    a = App()
+    window = MainWindow()
     sys.exit(app.exec())
