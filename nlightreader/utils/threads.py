@@ -1,6 +1,6 @@
 from typing import Callable
 
-from PySide6.QtCore import QThreadPool, QRunnable, QObject, Signal, Slot
+from PySide6.QtCore import QThreadPool, QRunnable, QObject, Signal, Slot, QThread
 
 
 class Signals(QObject):
@@ -40,3 +40,28 @@ class Worker(QRunnable):
         if pool.activeThreadCount() == pool.maxThreadCount():
             return
         pool.start(self)
+
+
+class Thread(QThread):
+    def __init__(self, target: Callable, args=(), kwargs=None, *, callback=None, locker=None):
+        super().__init__()
+        if kwargs is None:
+            kwargs = {}
+        self._target = target
+        self._args = args
+        self._kwargs = kwargs
+        self._locker = locker
+        self.signals = Signals()
+        if callback:
+            self.signals.finished.connect(callback)
+
+    @Slot()
+    def run(self):
+        if self._locker:
+            while not self._locker.tryLock():
+                pass
+            self._target(*self._args, **self._kwargs)
+            self._locker.unlock()
+        else:
+            self._target(*self._args, **self._kwargs)
+        self.signals.finished.emit()
