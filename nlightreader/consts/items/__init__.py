@@ -1,4 +1,4 @@
 from .desu_items import DesuItems
-from .shikimori_items import ShikimoriItems
-from .rulate_items import RulateItems
 from .ranobehub_items import RanobehubItems
+from .rulate_items import RulateItems
+from .shikimori_items import ShikimoriItems
