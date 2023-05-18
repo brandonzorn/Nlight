@@ -20,6 +20,5 @@ class LibraryMangaMenu(QMenu):
                 self.addAction(self.add_to_lib)
             case 1:
                 self.addAction(self.remove_from_lib)
-        if "beta_features" in QApplication.arguments():
-            self.addAction(self.open_local_files)
-            self.addAction(self.remove_files)
+        self.addAction(self.open_local_files)
+        self.addAction(self.remove_files)
