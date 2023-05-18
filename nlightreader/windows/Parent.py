@@ -1,4 +1,4 @@
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot, QSize
 from PySide6.QtWidgets import QMainWindow
 
 from data.ui.windows.mainWindow import Ui_MainWindow
@@ -39,6 +39,11 @@ class ParentWindow(QMainWindow):
             self.ui.top_item.removeWidget(self.ui.top_item.currentWidget())
         self.ui.top_item.addWidget(widget)
         self.ui.top_item.setCurrentWidget(widget)
+
+    def set_min_size_by_screen(self):
+        self.setMinimumSize(QSize(
+            self.screen().size().width() // 2,
+            self.screen().size().height() // 2))
 
     @Slot(Manga)
     def open_info(self, manga: Manga):
