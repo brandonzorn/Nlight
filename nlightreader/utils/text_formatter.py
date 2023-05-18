@@ -4,6 +4,19 @@ from PySide6.QtWidgets import QApplication
 
 
 class TextFormatter:
+    """
+    A class for formatting text with spoilers, character names, and URLs.
+
+    Args:
+        text (str): The text to be formatted.
+        show_spoilers (bool, optional): Whether or not to show spoiler text. Defaults to False.
+
+    Methods:
+        replace_spoilers(): Replaces spoiler tags in the text with HTML span tags.
+        replace_characters(): Replaces character tags in the text with HTML span tags.
+        replace_urls(): Replaces URL tags in the text with HTML anchor tags.
+        to_html_text(): Formats the text and returns it as HTML text.
+    """
     def __init__(self, text: str, show_spoilers=False):
         self._text = ' '.join(text.splitlines())
         self._show_spoilers = show_spoilers
@@ -56,10 +69,30 @@ def description_to_html(text: str, show_spoilers=False) -> str:
 
 
 def translate(context, string):
+    """
+    Translates a string using the current translation context.
+
+    Args:
+        context: The context in which the string appears.
+        string: The string to be translated.
+
+    Returns:
+        A translated version of the input string.
+    """
     return QApplication.translate(context, string, None)
 
 
 def get_status(status: str) -> str:
+    """
+    Translates the status of a manga.
+
+    Args:
+        status (str or None): The status of the manga.
+
+    Returns:
+        A translation of the status if it is 'ongoing', 'completed', or 'released'.
+        Otherwise, returns the original status.
+    """
     if status is None:
         return ""
     match status:
