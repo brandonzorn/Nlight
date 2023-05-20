@@ -1,3 +1,4 @@
+import requests
 from PySide6.QtWidgets import QApplication
 from requests_oauthlib import OAuth2Session
 
@@ -273,15 +274,21 @@ class Auth:
             print(e)
 
     def request(self, method, url, params=None, json=None, ignore_authorize=False):
-        if not self.is_authorized and not ignore_authorize:
-            print(f"SHIKIMORI REQUEST IGNORED")
+        if (not ignore_authorize and not self.is_authorized) or "test" in QApplication.arguments():
             return
         try:
             assert "test" not in QApplication.arguments(), "Test mode"
-            return self.client.request(method, url, params, json=json)
-        except Exception as e:
-            print(e)
-            print(f"Request data: {method=}, {url=}, {params=}, {json=}")
+            response = self.client.request(method, url, params=params, json=json)
+            response.raise_for_status()
+            return response
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching URL: {url}")
+            print(f"  Reason: {e}")
+            print(f"  Headers: {self.client.headers}")
+            print(f"  Params: {params}")
+            print(f"  Cookies: {self.client.cookies}")
+            print(f"  Json: {json}")
+            return
 
     def check_auth(self):
         url = f'{URL_SHIKIMORI_API}/users/whoami'

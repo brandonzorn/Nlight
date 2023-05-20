@@ -20,9 +20,9 @@ class Rulate(Parser):
         self.items = RulateItems
 
     def get_manga(self, manga: Manga) -> Manga:
-        html = get_html(f"{self.url_api}/book/{manga.content_id}", cookies=self.cookies)
-        if html and html.status_code == 200:
-            soup = BeautifulSoup(html.text, "html.parser")
+        response = get_html(f"{self.url_api}/book/{manga.content_id}", cookies=self.cookies, content_type='text')
+        if response:
+            soup = BeautifulSoup(response, "html.parser")
             hranobe = soup.find('div', style="margin: 20px 0 0 0")
             if hranobe:
                 description_text = hranobe.findAll('p')[0].text
@@ -34,9 +34,9 @@ class Rulate(Parser):
     def search_manga(self, form: RequestForm):
         ranobe = []
         params = {'t': form.search, 'cat': 12, 'Book_page': form.page, 'sort': form.order.content_id, 'adult': 0}
-        html = get_html(f"{self.url_api}/search", params=params)
-        if html and html.status_code == 200:
-            soup = BeautifulSoup(html.text, "html.parser")
+        response = get_html(f"{self.url_api}/search", params=params, content_type='text')
+        if response:
+            soup = BeautifulSoup(response, "html.parser")
             hranobe = soup.findAll('p', class_='book-tooltip')
             for i in hranobe:
                 name_text = i.text.strip()
@@ -52,9 +52,9 @@ class Rulate(Parser):
 
     def get_chapters(self, manga: Manga):
         chapters = []
-        html = get_html(f"{self.url_api}/book/{manga.content_id}", cookies=self.cookies)
-        if html and html.status_code == 200:
-            soup = BeautifulSoup(html.text, "html.parser")
+        response = get_html(f"{self.url_api}/book/{manga.content_id}", cookies=self.cookies, content_type='text')
+        if response:
+            soup = BeautifulSoup(response, "html.parser")
             ranobe_chapters = soup.findAll('tr', class_='chapter_row')
             for chapter in ranobe_chapters:
                 if chapter.find('span', class_='disabled') or chapter.find('i', class_='ac_read g'):
@@ -71,35 +71,40 @@ class Rulate(Parser):
         return [Image('', 1, url)]
 
     def get_image(self, image: Image):
+        # Function to get content images from chapter
         def get_chapter_content_image(media_id: str):
             url = f'{self.url_api}/{media_id}'
             if media_id.startswith("http"):
                 url = media_id
-            chapter_image = get_html(url, self.headers).content
+            chapter_image = get_html(url, self.headers, content_type='content')
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/jpg;base64,{str_equivalent_image}"
-        html = get_html(image.img, cookies=self.cookies)
-        content = ""
-        if html and html.status_code == 200:
-            soup = BeautifulSoup(html.text, "html.parser")
+
+        # Parse HTML content and extract images
+        response = get_html(image.img, cookies=self.cookies, content_type='text')
+        if response:
+            soup = BeautifulSoup(response, "html.parser")
             text_container = soup.find('div', class_="content-text")
             if not text_container:
                 return
+
+            # Construct content with images
+            content = ""
             for p in text_container:
                 if p.find('img') and not isinstance(p.find('img'), int):
                     content += f'<p><img src="{get_chapter_content_image(p.find("img")["src"])}"></p>'
                 else:
                     content += f'<p>{p.text}</p>'
-        return content
+            return content
 
     def get_preview(self, manga: Manga):
-        html = get_html(f"{self.url_api}/book/{manga.content_id}", cookies=self.cookies)
-        if html and html.status_code == 200:
-            soup = BeautifulSoup(html.text, "html.parser")
+        response = get_html(f"{self.url_api}/book/{manga.content_id}", cookies=self.cookies, content_type='text')
+        if response:
+            soup = BeautifulSoup(response, "html.parser")
             himage = soup.find('meta', property="og:image")
             if himage:
-                response = get_html(str(himage['content']), content_type='content')
-                return response
+                img_response = get_html(str(himage['content']), content_type='content')
+                return img_response
 
     def get_manga_url(self, manga: Manga) -> str:
         return f'{self.url_api}/book/{manga.content_id}'
@@ -117,9 +122,9 @@ class Erolate(Rulate):
     def search_manga(self, form: RequestForm):
         ranobe = []
         params = {'t': form.search, 'cat': 2, 'Book_page': form.page, 'sort': form.order.content_id, 'adult': 0}
-        html = get_html(f"{self.url_api}/search", params=params)
-        if html and html.status_code == 200:
-            soup = BeautifulSoup(html.text, "html.parser")
+        response = get_html(f"{self.url_api}/search", params=params, content_type='text')
+        if response:
+            soup = BeautifulSoup(response, "html.parser")
             hranobe = soup.findAll('p', class_='book-tooltip')
             for i in hranobe:
                 name_text = i.text.strip()
