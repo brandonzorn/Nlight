@@ -27,7 +27,7 @@ class FormShikimori(MangaItemBasedWidget):
         self.ui.auth_btn.clicked.connect(self.authorize)
         self.ui.scrollAreaWidgetContents.resizeEvent = self.scroll_resize_event
         self.catalog = ShikimoriLib()
-        self.Form_auth = FormAuth(self.catalog)
+        self.Form_auth = FormAuth(self.catalog, parent=self)
         self.Form_auth.accepted.connect(self.auth_accept)
         self.update_user_info()
 
@@ -77,8 +77,7 @@ class FormShikimori(MangaItemBasedWidget):
 
     @Slot()
     def authorize(self):
-        self.Form_auth.hide()
-        self.Form_auth.show()
+        self.Form_auth.exec()
 
     def get_whoami(self) -> User:
         return self.catalog.get_user()
