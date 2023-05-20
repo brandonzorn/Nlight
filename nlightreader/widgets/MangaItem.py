@@ -71,7 +71,7 @@ class MangaItem(QWidget):
             else:
                 menu.set_mode(0)
         else:
-            menu.set_mode(-1)
+            menu.set_mode(2)
         menu.add_to_lib.triggered.connect(add_to_lib)
         menu.remove_from_lib.triggered.connect(remove_from_lib)
         menu.open_in_browser.triggered.connect(open_in_browser)
