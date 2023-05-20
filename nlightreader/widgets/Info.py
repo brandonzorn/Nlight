@@ -113,13 +113,13 @@ class FormInfo(QWidget):
 
     @Slot()
     def open_rate(self):
-        self.rate_window = FormRate(self.manga)
-        self.rate_window.show()
+        self.rate_window = FormRate(self.manga, parent=self)
+        self.rate_window.exec()
 
     @Slot()
     def open_character(self):
         character = self.catalog.get_character(self.related_characters[self.ui.characters_list.currentIndex().row()])
-        self.character_window = FormCharacter(character, self.manga.catalog_id)
+        self.character_window = FormCharacter(character, self.manga.catalog_id, parent=self)
         self.character_window.show()
 
     def update_manga_preview(self):

@@ -5,8 +5,8 @@ from data.ui.dialogs.genres import Ui_Dialog
 
 
 class FormGenres(QDialog):
-    def __init__(self):
-        super().__init__(None)
+    def __init__(self, parent=None):
+        super().__init__(parent)
         self.ui_ge = Ui_Dialog()
         self.ui_ge.setupUi(self)
         self.setFixedSize(self.minimumSize())

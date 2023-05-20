@@ -8,8 +8,8 @@ from nlightreader.utils.file_manager import FileManager
 
 
 class FormCharacter(QDialog):
-    def __init__(self, character, catalog_id):
-        super().__init__()
+    def __init__(self, character, catalog_id, parent=None):
+        super().__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.ui.show_spoilers.clicked.connect(self.update_description)

@@ -6,8 +6,8 @@ from data.ui.dialogs.auth import Ui_Dialog
 
 
 class FormAuth(QDialog):
-    def __init__(self, catalog):
-        super().__init__()
+    def __init__(self, catalog, parent=None):
+        super().__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.ui.catalog_label.setText(catalog.catalog_name)
