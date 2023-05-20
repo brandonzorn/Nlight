@@ -9,8 +9,8 @@ from nlightreader.utils.catalog_manager import get_catalog, get_lib_catalog
 
 
 class FormRate(QDialog):
-    def __init__(self, manga: Manga):
-        super().__init__()
+    def __init__(self, manga: Manga, parent=None):
+        super().__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in lib_lists_en])

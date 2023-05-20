@@ -50,9 +50,7 @@ class MainWindow(ParentWindow):
     @staticmethod
     def theme_listener():
         theme = darkdetect.theme()
-        while True:
-            if darkdetect.theme() != theme:
-                return
+        while darkdetect.theme() == theme:
             time.sleep(1)
 
     def update_style(self):
@@ -62,6 +60,7 @@ class MainWindow(ParentWindow):
     def closeEvent(self, event):
         self._theme_updater.terminate()
         self._theme_updater.wait()
+        app.closeAllWindows()
         event.accept()
 
 

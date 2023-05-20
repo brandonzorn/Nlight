@@ -26,8 +26,8 @@ class FormFacial(MangaItemBasedWidget):
             lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row()))
         self.ui.scrollAreaWidgetContents.resizeEvent = self.scroll_resize_event
         self.__filter_controller = FilterController()
-        self.Form_genres = FormGenres()
-        self.ui.genres_btn.clicked.connect(lambda: self.Form_genres.show())
+        self.Form_genres = FormGenres(self)
+        self.ui.genres_btn.clicked.connect(self.open_genres_dialog)
 
     def setup(self):
         if not self.catalog:
@@ -116,3 +116,7 @@ class FormFacial(MangaItemBasedWidget):
         else:
             self.ui.filters_widget.setVisible(False)
             self.ui.catalogs_frame.setVisible(False)
+
+    @Slot()
+    def open_genres_dialog(self):
+        self.Form_genres.exec()
