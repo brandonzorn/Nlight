@@ -35,6 +35,8 @@ def get_html(url: str, headers=None, params=None, json=None, cookies=None, conte
             return response.content
         elif content_type == 'json':
             return response.json()
+        elif content_type == 'text':
+            return response.text
         else:
             return response
     except requests.exceptions.RequestException as e:
