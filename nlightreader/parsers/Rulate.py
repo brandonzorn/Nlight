@@ -80,7 +80,7 @@ class Rulate(Parser):
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/jpg;base64,{str_equivalent_image}"
 
-        # Parse HTML content and extract images
+        # Parse HTML content and extract text container
         response = get_html(image.img, cookies=self.cookies, content_type='text')
         if response:
             soup = BeautifulSoup(response, "html.parser")

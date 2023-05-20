@@ -1,5 +1,6 @@
 import base64
 
+import bs4.element
 from bs4 import BeautifulSoup
 
 from nlightreader.consts import URL_RANOBEHUB_API, URL_RANOBEHUB
@@ -21,9 +22,9 @@ class Ranobehub(Parser):
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f'{self.url_api}/ranobe/{manga.content_id}'
-        html = get_html(url, self.headers)
-        if html and html.status_code == 200 and html.json():
-            data = html.json().get('data')
+        response = get_html(url, self.headers, content_type='json')
+        if response:
+            data = response.get('data')
             manga.kind = "ranobe"
             manga.score = data.get('rating')
             manga.description.update({'all': data.get('description')})
@@ -33,10 +34,10 @@ class Ranobehub(Parser):
         url = f'{self.url_api}/search'
         params = {'title-contains': form.search, 'page': form.page, 'sort': form.order.content_id,
                   'tags:positive[]': [int(i) for i in form.get_genre_id()]}
-        html = get_html(url, self.headers, params)
+        response = get_html(url, self.headers, params, content_type='json')
         manga = []
-        if html and html.status_code == 200 and html.json():
-            for i in html.json().get('resource'):
+        if response:
+            for i in get_data(response, ['resource'], default_val=[]):
                 manga_id = i.get('id')
                 name = i.get('names').get('eng')
                 russian = i.get('names').get('rus')
@@ -45,12 +46,12 @@ class Ranobehub(Parser):
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f'{self.url_api}/ranobe/{manga.content_id}/contents'
-        html = get_html(url, self.headers)
+        response = get_html(url, self.headers, content_type='json')
         chapters = []
-        if html and html.status_code == 200 and html.json():
-            for i in get_data(html.json(), ['volumes']):
+        if response:
+            for i in get_data(response, ['volumes'], default_val=[]):
                 volume_num = i.get('num')
-                for chapter_data in get_data(i, ['chapters']):
+                for chapter_data in get_data(i, ['chapters'], []):
                     chapters.append(Chapter(chapter_data.get('id'), self.catalog_id, volume_num,
                                             chapter_data.get('num'), chapter_data.get('name'), 'ru'))
             chapters.reverse()
@@ -61,40 +62,50 @@ class Ranobehub(Parser):
         return [Image('', 1, url)]
 
     def get_image(self, image: Image):
-        def get_chapter_content_image(media_id):
+        # Function to get content images from chapter
+        def get_chapter_content_image(media_id: str):
             url = f'{self.url_api}/media/{media_id}'
             chapter_image = get_html(url, self.headers).content
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/png;base64,{str_equivalent_image}"
-        html = get_html(image.img)
-        content = ""
-        if html and html.status_code == 200:
-            soup = BeautifulSoup(html.text, "html.parser")
-            try:
-                header = soup.find('div', class_="title-wrapper")
-                content += f"<h1>{header.find('h1', class_='ui header').text}</h1>"
-            except Exception as e:
-                print("Header not found", e)
-            text_containers = soup.findAll("div", {'class': "ui text container"})
-            for i in text_containers:
-                if i.has_attr("data-container"):
-                    for p in i.findAll('p'):
-                        if p.find('img'):
-                            content += f'<p>' \
-                                       f'<img src="{get_chapter_content_image(p.find("img")["data-media-id"])}">' \
-                                       f'</p>'
-                        else:
-                            content += str(p)
-                    break
-        return content
+
+        def find_text_container(containers: bs4.element.ResultSet) -> bs4.element.Tag:
+            for container in containers:
+                if container.has_attr("data-container"):
+                    return container
+
+        # Parse HTML content and extract text container
+        response = get_html(image.img, content_type='text')
+        if response:
+            soup = BeautifulSoup(response, "html.parser")
+            text_container = find_text_container(soup.findAll("div", {'class': "ui text container"}))
+            if not text_container:
+                return
+
+            # Construct content with images
+            content = ""
+
+            header = soup.find('div', class_="title-wrapper")
+            if header is not None:
+                header_text = header.find('h1', class_='ui header')
+                if header_text is not None:
+                    content += f"<h1>{header_text.text}</h1>"
+
+            for p in text_container.findAll('p'):
+                if p.find('img'):
+                    media: str = p.find("img")["data-media-id"]
+                    content += f'<p><img src="{get_chapter_content_image(media)}"></p>'
+                else:
+                    content += str(p)
+            return content
 
     def get_preview(self, manga: Manga):
         url = f'{self.url_api}/ranobe/{manga.content_id}'
-        html = get_html(url, self.headers)
-        if html and html.status_code == 200 and html.json():
-            img = html.json().get('data').get('posters').get('big')
-            response = get_html(img, content_type='content')
-            return response
+        response = get_html(url, self.headers, content_type='json')
+        if response:
+            img = get_data(response, ['data', 'posters', 'big'])
+            img_response = get_html(img, content_type='content')
+            return img_response
 
     def get_manga_url(self, manga: Manga) -> str:
         return f'{URL_RANOBEHUB}/ranobe/{manga.content_id}'
