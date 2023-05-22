@@ -28,10 +28,7 @@ class Ui_manga_item_widget(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(manga_item_widget.sizePolicy().hasHeightForWidth())
         manga_item_widget.setSizePolicy(sizePolicy)
-        manga_item_widget.setStyleSheet(u"QWidget#manga_widget QLabel\n"
-"{\n"
-"    font-size: 14px;\n"
-"}")
+        manga_item_widget.setStyleSheet(u"")
         self.verticalLayout = QVBoxLayout(manga_item_widget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
