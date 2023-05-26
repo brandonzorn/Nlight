@@ -5,11 +5,11 @@ import time
 import darkdetect
 import platformdirs
 from PySide6.QtCore import Qt, QTranslator, QLocale, QThreadPool
-from PySide6.QtGui import QIcon, QFont
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 
 from nlightreader import ParentWindow
-from nlightreader.consts import APP_VERSION, APP_NAME, Icons, Fonts
+from nlightreader.consts import APP_VERSION, APP_NAME, Icons
 from nlightreader.utils import get_locale, get_ui_style, Thread
 
 
@@ -22,17 +22,12 @@ class App(QApplication):
 
         self.translator = QTranslator()
 
-        self.load_font()
         self.load_translator()
         self.update_style()
 
     def load_translator(self):
         self.translator.load(get_locale(QLocale().language()))
         self.installTranslator(self.translator)
-
-    def load_font(self):
-        font = QFont(Fonts.SegoeUI, 9)
-        self.setFont(font)
 
     def update_style(self):
         self.setStyleSheet(get_ui_style(darkdetect.theme()))

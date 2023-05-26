@@ -1,1 +1,1 @@
-from .files import Styles, Icons, LangIcons, Fonts, Translations
+from .files import Styles, Icons, LangIcons, Translations
