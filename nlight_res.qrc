@@ -72,7 +72,4 @@
     <file>data/styles/light/widget_light.qss</file>
     <file>data/styles/light/icons_light.qss</file>
   </qresource>
-  <qresource prefix="fonts">
-    <file>data/fonts/SegoeUI.ttf</file>
-  </qresource>
 </RCC>

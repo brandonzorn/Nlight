@@ -8,15 +8,13 @@ def read_file(file: QFile):
 
 
 class Styles:
-    Dark = read_file(QFile(u":/styles/data/styles/dark/widget_dark.qss")) +\
-           read_file(QFile(u":/styles/data/styles/dark/icons_dark.qss"))
+    dark_icons = read_file(QFile(u":/styles/data/styles/dark/icons_dark.qss"))
+    dark_widgets = read_file(QFile(u":/styles/data/styles/dark/widget_dark.qss"))
+    Dark = dark_icons + dark_widgets
 
-    Light = read_file(QFile(u":/styles/data/styles/light/widget_light.qss")) +\
-            read_file(QFile(u":/styles/data/styles/light/icons_light.qss"))
-
-
-class Fonts:
-    SegoeUI = u":/fonts/data/fonts/SegoeUI.ttf"
+    light_icons = read_file(QFile(u":/styles/data/styles/light/icons_light.qss"))
+    light_widgets = read_file(QFile(u":/styles/data/styles/light/widget_light.qss"))
+    Light = light_icons + light_widgets
 
 
 class LangIcons:
