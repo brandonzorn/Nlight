@@ -79,14 +79,14 @@ class MangaDex(Parser):
 
     def get_images(self, manga: Manga, chapter: Chapter):
         url = f'{self.url_api}/at-home/server/{chapter.content_id}'
-        html = get_html(url, self.headers)
+        response = get_html(url, self.headers, content_type='json')
         images = []
-        if html and html.status_code == 200 and html.json():
-            image_hash = html.json().get('chapter').get('hash')
-            for i in html.json().get('chapter').get('data'):
-                img = f'https://uploads.mangadex.org/data/{image_hash}/{i}'
-                page = html.json().get('chapter').get('data').index(i) + 1
-                images.append(Image('', page, img))
+        if response:
+            image_hash = response.get('chapter').get('hash')
+            for img_data in get_data(response, ['chapter', 'data']):
+                img_url = f'https://uploads.mangadex.org/data/{image_hash}/{img_data}'
+                page = response.get('chapter').get('data').index(img_data) + 1
+                images.append(Image('', page, img_url))
         return images
 
     def get_image(self, image: Image):
