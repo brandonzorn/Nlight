@@ -54,11 +54,6 @@ class FileManager:
         return QPixmap(get_file_path(path, 'preview.jpg'))
 
     @staticmethod
-    def remove_image_file(self):
-        # ToDo . Add removing cached images
-        ...
-
-    @staticmethod
     def remove_chapter_files(manga: Manga, chapter: Chapter, catalog):
         path = f'images/{catalog.catalog_name}/manga/{manga.content_id}/{chapter.content_id}'
         remove_file(path)
