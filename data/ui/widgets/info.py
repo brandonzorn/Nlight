@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'info.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.1
+## Created by: Qt User Interface Compiler version 6.5.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -16,9 +16,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QHBoxLayout,
-    QLabel, QListWidget, QListWidgetItem, QPushButton,
-    QSizePolicy, QSpacerItem, QTextBrowser, QVBoxLayout,
-    QWidget)
+    QHeaderView, QLabel, QListWidget, QListWidgetItem,
+    QPushButton, QSizePolicy, QSpacerItem, QTextBrowser,
+    QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
 import nlight_res_rc
 
 class Ui_Form(object):
@@ -266,12 +266,16 @@ class Ui_Form(object):
         self.items_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout = QVBoxLayout(self.items_frame)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.items_list = QListWidget(self.items_frame)
-        self.items_list.setObjectName(u"items_list")
-        self.items_list.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.items_list.setWordWrap(True)
+        self.items_tree = QTreeWidget(self.items_frame)
+        __qtreewidgetitem = QTreeWidgetItem()
+        __qtreewidgetitem.setText(0, u"1");
+        self.items_tree.setHeaderItem(__qtreewidgetitem)
+        self.items_tree.setObjectName(u"items_tree")
+        self.items_tree.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.items_tree.setHeaderHidden(True)
+        self.items_tree.header().setVisible(False)
 
-        self.verticalLayout.addWidget(self.items_list)
+        self.verticalLayout.addWidget(self.items_tree)
 
 
         self.horizontalLayout_4.addWidget(self.items_frame)
