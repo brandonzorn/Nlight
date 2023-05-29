@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt, QSize, Slot, Signal, QThreadPool
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QWidget, QListWidgetItem
+from PySide6.QtWidgets import QWidget, QListWidgetItem, QTreeWidgetItem
 
 from data.ui.widgets.info import Ui_Form
 from nlightreader.consts import lib_lists_en, ItemsColors, LibList
@@ -22,13 +22,13 @@ class FormInfo(QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in lib_lists_en])
-        self.ui.items_list.doubleClicked.connect(self.open_reader)
+        self.ui.items_tree.doubleClicked.connect(self.open_reader)
         self.ui.characters_list.doubleClicked.connect(self.open_character)
         self.ui.related_list.doubleClicked.connect(self.open_related_manga)
         self.ui.shikimori_btn.clicked.connect(self.open_rate)
         self.ui.add_btn.clicked.connect(self.add_to_favorites)
         self.ui.lib_list_box.currentIndexChanged.connect(self.change_lib_list)
-        self.ui.items_list.customContextMenuRequested.connect(self.on_context_menu)
+        self.ui.items_tree.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.back_btn.clicked.connect(self.close_widget)
         self.db: Database = Database()
         self.thread_pool = QThreadPool()
@@ -38,33 +38,39 @@ class FormInfo(QWidget):
         self.related_mangas: list[Manga] = []
         self.related_characters: list[Character] = []
         self.chapters: list[Chapter] = []
+        self.sorted_chapters = {}
         self.manga_pixmap = None
         self.reader_window = None
         self.rate_window = None
         self.character_window = None
 
     def on_context_menu(self, pos):
+        context_target = self.ui.items_tree
+
         def set_as_read_all():
             history_notes = []
-            for item in [selected_item.listWidget().item(i) for i in range(
-                    selected_item.listWidget().indexFromItem(selected_item).row())]:
-                history_notes.append(HistoryNote(
-                    self.chapters[selected_item.listWidget().indexFromItem(item).row()], self.manga, True))
-                item.setBackground(ItemsColors.READ)
+            for i in range(selected_item.parent().indexOfChild(selected_item) + 1):
+                chapter = self.sorted_chapters[selected_item.parent().text(0)][i]
+                history_notes.append(HistoryNote(chapter, self.manga, True))
+                item = selected_item.parent().child(i)
+                item.setBackground(0, ItemsColors.READ)
             self.db.add_history_notes(history_notes)
 
         def set_as_read():
-            self.db.add_history_note(HistoryNote(
-                self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()], self.manga, True))
-            selected_item.setBackground(ItemsColors.READ)
+            self.db.add_history_note(HistoryNote(selected_chapter, self.manga, True))
+            selected_item.setBackground(0, ItemsColors.READ)
 
         def remove_read_state():
-            self.db.del_history_note(self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()])
-            selected_item.setBackground(ItemsColors.EMPTY)
+            self.db.del_history_note(selected_chapter)
+            selected_item.setBackground(0, ItemsColors.EMPTY)
 
         menu = ReadMarkMenu()
-        selected_item = self.ui.items_list.itemAt(pos)
-        selected_chapter = self.chapters[selected_item.listWidget().indexFromItem(selected_item).row()]
+        selected_item = context_target.itemAt(pos)
+        if not selected_item or not selected_item.parent():
+            return
+        selected_chapter = self.sorted_chapters[
+            selected_item.parent().text(0)][
+            selected_item.parent().indexOfChild(selected_item)]
         if not self.db.check_complete_chapter(selected_chapter):
             menu.set_mode(0)
         else:
@@ -75,12 +81,29 @@ class FormInfo(QWidget):
         menu.set_as_read.triggered.connect(set_as_read)
         menu.set_as_read_all.triggered.connect(set_as_read_all)
         menu.remove_read_state.triggered.connect(remove_read_state)
-        menu.exec(self.ui.items_list.mapToGlobal(pos))
+        menu.exec(context_target.mapToGlobal(pos))
 
     def resizeEvent(self, a0):
         if not self.catalog or not self.manga or not self.manga_pixmap:
             return
         self.update_manga_preview()
+
+    def sort_chapters(self):
+        self.sorted_chapters.clear()
+        for ch in self.chapters:
+            if ch.language in self.sorted_chapters:
+                self.sorted_chapters[ch.language].append(ch)
+            else:
+                self.sorted_chapters.update({ch.language: [ch]})
+
+    def _get_selected_chapter(self):
+        selected_item = self.ui.items_tree.currentItem()
+        if not selected_item.parent():
+            return
+        selected_chapter = self.sorted_chapters[
+            selected_item.parent().text(0)][
+            selected_item.parent().indexOfChild(selected_item)]
+        return selected_chapter
 
     def get_current_manga(self):
         return self.catalog.get_manga(self.related_mangas[self.ui.related_list.currentIndex().row()])
@@ -167,18 +190,21 @@ class FormInfo(QWidget):
             self.db.add_chapters(self.chapters, self.manga)
 
         def update_chapters():
-            self.ui.items_list.clear()
+            self.ui.items_tree.clear()
             self.ui.items_frame.setVisible(bool(self.chapters))
-            for chapter in self.chapters:
-                item = QListWidgetItem(chapter.get_name())
-                if self.db.check_complete_chapter(chapter):
-                    if self.db.get_complete_status(chapter):
-                        item.setBackground(ItemsColors.READ)
-                    else:
-                        item.setBackground(ItemsColors.UNREAD)
-                if chapter.language:
-                    item.setIcon(QIcon(get_language_icon(chapter.language)))
-                self.ui.items_list.addItem(item)
+            self.sort_chapters()
+            for lang in self.sorted_chapters:
+                lang_item = QTreeWidgetItem([lang])
+                lang_item.setIcon(0, QIcon(get_language_icon(lang)))
+                self.ui.items_tree.addTopLevelItem(lang_item)
+                for chapter in self.sorted_chapters[lang]:
+                    ch_item = QTreeWidgetItem([chapter.get_name()])
+                    if self.db.check_complete_chapter(chapter):
+                        if self.db.get_complete_status(chapter):
+                            ch_item.setBackground(0, ItemsColors.READ)
+                        else:
+                            ch_item.setBackground(0, ItemsColors.UNREAD)
+                    lang_item.addChild(ch_item)
         Worker(target=get_chapters, callback=update_chapters).start(pool=self.thread_pool)
 
     def get_relations(self):
@@ -213,8 +239,10 @@ class FormInfo(QWidget):
         except RuntimeError:
             pass
         finally:
-            self.reader_window = ReaderWindow()
-            self.reader_window.setup(self.manga, self.chapters, self.ui.items_list.currentIndex().row() + 1)
+            selected_chapter = self._get_selected_chapter()
+            if selected_chapter:
+                self.reader_window = ReaderWindow()
+                self.reader_window.setup(self.manga, self.chapters, self.chapters.index(selected_chapter) + 1)
 
     @Slot()
     def open_related_manga(self):
