@@ -49,30 +49,43 @@ def get_html(url: str, headers=None, params=None, json=None, cookies=None, conte
         return
 
 
-def get_language_icon(language: str) -> str:
+def get_language_icon(lang_code: str) -> str:
     """
     Returns the file path to the icon for the specified language.
 
-    :param language: A string representing a language code.
+    :param lang_code: A string representing a language code.
     :return: The file path to the icon associated with the language as a string, or an empty string if no icon is found.
     """
-    match language:
-        case 'ru':
-            return LangIcons.Ru
-        case 'en':
-            return LangIcons.Gb
-        case 'jp':
-            return LangIcons.Jp
-        case 'ua':
-            return LangIcons.Ua
-        case _:
-            return ''
+    lang_icons = {
+        'ru': LangIcons.Ru,
+        'en': LangIcons.Gb,
+        'jp': LangIcons.Jp,
+        'ua': LangIcons.Ua
+    }
+    return lang_icons.get(lang_code, '')
 
 
 def get_manga_kind(kind: str) -> MangaKinds:
-    kinds_matches = {'manga': MangaKinds.manga, 'manhwa': MangaKinds.manhwa, 'manhua': MangaKinds.manhua,
-                     'one_shot': MangaKinds.one_shot, 'doujin': MangaKinds.doujin, 'ranobe': MangaKinds.ranobe}
-    assert kind in kinds_matches, f"Not fond matches for {kind}"
+    """
+    Returns the corresponding value from the `MangaKinds` enumeration for a given string `kind`.
+
+    Args:
+        kind (str): A string representing the kind of manga.
+    Returns:
+        MangaKinds: The corresponding value from the `MangaKinds` enumeration.
+    Raises:
+        ValueError: If no matches were found for the input `kind`.
+    """
+    kinds_matches = {
+        'manga': MangaKinds.manga,
+        'manhwa': MangaKinds.manhwa,
+        'manhua': MangaKinds.manhua,
+        'one_shot': MangaKinds.one_shot,
+        'doujin': MangaKinds.doujin,
+        'ranobe': MangaKinds.ranobe
+    }
+    if kind not in kinds_matches:
+        raise ValueError(f"No matches found for kind '{kind}'.")
     return kinds_matches[kind]
 
 
