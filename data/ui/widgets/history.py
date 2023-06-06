@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QListWidget,
-    QListWidgetItem, QPushButton, QSizePolicy, QSpacerItem,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
+    QPushButton, QSizePolicy, QSpacerItem, QTreeWidget,
+    QTreeWidgetItem, QVBoxLayout, QWidget)
 import nlight_res_rc
 
 class Ui_Form(object):
@@ -35,12 +35,16 @@ class Ui_Form(object):
         self.items_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_2 = QVBoxLayout(self.items_frame)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.items_list = QListWidget(self.items_frame)
-        self.items_list.setObjectName(u"items_list")
-        self.items_list.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.items_list.setWordWrap(True)
+        self.items_tree = QTreeWidget(self.items_frame)
+        __qtreewidgetitem = QTreeWidgetItem()
+        __qtreewidgetitem.setText(0, u"1");
+        self.items_tree.setHeaderItem(__qtreewidgetitem)
+        self.items_tree.setObjectName(u"items_tree")
+        self.items_tree.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.items_tree.setHeaderHidden(True)
+        self.items_tree.setColumnCount(1)
 
-        self.verticalLayout_2.addWidget(self.items_list)
+        self.verticalLayout_2.addWidget(self.items_tree)
 
 
         self.horizontalLayout.addWidget(self.items_frame)
