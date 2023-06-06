@@ -9,6 +9,12 @@ class BaseItem:
         self.name = name
         self.russian = russian
 
+    def __eq__(self, other):
+        return other.id == self.id
+
+    def __hash__(self):
+        return hash(self.id)
+
     def get_name(self) -> str:
         if QLocale().language() in (QLocale.Language.Russian, QLocale.Language.Ukrainian):
             if self.russian:
