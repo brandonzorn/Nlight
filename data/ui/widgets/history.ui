@@ -36,13 +36,21 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QListWidget" name="items_list">
+       <widget class="QTreeWidget" name="items_tree">
         <property name="contextMenuPolicy">
          <enum>Qt::CustomContextMenu</enum>
         </property>
-        <property name="wordWrap">
+        <property name="headerHidden">
          <bool>true</bool>
         </property>
+        <property name="columnCount">
+         <number>1</number>
+        </property>
+        <column>
+         <property name="text">
+          <string notr="true">1</string>
+         </property>
+        </column>
        </widget>
       </item>
      </layout>
