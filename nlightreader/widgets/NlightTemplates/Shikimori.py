@@ -1,4 +1,4 @@
-from PySide6.QtCore import Slot, Qt
+from PySide6.QtCore import Slot
 
 from data.ui.widgets.shikimori import Ui_Form
 from nlightreader.consts import LibList
@@ -6,8 +6,9 @@ from nlightreader.dialogs import FormAuth
 from nlightreader.items import Manga, User
 from nlightreader.parsers import ShikimoriLib
 from nlightreader.utils import translate
-from nlightreader.widgets.BaseWidget import MangaItemBasedWidget
-from nlightreader.widgets.MangaItem import MangaItem
+from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
+from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
+from nlightreader.widgets.NlightContainers.manga_area import MangaArea
 
 
 class FormShikimori(MangaItemBasedWidget):
@@ -15,6 +16,9 @@ class FormShikimori(MangaItemBasedWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+
+        self.manga_area = MangaArea(self.ui.items_layout)
+
         self.ui.planned_btn.clicked.connect(lambda: self.change_list(LibList.planned))
         self.ui.reading_btn.clicked.connect(lambda: self.change_list(LibList.reading))
         self.ui.on_hold_btn.clicked.connect(lambda: self.change_list(LibList.on_hold))
@@ -25,31 +29,10 @@ class FormShikimori(MangaItemBasedWidget):
         self.ui.prev_btn.clicked.connect(self.turn_page_prev)
         self.ui.search_btn.clicked.connect(self.search)
         self.ui.auth_btn.clicked.connect(self.authorize)
-        self.ui.scrollAreaWidgetContents.resizeEvent = self.scroll_resize_event
         self.catalog = ShikimoriLib()
         self.Form_auth = FormAuth(self.catalog, parent=self)
         self.Form_auth.accepted.connect(self.auth_accept)
         self.update_user_info()
-
-    def add_manga_items(self):
-        i, j = 0, 0
-        for manga_item in self.manga_items:
-            self.ui.content_grid.addWidget(manga_item, i, j, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
-            j += 1
-            if j == self.col_count - 1:
-                j = 0
-                i += 1
-
-    def delete_manga_items(self):
-        self.ui.scrollArea.verticalScrollBar().setValue(0)
-        for manga_item in self.manga_items:
-            self.ui.content_grid.removeWidget(manga_item)
-            manga_item.deleteLater()
-        self.manga_items.clear()
-
-    def update_manga_items(self):
-        size = self.ui.scrollArea.size().width() // self.col_count
-        [manga_item.set_size(size) for manga_item in self.manga_items]
 
     def setup_manga_item(self, manga: Manga):
         item = MangaItem(manga, is_added_to_lib=False, pool=self.manga_thread_pool)
