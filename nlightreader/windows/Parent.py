@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QMainWindow
 
 from data.ui.windows.mainWindow import Ui_MainWindow
 from nlightreader.items import Manga
-from nlightreader.widgets import FormFacial, FormLibrary, FormShikimori, FormHistory, FormInfo
+from nlightreader.widgets.NlightTemplates import FormFacial, FormLibrary, FormShikimori, FormHistory, FormInfo
 
 
 class ParentWindow(QMainWindow):
