@@ -1,12 +1,13 @@
-from PySide6.QtCore import Slot, Qt
+from PySide6.QtCore import Slot
 
 from data.ui.widgets.facial import Ui_Form
 from nlightreader.controlers import FilterController
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import Manga
 from nlightreader.utils import USER_CATALOGS, translate
-from nlightreader.widgets.BaseWidget import MangaItemBasedWidget
-from nlightreader.widgets.MangaItem import MangaItem
+from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
+from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
+from nlightreader.widgets.NlightContainers.manga_area import MangaArea
 
 
 class FormFacial(MangaItemBasedWidget):
@@ -14,6 +15,9 @@ class FormFacial(MangaItemBasedWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+
+        self.manga_area = MangaArea(self.ui.items_layout)
+
         self.ui.next_btn.clicked.connect(self.turn_page_next)
         self.ui.prev_btn.clicked.connect(self.turn_page_prev)
         self.ui.search_btn.clicked.connect(self.search)
@@ -24,7 +28,6 @@ class FormFacial(MangaItemBasedWidget):
             not self.ui.catalogs_list.isVisible()))
         self.ui.catalogs_list.doubleClicked.connect(
             lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row()))
-        self.ui.scrollAreaWidgetContents.resizeEvent = self.scroll_resize_event
         self.__filter_controller = FilterController()
         self.Form_genres = FormGenres(self)
         self.ui.genres_btn.clicked.connect(self.open_genres_dialog)
@@ -37,26 +40,6 @@ class FormFacial(MangaItemBasedWidget):
             self.change_catalog(0)
         else:
             self.get_content()
-
-    def add_manga_items(self):
-        i, j = 0, 0
-        for manga_item in self.manga_items:
-            self.ui.content_grid.addWidget(manga_item, i, j, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
-            j += 1
-            if j == self.col_count - 1:
-                j = 0
-                i += 1
-
-    def delete_manga_items(self):
-        self.ui.scrollArea.verticalScrollBar().setValue(0)
-        for manga_item in self.manga_items:
-            self.ui.content_grid.removeWidget(manga_item)
-            manga_item.deleteLater()
-        self.manga_items.clear()
-
-    def update_manga_items(self):
-        size = self.ui.scrollArea.size().width() // self.col_count
-        [manga_item.set_size(size) for manga_item in self.manga_items]
 
     def setup_manga_item(self, manga: Manga):
         item = MangaItem(manga, pool=self.manga_thread_pool)

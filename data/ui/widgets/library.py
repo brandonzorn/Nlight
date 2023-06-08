@@ -15,49 +15,29 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
-    QPushButton, QScrollArea, QSizePolicy, QSpacerItem,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QPushButton,
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(390, 395)
+        Form.resize(380, 200)
         Form.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.horizontalLayout = QHBoxLayout(Form)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.items_frame = QFrame(Form)
         self.items_frame.setObjectName(u"items_frame")
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.items_frame.sizePolicy().hasHeightForWidth())
+        self.items_frame.setSizePolicy(sizePolicy)
         self.items_frame.setFrameShape(QFrame.StyledPanel)
         self.items_frame.setFrameShadow(QFrame.Raised)
-        self.verticalLayout = QVBoxLayout(self.items_frame)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.scrollArea = QScrollArea(self.items_frame)
-        self.scrollArea.setObjectName(u"scrollArea")
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollAreaWidgetContents = QWidget()
-        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 267, 373))
-        self.scroll_layout = QVBoxLayout(self.scrollAreaWidgetContents)
-        self.scroll_layout.setSpacing(0)
-        self.scroll_layout.setObjectName(u"scroll_layout")
-        self.scroll_layout.setContentsMargins(0, 0, 0, 0)
-        self.content_grid = QGridLayout()
-        self.content_grid.setObjectName(u"content_grid")
-        self.content_grid.setVerticalSpacing(12)
-
-        self.scroll_layout.addLayout(self.content_grid)
-
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.scroll_layout.addItem(self.verticalSpacer_2)
-
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-
-        self.verticalLayout.addWidget(self.scrollArea)
-
+        self.items_layout = QVBoxLayout(self.items_frame)
+        self.items_layout.setObjectName(u"items_layout")
 
         self.horizontalLayout.addWidget(self.items_frame)
 
