@@ -1,6 +1,6 @@
 import webbrowser
 
-from PySide6.QtWidgets import QDialog
+from PySide6.QtWidgets import QDialog, QLayout
 
 from data.ui.dialogs.auth import Ui_Dialog
 
@@ -10,6 +10,7 @@ class FormAuth(QDialog):
         super().__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+        self.layout().setSizeConstraint(QLayout.SetFixedSize)
         self.ui.catalog_label.setText(catalog.catalog_name)
         self.session = catalog.session
         self.setup_form(catalog.fields)
