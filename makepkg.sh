@@ -19,4 +19,4 @@ find package/opt/Nlight -type d -exec chmod 755 -- {} +
 find package/usr/share -type f -exec chmod 644 -- {} +
 chmod +x package/opt/Nlight/Nlight
 
-fpm -C package -s dir -t deb -n "nlight" -v 1.9.5 --license mit --description "Open source manga and ranobe reading application" --url "https://github.com/brandonzorn/Nlight" --architecture native --maintainer "brandonzorn <v.klimenko.2137@gmail.com>" -p dist/Nlight.deb
+fpm -C package -s dir -t deb -n "nlight" -v 1.9.6 --license mit --description "Open source manga and ranobe reading application" --url "https://github.com/brandonzorn/Nlight" --architecture native --maintainer "brandonzorn <v.klimenko.2137@gmail.com>" -p dist/Nlight.deb
