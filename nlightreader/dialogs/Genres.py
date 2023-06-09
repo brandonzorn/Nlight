@@ -1,5 +1,5 @@
 from PySide6.QtCore import Slot
-from PySide6.QtWidgets import QDialog
+from PySide6.QtWidgets import QDialog, QLayout
 
 from data.ui.dialogs.genres import Ui_Dialog
 
@@ -9,7 +9,7 @@ class FormGenres(QDialog):
         super().__init__(parent)
         self.ui_ge = Ui_Dialog()
         self.ui_ge.setupUi(self)
-        self.setFixedSize(self.minimumSize())
+        self.layout().setSizeConstraint(QLayout.SetFixedSize)
         self.setWindowTitle('Genres')
         self.ui_ge.buttonBox.accepted.connect(self.accept_genres)
         self.ui_ge.buttonBox.rejected.connect(self.reject_genres)
