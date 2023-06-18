@@ -25,7 +25,7 @@ class Rulate(Parser):
             soup = BeautifulSoup(response, "html.parser")
             hranobe = soup.find('div', style="margin: 20px 0 0 0")
             if hranobe:
-                description_text = hranobe.findAll('p')[0].text
+                description_text = hranobe.text
                 if description_text:
                     manga.description.update({'all': str(description_text)})
             manga.kind = 'ranobe'
