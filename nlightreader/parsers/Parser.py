@@ -19,7 +19,7 @@ class Parser:
     def get_character(self, character: Character) -> Character:
         return character
 
-    def search_manga(self, params: RequestForm) -> list[Manga]:
+    def search_manga(self, form: RequestForm) -> list[Manga]:
         return []
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
