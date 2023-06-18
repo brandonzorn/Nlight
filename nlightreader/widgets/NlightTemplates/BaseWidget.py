@@ -6,8 +6,8 @@ from PySide6.QtWidgets import QWidget
 from nlightreader.consts import LibList
 from nlightreader.items import Manga, RequestForm
 from nlightreader.utils import Thread
-from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 from nlightreader.widgets.NlightContainers.manga_area import MangaArea
+from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
 class MangaItemBasedWidget(QWidget):
