@@ -165,7 +165,7 @@ class FormInfo(QWidget):
         self.ui.chapters_label.setText(f"{translate('Other', 'Chapters')}: {self.manga.chapters}")
         self.ui.catalog_score_label.setVisible(bool(self.manga.score))
         self.ui.catalog_score_label.setText(f"{translate('Other', 'Rating')}: {self.manga.score}")
-        self.ui.description_frame.setVisible(bool(self.manga.get_description()))
+        # self.ui.description_frame.setVisible(bool(self.manga.get_description()))
         self.ui.description_text.setHtml(description_to_html(self.manga.get_description()))
 
     @Slot()
@@ -205,6 +205,8 @@ class FormInfo(QWidget):
                         else:
                             ch_item.setBackground(0, ItemsColors.UNREAD)
                     lang_item.addChild(ch_item)
+                if len(self.sorted_chapters) == 1:
+                    lang_item.setExpanded(True)
         Worker(target=get_chapters, callback=update_chapters).start(pool=self.thread_pool)
 
     def get_relations(self):
