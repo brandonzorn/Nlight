@@ -6,9 +6,9 @@ from nlightreader.dialogs import FormAuth
 from nlightreader.items import Manga, User
 from nlightreader.parsers import ShikimoriLib
 from nlightreader.utils import translate
+from nlightreader.widgets.NlightContainers.manga_area import MangaArea
 from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
-from nlightreader.widgets.NlightContainers.manga_area import MangaArea
 
 
 class FormShikimori(MangaItemBasedWidget):
