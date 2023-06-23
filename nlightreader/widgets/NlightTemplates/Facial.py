@@ -5,9 +5,9 @@ from nlightreader.controlers import FilterController
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import Manga
 from nlightreader.utils import USER_CATALOGS, translate
+from nlightreader.widgets.NlightContainers.manga_area import MangaArea
 from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
-from nlightreader.widgets.NlightContainers.manga_area import MangaArea
 
 
 class FormFacial(MangaItemBasedWidget):
@@ -28,8 +28,13 @@ class FormFacial(MangaItemBasedWidget):
             not self.ui.catalogs_list.isVisible()))
         self.ui.catalogs_list.doubleClicked.connect(
             lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row()))
-        self.__filter_controller = FilterController()
+
         self.Form_genres = FormGenres(self)
+        self.__filter_controller = FilterController()
+        self.__filter_controller.set_kinds_container(self.ui.kinds_grid)
+        self.__filter_controller.set_orders_container(self.ui.orders_grid)
+        self.__filter_controller.set_genres_container(self.Form_genres)
+
         self.ui.genres_btn.clicked.connect(self.open_genres_dialog)
 
     def setup(self):
@@ -66,31 +71,32 @@ class FormFacial(MangaItemBasedWidget):
         self.request_params.clear()
         self.request_params.order = self.__filter_controller.get_active_order()
         self.request_params.kinds = self.__filter_controller.get_active_kinds()
-        self.request_params.genres = self.Form_genres.selected_genres
+        self.request_params.genres = self.__filter_controller.get_active_genres()
         self.request_params.search = self.ui.title_line.text()
         self.get_content()
 
     @Slot()
     def reset_filter(self):
-        self.request_params.clear()
-        self.Form_genres.reset_items()
         self.__filter_controller.reset_items()
+        self.request_params.clear()
         self.request_params.order = self.__filter_controller.get_active_order()
         self.ui.title_line.clear()
         self.get_content()
 
     def setup_filters(self):
         self.clear_filters_items()
-        self.__filter_controller.add_orders(
-            frame=self.ui.orders_frame, grid=self.ui.orders_grid, items=self.catalog.get_orders())
-        self.__filter_controller.add_kinds(
-            frame=self.ui.kinds_frame, grid=self.ui.kinds_grid, items=self.catalog.get_kinds())
-        self.__filter_controller.add_genres(
-            frame=self.ui.genres_frame, widget=self.Form_genres, items=self.catalog.get_genres())
+        orders = self.catalog.get_orders()
+        kinds = self.catalog.get_kinds()
+        genres = self.catalog.get_genres()
+        self.ui.kinds_frame.setVisible(bool(kinds))
+        self.ui.orders_frame.setVisible(bool(orders))
+        self.ui.genres_frame.setVisible(bool(genres))
+        self.__filter_controller.add_orders(orders)
+        self.__filter_controller.add_kinds(kinds)
+        self.__filter_controller.add_genres(genres)
 
     def clear_filters_items(self):
         self.__filter_controller.clear()
-        self.Form_genres.clear()
 
     @Slot()
     def change_filters_visible(self):

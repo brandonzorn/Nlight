@@ -1,52 +1,90 @@
-from PySide6.QtWidgets import QRadioButton, QCheckBox
+from PySide6.QtWidgets import QRadioButton, QCheckBox, QLayout
 
-from nlightreader.items import Order
+from nlightreader.dialogs import FormGenres
+from nlightreader.items import Order, Kind, Genre
 
 
 class FilterController:
     def __init__(self):
-        self.order_items = {}
-        self.kind_items = {}
+        self.max_genres_per_row = 5
+
+        self._order_items = {}
+        self._kind_items = {}
+
+        self._orders_container = None
+        self._kinds_container = None
+        self._genres_container = None
 
     def get_active_order(self):
-        if not self.order_items:
+        if not self._order_items:
             return Order.get_empty_instance()
-        return [self.order_items[i] for i in self.order_items if i.isChecked()][-1]
+        for item in self._order_items:
+            if item.isChecked():
+                return self._order_items[item]
 
     def get_active_kinds(self):
-        return [self.kind_items[i] for i in self.kind_items if i.isChecked()]
+        return [self._kind_items[i] for i in self._kind_items if i.isChecked()]
 
-    def add_orders(self, *, frame, grid, items):
-        for i in items:
-            item = QRadioButton(i.get_name())
-            if not self.order_items:
-                item.setChecked(True)
-            grid.addWidget(item)
-            self.order_items.update({item: i})
-        frame.setVisible(bool(items))
+    def get_active_genres(self):
+        return self._genres_container.selected_genres
 
-    def add_kinds(self, *, frame, grid, items):
-        for i in items:
-            item = QCheckBox(i.get_name())
-            grid.addWidget(item)
-            self.kind_items.update({item: i})
-        frame.setVisible(bool(items))
+    def add_orders(self, items: list[Order]):
+        if not self._orders_container:
+            raise ValueError("Orders container is not set")
+        for item in items:
+            item_widget = QRadioButton(item.get_name())
+            if not self._order_items:
+                item_widget.setChecked(True)
+            self._orders_container.addWidget(item_widget)
+            self._order_items.update({item_widget: item})
 
-    @staticmethod
-    def add_genres(*, frame, widget, items):
-        for i in range(len(items)):
-            check_box = QCheckBox(items[i].get_name())
-            widget.genres_items.update({check_box: items[i]})
-            widget.ui_ge.gridLayout.addWidget(check_box, i // 5, i % 5)
-        frame.setVisible(bool(items))
+    def add_kinds(self, items: list[Kind]):
+        if not self._orders_container:
+            raise ValueError("Kinds container is not set")
+        for item in items:
+            item_widget = QCheckBox(item.get_name())
+            self._kinds_container.addWidget(item_widget)
+            self._kind_items.update({item_widget: item})
+
+    def add_genres(self, items: list[Genre]):
+        if not self._orders_container:
+            raise ValueError("Genres container is not set")
+        for index, item in enumerate(items):
+            item_widget = QCheckBox(item.get_name())
+            self._genres_container.genres_items.update({item_widget: item})
+            self._genres_container.ui_ge.gridLayout.addWidget(
+                item_widget, index // self.max_genres_per_row, index % self.max_genres_per_row)
+
+    def set_orders_container(self, container):
+        if not isinstance(container, QLayout):
+            raise ValueError("Container must be a QLayout")
+        if self._orders_container:
+            raise ValueError("Orders container is already set")
+        self._orders_container = container
+
+    def set_kinds_container(self, container):
+        if not isinstance(container, QLayout):
+            raise ValueError("Container must be a QLayout")
+        if self._kinds_container:
+            raise ValueError("Kinds container is already set")
+        self._kinds_container = container
+
+    def set_genres_container(self, container):
+        if not isinstance(container, FormGenres):
+            raise ValueError("Container must be a FormGenres")
+        if self._genres_container:
+            raise ValueError("Genres container is already set")
+        self._genres_container = container
 
     def clear(self):
-        [item.deleteLater() for item in self.order_items]
-        [item.deleteLater() for item in self.kind_items]
-        self.order_items.clear()
-        self.kind_items.clear()
+        [item.deleteLater() for item in self._order_items]
+        [item.deleteLater() for item in self._kind_items]
+        self._order_items.clear()
+        self._kind_items.clear()
+        self._genres_container.clear()
 
     def reset_items(self):
-        if self.order_items:
-            list(self.order_items.keys())[0].setChecked(True)
-        [i.setChecked(False) for i in self.kind_items]
+        if self._order_items:
+            list(self._order_items.keys())[0].setChecked(True)
+        [i.setChecked(False) for i in self._kind_items]
+        self._genres_container.reset_items()
