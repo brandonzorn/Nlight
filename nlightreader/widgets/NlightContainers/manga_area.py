@@ -42,6 +42,7 @@ class MangaArea(QScrollArea):
         for item in items:
             self._manga_items.append(item)
             self._content_grid.addWidget(item, i, j, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
+            item.update_image()
             j += 1
             if j == self._column_count - 1:
                 j = 0
