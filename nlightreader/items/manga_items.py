@@ -11,7 +11,7 @@ class Manga(BaseItem):
         super().__init__(content_id, catalog_id, name, russian)
         self.kind: str | None = None
         self.description: dict = {}
-        self.score: int | float = 0
+        self._score: int | float = 0
         self.status: str | None = None
         self.genres: list[Genre] = []
         self.volumes = 0
@@ -22,6 +22,16 @@ class Manga(BaseItem):
             if self.russian:
                 return self.russian
         return self.name
+
+    @property
+    def score(self):
+        return self._score
+
+    @score.setter
+    def score(self, score):
+        if isinstance(score, float) and score.is_integer():
+            score = int(score)
+        self._score = score
 
     def get_description(self) -> str:
         if self.description.get('all'):
