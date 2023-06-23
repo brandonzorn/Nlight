@@ -24,7 +24,6 @@ class MangaItem(QWidget):
         self._pool = pool
         self.ui.manga_item_frame.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.name_lbl.setText(self.manga.get_name())
-        self.update_image()
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
