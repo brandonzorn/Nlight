@@ -1,18 +1,18 @@
 from nlightreader.consts import URL_DESU_API, DESU_HEADERS, URL_DESU, DesuItems
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm
-from nlightreader.parsers.Parser import Parser
+from nlightreader.parsers.catalogs_base import MangaCatalog
 from nlightreader.utils.utils import get_html, get_data
 
 
-class Desu(Parser):
-    catalog_name = 'Desu'
+class Desu(MangaCatalog):
+    CATALOG_ID = 0
+    CATALOG_NAME = 'Desu'
 
     def __init__(self):
         super().__init__()
         self.url = URL_DESU
         self.url_api = URL_DESU_API
         self.headers = DESU_HEADERS
-        self.catalog_id = 0
         self.items = DesuItems
 
     def get_manga(self, manga: Manga):
@@ -20,7 +20,7 @@ class Desu(Parser):
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
             data = get_data(html.json(), ['response'], {})
-            manga.genres = [Genre(i.get('id'), self.catalog_id, i.get('text'), i.get('russian'))
+            manga.genres = [Genre(i.get('id'), self.CATALOG_ID, i.get('text'), i.get('russian'))
                             for i in data.get("genres")]
             manga.score = data.get("score")
             manga.kind = data.get("kind")
@@ -40,7 +40,7 @@ class Desu(Parser):
         manga = []
         if html and html.status_code == 200 and html.json():
             for i in get_data(html.json(), ['response']):
-                manga.append(Manga(i.get('id'), self.catalog_id, i.get('name'), i.get('russian')))
+                manga.append(Manga(i.get('id'), self.CATALOG_ID, i.get('name'), i.get('russian')))
         return manga
 
     def get_chapters(self, manga: Manga):
@@ -49,7 +49,7 @@ class Desu(Parser):
         chapters = []
         if html and html.status_code == 200 and html.json():
             for i in get_data(html.json(), ['response', 'chapters', 'list']):
-                chapters.append(Chapter(i.get('id'), self.catalog_id, i.get('vol'), i.get('ch'), i.get('title'), 'ru'))
+                chapters.append(Chapter(i.get('id'), self.CATALOG_ID, i.get('vol'), i.get('ch'), i.get('title'), 'ru'))
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter):
