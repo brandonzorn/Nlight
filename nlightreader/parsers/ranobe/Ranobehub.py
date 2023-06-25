@@ -6,18 +6,18 @@ from bs4 import BeautifulSoup
 from nlightreader.consts import URL_RANOBEHUB_API, URL_RANOBEHUB
 from nlightreader.consts.items import RanobehubItems
 from nlightreader.items import RequestForm, Manga, Chapter, Image
-from nlightreader.parsers.Parser import Parser
+from nlightreader.parsers.catalogs_base import RanobeCatalog
 from nlightreader.utils.utils import get_html, get_data
 
 
-class Ranobehub(Parser):
-    catalog_name = 'Ranobehub'
+class Ranobehub(RanobeCatalog):
+    CATALOG_ID = 4
+    CATALOG_NAME = 'Ranobehub'
 
     def __init__(self):
         super().__init__()
         self.url = URL_RANOBEHUB
         self.url_api = URL_RANOBEHUB_API
-        self.catalog_id = 4
         self.items = RanobehubItems
 
     def get_manga(self, manga: Manga) -> Manga:
@@ -41,7 +41,7 @@ class Ranobehub(Parser):
                 manga_id = i.get('id')
                 name = i.get('names').get('eng')
                 russian = i.get('names').get('rus')
-                manga.append(Manga(manga_id, self.catalog_id, name, russian))
+                manga.append(Manga(manga_id, self.CATALOG_ID, name, russian))
         return manga
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
@@ -52,7 +52,7 @@ class Ranobehub(Parser):
             for i in get_data(response, ['volumes'], default_val=[]):
                 volume_num = i.get('num')
                 for chapter_data in get_data(i, ['chapters'], []):
-                    chapters.append(Chapter(chapter_data.get('id'), self.catalog_id, volume_num,
+                    chapters.append(Chapter(chapter_data.get('id'), self.CATALOG_ID, volume_num,
                                             chapter_data.get('num'), chapter_data.get('name'), 'ru'))
             chapters.reverse()
         return chapters

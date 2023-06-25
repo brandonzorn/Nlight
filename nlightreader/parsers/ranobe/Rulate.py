@@ -5,18 +5,18 @@ from bs4 import BeautifulSoup
 from nlightreader.consts import URL_RULATE, URL_EROLATE
 from nlightreader.consts.items import RulateItems
 from nlightreader.items import Manga, Chapter, Image, RequestForm
-from nlightreader.parsers.Parser import Parser
+from nlightreader.parsers.catalogs_base import RanobeCatalog
 from nlightreader.utils.utils import get_html
 
 
-class Rulate(Parser):
-    catalog_name = 'Rulate'
+class Rulate(RanobeCatalog):
+    CATALOG_ID = 3
+    CATALOG_NAME = 'Rulate'
 
     def __init__(self):
         super().__init__()
         self.url_api = URL_RULATE
         self.cookies = {"mature": "c3a2ed4b199a1a15f5a5483504c7a75a7030dc4bi%3A1%3B"}
-        self.catalog_id = 3
         self.items = RulateItems
 
     def get_manga(self, manga: Manga) -> Manga:
@@ -47,7 +47,7 @@ class Rulate(Parser):
                     name = name_items[0].strip()
                     russian = name_items[1].strip()
                 ranobe_id = i.unwrap()['data-tooltip-content'].split('#book-tooltip-')[-1]
-                ranobe.append(Manga(ranobe_id, self.catalog_id, name, russian))
+                ranobe.append(Manga(ranobe_id, self.CATALOG_ID, name, russian))
         return ranobe
 
     def get_chapters(self, manga: Manga):
@@ -62,7 +62,7 @@ class Rulate(Parser):
                 name: str = chapter.find('td', class_='t').text
                 name = name.strip()
                 chapter_id = chapter.unwrap()['data-id']
-                chapters.append(Chapter(chapter_id, self.catalog_id, '', '', name, 'ru'))
+                chapters.append(Chapter(chapter_id, self.CATALOG_ID, '', '', name, 'ru'))
             chapters.reverse()
         return chapters
 
