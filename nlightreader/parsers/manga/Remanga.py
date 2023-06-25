@@ -2,20 +2,21 @@ import json
 
 from bs4 import BeautifulSoup
 
+
 from nlightreader.consts import URL_REMANGA_API, URL_REMANGA
 from nlightreader.items import RequestForm, Manga, Chapter, Image
-from nlightreader.parsers.Parser import Parser
+from nlightreader.parsers.catalogs_base import MangaCatalog
 from nlightreader.utils.utils import get_html
 
 
-class Remanga(Parser):
-    catalog_name = "ReManga"
+class Remanga(MangaCatalog):
+    CATALOG_ID = 6
+    CATALOG_NAME = "ReManga"
 
     def __init__(self):
         super().__init__()
         self.url = URL_REMANGA
         self.url_api = URL_REMANGA_API
-        self.catalog_id = 6
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f'{self.url_api}/titles/{manga.content_id}'
@@ -38,7 +39,7 @@ class Remanga(Parser):
                 name = i.get('en_name')
                 russian = i.get('rus_name')
                 kind = i.get('type')
-                manga = Manga(manga_id, self.catalog_id, name, russian)
+                manga = Manga(manga_id, self.CATALOG_ID, name, russian)
                 manga.kind = kind
                 manga.score = i.get('avg_rating')
                 mangas.append(manga)
@@ -62,7 +63,7 @@ class Remanga(Parser):
                 for ch in data:
                     if ch.get('is_paid'):
                         continue
-                    chapter = Chapter(ch.get('id'), self.catalog_id,
+                    chapter = Chapter(ch.get('id'), self.CATALOG_ID,
                                       str(ch.get('tome')), ch.get('chapter'), ch.get('name'), 'ru')
                     chapters.append(chapter)
                 page += 1

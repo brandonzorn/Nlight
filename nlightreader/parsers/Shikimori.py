@@ -2,6 +2,8 @@ import requests
 from PySide6.QtWidgets import QApplication
 from requests_oauthlib import OAuth2Session
 
+from nlightreader.parsers.catalogs_base import MangaCatalog, RanobeCatalog
+
 try:
     from keys import SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID
 except ModuleNotFoundError:
@@ -17,18 +19,18 @@ from nlightreader.utils.utils import get_html
 
 
 class ShikimoriBase(Parser):
-    catalog_name = 'Shikimori'
+    CATALOG_ID = 1
+    CATALOG_NAME = 'Shikimori'
 
     def __init__(self):
         super().__init__()
         self.url = URL_SHIKIMORI
         self.url_api = URL_SHIKIMORI_API
         self.headers = SHIKIMORI_HEADERS
-        self.catalog_id = 1
         self.is_primary = True
 
     def setup_manga(self, data: dict) -> Manga:
-        return Manga(data.get('id'), self.catalog_id, data.get('name'), data.get('russian'))
+        return Manga(data.get('id'), self.CATALOG_ID, data.get('name'), data.get('russian'))
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f'{self.url_api}/mangas/{manga.content_id}'
@@ -64,11 +66,11 @@ class ShikimoriBase(Parser):
         url = f'{self.url_api}/genres'
         html = get_html(url, headers=self.headers)
         if html and html.status_code == 200 and html.json():
-            return [Genre(str(i.get('id')), self.catalog_id, i.get('name'), i.get('russian')) for i in html.json()]
+            return [Genre(str(i.get('id')), self.CATALOG_ID, i.get('name'), i.get('russian')) for i in html.json()]
         return []
 
     def get_orders(self) -> list[Order]:
-        return [Order(i['value'], self.catalog_id, i['name'], i['russian']) for i in ShikimoriItems.ORDERS]
+        return [Order(i['value'], self.CATALOG_ID, i['name'], i['russian']) for i in ShikimoriItems.ORDERS]
 
     def get_relations(self, manga: Manga) -> list[Manga]:
         mangas = []
@@ -92,7 +94,7 @@ class ShikimoriBase(Parser):
                     if role in ['Supporting', 'Main']:
                         data = i.get('character')
                         if data:
-                            characters.append(Character(data.get('id'), self.catalog_id, data.get('name'),
+                            characters.append(Character(data.get('id'), self.CATALOG_ID, data.get('name'),
                                                         data.get('russian'), '', role))
             characters.reverse()
         return characters
@@ -101,7 +103,7 @@ class ShikimoriBase(Parser):
         return f'{self.url}/mangas/{manga.content_id}'
 
 
-class ShikimoriManga(ShikimoriBase):
+class ShikimoriManga(ShikimoriBase, MangaCatalog):
     catalog_name = 'Shikimori(Manga)'
 
     def __init__(self):
@@ -121,10 +123,10 @@ class ShikimoriManga(ShikimoriBase):
         return mangas
 
     def get_kinds(self):
-        return [Kind(i['value'], self.catalog_id, i['name'], i['russian']) for i in ShikimoriItems.KINDS]
+        return [Kind(i['value'], self.CATALOG_ID, i['name'], i['russian']) for i in ShikimoriItems.KINDS]
 
 
-class ShikimoriRanobe(ShikimoriBase):
+class ShikimoriRanobe(ShikimoriBase, RanobeCatalog):
     catalog_name = 'Shikimori(Ranobe)'
 
     def __init__(self):
@@ -223,7 +225,7 @@ class Auth:
         self.client_secret = SHIKIMORI_CLIENT_SECRET
         self.redirect_uri = 'urn:ietf:wg:oauth:2.0:oob'
         self.extra = {'client_id': self.client_id, 'client_secret': self.client_secret}
-        self.tokens = TokenManager.load_token(ShikimoriLib.catalog_name)
+        self.tokens = TokenManager.load_token(ShikimoriLib.CATALOG_NAME)
         self.headers = {'User-Agent': 'Shikimori', 'Authorization': f'Bearer {self.tokens.get("access_token")}'}
         self.client = self.get_client(scope, self.redirect_uri, token)
         self.refresh_token()
@@ -250,25 +252,25 @@ class Auth:
             self.client.fetch_token(URL_SHIKIMORI_TOKEN, code, client_secret=self.client_secret)
         except Exception as e:
             print(e)
-        TokenManager.save_token(self.token, ShikimoriLib.catalog_name)
+        TokenManager.save_token(self.token, ShikimoriLib.CATALOG_NAME)
         return self.token
 
     def update_token(self, token):
         if token:
-            TokenManager.save_token(token, ShikimoriLib.catalog_name)
+            TokenManager.save_token(token, ShikimoriLib.CATALOG_NAME)
             self.tokens = token
 
     def refresh_token(self):
-        if not TokenManager.load_token(ShikimoriLib.catalog_name):
+        if not TokenManager.load_token(ShikimoriLib.CATALOG_NAME):
             return False
         try:
             self.client.headers.clear()
             self.client.headers.update(SHIKIMORI_HEADERS)
             self.client.refresh_token(URL_SHIKIMORI_TOKEN, refresh_token=TokenManager.load_token(
-                ShikimoriLib.catalog_name).get('refresh_token'))
+                ShikimoriLib.CATALOG_NAME).get('refresh_token'))
             self.update_token(self.token)
             self.client.headers.update({
-                'Authorization': f'Bearer {TokenManager.load_token(ShikimoriLib.catalog_name).get("access_token")}'})
+                'Authorization': f'Bearer {TokenManager.load_token(ShikimoriLib.CATALOG_NAME).get("access_token")}'})
             return self.token
         except Exception as e:
             print(e)

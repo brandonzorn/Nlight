@@ -4,12 +4,12 @@ from nlightreader.items import Manga, Chapter, Image, RequestForm, Genre, Kind, 
 
 
 class Parser:
-    catalog_name = 'CATALOG'
+    CATALOG_NAME = 'CATALOG'
+    CATALOG_ID = -1
     is_primary = False
 
     def __init__(self):
         self.headers = DEFAULT_HEADERS
-        self.catalog_id = -1
         self.cookies = None
         self.items = ParserItems
 
@@ -38,13 +38,13 @@ class Parser:
         return
 
     def get_genres(self):
-        return [Genre(i['value'], self.catalog_id, i['name'], i['russian']) for i in self.items.GENRES]
+        return [Genre(i['value'], self.CATALOG_ID, i['name'], i['russian']) for i in self.items.GENRES]
 
     def get_kinds(self) -> list[Kind]:
-        return [Kind(i['value'], self.catalog_id, i['name'], i['russian']) for i in self.items.KINDS]
+        return [Kind(i['value'], self.CATALOG_ID, i['name'], i['russian']) for i in self.items.KINDS]
 
     def get_orders(self) -> list[Order]:
-        return [Order(i['value'], self.catalog_id, i['name'], i['russian']) for i in self.items.ORDERS]
+        return [Order(i['value'], self.CATALOG_ID, i['name'], i['russian']) for i in self.items.ORDERS]
 
     def get_relations(self, manga: Manga) -> list[Manga]:
         return []

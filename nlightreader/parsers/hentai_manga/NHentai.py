@@ -2,18 +2,18 @@ from bs4 import BeautifulSoup
 
 from nlightreader.consts import URL_NHENTAI, URL_NHENTAI_API
 from nlightreader.items import Manga, Chapter, Image
-from nlightreader.parsers.Parser import Parser
+from nlightreader.parsers.catalogs_base import HentaiMangaCatalog
 from nlightreader.utils.utils import get_html
 
 
-class NHentai(Parser):
-    catalog_name = "NHentai"
+class NHentai(HentaiMangaCatalog):
+    CATALOG_ID = 7
+    CATALOG_NAME = "NHentai"
 
     def __init__(self):
         super().__init__()
         self.url = URL_NHENTAI
         self.url_api = URL_NHENTAI_API
-        self.catalog_id = 7
 
     def search_manga(self, form):
         url = f'{self.url}/search'
@@ -32,11 +32,11 @@ class NHentai(Parser):
                         manga_id = cover_tag['href'].split('/')[-2]
                         if not manga_id:
                             continue
-                        mangas.append(Manga(manga_id, self.catalog_id, name, ""))
+                        mangas.append(Manga(manga_id, self.CATALOG_ID, name, ""))
         return mangas
 
     def get_chapters(self, manga: Manga):
-        return [Chapter(manga.content_id, self.catalog_id, "1", "1", "", "")]
+        return [Chapter(manga.content_id, self.CATALOG_ID, "1", "1", "", "")]
 
     def get_images(self, manga: Manga, chapter: Chapter):
         url = f"https://nhentai.to/g/{manga.content_id}"

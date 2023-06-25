@@ -31,3 +31,11 @@ class MangaKinds(Enum):
     one_shot = 3
     doujin = 4
     ranobe = 5
+
+
+@unique
+class CatalogType(Enum):
+    manga = 0
+    hentai_manga = 1
+    ranobe = 2
+    anime = 3

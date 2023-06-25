@@ -11,7 +11,7 @@ from nlightreader.items import Manga, Chapter, Character
 class FileManager:
     @staticmethod
     def check_image_exists(manga: Manga, chapter: Chapter, image, catalog) -> bool:
-        path = f'images/{catalog.catalog_name}/manga/{manga.content_id}/{chapter.content_id}'
+        path = f'images/{catalog.CATALOG_NAME}/manga/{manga.content_id}/{chapter.content_id}'
         file_name = f'{image.page}.jpg'
         if manga.kind == 'ranobe':
             file_name = f'{image.page}.txt'
@@ -19,7 +19,7 @@ class FileManager:
 
     @staticmethod
     def get_image_file(manga: Manga, chapter: Chapter, image, catalog):
-        path = f'images/{catalog.catalog_name}/manga/{manga.content_id}/{chapter.content_id}'
+        path = f'images/{catalog.CATALOG_NAME}/manga/{manga.content_id}/{chapter.content_id}'
         file_name = f'{image.page}.jpg'
         if not check_file_exists(path, file_name):
             save_file(path, file_name, catalog.get_image(image))
@@ -27,7 +27,7 @@ class FileManager:
 
     @staticmethod
     def get_chapter_text_file(manga: Manga, chapter: Chapter, image, catalog) -> str:
-        path = f'images/{catalog.catalog_name}/manga/{manga.content_id}/{chapter.content_id}'
+        path = f'images/{catalog.CATALOG_NAME}/manga/{manga.content_id}/{chapter.content_id}'
         file_name = f'{image.page}.txt'
         if not check_file_exists(path, file_name):
             save_file(path, file_name, catalog.get_image(image))
@@ -41,31 +41,31 @@ class FileManager:
 
     @staticmethod
     def get_manga_preview(manga: Manga, catalog):
-        path = f'images/{catalog.catalog_name}/manga/{manga.content_id}'
+        path = f'images/{catalog.CATALOG_NAME}/manga/{manga.content_id}'
         if not check_file_exists(path, 'preview.jpg'):
             save_file(path, 'preview.jpg', catalog.get_preview(manga))
         return QPixmap(get_file_path(path, 'preview.jpg'))
 
     @staticmethod
     def get_character_preview(character: Character, catalog) -> QPixmap:
-        path = f'images/{catalog.catalog_name}/characters/{character.content_id}'
+        path = f'images/{catalog.CATALOG_NAME}/characters/{character.content_id}'
         if not check_file_exists(path, 'preview.jpg'):
             save_file(path, 'preview.jpg', catalog.get_character_preview(character))
         return QPixmap(get_file_path(path, 'preview.jpg'))
 
     @staticmethod
     def remove_chapter_files(manga: Manga, chapter: Chapter, catalog):
-        path = f'images/{catalog.catalog_name}/manga/{manga.content_id}/{chapter.content_id}'
+        path = f'images/{catalog.CATALOG_NAME}/manga/{manga.content_id}/{chapter.content_id}'
         remove_file(path)
 
     @staticmethod
     def remove_manga_files(manga: Manga, catalog):
-        path = f'images/{catalog.catalog_name}/manga/{manga.content_id}'
+        path = f'images/{catalog.CATALOG_NAME}/manga/{manga.content_id}'
         remove_file(path)
 
     @staticmethod
     def open_dir_in_explorer(manga: Manga, catalog):
-        path = f'images/{catalog.catalog_name}/manga/{manga.content_id}'
+        path = f'images/{catalog.CATALOG_NAME}/manga/{manga.content_id}'
         os.startfile(get_dir_path(path))
 
 

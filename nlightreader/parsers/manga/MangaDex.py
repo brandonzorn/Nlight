@@ -1,21 +1,23 @@
 import requests
 
+
 from nlightreader.consts import URL_MANGA_DEX_API, URL_MANGA_DEX, LibList
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
-from nlightreader.parsers.Parser import Parser, LibParser
+from nlightreader.parsers.Parser import LibParser
+from nlightreader.parsers.catalogs_base import MangaCatalog
 from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
 from nlightreader.utils.utils import get_data, get_html
 
 
-class MangaDex(Parser):
-    catalog_name = 'MangaDex'
+class MangaDex(MangaCatalog):
+    CATALOG_ID = 2
+    CATALOG_NAME = 'MangaDex'
 
     def __init__(self):
         super().__init__()
         self.url = URL_MANGA_DEX
         self.url_api = URL_MANGA_DEX_API
-        self.catalog_id = 2
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f'{self.url_api}/manga/{manga.content_id}'
@@ -48,7 +50,7 @@ class MangaDex(Parser):
                 russian = j.get('ru')
             if not name and 'en' in j.keys():
                 name = j.get('en')
-        return Manga(manga_id, self.catalog_id, name, russian)
+        return Manga(manga_id, self.CATALOG_ID, name, russian)
 
     def search_manga(self, form: RequestForm):
         url = f'{self.url_api}/manga'
@@ -73,7 +75,7 @@ class MangaDex(Parser):
                 html = get_html(url, self.headers, params)
                 for i in get_data(html.json(), ['data']):
                     attr = i.get('attributes')
-                    chapters.append(Chapter(i.get('id'), self.catalog_id, attr.get('volume'), attr.get('chapter'),
+                    chapters.append(Chapter(i.get('id'), self.CATALOG_ID, attr.get('volume'), attr.get('chapter'),
                                             attr.get('title'), attr.get('translatedLanguage')))
             chapters.reverse()
         return chapters
@@ -113,7 +115,7 @@ class MangaDex(Parser):
             for i in html.json().get('data'):
                 if i.get('attributes').get('group') not in ['genre', 'theme']:
                     continue
-                genres.append(Genre(i.get('id'), self.catalog_id, get_data(i, ['attributes', 'name', 'en']), ''))
+                genres.append(Genre(i.get('id'), self.CATALOG_ID, get_data(i, ['attributes', 'name', 'en']), ''))
         return genres
 
     def get_kinds(self):
@@ -124,7 +126,7 @@ class MangaDex(Parser):
             for i in html.json().get('data'):
                 if i.get('attributes').get('group') not in ['format']:
                     continue
-                kinds.append(Kind(i.get('id'), self.catalog_id, i.get('attributes').get('name').get('en'), ''))
+                kinds.append(Kind(i.get('id'), self.CATALOG_ID, i.get('attributes').get('name').get('en'), ''))
         return kinds
 
     def get_manga_url(self, manga: Manga) -> str:
@@ -166,7 +168,7 @@ class MangaDexLib(MangaDex, LibParser):
 class Auth:
     def __init__(self):
         self.url_api = URL_MANGA_DEX_API
-        self.tokens = TokenManager.load_token(MangaDex.catalog_name)
+        self.tokens = TokenManager.load_token(MangaDex.CATALOG_NAME)
         self.is_authorized = False
 
     def get_refresh(self):
@@ -189,7 +191,7 @@ class Auth:
     def update_token(self, token):
         if token:
             token = token.json().get('token')
-            TokenManager.save_token(token, MangaDex.catalog_name)
+            TokenManager.save_token(token, MangaDex.CATALOG_NAME)
             self.tokens = token
 
     def refresh_token(self):
