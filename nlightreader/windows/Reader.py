@@ -1,13 +1,14 @@
 import time
 
 from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QPixmap, QIcon
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QMainWindow, QListWidgetItem
 
 from data.ui.windows.reader import Ui_ReaderWindow
 from nlightreader.consts import ItemsColors
 from nlightreader.items import Manga, Chapter, Image, HistoryNote
 from nlightreader.utils import Database, get_catalog, FileManager, translate, get_language_icon, Thread
+from nlightreader.widgets.NlightContainers.image_area import ImageArea
 
 
 class ReaderWindow(QMainWindow):
@@ -27,8 +28,9 @@ class ReaderWindow(QMainWindow):
         self.ui.text_size_slider.valueChanged.connect(self.update_text_size)
 
         self.ui.items_list.doubleClicked.connect(self.change_chapter)
-
         self._set_image_thread = Thread(target=self.get_content, callback=self.update_image)
+
+        self.image_container = ImageArea(self.ui.horizontalLayout_2)
 
         self.db: Database = Database()
         self.manga = None
@@ -42,9 +44,9 @@ class ReaderWindow(QMainWindow):
         self.catalog = None
 
     def setup(self, manga: Manga, chapters: list[Chapter], cur_chapter=1):
-        self.showMaximized()
-        self.manga = manga
         self.ui.chapters_frame.hide()
+        self.manga = manga
+        self.setWindowTitle(self.manga.name)
         if self.manga.kind == 'ranobe':
             self.ui.image_reader.hide()
         else:
@@ -53,21 +55,13 @@ class ReaderWindow(QMainWindow):
         self.cur_chapter = cur_chapter
         self.max_chapters = len(chapters)
         self.catalog = get_catalog(manga.catalog_id)()
-        self.setWindowTitle(self.manga.name)
+        self.showMaximized()
         self.update_chapters_list()
         self.update_chapter()
 
     def keyPressEvent(self, event):
-        match event.key():
-            case Qt.Key.Key_Escape:
-                self.close()
-        event.accept()
-
-    def resizeEvent(self, event):
-        if (not self.chapters) or (self.manga and self.manga.kind == 'ranobe') or self.cur_image_pixmap is None:
-            return
-        self.reset_reader_area()
-        self.update_image()
+        if event.key() == Qt.Key.Key_Escape:
+            self.close()
         event.accept()
 
     def closeEvent(self, event):
@@ -104,9 +98,9 @@ class ReaderWindow(QMainWindow):
 
     @Slot()
     def turn_page_next(self):
-        self.db.add_history_note(HistoryNote(self.chapters[self.cur_chapter - 1], self.manga, False))
+        self.db.add_history_note(HistoryNote(self._current_chapter, self.manga, False))
         if self.cur_page == self.max_page:
-            self.db.add_history_note(HistoryNote(self.chapters[self.cur_chapter - 1], self.manga, True))
+            self.db.add_history_note(HistoryNote(self._current_chapter, self.manga, True))
             self.turn_chapter_next()
         else:
             self.cur_page += 1
@@ -114,9 +108,9 @@ class ReaderWindow(QMainWindow):
 
     @Slot()
     def turn_page_prev(self):
-        self.db.add_history_note(HistoryNote(self.chapters[self.cur_chapter - 1], self.manga, False))
+        self.db.add_history_note(HistoryNote(self._current_chapter, self.manga, False))
         if self.cur_page == 1:
-            self.db.del_history_note(self.chapters[self.cur_chapter - 1])
+            self.db.del_history_note(self._current_chapter)
             self.turn_chapter_prev()
         else:
             self.cur_page -= 1
@@ -128,7 +122,7 @@ class ReaderWindow(QMainWindow):
 
     @Slot()
     def turn_chapter_next(self):
-        self.db.add_history_note(HistoryNote(self.chapters[self.cur_chapter - 1], self.manga, True))
+        self.db.add_history_note(HistoryNote(self._current_chapter, self.manga, True))
         if self.cur_chapter == self.max_chapters:
             self.deleteLater()
         else:
@@ -147,14 +141,10 @@ class ReaderWindow(QMainWindow):
         self.cur_page = 1
         self.get_images()
         self.update_page()
-        self.ui.chapter_label.setText(self.chapters[self.cur_chapter - 1].get_name())
+        self.ui.chapter_label.setText(self._current_chapter.get_name())
 
     def reset_reader_area(self):
-        self.ui.img.clear()
         self.ui.text.clear()
-        self.ui.scrollArea.verticalScrollBar().setValue(0)
-        self.ui.scrollArea.horizontalScrollBar().setValue(0)
-        self.ui.scrollAreaWidgetContents.resize(0, 0)
 
     def attach_image(self):
         self._set_image_thread.terminate()
@@ -174,7 +164,7 @@ class ReaderWindow(QMainWindow):
             time.sleep(0.25)
             if page != self.cur_page or chapter != self.cur_chapter:
                 return
-            self.ui.img.setText(translate('Other', 'Page is loading'))
+            self.image_container.set_text(translate('Other', 'Page is loading'))
         if self.manga.kind == 'ranobe':
             self.cur_image_pixmap = FileManager.get_chapter_text_file(
                 self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog)
@@ -187,25 +177,16 @@ class ReaderWindow(QMainWindow):
         if self.manga.kind == 'ranobe':
             self.ui.text.setHtml(self.cur_image_pixmap)
         else:
-            pixmap = self._resize_pixmap(self.cur_image_pixmap)
-            self.ui.img.setPixmap(pixmap)
+            self.image_container.set_image(self.cur_image_pixmap)
 
     @Slot()
     def update_text_size(self):
-        font = self.ui.img.font()
+        font = self.ui.text.font()
         font.setPointSize(self.ui.text_size_slider.value())
         self.ui.text.setFont(font)
 
-    def _resize_pixmap(self, pixmap: QPixmap) -> QPixmap:
-        if pixmap is None or pixmap.isNull():
-            return QPixmap()
-        if 0.5 < pixmap.width() / pixmap.height() < 2:
-            pixmap = pixmap.scaled(self.ui.img.size(), Qt.AspectRatioMode.KeepAspectRatio,
-                                   Qt.TransformationMode.SmoothTransformation)
-        return pixmap
-
     def get_images(self):
-        chapter = self.chapters[self.cur_chapter - 1]
+        chapter = self._current_chapter
         self.images = self.catalog.get_images(self.manga, chapter)
         if not self.images:
             self.images = [Image.get_empty_instance()]
@@ -213,3 +194,7 @@ class ReaderWindow(QMainWindow):
 
     def get_chapter_pages(self) -> int:
         return self.images[-1].page
+
+    @property
+    def _current_chapter(self) -> Chapter:
+        return self.chapters[self.cur_chapter - 1]
