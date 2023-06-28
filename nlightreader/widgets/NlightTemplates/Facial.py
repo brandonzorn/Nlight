@@ -41,7 +41,7 @@ class FormFacial(MangaItemBasedWidget):
         if not self.catalog:
             self.ui.catalogs_frame.hide()
             self.ui.catalogs_list.clear()
-            self.ui.catalogs_list.addItems([i.catalog_name for i in USER_CATALOGS])
+            self.ui.catalogs_list.addItems([i.CATALOG_NAME for i in USER_CATALOGS])
             self.change_catalog(0)
         else:
             self.get_content()
