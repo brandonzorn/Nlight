@@ -104,7 +104,7 @@ class ShikimoriBase(Parser):
 
 
 class ShikimoriManga(ShikimoriBase, MangaCatalog):
-    catalog_name = 'Shikimori(Manga)'
+    CATALOG_NAME = 'Shikimori(Manga)'
 
     def __init__(self):
         super().__init__()
@@ -127,7 +127,7 @@ class ShikimoriManga(ShikimoriBase, MangaCatalog):
 
 
 class ShikimoriRanobe(ShikimoriBase, RanobeCatalog):
-    catalog_name = 'Shikimori(Ranobe)'
+    CATALOG_NAME = 'Shikimori(Ranobe)'
 
     def __init__(self):
         super().__init__()
