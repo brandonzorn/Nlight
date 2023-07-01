@@ -1,4 +1,5 @@
 import os
+import re
 import shutil
 
 import platformdirs
@@ -70,18 +71,22 @@ class FileManager:
 
 
 def get_dir_path(path):
+    path = fix_path(path)
     return f'{platformdirs.user_data_dir()}/{APP_NAME}/{path}'
 
 
 def get_file_path(path, file_name):
+    path = fix_path(path)
     return f'{platformdirs.user_data_dir()}/{APP_NAME}/{path}/{file_name}'
 
 
 def check_file_exists(path, file_name):
+    path = fix_path(path)
     return os.path.exists(get_file_path(path, file_name))
 
 
 def save_file(path, file_name, file_content):
+    path = fix_path(path)
     path = f'{platformdirs.user_data_dir()}/{APP_NAME}/{path}'
     if not os.path.exists(f'{path}/{file_name}'):
         os.makedirs(path, exist_ok=True)
@@ -93,6 +98,20 @@ def save_file(path, file_name, file_content):
 
 
 def remove_file(path):
+    path = fix_path(path)
     path = f'{platformdirs.user_data_dir()}/{APP_NAME}/{path}'
     if os.path.exists(path):
         shutil.rmtree(path, ignore_errors=True)
+
+
+def fix_folder_name(name):
+    invalid_chars_pattern = r'[<>:"|?*\\/]'
+    fixed_name = re.sub(invalid_chars_pattern, '', name)
+    return fixed_name
+
+
+def fix_path(path):
+    new_path = []
+    for p_dir in path.split('/'):
+        new_path.append(fix_folder_name(p_dir))
+    return '/'.join(new_path)
