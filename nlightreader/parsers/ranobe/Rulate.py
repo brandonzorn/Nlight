@@ -111,13 +111,13 @@ class Rulate(RanobeCatalog):
 
 
 class Erolate(Rulate):
-    catalog_name = "Erolate"
+    CATALOG_ID = 5
+    CATALOG_NAME = "Erolate"
 
     def __init__(self):
         super().__init__()
         self.url_api = URL_EROLATE
         self.cookies = {"mature": "7da3ee594b38fc5355692d978fe8f5adbeb3d17di%3A1%3B"}
-        self.catalog_id = 5
 
     def search_manga(self, form: RequestForm):
         ranobe = []
@@ -135,5 +135,5 @@ class Erolate(Rulate):
                     name = name_items[0].strip()
                     russian = name_items[1].strip()
                 ranobe_id = i.unwrap()['data-tooltip-content'].split('#book-tooltip-')[-1]
-                ranobe.append(Manga(ranobe_id, self.catalog_id, name, russian))
+                ranobe.append(Manga(ranobe_id, self.CATALOG_ID, name, russian))
         return ranobe
