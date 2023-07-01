@@ -8,6 +8,7 @@ from data.ui.windows.reader import Ui_ReaderWindow
 from nlightreader.consts import ItemsColors
 from nlightreader.items import Manga, Chapter, Image, HistoryNote
 from nlightreader.utils import Database, get_catalog, FileManager, translate, get_language_icon, Thread
+from nlightreader.widgets.NlightContainers import TextArea
 from nlightreader.widgets.NlightContainers.image_area import ImageArea
 
 
@@ -25,12 +26,12 @@ class ReaderWindow(QMainWindow):
 
         self.ui.fullscreen_btn.clicked.connect(self.change_fullscreen)
         self.ui.ch_list_btn.clicked.connect(self.change_chapters_list_visible)
-        self.ui.text_size_slider.valueChanged.connect(self.update_text_size)
 
         self.ui.items_list.doubleClicked.connect(self.change_chapter)
         self._set_image_thread = Thread(target=self.get_content, callback=self.update_image)
 
-        self.image_container = ImageArea(self.ui.horizontalLayout_2)
+        self.image_container = ImageArea()
+        self.text_container = TextArea()
 
         self.db: Database = Database()
         self.manga = None
@@ -48,9 +49,9 @@ class ReaderWindow(QMainWindow):
         self.manga = manga
         self.setWindowTitle(self.manga.name)
         if self.manga.kind == 'ranobe':
-            self.ui.image_reader.hide()
+            self.text_container.install(self.ui.reader_layout)
         else:
-            self.ui.text_reader.hide()
+            self.image_container.install(self.ui.reader_layout)
         self.chapters = chapters
         self.cur_chapter = cur_chapter
         self.max_chapters = len(chapters)
@@ -144,7 +145,8 @@ class ReaderWindow(QMainWindow):
         self.ui.chapter_label.setText(self._current_chapter.get_name())
 
     def reset_reader_area(self):
-        self.ui.text.clear()
+        return
+        # self.ui.text.clear()
 
     def attach_image(self):
         self._set_image_thread.terminate()
@@ -175,15 +177,9 @@ class ReaderWindow(QMainWindow):
 
     def update_image(self):
         if self.manga.kind == 'ranobe':
-            self.ui.text.setHtml(self.cur_image_pixmap)
+            self.text_container.set_html(self.cur_image_pixmap)
         else:
             self.image_container.set_image(self.cur_image_pixmap)
-
-    @Slot()
-    def update_text_size(self):
-        font = self.ui.text.font()
-        font.setPointSize(self.ui.text_size_slider.value())
-        self.ui.text.setFont(font)
 
     def get_images(self):
         chapter = self._current_chapter
