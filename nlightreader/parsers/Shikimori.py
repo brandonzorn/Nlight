@@ -2,6 +2,7 @@ import requests
 from PySide6.QtWidgets import QApplication
 from requests_oauthlib import OAuth2Session
 
+from nlightreader.consts.items import ShikimoriItems
 from nlightreader.parsers.catalogs_base import MangaCatalog, RanobeCatalog
 
 try:
@@ -9,8 +10,7 @@ try:
 except ModuleNotFoundError:
     print("Shikimori API keys not found")
     SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID = '', ''
-from nlightreader.consts import URL_SHIKIMORI_API, SHIKIMORI_HEADERS, URL_SHIKIMORI, LibList, URL_SHIKIMORI_TOKEN, \
-    ShikimoriItems
+from nlightreader.consts import URL_SHIKIMORI_API, SHIKIMORI_HEADERS, URL_SHIKIMORI, LibList, URL_SHIKIMORI_TOKEN
 from nlightreader.items import Manga, RequestForm, Genre, Kind, User, UserRate, Character, Order
 from nlightreader.parsers.Parser import Parser, LibParser
 from nlightreader.utils.decorators import singleton
