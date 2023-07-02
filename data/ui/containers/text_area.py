@@ -15,9 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QSizePolicy, QSlider, QTextBrowser, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QSizePolicy,
+    QSlider, QTextBrowser, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -33,11 +32,6 @@ class Ui_Form(object):
         self.size_frame.setFrameShadow(QFrame.Raised)
         self.horizontalLayout = QHBoxLayout(self.size_frame)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.size_lbl = QLabel(self.size_frame)
-        self.size_lbl.setObjectName(u"size_lbl")
-
-        self.horizontalLayout.addWidget(self.size_lbl)
-
         self.size_slider = QSlider(self.size_frame)
         self.size_slider.setObjectName(u"size_slider")
         self.size_slider.setFocusPolicy(Qt.NoFocus)
@@ -58,6 +52,9 @@ class Ui_Form(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.text_browser = QTextBrowser(self.frame)
         self.text_browser.setObjectName(u"text_browser")
+        self.text_browser.setFocusPolicy(Qt.NoFocus)
+        self.text_browser.setTextInteractionFlags(Qt.NoTextInteraction)
+        self.text_browser.setOpenLinks(False)
 
         self.verticalLayout.addWidget(self.text_browser)
 
@@ -72,6 +69,5 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.size_lbl.setText(QCoreApplication.translate("Form", u"Text size", None))
     # retranslateUi
 
