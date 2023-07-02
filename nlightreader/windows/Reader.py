@@ -144,14 +144,9 @@ class ReaderWindow(QMainWindow):
         self.update_page()
         self.ui.chapter_label.setText(self._current_chapter.get_name())
 
-    def reset_reader_area(self):
-        return
-        # self.ui.text.clear()
-
     def attach_image(self):
         self._set_image_thread.terminate()
         self._set_image_thread.wait()
-        self.reset_reader_area()
         self.cur_image_pixmap = None
         if not self.images:
             return
