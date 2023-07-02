@@ -25,7 +25,10 @@ Open source manga and ranobe reading application
      - Erolate (🇷🇺)
      - Ranobehub (🇷🇺)
 
+    Hentai Manga:
+     - NHentai (🇬🇧)
+
 
 ## Screenshots
-| ![desu_1](./.github/Screenshots/nl_1.png) | ![desu_2](./.github/Screenshots/nl_2.png) | ![desu_3](./.github/Screenshots/nl_3.png) |
-|-------------------------------------------|-------------------------------------------|-------------------------------------------|
+| ![nl_1](./.github/Screenshots/nl_1.png) | ![nl_2](./.github/Screenshots/nl_2.png) | ![nl_3](./.github/Screenshots/nl_3.png) |
+|-----------------------------------------|-----------------------------------------|-----------------------------------------|
