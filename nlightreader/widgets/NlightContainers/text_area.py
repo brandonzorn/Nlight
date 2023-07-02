@@ -20,5 +20,9 @@ class TextArea(QWidget):
         font.setPointSize(self.ui.size_slider.value())
         self.ui.text_browser.setFont(font)
 
+    def reset_reader_area(self):
+        self.ui.text_browser.clear()
+
     def set_html(self, html_text: str):
+        self.reset_reader_area()
         self.ui.text_browser.setHtml(html_text)
