@@ -1,6 +1,7 @@
 /.idea
 /venv
 /Nlight
+/pkg_res/version_info.txt
 /dist*
 /build*
 /Nlight.spec
