@@ -37,9 +37,8 @@ class Ui_Dialog(object):
         self.catalog_label = QLabel(self.catalog_frame)
         self.catalog_label.setObjectName(u"catalog_label")
         font = QFont()
-        font.setFamilies([u"Segoe UI Black"])
         font.setPointSize(16)
-        font.setBold(False)
+        font.setBold(True)
         self.catalog_label.setFont(font)
 
         self.horizontalLayout.addWidget(self.catalog_label)
