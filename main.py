@@ -5,7 +5,7 @@ import time
 import darkdetect
 import platformdirs
 from PySide6.QtCore import Qt, QTranslator, QLocale, QThreadPool
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QPalette
 from PySide6.QtWidgets import QApplication
 
 from nlightreader import ParentWindow
@@ -30,7 +30,8 @@ class App(QApplication):
         self.installTranslator(self.translator)
 
     def update_style(self):
-        self.setStyleSheet(get_ui_style(darkdetect.theme()))
+        accent_color = self.palette().color(QPalette.ColorRole.Highlight)
+        self.setStyleSheet(get_ui_style(darkdetect.theme(), accent_color.name()))
 
 
 class MainWindow(ParentWindow):
@@ -45,7 +46,8 @@ class MainWindow(ParentWindow):
     @staticmethod
     def theme_listener():
         theme = darkdetect.theme()
-        while darkdetect.theme() == theme:
+        accent_color = app.palette().color(QPalette.ColorRole.Highlight)
+        while darkdetect.theme() == theme and accent_color == app.palette().color(QPalette.ColorRole.Highlight):
             time.sleep(1)
 
     def update_style(self):
