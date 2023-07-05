@@ -29,8 +29,11 @@ class App(QApplication):
         self.translator.load(get_locale(QLocale().language()))
         self.installTranslator(self.translator)
 
+    def get_accent_color(self):
+        return self.palette().color(QPalette.ColorRole.Highlight)
+
     def update_style(self):
-        accent_color = self.palette().color(QPalette.ColorRole.Highlight)
+        accent_color = self.get_accent_color()
         self.setStyleSheet(get_ui_style(darkdetect.theme(), accent_color.name()))
 
 
@@ -46,8 +49,8 @@ class MainWindow(ParentWindow):
     @staticmethod
     def theme_listener():
         theme = darkdetect.theme()
-        accent_color = app.palette().color(QPalette.ColorRole.Highlight)
-        while darkdetect.theme() == theme and accent_color == app.palette().color(QPalette.ColorRole.Highlight):
+        accent_color = app.get_accent_color()
+        while darkdetect.theme() == theme and accent_color == app.get_accent_color():
             time.sleep(1)
 
     def update_style(self):
