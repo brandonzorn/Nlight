@@ -8,13 +8,15 @@ def read_file(file: QFile):
 
 
 class Styles:
+    default_widgets = read_file(QFile(u":/styles/data/styles/default/widget_default.qss"))
+
     dark_icons = read_file(QFile(u":/styles/data/styles/dark/icons_dark.qss"))
     dark_widgets = read_file(QFile(u":/styles/data/styles/dark/widget_dark.qss"))
-    Dark = dark_icons + dark_widgets
+    Dark = dark_icons + default_widgets + dark_widgets
 
     light_icons = read_file(QFile(u":/styles/data/styles/light/icons_light.qss"))
     light_widgets = read_file(QFile(u":/styles/data/styles/light/widget_light.qss"))
-    Light = light_icons + light_widgets
+    Light = light_icons + default_widgets + light_widgets
 
 
 class LangIcons:
