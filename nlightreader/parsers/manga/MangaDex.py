@@ -1,6 +1,5 @@
 import requests
 
-
 from nlightreader.consts import URL_MANGA_DEX_API, URL_MANGA_DEX, LibList
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
 from nlightreader.parsers.Parser import LibParser
