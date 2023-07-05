@@ -1,11 +1,11 @@
 from functools import reduce
-from typing import Any
+from typing import Any, Optional
 
 import requests
 from PySide6.QtCore import QLocale
 from PySide6.QtWidgets import QApplication
 
-from nlightreader.consts import DEFAULT_HEADERS, MangaKinds
+from nlightreader.consts import DEFAULT_HEADERS, MangaKinds, StyleColors
 from nlightreader.consts.files import LangIcons, Translations, Styles
 
 
@@ -127,15 +127,27 @@ def get_data(data: dict, path: list, default_val=None) -> Any:
         return default_val
 
 
-def get_ui_style(style: str) -> str:
+def get_ui_style(style: str, accent_color: Optional[str] = None) -> str:
     """
     Returns a Qt stylesheet string for the specified UI style.
 
     :param style: A string representing the desired UI style ('Dark' or 'Light').
+    :param accent_color: (Optional) A string representing the accent color.
     :return: A Qt stylesheet string corresponding to the selected style.
     :raises KeyError: If an invalid style is provided.
     """
     dark = Styles.Dark
     light = Styles.Light
-    themes = {"Dark": dark, "Light": light}
-    return themes[style]
+    if style == "Dark":
+        style = dark
+        binds = StyleColors.DARK_COLOR_BINDS
+        if accent_color:
+            binds["@accent_color"] = accent_color
+    else:
+        style = light
+        binds = StyleColors.LIGHT_COLOR_BINDS
+    for color_type in StyleColors.DEFAULT_COLOR_BINDS:
+        style = style.replace(color_type, StyleColors.DEFAULT_COLOR_BINDS[color_type])
+    for color_type in binds:
+        style = style.replace(color_type, binds[color_type])
+    return style
