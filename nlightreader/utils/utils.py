@@ -111,7 +111,8 @@ def get_data(data: dict, path: list, default_val=None) -> Any:
     Retrieves a value from a dictionary using a list of nested keys.
 
     :param data: The dictionary to retrieve values from.
-    :param path: A list of keys representing the path to the desired value. Each key corresponds to a nested level in the dictionary.
+    :param path: A list of keys representing the path to the desired value. Each key corresponds to
+    a nested level in the dictionary.
     :param default_val: Optional default value to return if the specified path does not exist in the dictionary.
     :return: The value located at the specified path in the dictionary, or the default value if the path does not exist.
     :raises TypeError: If the input data is not a dictionary.
