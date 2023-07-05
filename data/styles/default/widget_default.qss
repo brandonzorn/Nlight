@@ -33,17 +33,6 @@ QWidget#side_menu_widget QPushButton
     text-align: left;
     icon-size: 24px;
 }
-QWidget#side_menu_widget QPushButton:hover:!pressed
-{
-    border: 0px;
-    border-left: 2px solid @accent_color;
-    background-color: gray;
-}
-QWidget#side_menu_widget QPushButton:checked
-{
-    border: 0px;
-    border-left: 2px solid @accent_color;
-}
 
 
 QStackedWidget QFrame
