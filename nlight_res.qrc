@@ -67,6 +67,7 @@
     <file>data/translations/ru/ru.qm</file>
   </qresource>
   <qresource prefix="styles">
+    <file>data/styles/default/widget_default.qss</file>
     <file>data/styles/dark/widget_dark.qss</file>
     <file>data/styles/dark/icons_dark.qss</file>
     <file>data/styles/light/widget_light.qss</file>
