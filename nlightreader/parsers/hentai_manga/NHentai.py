@@ -39,7 +39,7 @@ class NHentai(HentaiMangaCatalog):
         return [Chapter(manga.content_id, self.CATALOG_ID, "1", "1", "", "")]
 
     def get_images(self, manga: Manga, chapter: Chapter):
-        url = f"https://nhentai.to/g/{manga.content_id}"
+        url = f"{self.url}/g/{manga.content_id}"
         images = []
         response = get_html(url, self.headers, content_type='text')
         if response:
@@ -58,7 +58,7 @@ class NHentai(HentaiMangaCatalog):
         return response
 
     def get_preview(self, manga: Manga):
-        url = f"https://nhentai.to/g/{manga.content_id}"
+        url = f"{self.url}/g/{manga.content_id}"
         response = get_html(url, self.headers, content_type='text')
         if response:
             soup = BeautifulSoup(response, "html.parser")
