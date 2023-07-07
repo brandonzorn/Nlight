@@ -48,8 +48,10 @@ class NHentai(HentaiMangaCatalog):
             for i in html_items:
                 img_tag = i.find('img', class_="")
                 img_url: str = img_tag['src']
-                if img_url.endswith('t.jpg'):
-                    img_url = img_url.replace('t.jpg', '.jpg', 1)
+                for img_format in ['png', 'jpg', 'gif']:
+                    if img_url.endswith(f't.{img_format}'):
+                        img_url = img_url.replace(f't.{img_format}', f'.{img_format}', 1)
+                        break
                 images.append(Image("", html_items.index(i) + 1, img_url))
         return images
 
