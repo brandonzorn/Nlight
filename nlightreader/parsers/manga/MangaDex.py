@@ -1,6 +1,6 @@
 import requests
 
-from nlightreader.consts import URL_MANGA_DEX_API, URL_MANGA_DEX, LibList
+from nlightreader.consts import URL_MANGA_DEX_API, URL_MANGA_DEX, LibList, MANGA_DEX_HEADERS
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
 from nlightreader.parsers.Parser import LibParser
 from nlightreader.parsers.catalogs_base import MangaCatalog
@@ -17,6 +17,7 @@ class MangaDex(MangaCatalog):
         super().__init__()
         self.url = URL_MANGA_DEX
         self.url_api = URL_MANGA_DEX_API
+        self.headers = MANGA_DEX_HEADERS
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f'{self.url_api}/manga/{manga.content_id}'
@@ -84,27 +85,29 @@ class MangaDex(MangaCatalog):
         response = get_html(url, self.headers, content_type='json')
         images = []
         if response:
-            image_hash = response.get('chapter').get('hash')
-            for img_data in get_data(response, ['chapter', 'data']):
-                img_url = f'https://uploads.mangadex.org/data/{image_hash}/{img_data}'
-                page = response.get('chapter').get('data').index(img_data) + 1
+            img_host = response["baseUrl"]
+            img_hash = response['chapter']['hash']
+            images_data = get_data(response, ['chapter', 'data'])
+            for img_index, img_data in enumerate(images_data):
+                img_url = f'{img_host}/data/{img_hash}/{img_data}'
+                page = img_index + 1
                 images.append(Image('', page, img_url))
         return images
 
     def get_image(self, image: Image):
-        response = get_html(image.img, content_type='content')
+        response = get_html(image.img, headers=self.headers, content_type='content')
         return response
 
     def get_preview(self, manga: Manga):
         url = f'{self.url_api}/cover'
         params = {'manga[]': manga.content_id}
-        html = get_html(url, self.headers, params)
+        covers_list_response = get_html(url, params=params, headers=self.headers, content_type='json')
         filename = ''
-        if html and html.status_code == 200 and len(html.json()):
-            filename = html.json().get('data')[0].get('attributes').get('fileName')
-        response = get_html(f'https://uploads.mangadex.org/covers/{manga.content_id}/{filename}.256.jpg',
-                            content_type='content')
-        return response
+        if covers_list_response:
+            filename = covers_list_response['data'][0]['attributes']['fileName']
+        cover_response = get_html(f'https://uploads.mangadex.org/covers/{manga.content_id}/{filename}.256.jpg',
+                                  content_type='content')
+        return cover_response
 
     def get_genres(self):
         url = f'{self.url_api}/manga/tag'
@@ -119,12 +122,10 @@ class MangaDex(MangaCatalog):
 
     def get_kinds(self):
         url = f'{self.url_api}/manga/tag'
-        html = get_html(url, headers=self.headers)
+        response = get_html(url, headers=self.headers, content_type='json')
         kinds = []
-        if html and html.status_code == 200 and html.json():
-            for i in html.json().get('data'):
-                if i.get('attributes').get('group') not in ['format']:
-                    continue
+        if response:
+            for i in list(filter(lambda x: x['attributes']['group'] in ['format'], response['data'])):
                 kinds.append(Kind(i.get('id'), self.CATALOG_ID, i.get('attributes').get('name').get('en'), ''))
         return kinds
 
