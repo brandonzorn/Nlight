@@ -110,7 +110,7 @@ class Ui_MainWindow(object):
 
         self.top_item_widget = QWidget(self.centralwidget)
         self.top_item_widget.setObjectName(u"top_item_widget")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.top_item_widget.sizePolicy().hasHeightForWidth())
@@ -154,6 +154,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.top_item = QStackedWidget(self.top_item_widget)
         self.top_item.setObjectName(u"top_item")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.top_item.sizePolicy().hasHeightForWidth())
+        self.top_item.setSizePolicy(sizePolicy2)
         self.top_item.setStyleSheet(u"")
 
         self.verticalLayout_2.addWidget(self.top_item)
