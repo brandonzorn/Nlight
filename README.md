@@ -32,3 +32,12 @@ Open source manga and ranobe reading application
 ## Screenshots
 | ![nl_1](./.github/Screenshots/nl_1.png) | ![nl_2](./.github/Screenshots/nl_2.png) | ![nl_3](./.github/Screenshots/nl_3.png) |
 |-----------------------------------------|-----------------------------------------|-----------------------------------------|
+
+
+## Running App on Xorg
+To run the app on Xorg, make sure you have the `libxcb-cursor0` library installed.
+
+### Install libxcb-cursor0
+- **For Ubuntu/Debian:**
+  ```shell
+  sudo apt install libxcb-cursor0
