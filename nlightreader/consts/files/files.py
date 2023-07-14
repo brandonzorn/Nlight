@@ -1,3 +1,5 @@
+import nlight_res_rc
+
 from PySide6.QtCore import QFile, QTextStream
 
 
