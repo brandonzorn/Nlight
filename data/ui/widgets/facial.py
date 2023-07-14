@@ -19,7 +19,6 @@ from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
     QLabel, QLineEdit, QListWidget, QListWidgetItem,
     QPushButton, QSizePolicy, QSpacerItem, QVBoxLayout,
     QWidget)
-import nlight_res_rc
 
 class Ui_Form(object):
     def setupUi(self, Form):
