@@ -445,8 +445,6 @@
    </layout>
   </widget>
  </widget>
- <resources>
-  <include location="../../../nlight_res.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

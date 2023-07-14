@@ -18,7 +18,6 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
     QPushButton, QSizePolicy, QSpacerItem, QTreeWidget,
     QTreeWidgetItem, QVBoxLayout, QWidget)
-import nlight_res_rc
 
 class Ui_Form(object):
     def setupUi(self, Form):

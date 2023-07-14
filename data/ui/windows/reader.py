@@ -18,7 +18,6 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
     QListWidget, QListWidgetItem, QMainWindow, QPushButton,
     QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
-import nlight_res_rc
 
 class Ui_ReaderWindow(object):
     def setupUi(self, ReaderWindow):
