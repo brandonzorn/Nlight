@@ -21,9 +21,9 @@ class MangaDex(MangaCatalog):
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f'{self.url_api}/manga/{manga.content_id}'
-        html = get_html(url, self.headers)
-        if html and html.status_code == 200 and html.json():
-            data = get_data(html.json(), ['data'])
+        response = get_html(url, self.headers, content_type='json')
+        if response:
+            data = get_data(response, ['data'])
             manga.kind = data.get('type')
             description = get_data(data, ['attributes', 'description'])
             if description:
@@ -55,22 +55,24 @@ class MangaDex(MangaCatalog):
     def search_manga(self, form: RequestForm):
         url = f'{self.url_api}/manga'
         params = {'limit': 50, 'title': form.search, 'offset': form.offset,
-                  'includedTags[]': form.get_genre_id() + form.get_kind_id()}
+                  'includedTags[]': form.get_genre_id() + form.get_kind_id(),
+                  'contentRating[]': ["safe", "suggestive", "erotica", "pornographic"]}
         mangas = []
-        html = get_html(url, self.headers, params)
-        if html and html.status_code == 200 and html.json():
-            for i in get_data(html.json(), ['data']):
+        response = get_html(url, self.headers, params, content_type='json')
+        if response:
+            for i in get_data(response, ['data']):
                 mangas.append(self.setup_manga(i))
         return mangas
 
     def get_chapters(self, manga: Manga):
         url = f'{self.url_api}/chapter'
-        params = {'manga': manga.content_id, 'limit': 1, 'translatedLanguage[]': ['ru', 'en'], 'order[chapter]': 'asc'}
-        html = get_html(url, self.headers, params)
+        params = {'manga': manga.content_id, 'limit': 1, 'translatedLanguage[]': ['ru', 'en'], 'order[chapter]': 'asc',
+                  'contentRating[]': ["safe", "suggestive", "erotica", "pornographic"]}
+        response = get_html(url, self.headers, params, content_type='json')
         chapters = []
-        if html and html.status_code == 200 and html.json():
+        if response:
             params.update({'limit': 100})
-            for j in range(html.json().get('total') // 100 + 1):
+            for j in range(response.get('total') // 100 + 1):
                 params.update({'offset': j * 100})
                 html = get_html(url, self.headers, params)
                 for i in get_data(html.json(), ['data']):
