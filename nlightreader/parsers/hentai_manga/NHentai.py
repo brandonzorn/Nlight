@@ -56,7 +56,8 @@ class NHentai(HentaiMangaCatalog):
         return images
 
     def get_image(self, image: Image):
-        response = get_html(image.img, self.headers, content_type='content')
+        img_request_headers = self.headers | {"Referer": URL_NHENTAI}
+        response = get_html(image.img, headers=img_request_headers, content_type='content')
         return response
 
     def get_preview(self, manga: Manga):
@@ -68,7 +69,8 @@ class NHentai(HentaiMangaCatalog):
             if html_item:
                 img_tag = html_item.find('img')
                 if img_tag:
-                    response = get_html(img_tag['src'], content_type='content')
+                    img_request_headers = self.headers | {"Referer": URL_NHENTAI}
+                    response = get_html(img_tag['src'], content_type='content', headers=img_request_headers)
                     return response
 
     def get_manga_url(self, manga: Manga) -> str:
