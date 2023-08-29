@@ -61,50 +61,23 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QPushButton" name="btn_library">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="cursor">
-             <cursorShape>PointingHandCursor</cursorShape>
-            </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="locale">
-             <locale language="English" country="UnitedStates"/>
-            </property>
+           <widget class="PushButton" name="btn_library">
             <property name="text">
              <string>Library</string>
             </property>
             <property name="checkable">
              <bool>true</bool>
             </property>
-            <property name="autoRepeat">
-             <bool>false</bool>
-            </property>
             <property name="autoExclusive">
+             <bool>true</bool>
+            </property>
+            <property name="hasIcon" stdset="0">
              <bool>true</bool>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="btn_main">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="cursor">
-             <cursorShape>PointingHandCursor</cursorShape>
-            </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
+           <widget class="PushButton" name="btn_main">
             <property name="text">
              <string>Main</string>
             </property>
@@ -114,70 +87,43 @@
             <property name="checked">
              <bool>true</bool>
             </property>
-            <property name="autoRepeat">
-             <bool>false</bool>
-            </property>
             <property name="autoExclusive">
+             <bool>true</bool>
+            </property>
+            <property name="hasIcon" stdset="0">
              <bool>true</bool>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="btn_shikimori">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="cursor">
-             <cursorShape>PointingHandCursor</cursorShape>
-            </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
+           <widget class="PushButton" name="btn_shikimori">
             <property name="text">
              <string>Shikimori</string>
             </property>
             <property name="checkable">
              <bool>true</bool>
             </property>
-            <property name="autoRepeat">
-             <bool>false</bool>
-            </property>
             <property name="autoExclusive">
+             <bool>true</bool>
+            </property>
+            <property name="hasIcon" stdset="0">
              <bool>true</bool>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="btn_history">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="cursor">
-             <cursorShape>PointingHandCursor</cursorShape>
-            </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
+           <widget class="PushButton" name="btn_history">
             <property name="text">
              <string>History</string>
             </property>
             <property name="checkable">
              <bool>true</bool>
             </property>
-            <property name="autoRepeat">
-             <bool>false</bool>
-            </property>
             <property name="autoExclusive">
              <bool>true</bool>
             </property>
-            <property name="autoDefault">
-             <bool>false</bool>
+            <property name="hasIcon" stdset="0">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -445,6 +391,13 @@
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PushButton</class>
+   <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
