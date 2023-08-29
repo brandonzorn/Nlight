@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'mainWindow.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.1
+## Created by: Qt User Interface Compiler version 6.4.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -16,8 +16,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QMainWindow,
-    QPushButton, QSizePolicy, QSpacerItem, QStackedWidget,
-    QVBoxLayout, QWidget)
+    QSizePolicy, QSpacerItem, QStackedWidget, QVBoxLayout,
+    QWidget)
+
+from qfluentwidgets import PushButton
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -43,57 +45,36 @@ class Ui_MainWindow(object):
         self.verticalLayout_3 = QVBoxLayout(self.frame)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.btn_library = QPushButton(self.frame)
+        self.btn_library = PushButton(self.frame)
         self.btn_library.setObjectName(u"btn_library")
-        sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_library.sizePolicy().hasHeightForWidth())
-        self.btn_library.setSizePolicy(sizePolicy)
-        self.btn_library.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_library.setStyleSheet(u"")
-        self.btn_library.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.btn_library.setCheckable(True)
-        self.btn_library.setAutoRepeat(False)
         self.btn_library.setAutoExclusive(True)
+        self.btn_library.setProperty("hasIcon", True)
 
         self.verticalLayout_3.addWidget(self.btn_library)
 
-        self.btn_main = QPushButton(self.frame)
+        self.btn_main = PushButton(self.frame)
         self.btn_main.setObjectName(u"btn_main")
-        sizePolicy.setHeightForWidth(self.btn_main.sizePolicy().hasHeightForWidth())
-        self.btn_main.setSizePolicy(sizePolicy)
-        self.btn_main.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_main.setStyleSheet(u"")
         self.btn_main.setCheckable(True)
         self.btn_main.setChecked(True)
-        self.btn_main.setAutoRepeat(False)
         self.btn_main.setAutoExclusive(True)
+        self.btn_main.setProperty("hasIcon", True)
 
         self.verticalLayout_3.addWidget(self.btn_main)
 
-        self.btn_shikimori = QPushButton(self.frame)
+        self.btn_shikimori = PushButton(self.frame)
         self.btn_shikimori.setObjectName(u"btn_shikimori")
-        sizePolicy.setHeightForWidth(self.btn_shikimori.sizePolicy().hasHeightForWidth())
-        self.btn_shikimori.setSizePolicy(sizePolicy)
-        self.btn_shikimori.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_shikimori.setStyleSheet(u"")
         self.btn_shikimori.setCheckable(True)
-        self.btn_shikimori.setAutoRepeat(False)
         self.btn_shikimori.setAutoExclusive(True)
+        self.btn_shikimori.setProperty("hasIcon", True)
 
         self.verticalLayout_3.addWidget(self.btn_shikimori)
 
-        self.btn_history = QPushButton(self.frame)
+        self.btn_history = PushButton(self.frame)
         self.btn_history.setObjectName(u"btn_history")
-        sizePolicy.setHeightForWidth(self.btn_history.sizePolicy().hasHeightForWidth())
-        self.btn_history.setSizePolicy(sizePolicy)
-        self.btn_history.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_history.setStyleSheet(u"")
         self.btn_history.setCheckable(True)
-        self.btn_history.setAutoRepeat(False)
         self.btn_history.setAutoExclusive(True)
-        self.btn_history.setAutoDefault(False)
+        self.btn_history.setProperty("hasIcon", True)
 
         self.verticalLayout_3.addWidget(self.btn_history)
 
@@ -109,11 +90,11 @@ class Ui_MainWindow(object):
 
         self.top_item_widget = QWidget(self.centralwidget)
         self.top_item_widget.setObjectName(u"top_item_widget")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.top_item_widget.sizePolicy().hasHeightForWidth())
-        self.top_item_widget.setSizePolicy(sizePolicy1)
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.top_item_widget.sizePolicy().hasHeightForWidth())
+        self.top_item_widget.setSizePolicy(sizePolicy)
         palette = QPalette()
         brush = QBrush(QColor(255, 255, 255, 255))
         brush.setStyle(Qt.SolidPattern)
@@ -153,11 +134,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.top_item = QStackedWidget(self.top_item_widget)
         self.top_item.setObjectName(u"top_item")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.top_item.sizePolicy().hasHeightForWidth())
-        self.top_item.setSizePolicy(sizePolicy2)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.top_item.sizePolicy().hasHeightForWidth())
+        self.top_item.setSizePolicy(sizePolicy1)
         self.top_item.setStyleSheet(u"")
 
         self.verticalLayout_2.addWidget(self.top_item)
