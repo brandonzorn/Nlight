@@ -19,7 +19,7 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QSizePolicy,
     QSpacerItem, QVBoxLayout, QWidget)
 
 from qfluentwidgets import (BodyLabel, CardWidget, LineEdit, PushButton,
-    SearchLineEdit, SimpleCardWidget)
+    SearchLineEdit, SimpleCardWidget, ToolButton)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -67,7 +67,7 @@ class Ui_Form(object):
         self.page_frame.setObjectName(u"page_frame")
         self.horizontalLayout_5 = QHBoxLayout(self.page_frame)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.prev_btn = PushButton(self.page_frame)
+        self.prev_btn = ToolButton(self.page_frame)
         self.prev_btn.setObjectName(u"prev_btn")
 
         self.horizontalLayout_5.addWidget(self.prev_btn)
@@ -77,7 +77,7 @@ class Ui_Form(object):
 
         self.horizontalLayout_5.addWidget(self.page_label)
 
-        self.next_btn = PushButton(self.page_frame)
+        self.next_btn = ToolButton(self.page_frame)
         self.next_btn.setObjectName(u"next_btn")
 
         self.horizontalLayout_5.addWidget(self.next_btn)
@@ -158,9 +158,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         self.title_line.setPlaceholderText(QCoreApplication.translate("Form", u"Search", None))
-        self.prev_btn.setText("")
         self.page_label.setText(QCoreApplication.translate("Form", u"Page 1", None))
-        self.next_btn.setText("")
         self.planned_btn.setText(QCoreApplication.translate("Form", u"Planned", None))
         self.completed_btn.setText(QCoreApplication.translate("Form", u"Completed", None))
         self.reading_btn.setText(QCoreApplication.translate("Form", u"Reading", None))

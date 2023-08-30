@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QRadioButton, QCheckBox, QLayout
+from PySide6.QtWidgets import QLayout
 from qfluentwidgets import RadioButton, CheckBox
 
 from nlightreader.dialogs import FormGenres

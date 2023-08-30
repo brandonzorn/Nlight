@@ -1,5 +1,6 @@
 from PySide6.QtCore import Slot, Signal
 from PySide6.QtWidgets import QWidget, QTreeWidgetItem
+from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.history import Ui_Form
 from nlightreader.consts import ItemsColors
@@ -15,6 +16,8 @@ class FormHistory(QWidget):
         super().__init__(parent=parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+
+        self.ui.delete_btn.setIcon(FluentIcon.DELETE)
 
         self.setObjectName("FormHistory")
 

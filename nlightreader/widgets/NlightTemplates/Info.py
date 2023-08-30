@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt, QSize, Slot, Signal, QThreadPool
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget, QListWidgetItem, QTreeWidgetItem
+from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.info import Ui_Form
 from nlightreader.consts import lib_lists_en, ItemsColors, LibList
@@ -21,6 +22,8 @@ class FormInfo(QWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+
+        self.ui.shikimori_btn.setIcon(QIcon(":/actions_black/data/icons/buttons/svg_24dp_black/actions/shikimori.svg"))
 
         self.setObjectName("FormInfo")
 
@@ -121,6 +124,12 @@ class FormInfo(QWidget):
                 self.setup_error.emit()
         Worker(target=info_setup, callback=self.update_additional_info).start(pool=self.thread_pool)
 
+    def update_add_button_icon(self):
+        if self.ui.add_btn.isChecked():
+            self.ui.add_btn.setIcon(FluentIcon.REMOVE_FROM)
+        else:
+            self.ui.add_btn.setIcon(FluentIcon.ADD_TO)
+
     def update_additional_info(self):
         self.ui.lib_frame.setVisible(not self.catalog.is_primary)
         self.ui.shikimori_frame.setVisible(self.catalog.is_primary)
@@ -130,6 +139,7 @@ class FormInfo(QWidget):
             self.ui.add_btn.setChecked(True)
         else:
             self.ui.add_btn.setChecked(False)
+        self.update_add_button_icon()
         self.update_manga_preview()
         self.get_chapters()
         self.get_characters()
@@ -177,6 +187,7 @@ class FormInfo(QWidget):
         else:
             lib_list = LibList(self.ui.lib_list_box.currentIndex())
             self.db.add_manga_library(self.manga, lib_list)
+        self.update_add_button_icon()
 
     @Slot()
     def change_lib_list(self):

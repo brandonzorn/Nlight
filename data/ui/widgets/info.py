@@ -16,12 +16,11 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
-    QLabel, QListWidgetItem, QPushButton, QSizePolicy,
-    QSpacerItem, QTextBrowser, QTreeWidgetItem, QVBoxLayout,
-    QWidget)
+    QLabel, QListWidgetItem, QSizePolicy, QSpacerItem,
+    QTextBrowser, QTreeWidgetItem, QVBoxLayout, QWidget)
 
 from qfluentwidgets import (BodyLabel, CardWidget, ComboBox, ElevatedCardWidget,
-    ListWidget, PushButton, SimpleCardWidget, TreeWidget)
+    ListWidget, SimpleCardWidget, ToolButton, TreeWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -63,7 +62,7 @@ class Ui_Form(object):
 
         self.horizontalLayout.addWidget(self.lib_list_box)
 
-        self.add_btn = PushButton(self.lib_frame)
+        self.add_btn = ToolButton(self.lib_frame)
         self.add_btn.setObjectName(u"add_btn")
         self.add_btn.setCheckable(True)
 
@@ -79,7 +78,7 @@ class Ui_Form(object):
         self.horizontalLayout_2 = QHBoxLayout(self.shikimori_frame)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.shikimori_btn = QPushButton(self.shikimori_frame)
+        self.shikimori_btn = ToolButton(self.shikimori_frame)
         self.shikimori_btn.setObjectName(u"shikimori_btn")
 
         self.horizontalLayout_2.addWidget(self.shikimori_btn)
@@ -238,6 +237,7 @@ class Ui_Form(object):
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.items_tree.sizePolicy().hasHeightForWidth())
         self.items_tree.setSizePolicy(sizePolicy2)
+        self.items_tree.setContextMenuPolicy(Qt.CustomContextMenu)
         self.items_tree.header().setVisible(False)
 
         self.verticalLayout_5.addWidget(self.items_tree)
@@ -252,8 +252,6 @@ class Ui_Form(object):
     # setupUi
 
     def retranslateUi(self, Form):
-        self.add_btn.setText("")
-        self.shikimori_btn.setText("")
         self.image.setText("")
         self.name_label.setText(QCoreApplication.translate("Form", u"name", None))
         self.russian_label.setText(QCoreApplication.translate("Form", u"russian", None))
