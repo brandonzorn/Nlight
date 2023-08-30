@@ -11,7 +11,7 @@ class FormAuth(QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.setWindowTitle('Authenticate')
-        self.layout().setSizeConstraint(QLayout.SetFixedSize)
+        self.layout().setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
         self.ui.catalog_label.setText(catalog.CATALOG_NAME)
         self.session = catalog.session
         self.setup_form(catalog.fields)

@@ -21,6 +21,9 @@ class FormInfo(QWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+
+        self.setObjectName("FormInfo")
+
         self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in lib_lists_en])
         self.ui.items_tree.doubleClicked.connect(self.open_reader)
         self.ui.characters_list.doubleClicked.connect(self.open_character)
@@ -29,7 +32,6 @@ class FormInfo(QWidget):
         self.ui.add_btn.clicked.connect(self.add_to_favorites)
         self.ui.lib_list_box.currentIndexChanged.connect(self.change_lib_list)
         self.ui.items_tree.customContextMenuRequested.connect(self.on_context_menu)
-        self.ui.back_btn.clicked.connect(self.close_widget)
         self.db: Database = Database()
         self.thread_pool = QThreadPool()
         self.thread_pool.setMaxThreadCount(3)
@@ -249,10 +251,3 @@ class FormInfo(QWidget):
     @Slot()
     def open_related_manga(self):
         self.opened_related_manga.emit(self.get_current_manga())
-        self.close_widget()
-
-    @Slot()
-    def close_widget(self):
-        parent = self.parent()
-        parent.removeWidget(self)
-        self.deleteLater()

@@ -1,14 +1,12 @@
 import os
 import sys
 import time
-from enum import Enum
 
 import darkdetect
 import platformdirs
 from PySide6.QtCore import Qt, QTranslator, QLocale, QThreadPool
 from PySide6.QtGui import QIcon, QPalette
 from PySide6.QtWidgets import QApplication
-from qfluentwidgets import StyleSheetBase, Theme, qconfig
 
 from nlightreader import ParentWindow
 from nlightreader.consts import APP_VERSION, APP_NAME, Icons
@@ -36,17 +34,7 @@ class App(QApplication):
 
     def update_style(self):
         accent_color = self.get_accent_color()
-        self.setStyleSheet(get_ui_style(darkdetect.theme(), accent_color.name()))
-
-
-class StyleSheet(StyleSheetBase, Enum):
-    """ Style sheet  """
-
-    MAIN_WINDOW = "main_window"
-
-    def path(self, theme=Theme.AUTO):
-        theme = qconfig.theme if theme == Theme.AUTO else theme
-        return f"app/resource/qss/{theme.value.lower()}/{self.value}.qss"
+        # self.setStyleSheet(get_ui_style(darkdetect.theme(), accent_color.name()))
 
 
 class MainWindow(ParentWindow):
@@ -54,7 +42,7 @@ class MainWindow(ParentWindow):
         super().__init__()
         self.set_min_size_by_screen()
         self.setWindowTitle(APP_NAME)
-        StyleSheet.MAIN_WINDOW.apply(self)
+        self.setWindowIcon(QIcon(Icons.App))
         self._theme_updater = Thread(target=self.theme_listener, callback=self.update_style)
         self._theme_updater.start()
         self.show()

@@ -30,8 +30,8 @@ class LangIcons:
 
 class Translations:
     En = ""
-    Ru = u":/translations/data/translations/ru/ru.qm"
-    Uk = u":/translations/data/translations/uk/uk.qm"
+    Ru = u":/translations/data/translations/ru/ru_RU.qm"
+    Uk = u":/translations/data/translations/uk/uk_UA.qm"
 
 
 class Icons:

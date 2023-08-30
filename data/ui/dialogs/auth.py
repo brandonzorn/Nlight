@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'auth.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.1
+## Created by: Qt User Interface Compiler version 6.4.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -16,14 +16,16 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QHBoxLayout,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
-    QSpacerItem, QVBoxLayout, QWidget)
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
+
+from qfluentwidgets import (HyperlinkButton, LineEdit, PrimaryPushButton, PushButton,
+    TitleLabel)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(337, 348)
+        Dialog.resize(610, 348)
         Dialog.setStyleSheet(u"")
         Dialog.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.verticalLayout_2 = QVBoxLayout(Dialog)
@@ -34,12 +36,9 @@ class Ui_Dialog(object):
         self.catalog_frame.setFrameShadow(QFrame.Raised)
         self.horizontalLayout = QHBoxLayout(self.catalog_frame)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.catalog_label = QLabel(self.catalog_frame)
+        self.catalog_label = TitleLabel(self.catalog_frame)
         self.catalog_label.setObjectName(u"catalog_label")
-        font = QFont()
-        font.setPointSize(16)
-        font.setBold(True)
-        self.catalog_label.setFont(font)
+        self.catalog_label.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout.addWidget(self.catalog_label)
 
@@ -55,24 +54,18 @@ class Ui_Dialog(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.auth_code_line = QLineEdit(self.one_frame)
+        self.auth_code_line = LineEdit(self.one_frame)
         self.auth_code_line.setObjectName(u"auth_code_line")
 
         self.horizontalLayout_2.addWidget(self.auth_code_line)
-
-        self.label = QLabel(self.one_frame)
-        self.label.setObjectName(u"label")
-
-        self.horizontalLayout_2.addWidget(self.label)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_2)
 
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.get_code_btn = QPushButton(self.one_frame)
+        self.get_code_btn = HyperlinkButton(self.one_frame)
         self.get_code_btn.setObjectName(u"get_code_btn")
-        self.get_code_btn.setCursor(QCursor(Qt.PointingHandCursor))
 
         self.horizontalLayout_3.addWidget(self.get_code_btn)
 
@@ -94,30 +87,20 @@ class Ui_Dialog(object):
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.horizontalLayout_5 = QHBoxLayout()
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.login_line = QLineEdit(self.two_frame)
+        self.login_line = LineEdit(self.two_frame)
         self.login_line.setObjectName(u"login_line")
 
         self.horizontalLayout_5.addWidget(self.login_line)
-
-        self.label_2 = QLabel(self.two_frame)
-        self.label_2.setObjectName(u"label_2")
-
-        self.horizontalLayout_5.addWidget(self.label_2)
 
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_5)
 
         self.horizontalLayout_6 = QHBoxLayout()
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
-        self.password_line = QLineEdit(self.two_frame)
+        self.password_line = LineEdit(self.two_frame)
         self.password_line.setObjectName(u"password_line")
 
         self.horizontalLayout_6.addWidget(self.password_line)
-
-        self.label_3 = QLabel(self.two_frame)
-        self.label_3.setObjectName(u"label_3")
-
-        self.horizontalLayout_6.addWidget(self.label_3)
 
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_6)
@@ -131,15 +114,10 @@ class Ui_Dialog(object):
         self.frame.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_4 = QHBoxLayout(self.frame)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.auth_btn = QPushButton(self.frame)
+        self.auth_btn = PrimaryPushButton(self.frame)
         self.auth_btn.setObjectName(u"auth_btn")
-        self.auth_btn.setCursor(QCursor(Qt.PointingHandCursor))
 
-        self.horizontalLayout_4.addWidget(self.auth_btn)
-
-        self.horizontalSpacer_2 = QSpacerItem(254, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_4.addItem(self.horizontalSpacer_2)
+        self.horizontalLayout_4.addWidget(self.auth_btn, 0, Qt.AlignHCenter)
 
 
         self.verticalLayout_2.addWidget(self.frame)
@@ -152,11 +130,11 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
-        self.catalog_label.setText(QCoreApplication.translate("Dialog", u"Shikimori", None))
-        self.label.setText(QCoreApplication.translate("Dialog", u"Authorization code", None))
+        self.catalog_label.setText("")
+        self.auth_code_line.setPlaceholderText(QCoreApplication.translate("Dialog", u"Authorization code", None))
         self.get_code_btn.setText(QCoreApplication.translate("Dialog", u"Get code", None))
-        self.label_2.setText(QCoreApplication.translate("Dialog", u"Login", None))
-        self.label_3.setText(QCoreApplication.translate("Dialog", u"Password", None))
+        self.login_line.setPlaceholderText(QCoreApplication.translate("Dialog", u"Login", None))
+        self.password_line.setPlaceholderText(QCoreApplication.translate("Dialog", u"Password", None))
         self.auth_btn.setText(QCoreApplication.translate("Dialog", u"Sign in", None))
     # retranslateUi
 

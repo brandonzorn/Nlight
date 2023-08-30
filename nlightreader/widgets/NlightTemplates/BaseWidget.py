@@ -13,8 +13,8 @@ from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 class MangaItemBasedWidget(QWidget):
     manga_open = Signal(Manga)
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         self.manga_area = MangaArea(None)
         self.mangas: list[Manga] = []
 

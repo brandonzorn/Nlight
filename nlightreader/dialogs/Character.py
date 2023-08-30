@@ -12,7 +12,7 @@ class FormCharacter(QDialog):
         super().__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.ui.show_spoilers.clicked.connect(self.update_description)
+        self.ui.show_spoilers.checkedChanged.connect(self.update_description)
         self.setFixedSize(QSize(550, 800))
         self.character = character
         self.setWindowTitle(self.character.get_name())

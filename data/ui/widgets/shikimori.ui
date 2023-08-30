@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>444</width>
-    <height>326</height>
+    <width>662</width>
+    <height>397</height>
    </rect>
   </property>
   <property name="locale">
@@ -29,18 +29,12 @@
    <item>
     <layout class="QVBoxLayout" name="search">
      <item>
-      <widget class="QFrame" name="items_frame">
+      <widget class="SimpleCardWidget" name="items_frame">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
        </property>
        <layout class="QVBoxLayout" name="items_layout"/>
       </widget>
@@ -54,37 +48,25 @@
         <enum>QFrame::Raised</enum>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
-         <widget class="QFrame" name="text_frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
+         <widget class="SimpleCardWidget" name="text_frame">
+          <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
-            <widget class="QLineEdit" name="title_line"/>
-           </item>
-           <item>
-            <widget class="QPushButton" name="search_btn">
-             <property name="cursor">
-              <cursorShape>PointingHandCursor</cursorShape>
-             </property>
-             <property name="text">
-              <string/>
+            <widget class="SearchLineEdit" name="title_line">
+             <property name="placeholderText">
+              <string>Search</string>
              </property>
             </widget>
            </item>
@@ -92,48 +74,24 @@
          </widget>
         </item>
         <item>
-         <widget class="QFrame" name="page_frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
+         <widget class="SimpleCardWidget" name="page_frame">
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
            <item>
-            <widget class="QPushButton" name="prev_btn">
-             <property name="cursor">
-              <cursorShape>PointingHandCursor</cursorShape>
-             </property>
+            <widget class="PushButton" name="prev_btn">
              <property name="text">
               <string/>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="page_label">
+            <widget class="BodyLabel" name="page_label">
              <property name="text">
               <string>Page 1</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="next_btn">
-             <property name="cursor">
-              <cursorShape>PointingHandCursor</cursorShape>
-             </property>
+            <widget class="PushButton" name="next_btn">
              <property name="text">
               <string/>
              </property>
@@ -148,19 +106,10 @@
     </layout>
    </item>
    <item>
-    <widget class="QFrame" name="lists_frame">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+    <widget class="SimpleCardWidget" name="lists_frame">
+     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QPushButton" name="planned_btn">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="PushButton" name="planned_btn">
         <property name="text">
          <string>Planned</string>
         </property>
@@ -176,48 +125,33 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="completed_btn">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="PushButton" name="completed_btn">
         <property name="text">
          <string>Completed</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
         </property>
-        <property name="autoRepeat">
-         <bool>false</bool>
-        </property>
         <property name="autoExclusive">
          <bool>true</bool>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="reading_btn">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="PushButton" name="reading_btn">
         <property name="text">
          <string>Reading</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
         </property>
-        <property name="autoRepeat">
-         <bool>false</bool>
-        </property>
         <property name="autoExclusive">
          <bool>true</bool>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="re_reading_btn">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="PushButton" name="re_reading_btn">
         <property name="text">
          <string>Re-reading</string>
         </property>
@@ -230,10 +164,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="on_hold_btn">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="PushButton" name="on_hold_btn">
         <property name="text">
          <string>On hold</string>
         </property>
@@ -246,10 +177,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="dropped_btn">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="PushButton" name="dropped_btn">
         <property name="text">
          <string>Dropped</string>
         </property>
@@ -275,10 +203,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="auth_btn">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="PushButton" name="auth_btn">
         <property name="text">
          <string>Sign in</string>
         </property>
@@ -289,6 +214,40 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PushButton</class>
+   <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>CardWidget</class>
+   <extends>QFrame</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SimpleCardWidget</class>
+   <extends>CardWidget</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BodyLabel</class>
+   <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>SearchLineEdit</class>
+   <extends>LineEdit</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

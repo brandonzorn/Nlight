@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>740</width>
-    <height>307</height>
+    <width>860</width>
+    <height>508</height>
    </rect>
   </property>
   <property name="locale">
@@ -29,18 +29,12 @@
    <item>
     <layout class="QVBoxLayout" name="search">
      <item>
-      <widget class="QFrame" name="items_frame">
+      <widget class="SimpleCardWidget" name="items_frame">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
        </property>
        <layout class="QVBoxLayout" name="items_layout"/>
       </widget>
@@ -54,67 +48,47 @@
         <enum>QFrame::Raised</enum>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
-         <widget class="QFrame" name="text_frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
+         <widget class="SimpleCardWidget" name="text_frame">
+          <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
-            <widget class="SearchLineEdit" name="title_line"/>
+            <widget class="SearchLineEdit" name="title_line">
+             <property name="placeholderText">
+              <string>Search</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="PushButton" name="filter_btn">
+             <property name="text">
+              <string>Filters</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
         </item>
         <item>
-         <widget class="PushButton" name="filter_btn">
-          <property name="text">
-           <string>Filters</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QFrame" name="page_frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
+         <widget class="SimpleCardWidget" name="page_frame">
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
            <item>
             <widget class="PushButton" name="prev_btn">
              <property name="text">
@@ -166,14 +140,8 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QFrame" name="catalogs_frame">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
+       <widget class="ElevatedCardWidget" name="catalogs_frame">
+        <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
           <widget class="ListWidget" name="catalogs_list">
            <property name="sizePolicy">
@@ -203,17 +171,8 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QFrame" name="orders_frame">
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_5">
+          <widget class="SimpleCardWidget" name="orders_frame">
+           <layout class="QVBoxLayout" name="verticalLayout">
             <item>
              <widget class="BodyLabel" name="label">
               <property name="text">
@@ -228,17 +187,8 @@
           </widget>
          </item>
          <item>
-          <widget class="QFrame" name="kinds_frame">
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
+          <widget class="SimpleCardWidget" name="kinds_frame">
+           <layout class="QVBoxLayout" name="verticalLayout_5">
             <item>
              <widget class="BodyLabel" name="label_2">
               <property name="text">
@@ -253,14 +203,8 @@
           </widget>
          </item>
          <item>
-          <widget class="QFrame" name="genres_frame">
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_6">
+          <widget class="SimpleCardWidget" name="genres_frame">
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
             <item>
              <widget class="PushButton" name="genres_btn">
               <property name="text">
@@ -272,14 +216,8 @@
           </widget>
          </item>
          <item>
-          <widget class="QFrame" name="filter_catalog_frame">
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_7">
+          <widget class="SimpleCardWidget" name="filter_catalog_frame">
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
              <widget class="PushButton" name="catalogs_btn">
               <property name="text">
@@ -304,14 +242,8 @@
           </spacer>
          </item>
          <item>
-          <widget class="QFrame" name="filter_actions_frame">
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <widget class="SimpleCardWidget" name="filter_actions_frame">
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
             <item>
              <widget class="PushButton" name="reset_btn">
               <property name="text">
@@ -342,6 +274,24 @@
    <class>PushButton</class>
    <extends>QPushButton</extends>
    <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>CardWidget</class>
+   <extends>QFrame</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ElevatedCardWidget</class>
+   <extends>SimpleCardWidget</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SimpleCardWidget</class>
+   <extends>CardWidget</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>BodyLabel</class>
