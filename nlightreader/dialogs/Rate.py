@@ -1,5 +1,6 @@
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QDialog, QLayout
+from qfluentwidgets import FluentIcon
 
 from data.ui.dialogs.rate import Ui_Dialog
 from nlightreader.consts import lib_lists_en, parse_lib_list
@@ -13,6 +14,11 @@ class FormRate(QDialog):
         super().__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+
+        self.ui.cancel_btn.setIcon(FluentIcon.CANCEL)
+        self.ui.update_btn.setIcon(FluentIcon.UPDATE)
+        self.ui.delete_btn.setIcon(FluentIcon.DELETE)
+
         self.layout().setSizeConstraint(QLayout.SetFixedSize)
         self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in lib_lists_en])
         self.ui.update_btn.clicked.connect(self.send_rate)

@@ -19,7 +19,7 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
     QSizePolicy, QSpacerItem, QTreeWidgetItem, QVBoxLayout,
     QWidget)
 
-from qfluentwidgets import (PushButton, TreeWidget)
+from qfluentwidgets import (ToolButton, TreeWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -55,7 +55,7 @@ class Ui_Form(object):
         self.frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout = QVBoxLayout(self.frame)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.delete_btn = PushButton(self.frame)
+        self.delete_btn = ToolButton(self.frame)
         self.delete_btn.setObjectName(u"delete_btn")
 
         self.verticalLayout.addWidget(self.delete_btn)
@@ -74,7 +74,6 @@ class Ui_Form(object):
     # setupUi
 
     def retranslateUi(self, Form):
-        self.delete_btn.setText("")
         pass
     # retranslateUi
 

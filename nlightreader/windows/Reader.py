@@ -3,6 +3,7 @@ import time
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QMainWindow, QListWidgetItem
+from qfluentwidgets import FluentIcon
 
 from data.ui.windows.reader import Ui_ReaderWindow
 from nlightreader.consts import ItemsColors
@@ -17,6 +18,13 @@ class ReaderWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_ReaderWindow()
         self.ui.setupUi(self)
+
+        self.ui.fullscreen_btn.setIcon(FluentIcon.FULL_SCREEN)
+        self.ui.ch_list_btn.setIcon(FluentIcon.TILES)
+        self.ui.next_page_btn.setIcon(FluentIcon.RIGHT_ARROW)
+        self.ui.prev_page_btn.setIcon(FluentIcon.LEFT_ARROW)
+        self.ui.next_chapter_btn.setIcon(FluentIcon.UP)
+        self.ui.prev_chapter_btn.setIcon(FluentIcon.DOWN)
 
         self.ui.next_page_btn.clicked.connect(self.turn_page_next)
         self.ui.prev_page_btn.clicked.connect(self.turn_page_prev)

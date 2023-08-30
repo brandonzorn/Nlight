@@ -1,4 +1,5 @@
 from PySide6.QtCore import Slot
+from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.shikimori import Ui_Form
 from nlightreader.consts import LibList
@@ -16,6 +17,9 @@ class FormShikimori(MangaItemBasedWidget):
         super().__init__(parent=parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+
+        self.ui.next_btn.setIcon(FluentIcon.RIGHT_ARROW)
+        self.ui.prev_btn.setIcon(FluentIcon.LEFT_ARROW)
 
         self.setObjectName("FormShikimori")
 
