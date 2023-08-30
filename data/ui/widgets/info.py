@@ -177,6 +177,8 @@ class Ui_Form(object):
 
         self.related_list = ListWidget(self.related_frame)
         self.related_list.setObjectName(u"related_list")
+        self.related_list.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.related_list.setWordWrap(True)
 
         self.verticalLayout_4.addWidget(self.related_list)
 
@@ -194,6 +196,8 @@ class Ui_Form(object):
 
         self.characters_list = ListWidget(self.characters_frame)
         self.characters_list.setObjectName(u"characters_list")
+        self.characters_list.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.characters_list.setWordWrap(True)
 
         self.verticalLayout_2.addWidget(self.characters_list)
 
