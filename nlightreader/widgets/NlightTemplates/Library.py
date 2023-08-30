@@ -8,10 +8,12 @@ from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
 class FormLibrary(MangaItemBasedWidget):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+
+        self.setObjectName("FormLibrary")
 
         self.manga_area = MangaArea(self.ui.items_layout)
 

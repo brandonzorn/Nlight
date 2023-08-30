@@ -276,10 +276,11 @@ class Auth:
             print(e)
 
     def request(self, method, url, params=None, json=None, ignore_authorize=False):
-        if (not ignore_authorize and not self.is_authorized) or "test" in QApplication.arguments():
+        if ((not ignore_authorize and not self.is_authorized) or
+                "test" in QApplication.arguments() or
+                "noshiki" in QApplication.arguments()):
             return
         try:
-            assert "test" not in QApplication.arguments(), "Test mode"
             response = self.client.request(method, url, params=params, json=json)
             response.raise_for_status()
             return response

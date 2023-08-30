@@ -27,16 +27,10 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QFrame" name="size_frame">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+    <widget class="SimpleCardWidget" name="size_frame">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QSlider" name="size_slider">
+       <widget class="Slider" name="size_slider">
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
@@ -55,18 +49,15 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="frame">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+    <widget class="SimpleCardWidget" name="frame">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
        <widget class="QTextBrowser" name="text_browser">
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
         </property>
         <property name="textInteractionFlags">
          <set>Qt::NoTextInteraction</set>
@@ -81,6 +72,25 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Slider</class>
+   <extends>QSlider</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>CardWidget</class>
+   <extends>QFrame</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SimpleCardWidget</class>
+   <extends>CardWidget</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

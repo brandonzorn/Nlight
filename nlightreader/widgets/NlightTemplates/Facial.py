@@ -11,10 +11,12 @@ from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
 class FormFacial(MangaItemBasedWidget):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+
+        self.setObjectName("FormFacial")
 
         self.manga_area = MangaArea(self.ui.items_layout)
 

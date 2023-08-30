@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>704</width>
+    <width>868</width>
     <height>610</height>
    </rect>
   </property>
@@ -99,19 +99,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QPushButton" name="prev_chapter_btn">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="cursor">
-                 <cursorShape>PointingHandCursor</cursorShape>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
-                </property>
+               <widget class="PushButton" name="prev_chapter_btn">
                 <property name="text">
                  <string/>
                 </property>
@@ -121,19 +109,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="prev_page_btn">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="cursor">
-                 <cursorShape>PointingHandCursor</cursorShape>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
-                </property>
+               <widget class="PushButton" name="prev_page_btn">
                 <property name="text">
                  <string/>
                 </property>
@@ -143,7 +119,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLabel" name="chapter_label">
+               <widget class="BodyLabel" name="chapter_label">
                 <property name="text">
                  <string>Глава 1</string>
                 </property>
@@ -153,7 +129,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLabel" name="page_label">
+               <widget class="BodyLabel" name="page_label">
                 <property name="text">
                  <string>Страница 1</string>
                 </property>
@@ -163,19 +139,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="next_page_btn">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="cursor">
-                 <cursorShape>PointingHandCursor</cursorShape>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
-                </property>
+               <widget class="PushButton" name="next_page_btn">
                 <property name="text">
                  <string/>
                 </property>
@@ -185,19 +149,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="next_chapter_btn">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="cursor">
-                 <cursorShape>PointingHandCursor</cursorShape>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
-                </property>
+               <widget class="PushButton" name="next_chapter_btn">
                 <property name="text">
                  <string/>
                 </property>
@@ -234,19 +186,7 @@
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
-             <widget class="QPushButton" name="fullscreen_btn">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="cursor">
-               <cursorShape>PointingHandCursor</cursorShape>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
+             <widget class="PushButton" name="fullscreen_btn">
               <property name="text">
                <string/>
               </property>
@@ -259,19 +199,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="ch_list_btn">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="cursor">
-               <cursorShape>PointingHandCursor</cursorShape>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
+             <widget class="PushButton" name="ch_list_btn">
               <property name="text">
                <string/>
               </property>
@@ -292,24 +220,15 @@
      </widget>
     </item>
     <item>
-     <widget class="QFrame" name="chapters_frame">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
+     <widget class="ElevatedCardWidget" name="chapters_frame">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QListWidget" name="items_list">
-         <property name="contextMenuPolicy">
-          <enum>Qt::CustomContextMenu</enum>
+        <widget class="ListWidget" name="items_list">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -322,6 +241,41 @@
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PushButton</class>
+   <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>CardWidget</class>
+   <extends>QFrame</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ElevatedCardWidget</class>
+   <extends>SimpleCardWidget</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SimpleCardWidget</class>
+   <extends>CardWidget</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BodyLabel</class>
+   <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>ListWidget</class>
+   <extends>QListWidget</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
