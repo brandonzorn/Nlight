@@ -90,9 +90,12 @@
          <widget class="SimpleCardWidget" name="page_frame">
           <layout class="QHBoxLayout" name="horizontalLayout_9">
            <item>
-            <widget class="PushButton" name="prev_btn">
-             <property name="text">
-              <string/>
+            <widget class="ToolButton" name="prev_btn">
+             <property name="popupMode">
+              <enum>QToolButton::DelayedPopup</enum>
+             </property>
+             <property name="arrowType">
+              <enum>Qt::NoArrow</enum>
              </property>
             </widget>
            </item>
@@ -104,11 +107,7 @@
             </widget>
            </item>
            <item>
-            <widget class="PushButton" name="next_btn">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
+            <widget class="ToolButton" name="next_btn"/>
            </item>
           </layout>
          </widget>
@@ -273,6 +272,11 @@
   <customwidget>
    <class>PushButton</class>
    <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>

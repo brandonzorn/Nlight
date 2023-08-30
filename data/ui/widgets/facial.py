@@ -16,11 +16,12 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
-    QListWidgetItem, QSizePolicy, QSpacerItem, QVBoxLayout,
-    QWidget)
+    QListWidgetItem, QSizePolicy, QSpacerItem, QToolButton,
+    QVBoxLayout, QWidget)
 
 from qfluentwidgets import (BodyLabel, CardWidget, ElevatedCardWidget, LineEdit,
-    ListWidget, PushButton, SearchLineEdit, SimpleCardWidget)
+    ListWidget, PushButton, SearchLineEdit, SimpleCardWidget,
+    ToolButton)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -75,8 +76,10 @@ class Ui_Form(object):
         self.page_frame.setObjectName(u"page_frame")
         self.horizontalLayout_9 = QHBoxLayout(self.page_frame)
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
-        self.prev_btn = PushButton(self.page_frame)
+        self.prev_btn = ToolButton(self.page_frame)
         self.prev_btn.setObjectName(u"prev_btn")
+        self.prev_btn.setPopupMode(QToolButton.DelayedPopup)
+        self.prev_btn.setArrowType(Qt.NoArrow)
 
         self.horizontalLayout_9.addWidget(self.prev_btn)
 
@@ -85,7 +88,7 @@ class Ui_Form(object):
 
         self.horizontalLayout_9.addWidget(self.page_label)
 
-        self.next_btn = PushButton(self.page_frame)
+        self.next_btn = ToolButton(self.page_frame)
         self.next_btn.setObjectName(u"next_btn")
 
         self.horizontalLayout_9.addWidget(self.next_btn)
@@ -225,9 +228,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         self.title_line.setPlaceholderText(QCoreApplication.translate("Form", u"Search", None))
         self.filter_btn.setText(QCoreApplication.translate("Form", u"Filters", None))
-        self.prev_btn.setText("")
         self.page_label.setText(QCoreApplication.translate("Form", u"Page 1", None))
-        self.next_btn.setText("")
         self.label.setText(QCoreApplication.translate("Form", u"Order", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"Kind", None))
         self.genres_btn.setText(QCoreApplication.translate("Form", u"Genres list", None))

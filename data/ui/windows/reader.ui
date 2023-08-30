@@ -99,17 +99,14 @@
                </spacer>
               </item>
               <item>
-               <widget class="PushButton" name="prev_chapter_btn">
-                <property name="text">
-                 <string/>
-                </property>
+               <widget class="ToolButton" name="prev_chapter_btn">
                 <property name="shortcut">
                  <string>Down</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="PushButton" name="prev_page_btn">
+               <widget class="ToolButton" name="prev_page_btn">
                 <property name="text">
                  <string/>
                 </property>
@@ -139,20 +136,14 @@
                </widget>
               </item>
               <item>
-               <widget class="PushButton" name="next_page_btn">
-                <property name="text">
-                 <string/>
-                </property>
+               <widget class="ToolButton" name="next_page_btn">
                 <property name="shortcut">
                  <string>Right</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="PushButton" name="next_chapter_btn">
-                <property name="text">
-                 <string/>
-                </property>
+               <widget class="ToolButton" name="next_chapter_btn">
                 <property name="shortcut">
                  <string>Up</string>
                 </property>
@@ -186,28 +177,16 @@
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
-             <widget class="PushButton" name="fullscreen_btn">
-              <property name="text">
-               <string/>
-              </property>
+             <widget class="ToolButton" name="fullscreen_btn">
               <property name="shortcut">
                <string>F11</string>
-              </property>
-              <property name="checkable">
-               <bool>true</bool>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="PushButton" name="ch_list_btn">
-              <property name="text">
-               <string/>
-              </property>
+             <widget class="ToolButton" name="ch_list_btn">
               <property name="shortcut">
-               <string>C</string>
-              </property>
-              <property name="checkable">
-               <bool>true</bool>
+               <string/>
               </property>
              </widget>
             </item>
@@ -230,6 +209,9 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
          <property name="wordWrap">
           <bool>true</bool>
          </property>
@@ -243,8 +225,8 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PushButton</class>
-   <extends>QPushButton</extends>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>

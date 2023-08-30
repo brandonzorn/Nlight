@@ -20,7 +20,7 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QListWidgetIte
     QWidget)
 
 from qfluentwidgets import (BodyLabel, CardWidget, ElevatedCardWidget, ListWidget,
-    PushButton, SimpleCardWidget)
+    SimpleCardWidget, ToolButton)
 
 class Ui_ReaderWindow(object):
     def setupUi(self, ReaderWindow):
@@ -72,12 +72,12 @@ class Ui_ReaderWindow(object):
 
         self.page_actions_btn.addItem(self.horizontalSpacer)
 
-        self.prev_chapter_btn = PushButton(self.actions_frame)
+        self.prev_chapter_btn = ToolButton(self.actions_frame)
         self.prev_chapter_btn.setObjectName(u"prev_chapter_btn")
 
         self.page_actions_btn.addWidget(self.prev_chapter_btn)
 
-        self.prev_page_btn = PushButton(self.actions_frame)
+        self.prev_page_btn = ToolButton(self.actions_frame)
         self.prev_page_btn.setObjectName(u"prev_page_btn")
 
         self.page_actions_btn.addWidget(self.prev_page_btn)
@@ -94,12 +94,12 @@ class Ui_ReaderWindow(object):
 
         self.page_actions_btn.addWidget(self.page_label)
 
-        self.next_page_btn = PushButton(self.actions_frame)
+        self.next_page_btn = ToolButton(self.actions_frame)
         self.next_page_btn.setObjectName(u"next_page_btn")
 
         self.page_actions_btn.addWidget(self.next_page_btn)
 
-        self.next_chapter_btn = PushButton(self.actions_frame)
+        self.next_chapter_btn = ToolButton(self.actions_frame)
         self.next_chapter_btn.setObjectName(u"next_chapter_btn")
 
         self.page_actions_btn.addWidget(self.next_chapter_btn)
@@ -120,15 +120,13 @@ class Ui_ReaderWindow(object):
         self.frame.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_4 = QHBoxLayout(self.frame)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.fullscreen_btn = PushButton(self.frame)
+        self.fullscreen_btn = ToolButton(self.frame)
         self.fullscreen_btn.setObjectName(u"fullscreen_btn")
-        self.fullscreen_btn.setCheckable(True)
 
         self.horizontalLayout_4.addWidget(self.fullscreen_btn)
 
-        self.ch_list_btn = PushButton(self.frame)
+        self.ch_list_btn = ToolButton(self.frame)
         self.ch_list_btn.setObjectName(u"ch_list_btn")
-        self.ch_list_btn.setCheckable(True)
 
         self.horizontalLayout_4.addWidget(self.ch_list_btn)
 
@@ -152,6 +150,7 @@ class Ui_ReaderWindow(object):
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.items_list.sizePolicy().hasHeightForWidth())
         self.items_list.setSizePolicy(sizePolicy2)
+        self.items_list.setContextMenuPolicy(Qt.CustomContextMenu)
         self.items_list.setWordWrap(True)
 
         self.verticalLayout_2.addWidget(self.items_list)
@@ -168,7 +167,6 @@ class Ui_ReaderWindow(object):
 
     def retranslateUi(self, ReaderWindow):
         ReaderWindow.setWindowTitle(QCoreApplication.translate("ReaderWindow", u"MainWindow", None))
-        self.prev_chapter_btn.setText("")
 #if QT_CONFIG(shortcut)
         self.prev_chapter_btn.setShortcut(QCoreApplication.translate("ReaderWindow", u"Down", None))
 #endif // QT_CONFIG(shortcut)
@@ -178,21 +176,17 @@ class Ui_ReaderWindow(object):
 #endif // QT_CONFIG(shortcut)
         self.chapter_label.setText(QCoreApplication.translate("ReaderWindow", u"\u0413\u043b\u0430\u0432\u0430 1", None))
         self.page_label.setText(QCoreApplication.translate("ReaderWindow", u"\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 1", None))
-        self.next_page_btn.setText("")
 #if QT_CONFIG(shortcut)
         self.next_page_btn.setShortcut(QCoreApplication.translate("ReaderWindow", u"Right", None))
 #endif // QT_CONFIG(shortcut)
-        self.next_chapter_btn.setText("")
 #if QT_CONFIG(shortcut)
         self.next_chapter_btn.setShortcut(QCoreApplication.translate("ReaderWindow", u"Up", None))
 #endif // QT_CONFIG(shortcut)
-        self.fullscreen_btn.setText("")
 #if QT_CONFIG(shortcut)
         self.fullscreen_btn.setShortcut(QCoreApplication.translate("ReaderWindow", u"F11", None))
 #endif // QT_CONFIG(shortcut)
-        self.ch_list_btn.setText("")
 #if QT_CONFIG(shortcut)
-        self.ch_list_btn.setShortcut(QCoreApplication.translate("ReaderWindow", u"C", None))
+        self.ch_list_btn.setShortcut("")
 #endif // QT_CONFIG(shortcut)
     # retranslateUi
 

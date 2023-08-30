@@ -1,4 +1,5 @@
 from PySide6.QtCore import Slot
+from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.facial import Ui_Form
 from nlightreader.controlers import FilterController
@@ -15,6 +16,10 @@ class FormFacial(MangaItemBasedWidget):
         super().__init__(parent=parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+
+        self.ui.next_btn.setIcon(FluentIcon.RIGHT_ARROW)
+        self.ui.prev_btn.setIcon(FluentIcon.LEFT_ARROW)
+        self.ui.filter_btn.setIcon(FluentIcon.FILTER)
 
         self.setObjectName("FormFacial")
 

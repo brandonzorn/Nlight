@@ -77,11 +77,7 @@
          <widget class="SimpleCardWidget" name="page_frame">
           <layout class="QHBoxLayout" name="horizontalLayout_5">
            <item>
-            <widget class="PushButton" name="prev_btn">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
+            <widget class="ToolButton" name="prev_btn"/>
            </item>
            <item>
             <widget class="BodyLabel" name="page_label">
@@ -91,11 +87,7 @@
             </widget>
            </item>
            <item>
-            <widget class="PushButton" name="next_btn">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
+            <widget class="ToolButton" name="next_btn"/>
            </item>
           </layout>
          </widget>
@@ -218,6 +210,11 @@
   <customwidget>
    <class>PushButton</class>
    <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>

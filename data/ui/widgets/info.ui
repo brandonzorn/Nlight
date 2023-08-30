@@ -102,10 +102,7 @@
               <widget class="ComboBox" name="lib_list_box"/>
              </item>
              <item>
-              <widget class="PushButton" name="add_btn">
-               <property name="text">
-                <string/>
-               </property>
+              <widget class="ToolButton" name="add_btn">
                <property name="checkable">
                 <bool>true</bool>
                </property>
@@ -136,11 +133,7 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QPushButton" name="shikimori_btn">
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
+              <widget class="ToolButton" name="shikimori_btn"/>
              </item>
             </layout>
            </widget>
@@ -315,6 +308,9 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::CustomContextMenu</enum>
+        </property>
         <attribute name="headerVisible">
          <bool>false</bool>
         </attribute>
@@ -337,8 +333,8 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>PushButton</class>
-   <extends>QPushButton</extends>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
