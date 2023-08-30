@@ -254,7 +254,14 @@
              </widget>
             </item>
             <item>
-             <widget class="ListWidget" name="related_list"/>
+             <widget class="ListWidget" name="related_list">
+              <property name="horizontalScrollBarPolicy">
+               <enum>Qt::ScrollBarAlwaysOff</enum>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -270,7 +277,14 @@
              </widget>
             </item>
             <item>
-             <widget class="ListWidget" name="characters_list"/>
+             <widget class="ListWidget" name="characters_list">
+              <property name="horizontalScrollBarPolicy">
+               <enum>Qt::ScrollBarAlwaysOff</enum>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
