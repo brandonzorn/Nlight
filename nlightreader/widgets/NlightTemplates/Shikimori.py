@@ -12,10 +12,12 @@ from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
 class FormShikimori(MangaItemBasedWidget):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+
+        self.setObjectName("FormShikimori")
 
         self.manga_area = MangaArea(self.ui.items_layout)
 
@@ -27,7 +29,7 @@ class FormShikimori(MangaItemBasedWidget):
         self.ui.re_reading_btn.clicked.connect(lambda: self.change_list(LibList.re_reading))
         self.ui.next_btn.clicked.connect(self.turn_page_next)
         self.ui.prev_btn.clicked.connect(self.turn_page_prev)
-        self.ui.search_btn.clicked.connect(self.search)
+        self.ui.title_line.searchSignal.connect(self.search)
         self.ui.auth_btn.clicked.connect(self.authorize)
         self.catalog = ShikimoriLib()
         self.Form_auth = FormAuth(self.catalog, parent=self)

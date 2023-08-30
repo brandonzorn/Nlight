@@ -1,17 +1,18 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QScrollArea, QWidget, QVBoxLayout, QGridLayout, QSpacerItem, QSizePolicy
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QSpacerItem, QSizePolicy, QFrame
+from qfluentwidgets import ScrollArea
 
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
-class MangaArea(QScrollArea):
+class MangaArea(ScrollArea):
     def __init__(self, parent):
         super().__init__()
         self.setWidgetResizable(True)
+        self.setFrameShape(QFrame.Shape.NoFrame)
 
         self._column_count = 6
         self._manga_items: list[MangaItem] = []
-
         self._scrollAreaWidgetContents = QWidget()
         self._scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
         self._scrollAreaWidgetContents.resizeEvent = self._scroll_resize_event
