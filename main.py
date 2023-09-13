@@ -1,6 +1,9 @@
 import os
 import sys
 import time
+
+from qfluentwidgets import Theme, setTheme
+
 import nlight_res_rc
 import darkdetect
 import platformdirs
@@ -10,7 +13,7 @@ from PySide6.QtWidgets import QApplication
 
 from nlightreader import ParentWindow
 from nlightreader.consts import APP_VERSION, APP_NAME, Icons
-from nlightreader.utils import get_locale, get_ui_style, Thread
+from nlightreader.utils import get_locale, Thread
 
 
 class App(QApplication):
@@ -23,7 +26,6 @@ class App(QApplication):
         self.translator = QTranslator()
 
         self.load_translator()
-        # self.update_style()
 
     def load_translator(self):
         self.translator.load(get_locale(QLocale().language()))
@@ -31,10 +33,6 @@ class App(QApplication):
 
     def get_accent_color(self):
         return self.palette().color(QPalette.ColorRole.Highlight)
-
-    def update_style(self):
-        accent_color = self.get_accent_color()
-        # self.setStyleSheet(get_ui_style(darkdetect.theme(), accent_color.name()))
 
 
 class MainWindow(ParentWindow):
@@ -44,7 +42,7 @@ class MainWindow(ParentWindow):
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QIcon(Icons.App))
         self._theme_updater = Thread(target=self.theme_listener, callback=self.update_style)
-        self._theme_updater.start()
+        # self._theme_updater.start()
         self.show()
 
     @staticmethod
@@ -67,9 +65,9 @@ class MainWindow(ParentWindow):
 
 if __name__ == '__main__':
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
-    # QApplication.setStyle('Fusion')
     QThreadPool.globalInstance().setMaxThreadCount(32)
     app = App(sys.argv)
+    # setTheme(Theme.DARK)
     os.makedirs(f'{platformdirs.user_data_dir()}/{APP_NAME}', exist_ok=True)
     window = MainWindow()
     sys.exit(app.exec())

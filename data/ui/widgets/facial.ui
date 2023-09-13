@@ -206,6 +206,9 @@
            <layout class="QHBoxLayout" name="horizontalLayout_8">
             <item>
              <widget class="PushButton" name="genres_btn">
+              <property name="contextMenuPolicy">
+               <enum>Qt::CustomContextMenu</enum>
+              </property>
               <property name="text">
                <string>Genres list</string>
               </property>
