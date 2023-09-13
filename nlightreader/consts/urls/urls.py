@@ -1,5 +1,5 @@
-URL_DESU = 'https://desu.me'
-URL_DESU_API = 'https://desu.me/manga/api'
+URL_DESU = 'https://desu.win'
+URL_DESU_API = 'https://desu.win/manga/api'
 
 URL_SHIKIMORI = 'https://shikimori.me'
 URL_SHIKIMORI_API = 'https://shikimori.me/api'
