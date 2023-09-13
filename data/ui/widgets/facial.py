@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'facial.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.3
+## Created by: Qt User Interface Compiler version 6.4.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -174,6 +174,7 @@ class Ui_Form(object):
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.genres_btn = PushButton(self.genres_frame)
         self.genres_btn.setObjectName(u"genres_btn")
+        self.genres_btn.setContextMenuPolicy(Qt.CustomContextMenu)
 
         self.horizontalLayout_8.addWidget(self.genres_btn)
 

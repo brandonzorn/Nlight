@@ -17,10 +17,11 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
     QLabel, QListWidgetItem, QSizePolicy, QSpacerItem,
-    QTextBrowser, QTreeWidgetItem, QVBoxLayout, QWidget)
+    QTreeWidgetItem, QVBoxLayout, QWidget)
 
 from qfluentwidgets import (BodyLabel, CardWidget, ComboBox, ElevatedCardWidget,
-    ListWidget, SimpleCardWidget, ToolButton, TreeWidget)
+    ListWidget, SimpleCardWidget, TextEdit, ToolButton,
+    TreeWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -211,9 +212,11 @@ class Ui_Form(object):
         self.description_frame.setObjectName(u"description_frame")
         self.verticalLayout_3 = QVBoxLayout(self.description_frame)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.description_text = QTextBrowser(self.description_frame)
+        self.description_text = TextEdit(self.description_frame)
         self.description_text.setObjectName(u"description_text")
-        self.description_text.setFrameShape(QFrame.NoFrame)
+        self.description_text.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.description_text.setUndoRedoEnabled(False)
+        self.description_text.setReadOnly(True)
         self.description_text.setTextInteractionFlags(Qt.NoTextInteraction)
 
         self.verticalLayout_3.addWidget(self.description_text)
