@@ -62,6 +62,7 @@ class Desu(MangaCatalog):
                 image_id = i.get('id')
                 page = i.get('page')
                 img: str = i.get('img')
+                img = img.replace('desu.me', "desu.win")
                 images.append(Image(image_id, page, img))
         return images
 
