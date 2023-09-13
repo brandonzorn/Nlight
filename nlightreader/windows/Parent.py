@@ -38,6 +38,8 @@ class ParentWindow(FluentWindow):
 
     @Slot()
     def on_widget_change(self):
+        # print(self.stackedWidget.currentWidget())
+        # self.stackedWidget.widget
         if self.stackedWidget.currentWidget().objectName() == "FormInfo":
             return
         self.stackedWidget.currentWidget().setup()

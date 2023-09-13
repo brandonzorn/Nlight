@@ -295,9 +295,15 @@
         <widget class="SimpleCardWidget" name="description_frame">
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QTextBrowser" name="description_text">
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
+           <widget class="TextEdit" name="description_text">
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAsNeeded</enum>
+            </property>
+            <property name="undoRedoEnabled">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
             </property>
             <property name="textInteractionFlags">
              <set>Qt::NoTextInteraction</set>
@@ -372,6 +378,11 @@
   <customwidget>
    <class>BodyLabel</class>
    <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>TextEdit</class>
+   <extends>QTextEdit</extends>
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
