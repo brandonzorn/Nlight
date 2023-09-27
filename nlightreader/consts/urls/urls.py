@@ -1,9 +1,9 @@
 URL_DESU = 'https://desu.win'
 URL_DESU_API = 'https://desu.win/manga/api'
 
-URL_SHIKIMORI = 'https://shikimori.me'
-URL_SHIKIMORI_API = 'https://shikimori.me/api'
-URL_SHIKIMORI_TOKEN = 'https://shikimori.me/oauth/token'
+URL_SHIKIMORI = 'https://shikimori.one'
+URL_SHIKIMORI_API = 'https://shikimori.one/api'
+URL_SHIKIMORI_TOKEN = 'https://shikimori.one/oauth/token'
 
 URL_MANGA_DEX = 'https://mangadex.org'
 URL_MANGA_DEX_API = 'https://api.mangadex.org'
