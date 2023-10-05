@@ -21,7 +21,9 @@ class MangaItemBasedWidget(QWidget):
         self.manga_thread_pool = QThreadPool()
         self.manga_thread_pool.setMaxThreadCount(50)
 
-        self._get_content_thread = Thread(target=self._get_content_thread_func, callback=self.update_content)
+        self._get_content_thread = Thread(
+            target=self._get_content_thread_func, callback=self.update_content
+        )
 
         self.mutex = QMutex()
         self.catalog = None
@@ -61,7 +63,10 @@ class MangaItemBasedWidget(QWidget):
         page = self.request_params.page
         lib_list = self.request_params.lib_list
         time.sleep(0.25)
-        if page != self.request_params.page or lib_list != self.request_params.lib_list:
+        if (
+            page != self.request_params.page
+            or lib_list != self.request_params.lib_list
+        ):
             return
         self.mangas = self.catalog.search_manga(self.request_params)
         self.manga_thread_pool.setMaxThreadCount(len(self.mangas))

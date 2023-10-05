@@ -1,12 +1,25 @@
-import requests
-
-from nlightreader.consts import URL_MANGA_DEX_API, URL_MANGA_DEX, LibList, MANGA_DEX_HEADERS
-from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
+from nlightreader.consts import (
+    URL_MANGA_DEX_API,
+    URL_MANGA_DEX,
+    LibList,
+    MANGA_DEX_HEADERS,
+)
+from nlightreader.items import (
+    Manga,
+    Chapter,
+    Image,
+    Genre,
+    RequestForm,
+    User,
+    Kind,
+)
 from nlightreader.parsers.Parser import LibParser
 from nlightreader.parsers.catalogs_base import MangaCatalog
 from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
 from nlightreader.utils.utils import get_data, get_html
+
+import requests
 
 
 class MangaDex(MangaCatalog):
@@ -54,9 +67,18 @@ class MangaDex(MangaCatalog):
 
     def search_manga(self, form: RequestForm):
         url = f'{self.url_api}/manga'
-        params = {'limit': 50, 'title': form.search, 'offset': form.offset,
-                  'includedTags[]': form.get_genre_id() + form.get_kind_id(),
-                  'contentRating[]': ["safe", "suggestive", "erotica", "pornographic"]}
+        params = {
+            'limit': 50,
+            'title': form.search,
+            'offset': form.offset,
+            'includedTags[]': form.get_genre_id() + form.get_kind_id(),
+            'contentRating[]': [
+                'safe',
+                'suggestive',
+                'erotica',
+                'pornographic',
+            ],
+        }
         mangas = []
         response = get_html(url, self.headers, params, content_type='json')
         if response:
@@ -66,8 +88,18 @@ class MangaDex(MangaCatalog):
 
     def get_chapters(self, manga: Manga):
         url = f'{self.url_api}/chapter'
-        params = {'manga': manga.content_id, 'limit': 1, 'translatedLanguage[]': ['ru', 'en'], 'order[chapter]': 'asc',
-                  'contentRating[]': ["safe", "suggestive", "erotica", "pornographic"]}
+        params = {
+            'manga': manga.content_id,
+            'limit': 1,
+            'translatedLanguage[]': ['ru', 'en'],
+            'order[chapter]': 'asc',
+            'contentRating[]': [
+                'safe',
+                'suggestive',
+                'erotica',
+                'pornographic',
+            ],
+        }
         response = get_html(url, self.headers, params, content_type='json')
         chapters = []
         if response:
@@ -77,8 +109,16 @@ class MangaDex(MangaCatalog):
                 html = get_html(url, self.headers, params)
                 for i in get_data(html.json(), ['data']):
                     attr = i.get('attributes')
-                    chapters.append(Chapter(i.get('id'), self.CATALOG_ID, attr.get('volume'), attr.get('chapter'),
-                                            attr.get('title'), attr.get('translatedLanguage')))
+                    chapters.append(
+                        Chapter(
+                            i.get('id'),
+                            self.CATALOG_ID,
+                            attr.get('volume'),
+                            attr.get('chapter'),
+                            attr.get('title'),
+                            attr.get('translatedLanguage'),
+                        )
+                    )
             chapters.reverse()
         return chapters
 
@@ -87,7 +127,7 @@ class MangaDex(MangaCatalog):
         response = get_html(url, self.headers, content_type='json')
         images = []
         if response:
-            img_host = response["baseUrl"]
+            img_host = response['baseUrl']
             img_hash = response['chapter']['hash']
             images_data = get_data(response, ['chapter', 'data'])
             for img_index, img_data in enumerate(images_data):
@@ -97,18 +137,26 @@ class MangaDex(MangaCatalog):
         return images
 
     def get_image(self, image: Image):
-        response = get_html(image.img, headers=self.headers, content_type='content')
+        response = get_html(
+            image.img, headers=self.headers, content_type='content'
+        )
         return response
 
     def get_preview(self, manga: Manga):
         url = f'{self.url_api}/cover'
         params = {'manga[]': manga.content_id}
-        covers_list_response = get_html(url, params=params, headers=self.headers, content_type='json')
+        covers_list_response = get_html(
+            url, params=params, headers=self.headers, content_type='json'
+        )
         filename = ''
         if covers_list_response:
-            filename = covers_list_response['data'][0]['attributes']['fileName']
-        cover_response = get_html(f'https://uploads.mangadex.org/covers/{manga.content_id}/{filename}.256.jpg',
-                                  content_type='content')
+            filename = covers_list_response['data'][0]['attributes'][
+                'fileName'
+            ]
+        cover_response = get_html(
+            f'https://uploads.mangadex.org/covers/{manga.content_id}/{filename}.256.jpg',
+            content_type='content',
+        )
         return cover_response
 
     def get_genres(self):
@@ -119,7 +167,14 @@ class MangaDex(MangaCatalog):
             for i in html.json().get('data'):
                 if i.get('attributes').get('group') not in ['genre', 'theme']:
                     continue
-                genres.append(Genre(i.get('id'), self.CATALOG_ID, get_data(i, ['attributes', 'name', 'en']), ''))
+                genres.append(
+                    Genre(
+                        i.get('id'),
+                        self.CATALOG_ID,
+                        get_data(i, ['attributes', 'name', 'en']),
+                        '',
+                    )
+                )
         return genres
 
     def get_kinds(self):
@@ -127,8 +182,20 @@ class MangaDex(MangaCatalog):
         response = get_html(url, headers=self.headers, content_type='json')
         kinds = []
         if response:
-            for i in list(filter(lambda x: x['attributes']['group'] in ['format'], response['data'])):
-                kinds.append(Kind(i.get('id'), self.CATALOG_ID, i.get('attributes').get('name').get('en'), ''))
+            for i in list(
+                filter(
+                    lambda x: x['attributes']['group'] in ['format'],
+                    response['data'],
+                )
+            ):
+                kinds.append(
+                    Kind(
+                        i.get('id'),
+                        self.CATALOG_ID,
+                        i.get('attributes').get('name').get('en'),
+                        '',
+                    )
+                )
         return kinds
 
     def get_manga_url(self, manga: Manga) -> str:
@@ -148,9 +215,13 @@ class MangaDexLib(MangaDex, LibParser):
                 lib_list = 'plan_to_read'
             case _:
                 lib_list = form.lib_list.name
-        html_statuses = self.session.get(f'{self.url_api}/manga/status', params={'status': lib_list})
+        html_statuses = self.session.get(
+            f'{self.url_api}/manga/status', params={'status': lib_list}
+        )
         params = {'limit': form.limit, 'offset': form.offset}
-        html = self.session.get(f'{self.url_api}/user/follows/manga', params=params)
+        html = self.session.get(
+            f'{self.url_api}/user/follows/manga', params=params
+        )
         if html and html.status_code == 200 and html.json():
             for i in html.json().get('data'):
                 manga = self.setup_manga(i)
@@ -162,7 +233,9 @@ class MangaDexLib(MangaDex, LibParser):
         whoami = self.session.get(f'{self.url_api}/user/me')
         if whoami and whoami.status_code == 200:
             data = whoami.json().get('data')
-            return User(data.get('id'), data.get('attributes').get('username'), '')
+            return User(
+                data.get('id'), data.get('attributes').get('username'), ''
+            )
         return User(None, None, None)
 
 
@@ -197,13 +270,15 @@ class Auth:
             self.tokens = token
 
     def refresh_token(self):
-        token = requests.post(f'{self.url_api}/auth/refresh', json={"token": self.get_refresh()})
+        token = requests.post(
+            f'{self.url_api}/auth/refresh', json={'token': self.get_refresh()}
+        )
         match token.status_code:
             case 200:
                 self.update_token(token)
 
     def auth_login(self, params):
-        token = requests.post(f"{self.url_api}/auth/login", json=params)
+        token = requests.post(f'{self.url_api}/auth/login', json=params)
         match token.status_code:
             case 200:
                 self.update_token(token)

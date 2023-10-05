@@ -1,6 +1,13 @@
 from enum import Enum, unique
 
-lib_lists_en = ('planned', 'completed', 'reading', 're-reading', 'on hold', 'dropped')
+lib_lists_en = (
+    'planned',
+    'completed',
+    'reading',
+    're-reading',
+    'on hold',
+    'dropped',
+)
 
 
 def parse_lib_list(lib_list: str):

@@ -25,15 +25,19 @@ class Ranobehub(RanobeCatalog):
         response = get_html(url, self.headers, content_type='json')
         if response:
             data = response.get('data')
-            manga.kind = "ranobe"
+            manga.kind = 'ranobe'
             manga.score = data.get('rating')
             manga.description.update({'all': data.get('description')})
         return manga
 
     def search_manga(self, form: RequestForm):
         url = f'{self.url_api}/search'
-        params = {'title-contains': form.search, 'page': form.page, 'sort': form.order.content_id,
-                  'tags:positive[]': [int(i) for i in form.get_genre_id()]}
+        params = {
+            'title-contains': form.search,
+            'page': form.page,
+            'sort': form.order.content_id,
+            'tags:positive[]': [int(i) for i in form.get_genre_id()],
+        }
         response = get_html(url, self.headers, params, content_type='json')
         manga = []
         if response:
@@ -52,13 +56,23 @@ class Ranobehub(RanobeCatalog):
             for i in get_data(response, ['volumes'], default_val=[]):
                 volume_num = i.get('num')
                 for chapter_data in get_data(i, ['chapters'], []):
-                    chapters.append(Chapter(chapter_data.get('id'), self.CATALOG_ID, volume_num,
-                                            chapter_data.get('num'), chapter_data.get('name'), 'ru'))
+                    chapters.append(
+                        Chapter(
+                            chapter_data.get('id'),
+                            self.CATALOG_ID,
+                            volume_num,
+                            chapter_data.get('num'),
+                            chapter_data.get('name'),
+                            'ru',
+                        )
+                    )
             chapters.reverse()
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
-        url = f"{self.url}/ranobe/{manga.content_id}/{chapter.vol}/{chapter.ch}"
+        url = (
+            f'{self.url}/ranobe/{manga.content_id}/{chapter.vol}/{chapter.ch}'
+        )
         return [Image('', 1, url)]
 
     def get_image(self, image: Image):
@@ -67,34 +81,38 @@ class Ranobehub(RanobeCatalog):
             url = f'{self.url_api}/media/{media_id}'
             chapter_image = get_html(url, self.headers).content
             str_equivalent_image = base64.b64encode(chapter_image).decode()
-            return f"data:image/png;base64,{str_equivalent_image}"
+            return f'data:image/png;base64,{str_equivalent_image}'
 
-        def find_text_container(containers: bs4.element.ResultSet) -> bs4.element.Tag:
+        def find_text_container(
+            containers: bs4.element.ResultSet,
+        ) -> bs4.element.Tag:
             for container in containers:
-                if container.has_attr("data-container"):
+                if container.has_attr('data-container'):
                     return container
 
         # Parse HTML content and extract text container
         response = get_html(image.img, content_type='text')
         if response:
-            soup = BeautifulSoup(response, "html.parser")
-            text_container = find_text_container(soup.findAll("div", {'class': "ui text container"}))
+            soup = BeautifulSoup(response, 'html.parser')
+            text_container = find_text_container(
+                soup.findAll('div', {'class': 'ui text container'})
+            )
             if not text_container:
                 return
 
             # Construct content with images
-            content = ""
+            content = ''
 
-            header = soup.find('div', class_="title-wrapper")
+            header = soup.find('div', class_='title-wrapper')
             if header is not None:
                 header_text = header.find('h1', class_='ui header')
                 if header_text is not None:
-                    content += f"<h1>{header_text.text}</h1>"
+                    content += f'<h1>{header_text.text}</h1>'
 
             for p in text_container.findAll('p'):
                 if p.find('img'):
-                    media: str = p.find("img")["data-media-id"]
-                    content += f'<p><img src="{get_chapter_content_image(media)}"></p>'
+                    media: str = p.find('img')['data-media-id']
+                    content += f"<p><img src='{get_chapter_content_image(media)}'></p>"
                 else:
                     content += str(p)
             return content

@@ -30,7 +30,7 @@ class FilterController:
 
     def add_orders(self, items: list[Order]):
         if not self._orders_container:
-            raise ValueError("Orders container is not set")
+            raise ValueError('Orders container is not set')
         for item in items:
             item_widget = QRadioButton(item.get_name())
             if not self._order_items:
@@ -40,7 +40,7 @@ class FilterController:
 
     def add_kinds(self, items: list[Kind]):
         if not self._orders_container:
-            raise ValueError("Kinds container is not set")
+            raise ValueError('Kinds container is not set')
         for item in items:
             item_widget = QCheckBox(item.get_name())
             self._kinds_container.addWidget(item_widget)
@@ -48,32 +48,35 @@ class FilterController:
 
     def add_genres(self, items: list[Genre]):
         if not self._orders_container:
-            raise ValueError("Genres container is not set")
+            raise ValueError('Genres container is not set')
         for index, item in enumerate(items):
             item_widget = QCheckBox(item.get_name())
             self._genres_container.genres_items.update({item_widget: item})
             self._genres_container.ui_ge.gridLayout.addWidget(
-                item_widget, index // self.max_genres_per_row, index % self.max_genres_per_row)
+                item_widget,
+                index // self.max_genres_per_row,
+                index % self.max_genres_per_row,
+            )
 
     def set_orders_container(self, container):
         if not isinstance(container, QLayout):
-            raise ValueError("Container must be a QLayout")
+            raise ValueError('Container must be a QLayout')
         if self._orders_container:
-            raise ValueError("Orders container is already set")
+            raise ValueError('Orders container is already set')
         self._orders_container = container
 
     def set_kinds_container(self, container):
         if not isinstance(container, QLayout):
-            raise ValueError("Container must be a QLayout")
+            raise ValueError('Container must be a QLayout')
         if self._kinds_container:
-            raise ValueError("Kinds container is already set")
+            raise ValueError('Kinds container is already set')
         self._kinds_container = container
 
     def set_genres_container(self, container):
         if not isinstance(container, FormGenres):
-            raise ValueError("Container must be a FormGenres")
+            raise ValueError('Container must be a FormGenres')
         if self._genres_container:
-            raise ValueError("Genres container is already set")
+            raise ValueError('Genres container is already set')
         self._genres_container = container
 
     def clear(self):

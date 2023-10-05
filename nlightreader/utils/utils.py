@@ -1,35 +1,45 @@
 from functools import reduce
 from typing import Any, Optional
 
-import requests
 from PySide6.QtCore import QLocale
 from PySide6.QtWidgets import QApplication
 
 from nlightreader.consts import DEFAULT_HEADERS, MangaKinds, StyleColors
 from nlightreader.consts.files import LangIcons, Translations, Styles
 
+import requests
 
-def get_html(url: str, headers=None, params=None, json=None, cookies=None, content_type=None):
+
+def get_html(
+    url: str,
+    headers=None,
+    params=None,
+    json=None,
+    cookies=None,
+    content_type=None,
+):
     """
-        Sends an HTTP GET request to the specified URL with the given headers, query parameters, and cookies.
+    Sends an HTTP GET request to the specified URL with the given headers, query parameters, and cookies.
 
-        :param url: The URL to request.
-        :param headers: Optional dictionary of request headers.
-        :param params: Optional dictionary of query parameters.
-        :param json: Optional dictionary of json to include in the request.
-        :param cookies: Optional dictionary of cookies to include in the request.
-        :param content_type: Optional string indicating the expected content type of the response ('content' or 'json').
-        :return: If content_type is 'content', returns the raw response content (bytes).
-                 If content_type is 'json', returns the JSON-decoded response.
-                 Otherwise, returns the full requests.Response object.
-                 Returns None if there was an error.
-        """
+    :param url: The URL to request.
+    :param headers: Optional dictionary of request headers.
+    :param params: Optional dictionary of query parameters.
+    :param json: Optional dictionary of json to include in the request.
+    :param cookies: Optional dictionary of cookies to include in the request.
+    :param content_type: Optional string indicating the expected content type of the response ('content' or 'json').
+    :return: If content_type is 'content', returns the raw response content (bytes).
+             If content_type is 'json', returns the JSON-decoded response.
+             Otherwise, returns the full requests.Response object.
+             Returns None if there was an error.
+    """
     if headers is None:
         headers = DEFAULT_HEADERS
-    if "test" in QApplication.arguments():
+    if 'test' in QApplication.arguments():
         return
     try:
-        response = requests.get(url, headers=headers, params=params, json=json, cookies=cookies)
+        response = requests.get(
+            url, headers=headers, params=params, json=json, cookies=cookies
+        )
         response.raise_for_status()
         if content_type == 'content':
             return response.content
@@ -40,12 +50,12 @@ def get_html(url: str, headers=None, params=None, json=None, cookies=None, conte
         else:
             return response
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching URL: {url}")
-        print(f"  Reason: {e}")
-        print(f"  Headers: {headers}")
-        print(f"  Params: {params}")
-        print(f"  Cookies: {cookies}")
-        print(f"  Json: {json}")
+        print(f'Error fetching URL: {url}')
+        print(f'  Reason: {e}')
+        print(f'  Headers: {headers}')
+        print(f'  Params: {params}')
+        print(f'  Cookies: {cookies}')
+        print(f'  Json: {json}')
         return
 
 
@@ -60,7 +70,7 @@ def get_language_icon(lang_code: str) -> str:
         'ru': LangIcons.Ru,
         'en': LangIcons.Gb,
         'jp': LangIcons.Jp,
-        'ua': LangIcons.Ua
+        'ua': LangIcons.Ua,
     }
     return lang_icons.get(lang_code, '')
 
@@ -82,7 +92,7 @@ def get_manga_kind(kind: str) -> MangaKinds:
         'manhua': MangaKinds.manhua,
         'one_shot': MangaKinds.one_shot,
         'doujin': MangaKinds.doujin,
-        'ranobe': MangaKinds.ranobe
+        'ranobe': MangaKinds.ranobe,
     }
     if kind not in kinds_matches:
         raise ValueError(f"No matches found for kind '{kind}'.")
@@ -118,7 +128,7 @@ def get_data(data: dict, path: list, default_val=None) -> Any:
     :raises TypeError: If the input data is not a dictionary.
     """
     if not isinstance(data, dict):
-        raise TypeError("Data must be a dictionary")
+        raise TypeError('Data must be a dictionary')
     if default_val is None:
         default_val = None
     current_data = data
@@ -139,16 +149,18 @@ def get_ui_style(style: str, accent_color: Optional[str] = None) -> str:
     """
     dark = Styles.Dark
     light = Styles.Light
-    if style == "Dark":
+    if style == 'Dark':
         style = dark
         binds = StyleColors.DARK_COLOR_BINDS
         if accent_color:
-            binds["@accent_color"] = accent_color
+            binds['@accent_color'] = accent_color
     else:
         style = light
         binds = StyleColors.LIGHT_COLOR_BINDS
     for color_type in StyleColors.DEFAULT_COLOR_BINDS:
-        style = style.replace(color_type, StyleColors.DEFAULT_COLOR_BINDS[color_type])
+        style = style.replace(
+            color_type, StyleColors.DEFAULT_COLOR_BINDS[color_type]
+        )
     for color_type in binds:
         style = style.replace(color_type, binds[color_type])
     return style

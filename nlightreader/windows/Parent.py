@@ -2,8 +2,15 @@ from PySide6.QtCore import Slot, QSize
 from PySide6.QtWidgets import QMainWindow
 
 from data.ui.windows.mainWindow import Ui_MainWindow
+
 from nlightreader.items import Manga
-from nlightreader.widgets.NlightTemplates import FormFacial, FormLibrary, FormShikimori, FormHistory, FormInfo
+from nlightreader.widgets.NlightTemplates import (
+    FormFacial,
+    FormHistory,
+    FormInfo,
+    FormLibrary,
+    FormShikimori,
+)
 
 
 class ParentWindow(QMainWindow):
@@ -17,10 +24,18 @@ class ParentWindow(QMainWindow):
         self.Form_shikimori = FormShikimori()
         self.Form_history = FormHistory()
 
-        self.ui.btn_main.clicked.connect(lambda: self.change_widget(self.Form_facial))
-        self.ui.btn_library.clicked.connect(lambda: self.change_widget(self.Form_library))
-        self.ui.btn_shikimori.clicked.connect(lambda: self.change_widget(self.Form_shikimori))
-        self.ui.btn_history.clicked.connect(lambda: self.change_widget(self.Form_history))
+        self.ui.btn_main.clicked.connect(
+            lambda: self.change_widget(self.Form_facial)
+        )
+        self.ui.btn_library.clicked.connect(
+            lambda: self.change_widget(self.Form_library)
+        )
+        self.ui.btn_shikimori.clicked.connect(
+            lambda: self.change_widget(self.Form_shikimori)
+        )
+        self.ui.btn_history.clicked.connect(
+            lambda: self.change_widget(self.Form_history)
+        )
 
         self.Form_facial.manga_open.connect(self.open_info)
         self.Form_library.manga_open.connect(self.open_info)
@@ -41,9 +56,12 @@ class ParentWindow(QMainWindow):
         self.ui.top_item.setCurrentWidget(widget)
 
     def set_min_size_by_screen(self):
-        self.setMinimumSize(QSize(
-            self.screen().size().width() // 2,
-            self.screen().size().height() // 2))
+        self.setMinimumSize(
+            QSize(
+                self.screen().size().width() // 2,
+                self.screen().size().height() // 2,
+            )
+        )
 
     @Slot(Manga)
     def open_info(self, manga: Manga):

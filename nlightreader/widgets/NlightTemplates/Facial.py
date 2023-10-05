@@ -1,12 +1,15 @@
 from PySide6.QtCore import Slot
 
 from data.ui.widgets.facial import Ui_Form
+
 from nlightreader.controlers import FilterController
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import Manga
 from nlightreader.utils import USER_CATALOGS, translate
 from nlightreader.widgets.NlightContainers.manga_area import MangaArea
-from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
+from nlightreader.widgets.NlightTemplates.BaseWidget import (
+    MangaItemBasedWidget,
+)
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
@@ -24,10 +27,16 @@ class FormFacial(MangaItemBasedWidget):
         self.ui.apply_btn.clicked.connect(self.apply_filter)
         self.ui.reset_btn.clicked.connect(self.reset_filter)
         self.ui.filter_btn.clicked.connect(self.change_filters_visible)
-        self.ui.catalogs_btn.clicked.connect(lambda: self.ui.catalogs_frame.setVisible(
-            not self.ui.catalogs_list.isVisible()))
+        self.ui.catalogs_btn.clicked.connect(
+            lambda: self.ui.catalogs_frame.setVisible(
+                not self.ui.catalogs_list.isVisible()
+            )
+        )
         self.ui.catalogs_list.doubleClicked.connect(
-            lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row()))
+            lambda: self.change_catalog(
+                self.ui.catalogs_list.currentIndex().row()
+            )
+        )
 
         self.Form_genres = FormGenres(self)
         self.__filter_controller = FilterController()
@@ -41,7 +50,9 @@ class FormFacial(MangaItemBasedWidget):
         if not self.catalog:
             self.ui.catalogs_frame.hide()
             self.ui.catalogs_list.clear()
-            self.ui.catalogs_list.addItems([i.CATALOG_NAME for i in USER_CATALOGS])
+            self.ui.catalogs_list.addItems(
+                [i.CATALOG_NAME for i in USER_CATALOGS]
+            )
             self.change_catalog(0)
         else:
             self.get_content()
@@ -58,7 +69,9 @@ class FormFacial(MangaItemBasedWidget):
         self.apply_filter()
 
     def update_page(self):
-        self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
+        self.ui.page_label.setText(
+            f"{translate('Other', 'Page')} {self.request_params.page}"
+        )
 
     @Slot()
     def search(self):
@@ -71,7 +84,9 @@ class FormFacial(MangaItemBasedWidget):
         self.request_params.clear()
         self.request_params.order = self.__filter_controller.get_active_order()
         self.request_params.kinds = self.__filter_controller.get_active_kinds()
-        self.request_params.genres = self.__filter_controller.get_active_genres()
+        self.request_params.genres = (
+            self.__filter_controller.get_active_genres()
+        )
         self.request_params.search = self.ui.title_line.text()
         self.get_content()
 

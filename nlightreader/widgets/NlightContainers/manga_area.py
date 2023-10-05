@@ -1,5 +1,12 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QScrollArea, QWidget, QVBoxLayout, QGridLayout, QSpacerItem, QSizePolicy
+from PySide6.QtWidgets import (
+    QScrollArea,
+    QWidget,
+    QVBoxLayout,
+    QGridLayout,
+    QSpacerItem,
+    QSizePolicy,
+)
 
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
@@ -13,7 +20,9 @@ class MangaArea(QScrollArea):
         self._manga_items: list[MangaItem] = []
 
         self._scrollAreaWidgetContents = QWidget()
-        self._scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self._scrollAreaWidgetContents.setObjectName(
+            'scrollAreaWidgetContents'
+        )
         self._scrollAreaWidgetContents.resizeEvent = self._scroll_resize_event
 
         self._scroll_layout = QVBoxLayout(self._scrollAreaWidgetContents)
@@ -25,7 +34,9 @@ class MangaArea(QScrollArea):
 
         self._scroll_layout.addLayout(self._content_grid)
 
-        self._verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self._verticalSpacer = QSpacerItem(
+            20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding
+        )
         self._scroll_layout.addItem(self._verticalSpacer)
         self.setWidget(self._scrollAreaWidgetContents)
 
@@ -41,7 +52,12 @@ class MangaArea(QScrollArea):
         i, j = 0, 0
         for item in items:
             self._manga_items.append(item)
-            self._content_grid.addWidget(item, i, j, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
+            self._content_grid.addWidget(
+                item,
+                i,
+                j,
+                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop,
+            )
             item.update_image()
             j += 1
             if j == self._column_count - 1:

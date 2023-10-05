@@ -22,7 +22,9 @@ class ImageArea(QWidget):
         view_w = self.ui.scrollArea.viewport().width()
         self.ui.img_lbl.setFixedWidth(view_w)
         self.ui.scrollAreaWidgetContents.setFixedWidth(view_w)
-        self.ui.scrollAreaWidgetContents.resize(self.ui.scrollArea.viewport().size())
+        self.ui.scrollAreaWidgetContents.resize(
+            self.ui.scrollArea.viewport().size()
+        )
         self.update_image()
 
     def reset_area(self):
@@ -32,20 +34,30 @@ class ImageArea(QWidget):
         view_w = self.ui.scrollArea.viewport().width()
         self.ui.img_lbl.setFixedWidth(view_w)
         self.ui.scrollAreaWidgetContents.setFixedWidth(view_w)
-        self.ui.scrollAreaWidgetContents.resize(self.ui.scrollArea.viewport().size())
+        self.ui.scrollAreaWidgetContents.resize(
+            self.ui.scrollArea.viewport().size()
+        )
 
     def _resize_pixmap(self, pixmap: QPixmap) -> QPixmap:
         if pixmap is None or pixmap.isNull():
             return QPixmap()
         if 0.5 < pixmap.width() / pixmap.height() < 2:
-            pixmap = pixmap.scaled(self.ui.scrollArea.viewport().size(), Qt.AspectRatioMode.KeepAspectRatio,
-                                   Qt.TransformationMode.SmoothTransformation)
-            self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            pixmap = pixmap.scaled(
+                self.ui.scrollArea.viewport().size(),
+                Qt.AspectRatioMode.KeepAspectRatio,
+                Qt.TransformationMode.SmoothTransformation,
+            )
+            self.ui.scrollArea.setVerticalScrollBarPolicy(
+                Qt.ScrollBarAlwaysOff
+            )
         else:
             w = self.ui.scrollArea.viewport().width()
             h = pixmap.height()
-            pixmap = pixmap.scaled(QSize(w, h), Qt.AspectRatioMode.KeepAspectRatio,
-                                   Qt.TransformationMode.SmoothTransformation)
+            pixmap = pixmap.scaled(
+                QSize(w, h),
+                Qt.AspectRatioMode.KeepAspectRatio,
+                Qt.TransformationMode.SmoothTransformation,
+            )
             self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         return pixmap
 

@@ -2,6 +2,7 @@ from PySide6.QtCore import Slot, Signal
 from PySide6.QtWidgets import QWidget, QTreeWidgetItem
 
 from data.ui.widgets.history import Ui_Form
+
 from nlightreader.consts import ItemsColors
 from nlightreader.contexts import HistoryNoteMenu
 from nlightreader.items import HistoryNote, Manga
@@ -15,7 +16,9 @@ class FormHistory(QWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.ui.items_tree.customContextMenuRequested.connect(self.on_context_menu)
+        self.ui.items_tree.customContextMenuRequested.connect(
+            self.on_context_menu
+        )
         self.db: Database = Database()
         self.ui.delete_btn.clicked.connect(self.delete_note)
         self.ui.items_tree.doubleClicked.connect(self.open_info)
@@ -24,7 +27,9 @@ class FormHistory(QWidget):
 
     def on_context_menu(self, pos):
         def set_as_read():
-            self.db.add_history_note(HistoryNote(selected_note.chapter, selected_note.manga, True))
+            self.db.add_history_note(
+                HistoryNote(selected_note.chapter, selected_note.manga, True)
+            )
             selected_item.setBackground(0, ItemsColors.READ)
 
         def remove_all():
@@ -39,7 +44,9 @@ class FormHistory(QWidget):
         selected_note = self._get_selected_note()
         selected_manga = self._get_selected_manga()
 
-        if selected_item.parent() and not self.db.get_complete_status(selected_note.chapter):
+        if selected_item.parent() and not self.db.get_complete_status(
+            selected_note.chapter
+        ):
             menu.set_mode(0)
         else:
             menu.set_mode(1)
@@ -83,9 +90,13 @@ class FormHistory(QWidget):
     def _get_selected_note(self) -> HistoryNote:
         selected_item = self.ui.items_tree.currentItem()
         if selected_item.parent():
-            parent_index = self.ui.items_tree.indexFromItem(selected_item.parent()).row()
+            parent_index = self.ui.items_tree.indexFromItem(
+                selected_item.parent()
+            ).row()
             note_index = self.ui.items_tree.indexFromItem(selected_item).row()
-            return self.sorted_notes[list(self.sorted_notes.keys())[parent_index]][note_index]
+            return self.sorted_notes[
+                list(self.sorted_notes.keys())[parent_index]
+            ][note_index]
 
     def _get_selected_manga(self) -> Manga:
         selected_item = self.ui.items_tree.currentItem()
