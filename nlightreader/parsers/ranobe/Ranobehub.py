@@ -56,23 +56,13 @@ class Ranobehub(RanobeCatalog):
             for i in get_data(response, ['volumes'], default_val=[]):
                 volume_num = i.get('num')
                 for chapter_data in get_data(i, ['chapters'], []):
-                    chapters.append(
-                        Chapter(
-                            chapter_data.get('id'),
-                            self.CATALOG_ID,
-                            volume_num,
-                            chapter_data.get('num'),
-                            chapter_data.get('name'),
-                            'ru',
-                        )
-                    )
+                    chapters.append(Chapter(chapter_data.get('id'), self.CATALOG_ID, volume_num,
+                                            chapter_data.get('num'), chapter_data.get('name'), 'ru'))
             chapters.reverse()
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
-        url = (
-            f'{self.url}/ranobe/{manga.content_id}/{chapter.vol}/{chapter.ch}'
-        )
+        url = f'{self.url}/ranobe/{manga.content_id}/{chapter.vol}/{chapter.ch}'
         return [Image('', 1, url)]
 
     def get_image(self, image: Image):
@@ -83,9 +73,7 @@ class Ranobehub(RanobeCatalog):
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f'data:image/png;base64,{str_equivalent_image}'
 
-        def find_text_container(
-            containers: bs4.element.ResultSet,
-        ) -> bs4.element.Tag:
+        def find_text_container(containers: bs4.element.ResultSet) -> bs4.element.Tag:
             for container in containers:
                 if container.has_attr('data-container'):
                     return container
@@ -94,9 +82,7 @@ class Ranobehub(RanobeCatalog):
         response = get_html(image.img, content_type='text')
         if response:
             soup = BeautifulSoup(response, 'html.parser')
-            text_container = find_text_container(
-                soup.findAll('div', {'class': 'ui text container'})
-            )
+            text_container = find_text_container(soup.findAll('div', {'class': 'ui text container'}))
             if not text_container:
                 return
 

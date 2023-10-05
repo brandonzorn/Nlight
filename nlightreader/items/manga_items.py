@@ -54,22 +54,12 @@ class Manga(BaseItem):
         return desc_str
 
     def set_description_from_str(self, desc: str):
-        for lang, text in re.findall(
-            r'<lang=(\w+)>(.+?)<end>', desc, re.DOTALL
-        ):
+        for lang, text in re.findall(r'<lang=(\w+)>(.+?)<end>', desc, re.DOTALL):
             self.description.update({lang: text})
 
 
 class Chapter:
-    def __init__(
-        self,
-        content_id: str,
-        catalog_id: int,
-        vol: str,
-        ch: str,
-        title: str,
-        language: str,
-    ):
+    def __init__(self, content_id: str, catalog_id: int, vol: str, ch: str, title: str, language: str):
         self.id = f'|{catalog_id}|_|{content_id}|'
         self.content_id = content_id
         self.catalog_id = catalog_id
@@ -99,15 +89,7 @@ class Image:
 
 
 class Character(BaseItem):
-    def __init__(
-        self,
-        content_id: str,
-        catalog_id: int,
-        name,
-        russian,
-        description,
-        role,
-    ):
+    def __init__(self, content_id: str, catalog_id: int, name, russian, description, role):
         super().__init__(content_id, catalog_id, name, russian)
         self.description = description
         self.role = role

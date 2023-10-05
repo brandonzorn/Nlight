@@ -2,106 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="uk_UA" sourcelanguage="en_US">
 <context>
-    <name>MainWindow</name>
-    <message>
-        <source>MainWindow</source>
-        <translation>Nlight</translation>
-    </message>
-    <message>
-        <source>Main</source>
-        <translation>Головна</translation>
-    </message>
-    <message>
-        <source>Library</source>
-        <translation>Бібліотека</translation>
-    </message>
-    <message>
-        <source>History</source>
-        <translation>Історія</translation>
-    </message>
-    <message>
-        <source>Shikimori</source>
-        <translation>Шикимори</translation>
-    </message>
-</context>
-
-<context>
-    <name>Form</name>
-    <message>
-        <source>MainWindow</source>
-        <translation>Nlight</translation>
-    </message>
-    <message>
-        <source>Kind</source>
-        <translation>Тип</translation>
-    </message>
-    <message>
-        <source>Order</source>
-        <translation>Сортування</translation>
-    </message>
-    <message>
-        <source>Apply</source>
-        <translation>Применить</translation>
-    </message>
-    <message>
-        <source>Reset</source>
-        <translation>Застосувати</translation>
-    </message>
-    <message>
-        <source>Filters</source>
-        <translation>Фільтри</translation>
-    </message>
-    <message>
-        <source>Genres list</source>
-        <translation>Список жанрів</translation>
-    </message>
-    <message>
-        <source>Catalogs</source>
-        <translation>Каталоги</translation>
-    </message>
-    <message>
-        <source>Sign in</source>
-        <translation>Увійти</translation>
-    </message>
-    <message>
-        <source>Related</source>
-        <translation>Пов'язане</translation>
-    </message>
-    <message>
-        <source>Characters</source>
-        <translation>Персонажі</translation>
-    </message>
-</context>
-
-<context>
-    <name>Form</name>
-    <message>
-        <source>Planned</source>
-        <translation>Заплановано</translation>
-    </message>
-    <message>
-        <source>Completed</source>
-        <translation>Прочитано</translation>
-    </message>
-    <message>
-        <source>Reading</source>
-        <translation>Читаю</translation>
-    </message>
-    <message>
-        <source>Re-reading</source>
-        <translation>Перечитую</translation>
-    </message>
-    <message>
-        <source>On hold</source>
-        <translation>Відкладено</translation>
-    </message>
-    <message>
-        <source>Dropped</source>
-        <translation>Кинуто</translation>
-    </message>
-</context>
-
-<context>
     <name>Dialog</name>
     <message>
         <source>Show spoilers</source>
@@ -152,7 +52,100 @@
         <translation>Увійти</translation>
     </message>
 </context>
-
+<context>
+    <name>Form</name>
+    <message>
+        <source>MainWindow</source>
+        <translation>Nlight</translation>
+    </message>
+    <message>
+        <source>Kind</source>
+        <translation>Тип</translation>
+    </message>
+    <message>
+        <source>Order</source>
+        <translation>Сортування</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation>Применить</translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation>Застосувати</translation>
+    </message>
+    <message>
+        <source>Filters</source>
+        <translation>Фільтри</translation>
+    </message>
+    <message>
+        <source>Genres list</source>
+        <translation>Список жанрів</translation>
+    </message>
+    <message>
+        <source>Catalogs</source>
+        <translation>Каталоги</translation>
+    </message>
+    <message>
+        <source>Sign in</source>
+        <translation>Увійти</translation>
+    </message>
+    <message>
+        <source>Related</source>
+        <translation>Пов&apos;язане</translation>
+    </message>
+    <message>
+        <source>Characters</source>
+        <translation>Персонажі</translation>
+    </message>
+    <message>
+        <source>Planned</source>
+        <translation>Заплановано</translation>
+    </message>
+    <message>
+        <source>Completed</source>
+        <translation>Прочитано</translation>
+    </message>
+    <message>
+        <source>Reading</source>
+        <translation>Читаю</translation>
+    </message>
+    <message>
+        <source>Re-reading</source>
+        <translation>Перечитую</translation>
+    </message>
+    <message>
+        <source>On hold</source>
+        <translation>Відкладено</translation>
+    </message>
+    <message>
+        <source>Dropped</source>
+        <translation>Кинуто</translation>
+    </message>
+</context>
+<context>
+    <name>MainWindow</name>
+    <message>
+        <source>MainWindow</source>
+        <translation>Nlight</translation>
+    </message>
+    <message>
+        <source>Main</source>
+        <translation>Головна</translation>
+    </message>
+    <message>
+        <source>Library</source>
+        <translation>Бібліотека</translation>
+    </message>
+    <message>
+        <source>History</source>
+        <translation>Історія</translation>
+    </message>
+    <message>
+        <source>Shikimori</source>
+        <translation>Шикимори</translation>
+    </message>
+</context>
 <context>
     <name>Menu</name>
     <message>
@@ -192,7 +185,6 @@
         <translation>Відкрити локальні файли</translation>
     </message>
 </context>
-
 <context>
     <name>Other</name>
     <message>
@@ -224,10 +216,9 @@
         <translation>Сторінка завантажується</translation>
     </message>
 </context>
-
 <context>
     <name>Status</name>
-        <message>
+    <message>
         <source>Ongoing</source>
         <translation>Виходить</translation>
     </message>
