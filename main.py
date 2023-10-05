@@ -2,8 +2,6 @@ import os
 import sys
 import time
 
-import darkdetect
-import platformdirs
 from PySide6.QtCore import Qt, QTranslator, QLocale, QThreadPool
 from PySide6.QtGui import QIcon, QPalette
 from PySide6.QtWidgets import QApplication
@@ -11,6 +9,10 @@ from PySide6.QtWidgets import QApplication
 from nlightreader import ParentWindow
 from nlightreader.consts import APP_VERSION, APP_NAME, Icons
 from nlightreader.utils import get_locale, get_ui_style, Thread
+
+import darkdetect
+
+import platformdirs
 
 
 class App(QApplication):

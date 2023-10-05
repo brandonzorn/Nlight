@@ -4,6 +4,7 @@ from PySide6.QtCore import Qt, Signal, QSize
 from PySide6.QtWidgets import QWidget
 
 from data.ui.manga_item import Ui_manga_item_widget
+
 from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.items import Manga
 from nlightreader.utils import Worker, get_catalog, FileManager, Database
@@ -22,7 +23,9 @@ class MangaItem(QWidget):
         self._is_added_to_lib = is_added_to_lib
         self._db: Database = Database()
         self._pool = pool
-        self.ui.manga_item_frame.customContextMenuRequested.connect(self.on_context_menu)
+        self.ui.manga_item_frame.customContextMenuRequested.connect(
+            self.on_context_menu
+        )
         self.ui.name_lbl.setText(self.manga.get_name())
 
     def mouseReleaseEvent(self, event):
@@ -91,9 +94,14 @@ class MangaItem(QWidget):
         self.manga_pixmap = FileManager.get_manga_preview(self.manga, catalog)
 
     def set_image(self):
-        pixmap = self.manga_pixmap.scaled(self.ui.image.maximumSize(), Qt.AspectRatioMode.KeepAspectRatio,
-                                          Qt.TransformationMode.SmoothTransformation)
+        pixmap = self.manga_pixmap.scaled(
+            self.ui.image.maximumSize(),
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation,
+        )
         self.ui.image.setPixmap(pixmap)
 
     def update_image(self):
-        Worker(target=self.get_image, callback=self.set_image).start(self._pool)
+        Worker(target=self.get_image, callback=self.set_image).start(
+            self._pool
+        )

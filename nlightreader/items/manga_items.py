@@ -18,7 +18,10 @@ class Manga(BaseItem):
         self.chapters = 0
 
     def get_name(self) -> str:
-        if QLocale().language() in (QLocale.Language.Russian, QLocale.Language.Ukrainian):
+        if QLocale().language() in (
+            QLocale.Language.Russian,
+            QLocale.Language.Ukrainian,
+        ):
             if self.russian:
                 return self.russian
         return self.name
@@ -36,25 +39,37 @@ class Manga(BaseItem):
     def get_description(self) -> str:
         if self.description.get('all'):
             return self.description.get('all')
-        elif QLocale().language() in (QLocale.Language.Russian, QLocale.Language.Ukrainian)\
-                and self.description.get('ru'):
+        elif QLocale().language() in (
+            QLocale.Language.Russian,
+            QLocale.Language.Ukrainian,
+        ) and self.description.get('ru'):
             return self.description.get('ru')
         return self.description.get('en')
 
     def descriptions_to_str(self) -> str:
-        desc_str = ""
+        desc_str = ''
         for key in self.description:
             if self.description.get(key):
-                desc_str += f"<lang={key}>{self.description.get(key)}<end>"
+                desc_str += f'<lang={key}>{self.description.get(key)}<end>'
         return desc_str
 
     def set_description_from_str(self, desc: str):
-        for lang, text in re.findall(r"<lang=(\w+)>(.+?)<end>", desc, re.DOTALL):
+        for lang, text in re.findall(
+            r'<lang=(\w+)>(.+?)<end>', desc, re.DOTALL
+        ):
             self.description.update({lang: text})
 
 
 class Chapter:
-    def __init__(self, content_id: str, catalog_id: int, vol: str, ch: str, title: str, language: str):
+    def __init__(
+        self,
+        content_id: str,
+        catalog_id: int,
+        vol: str,
+        ch: str,
+        title: str,
+        language: str,
+    ):
         self.id = f'|{catalog_id}|_|{content_id}|'
         self.content_id = content_id
         self.catalog_id = catalog_id
@@ -84,7 +99,15 @@ class Image:
 
 
 class Character(BaseItem):
-    def __init__(self, content_id: str, catalog_id: int, name, russian, description, role):
+    def __init__(
+        self,
+        content_id: str,
+        catalog_id: int,
+        name,
+        russian,
+        description,
+        role,
+    ):
         super().__init__(content_id, catalog_id, name, russian)
         self.description = description
         self.role = role

@@ -1,6 +1,13 @@
 from typing import Callable
 
-from PySide6.QtCore import QThreadPool, QRunnable, QObject, Signal, Slot, QThread
+from PySide6.QtCore import (
+    QThreadPool,
+    QRunnable,
+    QObject,
+    Signal,
+    Slot,
+    QThread,
+)
 
 
 class Signals(QObject):
@@ -11,7 +18,15 @@ class Signals(QObject):
 
 
 class Worker(QRunnable):
-    def __init__(self, target: Callable, args=(), kwargs=None, *, callback=None, locker=None):
+    def __init__(
+        self,
+        target: Callable,
+        args=(),
+        kwargs=None,
+        *,
+        callback=None,
+        locker=None
+    ):
         """
         Initializes a new `Runnable` instance.
 
@@ -54,7 +69,15 @@ class Worker(QRunnable):
 
 
 class Thread(QThread):
-    def __init__(self, target: Callable, args=(), kwargs=None, *, callback=None, locker=None):
+    def __init__(
+        self,
+        target: Callable,
+        args=(),
+        kwargs=None,
+        *,
+        callback=None,
+        locker=None
+    ):
         """
         Initializes a new `Thread` instance.
 
