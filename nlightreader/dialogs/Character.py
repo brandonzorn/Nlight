@@ -2,7 +2,6 @@ from PySide6.QtCore import QSize, Slot
 from PySide6.QtWidgets import QDialog
 
 from data.ui.dialogs.character import Ui_Dialog
-
 from nlightreader.utils import description_to_html, Worker
 from nlightreader.utils.catalog_manager import get_catalog
 from nlightreader.utils.file_manager import FileManager
@@ -28,13 +27,7 @@ class FormCharacter(QDialog):
 
     @Slot()
     def update_description(self):
-        self.ui.description.setHtml(
-            description_to_html(
-                self.character.description, self.ui.show_spoilers.isChecked()
-            )
-        )
+        self.ui.description.setHtml(description_to_html(self.character.description, self.ui.show_spoilers.isChecked()))
 
     def setup_image(self):
-        self.ui.image.setPixmap(
-            FileManager.get_character_preview(self.character, self.catalog)
-        )
+        self.ui.image.setPixmap(FileManager.get_character_preview(self.character, self.catalog))

@@ -3,7 +3,6 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget, QListWidgetItem, QTreeWidgetItem
 
 from data.ui.widgets.info import Ui_Form
-
 from nlightreader.consts import lib_lists_en, ItemsColors, LibList
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
@@ -30,18 +29,14 @@ class FormInfo(QWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.ui.lib_list_box.addItems(
-            [translate('Form', i.capitalize()) for i in lib_lists_en]
-        )
+        self.ui.lib_list_box.addItems([translate('Form', i.capitalize()) for i in lib_lists_en])
         self.ui.items_tree.doubleClicked.connect(self.open_reader)
         self.ui.characters_list.doubleClicked.connect(self.open_character)
         self.ui.related_list.doubleClicked.connect(self.open_related_manga)
         self.ui.shikimori_btn.clicked.connect(self.open_rate)
         self.ui.add_btn.clicked.connect(self.add_to_favorites)
         self.ui.lib_list_box.currentIndexChanged.connect(self.change_lib_list)
-        self.ui.items_tree.customContextMenuRequested.connect(
-            self.on_context_menu
-        )
+        self.ui.items_tree.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.back_btn.clicked.connect(self.close_widget)
         self.db: Database = Database()
         self.thread_pool = QThreadPool()
@@ -62,21 +57,15 @@ class FormInfo(QWidget):
 
         def set_as_read_all():
             history_notes = []
-            for i in range(
-                selected_item.parent().indexOfChild(selected_item) + 1
-            ):
-                chapter = self.sorted_chapters[selected_item.parent().text(0)][
-                    i
-                ]
+            for i in range(selected_item.parent().indexOfChild(selected_item) + 1):
+                chapter = self.sorted_chapters[selected_item.parent().text(0)][i]
                 history_notes.append(HistoryNote(chapter, self.manga, True))
                 item = selected_item.parent().child(i)
                 item.setBackground(0, ItemsColors.READ)
             self.db.add_history_notes(history_notes)
 
         def set_as_read():
-            self.db.add_history_note(
-                HistoryNote(selected_chapter, self.manga, True)
-            )
+            self.db.add_history_note(HistoryNote(selected_chapter, self.manga, True))
             selected_item.setBackground(0, ItemsColors.READ)
 
         def remove_read_state():
@@ -87,9 +76,9 @@ class FormInfo(QWidget):
         selected_item = context_target.itemAt(pos)
         if not selected_item or not selected_item.parent():
             return
-        selected_chapter = self.sorted_chapters[
-            selected_item.parent().text(0)
-        ][selected_item.parent().indexOfChild(selected_item)]
+        selected_chapter = self.sorted_chapters[selected_item.parent().text(0)][
+            selected_item.parent().indexOfChild(selected_item)
+        ]
         if not self.db.check_complete_chapter(selected_chapter):
             menu.set_mode(0)
         else:
@@ -119,15 +108,13 @@ class FormInfo(QWidget):
         selected_item = self.ui.items_tree.currentItem()
         if not selected_item.parent():
             return
-        selected_chapter = self.sorted_chapters[
-            selected_item.parent().text(0)
-        ][selected_item.parent().indexOfChild(selected_item)]
+        selected_chapter = self.sorted_chapters[selected_item.parent().text(0)][
+            selected_item.parent().indexOfChild(selected_item)
+        ]
         return selected_chapter
 
     def get_current_manga(self):
-        return self.catalog.get_manga(
-            self.related_mangas[self.ui.related_list.currentIndex().row()]
-        )
+        return self.catalog.get_manga(self.related_mangas[self.ui.related_list.currentIndex().row()])
 
     def setup(self, manga):
         def info_setup():
@@ -139,18 +126,14 @@ class FormInfo(QWidget):
                 print(e)
                 self.setup_error.emit()
 
-        Worker(target=info_setup, callback=self.update_additional_info).start(
-            pool=self.thread_pool
-        )
+        Worker(target=info_setup, callback=self.update_additional_info).start(pool=self.thread_pool)
 
     def update_additional_info(self):
         self.ui.lib_frame.setVisible(not self.catalog.is_primary)
         self.ui.shikimori_frame.setVisible(self.catalog.is_primary)
         self.set_info()
         if self.db.check_manga_library(self.manga):
-            self.ui.lib_list_box.setCurrentIndex(
-                self.db.get_manga_library_list(self.manga).value
-            )
+            self.ui.lib_list_box.setCurrentIndex(self.db.get_manga_library_list(self.manga).value)
             self.ui.add_btn.setChecked(True)
         else:
             self.ui.add_btn.setChecked(False)
@@ -167,22 +150,14 @@ class FormInfo(QWidget):
 
     @Slot()
     def open_character(self):
-        character = self.catalog.get_character(
-            self.related_characters[
-                self.ui.characters_list.currentIndex().row()
-            ]
-        )
-        self.character_window = FormCharacter(
-            character, self.manga.catalog_id, parent=self
-        )
+        character = self.catalog.get_character(self.related_characters[self.ui.characters_list.currentIndex().row()])
+        self.character_window = FormCharacter(character, self.manga.catalog_id, parent=self)
         self.character_window.show()
 
     def update_manga_preview(self):
         self.ui.image.clear()
         if not self.manga_pixmap:
-            self.manga_pixmap = FileManager.get_manga_preview(
-                self.manga, self.catalog
-            )
+            self.manga_pixmap = FileManager.get_manga_preview(self.manga, self.catalog)
         image_size = QSize(self.width() // 5, self.height() // 2)
         pixmap = self.manga_pixmap.scaled(
             image_size,
@@ -195,25 +170,15 @@ class FormInfo(QWidget):
         self.ui.name_label.setText(self.manga.name)
         self.ui.russian_label.setText(self.manga.russian)
         self.ui.status_label.setVisible(bool(self.manga.status))
-        self.ui.status_label.setText(
-            f"{translate('Other', 'Status')}: {get_status(self.manga.status)}"
-        )
+        self.ui.status_label.setText(f"{translate('Other', 'Status')}: {get_status(self.manga.status)}")
         self.ui.volumes_label.setVisible(bool(self.manga.volumes))
         self.ui.chapters_label.setVisible(bool(self.manga.chapters))
-        self.ui.volumes_label.setText(
-            f"{translate('Other', 'Volumes')}: {self.manga.volumes}"
-        )
-        self.ui.chapters_label.setText(
-            f"{translate('Other', 'Chapters')}: {self.manga.chapters}"
-        )
+        self.ui.volumes_label.setText(f"{translate('Other', 'Volumes')}: {self.manga.volumes}")
+        self.ui.chapters_label.setText(f"{translate('Other', 'Chapters')}: {self.manga.chapters}")
         self.ui.catalog_score_label.setVisible(bool(self.manga.score))
-        self.ui.catalog_score_label.setText(
-            f"{translate('Other', 'Rating')}: {self.manga.score}"
-        )
+        self.ui.catalog_score_label.setText(f"{translate('Other', 'Rating')}: {self.manga.score}")
         # self.ui.description_frame.setVisible(bool(self.manga.get_description()))
-        self.ui.description_text.setHtml(
-            description_to_html(self.manga.get_description())
-        )
+        self.ui.description_text.setHtml(description_to_html(self.manga.get_description()))
 
     @Slot()
     def add_to_favorites(self):
@@ -233,9 +198,7 @@ class FormInfo(QWidget):
         def get_chapters():
             self.chapters = self.catalog.get_chapters(self.manga)
             self.chapters.reverse()
-            self.chapters.sort(
-                key=lambda ch: ch.language if ch.language else False
-            )
+            self.chapters.sort(key=lambda ch: ch.language if ch.language else False)
             self.db.add_chapters(self.chapters, self.manga)
 
         def update_chapters():
@@ -257,9 +220,7 @@ class FormInfo(QWidget):
                 if len(self.sorted_chapters) == 1:
                     lang_item.setExpanded(True)
 
-        Worker(target=get_chapters, callback=update_chapters).start(
-            pool=self.thread_pool
-        )
+        Worker(target=get_chapters, callback=update_chapters).start(pool=self.thread_pool)
 
     def get_relations(self):
         def get_relations():
@@ -272,9 +233,7 @@ class FormInfo(QWidget):
                 item = QListWidgetItem(manga.get_name())
                 self.ui.related_list.addItem(item)
 
-        Worker(target=get_relations, callback=update_relations).start(
-            pool=self.thread_pool
-        )
+        Worker(target=get_relations, callback=update_relations).start(pool=self.thread_pool)
 
     def get_characters(self):
         def get_characters():
@@ -287,9 +246,7 @@ class FormInfo(QWidget):
                 item = QListWidgetItem(character.get_name())
                 self.ui.characters_list.addItem(item)
 
-        Worker(target=get_characters, callback=update_characters).start(
-            pool=self.thread_pool
-        )
+        Worker(target=get_characters, callback=update_characters).start(pool=self.thread_pool)
 
     @Slot()
     def open_reader(self):

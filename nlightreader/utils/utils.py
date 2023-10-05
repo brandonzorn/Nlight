@@ -1,23 +1,15 @@
 from functools import reduce
 from typing import Any, Optional
 
+import requests
 from PySide6.QtCore import QLocale
 from PySide6.QtWidgets import QApplication
 
 from nlightreader.consts import DEFAULT_HEADERS, MangaKinds, StyleColors
 from nlightreader.consts.files import LangIcons, Translations, Styles
 
-import requests
 
-
-def get_html(
-    url: str,
-    headers=None,
-    params=None,
-    json=None,
-    cookies=None,
-    content_type=None,
-):
+def get_html(url: str, headers=None, params=None, json=None, cookies=None, content_type=None):
     """
     Sends an HTTP GET request to the specified URL with the given headers, query parameters, and cookies.
 
@@ -37,9 +29,7 @@ def get_html(
     if 'test' in QApplication.arguments():
         return
     try:
-        response = requests.get(
-            url, headers=headers, params=params, json=json, cookies=cookies
-        )
+        response = requests.get(url, headers=headers, params=params, json=json, cookies=cookies)
         response.raise_for_status()
         if content_type == 'content':
             return response.content
@@ -158,9 +148,7 @@ def get_ui_style(style: str, accent_color: Optional[str] = None) -> str:
         style = light
         binds = StyleColors.LIGHT_COLOR_BINDS
     for color_type in StyleColors.DEFAULT_COLOR_BINDS:
-        style = style.replace(
-            color_type, StyleColors.DEFAULT_COLOR_BINDS[color_type]
-        )
+        style = style.replace(color_type, StyleColors.DEFAULT_COLOR_BINDS[color_type])
     for color_type in binds:
         style = style.replace(color_type, binds[color_type])
     return style
