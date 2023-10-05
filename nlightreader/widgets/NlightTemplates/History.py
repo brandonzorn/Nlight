@@ -19,7 +19,7 @@ class FormHistory(QWidget):
 
         self.ui.delete_btn.setIcon(FluentIcon.DELETE)
 
-        self.setObjectName("FormHistory")
+        self.setObjectName('FormHistory')
 
         self.ui.items_tree.customContextMenuRequested.connect(self.on_context_menu)
         self.db: Database = Database()

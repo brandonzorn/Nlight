@@ -31,7 +31,7 @@ class ParentWindow(FluentWindow):
         self.addSubInterface(self.facial_interface, FluentIcon.HOME,
                              translate('MainWindow', 'Main'))
         self.addSubInterface(self.shikimori_interface,
-                             QIcon(":/actions_black/data/icons/buttons/svg_24dp_black/actions/shikimori.svg"),
+                             QIcon(':/actions_black/data/icons/buttons/svg_24dp_black/actions/shikimori.svg'),
                              translate('MainWindow', 'Shikimori'))
         self.addSubInterface(self.history_interface, FluentIcon.HISTORY,
                              translate('MainWindow', 'History'))
@@ -40,7 +40,7 @@ class ParentWindow(FluentWindow):
     def on_widget_change(self):
         # print(self.stackedWidget.currentWidget())
         # self.stackedWidget.widget
-        if self.stackedWidget.currentWidget().objectName() == "FormInfo":
+        if self.stackedWidget.currentWidget().objectName() == 'FormInfo':
             return
         self.stackedWidget.currentWidget().setup()
 

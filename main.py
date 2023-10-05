@@ -4,7 +4,6 @@ import time
 
 from qfluentwidgets import Theme, setTheme
 
-import nlight_res_rc
 import darkdetect
 import platformdirs
 from PySide6.QtCore import Qt, QTranslator, QLocale, QThreadPool

@@ -1,0 +1,14 @@
+[flake8]
+extend-ignore = F401,I101,N802
+exclude =
+    .git,
+    __pycache__,
+    docs/source/conf.py,
+    old,
+    build,
+    dist,
+    venv,
+    venv-fluent,
+    data,
+    nlight_res_rc.py
+max-line-length = 120

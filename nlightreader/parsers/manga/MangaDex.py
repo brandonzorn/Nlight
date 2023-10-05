@@ -54,9 +54,18 @@ class MangaDex(MangaCatalog):
 
     def search_manga(self, form: RequestForm):
         url = f'{self.url_api}/manga'
-        params = {'limit': 50, 'title': form.search, 'offset': form.offset,
-                  'includedTags[]': form.get_genre_id() + form.get_kind_id(),
-                  'contentRating[]': ["safe", "suggestive", "erotica", "pornographic"]}
+        params = {
+            'limit': 50,
+            'title': form.search,
+            'offset': form.offset,
+            'includedTags[]': form.get_genre_id() + form.get_kind_id(),
+            'contentRating[]': [
+                'safe',
+                'suggestive',
+                'erotica',
+                'pornographic',
+            ],
+        }
         mangas = []
         response = get_html(url, self.headers, params, content_type='json')
         if response:
@@ -66,8 +75,18 @@ class MangaDex(MangaCatalog):
 
     def get_chapters(self, manga: Manga):
         url = f'{self.url_api}/chapter'
-        params = {'manga': manga.content_id, 'limit': 1, 'translatedLanguage[]': ['ru', 'en'], 'order[chapter]': 'asc',
-                  'contentRating[]': ["safe", "suggestive", "erotica", "pornographic"]}
+        params = {
+            'manga': manga.content_id,
+            'limit': 1,
+            'translatedLanguage[]': ['ru', 'en'],
+            'order[chapter]': 'asc',
+            'contentRating[]': [
+                'safe',
+                'suggestive',
+                'erotica',
+                'pornographic',
+            ],
+        }
         response = get_html(url, self.headers, params, content_type='json')
         chapters = []
         if response:
@@ -87,7 +106,7 @@ class MangaDex(MangaCatalog):
         response = get_html(url, self.headers, content_type='json')
         images = []
         if response:
-            img_host = response["baseUrl"]
+            img_host = response['baseUrl']
             img_hash = response['chapter']['hash']
             images_data = get_data(response, ['chapter', 'data'])
             for img_index, img_data in enumerate(images_data):
@@ -197,13 +216,13 @@ class Auth:
             self.tokens = token
 
     def refresh_token(self):
-        token = requests.post(f'{self.url_api}/auth/refresh', json={"token": self.get_refresh()})
+        token = requests.post(f'{self.url_api}/auth/refresh', json={'token': self.get_refresh()})
         match token.status_code:
             case 200:
                 self.update_token(token)
 
     def auth_login(self, params):
-        token = requests.post(f"{self.url_api}/auth/login", json=params)
+        token = requests.post(f'{self.url_api}/auth/login', json=params)
         match token.status_code:
             case 200:
                 self.update_token(token)

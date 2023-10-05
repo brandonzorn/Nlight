@@ -18,7 +18,10 @@ class Manga(BaseItem):
         self.chapters = 0
 
     def get_name(self) -> str:
-        if QLocale().language() in (QLocale.Language.Russian, QLocale.Language.Ukrainian):
+        if QLocale().language() in (
+            QLocale.Language.Russian,
+            QLocale.Language.Ukrainian,
+        ):
             if self.russian:
                 return self.russian
         return self.name
@@ -36,20 +39,22 @@ class Manga(BaseItem):
     def get_description(self) -> str:
         if self.description.get('all'):
             return self.description.get('all')
-        elif QLocale().language() in (QLocale.Language.Russian, QLocale.Language.Ukrainian)\
-                and self.description.get('ru'):
+        elif QLocale().language() in (
+            QLocale.Language.Russian,
+            QLocale.Language.Ukrainian,
+        ) and self.description.get('ru'):
             return self.description.get('ru')
         return self.description.get('en')
 
     def descriptions_to_str(self) -> str:
-        desc_str = ""
+        desc_str = ''
         for key in self.description:
             if self.description.get(key):
-                desc_str += f"<lang={key}>{self.description.get(key)}<end>"
+                desc_str += f'<lang={key}>{self.description.get(key)}<end>'
         return desc_str
 
     def set_description_from_str(self, desc: str):
-        for lang, text in re.findall(r"<lang=(\w+)>(.+?)<end>", desc, re.DOTALL):
+        for lang, text in re.findall(r'<lang=(\w+)>(.+?)<end>', desc, re.DOTALL):
             self.description.update({lang: text})
 
 

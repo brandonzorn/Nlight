@@ -13,8 +13,9 @@ class MangaArea(ScrollArea):
 
         self._column_count = 6
         self._manga_items: list[MangaItem] = []
+
         self._scrollAreaWidgetContents = QWidget()
-        self._scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self._scrollAreaWidgetContents.setObjectName('scrollAreaWidgetContents')
         self._scrollAreaWidgetContents.resizeEvent = self._scroll_resize_event
 
         self._scroll_layout = QVBoxLayout(self._scrollAreaWidgetContents)
