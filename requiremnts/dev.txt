@@ -2,3 +2,6 @@
 flake8>=6.1.0
 flake8-quotes>=3.3.2
 pep8-naming>=0.13.3
+pyinstaller==5.13.2
+tinyaes>=1.0.4
+pyinstaller-versionfile>=2.1.1
