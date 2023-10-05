@@ -38,7 +38,10 @@ class FormAuth(QDialog):
                 self.accept()
 
     def get_user_data(self):
-        return {'username': self.ui.login_line.text(), 'password': self.ui.password_line.text()}
+        return {
+            'username': self.ui.login_line.text(),
+            'password': self.ui.password_line.text(),
+        }
 
     def login(self):
         webbrowser.open_new_tab(self.session.get_auth_url())

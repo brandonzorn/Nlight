@@ -16,7 +16,10 @@ class BaseItem:
         return hash(self.id)
 
     def get_name(self) -> str:
-        if QLocale().language() in (QLocale.Language.Russian, QLocale.Language.Ukrainian):
+        if QLocale().language() in (
+            QLocale.Language.Russian,
+            QLocale.Language.Ukrainian,
+        ):
             if self.russian:
                 return self.russian
         return self.name.capitalize()

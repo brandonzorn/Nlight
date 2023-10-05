@@ -1,6 +1,13 @@
 from typing import Callable
 
-from PySide6.QtCore import QThreadPool, QRunnable, QObject, Signal, Slot, QThread
+from PySide6.QtCore import (
+    QThreadPool,
+    QRunnable,
+    QObject,
+    Signal,
+    Slot,
+    QThread,
+)
 
 
 class Signals(QObject):
