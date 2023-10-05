@@ -2,20 +2,20 @@ import requests
 from PySide6.QtWidgets import QApplication
 from requests_oauthlib import OAuth2Session
 
+from nlightreader.consts import URL_SHIKIMORI_API, SHIKIMORI_HEADERS, URL_SHIKIMORI, URL_SHIKIMORI_TOKEN, LibList
 from nlightreader.consts.items import ShikimoriItems
+from nlightreader.items import Manga, RequestForm, Genre, Kind, User, UserRate, Character, Order
+from nlightreader.parsers.Parser import Parser, LibParser
 from nlightreader.parsers.catalogs_base import MangaCatalog, RanobeCatalog
+from nlightreader.utils.decorators import singleton
+from nlightreader.utils.token import TokenManager
+from nlightreader.utils.utils import get_html
 
 try:
     from keys import SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID
 except ModuleNotFoundError:
-    print("Shikimori API keys not found")
+    print('Shikimori API keys not found')
     SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID = '', ''
-from nlightreader.consts import URL_SHIKIMORI_API, SHIKIMORI_HEADERS, URL_SHIKIMORI, LibList, URL_SHIKIMORI_TOKEN
-from nlightreader.items import Manga, RequestForm, Genre, Kind, User, UserRate, Character, Order
-from nlightreader.parsers.Parser import Parser, LibParser
-from nlightreader.utils.decorators import singleton
-from nlightreader.utils.token import TokenManager
-from nlightreader.utils.utils import get_html
 
 
 class ShikimoriBase(Parser):
@@ -111,10 +111,14 @@ class ShikimoriManga(ShikimoriBase, MangaCatalog):
 
     def search_manga(self, form: RequestForm):
         url = f'{self.url_api}/mangas'
-        params = {'limit': form.limit, 'search': form.search, 'page': form.page,
-                  'genre': ','.join(form.get_genre_id()),
-                  'order': form.order.content_id,
-                  'kind': ','.join([i.content_id for i in form.kinds])}
+        params = {
+            'limit': form.limit,
+            'search': form.search,
+            'page': form.page,
+            'genre': ','.join(form.get_genre_id()),
+            'order': form.order.content_id,
+            'kind': ','.join([i.content_id for i in form.kinds]),
+        }
         html = get_html(url, self.headers, params)
         mangas = []
         if html and html.status_code == 200 and html.json():
@@ -134,8 +138,14 @@ class ShikimoriRanobe(ShikimoriBase, RanobeCatalog):
 
     def search_manga(self, form: RequestForm):
         url = f'{self.url_api}/ranobe'
-        params = {'limit': form.limit, 'search': form.search, 'genre': ','.join(form.get_genre_id()),
-                  'order': form.order.name, 'kind': ','.join([i.name for i in form.kinds]), 'page': form.page}
+        params = {
+            'limit': form.limit,
+            'search': form.search,
+            'genre': ','.join(form.get_genre_id()),
+            'order': form.order.name,
+            'kind': ','.join([i.name for i in form.kinds]),
+            'page': form.page,
+        }
         html = get_html(url, self.headers, params)
         mangas = []
         if html and html.status_code == 200 and html.json():
@@ -152,7 +162,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
 
     def search_manga(self, req_params: RequestForm):
         url = f'{self.url_api}/users/{self.get_user().id}/manga_rates'
-        params = {"limit": 50, "page": req_params.page}
+        params = {'limit': 50, 'page': req_params.page}
         html = self.session.request('GET', url, params)
         mangas = []
         match req_params.lib_list:
@@ -164,9 +174,9 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                 lib_list = req_params.lib_list.name
         if html and html.status_code == 200 and html.json():
             for i in html.json():
-                if not i.get("status") == lib_list:
+                if not i.get('status') == lib_list:
                     continue
-                i = i.get("manga")
+                i = i.get('manga')
                 mangas.append(self.setup_manga(i))
         return mangas
 
@@ -179,12 +189,22 @@ class ShikimoriLib(ShikimoriBase, LibParser):
 
     def create_user_rate(self, manga: Manga):
         url = f'{self.url_api}/v2/user_rates'
-        data = {"user_rate": {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.content_id}}
+        data = {
+            'user_rate': {
+                'target_type': 'Manga',
+                'user_id': self.get_user().id,
+                'target_id': manga.content_id,
+            }
+        }
         self.session.request('POST', url, json=data)
 
     def check_user_rate(self, manga: Manga):
         url = f'{self.url_api}/v2/user_rates'
-        params = {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.content_id}
+        params = {
+            'target_type': 'Manga',
+            'user_id': self.get_user().id,
+            'target_id': manga.content_id,
+        }
         html = self.session.request('GET', url, params)
         if html and html.status_code == 200 and html.json():
             for i in html.json():
@@ -198,7 +218,11 @@ class ShikimoriLib(ShikimoriBase, LibParser):
 
     def get_user_rate(self, manga: Manga):
         url = f'{self.url_api}/v2/user_rates'
-        params = {'target_type': 'Manga', 'user_id': self.get_user().id, 'target_id': manga.content_id}
+        params = {
+            'target_type': 'Manga',
+            'user_id': self.get_user().id,
+            'target_id': manga.content_id,
+        }
         html = self.session.request('GET', url, params)
         if html and html.status_code == 200 and html.json():
             for i in html.json():
@@ -211,10 +235,15 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         match user_rate.status:
             case 'reading':
                 status = 'watching'
-            case "re-reading":
+            case 're-reading':
                 status = 'rewatching'
-        data = {"user_rate": {"chapters": f"{user_rate.chapters}", "score": f"{user_rate.score}",
-                              "status": status}}
+        data = {
+            'user_rate': {
+                'chapters': f'{user_rate.chapters}',
+                'score': f'{user_rate.score}',
+                'status': status,
+            }
+        }
         self.session.request('PATCH', url, json=data)
 
 
@@ -277,20 +306,20 @@ class Auth:
 
     def request(self, method, url, params=None, json=None, ignore_authorize=False):
         if ((not ignore_authorize and not self.is_authorized) or
-                "test" in QApplication.arguments() or
-                "noshiki" in QApplication.arguments()):
+                'test' in QApplication.arguments() or
+                'noshiki' in QApplication.arguments()):
             return
         try:
             response = self.client.request(method, url, params=params, json=json)
             response.raise_for_status()
             return response
         except requests.exceptions.RequestException as e:
-            print(f"Error fetching URL: {url}")
-            print(f"  Reason: {e}")
-            print(f"  Headers: {self.client.headers}")
-            print(f"  Params: {params}")
-            print(f"  Cookies: {self.client.cookies}")
-            print(f"  Json: {json}")
+            print(f'Error fetching URL: {url}')
+            print(f'  Reason: {e}')
+            print(f'  Headers: {self.client.headers}')
+            print(f'  Params: {params}')
+            print(f'  Cookies: {self.client.cookies}')
+            print(f'  Json: {json}')
             return
 
     def check_auth(self):

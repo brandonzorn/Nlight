@@ -38,14 +38,20 @@ class ImageArea(QWidget):
         if pixmap is None or pixmap.isNull():
             return QPixmap()
         if 0.5 < pixmap.width() / pixmap.height() < 2:
-            pixmap = pixmap.scaled(self.ui.scrollArea.viewport().size(), Qt.AspectRatioMode.KeepAspectRatio,
-                                   Qt.TransformationMode.SmoothTransformation)
+            pixmap = pixmap.scaled(
+                self.ui.scrollArea.viewport().size(),
+                Qt.AspectRatioMode.KeepAspectRatio,
+                Qt.TransformationMode.SmoothTransformation,
+            )
             self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         else:
             w = self.ui.scrollArea.viewport().width()
             h = pixmap.height()
-            pixmap = pixmap.scaled(QSize(w, h), Qt.AspectRatioMode.KeepAspectRatio,
-                                   Qt.TransformationMode.SmoothTransformation)
+            pixmap = pixmap.scaled(
+                QSize(w, h),
+                Qt.AspectRatioMode.KeepAspectRatio,
+                Qt.TransformationMode.SmoothTransformation,
+            )
             self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         return pixmap
 

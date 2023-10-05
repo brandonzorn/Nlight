@@ -33,12 +33,12 @@ class FileManager:
         if not check_file_exists(path, file_name):
             save_file(path, file_name, catalog.get_image(image))
         try:
-            with open(get_file_path(path, file_name), encoding="utf8") as f:
+            with open(get_file_path(path, file_name), encoding='utf8') as f:
                 text = f.read()
                 text = text.replace('\n', '<br>')
                 return text
         except FileNotFoundError:
-            return ""
+            return ''
 
     @staticmethod
     def get_manga_preview(manga: Manga, catalog):

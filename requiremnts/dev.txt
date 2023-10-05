@@ -1,0 +1,4 @@
+-r prod.txt
+flake8>=6.1.0
+flake8-quotes>=3.3.2
+pep8-naming>=0.13.3

@@ -21,7 +21,7 @@ class FormFacial(MangaItemBasedWidget):
         self.ui.prev_btn.setIcon(FluentIcon.LEFT_ARROW)
         self.ui.filter_btn.setIcon(FluentIcon.FILTER)
 
-        self.setObjectName("FormFacial")
+        self.setObjectName('FormFacial')
 
         self.manga_area = MangaArea(self.ui.items_layout)
 

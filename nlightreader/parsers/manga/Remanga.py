@@ -7,7 +7,7 @@ from nlightreader.utils.utils import get_html, get_data
 
 class Remanga(MangaCatalog):
     CATALOG_ID = 6
-    CATALOG_NAME = "ReManga"
+    CATALOG_NAME = 'ReManga'
 
     def __init__(self):
         super().__init__()
@@ -27,7 +27,12 @@ class Remanga(MangaCatalog):
         url = f'{self.url_api}/search/catalog'
         if form.search:
             url = f'{self.url_api}/search'
-        params = {'page': form.page, 'query': form.search, 'count': 40, 'ordering': form.order.content_id}
+        params = {
+            'page': form.page,
+            'query': form.search,
+            'count': 40,
+            'ordering': form.order.content_id,
+        }
         params = list(params.items())
         [params.append(('types', kind_id)) for kind_id in form.get_kind_id()]
         html = get_html(url, self.headers, params)
@@ -79,7 +84,7 @@ class Remanga(MangaCatalog):
 
     def get_image(self, image: Image):
         headers = {'User-Agent': 'Nlight', 'Referer': 'https://remanga.org/'}
-        response = get_html(f"{image.img}", headers=headers, content_type='content')
+        response = get_html(f'{image.img}', headers=headers, content_type='content')
         return response
 
     def get_preview(self, manga: Manga):
@@ -87,7 +92,7 @@ class Remanga(MangaCatalog):
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
             img = html.json().get('content').get('img').get('high')
-            response = get_html(f"{self.url}{img}", headers=self.headers, content_type='content')
+            response = get_html(f'{self.url}{img}', headers=self.headers, content_type='content')
             return response
 
     def get_manga_url(self, manga: Manga) -> str:

@@ -21,7 +21,7 @@ class FormShikimori(MangaItemBasedWidget):
         self.ui.next_btn.setIcon(FluentIcon.RIGHT_ARROW)
         self.ui.prev_btn.setIcon(FluentIcon.LEFT_ARROW)
 
-        self.setObjectName("FormShikimori")
+        self.setObjectName('FormShikimori')
 
         self.manga_area = MangaArea(self.ui.items_layout)
 
@@ -50,7 +50,7 @@ class FormShikimori(MangaItemBasedWidget):
         if whoami.nickname:
             self.ui.auth_btn.setText(whoami.nickname)
         else:
-            self.ui.auth_btn.setText(translate("Other", "Sign in"))
+            self.ui.auth_btn.setText(translate('Other', 'Sign in'))
 
     def update_page(self):
         self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
@@ -62,7 +62,7 @@ class FormShikimori(MangaItemBasedWidget):
         if whoami.nickname:
             self.ui.auth_btn.setText(whoami.nickname)
         else:
-            self.ui.auth_btn.setText(translate("Other", "Sign in"))
+            self.ui.auth_btn.setText(translate('Other', 'Sign in'))
 
     @Slot()
     def authorize(self):
