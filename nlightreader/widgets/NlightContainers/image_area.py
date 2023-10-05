@@ -22,9 +22,7 @@ class ImageArea(QWidget):
         view_w = self.ui.scrollArea.viewport().width()
         self.ui.img_lbl.setFixedWidth(view_w)
         self.ui.scrollAreaWidgetContents.setFixedWidth(view_w)
-        self.ui.scrollAreaWidgetContents.resize(
-            self.ui.scrollArea.viewport().size()
-        )
+        self.ui.scrollAreaWidgetContents.resize(self.ui.scrollArea.viewport().size())
         self.update_image()
 
     def reset_area(self):
@@ -34,9 +32,7 @@ class ImageArea(QWidget):
         view_w = self.ui.scrollArea.viewport().width()
         self.ui.img_lbl.setFixedWidth(view_w)
         self.ui.scrollAreaWidgetContents.setFixedWidth(view_w)
-        self.ui.scrollAreaWidgetContents.resize(
-            self.ui.scrollArea.viewport().size()
-        )
+        self.ui.scrollAreaWidgetContents.resize(self.ui.scrollArea.viewport().size())
 
     def _resize_pixmap(self, pixmap: QPixmap) -> QPixmap:
         if pixmap is None or pixmap.isNull():
@@ -47,9 +43,7 @@ class ImageArea(QWidget):
                 Qt.AspectRatioMode.KeepAspectRatio,
                 Qt.TransformationMode.SmoothTransformation,
             )
-            self.ui.scrollArea.setVerticalScrollBarPolicy(
-                Qt.ScrollBarAlwaysOff
-            )
+            self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         else:
             w = self.ui.scrollArea.viewport().width()
             h = pixmap.height()

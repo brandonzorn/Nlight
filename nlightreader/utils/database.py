@@ -1,11 +1,11 @@
 import sqlite3
 from threading import Lock
 
+import platformdirs
+
 from nlightreader.consts import APP_NAME, LibList
 from nlightreader.items import Chapter, Manga, HistoryNote
 from nlightreader.utils.decorators import with_lock_thread, singleton
-
-import platformdirs
 
 
 @singleton

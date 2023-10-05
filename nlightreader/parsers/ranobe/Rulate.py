@@ -16,17 +16,11 @@ class Rulate(RanobeCatalog):
     def __init__(self):
         super().__init__()
         self.url_api = URL_RULATE
-        self.cookies = {
-            'mature': 'c3a2ed4b199a1a15f5a5483504c7a75a7030dc4bi%3A1%3B'
-        }
+        self.cookies = {'mature': 'c3a2ed4b199a1a15f5a5483504c7a75a7030dc4bi%3A1%3B'}
         self.items = RulateItems
 
     def get_manga(self, manga: Manga) -> Manga:
-        response = get_html(
-            f'{self.url_api}/book/{manga.content_id}',
-            cookies=self.cookies,
-            content_type='text',
-        )
+        response = get_html(f'{self.url_api}/book/{manga.content_id}', cookies=self.cookies, content_type='text')
         if response:
             soup = BeautifulSoup(response, 'html.parser')
             hranobe = soup.find('div', style='margin: 20px 0 0 0')
@@ -46,9 +40,7 @@ class Rulate(RanobeCatalog):
             'sort': form.order.content_id,
             'adult': 0,
         }
-        response = get_html(
-            f'{self.url_api}/search', params=params, content_type='text'
-        )
+        response = get_html(f'{self.url_api}/search', params=params, content_type='text')
         if response:
             soup = BeautifulSoup(response, 'html.parser')
             hranobe = soup.findAll('p', class_='book-tooltip')
@@ -60,33 +52,23 @@ class Rulate(RanobeCatalog):
                 if len(name_items) == 2:
                     name = name_items[0].strip()
                     russian = name_items[1].strip()
-                ranobe_id = i.unwrap()['data-tooltip-content'].split(
-                    '#book-tooltip-'
-                )[-1]
+                ranobe_id = i.unwrap()['data-tooltip-content'].split('#book-tooltip-')[-1]
                 ranobe.append(Manga(ranobe_id, self.CATALOG_ID, name, russian))
         return ranobe
 
     def get_chapters(self, manga: Manga):
         chapters = []
-        response = get_html(
-            f'{self.url_api}/book/{manga.content_id}',
-            cookies=self.cookies,
-            content_type='text',
-        )
+        response = get_html(f'{self.url_api}/book/{manga.content_id}', cookies=self.cookies, content_type='text')
         if response:
             soup = BeautifulSoup(response, 'html.parser')
             ranobe_chapters = soup.findAll('tr', class_='chapter_row')
             for chapter in ranobe_chapters:
-                if chapter.find('span', class_='disabled') or chapter.find(
-                    'i', class_='ac_read g'
-                ):
+                if chapter.find('span', class_='disabled') or chapter.find('i', class_='ac_read g'):
                     continue
                 name: str = chapter.find('td', class_='t').text
                 name = name.strip()
                 chapter_id = chapter.unwrap()['data-id']
-                chapters.append(
-                    Chapter(chapter_id, self.CATALOG_ID, '', '', name, 'ru')
-                )
+                chapters.append(Chapter(chapter_id, self.CATALOG_ID, '', '', name, 'ru'))
             chapters.reverse()
         return chapters
 
@@ -105,9 +87,7 @@ class Rulate(RanobeCatalog):
             return f'data:image/jpg;base64,{str_equivalent_image}'
 
         # Parse HTML content and extract text container
-        response = get_html(
-            image.img, cookies=self.cookies, content_type='text'
-        )
+        response = get_html(image.img, cookies=self.cookies, content_type='text')
         if response:
             soup = BeautifulSoup(response, 'html.parser')
             text_container = soup.find('div', class_='content-text')
@@ -124,18 +104,12 @@ class Rulate(RanobeCatalog):
             return content
 
     def get_preview(self, manga: Manga):
-        response = get_html(
-            f'{self.url_api}/book/{manga.content_id}',
-            cookies=self.cookies,
-            content_type='text',
-        )
+        response = get_html(f'{self.url_api}/book/{manga.content_id}', cookies=self.cookies, content_type='text')
         if response:
             soup = BeautifulSoup(response, 'html.parser')
             himage = soup.find('meta', property='og:image')
             if himage:
-                img_response = get_html(
-                    str(himage['content']), content_type='content'
-                )
+                img_response = get_html(str(himage['content']), content_type='content')
                 return img_response
 
     def get_manga_url(self, manga: Manga) -> str:
@@ -149,9 +123,7 @@ class Erolate(Rulate):
     def __init__(self):
         super().__init__()
         self.url_api = URL_EROLATE
-        self.cookies = {
-            'mature': '7da3ee594b38fc5355692d978fe8f5adbeb3d17di%3A1%3B'
-        }
+        self.cookies = {'mature': '7da3ee594b38fc5355692d978fe8f5adbeb3d17di%3A1%3B'}
 
     def search_manga(self, form: RequestForm):
         ranobe = []
@@ -162,9 +134,7 @@ class Erolate(Rulate):
             'sort': form.order.content_id,
             'adult': 0,
         }
-        response = get_html(
-            f'{self.url_api}/search', params=params, content_type='text'
-        )
+        response = get_html(f'{self.url_api}/search', params=params, content_type='text')
         if response:
             soup = BeautifulSoup(response, 'html.parser')
             hranobe = soup.findAll('p', class_='book-tooltip')
@@ -176,8 +146,6 @@ class Erolate(Rulate):
                 if len(name_items) == 2:
                     name = name_items[0].strip()
                     russian = name_items[1].strip()
-                ranobe_id = i.unwrap()['data-tooltip-content'].split(
-                    '#book-tooltip-'
-                )[-1]
+                ranobe_id = i.unwrap()['data-tooltip-content'].split('#book-tooltip-')[-1]
                 ranobe.append(Manga(ranobe_id, self.CATALOG_ID, name, russian))
         return ranobe

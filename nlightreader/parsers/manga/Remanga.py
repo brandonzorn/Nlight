@@ -56,28 +56,16 @@ class Remanga(MangaCatalog):
         if html and html.status_code == 200 and html.json():
             data = html.json().get('content')
             branch_id = data.get('branches')[0].get('id')
-            chapters_data = get_html(
-                f'{self.url_api}/titles/chapters?branch_id={branch_id}&user_data=0',
-                headers=self.headers,
-            )
-            if (
-                chapters_data
-                and chapters_data.status_code == 200
-                and chapters_data.json()
-            ):
+            chapters_data = get_html(f'{self.url_api}/titles/chapters?branch_id={branch_id}&user_data=0',
+                                     headers=self.headers)
+            if chapters_data and chapters_data.status_code == 200 and chapters_data.json():
                 data = chapters_data.json().get('content')
                 if data:
                     for ch in data:
                         if ch.get('is_paid'):
                             continue
-                        chapter = Chapter(
-                            ch.get('id'),
-                            self.CATALOG_ID,
-                            str(ch.get('tome')),
-                            ch.get('chapter'),
-                            ch.get('name'),
-                            'ru',
-                        )
+                        chapter = Chapter(ch.get('id'), self.CATALOG_ID,
+                                          str(ch.get('tome')), ch.get('chapter'), ch.get('name'), 'ru')
                         chapters.append(chapter)
         return chapters
 
@@ -96,9 +84,7 @@ class Remanga(MangaCatalog):
 
     def get_image(self, image: Image):
         headers = {'User-Agent': 'Nlight', 'Referer': 'https://remanga.org/'}
-        response = get_html(
-            f'{image.img}', headers=headers, content_type='content'
-        )
+        response = get_html(f'{image.img}', headers=headers, content_type='content')
         return response
 
     def get_preview(self, manga: Manga):
@@ -106,11 +92,7 @@ class Remanga(MangaCatalog):
         html = get_html(url, self.headers)
         if html and html.status_code == 200 and html.json():
             img = html.json().get('content').get('img').get('high')
-            response = get_html(
-                f'{self.url}{img}',
-                headers=self.headers,
-                content_type='content',
-            )
+            response = get_html(f'{self.url}{img}', headers=self.headers, content_type='content')
             return response
 
     def get_manga_url(self, manga: Manga) -> str:

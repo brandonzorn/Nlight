@@ -8,9 +8,7 @@ class LibraryMangaMenu(QMenu):
     def __init__(self):
         super().__init__()
         self.add_to_lib = QAction(translate('Menu', 'Add to Library'))
-        self.remove_from_lib = QAction(
-            translate('Menu', 'Remove from library')
-        )
+        self.remove_from_lib = QAction(translate('Menu', 'Remove from library'))
         self.open_in_browser = QAction(translate('Menu', 'Open in browser'))
         self.remove_files = QAction(translate('Menu', 'Clear local files'))
         self.open_local_files = QAction(translate('Menu', 'Open local files'))

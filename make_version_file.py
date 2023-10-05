@@ -1,6 +1,6 @@
-from nlightreader.consts import APP_VERSION, APP_NAME
-
 import pyinstaller_versionfile
+
+from nlightreader.consts import APP_VERSION, APP_NAME
 
 pyinstaller_versionfile.create_versionfile(
     output_file='pkg_res/version_info.txt',

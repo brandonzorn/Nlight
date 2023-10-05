@@ -9,5 +9,6 @@ exclude =
     dist,
     venv,
     venv-fluent,
-    data
+    data,
+    nlight_res_rc.py
 max-line-length = 120
