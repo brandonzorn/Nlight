@@ -1,11 +1,11 @@
 import sqlite3
 from threading import Lock
 
-import platformdirs
-
 from nlightreader.consts import APP_NAME, LibList
 from nlightreader.items import Chapter, Manga, HistoryNote
 from nlightreader.utils.decorators import with_lock_thread, singleton
+
+import platformdirs
 
 
 @singleton
@@ -35,7 +35,7 @@ class Database:
 
     @with_lock_thread(lock)
     def add_manga(self, manga: Manga):
-        self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+        self.__cur.execute('INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
                            (manga.id, manga.content_id, manga.catalog_id, manga.name, manga.russian, manga.kind,
                             manga.descriptions_to_str(), manga.score, manga.status, manga.volumes, manga.chapters))
         self.__con.commit()
@@ -43,7 +43,7 @@ class Database:
     @with_lock_thread(lock)
     def add_mangas(self, mangas: list[Manga]):
         for manga in mangas:
-            self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+            self.__cur.execute('INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
                                (manga.id, manga.content_id, manga.catalog_id, manga.name, manga.russian, manga.kind,
                                 manga.descriptions_to_str(), manga.score, manga.status, manga.volumes, manga.chapters))
         self.__con.commit()
@@ -66,7 +66,7 @@ class Database:
     @with_lock_thread(lock)
     def add_chapters(self, chapters: list[Chapter], manga: Manga):
         for chapter in chapters:
-            self.__cur.execute("INSERT INTO chapters VALUES(?, ?, ?, ?, ?, ?, ?, ?);",
+            self.__cur.execute('INSERT INTO chapters VALUES(?, ?, ?, ?, ?, ?, ?, ?);',
                                (chapter.id, chapter.content_id, chapter.catalog_id, chapter.vol, chapter.ch,
                                 chapter.title, chapter.language, manga.id))
         self.__con.commit()
@@ -88,7 +88,7 @@ class Database:
 
     @with_lock_thread(lock)
     def add_manga_library(self, manga: Manga, lib_list: LibList = LibList.planned):
-        self.__cur.execute(f"INSERT INTO library VALUES(?, ?);", (manga.id, lib_list.value))
+        self.__cur.execute('INSERT INTO library VALUES(?, ?);', (manga.id, lib_list.value))
         self.__con.commit()
 
     @with_lock_thread(lock)
@@ -128,21 +128,21 @@ class Database:
 
     @with_lock_thread(lock)
     def add_history_note(self, note: HistoryNote):
-        self.__cur.execute(f"INSERT INTO chapter_history VALUES(?, ?, ?);",
+        self.__cur.execute('INSERT INTO chapter_history VALUES(?, ?, ?);',
                            (note.manga.id, note.chapter.id, note.is_completed))
         self.__con.commit()
 
     @with_lock_thread(lock)
     def add_history_notes(self, history_notes: list[HistoryNote]):
         for note in history_notes:
-            self.__cur.execute(f"INSERT INTO chapter_history VALUES(?, ?, ?);",
+            self.__cur.execute('INSERT INTO chapter_history VALUES(?, ?, ?);',
                                (note.manga.id, note.chapter.id, note.is_completed))
         self.__con.commit()
 
     @with_lock_thread(lock)
     def get_history_notes(self) -> list[HistoryNote]:
         notes = []
-        a = self.__cur.execute(f"SELECT * FROM chapter_history;").fetchall()
+        a = self.__cur.execute('SELECT * FROM chapter_history;').fetchall()
         for i in a:
             manga = self.get_manga(i[0])
             chapter = self.get_chapter(i[1])

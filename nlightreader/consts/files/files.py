@@ -1,6 +1,6 @@
-import nlight_res_rc
-
 from PySide6.QtCore import QFile, QTextStream
+
+import nlight_res_rc
 
 
 def read_file(file: QFile):
@@ -10,29 +10,29 @@ def read_file(file: QFile):
 
 
 class Styles:
-    default_widgets = read_file(QFile(u":/styles/data/styles/default/widget_default.qss"))
+    default_widgets = read_file(QFile(u':/styles/data/styles/default/widget_default.qss'))
 
-    dark_icons = read_file(QFile(u":/styles/data/styles/dark/icons_dark.qss"))
-    dark_widgets = read_file(QFile(u":/styles/data/styles/dark/widget_dark.qss"))
+    dark_icons = read_file(QFile(u':/styles/data/styles/dark/icons_dark.qss'))
+    dark_widgets = read_file(QFile(u':/styles/data/styles/dark/widget_dark.qss'))
     Dark = dark_icons + default_widgets + dark_widgets
 
-    light_icons = read_file(QFile(u":/styles/data/styles/light/icons_light.qss"))
-    light_widgets = read_file(QFile(u":/styles/data/styles/light/widget_light.qss"))
+    light_icons = read_file(QFile(u':/styles/data/styles/light/icons_light.qss'))
+    light_widgets = read_file(QFile(u':/styles/data/styles/light/widget_light.qss'))
     Light = light_icons + default_widgets + light_widgets
 
 
 class LangIcons:
-    Gb = u":/lang_icons/data/icons/lang/gb.svg"
-    Ru = u":/lang_icons/data/icons/lang/ru.svg"
-    Jp = u":/lang_icons/data/icons/lang/jp.svg"
-    Ua = u":/lang_icons/data/icons/lang/ua.svg"
+    Gb = u':/lang_icons/data/icons/lang/gb.svg'
+    Ru = u':/lang_icons/data/icons/lang/ru.svg'
+    Jp = u':/lang_icons/data/icons/lang/jp.svg'
+    Ua = u':/lang_icons/data/icons/lang/ua.svg'
 
 
 class Translations:
-    En = ""
-    Ru = u":/translations/data/translations/ru/ru.qm"
-    Uk = u":/translations/data/translations/uk/uk.qm"
+    En = ''
+    Ru = u':/translations/data/translations/ru/ru.qm'
+    Uk = u':/translations/data/translations/uk/uk.qm'
 
 
 class Icons:
-    App = u":/png_white/data/icons/icon.png"
+    App = u':/png_white/data/icons/icon.png'

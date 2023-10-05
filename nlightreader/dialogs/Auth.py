@@ -19,10 +19,14 @@ class FormAuth(QDialog):
     def setup_form(self, fields: int):
         if fields == 1:
             self.ui.get_code_btn.clicked.connect(self.login)
-            self.ui.auth_btn.clicked.connect(lambda: self.verify_user_data(fields))
+            self.ui.auth_btn.clicked.connect(
+                lambda: self.verify_user_data(fields)
+            )
             self.ui.two_frame.hide()
         else:
-            self.ui.auth_btn.clicked.connect(lambda: self.verify_user_data(fields))
+            self.ui.auth_btn.clicked.connect(
+                lambda: self.verify_user_data(fields)
+            )
             self.ui.one_frame.hide()
 
     def verify_user_data(self, fields: int):
@@ -38,7 +42,10 @@ class FormAuth(QDialog):
                 self.accept()
 
     def get_user_data(self):
-        return {'username': self.ui.login_line.text(), 'password': self.ui.password_line.text()}
+        return {
+            'username': self.ui.login_line.text(),
+            'password': self.ui.password_line.text(),
+        }
 
     def login(self):
         webbrowser.open_new_tab(self.session.get_auth_url())

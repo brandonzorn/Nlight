@@ -2,16 +2,19 @@ import os
 import re
 import shutil
 
-import platformdirs
 from PySide6.QtGui import QPixmap
 
 from nlightreader.consts import APP_NAME
 from nlightreader.items import Manga, Chapter, Character
 
+import platformdirs
+
 
 class FileManager:
     @staticmethod
-    def check_image_exists(manga: Manga, chapter: Chapter, image, catalog) -> bool:
+    def check_image_exists(
+        manga: Manga, chapter: Chapter, image, catalog
+    ) -> bool:
         path = f'images/{catalog.CATALOG_NAME}/manga/{manga.content_id}/{chapter.content_id}'
         file_name = f'{image.page}.jpg'
         if manga.kind == 'ranobe':
@@ -27,18 +30,20 @@ class FileManager:
         return QPixmap(get_file_path(path, file_name))
 
     @staticmethod
-    def get_chapter_text_file(manga: Manga, chapter: Chapter, image, catalog) -> str:
+    def get_chapter_text_file(
+        manga: Manga, chapter: Chapter, image, catalog
+    ) -> str:
         path = f'images/{catalog.CATALOG_NAME}/manga/{manga.content_id}/{chapter.content_id}'
         file_name = f'{image.page}.txt'
         if not check_file_exists(path, file_name):
             save_file(path, file_name, catalog.get_image(image))
         try:
-            with open(get_file_path(path, file_name), encoding="utf8") as f:
+            with open(get_file_path(path, file_name), encoding='utf8') as f:
                 text = f.read()
                 text = text.replace('\n', '<br>')
                 return text
         except FileNotFoundError:
-            return ""
+            return ''
 
     @staticmethod
     def get_manga_preview(manga: Manga, catalog):
@@ -49,9 +54,13 @@ class FileManager:
 
     @staticmethod
     def get_character_preview(character: Character, catalog) -> QPixmap:
-        path = f'images/{catalog.CATALOG_NAME}/characters/{character.content_id}'
+        path = (
+            f'images/{catalog.CATALOG_NAME}/characters/{character.content_id}'
+        )
         if not check_file_exists(path, 'preview.jpg'):
-            save_file(path, 'preview.jpg', catalog.get_character_preview(character))
+            save_file(
+                path, 'preview.jpg', catalog.get_character_preview(character)
+            )
         return QPixmap(get_file_path(path, 'preview.jpg'))
 
     @staticmethod
