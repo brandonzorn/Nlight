@@ -63,8 +63,8 @@
     <file>data/icons/buttons/svg_24dp_black/actions/list.svg</file>
   </qresource>
   <qresource prefix="translations">
-    <file>data/translations/uk/uk_UA.qm</file>
-    <file>data/translations/ru/ru_RU.qm</file>
+    <file>data/translations/uk/uk.qm</file>
+    <file>data/translations/ru/ru.qm</file>
   </qresource>
   <qresource prefix="styles">
     <file>data/styles/default/widget_default.qss</file>

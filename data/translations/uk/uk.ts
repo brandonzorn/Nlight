@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU" sourcelanguage="en_US">
+<TS version="2.1" language="uk_UA" sourcelanguage="en_US">
 <context>
     <name>Dialog</name>
     <message>
         <source>Show spoilers</source>
-        <translation>Показывать спойлеры</translation>
+        <translation>Показувати спойлери</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Отмена</translation>
+        <translation>Скасування</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Удалить</translation>
+        <translation>Вилучити</translation>
     </message>
     <message>
         <source>Update</source>
-        <translation>Обновить</translation>
+        <translation>Оновити</translation>
     </message>
     <message>
         <source>List</source>
-        <translation>Список</translation>
+        <translation>Перелік</translation>
     </message>
     <message>
         <source>Chapters read</source>
-        <translation>Прочитано глав</translation>
+        <translation>Прочитано розділів</translation>
     </message>
     <message>
         <source>Rating</source>
@@ -33,15 +33,15 @@
     </message>
     <message>
         <source>Get code</source>
-        <translation>Получить код</translation>
+        <translation>Отримати код</translation>
     </message>
     <message>
         <source>Authorization code</source>
-        <translation>Код авторизации</translation>
+        <translation>Код авторизації</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation>Логин</translation>
+        <translation>Логін</translation>
     </message>
     <message>
         <source>Password</source>
@@ -49,7 +49,7 @@
     </message>
     <message>
         <source>Sign in</source>
-        <translation>Войти</translation>
+        <translation>Увійти</translation>
     </message>
 </context>
 <context>
@@ -64,7 +64,7 @@
     </message>
     <message>
         <source>Order</source>
-        <translation>Сортировка</translation>
+        <translation>Сортування</translation>
     </message>
     <message>
         <source>Apply</source>
@@ -72,19 +72,15 @@
     </message>
     <message>
         <source>Reset</source>
-        <translation>Сбросить</translation>
+        <translation>Застосувати</translation>
     </message>
     <message>
         <source>Filters</source>
-        <translation>Фильтры</translation>
-    </message>
-     <message>
-        <source>Search</source>
-        <translation>Поиск</translation>
+        <translation>Фільтри</translation>
     </message>
     <message>
         <source>Genres list</source>
-        <translation>Список жанров</translation>
+        <translation>Список жанрів</translation>
     </message>
     <message>
         <source>Catalogs</source>
@@ -92,19 +88,19 @@
     </message>
     <message>
         <source>Sign in</source>
-        <translation>Войти</translation>
+        <translation>Увійти</translation>
     </message>
     <message>
         <source>Related</source>
-        <translation>Связанное</translation>
+        <translation>Пов&apos;язане</translation>
     </message>
     <message>
         <source>Characters</source>
-        <translation>Персонажи</translation>
+        <translation>Персонажі</translation>
     </message>
     <message>
         <source>Planned</source>
-        <translation>Запланированно</translation>
+        <translation>Заплановано</translation>
     </message>
     <message>
         <source>Completed</source>
@@ -116,15 +112,15 @@
     </message>
     <message>
         <source>Re-reading</source>
-        <translation>Перечитываю</translation>
+        <translation>Перечитую</translation>
     </message>
     <message>
         <source>On hold</source>
-        <translation>Отложено</translation>
+        <translation>Відкладено</translation>
     </message>
     <message>
         <source>Dropped</source>
-        <translation>Брошено</translation>
+        <translation>Кинуто</translation>
     </message>
 </context>
 <context>
@@ -135,15 +131,15 @@
     </message>
     <message>
         <source>Main</source>
-        <translation>Главная</translation>
+        <translation>Головна</translation>
     </message>
     <message>
         <source>Library</source>
-        <translation>Библиотека</translation>
+        <translation>Бібліотека</translation>
     </message>
     <message>
         <source>History</source>
-        <translation>История</translation>
+        <translation>Історія</translation>
     </message>
     <message>
         <source>Shikimori</source>
@@ -154,50 +150,50 @@
     <name>Menu</name>
     <message>
         <source>Open in browser</source>
-        <translation>Открыть в браузере</translation>
+        <translation>Відкрити в браузері</translation>
     </message>
     <message>
         <source>Remove from library</source>
-        <translation>Удалить из библиотеки</translation>
+        <translation>Видалити з бібліотеки</translation>
     </message>
     <message>
         <source>Add to Library</source>
-        <translation>Добавить в библиотеку</translation>
+        <translation>Додати до бібліотеки</translation>
     </message>
     <message>
         <source>Mark as read</source>
-        <translation>Отметить прочитанным</translation>
+        <translation>Відзначити прочитаним</translation>
     </message>
     <message>
         <source>Remove all</source>
-        <translation>Удалить все</translation>
+        <translation>Видалити все</translation>
     </message>
     <message>
         <source>Mark as read all previous</source>
-        <translation>Отметить прочитанным все предыдущие</translation>
+        <translation>Відзначити прочитаним усі попередні</translation>
     </message>
     <message>
         <source>Remove read mark</source>
-        <translation>Удалить отметку о прочтении</translation>
+        <translation>Видалити відмітку про прочитання</translation>
     </message>
     <message>
         <source>Clear local files</source>
-        <translation>Очистить локальные файлы</translation>
+        <translation>Очистити локальні файли</translation>
     </message>
     <message>
         <source>Open local files</source>
-        <translation>Открыть локальные файлы</translation>
+        <translation>Відкрити локальні файли</translation>
     </message>
 </context>
 <context>
     <name>Other</name>
     <message>
         <source>Page</source>
-        <translation>Страница</translation>
+        <translation>Сторінка</translation>
     </message>
     <message>
         <source>Sign in</source>
-        <translation>Войти</translation>
+        <translation>Увійти</translation>
     </message>
     <message>
         <source>Status</source>
@@ -205,7 +201,7 @@
     </message>
     <message>
         <source>Volumes</source>
-        <translation>Томов</translation>
+        <translation>Томів</translation>
     </message>
     <message>
         <source>Chapters</source>
@@ -217,18 +213,18 @@
     </message>
     <message>
         <source>Page is loading</source>
-        <translation>Страница загружается</translation>
+        <translation>Сторінка завантажується</translation>
     </message>
 </context>
 <context>
     <name>Status</name>
     <message>
         <source>Ongoing</source>
-        <translation>Выходит</translation>
+        <translation>Виходить</translation>
     </message>
     <message>
         <source>Completed</source>
-        <translation>Издано</translation>
+        <translation>Видано</translation>
     </message>
 </context>
 </TS>
