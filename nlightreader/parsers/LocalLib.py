@@ -3,7 +3,7 @@ from nlightreader.utils.database import Database
 
 
 class LocalLib:
-    CATALOG_NAME = 'LocalLib'
+    CATALOG_NAME = "LocalLib"
 
     def __init__(self):
         self.db: Database = Database()
