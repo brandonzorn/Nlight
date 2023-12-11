@@ -1,23 +1,22 @@
 from enum import Enum, unique
 
 lib_lists_en = (
-    'planned',
-    'completed',
-    'reading',
-    're-reading',
-    'on hold',
-    'dropped',
+    "planned",
+    "completed",
+    "reading",
+    "re-reading",
+    "on hold",
+    "dropped",
 )
 
 
 def parse_lib_list(lib_list: str):
-    match lib_list:
-        case 'watching':
-            return 'reading'
-        case 'rewatching':
-            return 're-reading'
-        case _:
-            return lib_list
+    if lib_list == "watching":
+        return "reading"
+    elif lib_list == "rewatching":
+        return "re-reading"
+    else:
+        return lib_list
 
 
 @unique
