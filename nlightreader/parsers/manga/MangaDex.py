@@ -1,12 +1,16 @@
-import requests
-
 from nlightreader.consts import URL_MANGA_DEX_API, URL_MANGA_DEX, LibList, MANGA_DEX_HEADERS
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
 from nlightreader.parsers.Parser import LibParser
 from nlightreader.parsers.catalogs_base import MangaCatalog
 from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
-from nlightreader.utils.utils import get_data, get_html
+from nlightreader.utils.utils import get_data, get_html, make_request
+
+try:
+    from keys import MANGADEX_CLIENT_ID, MANGADEX_CLIENT_SECRET
+except ModuleNotFoundError:
+    print("Shikimori API keys not found")
+    MANGADEX_CLIENT_ID, MANGADEX_CLIENT_SECRET = "", ""
 
 
 class MangaDex(MangaCatalog):
@@ -190,56 +194,70 @@ class Auth:
     def __init__(self):
         self.url_api = URL_MANGA_DEX_API
         self.tokens = TokenManager.load_token(MangaDex.CATALOG_NAME)
+
+        self.client_headers = {
+            "client_id": MANGADEX_CLIENT_ID,
+            "client_secret": MANGADEX_CLIENT_SECRET,
+        }
+
         self.is_authorized = False
 
-    def get_refresh(self):
         if self.check_token():
-            return self.token.get('refresh')
+            self.refresh_token()
 
     def check_token(self) -> bool:
         if not self.tokens:
             return False
-        return True
-
-    def check_auth(self):
-        response = get_html(f'{self.url_api}/auth/check', headers=self.headers)
-        if response.status_code and response.json():
-            self.is_authorized = response.json().get('isAuthenticated')
-            return response.json().get('isAuthenticated')
-        self.is_authorized = False
+        if "access_token" in self.tokens and "refresh_token" in self.tokens:
+            return True
         return False
 
-    def update_token(self, token):
+    def update_token(self, token: dict):
         if token:
-            token = token.json().get('token')
-            TokenManager.save_token(token, MangaDex.CATALOG_NAME)
+            TokenManager.save_token(token, catalog_name=MangaDex.CATALOG_NAME)
             self.tokens = token
 
     def refresh_token(self):
-        token = requests.post(f'{self.url_api}/auth/refresh', json={'token': self.get_refresh()})
-        match token.status_code:
-            case 200:
-                self.update_token(token)
+        request_data = self._refresh_headers
+        response = make_request(
+            "https://auth.mangadex.org/realms/mangadex/protocol/openid-connect/token/auth/refresh",
+            "POST",
+            data=request_data,
+            content_type="json",
+        )
+        if response:
+            self.update_token(response)
+            self.is_authorized = True
+        else:
+            self.is_authorized = False
 
     def auth_login(self, params):
-        token = requests.post(f'{self.url_api}/auth/login', json=params)
-        match token.status_code:
-            case 200:
-                self.update_token(token)
+        request_data = self._auth_headers | params
+        response = make_request(
+            "https://auth.mangadex.org/realms/mangadex/protocol/openid-connect/token",
+            "POST",
+            data=request_data,
+            content_type="json",
+        )
+        if response:
+            self.update_token(response)
+            self.is_authorized = True
+        else:
+            self.refresh_token()
 
     def get(self, url, params=None):
-        if self.check_auth():
+        if self.is_authorized:
             response = get_html(url, params=params, headers=self.headers)
             return response
 
     @property
-    def token(self):
-        if self.check_token():
-            if self.check_auth():
-                return self.tokens.get('session')
-            else:
-                self.refresh_token()
+    def headers(self):
+        return {"Authorization": f"Bearer {self.tokens.get('access_token')}"}
 
     @property
-    def headers(self):
-        return {'Authorization': self.tokens.get('session')}
+    def _refresh_headers(self):
+        return {"grant_type": "refresh_token", "refresh_token": self.tokens["refresh_token"]} | self.client_headers
+
+    @property
+    def _auth_headers(self):
+        return {"grant_type": "password"} | self.client_headers

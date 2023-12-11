@@ -10,7 +10,7 @@ class FormAuth(QDialog):
         super().__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.setWindowTitle('Authenticate')
+        self.setWindowTitle("Authenticate")
         self.layout().setSizeConstraint(QLayout.SetFixedSize)
         self.ui.catalog_label.setText(catalog.CATALOG_NAME)
         self.session = catalog.session
@@ -18,7 +18,7 @@ class FormAuth(QDialog):
 
     def setup_form(self, fields: int):
         if fields == 1:
-            self.ui.get_code_btn.clicked.connect(self.login)
+            self.ui.get_code_btn.clicked.connect(self.open_login_page)
             self.ui.auth_btn.clicked.connect(lambda: self.verify_user_data(fields))
             self.ui.two_frame.hide()
         else:
@@ -39,9 +39,9 @@ class FormAuth(QDialog):
 
     def get_user_data(self):
         return {
-            'username': self.ui.login_line.text(),
-            'password': self.ui.password_line.text(),
+            "username": self.ui.login_line.text(),
+            "password": self.ui.password_line.text(),
         }
 
-    def login(self):
+    def open_login_page(self):
         webbrowser.open_new_tab(self.session.get_auth_url())
