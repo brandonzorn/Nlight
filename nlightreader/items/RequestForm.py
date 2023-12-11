@@ -5,7 +5,7 @@ from nlightreader.items.sort_items import Order, Genre, Kind
 class RequestForm:
     def __init__(self):
         self.limit = 50
-        self.search = ''
+        self.search = ""
         self.page = 1
         self.genres: list[Genre] = []
         self.order: Order = Order.get_empty_instance()
@@ -24,7 +24,7 @@ class RequestForm:
 
     def clear(self):
         self.limit = 50
-        self.search = ''
+        self.search = ""
         self.page = 1
         self.genres = []
         self.order = Order.get_empty_instance()
