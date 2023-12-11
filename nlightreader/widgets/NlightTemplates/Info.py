@@ -29,7 +29,7 @@ class FormInfo(QWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.ui.lib_list_box.addItems([translate('Form', i.capitalize()) for i in lib_lists_en])
+        self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in lib_lists_en])
         self.ui.items_tree.doubleClicked.connect(self.open_reader)
         self.ui.characters_list.doubleClicked.connect(self.open_character)
         self.ui.related_list.doubleClicked.connect(self.open_related_manga)

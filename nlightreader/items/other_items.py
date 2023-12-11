@@ -8,7 +8,7 @@ class HistoryNote:
         self.is_completed = is_completed
 
     def get_name(self):
-        return f'{self.manga.get_name()}: {self.chapter.get_name()}'
+        return f"{self.manga.get_name()}: {self.chapter.get_name()}"
 
 
 class UserRate:
