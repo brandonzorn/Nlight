@@ -35,7 +35,7 @@ Open source manga and ranobe reading application
 
 ## Installation
 
-1. Clone the project repository to your local machine:
+1. Clone the project repository:
     ```bash
     git clone https://github.com/brandonzorn/Nlight.git
     ```
