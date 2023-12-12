@@ -134,8 +134,7 @@ class ReaderWindow(QMainWindow):
     def turn_chapter_prev(self):
         if self.cur_chapter == 1:
             return
-        else:
-            self.cur_chapter -= 1
+        self.cur_chapter -= 1
         self.update_chapter()
 
     def update_chapter(self):

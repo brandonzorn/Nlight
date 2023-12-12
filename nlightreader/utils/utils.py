@@ -41,12 +41,11 @@ def get_html(url: str, headers=None, params=None, json=None, data=None, cookies=
         response.raise_for_status()
         if content_type == "content":
             return response.content
-        elif content_type == "json":
+        if content_type == "json":
             return response.json()
-        elif content_type == "text":
+        if content_type == "text":
             return response.text
-        else:
-            return response
+        return response
     except requests.exceptions.RequestException as e:
         print(f"Error fetching URL: {url}")
         print(f"  Reason: {e}")
@@ -89,12 +88,11 @@ def make_request(url: str, method: str, *,
         response.raise_for_status()
         if content_type == "content":
             return response.content
-        elif content_type == "json":
+        if content_type == "json":
             return response.json()
-        elif content_type == "text":
+        if content_type == "text":
             return response.text
-        else:
-            return response
+        return response
     except requests.exceptions.RequestException as e:
         print(f"Error fetching URL: {url}")
         print(f"  Reason: {e}")
@@ -102,6 +100,7 @@ def make_request(url: str, method: str, *,
         print(f"  Params: {params}")
         print(f"  Cookies: {cookies}")
         print(f"  Json: {json}")
+        print(f"  Data: {data}")
         return
 
 
