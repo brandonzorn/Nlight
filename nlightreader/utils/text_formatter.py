@@ -28,24 +28,24 @@ class TextFormatter:
             if not self._show_spoilers:
                 spoiler = ""
             self._text = self._text.replace(
-                f"[spoiler={i}]{spoiler_text}[/spoiler]", f'<span style=" color:#951a00;">{spoiler}</span>'
+                f"[spoiler={i}]{spoiler_text}[/spoiler]", f'<span style=" color:#951a00;">{spoiler}</span>',
             )
         for spoiler_text in re.findall(r"\[spoiler](.+?)\[/spoiler]", self._text, re.DOTALL):
             spoiler = spoiler_text
             if not self._show_spoilers:
                 spoiler = ""
             self._text = self._text.replace(
-                f"[spoiler]{spoiler_text}[/spoiler]", f'<span style=" color:#951a00;">{spoiler}</span>'
+                f"[spoiler]{spoiler_text}[/spoiler]", f'<span style=" color:#951a00;">{spoiler}</span>',
             )
 
     def replace_characters(self):
         for ch_id, name in re.findall(r"\[character=(\w+)](.+?)\[/character]", self._text, re.DOTALL):
             self._text = self._text.replace(
-                f"[character={ch_id}]{name}[/character]", f'<span style=" color:#177e00;">{name}</span>'
+                f"[character={ch_id}]{name}[/character]", f'<span style=" color:#177e00;">{name}</span>',
             )
         for ch_id, name in re.findall(r"\[character=(\w+) (.+?)]", self._text, re.DOTALL):
             self._text = self._text.replace(
-                f"[character={ch_id} {name}]", f'<span style=" color:#177e00;">{name}</span>'
+                f"[character={ch_id} {name}]", f'<span style=" color:#177e00;">{name}</span>',
             )
 
     def replace_urls(self):

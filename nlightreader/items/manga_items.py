@@ -39,7 +39,7 @@ class Manga(BaseItem):
     def get_description(self) -> str:
         if self.description.get("all"):
             return self.description.get("all")
-        elif QLocale().language() in (
+        if QLocale().language() in (
             QLocale.Language.Russian,
             QLocale.Language.Ukrainian,
         ) and self.description.get("ru"):

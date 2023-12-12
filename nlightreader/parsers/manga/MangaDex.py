@@ -219,7 +219,7 @@ class Auth:
     def refresh_token(self):
         request_data = self._refresh_headers
         response = make_request(
-            "https://auth.mangadex.org/realms/mangadex/protocol/openid-connect/token/auth/refresh",
+            "https://auth.mangadex.org/realms/mangadex/protocol/openid-connect/token",
             "POST",
             data=request_data,
             content_type="json",
