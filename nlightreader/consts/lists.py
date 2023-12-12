@@ -13,10 +13,9 @@ lib_lists_en = (
 def parse_lib_list(lib_list: str):
     if lib_list == "watching":
         return "reading"
-    elif lib_list == "rewatching":
+    if lib_list == "rewatching":
         return "re-reading"
-    else:
-        return lib_list
+    return lib_list
 
 
 @unique

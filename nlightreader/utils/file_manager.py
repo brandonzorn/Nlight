@@ -1,6 +1,7 @@
 import os
 import re
 import shutil
+from pathlib import Path
 
 import platformdirs
 from PySide6.QtGui import QPixmap
@@ -33,7 +34,7 @@ class FileManager:
         if not check_file_exists(path, file_name):
             save_file(path, file_name, catalog.get_image(image))
         try:
-            with open(get_file_path(path, file_name), encoding="utf8") as f:
+            with Path(get_file_path(path, file_name)).open(encoding="utf8") as f:
                 text = f.read()
                 text = text.replace("\n", "<br>")
                 return text
@@ -93,7 +94,7 @@ def save_file(path, file_name, file_content):
         if file_content:
             if isinstance(file_content, str):
                 file_content = bytes(file_content, encoding="utf8")
-            with open(f"{path}/{file_name}", "wb") as f:
+            with Path(f"{path}/{file_name}").open("wb") as f:
                 f.write(file_content)
 
 

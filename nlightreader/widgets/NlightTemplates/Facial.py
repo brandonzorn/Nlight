@@ -25,10 +25,10 @@ class FormFacial(MangaItemBasedWidget):
         self.ui.reset_btn.clicked.connect(self.reset_filter)
         self.ui.filter_btn.clicked.connect(self.change_filters_visible)
         self.ui.catalogs_btn.clicked.connect(
-            lambda: self.ui.catalogs_frame.setVisible(not self.ui.catalogs_list.isVisible())
+            lambda: self.ui.catalogs_frame.setVisible(not self.ui.catalogs_list.isVisible()),
         )
         self.ui.catalogs_list.doubleClicked.connect(
-            lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row())
+            lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row()),
         )
 
         self.Form_genres = FormGenres(self)

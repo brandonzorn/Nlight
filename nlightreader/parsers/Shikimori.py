@@ -194,7 +194,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                 "target_type": "Manga",
                 "user_id": self.get_user().id,
                 "target_id": manga.content_id,
-            }
+            },
         }
         self.session.request("POST", url, json=data)
 
@@ -242,7 +242,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                 "chapters": f"{user_rate.chapters}",
                 "score": f"{user_rate.score}",
                 "status": status,
-            }
+            },
         }
         self.session.request("PATCH", url, json=data)
 
