@@ -13,7 +13,7 @@ from nlightreader.utils.utils import get_html
 
 try:
     from keys import SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID
-except ModuleNotFoundError:
+except (ModuleNotFoundError, ImportError):
     print("Shikimori API keys not found")
     SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID = "", ""
 
