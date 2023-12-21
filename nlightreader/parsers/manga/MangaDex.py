@@ -8,8 +8,8 @@ from nlightreader.utils.utils import get_data, get_html, make_request
 
 try:
     from keys import MANGADEX_CLIENT_ID, MANGADEX_CLIENT_SECRET
-except ModuleNotFoundError:
-    print("Shikimori API keys not found")
+except (ModuleNotFoundError, ImportError):
+    print("MangaDex API keys not found")
     MANGADEX_CLIENT_ID, MANGADEX_CLIENT_SECRET = "", ""
 
 
