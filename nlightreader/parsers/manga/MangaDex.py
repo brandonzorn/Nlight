@@ -212,7 +212,8 @@ class Auth:
         return False
 
     def update_token(self, token: dict):
-        if token:
+        if token and "access_token" in token and "refresh_token" in token:
+            token = {"access_token": token["access_token"], "refresh_token": token["refresh_token"]}
             TokenManager.save_token(token, catalog_name=MangaDex.CATALOG_NAME)
             self.tokens = token
 

@@ -83,14 +83,14 @@ def get_file_path(path, file_name):
 
 def check_file_exists(path, file_name):
     path = fix_path(path)
-    return os.path.exists(get_file_path(path, file_name))
+    return Path(get_file_path(path, file_name)).exists()
 
 
 def save_file(path, file_name, file_content):
     path = fix_path(path)
     path = f"{platformdirs.user_data_dir()}/{APP_NAME}/{path}"
-    if not os.path.exists(f"{path}/{file_name}"):
-        os.makedirs(path, exist_ok=True)
+    if not Path(f"{path}/{file_name}").exists():
+        Path(path).mkdir(parents=True, exist_ok=True)
         if file_content:
             if isinstance(file_content, str):
                 file_content = bytes(file_content, encoding="utf8")
@@ -100,8 +100,8 @@ def save_file(path, file_name, file_content):
 
 def remove_file(path):
     path = fix_path(path)
-    path = f"{platformdirs.user_data_dir()}/{APP_NAME}/{path}"
-    if os.path.exists(path):
+    path = Path(f"{platformdirs.user_data_dir()}/{APP_NAME}/{path}")
+    if path.exists():
         shutil.rmtree(path, ignore_errors=True)
 
 
