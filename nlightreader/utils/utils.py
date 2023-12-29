@@ -54,7 +54,6 @@ def get_html(url: str, headers=None, params=None, json=None, data=None, cookies=
         print(f"  Cookies: {cookies}")
         print(f"  Json: {json}")
         print(f"  Data: {data}")
-        return
 
 
 def make_request(url: str, method: str, *,
@@ -101,7 +100,6 @@ def make_request(url: str, method: str, *,
         print(f"  Cookies: {cookies}")
         print(f"  Json: {json}")
         print(f"  Data: {data}")
-        return
 
 
 def get_language_icon(lang_code: str) -> str:
