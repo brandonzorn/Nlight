@@ -1,5 +1,4 @@
 import json
-import os
 from pathlib import Path
 
 from nlightreader.consts import TOKEN_PATH
@@ -14,9 +13,9 @@ class TokenManager:
         :param token: A dictionary containing authentication token data.
         :param catalog_name: The name of the parser for which the token is being saved.
         """
-        path = f"{TOKEN_PATH}/{catalog_name}"
-        if not os.path.exists(path):
-            os.makedirs(path, exist_ok=True)
+        path = Path(f"{TOKEN_PATH}/{catalog_name}")
+        if not path.exists():
+            path.mkdir(parents=True, exist_ok=True)
         with Path(f"{path}/token.json").open("w") as f:
             f.write(json.dumps(token))
 

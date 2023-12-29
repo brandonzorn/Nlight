@@ -108,10 +108,9 @@ class FormInfo(QWidget):
         selected_item = self.ui.items_tree.currentItem()
         if not selected_item.parent():
             return
-        selected_chapter = self.sorted_chapters[selected_item.parent().text(0)][
+        return self.sorted_chapters[selected_item.parent().text(0)][
             selected_item.parent().indexOfChild(selected_item)
         ]
-        return selected_chapter
 
     def get_current_manga(self):
         return self.catalog.get_manga(self.related_mangas[self.ui.related_list.currentIndex().row()])
