@@ -13,9 +13,6 @@ from PySide6.QtCore import (
 class Signals(QObject):
     finished = Signal()
 
-    def __init__(self):
-        super().__init__()
-
 
 class Worker(QRunnable):
     def __init__(self, target: Callable, args=(), kwargs=None, *, callback=None, locker=None):
