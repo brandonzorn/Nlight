@@ -37,30 +37,30 @@ class Manga(BaseItem):
         self._score = score
 
     def get_description(self) -> str:
-        if self.description.get('all'):
-            return self.description.get('all')
-        elif QLocale().language() in (
+        if self.description.get("all"):
+            return self.description.get("all")
+        if QLocale().language() in (
             QLocale.Language.Russian,
             QLocale.Language.Ukrainian,
-        ) and self.description.get('ru'):
-            return self.description.get('ru')
-        return self.description.get('en')
+        ) and self.description.get("ru"):
+            return self.description.get("ru")
+        return self.description.get("en")
 
     def descriptions_to_str(self) -> str:
-        desc_str = ''
+        desc_str = ""
         for key in self.description:
             if self.description.get(key):
-                desc_str += f'<lang={key}>{self.description.get(key)}<end>'
+                desc_str += f"<lang={key}>{self.description.get(key)}<end>"
         return desc_str
 
     def set_description_from_str(self, desc: str):
-        for lang, text in re.findall(r'<lang=(\w+)>(.+?)<end>', desc, re.DOTALL):
+        for lang, text in re.findall(r"<lang=(\w+)>(.+?)<end>", desc, re.DOTALL):
             self.description.update({lang: text})
 
 
 class Chapter:
     def __init__(self, content_id: str, catalog_id: int, vol: str, ch: str, title: str, language: str):
-        self.id = f'|{catalog_id}|_|{content_id}|'
+        self.id = f"|{catalog_id}|_|{content_id}|"
         self.content_id = content_id
         self.catalog_id = catalog_id
         self.vol = vol
@@ -72,8 +72,8 @@ class Chapter:
         if not self.vol and not self.ch:
             return self.title
         if self.title:
-            return f'{self.vol}-{self.ch} {self.title}'
-        return f'{self.vol}-{self.ch}'
+            return f"{self.vol}-{self.ch} {self.title}"
+        return f"{self.vol}-{self.ch}"
 
 
 class Image:
@@ -84,8 +84,8 @@ class Image:
 
     @staticmethod
     def get_empty_instance():
-        item_name = 'image'
-        return Image(item_name, 1, '')
+        item_name = "image"
+        return Image(item_name, 1, "")
 
 
 class Character(BaseItem):

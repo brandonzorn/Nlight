@@ -7,11 +7,11 @@ from nlightreader.utils import translate
 class LibraryMangaMenu(RoundMenu):
     def __init__(self):
         super().__init__()
-        self.add_to_lib = QAction(FluentIcon.ADD_TO.icon(), translate('Menu', 'Add to Library'))
-        self.remove_from_lib = QAction(FluentIcon.REMOVE_FROM.icon(), translate('Menu', 'Remove from library'))
-        self.open_in_browser = QAction(FluentIcon.LINK.icon(), translate('Menu', 'Open in browser'))
-        self.remove_files = QAction(FluentIcon.DELETE.icon(), translate('Menu', 'Clear local files'))
-        self.open_local_files = QAction(FluentIcon.FOLDER.icon(), translate('Menu', 'Open local files'))
+        self.add_to_lib = QAction(FluentIcon.ADD_TO.icon(), translate("Menu", "Add to Library"))
+        self.remove_from_lib = QAction(FluentIcon.REMOVE_FROM.icon(), translate("Menu", "Remove from library"))
+        self.open_in_browser = QAction(FluentIcon.LINK.icon(), translate("Menu", "Open in browser"))
+        self.remove_files = QAction(FluentIcon.DELETE.icon(), translate("Menu", "Clear local files"))
+        self.open_local_files = QAction(FluentIcon.FOLDER.icon(), translate("Menu", "Open local files"))
 
     def set_mode(self, mode: int):
         """
@@ -43,5 +43,5 @@ class LibraryMangaMenu(RoundMenu):
             ],
         }
         if mode not in actions:
-            raise ValueError('Invalid mode: must be 0, 1 or 2')
+            raise ValueError("Invalid mode: must be 0, 1 or 2")
         self.addActions(actions.get(mode, []))
