@@ -79,8 +79,11 @@ class MangaItem(ElevatedCardWidget):
         self.manga_pixmap = FileManager.get_manga_preview(self.manga, catalog)
 
     def set_image(self):
-        pixmap = self.manga_pixmap.scaled(self.ui.image.maximumSize(), Qt.AspectRatioMode.KeepAspectRatio,
-                                          Qt.TransformationMode.SmoothTransformation)
+        pixmap = self.manga_pixmap.scaled(
+            self.ui.image.maximumSize(),
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation,
+        )
         self.ui.image.setPixmap(pixmap)
 
     def update_image(self):

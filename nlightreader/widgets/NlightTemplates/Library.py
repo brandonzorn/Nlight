@@ -13,7 +13,7 @@ class FormLibrary(MangaItemBasedWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
-        self.setObjectName('FormLibrary')
+        self.setObjectName("FormLibrary")
 
         self.manga_area = MangaArea(self.ui.items_layout)
 

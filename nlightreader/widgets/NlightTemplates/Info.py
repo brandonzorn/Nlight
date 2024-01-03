@@ -8,8 +8,16 @@ from nlightreader.consts import lib_lists_en, ItemsColors, LibList
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
 from nlightreader.items import Manga, Character, Chapter, HistoryNote
-from nlightreader.utils import Database, FileManager, get_catalog, get_status, get_language_icon, \
-    translate, Worker, description_to_html
+from nlightreader.utils import (
+    Database,
+    FileManager,
+    get_catalog,
+    get_status,
+    get_language_icon,
+    translate,
+    Worker,
+    description_to_html,
+)
 from nlightreader.windows.Reader import ReaderWindow
 
 
@@ -23,11 +31,11 @@ class FormInfo(QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
-        self.ui.shikimori_btn.setIcon(QIcon(':/actions_black/data/icons/buttons/svg_24dp_black/actions/shikimori.svg'))
+        self.ui.shikimori_btn.setIcon(QIcon(":/actions_black/data/icons/buttons/svg_24dp_black/actions/shikimori.svg"))
 
-        self.setObjectName('FormInfo')
+        self.setObjectName("FormInfo")
 
-        self.ui.lib_list_box.addItems([translate('Form', i.capitalize()) for i in lib_lists_en])
+        self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in lib_lists_en])
         self.ui.items_tree.doubleClicked.connect(self.open_reader)
         self.ui.characters_list.doubleClicked.connect(self.open_character)
         self.ui.related_list.doubleClicked.connect(self.open_related_manga)
@@ -73,9 +81,9 @@ class FormInfo(QWidget):
         selected_item = context_target.itemAt(pos)
         if not selected_item or not selected_item.parent():
             return
-        selected_chapter = self.sorted_chapters[
-            selected_item.parent().text(0)][
-            selected_item.parent().indexOfChild(selected_item)]
+        selected_chapter = self.sorted_chapters[selected_item.parent().text(0)][
+            selected_item.parent().indexOfChild(selected_item)
+        ]
         if not self.db.check_complete_chapter(selected_chapter):
             menu.set_mode(0)
         else:
@@ -105,9 +113,9 @@ class FormInfo(QWidget):
         selected_item = self.ui.items_tree.currentItem()
         if not selected_item.parent():
             return
-        selected_chapter = self.sorted_chapters[
-            selected_item.parent().text(0)][
-            selected_item.parent().indexOfChild(selected_item)]
+        selected_chapter = self.sorted_chapters[selected_item.parent().text(0)][
+            selected_item.parent().indexOfChild(selected_item)
+        ]
         return selected_chapter
 
     def get_current_manga(self):
@@ -122,6 +130,7 @@ class FormInfo(QWidget):
             except Exception as e:
                 print(e)
                 self.setup_error.emit()
+
         Worker(target=info_setup, callback=self.update_additional_info).start(pool=self.thread_pool)
 
     def update_add_button_icon(self):
@@ -162,8 +171,11 @@ class FormInfo(QWidget):
         if not self.manga_pixmap:
             self.manga_pixmap = FileManager.get_manga_preview(self.manga, self.catalog)
         image_size = QSize(self.width() // 5, self.height() // 2)
-        pixmap = self.manga_pixmap.scaled(image_size, Qt.AspectRatioMode.KeepAspectRatio,
-                                          Qt.TransformationMode.SmoothTransformation)
+        pixmap = self.manga_pixmap.scaled(
+            image_size,
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation,
+        )
         self.ui.image.setPixmap(pixmap)
 
     def set_info(self):
@@ -220,6 +232,7 @@ class FormInfo(QWidget):
                     lang_item.addChild(ch_item)
                 if len(self.sorted_chapters) == 1:
                     lang_item.setExpanded(True)
+
         Worker(target=get_chapters, callback=update_chapters).start(pool=self.thread_pool)
 
     def get_relations(self):
@@ -232,6 +245,7 @@ class FormInfo(QWidget):
             for manga in self.related_mangas:
                 item = QListWidgetItem(manga.get_name())
                 self.ui.related_list.addItem(item)
+
         Worker(target=get_relations, callback=update_relations).start(pool=self.thread_pool)
 
     def get_characters(self):
@@ -244,6 +258,7 @@ class FormInfo(QWidget):
             for character in self.related_characters:
                 item = QListWidgetItem(character.get_name())
                 self.ui.characters_list.addItem(item)
+
         Worker(target=get_characters, callback=update_characters).start(pool=self.thread_pool)
 
     @Slot()
