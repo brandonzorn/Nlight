@@ -21,7 +21,7 @@ class FormFacial(MangaItemBasedWidget):
         self.ui.prev_btn.setIcon(FluentIcon.LEFT_ARROW)
         self.ui.filter_btn.setIcon(FluentIcon.FILTER)
 
-        self.setObjectName('FormFacial')
+        self.setObjectName("FormFacial")
 
         self.manga_area = MangaArea(self.ui.items_layout)
 
@@ -31,8 +31,8 @@ class FormFacial(MangaItemBasedWidget):
         self.ui.apply_btn.clicked.connect(self.apply_filter)
         self.ui.reset_btn.clicked.connect(self.reset_filter)
         self.ui.filter_btn.clicked.connect(self.change_filters_visible)
-        self.ui.catalogs_btn.clicked.connect(lambda: self.ui.catalogs_frame.setVisible(
-            not self.ui.catalogs_list.isVisible()))
+        self.ui.catalogs_btn.clicked.connect(
+            lambda: self.ui.catalogs_frame.setVisible(not self.ui.catalogs_list.isVisible()))
         self.ui.catalogs_list.itemClicked.connect(
             lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row()))
 

@@ -1,5 +1,8 @@
 [flake8]
-extend-ignore = F401,I101,N802
+inline-quotes=double
+import-order-style=google
+max-line-length = 120
+extend-ignore = I202,I101,R503,R502,R504
 exclude =
     .git,
     __pycache__,
@@ -10,5 +13,5 @@ exclude =
     venv,
     venv-fluent,
     data,
+    __init__.py,
     nlight_res_rc.py
-max-line-length = 120

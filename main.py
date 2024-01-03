@@ -1,8 +1,6 @@
-import os
 import sys
 import time
-
-from qfluentwidgets import Theme, setTheme
+from pathlib import Path
 
 import darkdetect
 import platformdirs
@@ -62,11 +60,10 @@ class MainWindow(ParentWindow):
         event.accept()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
     QThreadPool.globalInstance().setMaxThreadCount(32)
     app = App(sys.argv)
-    # setTheme(Theme.DARK)
-    os.makedirs(f'{platformdirs.user_data_dir()}/{APP_NAME}', exist_ok=True)
+    Path(f"{platformdirs.user_data_dir()}/{APP_NAME}").mkdir(parents=True, exist_ok=True)
     window = MainWindow()
     sys.exit(app.exec())

@@ -20,7 +20,7 @@ class FormRate(QDialog):
         self.ui.delete_btn.setIcon(FluentIcon.DELETE)
 
         self.layout().setSizeConstraint(QLayout.SetFixedSize)
-        self.ui.lib_list_box.addItems([translate('Form', i.capitalize()) for i in lib_lists_en])
+        self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in lib_lists_en])
         self.ui.update_btn.clicked.connect(self.send_rate)
         self.ui.cancel_btn.clicked.connect(self.close)
         self.ui.delete_btn.clicked.connect(self.delete_rate)
@@ -29,7 +29,7 @@ class FormRate(QDialog):
 
         self.user_rate = None
 
-        self.setWindowTitle(f'{self.manga.get_name()}')
+        self.setWindowTitle(f"{self.manga.get_name()}")
 
         self.setup()
 

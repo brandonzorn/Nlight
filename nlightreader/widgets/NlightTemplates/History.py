@@ -19,7 +19,7 @@ class FormHistory(QWidget):
 
         self.ui.delete_btn.setIcon(FluentIcon.DELETE)
 
-        self.setObjectName('FormHistory')
+        self.setObjectName("FormHistory")
 
         self.ui.items_tree.customContextMenuRequested.connect(self.on_context_menu)
         self.db: Database = Database()
@@ -98,8 +98,7 @@ class FormHistory(QWidget):
         if not selected_item.parent():
             index = self.ui.items_tree.indexFromItem(selected_item).row()
             return list(self.sorted_notes.keys())[index]
-        else:
-            return self._get_selected_note().manga
+        return self._get_selected_note().manga
 
     @Slot()
     def delete_note(self):
