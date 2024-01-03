@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QSpacerItem, QSizePolicy, QFrame
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QSpacerItem, QSizePolicy
 from qfluentwidgets import ScrollArea
 
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
