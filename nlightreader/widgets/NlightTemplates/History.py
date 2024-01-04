@@ -92,8 +92,7 @@ class FormHistory(QWidget):
         if not selected_item.parent():
             index = self.ui.items_tree.indexFromItem(selected_item).row()
             return list(self.sorted_notes.keys())[index]
-        else:
-            return self._get_selected_note().manga
+        return self._get_selected_note().manga
 
     @Slot()
     def delete_note(self):

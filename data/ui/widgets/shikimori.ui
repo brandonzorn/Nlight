@@ -83,9 +83,6 @@
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
-             <property name="text">
-              <string/>
-             </property>
             </widget>
            </item>
           </layout>
@@ -117,9 +114,6 @@
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
-             <property name="text">
-              <string/>
-             </property>
             </widget>
            </item>
            <item>
@@ -133,9 +127,6 @@
             <widget class="QPushButton" name="next_btn">
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
-             </property>
-             <property name="text">
-              <string/>
              </property>
             </widget>
            </item>

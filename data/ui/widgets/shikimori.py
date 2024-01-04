@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'shikimori.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.3
+## Created by: Qt User Interface Compiler version 6.5.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -181,10 +181,7 @@ class Ui_Form(object):
     # setupUi
 
     def retranslateUi(self, Form):
-        self.search_btn.setText("")
-        self.prev_btn.setText("")
         self.page_label.setText(QCoreApplication.translate("Form", u"Page 1", None))
-        self.next_btn.setText("")
         self.planned_btn.setText(QCoreApplication.translate("Form", u"Planned", None))
         self.completed_btn.setText(QCoreApplication.translate("Form", u"Completed", None))
         self.reading_btn.setText(QCoreApplication.translate("Form", u"Reading", None))
