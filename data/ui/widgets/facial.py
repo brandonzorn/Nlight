@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'facial.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.3
+## Created by: Qt User Interface Compiler version 6.5.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -260,11 +260,8 @@ class Ui_Form(object):
     # setupUi
 
     def retranslateUi(self, Form):
-        self.search_btn.setText("")
         self.filter_btn.setText(QCoreApplication.translate("Form", u"Filters", None))
-        self.prev_btn.setText("")
         self.page_label.setText(QCoreApplication.translate("Form", u"Page 1", None))
-        self.next_btn.setText("")
         self.label.setText(QCoreApplication.translate("Form", u"Order", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"Kind", None))
         self.genres_btn.setText(QCoreApplication.translate("Form", u"Genres list", None))

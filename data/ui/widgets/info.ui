@@ -54,9 +54,6 @@
           <property name="cursor">
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
-          <property name="text">
-           <string/>
-          </property>
          </widget>
         </item>
         <item>
@@ -126,9 +123,6 @@
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
-               <property name="text">
-                <string/>
-               </property>
                <property name="checkable">
                 <bool>true</bool>
                </property>
@@ -162,9 +156,6 @@
               <widget class="QPushButton" name="shikimori_btn">
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
-               </property>
-               <property name="text">
-                <string/>
                </property>
               </widget>
              </item>

@@ -70,9 +70,6 @@
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
-        <property name="text">
-         <string/>
-        </property>
        </widget>
       </item>
       <item>

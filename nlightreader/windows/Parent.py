@@ -41,12 +41,7 @@ class ParentWindow(QMainWindow):
         self.ui.top_item.setCurrentWidget(widget)
 
     def set_min_size_by_screen(self):
-        self.setMinimumSize(
-            QSize(
-                self.screen().size().width() // 2,
-                self.screen().size().height() // 2,
-            )
-        )
+        self.setMinimumSize(QSize(self.screen().size().width() // 2, self.screen().size().height() // 2))
 
     @Slot(Manga)
     def open_info(self, manga: Manga):

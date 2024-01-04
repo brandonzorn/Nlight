@@ -7,9 +7,9 @@ from nlightreader.utils import translate
 class ReadMarkMenu(QMenu):
     def __init__(self):
         super().__init__()
-        self.set_as_read = QAction(translate('Menu', 'Mark as read'))
-        self.set_as_read_all = QAction(translate('Menu', 'Mark as read all previous'))
-        self.remove_read_state = QAction(translate('Menu', 'Remove read mark'))
+        self.set_as_read = QAction(translate("Menu", "Mark as read"))
+        self.set_as_read_all = QAction(translate("Menu", "Mark as read all previous"))
+        self.remove_read_state = QAction(translate("Menu", "Remove read mark"))
 
     def set_mode(self, mode: int):
         """
@@ -31,5 +31,5 @@ class ReadMarkMenu(QMenu):
             ],
         }
         if mode not in actions:
-            raise ValueError('Invalid mode: must be 0, 1 or 2')
+            raise ValueError("Invalid mode: must be 0, 1 or 2")
         self.addActions(actions.get(mode, []))
