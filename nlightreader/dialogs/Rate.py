@@ -14,12 +14,10 @@ class FormRate(QDialog):
         super().__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-
+        self.layout().setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
         self.ui.cancel_btn.setIcon(FluentIcon.CANCEL)
         self.ui.update_btn.setIcon(FluentIcon.UPDATE)
         self.ui.delete_btn.setIcon(FluentIcon.DELETE)
-
-        self.layout().setSizeConstraint(QLayout.SetFixedSize)
         self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in lib_lists_en])
         self.ui.update_btn.clicked.connect(self.send_rate)
         self.ui.cancel_btn.clicked.connect(self.close)
