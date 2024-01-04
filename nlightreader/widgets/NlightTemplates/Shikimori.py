@@ -3,13 +3,11 @@ from PySide6.QtCore import Slot
 from data.ui.widgets.shikimori import Ui_Form
 from nlightreader.consts import LibList
 from nlightreader.dialogs import FormAuth
-from nlightreader.items import Manga, User
+from nlightreader.items import Manga
 from nlightreader.parsers import ShikimoriLib
-from nlightreader.utils import translate
+from nlightreader.utils import translate, Worker
 from nlightreader.widgets.NlightContainers.manga_area import MangaArea
-from nlightreader.widgets.NlightTemplates.BaseWidget import (
-    MangaItemBasedWidget,
-)
+from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
@@ -42,11 +40,18 @@ class FormShikimori(MangaItemBasedWidget):
         return item
 
     def update_user_info(self):
-        whoami = self.get_whoami()
-        if whoami.nickname:
-            self.ui.auth_btn.setText(whoami.nickname)
-        else:
-            self.ui.auth_btn.setText(translate("Other", "Sign in"))
+        def get_user_info():
+            self.whoami = self.catalog.get_user()
+
+        def set_user_info():
+            if self.whoami.nickname:
+                self.ui.auth_btn.setText(self.whoami.nickname)
+            else:
+                self.ui.auth_btn.setText(translate("Other", "Sign in"))
+            self.ui.auth_btn.setEnabled(True)
+
+        self.ui.auth_btn.setEnabled(False)
+        Worker(target=get_user_info, callback=set_user_info).start()
 
     def update_page(self):
         self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
@@ -54,18 +59,11 @@ class FormShikimori(MangaItemBasedWidget):
     @Slot()
     def auth_accept(self):
         self.catalog.session.auth_login(self.Form_auth.get_user_data())
-        whoami = self.get_whoami()
-        if whoami.nickname:
-            self.ui.auth_btn.setText(whoami.nickname)
-        else:
-            self.ui.auth_btn.setText(translate("Other", "Sign in"))
+        self.update_user_info()
 
     @Slot()
     def authorize(self):
         self.Form_auth.exec()
-
-    def get_whoami(self) -> User:
-        return self.catalog.get_user()
 
     @Slot()
     def search(self):
