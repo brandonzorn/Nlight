@@ -6,8 +6,6 @@
 /build*
 /Nlight.spec
 /keys.py
-/Nlight*.bat
-/Nlight*.sh
 /package
 *.pyc
 .dmypy.json
