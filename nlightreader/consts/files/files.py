@@ -4,7 +4,7 @@ from PySide6.QtCore import QFile, QTextStream
 
 
 def read_file(file: QFile):
-    file.open(QFile.ReadOnly | QFile.Text)
+    file.open(QFile.OpenModeFlag.ReadOnly | QFile.OpenModeFlag.Text)
     stream = QTextStream(file)
     return stream.readAll()
 
