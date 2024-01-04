@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'info.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.3
+## Created by: Qt User Interface Compiler version 6.5.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -286,9 +286,6 @@ class Ui_Form(object):
     # setupUi
 
     def retranslateUi(self, Form):
-        self.back_btn.setText("")
-        self.add_btn.setText("")
-        self.shikimori_btn.setText("")
         self.image.setText("")
         self.name_label.setText(QCoreApplication.translate("Form", u"name", None))
         self.russian_label.setText(QCoreApplication.translate("Form", u"russian", None))

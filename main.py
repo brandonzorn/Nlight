@@ -1,6 +1,6 @@
-import os
 import sys
 import time
+from pathlib import Path
 
 import darkdetect
 import platformdirs
@@ -64,11 +64,11 @@ class MainWindow(ParentWindow):
         event.accept()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
-    QApplication.setStyle('Fusion')
+    QApplication.setStyle("Fusion")
     QThreadPool.globalInstance().setMaxThreadCount(32)
     app = App(sys.argv)
-    os.makedirs(f'{platformdirs.user_data_dir()}/{APP_NAME}', exist_ok=True)
+    Path(f"{platformdirs.user_data_dir()}/{APP_NAME}").mkdir(parents=True, exist_ok=True)
     window = MainWindow()
     sys.exit(app.exec())

@@ -4,7 +4,7 @@ from nlightreader.items import Manga, Chapter, Image, RequestForm, Genre, Kind, 
 
 
 class Parser:
-    CATALOG_NAME = 'CATALOG'
+    CATALOG_NAME = "CATALOG"
     CATALOG_ID = -1
     is_primary = False
 
@@ -38,13 +38,13 @@ class Parser:
         return
 
     def get_genres(self):
-        return [Genre(i['value'], self.CATALOG_ID, i['name'], i['russian']) for i in self.items.GENRES]
+        return [Genre(i["value"], self.CATALOG_ID, i["name"], i["russian"]) for i in self.items.GENRES]
 
     def get_kinds(self) -> list[Kind]:
-        return [Kind(i['value'], self.CATALOG_ID, i['name'], i['russian']) for i in self.items.KINDS]
+        return [Kind(i["value"], self.CATALOG_ID, i["name"], i["russian"]) for i in self.items.KINDS]
 
     def get_orders(self) -> list[Order]:
-        return [Order(i['value'], self.CATALOG_ID, i['name'], i['russian']) for i in self.items.ORDERS]
+        return [Order(i["value"], self.CATALOG_ID, i["name"], i["russian"]) for i in self.items.ORDERS]
 
     def get_relations(self, manga: Manga) -> list[Manga]:
         return []
@@ -64,7 +64,7 @@ class LibParser:
         return []
 
     def get_user(self) -> User:
-        return User(None, 'Войти', None)
+        return User(None, "Войти", None)
 
     def create_user_rate(self, manga: Manga):
         pass
