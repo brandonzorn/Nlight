@@ -45,7 +45,6 @@ class Manga(BaseItem):
     def kind(self, kind):
         if not isinstance(kind, Nl.MangaKind):
             raise TypeError("Kind must be Nl.MangaKind")
-        print(f"{self.name}:", kind)
         self._kind = kind
 
     def get_description(self) -> str:
