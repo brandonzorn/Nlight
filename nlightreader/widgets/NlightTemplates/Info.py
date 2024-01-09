@@ -3,7 +3,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget, QListWidgetItem, QTreeWidgetItem
 
 from data.ui.widgets.info import Ui_Form
-from nlightreader.consts import lib_lists_en, ItemsColors, LibList
+from nlightreader.consts import lib_lists_en, ItemsColors, Nl
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
 from nlightreader.items import Manga, Character, Chapter, HistoryNote
@@ -184,13 +184,13 @@ class FormInfo(QWidget):
         if self.db.check_manga_library(self.manga):
             self.db.rem_manga_library(self.manga)
         else:
-            lib_list = LibList(self.ui.lib_list_box.currentIndex())
+            lib_list = Nl.LibList(self.ui.lib_list_box.currentIndex())
             self.db.add_manga_library(self.manga, lib_list)
 
     @Slot()
     def change_lib_list(self):
         if self.db.check_manga_library(self.manga):
-            lib_list = LibList(self.ui.lib_list_box.currentIndex())
+            lib_list = Nl.LibList(self.ui.lib_list_box.currentIndex())
             self.db.add_manga_library(self.manga, lib_list)
 
     def get_chapters(self):

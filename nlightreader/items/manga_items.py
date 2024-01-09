@@ -2,6 +2,7 @@ import re
 
 from PySide6.QtCore import QLocale
 
+from nlightreader.consts import Nl
 from nlightreader.items.BaseItem import BaseItem
 from nlightreader.items.sort_items import Genre
 
@@ -9,7 +10,7 @@ from nlightreader.items.sort_items import Genre
 class Manga(BaseItem):
     def __init__(self, content_id: str, catalog_id, name, russian):
         super().__init__(content_id, catalog_id, name, russian)
-        self.kind: str | None = None
+        self._kind: Nl.MangaKind = Nl.MangaKind.undefined
         self.description: dict = {}
         self._score: int | float = 0
         self.status: str | None = None
@@ -35,6 +36,17 @@ class Manga(BaseItem):
         if isinstance(score, float) and score.is_integer():
             score = int(score)
         self._score = score
+
+    @property
+    def kind(self):
+        return self._kind
+
+    @kind.setter
+    def kind(self, kind):
+        if not isinstance(kind, Nl.MangaKind):
+            raise TypeError("Kind must be Nl.MangaKind")
+        print(f"{self.name}:", kind)
+        self._kind = kind
 
     def get_description(self) -> str:
         if self.description.get("all"):

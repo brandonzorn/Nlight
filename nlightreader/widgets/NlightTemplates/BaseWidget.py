@@ -3,7 +3,7 @@ import time
 from PySide6.QtCore import QThreadPool, Signal, QMutex, Slot
 from PySide6.QtWidgets import QWidget
 
-from nlightreader.consts import LibList
+from nlightreader.consts import Nl
 from nlightreader.items import Manga, RequestForm
 from nlightreader.utils import Thread
 from nlightreader.widgets.NlightContainers.manga_area import MangaArea
@@ -72,7 +72,7 @@ class MangaItemBasedWidget(QWidget):
     def update_page(self):
         pass
 
-    @Slot(LibList)
-    def change_list(self, lst: LibList):
+    @Slot(Nl.LibList)
+    def change_list(self, lst: Nl.LibList):
         self.request_params.lib_list = lst
         self.get_content()
