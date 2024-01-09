@@ -102,44 +102,23 @@ def make_request(url: str, method: str, *,
         print(f"  Data: {data}")
 
 
-def get_language_icon(lang_code: str) -> str:
+def get_language_icon(language: Nl.Language) -> str:
     """
     Returns the file path to the icon for the specified language.
 
-    :param lang_code: A string representing a language code.
+    :param language: Nl.Language.
     :return: The file path to the icon associated with the language as a string, or an empty string if no icon is found.
     """
+    if not isinstance(language, Nl.Language):
+        raise TypeError("Language must be Nl.Language")
     lang_icons = {
-        "ru": LangIcons.Ru,
-        "en": LangIcons.Gb,
-        "jp": LangIcons.Jp,
-        "ua": LangIcons.Ua,
+        Nl.Language.ru: LangIcons.Ru,
+        Nl.Language.en: LangIcons.Gb,
+        Nl.Language.jp: LangIcons.Jp,
+        Nl.Language.uk: LangIcons.Ua,
+        Nl.Language.undefined: "",
     }
-    return lang_icons.get(lang_code, "")
-
-
-def get_manga_kind(kind: str) -> Nl.MangaKind:
-    """
-    Returns the corresponding value from the `Nl.MangaKind` enumeration for a given string `kind`.
-
-    Args:
-        kind (str): A string representing the kind of manga.
-    Returns:
-        MangaKind: The corresponding value from the `Nl.MangaKind` enumeration.
-    Raises:
-        ValueError: If no matches were found for the input `kind`.
-    """
-    kinds_matches = {
-        "manga": Nl.MangaKind.manga,
-        "manhwa": Nl.MangaKind.manhwa,
-        "manhua": Nl.MangaKind.manhua,
-        "one_shot": Nl.MangaKind.one_shot,
-        "doujin": Nl.MangaKind.doujin,
-        "ranobe": Nl.MangaKind.ranobe,
-    }
-    if kind not in kinds_matches:
-        raise ValueError(f"No matches found for kind '{kind}'.")
-    return kinds_matches[kind]
+    return lang_icons.get(language)
 
 
 def get_locale(locale: QLocale.Language) -> str:

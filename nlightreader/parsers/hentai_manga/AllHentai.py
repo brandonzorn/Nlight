@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 
-from nlightreader.consts import URL_ALLHENTAI, URL_ALLHENTAI_API
+from nlightreader.consts import URL_ALLHENTAI, URL_ALLHENTAI_API, Nl
 from nlightreader.items import Manga, Chapter, Image
 from nlightreader.parsers.catalogs_base import HentaiMangaCatalog
 from nlightreader.utils.utils import get_html, make_request
@@ -47,7 +47,10 @@ class AllHentai(HentaiMangaCatalog):
                     if chapter_as_num.is_integer():
                         chapter_as_num = int(chapter_as_num)
                     chapter_num = str(chapter_as_num)
-                chapters.append(Chapter(manga.content_id, self.CATALOG_ID, volume, chapter_num, "", "ru"))
+
+                chapter = Chapter(manga.content_id, self.CATALOG_ID, volume, chapter_num, "")
+                chapter.language = Nl.Language.ru
+                chapters.append(chapter)
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter):

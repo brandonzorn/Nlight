@@ -36,7 +36,7 @@ class NHentai(HentaiMangaCatalog):
         return mangas
 
     def get_chapters(self, manga: Manga):
-        return [Chapter(manga.content_id, self.CATALOG_ID, "1", "1", "", "")]
+        return [Chapter(manga.content_id, self.CATALOG_ID, "1", "1", "")]
 
     def get_images(self, manga: Manga, chapter: Chapter):
         url = f"{self.url}/g/{manga.content_id}"

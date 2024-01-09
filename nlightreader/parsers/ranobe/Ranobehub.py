@@ -56,8 +56,12 @@ class Ranobehub(RanobeCatalog):
             for i in get_data(response, ["volumes"], default_val=[]):
                 volume_num = i.get("num")
                 for chapter_data in get_data(i, ["chapters"], []):
-                    chapters.append(Chapter(chapter_data.get("id"), self.CATALOG_ID, volume_num,
-                                            chapter_data.get("num"), chapter_data.get("name"), "ru"))
+                    chapter = Chapter(
+                        chapter_data.get("id"), self.CATALOG_ID,
+                        volume_num, chapter_data.get("num"), chapter_data.get("name"),
+                    )
+                    chapter.lang = Nl.Language.ru
+                    chapters.append(chapter)
             chapters.reverse()
         return chapters
 
