@@ -100,8 +100,12 @@ class MangaDex(MangaCatalog):
                 html = get_html(url, headers=self.headers, params=params)
                 for i in get_data(html.json(), ["data"]):
                     attr = i.get("attributes")
-                    chapters.append(Chapter(i.get("id"), self.CATALOG_ID, attr.get("volume"), attr.get("chapter"),
-                                            attr.get("title"), attr.get("translatedLanguage")))
+
+                    chapter = Chapter(
+                        i.get("id"), self.CATALOG_ID, attr.get("volume"), attr.get("chapter"), attr.get("title"),
+                    )
+                    chapter.language = Nl.Language.from_str(attr.get("translatedLanguage"))
+                    chapters.append(chapter)
             chapters.reverse()
         return chapters
 

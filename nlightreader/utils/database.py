@@ -69,7 +69,7 @@ class Database:
         for chapter in chapters:
             self.__cur.execute("INSERT INTO chapters VALUES(?, ?, ?, ?, ?, ?, ?, ?);",
                                (chapter.id, chapter.content_id, chapter.catalog_id, chapter.vol, chapter.ch,
-                                chapter.title, chapter.language, manga.id))
+                                chapter.title, chapter.language.name, manga.id))
         self.__con.commit()
 
     def get_chapter(self, chapter_id: str):
@@ -79,13 +79,21 @@ class Database:
         vol = a[3]
         ch = a[4]
         title = a[5]
-        language = a[6]
-        return Chapter(content_id, catalog_id, vol, ch, title, language)
+        language = Nl.Language.from_str(a[6])
+
+        chapter = Chapter(content_id, catalog_id, vol, ch, title)
+        chapter.language = language
+        return chapter
 
     @with_lock_thread(lock)
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         a = self.__cur.execute(f"SELECT * FROM chapters WHERE manga_id = '{manga.id}' ORDER by index_n").fetchall()
-        return [Chapter(i[1], i[2], i[3], i[4], i[5], a[6]) for i in a[::-1]]
+        chapters = []
+        for i in a[::-1]:
+            chapter = Chapter(i[1], i[2], i[3], i[4], i[5])
+            chapter.language = Nl.Language.from_str(a[6])
+            chapters.append(chapter)
+        return chapters
 
     @with_lock_thread(lock)
     def add_manga_library(self, manga: Manga, lib_list: Nl.LibList = Nl.LibList.planned):

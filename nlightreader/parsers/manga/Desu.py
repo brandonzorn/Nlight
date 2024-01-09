@@ -58,7 +58,9 @@ class Desu(MangaCatalog):
                 ch = i.get("ch")
                 vol = str(vol) if vol is not None else vol
                 ch = str(ch) if ch is not None else ch
-                chapters.append(Chapter(i.get("id"), self.CATALOG_ID, vol, ch, i.get("title"), "ru"))
+                chapter = Chapter(i.get("id"), self.CATALOG_ID, vol, ch, i.get("title"))
+                chapter.language = Nl.Language.ru
+                chapters.append(chapter)
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter):

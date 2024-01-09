@@ -108,7 +108,8 @@ class FormInfo(QWidget):
         selected_item = self.ui.items_tree.currentItem()
         if not selected_item.parent():
             return
-        return self.sorted_chapters[selected_item.parent().text(0)][
+        top_item_id = self.ui.items_tree.indexOfTopLevelItem(selected_item.parent())
+        return self.sorted_chapters[list(self.sorted_chapters.keys())[top_item_id]][
             selected_item.parent().indexOfChild(selected_item)
         ]
 
@@ -197,7 +198,7 @@ class FormInfo(QWidget):
         def get_chapters():
             self.chapters = self.catalog.get_chapters(self.manga)
             self.chapters.reverse()
-            self.chapters.sort(key=lambda ch: ch.language if ch.language else False)
+            self.chapters.sort(key=lambda ch: ch.language.value if ch.language.value else False)
             self.db.add_chapters(self.chapters, self.manga)
 
         def update_chapters():
@@ -205,7 +206,7 @@ class FormInfo(QWidget):
             self.ui.items_frame.setVisible(bool(self.chapters))
             self.sort_chapters()
             for lang in self.sorted_chapters:
-                lang_item = QTreeWidgetItem([lang])
+                lang_item = QTreeWidgetItem([translate("NlLanguage", lang.to_full_str())])
                 lang_item.setIcon(0, QIcon(get_language_icon(lang)))
                 self.ui.items_tree.addTopLevelItem(lang_item)
                 for chapter in self.sorted_chapters[lang]:

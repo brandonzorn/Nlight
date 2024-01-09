@@ -64,8 +64,10 @@ class Remanga(MangaCatalog):
                     for ch in data:
                         if ch.get("is_paid"):
                             continue
-                        chapter = Chapter(ch.get("id"), self.CATALOG_ID,
-                                          str(ch.get("tome")), ch.get("chapter"), ch.get("name"), "ru")
+                        chapter = Chapter(
+                            ch.get("id"), self.CATALOG_ID, str(ch.get("tome")), ch.get("chapter"), ch.get("name"),
+                        )
+                        chapter.language = Nl.Language.ru
                         chapters.append(chapter)
         return chapters
 
