@@ -1,4 +1,4 @@
-from nlightreader.consts import URL_DESU_API, DESU_HEADERS, URL_DESU
+from nlightreader.consts import URL_DESU_API, DESU_HEADERS, URL_DESU, Nl
 from nlightreader.consts.items import DesuItems
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm
 from nlightreader.parsers.catalogs_base import MangaCatalog
@@ -18,13 +18,13 @@ class Desu(MangaCatalog):
 
     def get_manga(self, manga: Manga):
         url = f"{self.url_api}/{manga.content_id}"
-        html = get_html(url, self.headers)
-        if html and html.status_code == 200 and html.json():
-            data = get_data(html.json(), ["response"], {})
+        response = get_html(url, headers=self.headers, content_type="json")
+        if response:
+            data = get_data(response, ["response"], {})
             manga.genres = [Genre(i.get("id"), self.CATALOG_ID, i.get("text"), i.get("russian"))
                             for i in data.get("genres")]
             manga.score = data.get("score")
-            manga.kind = data.get("kind")
+            manga.kind = Nl.MangaKind.from_str(data.get("kind"))
             manga.description.update({"all": data.get("description")})
             manga.volumes = data.get("chapters").get("last").get("vol")
             manga.chapters = data.get("chapters").get("last").get("ch")
@@ -41,28 +41,32 @@ class Desu(MangaCatalog):
             "order": form.order.content_id,
             "kinds": ",".join([i.content_id for i in form.kinds]),
         }
-        html = get_html(url, self.headers, params)
+        response = get_html(url, headers=self.headers, params=params, content_type="json")
         manga = []
-        if html and html.status_code == 200 and html.json():
-            for i in get_data(html.json(), ["response"]):
+        if response:
+            for i in get_data(response, ["response"]):
                 manga.append(Manga(i.get("id"), self.CATALOG_ID, i.get("name"), i.get("russian")))
         return manga
 
     def get_chapters(self, manga: Manga):
         url = f"{self.url_api}/{manga.content_id}"
-        html = get_html(url, self.headers)
+        response = get_html(url, headers=self.headers, content_type="json")
         chapters = []
-        if html and html.status_code == 200 and html.json():
-            for i in get_data(html.json(), ["response", "chapters", "list"]):
-                chapters.append(Chapter(i.get("id"), self.CATALOG_ID, i.get("vol"), i.get("ch"), i.get("title"), "ru"))
+        if response:
+            for i in get_data(response, ["response", "chapters", "list"]):
+                vol = i.get("vol")
+                ch = i.get("ch")
+                vol = str(vol) if vol is not None else vol
+                ch = str(ch) if ch is not None else ch
+                chapters.append(Chapter(i.get("id"), self.CATALOG_ID, vol, ch, i.get("title"), "ru"))
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter):
         url = f"{self.url_api}/{manga.content_id}/chapter/{chapter.content_id}"
-        html = get_html(url, headers=self.headers)
+        response = get_html(url, headers=self.headers, content_type="json")
         images = []
-        if html and html.status_code == 200 and html.json():
-            for i in get_data(html.json(), ["response", "pages", "list"]):
+        if response:
+            for i in get_data(response, ["response", "pages", "list"]):
                 image_id = i.get("id")
                 page = i.get("page")
                 img: str = i.get("img")

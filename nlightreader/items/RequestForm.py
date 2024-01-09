@@ -1,4 +1,4 @@
-from nlightreader.consts import LibList
+from nlightreader.consts import Nl
 from nlightreader.items.sort_items import Order, Genre, Kind
 
 
@@ -10,7 +10,7 @@ class RequestForm:
         self.genres: list[Genre] = []
         self.order: Order = Order.get_empty_instance()
         self.kinds: list[Kind] = []
-        self.lib_list = LibList.planned
+        self.lib_list = Nl.LibList.planned
 
     @property
     def offset(self):
@@ -29,4 +29,4 @@ class RequestForm:
         self.genres = []
         self.order = Order.get_empty_instance()
         self.kinds = []
-        self.lib_list = LibList.planned
+        self.lib_list = Nl.LibList.planned

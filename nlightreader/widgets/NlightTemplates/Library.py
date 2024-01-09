@@ -1,6 +1,6 @@
 from data.ui.widgets.library import Ui_Form
 
-from nlightreader.consts import LibList
+from nlightreader.consts import Nl
 from nlightreader.items import Manga
 from nlightreader.parsers import LocalLib
 from nlightreader.widgets.NlightContainers.manga_area import MangaArea
@@ -18,12 +18,12 @@ class FormLibrary(MangaItemBasedWidget):
 
         self.manga_area = MangaArea(self.ui.items_layout)
 
-        self.ui.planned_btn.clicked.connect(lambda: self.change_list(LibList.planned))
-        self.ui.reading_btn.clicked.connect(lambda: self.change_list(LibList.reading))
-        self.ui.on_hold_btn.clicked.connect(lambda: self.change_list(LibList.on_hold))
-        self.ui.completed_btn.clicked.connect(lambda: self.change_list(LibList.completed))
-        self.ui.dropped_btn.clicked.connect(lambda: self.change_list(LibList.dropped))
-        self.ui.re_reading_btn.clicked.connect(lambda: self.change_list(LibList.re_reading))
+        self.ui.planned_btn.clicked.connect(lambda: self.change_list(Nl.LibList.planned))
+        self.ui.reading_btn.clicked.connect(lambda: self.change_list(Nl.LibList.reading))
+        self.ui.on_hold_btn.clicked.connect(lambda: self.change_list(Nl.LibList.on_hold))
+        self.ui.completed_btn.clicked.connect(lambda: self.change_list(Nl.LibList.completed))
+        self.ui.dropped_btn.clicked.connect(lambda: self.change_list(Nl.LibList.dropped))
+        self.ui.re_reading_btn.clicked.connect(lambda: self.change_list(Nl.LibList.re_reading))
         self.catalog = LocalLib()
 
     def update_content(self):
