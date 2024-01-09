@@ -50,11 +50,15 @@ class Desu(MangaCatalog):
 
     def get_chapters(self, manga: Manga):
         url = f"{self.url_api}/{manga.content_id}"
-        html = get_html(url, self.headers)
+        response = get_html(url, headers=self.headers, content_type="json")
         chapters = []
-        if html and html.status_code == 200 and html.json():
-            for i in get_data(html.json(), ["response", "chapters", "list"]):
-                chapters.append(Chapter(i.get("id"), self.CATALOG_ID, i.get("vol"), i.get("ch"), i.get("title"), "ru"))
+        if response:
+            for i in get_data(response, ["response", "chapters", "list"]):
+                vol = i.get("vol")
+                ch = i.get("ch")
+                vol = str(vol) if vol is not None else vol
+                ch = str(ch) if ch is not None else ch
+                chapters.append(Chapter(i.get("id"), self.CATALOG_ID, vol, ch, i.get("title"), "ru"))
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter):
