@@ -1,4 +1,4 @@
-from nlightreader.consts import URL_MANGA_DEX_API, URL_MANGA_DEX, LibList, MANGA_DEX_HEADERS
+from nlightreader.consts import URL_MANGA_DEX_API, URL_MANGA_DEX, Nl, MANGA_DEX_HEADERS
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
 from nlightreader.parsers.Parser import LibParser
 from nlightreader.parsers.catalogs_base import MangaCatalog
@@ -25,10 +25,10 @@ class MangaDex(MangaCatalog):
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self.url_api}/manga/{manga.content_id}"
-        response = get_html(url, self.headers, content_type="json")
+        response = get_html(url, headers=self.headers, content_type="json")
         if response:
             data = get_data(response, ["data"])
-            manga.kind = data.get("type")
+            manga.kind = Nl.MangaKind.from_str(data.get("type"))
             description = get_data(data, ["attributes", "description"])
             if description:
                 if description.get("en"):
@@ -71,7 +71,7 @@ class MangaDex(MangaCatalog):
             ],
         }
         mangas = []
-        response = get_html(url, self.headers, params, content_type="json")
+        response = get_html(url, headers=self.headers, params=params, content_type="json")
         if response:
             for i in get_data(response, ["data"]):
                 mangas.append(self.setup_manga(i))
@@ -91,13 +91,13 @@ class MangaDex(MangaCatalog):
                 "pornographic",
             ],
         }
-        response = get_html(url, self.headers, params, content_type="json")
+        response = get_html(url, headers=self.headers, params=params, content_type="json")
         chapters = []
         if response:
             params.update({"limit": 100})
             for j in range(response.get("total") // 100 + 1):
                 params.update({"offset": j * 100})
-                html = get_html(url, self.headers, params)
+                html = get_html(url, headers=self.headers, params=params)
                 for i in get_data(html.json(), ["data"]):
                     attr = i.get("attributes")
                     chapters.append(Chapter(i.get("id"), self.CATALOG_ID, attr.get("volume"), attr.get("chapter"),
@@ -107,7 +107,7 @@ class MangaDex(MangaCatalog):
 
     def get_images(self, manga: Manga, chapter: Chapter):
         url = f"{self.url_api}/at-home/server/{chapter.content_id}"
-        response = get_html(url, self.headers, content_type="json")
+        response = get_html(url, headers=self.headers, content_type="json")
         images = []
         if response:
             img_host = response["baseUrl"]
@@ -166,7 +166,7 @@ class MangaDexLib(MangaDex, LibParser):
 
     def search_manga(self, form: RequestForm):
         mangas = []
-        if form.lib_list == LibList.planned:
+        if form.lib_list == Nl.LibList.planned:
             lib_list = "plan_to_read"
         else:
             lib_list = form.lib_list.name

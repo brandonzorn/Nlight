@@ -3,7 +3,7 @@ from threading import Lock
 
 import platformdirs
 
-from nlightreader.consts import APP_NAME, LibList
+from nlightreader.consts import APP_NAME, Nl
 from nlightreader.items import Chapter, Manga, HistoryNote
 from nlightreader.utils.decorators import with_lock_thread, singleton
 
@@ -36,7 +36,7 @@ class Database:
     @with_lock_thread(lock)
     def add_manga(self, manga: Manga):
         self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-                           (manga.id, manga.content_id, manga.catalog_id, manga.name, manga.russian, manga.kind,
+                           (manga.id, manga.content_id, manga.catalog_id, manga.name, manga.russian, manga.kind.name,
                             manga.descriptions_to_str(), manga.score, manga.status, manga.volumes, manga.chapters))
         self.__con.commit()
 
@@ -44,7 +44,7 @@ class Database:
     def add_mangas(self, mangas: list[Manga]):
         for manga in mangas:
             self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-                               (manga.id, manga.content_id, manga.catalog_id, manga.name, manga.russian, manga.kind,
+                               (manga.id, manga.content_id, manga.catalog_id, manga.name, manga.russian, manga.kind.name,
                                 manga.descriptions_to_str(), manga.score, manga.status, manga.volumes, manga.chapters))
         self.__con.commit()
 
@@ -55,7 +55,7 @@ class Database:
         name = x[3]
         russian = x[4]
         manga = Manga(content_id, catalog_id, name, russian)
-        manga.kind = x[5]
+        manga.kind = Nl.MangaKind.from_str(x[5])
         manga.set_description_from_str(x[6])
         manga.score = x[7]
         manga.status = x[8]
@@ -87,12 +87,12 @@ class Database:
         return [Chapter(i[1], i[2], i[3], i[4], i[5], a[6]) for i in a[::-1]]
 
     @with_lock_thread(lock)
-    def add_manga_library(self, manga: Manga, lib_list: LibList = LibList.planned):
+    def add_manga_library(self, manga: Manga, lib_list: Nl.LibList = Nl.LibList.planned):
         self.__cur.execute("INSERT INTO library VALUES(?, ?);", (manga.id, lib_list.value))
         self.__con.commit()
 
     @with_lock_thread(lock)
-    def get_manga_library(self, lib_list: LibList) -> list[Manga]:
+    def get_manga_library(self, lib_list: Nl.LibList) -> list[Manga]:
         a = self.__cur.execute(f"SELECT manga_id FROM library WHERE list = '{lib_list.value}';").fetchall()
         mangas = []
         for i in a[::-1]:
@@ -100,9 +100,9 @@ class Database:
         return mangas
 
     @with_lock_thread(lock)
-    def get_manga_library_list(self, manga: Manga) -> LibList:
+    def get_manga_library_list(self, manga: Manga) -> Nl.LibList:
         a = self.__cur.execute(f"SELECT list FROM library WHERE manga_id = '{manga.id}';").fetchone()
-        return LibList(a[0])
+        return Nl.LibList(a[0])
 
     @with_lock_thread(lock)
     def check_manga_library(self, manga: Manga) -> bool:

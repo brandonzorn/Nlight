@@ -18,7 +18,7 @@ class NHentai(HentaiMangaCatalog):
     def search_manga(self, form):
         url = f"{self.url}/search"
         params = {"page": form.page, "q": form.search}
-        response = get_html(url, self.headers, params=params, content_type="text")
+        response = get_html(url, headers=self.headers, params=params, content_type="text")
         mangas = []
         if response:
             soup = BeautifulSoup(response, "html.parser")
@@ -41,7 +41,7 @@ class NHentai(HentaiMangaCatalog):
     def get_images(self, manga: Manga, chapter: Chapter):
         url = f"{self.url}/g/{manga.content_id}"
         images = []
-        response = get_html(url, self.headers, content_type="text")
+        response = get_html(url, headers=self.headers, content_type="text")
         if response:
             soup = BeautifulSoup(response, "html.parser")
             html_items = soup.findAll("a", class_="gallerythumb")
@@ -62,7 +62,7 @@ class NHentai(HentaiMangaCatalog):
 
     def get_preview(self, manga: Manga):
         url = f"{self.url}/g/{manga.content_id}"
-        response = get_html(url, self.headers, content_type="text")
+        response = get_html(url, headers=self.headers, content_type="text")
         if response:
             soup = BeautifulSoup(response, "html.parser")
             html_item = soup.find("div", id="cover")
