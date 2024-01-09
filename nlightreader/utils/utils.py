@@ -5,11 +5,11 @@ import requests
 from PySide6.QtCore import QLocale
 from PySide6.QtWidgets import QApplication
 
-from nlightreader.consts import DEFAULT_HEADERS, MangaKinds, StyleColors
+from nlightreader.consts import DEFAULT_HEADERS, Nl, StyleColors
 from nlightreader.consts.files import LangIcons, Translations, Styles
 
 
-def get_html(url: str, headers=None, params=None, json=None, data=None, cookies=None, content_type=None):
+def get_html(url: str, *, headers=None, params=None, json=None, data=None, cookies=None, content_type=None):
     """
     Sends an HTTP GET request to the specified URL with the given headers, query parameters, and cookies.
 
@@ -118,24 +118,24 @@ def get_language_icon(lang_code: str) -> str:
     return lang_icons.get(lang_code, "")
 
 
-def get_manga_kind(kind: str) -> MangaKinds:
+def get_manga_kind(kind: str) -> Nl.MangaKind:
     """
-    Returns the corresponding value from the `MangaKinds` enumeration for a given string `kind`.
+    Returns the corresponding value from the `Nl.MangaKind` enumeration for a given string `kind`.
 
     Args:
         kind (str): A string representing the kind of manga.
     Returns:
-        MangaKinds: The corresponding value from the `MangaKinds` enumeration.
+        MangaKind: The corresponding value from the `Nl.MangaKind` enumeration.
     Raises:
         ValueError: If no matches were found for the input `kind`.
     """
     kinds_matches = {
-        "manga": MangaKinds.manga,
-        "manhwa": MangaKinds.manhwa,
-        "manhua": MangaKinds.manhua,
-        "one_shot": MangaKinds.one_shot,
-        "doujin": MangaKinds.doujin,
-        "ranobe": MangaKinds.ranobe,
+        "manga": Nl.MangaKind.manga,
+        "manhwa": Nl.MangaKind.manhwa,
+        "manhua": Nl.MangaKind.manhua,
+        "one_shot": Nl.MangaKind.one_shot,
+        "doujin": Nl.MangaKind.doujin,
+        "ranobe": Nl.MangaKind.ranobe,
     }
     if kind not in kinds_matches:
         raise ValueError(f"No matches found for kind '{kind}'.")
