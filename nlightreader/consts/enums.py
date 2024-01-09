@@ -60,7 +60,7 @@ class Nl:
                 return cls.ranobe
             if string in ("comics", "Рукомикс", "Западный комикс", "Индонезийский комикс",):
                 return cls.comics
-            if string is None or string in ("Другое",):
+            if string is None or string in ("undefined", "Другое",):
                 return cls.undefined
             raise ValueError(f"unknown manga kind: {string}")
 
