@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QWidget, QListWidgetItem, QTreeWidgetItem
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.info import Ui_Form
-from nlightreader.consts import lib_lists_en, ItemsColors, LibList
+from nlightreader.consts import lib_lists_en, ItemsColors, Nl
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
 from nlightreader.items import Manga, Character, Chapter, HistoryNote
@@ -113,10 +113,10 @@ class FormInfo(QWidget):
         selected_item = self.ui.items_tree.currentItem()
         if not selected_item.parent():
             return
-        selected_chapter = self.sorted_chapters[selected_item.parent().text(0)][
+        top_item_id = self.ui.items_tree.indexOfTopLevelItem(selected_item.parent())
+        return self.sorted_chapters[list(self.sorted_chapters.keys())[top_item_id]][
             selected_item.parent().indexOfChild(selected_item)
         ]
-        return selected_chapter
 
     def get_current_manga(self):
         return self.catalog.get_manga(self.related_mangas[self.ui.related_list.currentIndex().row()])
@@ -197,21 +197,21 @@ class FormInfo(QWidget):
         if self.db.check_manga_library(self.manga):
             self.db.rem_manga_library(self.manga)
         else:
-            lib_list = LibList(self.ui.lib_list_box.currentIndex())
+            lib_list = Nl.LibList(self.ui.lib_list_box.currentIndex())
             self.db.add_manga_library(self.manga, lib_list)
         self.update_add_button_icon()
 
     @Slot()
     def change_lib_list(self):
         if self.db.check_manga_library(self.manga):
-            lib_list = LibList(self.ui.lib_list_box.currentIndex())
+            lib_list = Nl.LibList(self.ui.lib_list_box.currentIndex())
             self.db.add_manga_library(self.manga, lib_list)
 
     def get_chapters(self):
         def get_chapters():
             self.chapters = self.catalog.get_chapters(self.manga)
             self.chapters.reverse()
-            self.chapters.sort(key=lambda ch: ch.language if ch.language else False)
+            self.chapters.sort(key=lambda ch: ch.language.value if ch.language.value else False)
             self.db.add_chapters(self.chapters, self.manga)
 
         def update_chapters():
@@ -219,7 +219,7 @@ class FormInfo(QWidget):
             self.ui.items_frame.setVisible(bool(self.chapters))
             self.sort_chapters()
             for lang in self.sorted_chapters:
-                lang_item = QTreeWidgetItem([lang])
+                lang_item = QTreeWidgetItem([translate("NlLanguage", lang.to_full_str())])
                 lang_item.setIcon(0, QIcon(get_language_icon(lang)))
                 self.ui.items_tree.addTopLevelItem(lang_item)
                 for chapter in self.sorted_chapters[lang]:
