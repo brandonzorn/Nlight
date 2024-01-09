@@ -44,8 +44,9 @@ class Database:
     def add_mangas(self, mangas: list[Manga]):
         for manga in mangas:
             self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-                               (manga.id, manga.content_id, manga.catalog_id, manga.name, manga.russian, manga.kind.name,
-                                manga.descriptions_to_str(), manga.score, manga.status, manga.volumes, manga.chapters))
+                               (manga.id, manga.content_id, manga.catalog_id,
+                                manga.name, manga.russian, manga.kind.name, manga.descriptions_to_str(), manga.score,
+                                manga.status, manga.volumes, manga.chapters))
         self.__con.commit()
 
     def get_manga(self, manga_id: str):
