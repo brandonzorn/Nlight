@@ -26,6 +26,26 @@ class Nl:
         en = 1
         ru = 2
         uk = 3
+        jp = 4
+
+        @classmethod
+        def from_str(cls, string: str):
+            if string in ("en", "eng"):
+                return cls.en
+            if string in ("ru", "rus"):
+                return cls.ru
+            if string in ("uk", "ukr"):
+                return cls.uk
+            if string in ("jp", "jap"):
+                return cls.jp
+            if string in ("undefined",):
+                return cls.undefined
+            logging.warning(f"Unknown language {string}")
+            return cls.undefined
+
+        def to_full_str(self):
+            names = ["Undefined", "English", "Russian", "Ukrainian", "Japanese"]
+            return names[self.value]
 
     @unique
     class CatalogType(Enum):
@@ -65,6 +85,10 @@ class Nl:
                 return cls.undefined
             logging.warning(f"Unknown manga kind: {string}")
             return cls.undefined
+
+        def to_full_str(self):
+            names = ["Undefined", "Manga", "Manhwa", "Manhua", "One shot", "Doujin", "Light Novel", "Comics"]
+            return names[self.value]
 
     @unique
     class LibList(Enum):

@@ -62,13 +62,16 @@ class Rulate(RanobeCatalog):
         if response:
             soup = BeautifulSoup(response, "html.parser")
             ranobe_chapters = soup.findAll("tr", class_="chapter_row")
-            for chapter in ranobe_chapters:
-                if chapter.find("span", class_="disabled") or chapter.find("i", class_="ac_read g"):
+            for chapter_data in ranobe_chapters:
+                if chapter_data.find("span", class_="disabled") or chapter_data.find("i", class_="ac_read g"):
                     continue
-                name: str = chapter.find("td", class_="t").text
+                name: str = chapter_data.find("td", class_="t").text
                 name = name.strip()
-                chapter_id = chapter.unwrap()["data-id"]
-                chapters.append(Chapter(chapter_id, self.CATALOG_ID, "", "", name, "ru"))
+                chapter_id = chapter_data.unwrap()["data-id"]
+
+                chapter = Chapter(chapter_id, self.CATALOG_ID, "", "", name)
+                chapter.language = Nl.Language.ru
+                chapters.append(chapter)
             chapters.reverse()
         return chapters
 

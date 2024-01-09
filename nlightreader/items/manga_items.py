@@ -70,14 +70,14 @@ class Manga(BaseItem):
 
 
 class Chapter:
-    def __init__(self, content_id: str, catalog_id: int, vol: str, ch: str, title: str, language: str):
+    def __init__(self, content_id: str, catalog_id: int, vol: str, ch: str, title: str):
         self.id = f"|{catalog_id}|_|{content_id}|"
         self.content_id = content_id
         self.catalog_id = catalog_id
         self.vol = vol
         self.ch = ch
         self.title = title
-        self.language = language
+        self._language = Nl.Language.undefined
 
     def get_name(self) -> str:
         if not self.vol and not self.ch:
@@ -85,6 +85,16 @@ class Chapter:
         if self.title:
             return f"{self.vol}-{self.ch} {self.title}"
         return f"{self.vol}-{self.ch}"
+
+    @property
+    def language(self):
+        return self._language
+
+    @language.setter
+    def language(self, language):
+        if not isinstance(language, Nl.Language):
+            raise TypeError("Language must be Nl.Language")
+        self._language = language
 
 
 class Image:
