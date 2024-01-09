@@ -1,3 +1,4 @@
+import logging
 import sys
 import time
 from pathlib import Path
@@ -61,6 +62,8 @@ class MainWindow(ParentWindow):
 
 
 if __name__ == "__main__":
+    if "debug" in sys.argv:
+        logging.basicConfig(level=logging.WARNING, filename="latest.log", filemode="w")
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
     QThreadPool.globalInstance().setMaxThreadCount(32)
     app = App(sys.argv)

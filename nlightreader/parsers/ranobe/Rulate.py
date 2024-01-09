@@ -2,7 +2,7 @@ import base64
 
 from bs4 import BeautifulSoup
 
-from nlightreader.consts import URL_RULATE, URL_EROLATE
+from nlightreader.consts import URL_RULATE, URL_EROLATE, Nl
 from nlightreader.consts.items import RulateItems
 from nlightreader.items import Manga, Chapter, Image, RequestForm
 from nlightreader.parsers.catalogs_base import RanobeCatalog
@@ -28,7 +28,7 @@ class Rulate(RanobeCatalog):
                 description_text = hranobe.text
                 if description_text:
                     manga.description.update({"all": str(description_text)})
-            manga.kind = "ranobe"
+            manga.kind = Nl.MangaKind.ranobe
         return manga
 
     def search_manga(self, form: RequestForm):
@@ -62,13 +62,16 @@ class Rulate(RanobeCatalog):
         if response:
             soup = BeautifulSoup(response, "html.parser")
             ranobe_chapters = soup.findAll("tr", class_="chapter_row")
-            for chapter in ranobe_chapters:
-                if chapter.find("span", class_="disabled") or chapter.find("i", class_="ac_read g"):
+            for chapter_data in ranobe_chapters:
+                if chapter_data.find("span", class_="disabled") or chapter_data.find("i", class_="ac_read g"):
                     continue
-                name: str = chapter.find("td", class_="t").text
+                name: str = chapter_data.find("td", class_="t").text
                 name = name.strip()
-                chapter_id = chapter.unwrap()["data-id"]
-                chapters.append(Chapter(chapter_id, self.CATALOG_ID, "", "", name, "ru"))
+                chapter_id = chapter_data.unwrap()["data-id"]
+
+                chapter = Chapter(chapter_id, self.CATALOG_ID, "", "", name)
+                chapter.language = Nl.Language.ru
+                chapters.append(chapter)
             chapters.reverse()
         return chapters
 
@@ -82,7 +85,7 @@ class Rulate(RanobeCatalog):
             url = f"{self.url_api}/{media_id}"
             if media_id.startswith("http"):
                 url = media_id
-            chapter_image = get_html(url, self.headers, content_type="content")
+            chapter_image = get_html(url, headers=self.headers, content_type="content")
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/jpg;base64,{str_equivalent_image}"
 

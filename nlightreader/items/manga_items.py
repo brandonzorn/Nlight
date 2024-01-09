@@ -2,6 +2,7 @@ import re
 
 from PySide6.QtCore import QLocale
 
+from nlightreader.consts import Nl
 from nlightreader.items.BaseItem import BaseItem
 from nlightreader.items.sort_items import Genre
 
@@ -9,7 +10,7 @@ from nlightreader.items.sort_items import Genre
 class Manga(BaseItem):
     def __init__(self, content_id: str, catalog_id, name, russian):
         super().__init__(content_id, catalog_id, name, russian)
-        self.kind: str | None = None
+        self._kind: Nl.MangaKind = Nl.MangaKind.undefined
         self.description: dict = {}
         self._score: int | float = 0
         self.status: str | None = None
@@ -36,6 +37,16 @@ class Manga(BaseItem):
             score = int(score)
         self._score = score
 
+    @property
+    def kind(self):
+        return self._kind
+
+    @kind.setter
+    def kind(self, kind):
+        if not isinstance(kind, Nl.MangaKind):
+            raise TypeError("Kind must be Nl.MangaKind")
+        self._kind = kind
+
     def get_description(self) -> str:
         if self.description.get("all"):
             return self.description.get("all")
@@ -59,14 +70,14 @@ class Manga(BaseItem):
 
 
 class Chapter:
-    def __init__(self, content_id: str, catalog_id: int, vol: str, ch: str, title: str, language: str):
+    def __init__(self, content_id: str, catalog_id: int, vol: str, ch: str, title: str):
         self.id = f"|{catalog_id}|_|{content_id}|"
         self.content_id = content_id
         self.catalog_id = catalog_id
         self.vol = vol
         self.ch = ch
         self.title = title
-        self.language = language
+        self._language = Nl.Language.undefined
 
     def get_name(self) -> str:
         if not self.vol and not self.ch:
@@ -74,6 +85,16 @@ class Chapter:
         if self.title:
             return f"{self.vol}-{self.ch} {self.title}"
         return f"{self.vol}-{self.ch}"
+
+    @property
+    def language(self):
+        return self._language
+
+    @language.setter
+    def language(self, language):
+        if not isinstance(language, Nl.Language):
+            raise TypeError("Language must be Nl.Language")
+        self._language = language
 
 
 class Image:

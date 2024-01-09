@@ -5,11 +5,11 @@ import requests
 from PySide6.QtCore import QLocale
 from PySide6.QtWidgets import QApplication
 
-from nlightreader.consts import DEFAULT_HEADERS, MangaKinds, StyleColors
+from nlightreader.consts import DEFAULT_HEADERS, Nl, StyleColors
 from nlightreader.consts.files import LangIcons, Translations, Styles
 
 
-def get_html(url: str, headers=None, params=None, json=None, data=None, cookies=None, content_type=None):
+def get_html(url: str, *, headers=None, params=None, json=None, data=None, cookies=None, content_type=None):
     """
     Sends an HTTP GET request to the specified URL with the given headers, query parameters, and cookies.
 
@@ -102,44 +102,23 @@ def make_request(url: str, method: str, *,
         print(f"  Data: {data}")
 
 
-def get_language_icon(lang_code: str) -> str:
+def get_language_icon(language: Nl.Language) -> str:
     """
     Returns the file path to the icon for the specified language.
 
-    :param lang_code: A string representing a language code.
+    :param language: Nl.Language.
     :return: The file path to the icon associated with the language as a string, or an empty string if no icon is found.
     """
+    if not isinstance(language, Nl.Language):
+        raise TypeError("Language must be Nl.Language")
     lang_icons = {
-        "ru": LangIcons.Ru,
-        "en": LangIcons.Gb,
-        "jp": LangIcons.Jp,
-        "ua": LangIcons.Ua,
+        Nl.Language.ru: LangIcons.Ru,
+        Nl.Language.en: LangIcons.Gb,
+        Nl.Language.jp: LangIcons.Jp,
+        Nl.Language.uk: LangIcons.Ua,
+        Nl.Language.undefined: "",
     }
-    return lang_icons.get(lang_code, "")
-
-
-def get_manga_kind(kind: str) -> MangaKinds:
-    """
-    Returns the corresponding value from the `MangaKinds` enumeration for a given string `kind`.
-
-    Args:
-        kind (str): A string representing the kind of manga.
-    Returns:
-        MangaKinds: The corresponding value from the `MangaKinds` enumeration.
-    Raises:
-        ValueError: If no matches were found for the input `kind`.
-    """
-    kinds_matches = {
-        "manga": MangaKinds.manga,
-        "manhwa": MangaKinds.manhwa,
-        "manhua": MangaKinds.manhua,
-        "one_shot": MangaKinds.one_shot,
-        "doujin": MangaKinds.doujin,
-        "ranobe": MangaKinds.ranobe,
-    }
-    if kind not in kinds_matches:
-        raise ValueError(f"No matches found for kind '{kind}'.")
-    return kinds_matches[kind]
+    return lang_icons.get(language)
 
 
 def get_locale(locale: QLocale.Language) -> str:
