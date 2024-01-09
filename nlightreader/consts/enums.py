@@ -1,3 +1,4 @@
+import logging
 from enum import Enum, unique
 
 lib_lists_en = (
@@ -62,7 +63,8 @@ class Nl:
                 return cls.comics
             if string is None or string in ("undefined", "Другое"):
                 return cls.undefined
-            raise ValueError(f"unknown manga kind: {string}")
+            logging.warning(f"Unknown manga kind: {string}")
+            return cls.undefined
 
     @unique
     class LibList(Enum):

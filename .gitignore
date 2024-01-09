@@ -8,4 +8,5 @@
 /keys.py
 /package
 *.pyc
+*.log
 .dmypy.json
