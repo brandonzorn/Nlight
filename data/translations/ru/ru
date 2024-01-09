@@ -227,4 +227,62 @@
         <translation>Издано</translation>
     </message>
 </context>
+<context>
+    <name>NlLanguage</name>
+    <message>
+        <source>Russian</source>
+        <translation>Русский</translation>
+    </message>
+    <message>
+        <source>Ukrainian</source>
+        <translation>Украинский</translation>
+    </message>
+    <message>
+        <source>Japanese</source>
+        <translation>Японский</translation>
+    </message>
+    <message>
+        <source>English</source>
+        <translation>Английский</translation>
+    </message>
+    <message>
+        <source>Undefined</source>
+        <translation>Не определено</translation>
+    </message>
+</context>
+<context>
+    <name>NlKind</name>
+    <message>
+        <source>Manga</source>
+        <translation>Манга</translation>
+    </message>
+    <message>
+        <source>Manhwa</source>
+        <translation>Манхва</translation>
+    </message>
+    <message>
+        <source>Manhua</source>
+        <translation>Маньхуа</translation>
+    </message>
+    <message>
+        <source>One shot</source>
+        <translation>Ваншот</translation>
+    </message>
+    <message>
+        <source>Doujin</source>
+        <translation>Додзинси</translation>
+    </message>
+    <message>
+        <source>Light Novel</source>
+        <translation>Ранобэ</translation>
+    </message>
+    <message>
+        <source>Comics</source>
+        <translation>Комикс</translation>
+    </message>
+    <message>
+        <source>Undefined</source>
+        <translation>Не определено</translation>
+    </message>
+</context>
 </TS>
