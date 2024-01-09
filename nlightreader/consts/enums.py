@@ -46,21 +46,21 @@ class Nl:
 
         @classmethod
         def from_str(cls, string: str | None):
-            if string in ("manga", "Манга",):
+            if string in ("manga", "Манга"):
                 return cls.manga
-            if string in ("manhwa", "Манхва",):
+            if string in ("manhwa", "Манхва"):
                 return cls.manhwa
-            if string in ("manhua", "Маньхуа",):
+            if string in ("manhua", "Маньхуа"):
                 return cls.manhua
             if string in ("one_shot",):
                 return cls.one_shot
             if string in ("doujin",):
                 return cls.doujin
-            if string in ("ranobe", "light_novel",):
+            if string in ("ranobe", "light_novel"):
                 return cls.ranobe
-            if string in ("comics", "Рукомикс", "Западный комикс", "Индонезийский комикс",):
+            if string in ("comics", "Рукомикс", "Западный комикс", "Индонезийский комикс"):
                 return cls.comics
-            if string is None or string in ("undefined", "Другое",):
+            if string is None or string in ("undefined", "Другое"):
                 return cls.undefined
             raise ValueError(f"unknown manga kind: {string}")
 

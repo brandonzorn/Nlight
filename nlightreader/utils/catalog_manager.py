@@ -10,7 +10,7 @@ CATALOGS = {
     5: Erolate,
     6: Remanga,
     7: NHentai,
-    8: AllHentai
+    8: AllHentai,
 }
 USER_CATALOGS = [
     Desu,
