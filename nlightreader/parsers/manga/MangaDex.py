@@ -82,7 +82,7 @@ class MangaDex(MangaCatalog):
         params = {
             "manga": manga.content_id,
             "limit": 1,
-            "translatedLanguage[]": ["ru", "en"],
+            "translatedLanguage[]": ["ru", "en", "uk"],
             "order[chapter]": "asc",
             "contentRating[]": [
                 "safe",
