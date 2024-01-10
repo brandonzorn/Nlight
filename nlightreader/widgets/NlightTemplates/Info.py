@@ -81,7 +81,8 @@ class FormInfo(QWidget):
         selected_item = context_target.itemAt(pos)
         if not selected_item or not selected_item.parent():
             return
-        selected_chapter = self.sorted_chapters[selected_item.parent().text(0)][
+        top_item_id = self.ui.items_tree.indexOfTopLevelItem(selected_item.parent())
+        selected_chapter = self.sorted_chapters[list(self.sorted_chapters.keys())[top_item_id]][
             selected_item.parent().indexOfChild(selected_item)
         ]
         if not self.db.check_complete_chapter(selected_chapter):
