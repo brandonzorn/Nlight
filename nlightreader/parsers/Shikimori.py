@@ -34,9 +34,9 @@ class ShikimoriBase(Parser):
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self.url_api}/mangas/{manga.content_id}"
-        html = get_html(url, headers=self.headers)
-        if html and html.status_code == 200 and html.json():
-            data = html.json()
+        response = get_html(url, headers=self.headers, content_type="json")
+        if response:
+            data = response
             manga.description.update({"all": data.get("description")})
             manga.kind = Nl.MangaKind.from_str(data.get("kind"))
             manga.score = float(data.get("score"))
@@ -49,10 +49,9 @@ class ShikimoriBase(Parser):
 
     def get_character(self, character: Character) -> Character:
         url = f"{self.url_api}/characters/{character.content_id}"
-        html = get_html(url, headers=self.headers)
-        if html and html.status_code == 200 and html.json():
-            data = html.json()
-            character.description = data.get("description")
+        response = get_html(url, headers=self.headers, content_type="json")
+        if response:
+            character.description = response.get("description")
         return character
 
     def get_preview(self, manga: Manga):
@@ -64,9 +63,9 @@ class ShikimoriBase(Parser):
 
     def get_genres(self):
         url = f"{self.url_api}/genres"
-        html = get_html(url, headers=self.headers)
-        if html and html.status_code == 200 and html.json():
-            return [Genre(str(i.get("id")), self.CATALOG_ID, i.get("name"), i.get("russian")) for i in html.json()]
+        response = get_html(url, headers=self.headers, content_type="json")
+        if response:
+            return [Genre(str(i.get("id")), self.CATALOG_ID, i.get("name"), i.get("russian")) for i in response]
         return []
 
     def get_orders(self) -> list[Order]:
@@ -75,9 +74,9 @@ class ShikimoriBase(Parser):
     def get_relations(self, manga: Manga) -> list[Manga]:
         mangas = []
         url = f"{self.url_api}/mangas/{manga.content_id}/related"
-        html = get_html(url, headers=self.headers)
-        if html and html.status_code == 200 and html.json():
-            for i in html.json():
+        response = get_html(url, headers=self.headers, content_type="json")
+        if response:
+            for i in response:
                 if i.get("manga"):
                     i = i.get("manga")
                     mangas.append(self.setup_manga(i))
@@ -86,9 +85,9 @@ class ShikimoriBase(Parser):
     def get_characters(self, manga: Manga) -> list[Character]:
         characters = []
         url = f"{self.url_api}/mangas/{manga.content_id}/roles"
-        html = get_html(url, headers=self.headers)
-        if html and html.status_code == 200 and html.json():
-            for i in html.json():
+        response = get_html(url, headers=self.headers, content_type="json")
+        if response:
+            for i in response:
                 if i.get("roles"):
                     role = i.get("roles")[0]
                     if role in ["Supporting", "Main"]:
@@ -96,7 +95,7 @@ class ShikimoriBase(Parser):
                         if data:
                             characters.append(Character(data.get("id"), self.CATALOG_ID, data.get("name"),
                                                         data.get("russian"), "", role))
-            characters.reverse()
+            characters.sort(key=lambda x: x.role)
         return characters
 
     def get_manga_url(self, manga: Manga) -> str:
@@ -163,17 +162,17 @@ class ShikimoriLib(ShikimoriBase, LibParser):
     def search_manga(self, req_params: RequestForm):
         url = f"{self.url_api}/users/{self.get_user().id}/manga_rates"
         params = {"limit": 50, "page": req_params.page}
-        html = self.session.request("GET", url, params=params)
+        response = self.session.request("GET", url, params=params)
         mangas = []
-        match req_params.lib_list:
-            case Nl.LibList.reading:
-                lib_list = "watching"
-            case Nl.LibList.re_reading:
-                lib_list = "rewatching"
-            case _:
-                lib_list = req_params.lib_list.name
-        if html and html.status_code == 200 and html.json():
-            for i in html.json():
+        lib_list = req_params.lib_list
+        if lib_list == Nl.LibList.reading:
+            lib_list = "watching"
+        elif lib_list == Nl.LibList.re_reading:
+            lib_list = "rewatching"
+        else:
+            lib_list = req_params.lib_list.name
+        if response:
+            for i in response.json():
                 if not i.get("status") == lib_list:
                     continue
                 i = i.get("manga")
@@ -232,11 +231,10 @@ class ShikimoriLib(ShikimoriBase, LibParser):
     def update_user_rate(self, user_rate: UserRate):
         url = f"{self.url_api}/v2/user_rates/{user_rate.id}"
         status = user_rate.status
-        match user_rate.status:
-            case "reading":
-                status = "watching"
-            case "re-reading":
-                status = "rewatching"
+        if status == "reading":
+            status = "watching"
+        elif status == "re-reading":
+            status = "rewatching"
         data = {
             "user_rate": {
                 "chapters": f"{user_rate.chapters}",
@@ -285,8 +283,9 @@ class Auth:
         return self.token
 
     def update_token(self, token):
-        if token:
-            TokenManager.save_token(token, ShikimoriLib.CATALOG_NAME)
+        if token and "access_token" in token and "refresh_token" in token:
+            token = {"access_token": token["access_token"], "refresh_token": token["refresh_token"]}
+            TokenManager.save_token(token, catalog_name=ShikimoriLib.CATALOG_NAME)
             self.tokens = token
 
     def refresh_token(self):
