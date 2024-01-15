@@ -17,6 +17,7 @@ class Manga(BaseItem):
         self.genres: list[Genre] = []
         self.volumes = 0
         self.chapters = 0
+        self.preview_url: str | None = None
 
     def get_name(self) -> str:
         if QLocale().language() in (
