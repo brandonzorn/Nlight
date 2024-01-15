@@ -67,22 +67,26 @@ class Nl:
 
         @classmethod
         def from_str(cls, string: str | None):
-            if string in ("manga", "Манга"):
-                return cls.manga
-            if string in ("manhwa", "Манхва"):
-                return cls.manhwa
-            if string in ("manhua", "Маньхуа"):
-                return cls.manhua
-            if string in ("one_shot",):
-                return cls.one_shot
-            if string in ("doujin",):
-                return cls.doujin
-            if string in ("ranobe", "light_novel"):
-                return cls.ranobe
-            if string in ("comics", "Рукомикс", "Западный комикс", "Индонезийский комикс"):
-                return cls.comics
+            def matching_the_pattern(text, pattern):
+                text = text.lower()
+                return any([i in text for i in pattern])
+
             if string is None or string in ("undefined", "Другое"):
                 return cls.undefined
+            if matching_the_pattern(string, ("manga", "манга")):
+                return cls.manga
+            if matching_the_pattern(string, ("manhwa", "манхва")):
+                return cls.manhwa
+            if matching_the_pattern(string, ("manhua", "маньхуа")):
+                return cls.manhua
+            if matching_the_pattern(string, ("one_shot",)):
+                return cls.one_shot
+            if matching_the_pattern(string, ("doujin",)):
+                return cls.doujin
+            if matching_the_pattern(string, ("ranobe", "novel")):
+                return cls.ranobe
+            if matching_the_pattern(string, ("комикс", "comics")):
+                return cls.comics
             logging.warning(f"Unknown manga kind: {string}")
             return cls.undefined
 
