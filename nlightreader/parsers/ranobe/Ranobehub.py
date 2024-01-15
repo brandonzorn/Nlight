@@ -39,14 +39,16 @@ class Ranobehub(RanobeCatalog):
             "tags:positive[]": [int(i) for i in form.get_genre_id()],
         }
         response = get_html(url, headers=self.headers, params=params, content_type="json")
-        manga = []
+        mangas = []
         if response:
             for i in get_data(response, ["resource"], default_val=[]):
                 manga_id = i.get("id")
                 name = i.get("names").get("eng")
                 russian = i.get("names").get("rus")
-                manga.append(Manga(manga_id, self.CATALOG_ID, name, russian))
-        return manga
+                manga = Manga(manga_id, self.CATALOG_ID, name, russian)
+                manga.preview_url = i.get("poster").get("medium")
+                mangas.append(manga)
+        return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self.url_api}/ranobe/{manga.content_id}/contents"
@@ -60,7 +62,7 @@ class Ranobehub(RanobeCatalog):
                         chapter_data.get("id"), self.CATALOG_ID,
                         volume_num, chapter_data.get("num"), chapter_data.get("name"),
                     )
-                    chapter.lang = Nl.Language.ru
+                    chapter.language = Nl.Language.ru
                     chapters.append(chapter)
             chapters.reverse()
         return chapters
@@ -108,12 +110,8 @@ class Ranobehub(RanobeCatalog):
             return content
 
     def get_preview(self, manga: Manga):
-        url = f"{self.url_api}/ranobe/{manga.content_id}"
-        response = get_html(url, headers=self.headers, content_type="json")
-        if response:
-            img = get_data(response, ["data", "posters", "big"])
-            img_response = get_html(img, content_type="content")
-            return img_response
+        if manga.preview_url:
+            return get_html(manga.preview_url, headers=self.headers, content_type="content")
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{URL_RANOBEHUB}/ranobe/{manga.content_id}"
