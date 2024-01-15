@@ -23,6 +23,9 @@ URL_NHENTAI_API = "https://nhentai.net/api"
 URL_ALLHENTAI = "https://20.allhen.online"
 URL_ALLHENTAI_API = ""
 
+URL_SLASHLIB = "https://v1.slashlib.me"
+URL_MANGALIB = "https://mangalib.me"
+
 
 DEFAULT_HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:99.0) Gecko/20100101 Firefox/99.0"}
 DESU_HEADERS = {"User-Agent": "Nlight"}
