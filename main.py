@@ -8,6 +8,7 @@ import platformdirs
 from PySide6.QtCore import Qt, QTranslator, QLocale, QThreadPool
 from PySide6.QtGui import QIcon, QPalette
 from PySide6.QtWidgets import QApplication
+from qfluentwidgets import setTheme, Theme
 
 from nlightreader import ParentWindow
 from nlightreader.consts import APP_VERSION, APP_NAME, Icons
@@ -66,6 +67,7 @@ if __name__ == "__main__":
         logging.basicConfig(level=logging.WARNING, filename="latest.log", filemode="w")
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
     QThreadPool.globalInstance().setMaxThreadCount(32)
+    # setTheme(Theme.DARK)
     app = App(sys.argv)
     Path(f"{platformdirs.user_data_dir()}/{APP_NAME}").mkdir(parents=True, exist_ok=True)
     window = MainWindow()
