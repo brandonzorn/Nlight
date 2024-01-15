@@ -46,6 +46,7 @@ class Remanga(MangaCatalog):
                 manga = Manga(manga_id, self.CATALOG_ID, name, russian)
                 manga.kind = kind
                 manga.score = i.get("avg_rating")
+                manga.preview_url = i.get("img").get("high")
                 mangas.append(manga)
         return mangas
 
@@ -90,12 +91,8 @@ class Remanga(MangaCatalog):
         return response
 
     def get_preview(self, manga: Manga):
-        url = f"{self.url_api}/titles/{manga.content_id}"
-        response = get_html(url, headers=self.headers, content_type="json")
-        if response:
-            img = response.get("content").get("img").get("high")
-            response = get_html(f"{self.url}{img}", headers=self.headers, content_type="content")
-            return response
+        if manga.preview_url and manga.preview_url != "/media/None":
+            return get_html(f"{self.url}{manga.preview_url}", headers=self.headers, content_type="content")
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/manga/{manga.content_id}"
