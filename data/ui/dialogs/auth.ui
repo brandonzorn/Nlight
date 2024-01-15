@@ -115,7 +115,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
-         <widget class="LineEdit" name="password_line">
+         <widget class="PasswordLineEdit" name="password_line">
           <property name="placeholderText">
            <string>Password</string>
           </property>
@@ -171,6 +171,11 @@
   <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>PasswordLineEdit</class>
+   <extends>LineEdit</extends>
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
