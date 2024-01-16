@@ -29,6 +29,8 @@ class MangaArea(ScrollArea):
         self._verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         self._scroll_layout.addItem(self._verticalSpacer)
         self.setWidget(self._scrollAreaWidgetContents)
+        
+        self.setStyleSheet("QScrollArea {border: none;}")
 
         if parent is not None:
             parent.addWidget(self)
