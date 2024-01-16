@@ -6,7 +6,7 @@ from pathlib import Path
 import platformdirs
 from PySide6.QtGui import QPixmap
 
-from nlightreader.consts import APP_NAME
+from nlightreader.consts import APP_NAME, Nl
 from nlightreader.items import Manga, Chapter, Character
 
 
@@ -15,7 +15,7 @@ class FileManager:
     def check_image_exists(manga: Manga, chapter: Chapter, image, catalog) -> bool:
         path = f"images/{catalog.CATALOG_NAME}/manga/{manga.content_id}/{chapter.content_id}"
         file_name = f"{image.page}.jpg"
-        if manga.kind == "ranobe":
+        if manga.kind == Nl.MangaKind.ranobe:
             file_name = f"{image.page}.txt"
         return check_file_exists(path, file_name)
 
