@@ -1,12 +1,12 @@
 import webbrowser
 
 from PySide6.QtCore import Qt, Signal, QSize
-from qfluentwidgets import ElevatedCardWidget
+from qfluentwidgets import ElevatedCardWidget, InfoBar
 
 from data.ui.manga_item import Ui_Form
 from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.items import Manga
-from nlightreader.utils import Worker, get_catalog, FileManager, Database
+from nlightreader.utils import Worker, get_catalog, FileManager, Database, translate
 
 
 class MangaItem(ElevatedCardWidget):
@@ -37,9 +37,21 @@ class MangaItem(ElevatedCardWidget):
         def add_to_lib():
             self._db.add_manga(self.manga)
             self._db.add_manga_library(self.manga)
+            InfoBar.success(
+                title=self.manga.get_name(),
+                content=translate("Message", "Manga {} has been added.").format(self.manga.get_name()),
+                duration=2000,
+                parent=self.parentWidget()
+            )
 
         def remove_from_lib():
             self._db.rem_manga_library(self.manga)
+            InfoBar.success(
+                title=self.manga.get_name(),
+                content=translate("Message", "Manga {} has been deleted.").format(self.manga.get_name()),
+                duration=2000,
+                parent=self.parentWidget()
+            )
             self.manga_changed.emit()
 
         def open_in_browser():
@@ -47,6 +59,12 @@ class MangaItem(ElevatedCardWidget):
 
         def remove_files():
             FileManager.remove_manga_files(self.manga, catalog)
+            InfoBar.success(
+                title=self.manga.get_name(),
+                content=translate("Message", "Files {} have been removed.").format(self.manga.get_name()),
+                duration=2000,
+                parent=self.parentWidget()
+            )
 
         def open_local_files():
             FileManager.open_dir_in_explorer(self.manga, catalog)
