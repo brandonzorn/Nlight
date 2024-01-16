@@ -107,8 +107,7 @@ def remove_file(path):
 
 def fix_folder_name(name):
     invalid_chars_pattern = r'[<>:"|?*\\/]'
-    fixed_name = re.sub(invalid_chars_pattern, "", name)
-    return fixed_name
+    return re.sub(invalid_chars_pattern, "", name)
 
 
 def fix_path(path):
