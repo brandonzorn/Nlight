@@ -65,8 +65,7 @@ class TextFormatter:
 def description_to_html(text: str, show_spoilers=False) -> str:
     if not text:
         return ""
-    text = TextFormatter(text, show_spoilers).to_html_text()
-    return text
+    return TextFormatter(text, show_spoilers).to_html_text()
 
 
 def translate(context, string):
