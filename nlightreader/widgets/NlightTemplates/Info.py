@@ -58,7 +58,7 @@ class FormInfo(QWidget):
         def set_as_read_all():
             history_notes = []
             for i in range(selected_item.parent().indexOfChild(selected_item) + 1):
-                chapter = self.sorted_chapters[selected_item.parent().text(0)][i]
+                chapter = self.sorted_chapters[list(self.sorted_chapters.keys())[top_item_id]][i]
                 history_notes.append(HistoryNote(chapter, self.manga, True))
                 item = selected_item.parent().child(i)
                 item.setBackground(0, ItemsColors.READ)
