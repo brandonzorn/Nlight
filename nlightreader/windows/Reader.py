@@ -5,7 +5,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QListWidgetItem, QMainWindow
 
 from data.ui.windows.reader import Ui_ReaderWindow
-from nlightreader.consts import ItemsColors
+from nlightreader.consts import ItemsColors, Nl
 from nlightreader.items import Manga, Chapter, Image, HistoryNote
 from nlightreader.utils import Database, get_catalog, FileManager, translate, get_language_icon, Thread
 from nlightreader.widgets.NlightContainers import TextArea
@@ -48,7 +48,7 @@ class ReaderWindow(QMainWindow):
         self.ui.chapters_frame.hide()
         self.manga = manga
         self.setWindowTitle(self.manga.name)
-        if self.manga.kind == "ranobe":
+        if self.manga.kind == Nl.MangaKind.ranobe:
             self.text_container.install(self.ui.reader_layout)
         else:
             self.image_container.install(self.ui.reader_layout)
@@ -161,7 +161,7 @@ class ReaderWindow(QMainWindow):
             if page != self.cur_page or chapter != self.cur_chapter:
                 return
             self.image_container.set_text(translate("Other", "Page is loading"))
-        if self.manga.kind == "ranobe":
+        if self.manga.kind == Nl.MangaKind.ranobe:
             self.cur_image_pixmap = FileManager.get_chapter_text_file(
                 self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog)
         else:
@@ -170,7 +170,7 @@ class ReaderWindow(QMainWindow):
                     self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog)
 
     def update_image(self):
-        if self.manga.kind == "ranobe":
+        if self.manga.kind == Nl.MangaKind.ranobe:
             self.text_container.set_html(self.cur_image_pixmap)
         else:
             self.image_container.set_image(self.cur_image_pixmap)
