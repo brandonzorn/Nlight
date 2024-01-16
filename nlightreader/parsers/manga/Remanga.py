@@ -87,8 +87,7 @@ class Remanga(MangaCatalog):
 
     def get_image(self, image: Image):
         headers = {"User-Agent": "Nlight", "Referer": "https://remanga.org/"}
-        response = get_html(f"{image.img}", headers=headers, content_type="content")
-        return response
+        return get_html(f"{image.img}", headers=headers, content_type="content")
 
     def get_preview(self, manga: Manga):
         if manga.preview_url and manga.preview_url != "/media/None":
