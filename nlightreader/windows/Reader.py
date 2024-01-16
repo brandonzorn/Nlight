@@ -18,7 +18,7 @@ class ReaderWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_ReaderWindow()
         self.ui.setupUi(self)
-
+        self.setStyleSheet("QScrollArea {border: none;}")
         self.ui.fullscreen_btn.setIcon(FluentIcon.FULL_SCREEN)
         self.ui.ch_list_btn.setIcon(FluentIcon.TILES)
         self.ui.next_page_btn.setIcon(FluentIcon.RIGHT_ARROW)
