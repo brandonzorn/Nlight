@@ -4,7 +4,7 @@ import re
 from bs4 import BeautifulSoup
 
 from nlightreader.consts import URL_SLASHLIB, URL_MANGALIB, Nl
-from nlightreader.items import RequestForm, Manga, Chapter
+from nlightreader.items import RequestForm, Manga, Chapter, Image
 from nlightreader.parsers.Parser import Parser
 from nlightreader.utils.utils import get_html, get_data
 
@@ -13,6 +13,16 @@ class LibBase(Parser):
     def __init__(self):
         super().__init__()
         self.url = None
+
+    def get_manga(self, manga: Manga):
+        url = f"{self.url}/manga-short-info?slug={manga.content_id}"
+        response = get_html(url, headers=self.headers, content_type="json")
+        if response:
+            manga.name = response.get("name")
+            manga.russian = response.get("rus_name")
+            manga.description.update({"all": response.get("summary")})
+            manga.score = response.get("rate_avg")
+        return manga
 
     def search_manga(self, form: RequestForm):
         url = f"{self.url}/manga-list"
@@ -54,6 +64,29 @@ class LibBase(Parser):
                 chapter.language = Nl.Language.ru
                 chapters.append(chapter)
         return chapters
+
+    def get_images(self, manga: Manga, chapter: Chapter):
+        url = f"{self.url}/{manga.content_id}/v{chapter.vol}/c{chapter.ch}?ui=2239878"
+        response = get_html(url, headers=self.headers, content_type="text")
+        images = []
+        if response:
+            soup = BeautifulSoup(response, "html.parser")
+            script_tag = soup.find('script', id="pg", text=re.compile(r'window\.__pg'))
+            script_content = script_tag.text if script_tag else None
+            match = re.search(r'window\.__pg\s*=\s*(.*?}]);', script_content)
+            data = json.loads(match.group(1))
+            for i in data:
+                page_num = i.get("p")
+                file_name = i.get("u")
+                img_url = (f"https://img33.imgslib.link/manga/{manga.content_id}"
+                           f"/chapters/{chapter.vol}-{chapter.ch}/{file_name}")
+                image = Image("", page_num, img_url)
+                images.append(image)
+        return images
+
+    def get_image(self, image: Image):
+        headers = self.headers | {"Referer": f"{self.url}/"}
+        return get_html(image.img, headers=headers, content_type="content")
 
     def get_preview(self, manga: Manga):
         response = get_html(manga.preview_url, content_type="content")
