@@ -1,3 +1,4 @@
+import logging
 from functools import reduce
 from typing import Any, Optional
 
@@ -7,53 +8,6 @@ from PySide6.QtWidgets import QApplication
 
 from nlightreader.consts import DEFAULT_HEADERS, Nl, StyleColors
 from nlightreader.consts.files import LangIcons, Translations, Styles
-
-
-def get_html(url: str, *, headers=None, params=None, json=None, data=None, cookies=None, content_type=None):
-    """
-    Sends an HTTP GET request to the specified URL with the given headers, query parameters, and cookies.
-
-    :param url: The URL to request.
-    :param headers: Optional dictionary of request headers.
-    :param params: Optional dictionary of query parameters.
-    :param json: Optional dictionary of json to include in the request.
-    :param data: Optional dictionary of data to include in the request.
-    :param cookies: Optional dictionary of cookies to include in the request.
-    :param content_type: Optional string indicating the expected content type of the response ('content' or 'json').
-    :return: If content_type is 'content', returns the raw response content (bytes).
-             If content_type is 'json', returns the JSON-decoded response.
-             Otherwise, returns the full requests.Response object.
-             Returns None if there was an error.
-    """
-    if headers is None:
-        headers = DEFAULT_HEADERS
-    if "test" in QApplication.arguments():
-        return
-    try:
-        response = requests.get(
-            url,
-            headers=headers,
-            params=params,
-            json=json,
-            data=data,
-            cookies=cookies,
-        )
-        response.raise_for_status()
-        if content_type == "content":
-            return response.content
-        if content_type == "json":
-            return response.json()
-        if content_type == "text":
-            return response.text
-        return response
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching URL: {url}")
-        print(f"  Reason: {e}")
-        print(f"  Headers: {headers}")
-        print(f"  Params: {params}")
-        print(f"  Cookies: {cookies}")
-        print(f"  Json: {json}")
-        print(f"  Data: {data}")
 
 
 def make_request(url: str, method: str, *,
@@ -74,6 +28,11 @@ def make_request(url: str, method: str, *,
              Otherwise, returns the full requests.Response object.
              Returns None if there was an error.
     """
+    if "test" in QApplication.arguments():
+        return
+    if headers is None:
+        logging.warning(f"No headers {method}: {url}")
+        headers = DEFAULT_HEADERS
     try:
         response = requests.request(
             method,
@@ -93,13 +52,35 @@ def make_request(url: str, method: str, *,
             return response.text
         return response
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching URL: {url}")
-        print(f"  Reason: {e}")
-        print(f"  Headers: {headers}")
-        print(f"  Params: {params}")
-        print(f"  Cookies: {cookies}")
-        print(f"  Json: {json}")
-        print(f"  Data: {data}")
+        logging.error(
+            f"\n\tError fetching URL: {url}\n"
+            f"\t\tReason: {e}\n"
+            f"\t\tHeaders: {headers}\n"
+            f"\t\tParams: {params}\n"
+            f"\t\tCookies: {cookies}\n"
+            f"\t\tJson: {json}\n"
+            f"\t\tData: {data}",
+        )
+
+
+def get_html(url: str, *, headers=None, params=None, json=None, data=None, cookies=None, content_type=None):
+    """
+    Sends an HTTP GET request to the specified URL with the given headers, query parameters, and cookies.
+
+    :param url: The URL to request.
+    :param headers: Optional dictionary of request headers.
+    :param params: Optional dictionary of query parameters.
+    :param json: Optional dictionary of json to include in the request.
+    :param data: Optional dictionary of data to include in the request.
+    :param cookies: Optional dictionary of cookies to include in the request.
+    :param content_type: Optional string indicating the expected content type of the response ('content' or 'json').
+    :return: If content_type is 'content', returns the raw response content (bytes).
+             If content_type is 'json', returns the JSON-decoded response.
+             Otherwise, returns the full requests.Response object.
+             Returns None if there was an error.
+    """
+    return make_request(url, "GET", headers=headers, params=params,
+                        json=json, data=data, cookies=cookies, content_type=content_type)
 
 
 def get_language_icon(language: Nl.Language) -> str:
