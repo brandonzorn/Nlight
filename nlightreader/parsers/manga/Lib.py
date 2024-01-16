@@ -14,6 +14,16 @@ class LibBase(Parser):
         super().__init__()
         self.url = None
 
+    def get_manga(self, manga: Manga):
+        url = f"{self.url}/manga-short-info?slug={manga.content_id}"
+        response = get_html(url, headers=self.headers, content_type="json")
+        if response:
+            manga.name = response.get("name")
+            manga.russian = response.get("rus_name")
+            manga.description.update({"all": response.get("summary")})
+            manga.score = response.get("rate_avg")
+        return manga
+
     def search_manga(self, form: RequestForm):
         url = f"{self.url}/manga-list"
         params = {
