@@ -9,5 +9,4 @@ class LocalLib:
         self.db: Database = Database()
 
     def search_manga(self, params: RequestForm) -> list[Manga]:
-        manga = self.db.get_manga_library(params.lib_list)
-        return manga
+        return self.db.get_manga_library(params.lib_list)

@@ -55,8 +55,7 @@ class ShikimoriBase(Parser):
         return character
 
     def get_preview(self, manga: Manga):
-        response = get_html(f"{self.url}/system/mangas/preview/{manga.content_id}.jpg", content_type="content")
-        return response
+        return get_html(f"{self.url}/system/mangas/preview/{manga.content_id}.jpg", content_type="content")
 
     def get_character_preview(self, character: Character):
         return get_html(f"{self.url}/system/characters/preview/{character.content_id}.jpg").content

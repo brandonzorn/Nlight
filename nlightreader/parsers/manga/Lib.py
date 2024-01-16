@@ -51,9 +51,9 @@ class LibBase(Parser):
         chapters = []
         if response:
             soup = BeautifulSoup(response, "html.parser")
-            script_tag = soup.find('script', text=re.compile(r'window\.__DATA__'))
+            script_tag = soup.find("script", text=re.compile(r"window\.__DATA__"))
             script_content = script_tag.text if script_tag else None
-            match = re.search(r'window\.__DATA__\s*=\s*(.*?}});', script_content)
+            match = re.search(r"window\.__DATA__\s*=\s*(.*?}});", script_content)
             data = json.loads(match.group(1))
             for i in get_data(data, ["chapters", "list"]):
                 vol = i.get("chapter_volume")
@@ -71,9 +71,9 @@ class LibBase(Parser):
         images = []
         if response:
             soup = BeautifulSoup(response, "html.parser")
-            script_tag = soup.find('script', id="pg", text=re.compile(r'window\.__pg'))
+            script_tag = soup.find("script", id="pg", text=re.compile(r"window\.__pg"))
             script_content = script_tag.text if script_tag else None
-            match = re.search(r'window\.__pg\s*=\s*(.*?}]);', script_content)
+            match = re.search(r"window\.__pg\s*=\s*(.*?}]);", script_content)
             data = json.loads(match.group(1))
             for i in data:
                 page_num = i.get("p")
@@ -89,8 +89,7 @@ class LibBase(Parser):
         return get_html(image.img, headers=headers, content_type="content")
 
     def get_preview(self, manga: Manga):
-        response = get_html(manga.preview_url, content_type="content")
-        return response
+        return get_html(manga.preview_url, content_type="content")
 
     def get_manga_url(self, manga: Manga):
         return f"{self.url}/{manga.content_id}"

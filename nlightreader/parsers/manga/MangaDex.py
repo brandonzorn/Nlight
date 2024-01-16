@@ -124,8 +124,7 @@ class MangaDex(MangaCatalog):
         return images
 
     def get_image(self, image: Image):
-        response = get_html(image.img, headers=self.headers, content_type="content")
-        return response
+        return get_html(image.img, headers=self.headers, content_type="content")
 
     def get_preview(self, manga: Manga):
         url = f"{self.url_api}/cover"
@@ -134,9 +133,9 @@ class MangaDex(MangaCatalog):
         filename = ""
         if covers_list_response:
             filename = covers_list_response["data"][0]["attributes"]["fileName"]
-        cover_response = get_html(f"https://uploads.mangadex.org/covers/{manga.content_id}/{filename}.256.jpg",
-                                  content_type="content")
-        return cover_response
+        return get_html(
+            f"https://uploads.mangadex.org/covers/{manga.content_id}/{filename}.256.jpg",
+            content_type="content")
 
     def get_genres(self):
         url = f"{self.url_api}/manga/tag"
@@ -251,8 +250,7 @@ class Auth:
 
     def get(self, url, params=None):
         if self.is_authorized:
-            response = get_html(url, params=params, headers=self.headers)
-            return response
+            return get_html(url, params=params, headers=self.headers)
 
     @property
     def headers(self):
