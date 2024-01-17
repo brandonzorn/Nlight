@@ -25,10 +25,11 @@ class Desu(MangaCatalog):
                             for i in data.get("genres")]
             manga.score = data.get("score")
             manga.kind = Nl.MangaKind.from_str(data.get("kind"))
-            manga.description.update({"all": data.get("description")})
             manga.volumes = data.get("chapters").get("last").get("vol")
             manga.chapters = data.get("chapters").get("last").get("ch")
             manga.status = data.get("status")
+
+            manga.add_description(Nl.Language.undefined, data.get("description"))
         return manga
 
     def search_manga(self, form: RequestForm):
