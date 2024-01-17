@@ -18,6 +18,7 @@ class MangaItem(QWidget):
         self.ui = Ui_manga_item_widget()
         self.ui.setupUi(self)
         self.manga = manga
+        self._catalog = get_catalog(self.manga.catalog_id)()
         self.manga_pixmap = None
         self._is_added_to_lib = is_added_to_lib
         self._db: Database = Database()
@@ -64,7 +65,7 @@ class MangaItem(QWidget):
             FileManager.open_dir_in_explorer(self.manga, catalog)
 
         menu = LibraryMangaMenu()
-        if self._is_added_to_lib:
+        if self._is_added_to_lib and not self._catalog.is_primary:
             if self._db.check_manga_library(self.manga):
                 menu.set_mode(1)
             else:
@@ -87,8 +88,7 @@ class MangaItem(QWidget):
             self.set_image()
 
     def get_image(self):
-        catalog = get_catalog(self.manga.catalog_id)()
-        self.manga_pixmap = FileManager.get_manga_preview(self.manga, catalog)
+        self.manga_pixmap = FileManager.get_manga_preview(self.manga, self._catalog)
 
     def set_image(self):
         pixmap = self.manga_pixmap.scaled(
