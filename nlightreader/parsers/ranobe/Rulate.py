@@ -27,7 +27,7 @@ class Rulate(RanobeCatalog):
             if hranobe:
                 description_text = hranobe.text
                 if description_text:
-                    manga.description.update({"all": str(description_text)})
+                    manga.add_description(Nl.Language.undefined, str(description_text))
             manga.kind = Nl.MangaKind.ranobe
         return manga
 

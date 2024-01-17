@@ -20,8 +20,9 @@ class LibBase(Parser):
         if response:
             manga.name = response.get("name")
             manga.russian = response.get("rus_name")
-            manga.description.update({"all": response.get("summary")})
             manga.score = response.get("rate_avg")
+
+            manga.add_description(Nl.Language.undefined, response.get("summary"))
         return manga
 
     def search_manga(self, form: RequestForm):
