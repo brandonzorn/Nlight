@@ -31,7 +31,6 @@ def make_request(url: str, method: str, *,
     if "test" in QApplication.arguments():
         return
     if headers is None:
-        logging.warning(f"No headers {method}: {url}")
         headers = DEFAULT_HEADERS
     try:
         response = requests.request(
