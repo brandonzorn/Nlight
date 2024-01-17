@@ -37,7 +37,6 @@ class ShikimoriBase(Parser):
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
             data = response
-            manga.description.update({"all": data.get("description")})
             manga.kind = Nl.MangaKind.from_str(data.get("kind"))
             manga.score = float(data.get("score"))
             manga.status = data.get("status")
@@ -45,6 +44,8 @@ class ShikimoriBase(Parser):
                 manga.volumes = int(data.get("volumes"))
             if data.get("chapters"):
                 manga.chapters = int(data.get("chapters"))
+
+            manga.add_description(Nl.Language.undefined, data.get("description"))
         return manga
 
     def get_character(self, character: Character) -> Character:

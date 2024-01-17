@@ -20,7 +20,7 @@ class Remanga(MangaCatalog):
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
             data = response.get("content")
-            manga.description.update({"all": data.get("description")})
+            manga.add_description(Nl.Language.undefined, data.get("description"))
         return manga
 
     def search_manga(self, form: RequestForm):

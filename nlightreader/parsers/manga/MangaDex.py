@@ -32,9 +32,9 @@ class MangaDex(MangaCatalog):
             description = get_data(data, ["attributes", "description"])
             if description:
                 if description.get("en"):
-                    manga.description.update({"en": description.get("en")})
+                    manga.add_description(Nl.Language.en, description.get("en"))
                 if description.get("ru"):
-                    manga.description.update({"ru": description.get("ru")})
+                    manga.add_description(Nl.Language.ru, description.get("ru"))
             volumes = get_data(data, ["attributes", "lastVolume"])
             chapters = get_data(data, ["attributes", "lastChapter"])
             if volumes:
