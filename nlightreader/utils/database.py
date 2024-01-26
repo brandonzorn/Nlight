@@ -72,11 +72,11 @@ class Database:
 
     def add_manga(self, manga: Manga):
         manga_data = {
-                    "id": manga.id, "content_id": manga.content_id, "catalog_id": manga.catalog_id, "name": manga.name,
-                    "russian": manga.russian, "kind": manga.kind.name, "description": manga.descriptions_to_str(),
-                    "score": manga.score, "status": manga.status, "volumes": manga.volumes, "chapters": manga.chapters,
-                    "preview_url": manga.preview_url,
-                }
+            "id": manga.id, "content_id": manga.content_id, "catalog_id": manga.catalog_id, "name": manga.name,
+            "russian": manga.russian, "kind": manga.kind.name, "description": manga.descriptions_to_str(),
+            "score": manga.score, "status": manga.status, "volumes": manga.volumes, "chapters": manga.chapters,
+            "preview_url": manga.preview_url,
+        }
         manga_insert = insert(self._manga).values([manga_data])
         manga_insert = manga_insert.on_conflict_do_update(index_elements=["id"], set_=manga_data)
         with self.__engine.connect() as conn:
@@ -89,10 +89,10 @@ class Database:
         with self.__engine.connect() as conn:
             for manga in mangas:
                 manga_data = {
-                            "id": manga.id, "content_id": manga.content_id, "catalog_id": manga.catalog_id, "name": manga.name,
-                            "russian": manga.russian, "kind": manga.kind.name, "description": manga.descriptions_to_str(),
-                            "score": manga.score, "status": manga.status, "volumes": manga.volumes, "chapters": manga.chapters,
-                            "preview_url": manga.preview_url}
+                    "id": manga.id, "content_id": manga.content_id, "catalog_id": manga.catalog_id, "name": manga.name,
+                    "russian": manga.russian, "kind": manga.kind.name, "description": manga.descriptions_to_str(),
+                    "score": manga.score, "status": manga.status, "volumes": manga.volumes, "chapters": manga.chapters,
+                    "preview_url": manga.preview_url}
                 manga_insert = insert(self._manga).values(manga_data)
                 manga_insert = manga_insert.on_conflict_do_update(index_elements=["id"], set_=manga_data)
                 conn.execute(manga_insert)
@@ -127,9 +127,9 @@ class Database:
         with self.__engine.connect() as conn:
             for chapter in chapters:
                 chapter_data = {
-                            "id": chapter.id, "content_id": chapter.content_id, "catalog_id": chapter.catalog_id,
-                            "vol": chapter.vol, "ch": chapter.ch, "title": chapter.title, "language": chapter.language.name,
-                            "manga_id": manga.id}
+                    "id": chapter.id, "content_id": chapter.content_id, "catalog_id": chapter.catalog_id,
+                    "vol": chapter.vol, "ch": chapter.ch, "title": chapter.title, "language": chapter.language.name,
+                    "manga_id": manga.id}
                 chapters_insert = insert(self._chapters).values([chapter_data])
                 chapters_insert = chapters_insert.on_conflict_do_update(index_elements=["id"], set_=chapter_data)
                 conn.execute(chapters_insert)
@@ -152,7 +152,8 @@ class Database:
         return chapter
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
-        select_chapters = sqlalchemy.select(self._chapters).where(self._chapters.c.manga_id == manga.id)
+        select_chapters = sqlalchemy.select(self._chapters).filter_by(
+            manga_id=manga.id)
         with self.__engine.connect() as conn:
             select_chapters_result = conn.execute(select_chapters)
         a = select_chapters_result.fetchall()
@@ -174,44 +175,47 @@ class Database:
 
     def get_manga_library(self, lib_list: Nl.LibList) -> list[Manga]:
         select_manga_library = sqlalchemy.select(self._manga).join(
-            self._library, self._manga.c.id == self._library.c.manga_id).where(self._library.c.list == lib_list.value)
+            self._library, self._manga.c.id == self._library.c.manga_id).filter_by(
+            list=lib_list.value)
         with self.__engine.connect() as conn:
             select_chapter_result = conn.execute(select_manga_library)
         a = select_chapter_result.fetchall()
         return [self._make_manga(data) for data in a[::-1]]
 
     def get_manga_library_list(self, manga: Manga) -> Nl.LibList:
-        select_manga_library = sqlalchemy.select(self._library.c.list).where(self._library.c.manga_id == manga.id)
+        select_manga_library = sqlalchemy.select(self._library.c.list).filter_by(
+            manga_id=manga.id)
         with self.__engine.connect() as conn:
             select_chapter_result = conn.execute(select_manga_library)
         a = select_chapter_result.fetchone()
         return Nl.LibList(a[0])
 
     def check_manga_library(self, manga: Manga) -> bool:
-        select_manga_library = sqlalchemy.select(self._library.c.list).where(self._library.c.manga_id == manga.id)
+        select_manga_library = sqlalchemy.select(self._library.c.list).filter_by(
+            manga_id=manga.id)
         with self.__engine.connect() as conn:
             select_chapter_result = conn.execute(select_manga_library)
         a = select_chapter_result.fetchone()
         return bool(a)
 
     def rem_manga_library(self, manga: Manga):
-        delete_manga_library = sqlalchemy.delete(self._library).where(
-            self._library.c.manga_id == manga.id)
+        delete_manga_library = sqlalchemy.delete(self._library).filter_by(
+            manga_id=manga.id)
         with self.__engine.connect() as conn:
             conn.execute(delete_manga_library)
             conn.commit()
 
     def check_complete_chapter(self, chapter: Chapter):
-        select_chapter_history = sqlalchemy.select(self._chapter_history.c.is_completed).where(
-            self._chapter_history.c.chapter_id == chapter.id)
+        select_chapter_history = sqlalchemy.select(self._chapter_history.c.is_completed).filter_by(
+            chapter_id=chapter.id)
         with self.__engine.connect() as conn:
             select_chapter_result = conn.execute(select_chapter_history)
         a = select_chapter_result.fetchall()
         return bool(a)
 
     def get_complete_status(self, chapter: Chapter):
-        select_chapter_history = sqlalchemy.select(self._chapter_history.c.is_completed).where(
-            self._chapter_history.c.chapter_id == chapter.id)
+        select_chapter_history = sqlalchemy.select(self._chapter_history.c.is_completed).filter_by(
+            chapter_id=chapter.id)
         with self.__engine.connect() as conn:
             select_chapter_result = conn.execute(select_chapter_history)
         a = select_chapter_result.fetchall()
@@ -234,7 +238,7 @@ class Database:
                     "manga_id": note.manga.id, "chapter_id": note.chapter.id, "is_completed": note.is_completed}
                 history_notes_insert = insert(self._chapter_history).values([note_data])
                 history_notes_insert = history_notes_insert.on_conflict_do_update(
-                    index_elements=["chapter_id"],set_=note_data)
+                    index_elements=["chapter_id"], set_=note_data)
                 conn.execute(history_notes_insert)
             conn.commit()
 
@@ -252,15 +256,15 @@ class Database:
         return notes
 
     def del_history_notes(self, manga: Manga):
-        delete_history_notes = sqlalchemy.delete(self._chapter_history).where(
-            self._chapter_history.c.manga_id == manga.id)
+        delete_history_notes = sqlalchemy.delete(self._chapter_history).filter_by(
+            manga_id=manga.id)
         with self.__engine.connect() as conn:
             conn.execute(delete_history_notes)
             conn.commit()
 
     def del_history_note(self, chapter: Chapter):
-        delete_history_note = sqlalchemy.delete(self._chapter_history).where(
-            self._chapter_history.c.chapter_id == chapter.id)
+        delete_history_note = sqlalchemy.delete(self._chapter_history).filter_by(
+            chapter_id=chapter.id)
         with self.__engine.connect() as conn:
             conn.execute(delete_history_note)
             conn.commit()
