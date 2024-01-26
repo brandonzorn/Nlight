@@ -2,11 +2,11 @@ from bs4 import BeautifulSoup
 
 from nlightreader.consts import URL_NHENTAI, URL_NHENTAI_API
 from nlightreader.items import Manga, Chapter, Image
-from nlightreader.parsers.catalogs_base import HentaiMangaCatalog
+from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
 from nlightreader.utils.utils import get_html
 
 
-class NHentai(HentaiMangaCatalog):
+class NHentai(AbstractHentaiMangaCatalog):
     CATALOG_ID = 7
     CATALOG_NAME = "NHentai"
 

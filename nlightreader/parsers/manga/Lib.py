@@ -5,11 +5,12 @@ from bs4 import BeautifulSoup
 
 from nlightreader.consts import URL_SLASHLIB, URL_MANGALIB, Nl
 from nlightreader.items import RequestForm, Manga, Chapter, Image
-from nlightreader.parsers.Parser import Parser
+from nlightreader.parsers.catalog import AbstractCatalog
+from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.utils import get_html, get_data
 
 
-class LibBase(Parser):
+class LibBase(AbstractCatalog):
     def __init__(self):
         super().__init__()
         self.url = None
@@ -96,7 +97,7 @@ class LibBase(Parser):
         return f"{self.url}/{manga.content_id}"
 
 
-class SlashLib(LibBase):
+class SlashLib(LibBase, AbstractMangaCatalog):
     CATALOG_NAME = "SlashLib"
     CATALOG_ID = 9
 
@@ -105,7 +106,7 @@ class SlashLib(LibBase):
         self.url = URL_SLASHLIB
 
 
-class MangaLib(LibBase):
+class MangaLib(LibBase, AbstractMangaCatalog):
     CATALOG_NAME = "MangaLib"
     CATALOG_ID = 10
 

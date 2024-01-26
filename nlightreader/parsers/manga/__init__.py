@@ -1,4 +1,4 @@
-from .Desu import Desu
-from .MangaDex import MangaDex, MangaDexLib
-from .Remanga import Remanga
+from .desu_manga import Desu
+from .mangadex_manga import MangaDex, MangaDexLib
+from .remanga_manga import Remanga
 from .Lib import SlashLib, MangaLib
