@@ -6,11 +6,11 @@ from bs4 import BeautifulSoup
 from nlightreader.consts import URL_RANOBEHUB_API, URL_RANOBEHUB, Nl
 from nlightreader.consts.items import RanobehubItems
 from nlightreader.items import RequestForm, Manga, Chapter, Image
-from nlightreader.parsers.catalogs_base import RanobeCatalog
+from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.utils.utils import get_html, get_data
 
 
-class Ranobehub(RanobeCatalog):
+class Ranobehub(AbstractRanobeCatalog):
     CATALOG_ID = 4
     CATALOG_NAME = "Ranobehub"
 

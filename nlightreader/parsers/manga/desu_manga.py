@@ -1,11 +1,11 @@
 from nlightreader.consts import URL_DESU_API, DESU_HEADERS, URL_DESU, Nl
 from nlightreader.consts.items import DesuItems
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm
-from nlightreader.parsers.catalogs_base import MangaCatalog
+from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.utils import get_html, get_data
 
 
-class Desu(MangaCatalog):
+class Desu(AbstractMangaCatalog):
     CATALOG_ID = 0
     CATALOG_NAME = "Desu"
 
@@ -78,8 +78,7 @@ class Desu(MangaCatalog):
         return images
 
     def get_image(self, image: Image):
-        headers = self.headers.copy()
-        headers.update({"Referer": f"{self.url}/"})
+        headers = self.headers | {"Referer": f"{self.url}/"}
         return get_html(image.img, headers=headers, content_type="content")
 
     def get_preview(self, manga: Manga):

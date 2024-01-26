@@ -1,7 +1,7 @@
 from nlightreader.consts import URL_MANGA_DEX_API, URL_MANGA_DEX, Nl, MANGA_DEX_HEADERS
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
-from nlightreader.parsers.Parser import LibParser
-from nlightreader.parsers.catalogs_base import MangaCatalog
+from nlightreader.parsers.catalog import LibParser
+from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
 from nlightreader.utils.utils import get_data, get_html, make_request
@@ -13,7 +13,7 @@ except (ModuleNotFoundError, ImportError):
     MANGADEX_CLIENT_ID, MANGADEX_CLIENT_SECRET = "", ""
 
 
-class MangaDex(MangaCatalog):
+class MangaDex(AbstractMangaCatalog):
     CATALOG_ID = 2
     CATALOG_NAME = "MangaDex"
 

@@ -2,11 +2,11 @@ from bs4 import BeautifulSoup
 
 from nlightreader.consts import URL_ALLHENTAI, URL_ALLHENTAI_API, Nl
 from nlightreader.items import Manga, Chapter, Image
-from nlightreader.parsers.catalogs_base import HentaiMangaCatalog
+from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
 from nlightreader.utils.utils import get_html, make_request
 
 
-class AllHentai(HentaiMangaCatalog):
+class AllHentai(AbstractHentaiMangaCatalog):
     CATALOG_ID = 8
     CATALOG_NAME = "AllHentai"
 

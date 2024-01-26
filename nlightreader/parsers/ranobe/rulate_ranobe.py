@@ -5,11 +5,11 @@ from bs4 import BeautifulSoup
 from nlightreader.consts import URL_RULATE, URL_EROLATE, Nl
 from nlightreader.consts.items import RulateItems
 from nlightreader.items import Manga, Chapter, Image, RequestForm
-from nlightreader.parsers.catalogs_base import RanobeCatalog
+from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.utils.utils import get_html
 
 
-class Rulate(RanobeCatalog):
+class Rulate(AbstractRanobeCatalog):
     CATALOG_ID = 3
     CATALOG_NAME = "Rulate"
 

@@ -1,11 +1,11 @@
 from nlightreader.consts import URL_REMANGA_API, URL_REMANGA, Nl
 from nlightreader.consts.items import RemangaItems
 from nlightreader.items import RequestForm, Manga, Chapter, Image
-from nlightreader.parsers.catalogs_base import MangaCatalog
+from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.utils import get_html, get_data
 
 
-class Remanga(MangaCatalog):
+class Remanga(AbstractMangaCatalog):
     CATALOG_ID = 6
     CATALOG_NAME = "ReManga"
 
