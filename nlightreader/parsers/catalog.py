@@ -3,7 +3,7 @@ from nlightreader.consts.items.parser_items import ParserItems
 from nlightreader.items import Manga, Chapter, Image, RequestForm, Genre, Kind, Order, Character, User, UserRate
 
 
-class Parser:
+class AbstractCatalog:
     CATALOG_NAME = "CATALOG"
     CATALOG_ID = -1
     is_primary = False

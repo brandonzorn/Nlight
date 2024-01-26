@@ -5,8 +5,8 @@ from requests_oauthlib import OAuth2Session
 from nlightreader.consts import URL_SHIKIMORI_API, SHIKIMORI_HEADERS, URL_SHIKIMORI, URL_SHIKIMORI_TOKEN, Nl
 from nlightreader.consts.items import ShikimoriItems
 from nlightreader.items import Manga, RequestForm, Genre, Kind, User, UserRate, Character, Order
-from nlightreader.parsers.Parser import Parser, LibParser
-from nlightreader.parsers.catalogs_base import MangaCatalog, RanobeCatalog
+from nlightreader.parsers.catalog import AbstractCatalog, LibParser
+from nlightreader.parsers.catalogs_base import AbstractMangaCatalog, AbstractRanobeCatalog
 from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
 from nlightreader.utils.utils import get_html
@@ -18,7 +18,7 @@ except (ModuleNotFoundError, ImportError):
     SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID = "", ""
 
 
-class ShikimoriBase(Parser):
+class ShikimoriBase(AbstractCatalog):
     CATALOG_ID = 1
     CATALOG_NAME = "Shikimori"
 
@@ -102,7 +102,7 @@ class ShikimoriBase(Parser):
         return f"{self.url}/mangas/{manga.content_id}"
 
 
-class ShikimoriManga(ShikimoriBase, MangaCatalog):
+class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
     CATALOG_NAME = "Shikimori(Manga)"
 
     def __init__(self):
@@ -129,7 +129,7 @@ class ShikimoriManga(ShikimoriBase, MangaCatalog):
         return [Kind(i["value"], self.CATALOG_ID, i["name"], i["russian"]) for i in ShikimoriItems.KINDS]
 
 
-class ShikimoriRanobe(ShikimoriBase, RanobeCatalog):
+class ShikimoriRanobe(ShikimoriBase, AbstractRanobeCatalog):
     CATALOG_NAME = "Shikimori(Ranobe)"
 
     def __init__(self):
