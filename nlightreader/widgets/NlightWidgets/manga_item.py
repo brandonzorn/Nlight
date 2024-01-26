@@ -1,6 +1,6 @@
 import webbrowser
 
-from PySide6.QtCore import Qt, Signal, QSize
+from PySide6.QtCore import Qt, Signal, QSize, QThreadPool
 from PySide6.QtWidgets import QWidget
 
 from data.ui.manga_item import Ui_manga_item_widget
@@ -13,7 +13,7 @@ class MangaItem(QWidget):
     manga_clicked = Signal(Manga)
     manga_changed = Signal()
 
-    def __init__(self, manga: Manga, *, is_added_to_lib=True, pool=None):
+    def __init__(self, manga: Manga, *, is_added_to_lib=True, pool: QThreadPool = None):
         super().__init__()
         self.ui = Ui_manga_item_widget()
         self.ui.setupUi(self)

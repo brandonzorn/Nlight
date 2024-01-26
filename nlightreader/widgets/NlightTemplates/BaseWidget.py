@@ -1,6 +1,6 @@
 import time
 
-from PySide6.QtCore import QThreadPool, Signal, QMutex, Slot
+from PySide6.QtCore import Signal, QMutex, Slot
 from PySide6.QtWidgets import QWidget
 
 from nlightreader.consts import Nl
@@ -17,9 +17,6 @@ class MangaItemBasedWidget(QWidget):
         super().__init__()
         self.manga_area = MangaArea(None)
         self.mangas: list[Manga] = []
-
-        self.manga_thread_pool = QThreadPool()
-        self.manga_thread_pool.setMaxThreadCount(50)
 
         self._get_content_thread = Thread(target=self._get_content_thread_func, callback=self.update_content)
 
@@ -64,7 +61,6 @@ class MangaItemBasedWidget(QWidget):
         if page != self.request_params.page or lib_list != self.request_params.lib_list:
             return
         self.mangas = self.catalog.search_manga(self.request_params)
-        self.manga_thread_pool.setMaxThreadCount(len(self.mangas))
 
     def setup_manga_item(self, manga: Manga) -> MangaItem:
         pass

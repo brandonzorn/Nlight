@@ -35,7 +35,7 @@ class FormShikimori(MangaItemBasedWidget):
         self.update_user_info()
 
     def setup_manga_item(self, manga: Manga):
-        item = MangaItem(manga, is_added_to_lib=False, pool=self.manga_thread_pool)
+        item = MangaItem(manga, is_added_to_lib=False, pool=self.manga_area.manga_thread_pool)
         item.manga_clicked.connect(self.manga_open.emit)
         return item
 
