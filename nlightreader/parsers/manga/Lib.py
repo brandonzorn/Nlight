@@ -1,5 +1,6 @@
 import json
 import re
+from typing import override
 
 from bs4 import BeautifulSoup
 
@@ -15,6 +16,7 @@ class LibBase(AbstractCatalog):
         super().__init__()
         self.url = None
 
+    @override
     def get_manga(self, manga: Manga):
         url = f"{self.url}/manga-short-info?slug={manga.content_id}"
         response = get_html(url, headers=self.headers, content_type="json")
@@ -26,6 +28,7 @@ class LibBase(AbstractCatalog):
             manga.add_description(Nl.Language.undefined, response.get("summary"))
         return manga
 
+    @override
     def search_manga(self, form: RequestForm):
         url = f"{self.url}/manga-list"
         params = {
@@ -47,6 +50,7 @@ class LibBase(AbstractCatalog):
                 mangas.append(manga)
         return mangas
 
+    @override
     def get_chapters(self, manga: Manga):
         url = f"{self.url}/{manga.content_id}?section=chapters&ui=2239878"
         response = get_html(url, headers=self.headers, content_type="text")
@@ -67,6 +71,7 @@ class LibBase(AbstractCatalog):
                 chapters.append(chapter)
         return chapters
 
+    @override
     def get_images(self, manga: Manga, chapter: Chapter):
         url = f"{self.url}/{manga.content_id}/v{chapter.vol}/c{chapter.ch}?ui=2239878"
         response = get_html(url, headers=self.headers, content_type="text")
@@ -86,13 +91,16 @@ class LibBase(AbstractCatalog):
                 images.append(image)
         return images
 
+    @override
     def get_image(self, image: Image):
         headers = self.headers | {"Referer": f"{self.url}/"}
         return get_html(image.img, headers=headers, content_type="content")
 
+    @override
     def get_preview(self, manga: Manga):
         return get_html(manga.preview_url, content_type="content")
 
+    @override
     def get_manga_url(self, manga: Manga):
         return f"{self.url}/{manga.content_id}"
 

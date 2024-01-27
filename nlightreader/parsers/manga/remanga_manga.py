@@ -1,3 +1,5 @@
+from typing import override
+
 from nlightreader.consts import URL_REMANGA_API, URL_REMANGA, Nl
 from nlightreader.consts.items import RemangaItems
 from nlightreader.items import RequestForm, Manga, Chapter, Image
@@ -15,6 +17,7 @@ class Remanga(AbstractMangaCatalog):
         self.url_api = URL_REMANGA_API
         self.items = RemangaItems
 
+    @override
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self.url_api}/titles/{manga.content_id}/"
         response = get_html(url, headers=self.headers, content_type="json")
@@ -23,6 +26,7 @@ class Remanga(AbstractMangaCatalog):
             manga.add_description(Nl.Language.undefined, data.get("description"))
         return manga
 
+    @override
     def search_manga(self, form: RequestForm):
         url = f"{self.url_api}/search/catalog"
         if form.search:
@@ -50,6 +54,7 @@ class Remanga(AbstractMangaCatalog):
                 mangas.append(manga)
         return mangas
 
+    @override
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self.url_api}/titles/{manga.content_id}/"
         response = get_html(url, headers=self.headers, content_type="json")
@@ -72,6 +77,7 @@ class Remanga(AbstractMangaCatalog):
                         chapters.append(chapter)
         return chapters
 
+    @override
     def get_images(self, manga: Manga, chapter: Chapter):
         url = f"{self.url_api}/titles/chapters/{chapter.content_id}/"
         response = get_html(url, headers=self.headers, content_type="json")
@@ -85,13 +91,16 @@ class Remanga(AbstractMangaCatalog):
                 images.append(Image(pg_id, page, pg_link))
         return images
 
+    @override
     def get_image(self, image: Image):
         headers = {"User-Agent": "Nlight", "Referer": "https://remanga.org/"}
         return get_html(f"{image.img}", headers=headers, content_type="content")
 
+    @override
     def get_preview(self, manga: Manga):
         if manga.preview_url and manga.preview_url != "/media/None":
             return get_html(f"{self.url}{manga.preview_url}", headers=self.headers, content_type="content")
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/manga/{manga.content_id}"

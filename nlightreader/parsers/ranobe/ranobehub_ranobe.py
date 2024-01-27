@@ -1,4 +1,5 @@
 import base64
+from typing import override
 
 import bs4.element
 from bs4 import BeautifulSoup
@@ -20,6 +21,7 @@ class Ranobehub(AbstractRanobeCatalog):
         self.url_api = URL_RANOBEHUB_API
         self.items = RanobehubItems
 
+    @override
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self.url_api}/ranobe/{manga.content_id}"
         response = get_html(url, headers=self.headers, content_type="json")
@@ -31,6 +33,7 @@ class Ranobehub(AbstractRanobeCatalog):
             manga.add_description(Nl.Language.undefined, data.get("description"))
         return manga
 
+    @override
     def search_manga(self, form: RequestForm):
         url = f"{self.url_api}/search"
         params = {
@@ -51,6 +54,7 @@ class Ranobehub(AbstractRanobeCatalog):
                 mangas.append(manga)
         return mangas
 
+    @override
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self.url_api}/ranobe/{manga.content_id}/contents"
         response = get_html(url, headers=self.headers, content_type="json")
@@ -68,10 +72,12 @@ class Ranobehub(AbstractRanobeCatalog):
             chapters.reverse()
         return chapters
 
+    @override
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = f"{self.url}/ranobe/{manga.content_id}/{chapter.vol}/{chapter.ch}"
         return [Image("", 1, url)]
 
+    @override
     def get_image(self, image: Image):
         # Function to get content images from chapter
         def get_chapter_content_image(media_id: str):
@@ -110,9 +116,11 @@ class Ranobehub(AbstractRanobeCatalog):
                     content += str(p)
             return content
 
+    @override
     def get_preview(self, manga: Manga):
         if manga.preview_url:
             return get_html(manga.preview_url, headers=self.headers, content_type="content")
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{URL_RANOBEHUB}/ranobe/{manga.content_id}"

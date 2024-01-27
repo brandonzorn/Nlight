@@ -1,3 +1,5 @@
+from typing import override
+
 from bs4 import BeautifulSoup
 
 from nlightreader.consts import URL_NHENTAI, URL_NHENTAI_API
@@ -15,6 +17,7 @@ class NHentai(AbstractHentaiMangaCatalog):
         self.url = URL_NHENTAI
         self.url_api = URL_NHENTAI_API
 
+    @override
     def search_manga(self, form):
         url = f"{self.url}/search"
         params = {"page": form.page, "q": form.search}
@@ -35,9 +38,11 @@ class NHentai(AbstractHentaiMangaCatalog):
                         mangas.append(Manga(manga_id, self.CATALOG_ID, name, ""))
         return mangas
 
+    @override
     def get_chapters(self, manga: Manga):
         return [Chapter(manga.content_id, self.CATALOG_ID, "1", "1", "")]
 
+    @override
     def get_images(self, manga: Manga, chapter: Chapter):
         url = f"{self.url}/g/{manga.content_id}"
         images = []
@@ -55,10 +60,12 @@ class NHentai(AbstractHentaiMangaCatalog):
                 images.append(Image("", html_items.index(i) + 1, img_url))
         return images
 
+    @override
     def get_image(self, image: Image):
         img_request_headers = self.headers | {"Referer": URL_NHENTAI}
         return get_html(image.img, headers=img_request_headers, content_type="content")
 
+    @override
     def get_preview(self, manga: Manga):
         url = f"{self.url}/g/{manga.content_id}"
         response = get_html(url, headers=self.headers, content_type="text")
@@ -71,5 +78,6 @@ class NHentai(AbstractHentaiMangaCatalog):
                     img_request_headers = self.headers | {"Referer": URL_NHENTAI}
                     return get_html(img_tag["src"], content_type="content", headers=img_request_headers)
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/g/{manga.content_id}"

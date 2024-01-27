@@ -1,3 +1,5 @@
+from typing import override
+
 from bs4 import BeautifulSoup
 
 from nlightreader.consts import URL_ALLHENTAI, URL_ALLHENTAI_API, Nl
@@ -15,6 +17,7 @@ class AllHentai(AbstractHentaiMangaCatalog):
         self.url = URL_ALLHENTAI
         self.url_api = URL_ALLHENTAI_API
 
+    @override
     def search_manga(self, form):
         url = f"{self.url}/search"
         params = {"q": form.search, "+": "Искать!", "fast-filter": "CREATION"}
@@ -32,6 +35,7 @@ class AllHentai(AbstractHentaiMangaCatalog):
                     mangas.append(Manga(manga_id, self.CATALOG_ID, name, ""))
         return mangas
 
+    @override
     def get_chapters(self, manga: Manga):
         url = f"{self.url}/{manga.content_id}"
         response = get_html(url, headers=self.headers, content_type="text")
@@ -53,12 +57,15 @@ class AllHentai(AbstractHentaiMangaCatalog):
                 chapters.append(chapter)
         return chapters
 
+    @override
     def get_images(self, manga: Manga, chapter: Chapter):
         return []
 
+    @override
     def get_image(self, image: Image):
         return
 
+    @override
     def get_preview(self, manga: Manga):
         url = f"{self.url}/{manga.content_id}"
         response = get_html(url, headers=self.headers, content_type="text")
@@ -70,5 +77,6 @@ class AllHentai(AbstractHentaiMangaCatalog):
                 if img_src:
                     return get_html(img_src, content_type="content", headers=self.headers)
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/{manga.content_id}"

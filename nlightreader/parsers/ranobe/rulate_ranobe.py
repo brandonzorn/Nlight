@@ -1,4 +1,5 @@
 import base64
+from typing import override
 
 from bs4 import BeautifulSoup
 
@@ -19,6 +20,7 @@ class Rulate(AbstractRanobeCatalog):
         self.cookies = {"mature": "c3a2ed4b199a1a15f5a5483504c7a75a7030dc4bi%3A1%3B"}
         self.items = RulateItems
 
+    @override
     def get_manga(self, manga: Manga) -> Manga:
         response = get_html(f"{self.url_api}/book/{manga.content_id}", cookies=self.cookies, content_type="text")
         if response:
@@ -31,6 +33,7 @@ class Rulate(AbstractRanobeCatalog):
             manga.kind = Nl.MangaKind.ranobe
         return manga
 
+    @override
     def search_manga(self, form: RequestForm):
         ranobe = []
         params = {
@@ -56,6 +59,7 @@ class Rulate(AbstractRanobeCatalog):
                 ranobe.append(Manga(ranobe_id, self.CATALOG_ID, name, russian))
         return ranobe
 
+    @override
     def get_chapters(self, manga: Manga):
         chapters = []
         response = get_html(f"{self.url_api}/book/{manga.content_id}", cookies=self.cookies, content_type="text")
@@ -75,10 +79,12 @@ class Rulate(AbstractRanobeCatalog):
             chapters.reverse()
         return chapters
 
+    @override
     def get_images(self, manga: Manga, chapter: Chapter):
         url = f"{self.url_api}/book/{manga.content_id}/{chapter.content_id}/ready_new"
         return [Image("", 1, url)]
 
+    @override
     def get_image(self, image: Image):
         # Function to get content images from chapter
         def get_chapter_content_image(media_id: str):
@@ -106,6 +112,7 @@ class Rulate(AbstractRanobeCatalog):
                     content += f"<p>{p.text}</p>"
             return content
 
+    @override
     def get_preview(self, manga: Manga):
         response = get_html(f"{self.url_api}/book/{manga.content_id}", cookies=self.cookies, content_type="text")
         if response:
@@ -114,6 +121,7 @@ class Rulate(AbstractRanobeCatalog):
             if himage:
                 return get_html(str(himage["content"]), content_type="content")
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url_api}/book/{manga.content_id}"
 
@@ -127,6 +135,7 @@ class Erolate(Rulate):
         self.url_api = URL_EROLATE
         self.cookies = {"mature": "7da3ee594b38fc5355692d978fe8f5adbeb3d17di%3A1%3B"}
 
+    @override
     def search_manga(self, form: RequestForm):
         ranobe = []
         params = {

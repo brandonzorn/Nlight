@@ -1,3 +1,5 @@
+from typing import override
+
 from nlightreader.consts import URL_MANGA_DEX_API, URL_MANGA_DEX, Nl, MANGA_DEX_HEADERS
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
 from nlightreader.parsers.catalog import LibParser
@@ -23,6 +25,7 @@ class MangaDex(AbstractMangaCatalog):
         self.url_api = URL_MANGA_DEX_API
         self.headers = MANGA_DEX_HEADERS
 
+    @override
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self.url_api}/manga/{manga.content_id}"
         response = get_html(url, headers=self.headers, content_type="json")
@@ -56,6 +59,7 @@ class MangaDex(AbstractMangaCatalog):
                 name = j.get("en")
         return Manga(manga_id, self.CATALOG_ID, name, russian)
 
+    @override
     def search_manga(self, form: RequestForm):
         url = f"{self.url_api}/manga"
         params = {
@@ -77,6 +81,7 @@ class MangaDex(AbstractMangaCatalog):
                 mangas.append(self.setup_manga(i))
         return mangas
 
+    @override
     def get_chapters(self, manga: Manga):
         url = f"{self.url_api}/chapter"
         params = {
@@ -109,6 +114,7 @@ class MangaDex(AbstractMangaCatalog):
             chapters.reverse()
         return chapters
 
+    @override
     def get_images(self, manga: Manga, chapter: Chapter):
         url = f"{self.url_api}/at-home/server/{chapter.content_id}"
         response = get_html(url, headers=self.headers, content_type="json")
@@ -123,9 +129,11 @@ class MangaDex(AbstractMangaCatalog):
                 images.append(Image("", page, img_url))
         return images
 
+    @override
     def get_image(self, image: Image):
         return get_html(image.img, headers=self.headers, content_type="content")
 
+    @override
     def get_preview(self, manga: Manga):
         url = f"{self.url_api}/cover"
         params = {"manga[]": manga.content_id}
@@ -137,6 +145,7 @@ class MangaDex(AbstractMangaCatalog):
             f"https://uploads.mangadex.org/covers/{manga.content_id}/{filename}.256.jpg",
             content_type="content")
 
+    @override
     def get_genres(self):
         url = f"{self.url_api}/manga/tag"
         html = get_html(url, headers=self.headers)
@@ -148,6 +157,7 @@ class MangaDex(AbstractMangaCatalog):
                 genres.append(Genre(i.get("id"), self.CATALOG_ID, get_data(i, ["attributes", "name", "en"]), ""))
         return genres
 
+    @override
     def get_kinds(self):
         url = f"{self.url_api}/manga/tag"
         response = get_html(url, headers=self.headers, content_type="json")
@@ -157,6 +167,7 @@ class MangaDex(AbstractMangaCatalog):
                 kinds.append(Kind(i.get("id"), self.CATALOG_ID, i.get("attributes").get("name").get("en"), ""))
         return kinds
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/title/{manga.content_id}"
 
@@ -167,6 +178,7 @@ class MangaDexLib(MangaDex, LibParser):
         self.fields = 2
         self.session = Auth()
 
+    @override
     def search_manga(self, form: RequestForm):
         mangas = []
         if form.lib_list == Nl.LibList.planned:
@@ -183,6 +195,7 @@ class MangaDexLib(MangaDex, LibParser):
                     mangas.append(manga)
         return mangas
 
+    @override
     def get_user(self):
         whoami = self.session.get(f"{self.url_api}/user/me")
         if whoami and whoami.status_code == 200:

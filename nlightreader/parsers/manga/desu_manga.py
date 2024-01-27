@@ -1,3 +1,5 @@
+from typing import override
+
 from nlightreader.consts import URL_DESU_API, DESU_HEADERS, URL_DESU, Nl
 from nlightreader.consts.items import DesuItems
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm
@@ -16,6 +18,7 @@ class Desu(AbstractMangaCatalog):
         self.headers = DESU_HEADERS
         self.items = DesuItems
 
+    @override
     def get_manga(self, manga: Manga):
         url = f"{self.url_api}/{manga.content_id}"
         response = get_html(url, headers=self.headers, content_type="json")
@@ -32,6 +35,7 @@ class Desu(AbstractMangaCatalog):
             manga.add_description(Nl.Language.undefined, data.get("description"))
         return manga
 
+    @override
     def search_manga(self, form: RequestForm):
         url = f"{self.url_api}"
         params = {
@@ -49,6 +53,7 @@ class Desu(AbstractMangaCatalog):
                 manga.append(Manga(i.get("id"), self.CATALOG_ID, i.get("name"), i.get("russian")))
         return manga
 
+    @override
     def get_chapters(self, manga: Manga):
         url = f"{self.url_api}/{manga.content_id}"
         response = get_html(url, headers=self.headers, content_type="json")
@@ -64,6 +69,7 @@ class Desu(AbstractMangaCatalog):
                 chapters.append(chapter)
         return chapters
 
+    @override
     def get_images(self, manga: Manga, chapter: Chapter):
         url = f"{self.url_api}/{manga.content_id}/chapter/{chapter.content_id}"
         response = get_html(url, headers=self.headers, content_type="json")
@@ -77,12 +83,15 @@ class Desu(AbstractMangaCatalog):
                 images.append(Image(image_id, page, img))
         return images
 
+    @override
     def get_image(self, image: Image):
         headers = self.headers | {"Referer": f"{self.url}/"}
         return get_html(image.img, headers=headers, content_type="content")
 
+    @override
     def get_preview(self, manga: Manga):
         return get_html(f"{self.url}/data/manga/covers/preview/{manga.content_id}.jpg", content_type="content")
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/manga/{manga.content_id}"

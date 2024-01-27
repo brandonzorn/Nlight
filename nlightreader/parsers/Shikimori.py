@@ -1,3 +1,5 @@
+from typing import override
+
 import requests
 from PySide6.QtWidgets import QApplication
 from requests_oauthlib import OAuth2Session
@@ -32,6 +34,7 @@ class ShikimoriBase(AbstractCatalog):
     def setup_manga(self, data: dict) -> Manga:
         return Manga(data.get("id"), self.CATALOG_ID, data.get("name"), data.get("russian"))
 
+    @override
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self.url_api}/mangas/{manga.content_id}"
         response = get_html(url, headers=self.headers, content_type="json")
@@ -48,6 +51,7 @@ class ShikimoriBase(AbstractCatalog):
             manga.add_description(Nl.Language.undefined, data.get("description"))
         return manga
 
+    @override
     def get_character(self, character: Character) -> Character:
         url = f"{self.url_api}/characters/{character.content_id}"
         response = get_html(url, headers=self.headers, content_type="json")
@@ -55,12 +59,15 @@ class ShikimoriBase(AbstractCatalog):
             character.description = response.get("description")
         return character
 
+    @override
     def get_preview(self, manga: Manga):
         return get_html(f"{self.url}/system/mangas/preview/{manga.content_id}.jpg", content_type="content")
 
+    @override
     def get_character_preview(self, character: Character):
         return get_html(f"{self.url}/system/characters/preview/{character.content_id}.jpg").content
 
+    @override
     def get_genres(self):
         url = f"{self.url_api}/genres"
         response = get_html(url, headers=self.headers, content_type="json")
@@ -68,9 +75,11 @@ class ShikimoriBase(AbstractCatalog):
             return [Genre(str(i.get("id")), self.CATALOG_ID, i.get("name"), i.get("russian")) for i in response]
         return []
 
+    @override
     def get_orders(self) -> list[Order]:
         return [Order(i["value"], self.CATALOG_ID, i["name"], i["russian"]) for i in ShikimoriItems.ORDERS]
 
+    @override
     def get_relations(self, manga: Manga) -> list[Manga]:
         mangas = []
         url = f"{self.url_api}/mangas/{manga.content_id}/related"
@@ -82,6 +91,7 @@ class ShikimoriBase(AbstractCatalog):
                     mangas.append(self.setup_manga(i))
         return mangas
 
+    @override
     def get_characters(self, manga: Manga) -> list[Character]:
         characters = []
         url = f"{self.url_api}/mangas/{manga.content_id}/roles"
@@ -98,6 +108,7 @@ class ShikimoriBase(AbstractCatalog):
             characters.sort(key=lambda x: x.role)
         return characters
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/mangas/{manga.content_id}"
 
@@ -108,6 +119,7 @@ class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
     def __init__(self):
         super().__init__()
 
+    @override
     def search_manga(self, form: RequestForm):
         url = f"{self.url_api}/mangas"
         params = {
@@ -125,6 +137,7 @@ class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
                 mangas.append(self.setup_manga(i))
         return mangas
 
+    @override
     def get_kinds(self):
         return [Kind(i["value"], self.CATALOG_ID, i["name"], i["russian"]) for i in ShikimoriItems.KINDS]
 
@@ -135,6 +148,7 @@ class ShikimoriRanobe(ShikimoriBase, AbstractRanobeCatalog):
     def __init__(self):
         super().__init__()
 
+    @override
     def search_manga(self, form: RequestForm):
         url = f"{self.url_api}/ranobe"
         params = {
@@ -159,6 +173,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         self.fields = 1
         self.session: Auth = Auth()
 
+    @override
     def search_manga(self, req_params: RequestForm):
         url = f"{self.url_api}/users/{self.get_user().id}/manga_rates"
         params = {"limit": 50, "page": req_params.page}
@@ -179,6 +194,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                 mangas.append(self.setup_manga(i))
         return mangas
 
+    @override
     def get_user(self):
         whoami = self.session.request("GET", f"{self.url_api}/users/whoami")
         if whoami and whoami.status_code == 200:
@@ -186,6 +202,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
             return User(data.get("id"), data.get("nickname"), data.get("avatar"))
         return User(None, None, None)
 
+    @override
     def create_user_rate(self, manga: Manga):
         url = f"{self.url_api}/v2/user_rates"
         data = {
@@ -197,6 +214,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         }
         self.session.request("POST", url, json=data)
 
+    @override
     def check_user_rate(self, manga: Manga):
         url = f"{self.url_api}/v2/user_rates"
         params = {
@@ -211,10 +229,12 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                     return True
         return False
 
+    @override
     def delete_user_rate(self, user_rate: UserRate):
         url = f"{self.url_api}/v2/user_rates/{user_rate.id}"
         self.session.request("DELETE", url)
 
+    @override
     def get_user_rate(self, manga: Manga):
         url = f"{self.url_api}/v2/user_rates"
         params = {
@@ -228,6 +248,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                 return UserRate(i.get("id"), i.get("user_id"), i.get("target_id"),
                                 i.get("score"), i.get("status"), i.get("chapters"))
 
+    @override
     def update_user_rate(self, user_rate: UserRate):
         url = f"{self.url_api}/v2/user_rates/{user_rate.id}"
         status = user_rate.status
