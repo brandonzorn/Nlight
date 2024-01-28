@@ -1,4 +1,4 @@
-from nlightreader.consts import URL_MANGA_DEX_API, URL_MANGA_DEX, Nl, MANGA_DEX_HEADERS
+from nlightreader.consts import URL_MANGA_DEX_API, URL_MANGA_DEX, Nl, MANGA_DEX_HEADERS, URL_MANGA_DEX_TOKEN
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
 from nlightreader.parsers.catalog import LibParser
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
@@ -223,7 +223,7 @@ class Auth:
     def refresh_token(self):
         request_data = self._refresh_headers
         response = make_request(
-            "https://auth.mangadex.org/realms/mangadex/protocol/openid-connect/token",
+            URL_MANGA_DEX_TOKEN,
             "POST",
             data=request_data,
             content_type="json",
@@ -237,7 +237,7 @@ class Auth:
     def auth_login(self, params):
         request_data = self._auth_headers | params
         response = make_request(
-            "https://auth.mangadex.org/realms/mangadex/protocol/openid-connect/token",
+            URL_MANGA_DEX_TOKEN,
             "POST",
             data=request_data,
             content_type="json",
