@@ -16,6 +16,11 @@ class AllHentai(AbstractHentaiMangaCatalog):
         super().__init__()
         self.url = URL_ALLHENTAI
         self.url_api = URL_ALLHENTAI_API
+        self.cookies = {
+            "remember_me":
+                "JTJCWlRqaDdOS3ElMkZKQzJXbFZxN3JrRzF5N2pXVDNEdnVhM1J6a25SUGhHZjglM0Q6VVN1S0dCRVV"
+                "ET0F2OE5xY2xpbU9vaW9mQmJaZTExdUxKVHJKMFFMYng2SSUzRA",
+        }
 
     @override
     def search_manga(self, form):
@@ -59,11 +64,26 @@ class AllHentai(AbstractHentaiMangaCatalog):
 
     @override
     def get_images(self, manga: Manga, chapter: Chapter):
-        return []
+        url = f"{self.url}/{manga.content_id}/vol{chapter.vol}/{chapter.ch}"
+        response = get_html(url, headers=self.headers, cookies=self.cookies, content_type="text")
+        images = []
+        if response:
+            soup = BeautifulSoup(response, "html.parser")
+            pages_count = soup.find("span", class_="pages-count").text
+            pages = int(pages_count) if pages_count.isdigit() else 499
+            for i in range(1, pages+1):
+                image = Image(str(i), i, f"{url}#page={i}")
+                images.append(image)
+        return images
 
     @override
     def get_image(self, image: Image):
-        return
+        response = get_html(image.img, headers=self.headers, cookies=self.cookies, content_type="text")
+        if response:
+            soup = BeautifulSoup(response, "html.parser")
+            image_elem = soup.find("img", id="mangaPicture")
+            image_url = f"https:{image_elem.get('src')}"
+            return get_html(image_url, headers=self.headers, cookies=self.cookies, content_type="content")
 
     @override
     def get_preview(self, manga: Manga):
