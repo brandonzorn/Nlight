@@ -1,2 +1,2 @@
-from .NHentai import NHentai
-from .AllHentai import AllHentai
+from .allhentai_hmanga import AllHentai
+from .nhentai_hmanga import NHentai

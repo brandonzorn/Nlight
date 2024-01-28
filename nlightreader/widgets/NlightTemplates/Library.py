@@ -1,9 +1,12 @@
 from data.ui.widgets.library import Ui_Form
+
 from nlightreader.consts import Nl
 from nlightreader.items import Manga
 from nlightreader.parsers import LocalLib
 from nlightreader.widgets.NlightContainers.manga_area import MangaArea
-from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
+from nlightreader.widgets.NlightTemplates.BaseWidget import (
+    MangaItemBasedWidget,
+)
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
@@ -27,11 +30,10 @@ class FormLibrary(MangaItemBasedWidget):
 
     def update_content(self):
         self.mangas = self.catalog.search_manga(self.request_params)
-        self.manga_thread_pool.setMaxThreadCount(len(self.mangas))
         super().update_content()
 
     def setup_manga_item(self, manga: Manga):
-        item = MangaItem(manga, pool=self.manga_thread_pool)
+        item = MangaItem(manga, pool=self.manga_area.manga_thread_pool)
         item.manga_clicked.connect(self.manga_open.emit)
         item.manga_changed.connect(self.get_content)
         return item

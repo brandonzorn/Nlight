@@ -5,8 +5,8 @@ from requests_oauthlib import OAuth2Session
 from nlightreader.consts import URL_SHIKIMORI_API, SHIKIMORI_HEADERS, URL_SHIKIMORI, URL_SHIKIMORI_TOKEN, Nl
 from nlightreader.consts.items import ShikimoriItems
 from nlightreader.items import Manga, RequestForm, Genre, Kind, User, UserRate, Character, Order
-from nlightreader.parsers.Parser import Parser, LibParser
-from nlightreader.parsers.catalogs_base import MangaCatalog, RanobeCatalog
+from nlightreader.parsers.catalog import AbstractCatalog, LibParser
+from nlightreader.parsers.catalogs_base import AbstractMangaCatalog, AbstractRanobeCatalog
 from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
 from nlightreader.utils.utils import get_html
@@ -18,7 +18,7 @@ except (ModuleNotFoundError, ImportError):
     SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID = "", ""
 
 
-class ShikimoriBase(Parser):
+class ShikimoriBase(AbstractCatalog):
     CATALOG_ID = 1
     CATALOG_NAME = "Shikimori"
 
@@ -37,7 +37,6 @@ class ShikimoriBase(Parser):
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
             data = response
-            manga.description.update({"all": data.get("description")})
             manga.kind = Nl.MangaKind.from_str(data.get("kind"))
             manga.score = float(data.get("score"))
             manga.status = data.get("status")
@@ -45,6 +44,8 @@ class ShikimoriBase(Parser):
                 manga.volumes = int(data.get("volumes"))
             if data.get("chapters"):
                 manga.chapters = int(data.get("chapters"))
+
+            manga.add_description(Nl.Language.undefined, data.get("description"))
         return manga
 
     def get_character(self, character: Character) -> Character:
@@ -55,8 +56,7 @@ class ShikimoriBase(Parser):
         return character
 
     def get_preview(self, manga: Manga):
-        response = get_html(f"{self.url}/system/mangas/preview/{manga.content_id}.jpg", content_type="content")
-        return response
+        return get_html(f"{self.url}/system/mangas/preview/{manga.content_id}.jpg", content_type="content")
 
     def get_character_preview(self, character: Character):
         return get_html(f"{self.url}/system/characters/preview/{character.content_id}.jpg").content
@@ -102,7 +102,7 @@ class ShikimoriBase(Parser):
         return f"{self.url}/mangas/{manga.content_id}"
 
 
-class ShikimoriManga(ShikimoriBase, MangaCatalog):
+class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
     CATALOG_NAME = "Shikimori(Manga)"
 
     def __init__(self):
@@ -129,7 +129,7 @@ class ShikimoriManga(ShikimoriBase, MangaCatalog):
         return [Kind(i["value"], self.CATALOG_ID, i["name"], i["russian"]) for i in ShikimoriItems.KINDS]
 
 
-class ShikimoriRanobe(ShikimoriBase, RanobeCatalog):
+class ShikimoriRanobe(ShikimoriBase, AbstractRanobeCatalog):
     CATALOG_NAME = "Shikimori(Ranobe)"
 
     def __init__(self):

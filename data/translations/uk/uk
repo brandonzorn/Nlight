@@ -285,19 +285,4 @@
         <translation>Не визначено</translation>
     </message>
 </context>
-<context>
-    <name>Message</name>
-    <message>
-        <source>Manga {} has been added.</source>
-        <translation>Манга {} додано.</translation>
-    </message>
-    <message>
-        <source>Manga {} has been deleted.</source>
-        <translation>Манга {} видалено.</translation>
-    </message>
-    <message>
-        <source>Files {} have been removed.</source>
-        <translation>Файли {} видалені.</translation>
-    </message>
-</context>
 </TS>

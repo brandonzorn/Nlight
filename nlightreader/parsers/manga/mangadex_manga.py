@@ -1,7 +1,7 @@
-from nlightreader.consts import URL_MANGA_DEX_API, URL_MANGA_DEX, Nl, MANGA_DEX_HEADERS
+from nlightreader.consts import URL_MANGA_DEX_API, URL_MANGA_DEX, Nl, MANGA_DEX_HEADERS, URL_MANGA_DEX_TOKEN
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
-from nlightreader.parsers.Parser import LibParser
-from nlightreader.parsers.catalogs_base import MangaCatalog
+from nlightreader.parsers.catalog import LibParser
+from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
 from nlightreader.utils.utils import get_data, get_html, make_request
@@ -13,7 +13,7 @@ except (ModuleNotFoundError, ImportError):
     MANGADEX_CLIENT_ID, MANGADEX_CLIENT_SECRET = "", ""
 
 
-class MangaDex(MangaCatalog):
+class MangaDex(AbstractMangaCatalog):
     CATALOG_ID = 2
     CATALOG_NAME = "MangaDex"
 
@@ -32,9 +32,9 @@ class MangaDex(MangaCatalog):
             description = get_data(data, ["attributes", "description"])
             if description:
                 if description.get("en"):
-                    manga.description.update({"en": description.get("en")})
+                    manga.add_description(Nl.Language.en, description.get("en"))
                 if description.get("ru"):
-                    manga.description.update({"ru": description.get("ru")})
+                    manga.add_description(Nl.Language.ru, description.get("ru"))
             volumes = get_data(data, ["attributes", "lastVolume"])
             chapters = get_data(data, ["attributes", "lastChapter"])
             if volumes:
@@ -124,8 +124,7 @@ class MangaDex(MangaCatalog):
         return images
 
     def get_image(self, image: Image):
-        response = get_html(image.img, headers=self.headers, content_type="content")
-        return response
+        return get_html(image.img, headers=self.headers, content_type="content")
 
     def get_preview(self, manga: Manga):
         url = f"{self.url_api}/cover"
@@ -134,9 +133,9 @@ class MangaDex(MangaCatalog):
         filename = ""
         if covers_list_response:
             filename = covers_list_response["data"][0]["attributes"]["fileName"]
-        cover_response = get_html(f"https://uploads.mangadex.org/covers/{manga.content_id}/{filename}.256.jpg",
-                                  content_type="content")
-        return cover_response
+        return get_html(
+            f"https://uploads.mangadex.org/covers/{manga.content_id}/{filename}.256.jpg",
+            content_type="content")
 
     def get_genres(self):
         url = f"{self.url_api}/manga/tag"
@@ -224,7 +223,7 @@ class Auth:
     def refresh_token(self):
         request_data = self._refresh_headers
         response = make_request(
-            "https://auth.mangadex.org/realms/mangadex/protocol/openid-connect/token",
+            URL_MANGA_DEX_TOKEN,
             "POST",
             data=request_data,
             content_type="json",
@@ -238,7 +237,7 @@ class Auth:
     def auth_login(self, params):
         request_data = self._auth_headers | params
         response = make_request(
-            "https://auth.mangadex.org/realms/mangadex/protocol/openid-connect/token",
+            URL_MANGA_DEX_TOKEN,
             "POST",
             data=request_data,
             content_type="json",
@@ -251,8 +250,7 @@ class Auth:
 
     def get(self, url, params=None):
         if self.is_authorized:
-            response = get_html(url, params=params, headers=self.headers)
-            return response
+            return get_html(url, params=params, headers=self.headers)
 
     @property
     def headers(self):

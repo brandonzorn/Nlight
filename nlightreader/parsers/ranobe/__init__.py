@@ -1,2 +1,2 @@
-from .Ranobehub import Ranobehub
-from .Rulate import Rulate, Erolate
+from .ranobehub_ranobe import Ranobehub
+from .rulate_ranobe import Rulate, Erolate

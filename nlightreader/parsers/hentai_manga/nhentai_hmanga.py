@@ -2,11 +2,11 @@ from bs4 import BeautifulSoup
 
 from nlightreader.consts import URL_NHENTAI, URL_NHENTAI_API
 from nlightreader.items import Manga, Chapter, Image
-from nlightreader.parsers.catalogs_base import HentaiMangaCatalog
+from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
 from nlightreader.utils.utils import get_html
 
 
-class NHentai(HentaiMangaCatalog):
+class NHentai(AbstractHentaiMangaCatalog):
     CATALOG_ID = 7
     CATALOG_NAME = "NHentai"
 
@@ -57,8 +57,7 @@ class NHentai(HentaiMangaCatalog):
 
     def get_image(self, image: Image):
         img_request_headers = self.headers | {"Referer": URL_NHENTAI}
-        response = get_html(image.img, headers=img_request_headers, content_type="content")
-        return response
+        return get_html(image.img, headers=img_request_headers, content_type="content")
 
     def get_preview(self, manga: Manga):
         url = f"{self.url}/g/{manga.content_id}"
@@ -70,8 +69,7 @@ class NHentai(HentaiMangaCatalog):
                 img_tag = html_item.find("img")
                 if img_tag:
                     img_request_headers = self.headers | {"Referer": URL_NHENTAI}
-                    response = get_html(img_tag["src"], content_type="content", headers=img_request_headers)
-                    return response
+                    return get_html(img_tag["src"], content_type="content", headers=img_request_headers)
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/g/{manga.content_id}"
