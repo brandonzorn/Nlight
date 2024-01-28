@@ -38,22 +38,15 @@ class ImageArea(QWidget):
         if pixmap is None or pixmap.isNull():
             return QPixmap()
         if 0.5 < pixmap.width() / pixmap.height() < 2:
-            pixmap = pixmap.scaled(
-                self.ui.scrollArea.viewport().size(),
-                Qt.AspectRatioMode.KeepAspectRatio,
-                Qt.TransformationMode.SmoothTransformation,
-            )
+            w, h = self.ui.scrollArea.viewport().size().toTuple()
             self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         else:
             w = self.ui.scrollArea.viewport().width()
             h = pixmap.height()
-            pixmap = pixmap.scaled(
-                QSize(w, h),
-                Qt.AspectRatioMode.KeepAspectRatio,
-                Qt.TransformationMode.SmoothTransformation,
-            )
             self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
-        return pixmap
+        return pixmap.scaled(
+            QSize(w, h), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation,
+        )
 
     def update_image(self):
         pixmap = self._resize_pixmap(self._image_pixmap)
