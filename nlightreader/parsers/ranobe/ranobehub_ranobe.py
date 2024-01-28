@@ -6,11 +6,11 @@ from bs4 import BeautifulSoup
 from nlightreader.consts import URL_RANOBEHUB_API, URL_RANOBEHUB, Nl
 from nlightreader.consts.items import RanobehubItems
 from nlightreader.items import RequestForm, Manga, Chapter, Image
-from nlightreader.parsers.catalogs_base import RanobeCatalog
+from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.utils.utils import get_html, get_data
 
 
-class Ranobehub(RanobeCatalog):
+class Ranobehub(AbstractRanobeCatalog):
     CATALOG_ID = 4
     CATALOG_NAME = "Ranobehub"
 
@@ -27,7 +27,8 @@ class Ranobehub(RanobeCatalog):
             data = response.get("data")
             manga.kind = Nl.MangaKind.ranobe
             manga.score = data.get("rating")
-            manga.description.update({"all": data.get("description")})
+
+            manga.add_description(Nl.Language.undefined, data.get("description"))
         return manga
 
     def search_manga(self, form: RequestForm):

@@ -11,7 +11,7 @@ class Manga(BaseItem):
     def __init__(self, content_id: str, catalog_id, name, russian):
         super().__init__(content_id, catalog_id, name, russian)
         self._kind: Nl.MangaKind = Nl.MangaKind.undefined
-        self.description: dict = {}
+        self._description: dict[Nl.Language, str] = {}
         self._score: int | float = 0
         self.status: str | None = None
         self.genres: list[Genre] = []
@@ -48,26 +48,29 @@ class Manga(BaseItem):
             raise TypeError("Kind must be Nl.MangaKind")
         self._kind = kind
 
+    def add_description(self, language: Nl.Language, description: str):
+        self._description.update({language: description})
+
     def get_description(self) -> str:
-        if self.description.get("all"):
-            return self.description.get("all")
+        if self._description.get(Nl.Language.undefined):
+            return self._description.get(Nl.Language.undefined)
         if QLocale().language() in (
             QLocale.Language.Russian,
             QLocale.Language.Ukrainian,
-        ) and self.description.get("ru"):
-            return self.description.get("ru")
-        return self.description.get("en")
+        ) and self._description.get(Nl.Language.ru):
+            return self._description.get(Nl.Language.ru)
+        return self._description.get(Nl.Language.en)
 
     def descriptions_to_str(self) -> str:
         desc_str = ""
-        for key in self.description:
-            if self.description.get(key):
-                desc_str += f"<lang={key}>{self.description.get(key)}<end>"
+        for key in self._description:
+            if self._description.get(key):
+                desc_str += f"<lang={key.name}>{self._description.get(key)}<end>"
         return desc_str
 
     def set_description_from_str(self, desc: str):
         for lang, text in re.findall(r"<lang=(\w+)>(.+?)<end>", desc, re.DOTALL):
-            self.description.update({lang: text})
+            self.add_description(Nl.Language.from_str(lang), text)
 
 
 class Chapter:

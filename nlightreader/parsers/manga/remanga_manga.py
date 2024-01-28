@@ -1,11 +1,11 @@
 from nlightreader.consts import URL_REMANGA_API, URL_REMANGA, Nl
 from nlightreader.consts.items import RemangaItems
 from nlightreader.items import RequestForm, Manga, Chapter, Image
-from nlightreader.parsers.catalogs_base import MangaCatalog
+from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.utils import get_html, get_data
 
 
-class Remanga(MangaCatalog):
+class Remanga(AbstractMangaCatalog):
     CATALOG_ID = 6
     CATALOG_NAME = "ReManga"
 
@@ -20,7 +20,7 @@ class Remanga(MangaCatalog):
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
             data = response.get("content")
-            manga.description.update({"all": data.get("description")})
+            manga.add_description(Nl.Language.undefined, data.get("description"))
         return manga
 
     def search_manga(self, form: RequestForm):
@@ -87,8 +87,7 @@ class Remanga(MangaCatalog):
 
     def get_image(self, image: Image):
         headers = {"User-Agent": "Nlight", "Referer": "https://remanga.org/"}
-        response = get_html(f"{image.img}", headers=headers, content_type="content")
-        return response
+        return get_html(f"{image.img}", headers=headers, content_type="content")
 
     def get_preview(self, manga: Manga):
         if manga.preview_url and manga.preview_url != "/media/None":

@@ -2,11 +2,11 @@ from bs4 import BeautifulSoup
 
 from nlightreader.consts import URL_ALLHENTAI, URL_ALLHENTAI_API, Nl
 from nlightreader.items import Manga, Chapter, Image
-from nlightreader.parsers.catalogs_base import HentaiMangaCatalog
+from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
 from nlightreader.utils.utils import get_html, make_request
 
 
-class AllHentai(HentaiMangaCatalog):
+class AllHentai(AbstractHentaiMangaCatalog):
     CATALOG_ID = 8
     CATALOG_NAME = "AllHentai"
 
@@ -68,8 +68,7 @@ class AllHentai(HentaiMangaCatalog):
             if html_item:
                 img_src = html_item.get("src")
                 if img_src:
-                    response = get_html(img_src, content_type="content", headers=self.headers)
-                    return response
+                    return get_html(img_src, content_type="content", headers=self.headers)
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/{manga.content_id}"

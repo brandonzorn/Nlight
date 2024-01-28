@@ -1,7 +1,14 @@
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QSpacerItem, QSizePolicy
+from PySide6.QtCore import Qt, QThreadPool
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QGridLayout,
+    QSpacerItem,
+    QSizePolicy,
+)
 from qfluentwidgets import ScrollArea
 
+from nlightreader.utils import Thread
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
@@ -10,7 +17,7 @@ class MangaArea(ScrollArea):
         super().__init__()
         self.setWidgetResizable(True)
 
-        self._column_count = 6
+        self._column_count = 5
         self._manga_items: list[MangaItem] = []
 
         self._scrollAreaWidgetContents = QWidget()
@@ -29,7 +36,11 @@ class MangaArea(ScrollArea):
         self._verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         self._scroll_layout.addItem(self._verticalSpacer)
         self.setWidget(self._scrollAreaWidgetContents)
-        
+
+        self.manga_thread_pool = QThreadPool()
+        self.manga_thread_pool.setMaxThreadCount(self._column_count)
+        self._set_images_thread = Thread(target=self.partial_image_addition)
+
         self.setStyleSheet("QScrollArea {border: none;}")
 
         if parent is not None:
@@ -45,13 +56,20 @@ class MangaArea(ScrollArea):
         for item in items:
             self._manga_items.append(item)
             self._content_grid.addWidget(item, i, j, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
-            item.update_image()
             j += 1
-            if j == self._column_count - 1:
+            if j == self._column_count:
                 j = 0
                 i += 1
+        self._set_images_thread.start()
+
+    def partial_image_addition(self):
+        for item in self._manga_items:
+            if self.manga_thread_pool.activeThreadCount() == self.manga_thread_pool.maxThreadCount():
+                self.manga_thread_pool.waitForDone()
+            item.update_image()
 
     def delete_items(self):
+        self._set_images_thread.terminate()
         self.verticalScrollBar().setValue(0)
         for item in self._manga_items:
             self._content_grid.removeWidget(item)
@@ -59,5 +77,5 @@ class MangaArea(ScrollArea):
         self._manga_items.clear()
 
     def update_items(self):
-        size = self.size().width() // self._column_count
+        size = self.size().width() // (self._column_count + 1)
         [item.set_size(size) for item in self._manga_items]
