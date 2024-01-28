@@ -2,7 +2,7 @@
 inline-quotes=double
 import-order-style=google
 max-line-length = 120
-extend-ignore = I202,I101,R503,R502,R504,F401
+extend-ignore = R503,R502,F401
 exclude =
     .git,
     __pycache__,
