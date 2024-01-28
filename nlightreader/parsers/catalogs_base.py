@@ -1,22 +1,22 @@
 from nlightreader.consts import Nl
-from nlightreader.parsers.Parser import Parser
+from nlightreader.parsers.catalog import AbstractCatalog
 
 
-class MangaCatalog(Parser):
+class AbstractMangaCatalog(AbstractCatalog):
     CATALOG_TYPE = Nl.CatalogType.manga
 
     def __init__(self):
         super().__init__()
 
 
-class HentaiMangaCatalog(Parser):
+class AbstractHentaiMangaCatalog(AbstractCatalog):
     CATALOG_TYPE = Nl.CatalogType.hentai_manga
 
     def __init__(self):
         super().__init__()
 
 
-class RanobeCatalog(Parser):
+class AbstractRanobeCatalog(AbstractCatalog):
     CATALOG_TYPE = Nl.CatalogType.ranobe
 
     def __init__(self):

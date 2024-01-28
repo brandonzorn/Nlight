@@ -1,79 +1,145 @@
-import sqlite3
-from threading import Lock
-
+import sqlalchemy
 import platformdirs
+from sqlalchemy.dialects.sqlite import insert
 
 from nlightreader.consts import APP_NAME, Nl
 from nlightreader.items import Chapter, Manga, HistoryNote
-from nlightreader.utils.decorators import with_lock_thread, singleton
+from nlightreader.utils.decorators import singleton
 
 
 @singleton
 class Database:
-    lock = Lock()
-
     def __init__(self):
-        self.__con = sqlite3.connect(f"{platformdirs.user_data_dir()}/{APP_NAME}/data.db", check_same_thread=False)
-        self.__cur = self.__con.cursor()
-        self.__cur.execute(
-            """CREATE TABLE IF NOT EXISTS manga (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
-        content_id STRING NOT NULL, catalog_id INTEGER NOT NULL, name STRING, russian STRING, kind STRING,
-        description TEXT, score FLOAT, status STRING, volumes INTEGER, chapters INTEGER);
-            """)
-        self.__cur.execute(
-            """CREATE TABLE IF NOT EXISTS chapters (id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL,
-        content_id STRING NOT NULL, catalog_id INTEGER NOT NULL, vol STRING, ch STRING, title STRING, language STRING,
-        manga_id INTEGER);
-            """)
-        self.__cur.execute("""CREATE TABLE IF NOT EXISTS library
-        (manga_id STRING PRIMARY KEY ON CONFLICT REPLACE NOT NULL, list INTEGER NOT NULL)
-            """)
-        self.__cur.execute("""CREATE TABLE IF NOT EXISTS chapter_history
-        (manga_id STRING NOT NULL, chapter_id STRING NOT NULL UNIQUE ON CONFLICT REPLACE, is_completed BOOLEAN)
-            """)
-        self.__con.commit()
+        db_file_path = f"{platformdirs.user_data_dir()}/{APP_NAME}/data.db"
+        self.__engine = sqlalchemy.create_engine(f"sqlite:///{db_file_path}")
+        self._metadata = sqlalchemy.MetaData()
 
-    @with_lock_thread(lock)
+        self._manga = sqlalchemy.Table(
+            "manga", self._metadata,
+            sqlalchemy.Column("id", sqlalchemy.String, primary_key=True, nullable=False),
+            sqlalchemy.Column("content_id", sqlalchemy.String, nullable=False),
+            sqlalchemy.Column("catalog_id", sqlalchemy.Integer, nullable=False),
+            sqlalchemy.Column("name", sqlalchemy.String),
+            sqlalchemy.Column("russian", sqlalchemy.String),
+            sqlalchemy.Column("kind", sqlalchemy.String),
+            sqlalchemy.Column("description", sqlalchemy.Text),
+            sqlalchemy.Column("score", sqlalchemy.Float),
+            sqlalchemy.Column("status", sqlalchemy.String),
+            sqlalchemy.Column("volumes", sqlalchemy.Integer),
+            sqlalchemy.Column("chapters", sqlalchemy.Integer),
+            sqlalchemy.Column("preview_url", sqlalchemy.String),
+        )
+
+        self._chapters = sqlalchemy.Table(
+            "chapters", self._metadata,
+            sqlalchemy.Column("id", sqlalchemy.String, primary_key=True, nullable=False),
+            sqlalchemy.Column("content_id", sqlalchemy.String, nullable=False),
+            sqlalchemy.Column("catalog_id", sqlalchemy.Integer, nullable=False),
+            sqlalchemy.Column("vol", sqlalchemy.String),
+            sqlalchemy.Column("ch", sqlalchemy.String),
+            sqlalchemy.Column("title", sqlalchemy.String),
+            sqlalchemy.Column("language", sqlalchemy.String),
+            sqlalchemy.Column("manga_id", sqlalchemy.String),
+        )
+
+        self._library = sqlalchemy.Table(
+            "library", self._metadata,
+            sqlalchemy.Column("manga_id", sqlalchemy.String, primary_key=True, nullable=False),
+            sqlalchemy.Column("list", sqlalchemy.Integer, nullable=False),
+        )
+
+        self._chapter_history = sqlalchemy.Table(
+            "chapter_history", self._metadata,
+            sqlalchemy.Column("manga_id", sqlalchemy.String, nullable=False),
+            sqlalchemy.Column("chapter_id", sqlalchemy.String, primary_key=True, nullable=False),
+            sqlalchemy.Column("is_completed", sqlalchemy.Boolean, nullable=True),
+        )
+
+        self._metadata.create_all(self.__engine)
+
+        migrate1 = ("preview_url", "manga", "STRING")
+        self.add_column_migration(*migrate1)
+
+    def add_column_migration(self, column, table, params):
+        inspector = sqlalchemy.inspect(self.__engine)
+        columns = inspector.get_columns(table)
+        columns_names = [column["name"] for column in columns]
+        if column in columns_names:
+            return
+        with self.__engine.connect() as conn:
+            conn.execute(sqlalchemy.text(f"ALTER TABLE {table} ADD {column} {params};"))
+            conn.commit()
+
     def add_manga(self, manga: Manga):
-        self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-                           (manga.id, manga.content_id, manga.catalog_id, manga.name, manga.russian, manga.kind.name,
-                            manga.descriptions_to_str(), manga.score, manga.status, manga.volumes, manga.chapters))
-        self.__con.commit()
+        manga_data = {
+            "id": manga.id, "content_id": manga.content_id, "catalog_id": manga.catalog_id, "name": manga.name,
+            "russian": manga.russian, "kind": manga.kind.name, "description": manga.descriptions_to_str(),
+            "score": manga.score, "status": manga.status, "volumes": manga.volumes, "chapters": manga.chapters,
+            "preview_url": manga.preview_url,
+        }
+        manga_insert = insert(self._manga).values([manga_data])
+        manga_insert = manga_insert.on_conflict_do_update(index_elements=["id"], set_=manga_data)
+        with self.__engine.connect() as conn:
+            conn.execute(manga_insert)
+            conn.commit()
 
-    @with_lock_thread(lock)
     def add_mangas(self, mangas: list[Manga]):
-        for manga in mangas:
-            self.__cur.execute("INSERT INTO manga VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-                               (manga.id, manga.content_id, manga.catalog_id,
-                                manga.name, manga.russian, manga.kind.name, manga.descriptions_to_str(), manga.score,
-                                manga.status, manga.volumes, manga.chapters))
-        self.__con.commit()
+        if not mangas:
+            return
+        with self.__engine.connect() as conn:
+            for manga in mangas:
+                manga_data = {
+                    "id": manga.id, "content_id": manga.content_id, "catalog_id": manga.catalog_id, "name": manga.name,
+                    "russian": manga.russian, "kind": manga.kind.name, "description": manga.descriptions_to_str(),
+                    "score": manga.score, "status": manga.status, "volumes": manga.volumes, "chapters": manga.chapters,
+                    "preview_url": manga.preview_url}
+                manga_insert = insert(self._manga).values(manga_data)
+                manga_insert = manga_insert.on_conflict_do_update(index_elements=["id"], set_=manga_data)
+                conn.execute(manga_insert)
+            conn.commit()
 
-    def get_manga(self, manga_id: str):
-        x = self.__cur.execute(f"SELECT * FROM manga WHERE id = '{manga_id}'").fetchone()
-        content_id = x[1]
-        catalog_id = x[2]
-        name = x[3]
-        russian = x[4]
+    @staticmethod
+    def _make_manga(manga_data) -> Manga:
+        content_id = manga_data[1]
+        catalog_id = manga_data[2]
+        name = manga_data[3]
+        russian = manga_data[4]
         manga = Manga(content_id, catalog_id, name, russian)
-        manga.kind = Nl.MangaKind.from_str(x[5])
-        manga.set_description_from_str(x[6])
-        manga.score = x[7]
-        manga.status = x[8]
-        manga.volumes = x[9]
-        manga.chapters = x[10]
+        manga.kind = Nl.MangaKind.from_str(manga_data[5])
+        manga.set_description_from_str(manga_data[6])
+        manga.score = manga_data[7]
+        manga.status = manga_data[8]
+        manga.volumes = manga_data[9]
+        manga.chapters = manga_data[10]
+        manga.preview_url = manga_data[11]
         return manga
 
-    @with_lock_thread(lock)
+    def get_manga(self, manga_id: str):
+        select_manga = sqlalchemy.select(self._manga).where(self._manga.c.id == manga_id)
+        with self.__engine.connect() as conn:
+            select_manga_result = conn.execute(select_manga)
+        x = select_manga_result.fetchone()
+        return self._make_manga(x)
+
     def add_chapters(self, chapters: list[Chapter], manga: Manga):
-        for chapter in chapters:
-            self.__cur.execute("INSERT INTO chapters VALUES(?, ?, ?, ?, ?, ?, ?, ?);",
-                               (chapter.id, chapter.content_id, chapter.catalog_id, chapter.vol, chapter.ch,
-                                chapter.title, chapter.language.name, manga.id))
-        self.__con.commit()
+        if not chapters or not manga:
+            return
+        with self.__engine.connect() as conn:
+            for chapter in chapters:
+                chapter_data = {
+                    "id": chapter.id, "content_id": chapter.content_id, "catalog_id": chapter.catalog_id,
+                    "vol": chapter.vol, "ch": chapter.ch, "title": chapter.title, "language": chapter.language.name,
+                    "manga_id": manga.id}
+                chapters_insert = insert(self._chapters).values([chapter_data])
+                chapters_insert = chapters_insert.on_conflict_do_update(index_elements=["id"], set_=chapter_data)
+                conn.execute(chapters_insert)
+            conn.commit()
 
     def get_chapter(self, chapter_id: str):
-        a = self.__cur.execute(f"SELECT * FROM chapters WHERE id = '{chapter_id}'").fetchone()
+        select_chapter = sqlalchemy.select(self._chapters).where(self._chapters.c.id == chapter_id)
+        with self.__engine.connect() as conn:
+            select_chapter_result = conn.execute(select_chapter)
+        a = select_chapter_result.fetchone()
         content_id = a[1]
         catalog_id = a[2]
         vol = a[3]
@@ -85,9 +151,12 @@ class Database:
         chapter.language = language
         return chapter
 
-    @with_lock_thread(lock)
     def get_chapters(self, manga: Manga) -> list[Chapter]:
-        a = self.__cur.execute(f"SELECT * FROM chapters WHERE manga_id = '{manga.id}' ORDER by index_n").fetchall()
+        select_chapters = sqlalchemy.select(self._chapters).filter_by(
+            manga_id=manga.id)
+        with self.__engine.connect() as conn:
+            select_chapters_result = conn.execute(select_chapters)
+        a = select_chapters_result.fetchall()
         chapters = []
         for i in a[::-1]:
             chapter = Chapter(i[1], i[2], i[3], i[4], i[5])
@@ -95,63 +164,90 @@ class Database:
             chapters.append(chapter)
         return chapters
 
-    @with_lock_thread(lock)
     def add_manga_library(self, manga: Manga, lib_list: Nl.LibList = Nl.LibList.planned):
-        self.__cur.execute("INSERT INTO library VALUES(?, ?);", (manga.id, lib_list.value))
-        self.__con.commit()
+        lib_manga_data = {"manga_id": manga.id, "list": lib_list.value}
+        manga_library_insert = insert(self._library).values([lib_manga_data])
+        manga_library_insert = manga_library_insert.on_conflict_do_update(
+            index_elements=["manga_id"], set_=lib_manga_data)
+        with self.__engine.connect() as conn:
+            conn.execute(manga_library_insert)
+            conn.commit()
 
-    @with_lock_thread(lock)
     def get_manga_library(self, lib_list: Nl.LibList) -> list[Manga]:
-        a = self.__cur.execute(f"SELECT manga_id FROM library WHERE list = '{lib_list.value}';").fetchall()
-        mangas = []
-        for i in a[::-1]:
-            mangas.append(self.get_manga(i[0]))
-        return mangas
+        select_manga_library = sqlalchemy.select(self._manga).join(
+            self._library, self._manga.c.id == self._library.c.manga_id).filter_by(
+            list=lib_list.value)
+        with self.__engine.connect() as conn:
+            select_chapter_result = conn.execute(select_manga_library)
+        a = select_chapter_result.fetchall()
+        return [self._make_manga(data) for data in a[::-1]]
 
-    @with_lock_thread(lock)
     def get_manga_library_list(self, manga: Manga) -> Nl.LibList:
-        a = self.__cur.execute(f"SELECT list FROM library WHERE manga_id = '{manga.id}';").fetchone()
+        select_manga_library = sqlalchemy.select(self._library.c.list).filter_by(
+            manga_id=manga.id)
+        with self.__engine.connect() as conn:
+            select_chapter_result = conn.execute(select_manga_library)
+        a = select_chapter_result.fetchone()
         return Nl.LibList(a[0])
 
-    @with_lock_thread(lock)
     def check_manga_library(self, manga: Manga) -> bool:
-        a = self.__cur.execute(f"SELECT list FROM library WHERE manga_id = '{manga.id}';").fetchone()
+        select_manga_library = sqlalchemy.select(self._library.c.list).filter_by(
+            manga_id=manga.id)
+        with self.__engine.connect() as conn:
+            select_chapter_result = conn.execute(select_manga_library)
+        a = select_chapter_result.fetchone()
         return bool(a)
 
-    @with_lock_thread(lock)
     def rem_manga_library(self, manga: Manga):
-        self.__cur.execute(f"DELETE FROM library WHERE manga_id = '{manga.id}';")
-        self.__con.commit()
+        delete_manga_library = sqlalchemy.delete(self._library).filter_by(
+            manga_id=manga.id)
+        with self.__engine.connect() as conn:
+            conn.execute(delete_manga_library)
+            conn.commit()
 
-    @with_lock_thread(lock)
     def check_complete_chapter(self, chapter: Chapter):
-        a = self.__cur.execute(
-            f"SELECT is_completed FROM chapter_history WHERE chapter_id = '{chapter.id}';").fetchall()
+        select_chapter_history = sqlalchemy.select(self._chapter_history.c.is_completed).filter_by(
+            chapter_id=chapter.id)
+        with self.__engine.connect() as conn:
+            select_chapter_result = conn.execute(select_chapter_history)
+        a = select_chapter_result.fetchall()
         return bool(a)
 
-    @with_lock_thread(lock)
     def get_complete_status(self, chapter: Chapter):
-        a = self.__cur.execute(
-            f"SELECT is_completed FROM chapter_history WHERE chapter_id = '{chapter.id}';").fetchall()
+        select_chapter_history = sqlalchemy.select(self._chapter_history.c.is_completed).filter_by(
+            chapter_id=chapter.id)
+        with self.__engine.connect() as conn:
+            select_chapter_result = conn.execute(select_chapter_history)
+        a = select_chapter_result.fetchall()
         return bool(a[0][0])
 
-    @with_lock_thread(lock)
     def add_history_note(self, note: HistoryNote):
-        self.__cur.execute("INSERT INTO chapter_history VALUES(?, ?, ?);",
-                           (note.manga.id, note.chapter.id, note.is_completed))
-        self.__con.commit()
+        note_data = {"manga_id": note.manga.id, "chapter_id": note.chapter.id, "is_completed": note.is_completed}
+        history_note_insert = insert(self._chapter_history).values([note_data])
+        history_note_insert = history_note_insert.on_conflict_do_update(index_elements=["chapter_id"], set_=note_data)
+        with self.__engine.connect() as conn:
+            conn.execute(history_note_insert)
+            conn.commit()
 
-    @with_lock_thread(lock)
     def add_history_notes(self, history_notes: list[HistoryNote]):
-        for note in history_notes:
-            self.__cur.execute("INSERT INTO chapter_history VALUES(?, ?, ?);",
-                               (note.manga.id, note.chapter.id, note.is_completed))
-        self.__con.commit()
+        if not history_notes:
+            return
+        with self.__engine.connect() as conn:
+            for note in history_notes:
+                note_data = {
+                    "manga_id": note.manga.id, "chapter_id": note.chapter.id, "is_completed": note.is_completed}
+                history_notes_insert = insert(self._chapter_history).values([note_data])
+                history_notes_insert = history_notes_insert.on_conflict_do_update(
+                    index_elements=["chapter_id"], set_=note_data)
+                conn.execute(history_notes_insert)
+            conn.commit()
 
-    @with_lock_thread(lock)
     def get_history_notes(self) -> list[HistoryNote]:
+        select_chapter_history = sqlalchemy.select(self._chapter_history)
+        with self.__engine.connect() as conn:
+            select_chapter_result = conn.execute(select_chapter_history)
+        a = select_chapter_result.fetchall()
         notes = []
-        a = self.__cur.execute("SELECT * FROM chapter_history;").fetchall()
         for i in a:
             manga = self.get_manga(i[0])
             chapter = self.get_chapter(i[1])
@@ -159,12 +255,16 @@ class Database:
             notes.append(HistoryNote(chapter, manga, is_completed))
         return notes
 
-    @with_lock_thread(lock)
     def del_history_notes(self, manga: Manga):
-        self.__cur.execute(f"DELETE FROM chapter_history WHERE manga_id = '{manga.id}';")
-        self.__con.commit()
+        delete_history_notes = sqlalchemy.delete(self._chapter_history).filter_by(
+            manga_id=manga.id)
+        with self.__engine.connect() as conn:
+            conn.execute(delete_history_notes)
+            conn.commit()
 
-    @with_lock_thread(lock)
     def del_history_note(self, chapter: Chapter):
-        self.__cur.execute(f"DELETE FROM chapter_history WHERE chapter_id = '{chapter.id}';")
-        self.__con.commit()
+        delete_history_note = sqlalchemy.delete(self._chapter_history).filter_by(
+            chapter_id=chapter.id)
+        with self.__engine.connect() as conn:
+            conn.execute(delete_history_note)
+            conn.commit()

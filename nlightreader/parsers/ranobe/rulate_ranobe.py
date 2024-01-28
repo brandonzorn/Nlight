@@ -5,11 +5,11 @@ from bs4 import BeautifulSoup
 from nlightreader.consts import URL_RULATE, URL_EROLATE, Nl
 from nlightreader.consts.items import RulateItems
 from nlightreader.items import Manga, Chapter, Image, RequestForm
-from nlightreader.parsers.catalogs_base import RanobeCatalog
+from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.utils.utils import get_html
 
 
-class Rulate(RanobeCatalog):
+class Rulate(AbstractRanobeCatalog):
     CATALOG_ID = 3
     CATALOG_NAME = "Rulate"
 
@@ -27,7 +27,7 @@ class Rulate(RanobeCatalog):
             if hranobe:
                 description_text = hranobe.text
                 if description_text:
-                    manga.description.update({"all": str(description_text)})
+                    manga.add_description(Nl.Language.undefined, str(description_text))
             manga.kind = Nl.MangaKind.ranobe
         return manga
 
@@ -112,8 +112,7 @@ class Rulate(RanobeCatalog):
             soup = BeautifulSoup(response, "html.parser")
             himage = soup.find("meta", property="og:image")
             if himage:
-                img_response = get_html(str(himage["content"]), content_type="content")
-                return img_response
+                return get_html(str(himage["content"]), content_type="content")
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url_api}/book/{manga.content_id}"
