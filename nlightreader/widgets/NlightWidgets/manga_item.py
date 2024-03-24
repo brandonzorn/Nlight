@@ -80,8 +80,11 @@ class MangaItem(QWidget):
         menu.exec(self.ui.manga_item_frame.mapToGlobal(pos))
 
     def set_size(self, size: int):
+        current_size = self.size()
+        if abs(current_size.width() - size) < 6:
+            return
         max_size = QSize(size, size * 2)
-        if self.size() != max_size:
+        if current_size != max_size:
             self.setFixedSize(max_size)
             self.ui.image.setMaximumSize(max_size)
         if self.manga_pixmap:
