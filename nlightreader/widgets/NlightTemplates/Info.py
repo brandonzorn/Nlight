@@ -199,7 +199,7 @@ class FormInfo(QWidget):
         def get_chapters():
             self.chapters = self.catalog.get_chapters(self.manga)
             self.chapters.reverse()
-            self.chapters.sort(key=lambda ch: ch.language.value if ch.language.value else False)
+            # self.chapters.sort(key=lambda ch: ch.language.value if ch.language.value else False)
             self.db.add_chapters(self.chapters, self.manga)
 
         def update_chapters():
@@ -257,8 +257,7 @@ class FormInfo(QWidget):
         except RuntimeError:
             pass
         finally:
-            selected_chapter = self._get_selected_chapter()
-            if selected_chapter:
+            if selected_chapter := self._get_selected_chapter():
                 self.reader_window = ReaderWindow()
                 self.reader_window.setup(
                     self.manga,
