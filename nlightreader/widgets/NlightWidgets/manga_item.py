@@ -1,7 +1,7 @@
 import webbrowser
 
 from PySide6.QtCore import Qt, Signal, QSize
-from qfluentwidgets import ElevatedCardWidget, InfoBar, FluentStyleSheet, isDarkTheme
+from qfluentwidgets import ElevatedCardWidget, InfoBar
 
 from data.ui.manga_item import Ui_Form
 from nlightreader.contexts import LibraryMangaMenu
@@ -89,10 +89,11 @@ class MangaItem(ElevatedCardWidget):
         menu.exec(self.mapToGlobal(pos))
 
     def set_size(self, size: int):
-        max_size = QSize(size, size * 2)
-        if abs(self.size().width() - size) < 6:
+        current_size = self.size()
+        if abs(current_size.width() - size) < 6:
             return
-        if self.size() != max_size:
+        max_size = QSize(size, size * 2)
+        if current_size != max_size:
             self.setFixedSize(max_size)
             self.ui.image.setMaximumSize(max_size)
         if self.manga_pixmap:
