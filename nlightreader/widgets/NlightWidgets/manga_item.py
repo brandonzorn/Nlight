@@ -1,7 +1,7 @@
 import webbrowser
 
 from PySide6.QtCore import Qt, Signal, QSize
-from qfluentwidgets import ElevatedCardWidget, InfoBar
+from qfluentwidgets import ElevatedCardWidget, InfoBar, FluentStyleSheet, isDarkTheme
 
 from data.ui.manga_item import Ui_Form
 from nlightreader.contexts import LibraryMangaMenu
@@ -34,24 +34,27 @@ class MangaItem(ElevatedCardWidget):
 
     def on_context_menu(self, pos):
         catalog = get_catalog(self.manga.catalog_id)()
+        manga_title = self.manga.get_name()
+        info_bar_parent = self.parentWidget().parentWidget()
+        info_bar_duration = 2000
 
         def add_to_lib():
             self._db.add_manga(self.manga)
             self._db.add_manga_library(self.manga)
             InfoBar.success(
-                title=self.manga.get_name(),
+                title=manga_title,
                 content=translate("Message", "Manga {} has been added.").format(self.manga.get_name()),
-                duration=2000,
-                parent=self.parentWidget(),
+                duration=info_bar_duration,
+                parent=info_bar_parent,
             )
 
         def remove_from_lib():
             self._db.rem_manga_library(self.manga)
             InfoBar.success(
-                title=self.manga.get_name(),
+                title=manga_title,
                 content=translate("Message", "Manga {} has been deleted.").format(self.manga.get_name()),
-                duration=2000,
-                parent=self.parentWidget(),
+                duration=info_bar_duration,
+                parent=info_bar_parent,
             )
             self.manga_changed.emit()
 
@@ -61,10 +64,10 @@ class MangaItem(ElevatedCardWidget):
         def remove_files():
             FileManager.remove_manga_files(self.manga, catalog)
             InfoBar.success(
-                title=self.manga.get_name(),
+                title=manga_title,
                 content=translate("Message", "Files {} have been removed.").format(self.manga.get_name()),
-                duration=2000,
-                parent=self.parentWidget(),
+                duration=info_bar_duration,
+                parent=info_bar_parent,
             )
 
         def open_local_files():
@@ -87,6 +90,8 @@ class MangaItem(ElevatedCardWidget):
 
     def set_size(self, size: int):
         max_size = QSize(size, size * 2)
+        if abs(self.size().width() - size) < 6:
+            return
         if self.size() != max_size:
             self.setFixedSize(max_size)
             self.ui.image.setMaximumSize(max_size)
