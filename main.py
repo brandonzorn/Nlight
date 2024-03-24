@@ -25,6 +25,7 @@ class App(QApplication):
         self.translator = QTranslator()
 
         self.load_translator()
+        self.update_style()
 
     def load_translator(self):
         self.translator.load(get_locale(QLocale().language()))
@@ -32,6 +33,9 @@ class App(QApplication):
 
     def get_accent_color(self):
         return self.palette().color(QPalette.ColorRole.Highlight)
+
+    def update_style(self):
+        setTheme(Theme.DARK if darkdetect.isDark() else Theme.LIGHT)
 
 
 class MainWindow(ParentWindow):
@@ -41,7 +45,7 @@ class MainWindow(ParentWindow):
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QIcon(Icons.App))
         self._theme_updater = Thread(target=self.theme_listener, callback=self.update_style)
-        # self._theme_updater.start()
+        self._theme_updater.start()
         self.show()
 
     @staticmethod
@@ -67,7 +71,6 @@ if __name__ == "__main__":
         logging.basicConfig(level=logging.WARNING, filename="latest.log", filemode="w")
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
     QThreadPool.globalInstance().setMaxThreadCount(32)
-    # setTheme(Theme.DARK)
     app = App(sys.argv)
     Path(f"{platformdirs.user_data_dir()}/{APP_NAME}").mkdir(parents=True, exist_ok=True)
     window = MainWindow()
