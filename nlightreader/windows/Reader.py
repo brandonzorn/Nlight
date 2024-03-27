@@ -2,10 +2,10 @@ import time
 
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QMainWindow, QListWidgetItem
+from PySide6.QtWidgets import QWidget, QListWidgetItem
 from qfluentwidgets import FluentIcon
 
-from data.ui.windows.reader import Ui_ReaderWindow
+from data.ui.widgets.reader import Ui_ReaderWidget
 from nlightreader.consts import ItemsColors, Nl
 from nlightreader.items import Manga, Chapter, Image, HistoryNote
 from nlightreader.utils import Database, get_catalog, FileManager, translate, get_language_icon, Thread
@@ -13,12 +13,17 @@ from nlightreader.widgets.NlightContainers import TextArea
 from nlightreader.widgets.NlightContainers.image_area import ImageArea
 
 
-class ReaderWindow(QMainWindow):
+class ReaderWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.ui = Ui_ReaderWindow()
+        self.ui = Ui_ReaderWidget()
         self.ui.setupUi(self)
-        self.setStyleSheet("QScrollArea {border: none;}")
+        self.setStyleSheet(
+            """
+            QWidget {background: transparent;}
+            QScrollArea {border: none;}
+            """
+        )
         self.ui.fullscreen_btn.setIcon(FluentIcon.FULL_SCREEN)
         self.ui.ch_list_btn.setIcon(FluentIcon.TILES)
         self.ui.next_page_btn.setIcon(FluentIcon.RIGHT_ARROW)
@@ -64,7 +69,7 @@ class ReaderWindow(QMainWindow):
         self.cur_chapter = cur_chapter
         self.max_chapters = len(chapters)
         self.catalog = get_catalog(manga.catalog_id)()
-        self.showMaximized()
+        # self.showMaximized()
         self.update_chapters_list()
         self.update_chapter()
 
