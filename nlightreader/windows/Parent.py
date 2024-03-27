@@ -29,7 +29,7 @@ class ParentWindow(FluentWindow):
         self.addSubInterface(self.library_interface, FluentIcon.LIBRARY, translate("MainWindow", "Library"))
         self.addSubInterface(self.facial_interface, FluentIcon.HOME, translate("MainWindow", "Main"))
         self.addSubInterface(
-            self.shikimori_interface, NlFluentIcons.SHIKIMORI, translate("MainWindow", "Shikimori")
+            self.shikimori_interface, NlFluentIcons.SHIKIMORI, translate("MainWindow", "Shikimori"),
         )
         self.addSubInterface(self.history_interface, FluentIcon.HISTORY, translate("MainWindow", "History"))
 

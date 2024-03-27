@@ -20,7 +20,7 @@ class MangaArea(ScrollArea):
             """
             QWidget {background: transparent;}
             QScrollArea {border: none;}
-            """
+            """,
         )
         self._column_count = 5
         self._manga_items: list[MangaItem] = []

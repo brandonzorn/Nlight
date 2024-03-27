@@ -1,3 +1,5 @@
+import logging
+
 from PySide6.QtCore import Qt, QSize, Slot, Signal, QThreadPool
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget, QListWidgetItem, QTreeWidgetItem
@@ -130,7 +132,7 @@ class FormInfo(QWidget):
                 self.manga = self.catalog.get_manga(manga)
                 self.db.add_manga(self.manga)
             except Exception as e:
-                print(e)
+                logging.error(e)
                 self.setup_error.emit()
 
         Worker(target=info_setup, callback=self.update_additional_info).start(pool=self.thread_pool)

@@ -48,4 +48,5 @@ class NlFluentIcons(FluentIconBase, Enum):
     SHIKIMORI = "shikimori"
 
     def path(self, theme=Theme.AUTO):
-        return f":/actions_{getIconColor(theme)}/data/icons/buttons/svg_24dp_{getIconColor(theme)}/actions/{self.value}.svg"
+        return (f":/actions_{getIconColor(theme)}"
+                f"/data/icons/buttons/svg_24dp_{getIconColor(theme)}/actions/{self.value}.svg")

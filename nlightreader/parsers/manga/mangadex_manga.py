@@ -1,3 +1,5 @@
+import logging
+
 from nlightreader.consts import URL_MANGA_DEX_API, URL_MANGA_DEX, Nl, MANGA_DEX_HEADERS, URL_MANGA_DEX_TOKEN
 from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
 from nlightreader.parsers.catalog import LibParser
@@ -9,7 +11,7 @@ from nlightreader.utils.utils import get_data, get_html, make_request
 try:
     from keys import MANGADEX_CLIENT_ID, MANGADEX_CLIENT_SECRET
 except (ModuleNotFoundError, ImportError):
-    print("MangaDex API keys not found")
+    logging.info("MangaDex API keys not found")
     MANGADEX_CLIENT_ID, MANGADEX_CLIENT_SECRET = "", ""
 
 
