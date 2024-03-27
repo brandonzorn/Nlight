@@ -1,3 +1,5 @@
+import logging
+
 import requests
 from PySide6.QtWidgets import QApplication
 from requests_oauthlib import OAuth2Session
@@ -14,7 +16,7 @@ from nlightreader.utils.utils import get_html
 try:
     from keys import SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID
 except (ModuleNotFoundError, ImportError):
-    print("Shikimori API keys not found")
+    logging.info("Shikimori API keys not found")
     SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID = "", ""
 
 
@@ -278,7 +280,7 @@ class Auth:
         try:
             self.client.fetch_token(URL_SHIKIMORI_TOKEN, code, client_secret=self.client_secret)
         except Exception as e:
-            print(e)
+            logging.error(e)
         TokenManager.save_token(self.token, ShikimoriLib.CATALOG_NAME)
         return self.token
 
@@ -301,7 +303,7 @@ class Auth:
                 "Authorization": f"Bearer {TokenManager.load_token(ShikimoriLib.CATALOG_NAME).get('access_token')}"})
             return self.token
         except Exception as e:
-            print(e)
+            logging.error(e)
 
     def request(self, method, url, *, params=None, json=None, ignore_authorize=False):
         if ((not ignore_authorize and not self.is_authorized) or
@@ -313,13 +315,14 @@ class Auth:
             response.raise_for_status()
             return response
         except requests.exceptions.RequestException as e:
-            print(f"Error fetching URL: {url}")
-            print(f"  Reason: {e}")
-            print(f"  Headers: {self.client.headers}")
-            print(f"  Params: {params}")
-            print(f"  Cookies: {self.client.cookies}")
-            print(f"  Json: {json}")
-            return
+            logging.error(
+                f"\n\tError fetching URL: {url}\n"
+                f"\t\tReason: {e}\n"
+                f"\t\tHeaders: {self.client.headers}\n"
+                f"\t\tParams: {params}\n"
+                f"\t\tCookies: {self.client.cookies}\n"
+                f"\t\tJson: {json}\n",
+            )
 
     def check_auth(self):
         url = f"{URL_SHIKIMORI_API}/users/whoami"
