@@ -5,6 +5,7 @@ from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.info import Ui_Form
 from nlightreader.consts import lib_lists_en, ItemsColors, Nl
+from nlightreader.consts.files.files import NlFluentIcons
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
 from nlightreader.items import Manga, Character, Chapter, HistoryNote
@@ -31,7 +32,7 @@ class FormInfo(QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
-        self.ui.shikimori_btn.setIcon(QIcon(":/actions_black/data/icons/buttons/svg_24dp_black/actions/shikimori.svg"))
+        self.ui.shikimori_btn.setIcon(NlFluentIcons.SHIKIMORI.qicon())
 
         self.setObjectName("FormInfo")
 
@@ -278,6 +279,9 @@ class FormInfo(QWidget):
                     self.chapters,
                     self.chapters.index(selected_chapter) + 1,
                 )
+                stack = self.parent()
+                stack.addWidget(self.reader_window)
+                stack.setCurrentWidget(self.reader_window)
 
     @Slot()
     def open_related_manga(self):

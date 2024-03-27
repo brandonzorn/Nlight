@@ -1,3 +1,7 @@
+from enum import Enum
+
+from qfluentwidgets import FluentIconBase, Theme, getIconColor
+
 import nlight_res_rc
 
 from PySide6.QtCore import QFile, QTextStream
@@ -36,3 +40,12 @@ class Translations:
 
 class Icons:
     App = ":/png_white/data/icons/icon.png"
+
+
+class NlFluentIcons(FluentIconBase, Enum):
+    """ Custom icons """
+
+    SHIKIMORI = "shikimori"
+
+    def path(self, theme=Theme.AUTO):
+        return f":/actions_{getIconColor(theme)}/data/icons/buttons/svg_24dp_{getIconColor(theme)}/actions/{self.value}.svg"
