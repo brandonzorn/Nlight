@@ -1,7 +1,7 @@
 from PySide6.QtCore import Slot, QSize
-from PySide6.QtGui import QIcon
 from qfluentwidgets import FluentWindow, FluentIcon
 
+from nlightreader.consts.files.files import NlFluentIcons
 from nlightreader.items import Manga
 from nlightreader.utils import translate
 from nlightreader.widgets.NlightTemplates import FormFacial, FormLibrary, FormShikimori, FormHistory, FormInfo
@@ -29,17 +29,13 @@ class ParentWindow(FluentWindow):
         self.addSubInterface(self.library_interface, FluentIcon.LIBRARY, translate("MainWindow", "Library"))
         self.addSubInterface(self.facial_interface, FluentIcon.HOME, translate("MainWindow", "Main"))
         self.addSubInterface(
-            self.shikimori_interface,
-            QIcon(":/actions_black/data/icons/buttons/svg_24dp_black/actions/shikimori.svg"),
-            translate("MainWindow", "Shikimori"),
+            self.shikimori_interface, NlFluentIcons.SHIKIMORI, translate("MainWindow", "Shikimori")
         )
         self.addSubInterface(self.history_interface, FluentIcon.HISTORY, translate("MainWindow", "History"))
 
     @Slot()
     def on_widget_change(self):
-        # print(self.stackedWidget.currentWidget())
-        # self.stackedWidget.widget
-        if self.stackedWidget.currentWidget().objectName() == "FormInfo":
+        if self.stackedWidget.currentWidget().objectName() in ("FormInfo", "ReaderWidget"):
             return
         self.stackedWidget.currentWidget().setup()
 

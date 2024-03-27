@@ -16,7 +16,12 @@ class MangaArea(ScrollArea):
     def __init__(self, parent):
         super().__init__()
         self.setWidgetResizable(True)
-
+        self.setStyleSheet(
+            """
+            QWidget {background: transparent;}
+            QScrollArea {border: none;}
+            """
+        )
         self._column_count = 5
         self._manga_items: list[MangaItem] = []
 
@@ -40,8 +45,6 @@ class MangaArea(ScrollArea):
         self.manga_thread_pool = QThreadPool()
         self.manga_thread_pool.setMaxThreadCount(self._column_count)
         self._set_images_thread = Thread(target=self.partial_image_addition)
-
-        self.setStyleSheet("QScrollArea {border: none;}")
 
         if parent is not None:
             parent.addWidget(self)
