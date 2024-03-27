@@ -48,7 +48,7 @@
        <number>9</number>
       </property>
       <item>
-       <widget class="QScrollArea" name="scrollArea">
+       <widget class="ScrollArea" name="scrollArea">
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
@@ -105,6 +105,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ScrollArea</class>
+   <extends>QScrollArea</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
