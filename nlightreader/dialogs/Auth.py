@@ -1,41 +1,54 @@
 import webbrowser
 
-from PySide6.QtWidgets import QDialog, QLayout
+from qfluentwidgets import MessageBoxBase, LineEdit, SubtitleLabel, PushButton
 
-from data.ui.dialogs.auth import Ui_Dialog
+from nlightreader.utils import translate
 
 
-class FormAuth(QDialog):
+class AuthMessageBox(MessageBoxBase):
     def __init__(self, catalog, parent=None):
         super().__init__(parent)
-        self.ui = Ui_Dialog()
-        self.ui.setupUi(self)
-        self.setWindowTitle("Authenticate")
-        self.layout().setSizeConstraint(QLayout.SetFixedSize)
-        self.ui.catalog_label.setText(catalog.CATALOG_NAME)
+        self.titleLabel = SubtitleLabel("Authenticate", parent=self)
+        self.tokenLineEdit = LineEdit(self)
+        self.getCodeButton = PushButton(translate("Dialog", "Get code"), None)
+
+        self.tokenLineEdit.setPlaceholderText(translate("Dialog", "Authorization code"))
+        self.tokenLineEdit.setClearButtonEnabled(True)
+
+        self.viewLayout.addWidget(self.titleLabel)
+        self.viewLayout.addWidget(self.tokenLineEdit)
+        self.viewLayout.addWidget(self.getCodeButton)
+
+        self.yesButton.setText(translate("Dialog", "Sign in"))
+        self.cancelButton.setText(translate("Dialog", "Cancel"))
+
+        self.widget.setMinimumWidth(350)
+
+        self.yesButton.clicked.connect(lambda: self.verify_user_data(catalog.fields))
+        self.getCodeButton.clicked.connect(self.open_login_page)
+
         self.session = catalog.session
         self.setup_form(catalog.fields)
 
     def setup_form(self, fields: int):
         if fields == 1:
-            self.ui.get_code_btn.clicked.connect(self.open_login_page)
-            self.ui.auth_btn.clicked.connect(lambda: self.verify_user_data(fields))
-            self.ui.two_frame.hide()
+            ...
+            # self.ui.two_frame.hide()
         else:
-            self.ui.auth_btn.clicked.connect(lambda: self.verify_user_data(fields))
-            self.ui.one_frame.hide()
+            ...
+            # self.ui.one_frame.hide()
 
     def verify_user_data(self, fields: int):
         if fields == 1:
-            code = self.ui.auth_code_line.text()
+            code = self.tokenLineEdit.text()
             if not code:
                 return
             self.session.fetch_token(code)
             if self.session.check_auth():
                 self.accept()
-        else:
-            if self.ui.login_line.text() and self.ui.password_line.text():
-                self.accept()
+        # else:
+        #    if self.ui.login_line.text() and self.ui.password_line.text():
+        #        self.accept()
 
     def get_user_data(self):
         return {

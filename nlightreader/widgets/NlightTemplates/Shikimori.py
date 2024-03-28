@@ -3,7 +3,7 @@ from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.shikimori import Ui_Form
 from nlightreader.consts import Nl
-from nlightreader.dialogs import FormAuth
+from nlightreader.dialogs import AuthMessageBox
 from nlightreader.items import Manga
 from nlightreader.parsers import ShikimoriLib
 from nlightreader.utils import translate, Worker
@@ -36,8 +36,6 @@ class FormShikimori(MangaItemBasedWidget):
         self.ui.title_line.searchSignal.connect(self.search)
         self.ui.auth_btn.clicked.connect(self.authorize)
         self.catalog = ShikimoriLib()
-        self.Form_auth = FormAuth(self.catalog, parent=self)
-        self.Form_auth.accepted.connect(self.auth_accept)
         self.update_user_info()
 
     def setup_manga_item(self, manga: Manga):
@@ -63,13 +61,11 @@ class FormShikimori(MangaItemBasedWidget):
         self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
 
     @Slot()
-    def auth_accept(self):
-        self.catalog.session.auth_login(self.Form_auth.get_user_data())
-        self.update_user_info()
-
-    @Slot()
     def authorize(self):
-        self.Form_auth.exec()
+        w = AuthMessageBox(self.catalog, parent=self)
+        if w.exec():
+            self.catalog.session.auth_login(w.get_user_data())
+            self.update_user_info()
 
     @Slot()
     def search(self):
