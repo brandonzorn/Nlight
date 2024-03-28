@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'infotEWocK.ui'
+## Form generated from reading UI file 'infojOTtZx.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.2
 ##
@@ -54,10 +54,6 @@ class Ui_Form(object):
         self.horizontalLayout = QHBoxLayout(self.lib_frame)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout.addItem(self.horizontalSpacer_3)
-
         self.lib_list_box = ComboBox(self.lib_frame)
         self.lib_list_box.setObjectName(u"lib_list_box")
 
