@@ -40,13 +40,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QFrame" name="search_frame">
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
+      <widget class="QWidget" name="search_frame">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <property name="leftMargin">
          <number>0</number>

@@ -29,7 +29,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_10">
      <item>
-      <widget class="QFrame" name="header_frame">
+      <widget class="SimpleCardWidget" name="header_frame">
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
        </property>
@@ -65,7 +65,7 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
-           <widget class="QFrame" name="lib_frame">
+           <widget class="SimpleCardWidget" name="lib_frame">
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
             </property>
@@ -112,7 +112,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QFrame" name="shikimori_frame">
+           <widget class="SimpleCardWidget" name="shikimori_frame">
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
             </property>
