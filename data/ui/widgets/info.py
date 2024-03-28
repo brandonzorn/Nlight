@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'info.ui'
+## Form generated from reading UI file 'infotEWocK.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.2
 ##
@@ -34,7 +34,7 @@ class Ui_Form(object):
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_10 = QVBoxLayout()
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
-        self.header_frame = QFrame(Form)
+        self.header_frame = SimpleCardWidget(Form)
         self.header_frame.setObjectName(u"header_frame")
         self.header_frame.setFrameShape(QFrame.StyledPanel)
         self.header_frame.setFrameShadow(QFrame.Raised)
@@ -47,7 +47,7 @@ class Ui_Form(object):
 
         self.verticalLayout_7 = QVBoxLayout()
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.lib_frame = QFrame(self.header_frame)
+        self.lib_frame = SimpleCardWidget(self.header_frame)
         self.lib_frame.setObjectName(u"lib_frame")
         self.lib_frame.setFrameShape(QFrame.StyledPanel)
         self.lib_frame.setFrameShadow(QFrame.Raised)
@@ -72,7 +72,7 @@ class Ui_Form(object):
 
         self.verticalLayout_7.addWidget(self.lib_frame)
 
-        self.shikimori_frame = QFrame(self.header_frame)
+        self.shikimori_frame = SimpleCardWidget(self.header_frame)
         self.shikimori_frame.setObjectName(u"shikimori_frame")
         self.shikimori_frame.setFrameShape(QFrame.StyledPanel)
         self.shikimori_frame.setFrameShadow(QFrame.Raised)
