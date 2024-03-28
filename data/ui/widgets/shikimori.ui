@@ -40,7 +40,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QFrame" name="search_frame">
+      <widget class="SimpleCardWidget" name="search_frame">
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
        </property>
