@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'infojOTtZx.ui'
+## Form generated from reading UI file 'info.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.2
 ##
@@ -20,8 +20,8 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
     QTreeWidgetItem, QVBoxLayout, QWidget)
 
 from qfluentwidgets import (BodyLabel, CardWidget, ComboBox, ElevatedCardWidget,
-    ListWidget, SimpleCardWidget, TextEdit, ToolButton,
-    TreeWidget)
+    ListWidget, ScrollArea, SimpleCardWidget, TextEdit,
+    ToolButton, TreeWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -32,9 +32,20 @@ class Ui_Form(object):
         self.horizontalLayout_4 = QHBoxLayout(Form)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_10 = QVBoxLayout()
-        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
-        self.header_frame = SimpleCardWidget(Form)
+        self.scrollArea = ScrollArea(Form)
+        self.scrollArea.setObjectName(u"scrollArea")
+        self.scrollArea.setStyleSheet(u"QWidget {background: transparent;}\n"
+"QScrollArea {border: none;}\n"
+"")
+        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, -265, 448, 994))
+        self.verticalLayout = QVBoxLayout(self.scrollAreaWidgetContents)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setContentsMargins(0, 0, -1, 0)
+        self.header_frame = SimpleCardWidget(self.scrollAreaWidgetContents)
         self.header_frame.setObjectName(u"header_frame")
         self.header_frame.setFrameShape(QFrame.StyledPanel)
         self.header_frame.setFrameShadow(QFrame.Raised)
@@ -87,13 +98,13 @@ class Ui_Form(object):
         self.horizontalLayout_3.addLayout(self.verticalLayout_7)
 
 
-        self.verticalLayout_10.addWidget(self.header_frame)
+        self.verticalLayout.addWidget(self.header_frame)
 
         self.manga_layout = QVBoxLayout()
         self.manga_layout.setObjectName(u"manga_layout")
         self.info_layout = QHBoxLayout()
         self.info_layout.setObjectName(u"info_layout")
-        self.image_frame = SimpleCardWidget(Form)
+        self.image_frame = SimpleCardWidget(self.scrollAreaWidgetContents)
         self.image_frame.setObjectName(u"image_frame")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -111,7 +122,7 @@ class Ui_Form(object):
 
         self.info_layout.addWidget(self.image_frame)
 
-        self.title_frame = SimpleCardWidget(Form)
+        self.title_frame = SimpleCardWidget(self.scrollAreaWidgetContents)
         self.title_frame.setObjectName(u"title_frame")
         sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
@@ -161,28 +172,18 @@ class Ui_Form(object):
 
         self.manga_layout.addLayout(self.info_layout)
 
-        self.related_layout = QHBoxLayout()
-        self.related_layout.setObjectName(u"related_layout")
-        self.related_frame = ElevatedCardWidget(Form)
-        self.related_frame.setObjectName(u"related_frame")
-        self.verticalLayout_4 = QVBoxLayout(self.related_frame)
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.label = BodyLabel(self.related_frame)
-        self.label.setObjectName(u"label")
+        self.verticalLayout_9 = QVBoxLayout()
+        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
+        self.description_text = TextEdit(self.scrollAreaWidgetContents)
+        self.description_text.setObjectName(u"description_text")
+        self.description_text.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.description_text.setUndoRedoEnabled(False)
+        self.description_text.setReadOnly(True)
+        self.description_text.setTextInteractionFlags(Qt.NoTextInteraction)
 
-        self.verticalLayout_4.addWidget(self.label)
+        self.verticalLayout_9.addWidget(self.description_text)
 
-        self.related_list = ListWidget(self.related_frame)
-        self.related_list.setObjectName(u"related_list")
-        self.related_list.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.related_list.setWordWrap(True)
-
-        self.verticalLayout_4.addWidget(self.related_list)
-
-
-        self.related_layout.addWidget(self.related_frame)
-
-        self.characters_frame = ElevatedCardWidget(Form)
+        self.characters_frame = ElevatedCardWidget(self.scrollAreaWidgetContents)
         self.characters_frame.setObjectName(u"characters_frame")
         self.verticalLayout_2 = QVBoxLayout(self.characters_frame)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
@@ -199,37 +200,42 @@ class Ui_Form(object):
         self.verticalLayout_2.addWidget(self.characters_list)
 
 
-        self.related_layout.addWidget(self.characters_frame)
+        self.verticalLayout_9.addWidget(self.characters_frame)
+
+        self.related_frame = ElevatedCardWidget(self.scrollAreaWidgetContents)
+        self.related_frame.setObjectName(u"related_frame")
+        self.verticalLayout_4 = QVBoxLayout(self.related_frame)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.label = BodyLabel(self.related_frame)
+        self.label.setObjectName(u"label")
+
+        self.verticalLayout_4.addWidget(self.label)
+
+        self.related_list = ListWidget(self.related_frame)
+        self.related_list.setObjectName(u"related_list")
+        self.related_list.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.related_list.setWordWrap(True)
+
+        self.verticalLayout_4.addWidget(self.related_list)
 
 
-        self.manga_layout.addLayout(self.related_layout)
-
-        self.description_frame = SimpleCardWidget(Form)
-        self.description_frame.setObjectName(u"description_frame")
-        self.verticalLayout_3 = QVBoxLayout(self.description_frame)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.description_text = TextEdit(self.description_frame)
-        self.description_text.setObjectName(u"description_text")
-        self.description_text.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.description_text.setUndoRedoEnabled(False)
-        self.description_text.setReadOnly(True)
-        self.description_text.setTextInteractionFlags(Qt.NoTextInteraction)
-
-        self.verticalLayout_3.addWidget(self.description_text)
+        self.verticalLayout_9.addWidget(self.related_frame)
 
 
-        self.manga_layout.addWidget(self.description_frame)
+        self.manga_layout.addLayout(self.verticalLayout_9)
 
 
-        self.verticalLayout_10.addLayout(self.manga_layout)
+        self.verticalLayout.addLayout(self.manga_layout)
 
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
-        self.horizontalLayout_4.addLayout(self.verticalLayout_10)
+        self.horizontalLayout_4.addWidget(self.scrollArea)
 
         self.items_frame = ElevatedCardWidget(Form)
         self.items_frame.setObjectName(u"items_frame")
         self.verticalLayout_5 = QVBoxLayout(self.items_frame)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.verticalLayout_5.setContentsMargins(0, -1, -1, -1)
         self.items_tree = TreeWidget(self.items_frame)
         __qtreewidgetitem = QTreeWidgetItem()
         __qtreewidgetitem.setText(0, u"1");
@@ -262,8 +268,8 @@ class Ui_Form(object):
         self.catalog_score_label.setText(QCoreApplication.translate("Form", u"score", None))
         self.volumes_label.setText(QCoreApplication.translate("Form", u"volumes", None))
         self.chapters_label.setText(QCoreApplication.translate("Form", u"chapters", None))
-        self.label.setText(QCoreApplication.translate("Form", u"Related", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"Characters", None))
+        self.label.setText(QCoreApplication.translate("Form", u"Related", None))
         pass
     # retranslateUi
 
