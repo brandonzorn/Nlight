@@ -86,19 +86,6 @@
               <number>0</number>
              </property>
              <item>
-              <spacer name="horizontalSpacer_3">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
               <widget class="ComboBox" name="lib_list_box"/>
              </item>
              <item>
@@ -364,12 +351,6 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>ElevatedCardWidget</class>
-   <extends>SimpleCardWidget</extends>
-   <header>qfluentwidgets</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>SimpleCardWidget</class>
    <extends>CardWidget</extends>
    <header>qfluentwidgets</header>
@@ -394,6 +375,12 @@
    <class>TreeWidget</class>
    <extends>QTreeWidget</extends>
    <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>ElevatedCardWidget</class>
+   <extends>SimpleCardWidget</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
