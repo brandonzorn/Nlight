@@ -1,7 +1,7 @@
 import webbrowser
 
 from PySide6.QtCore import Qt, Signal, QSize
-from qfluentwidgets import ElevatedCardWidget, InfoBar
+from qfluentwidgets import InfoBar, CardWidget
 
 from data.ui.manga_item import Ui_Form
 from nlightreader.contexts import LibraryMangaMenu
@@ -9,7 +9,7 @@ from nlightreader.items import Manga
 from nlightreader.utils import Worker, get_catalog, FileManager, Database, translate
 
 
-class MangaItem(ElevatedCardWidget):
+class MangaItem(CardWidget):
     manga_clicked = Signal(Manga)
     manga_changed = Signal()
 
