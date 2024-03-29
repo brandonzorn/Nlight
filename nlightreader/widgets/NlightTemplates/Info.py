@@ -109,7 +109,7 @@ class FormInfo(QWidget):
         self.update_manga_preview()
 
     def scroll_area_resize_event(self, event):
-        self.ui.scrollAreaWidgetContents.setMaximumWidth(event.size().width())
+        self.ui.scrollAreaWidgetContents.setFixedWidth(event.size().width())
 
     def sort_chapters(self):
         self.sorted_chapters.clear()
