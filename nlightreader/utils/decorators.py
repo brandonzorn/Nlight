@@ -1,5 +1,4 @@
 from functools import wraps
-from typing import Callable
 
 
 def singleton(cls):
@@ -21,25 +20,3 @@ def singleton(cls):
         return instance[0]
 
     return wrapper
-
-
-def with_lock_thread(locker):
-    """
-    A decorator that acquires a lock before executing a function in a threaded environment.
-
-    Parameters:
-        locker (threading.Lock): The lock object to acquire.
-
-    Returns:
-        callable: Decorator that acquires the lock before executing wrapped function.
-    """
-
-    def decorator(func: Callable):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            with locker:
-                return func(*args, **kwargs)
-
-        return wrapper
-
-    return decorator
