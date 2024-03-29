@@ -46,6 +46,9 @@ class FormInfo(QWidget):
         self.ui.add_btn.clicked.connect(self.add_to_favorites)
         self.ui.lib_list_box.currentIndexChanged.connect(self.change_lib_list)
         self.ui.items_tree.customContextMenuRequested.connect(self.on_context_menu)
+
+        self.ui.scrollArea.resizeEvent = self.scroll_area_resize_event
+
         self.db: Database = Database()
         self.thread_pool = QThreadPool()
         self.thread_pool.setMaxThreadCount(3)
@@ -100,10 +103,13 @@ class FormInfo(QWidget):
         menu.remove_read_state.triggered.connect(remove_read_state)
         menu.exec(context_target.mapToGlobal(pos))
 
-    def resizeEvent(self, a0):
+    def resizeEvent(self, event):
         if not self.catalog or not self.manga or not self.manga_pixmap:
             return
         self.update_manga_preview()
+
+    def scroll_area_resize_event(self, event):
+        self.ui.scrollAreaWidgetContents.setMaximumWidth(event.size().width())
 
     def sort_chapters(self):
         self.sorted_chapters.clear()
