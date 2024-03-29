@@ -26,12 +26,18 @@ class ParentWindow(FluentWindow):
         self.init_navigation()
 
     def init_navigation(self):
-        self.addSubInterface(self.library_interface, FluentIcon.LIBRARY, translate("MainWindow", "Library"))
-        self.addSubInterface(self.facial_interface, FluentIcon.HOME, translate("MainWindow", "Main"))
+        self.addSubInterface(
+            self.library_interface, FluentIcon.LIBRARY, translate("MainWindow", "Library"),
+        )
+        self.addSubInterface(
+            self.facial_interface, FluentIcon.HOME, translate("MainWindow", "Main"),
+        )
         self.addSubInterface(
             self.shikimori_interface, NlFluentIcons.SHIKIMORI, translate("MainWindow", "Shikimori"),
         )
-        self.addSubInterface(self.history_interface, FluentIcon.HISTORY, translate("MainWindow", "History"))
+        self.addSubInterface(
+            self.history_interface, FluentIcon.HISTORY, translate("MainWindow", "History"),
+        )
 
     @Slot()
     def on_widget_change(self):

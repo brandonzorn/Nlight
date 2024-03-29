@@ -46,7 +46,6 @@ class MainWindow(ParentWindow):
         self.setWindowIcon(QIcon(Icons.App))
         self._theme_updater = Thread(target=self.theme_listener, callback=self.update_style)
         self._theme_updater.start()
-        self.show()
 
     @staticmethod
     def theme_listener():
@@ -75,4 +74,5 @@ if __name__ == "__main__":
     app = App(sys.argv)
     Path(f"{platformdirs.user_data_dir()}/{APP_NAME}").mkdir(parents=True, exist_ok=True)
     window = MainWindow()
+    window.show()
     sys.exit(app.exec())
