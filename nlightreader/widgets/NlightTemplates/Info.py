@@ -186,6 +186,7 @@ class FormInfo(QWidget):
             Qt.AspectRatioMode.KeepAspectRatio,
             Qt.TransformationMode.SmoothTransformation,
         )
+        self.ui.image_frame.setFixedWidth(pixmap.width())
         self.ui.image.setPixmap(pixmap)
 
     def set_info(self):
