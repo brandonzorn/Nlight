@@ -23,7 +23,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QFrame" name="image_frame">
+      <widget class="SimpleCardWidget" name="image_frame">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -51,7 +51,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QFrame" name="title_frame">
+      <widget class="SimpleCardWidget" name="title_frame">
        <property name="styleSheet">
         <string notr="true"/>
        </property>
@@ -96,14 +96,14 @@
          </spacer>
         </item>
         <item>
-         <widget class="SwitchButton" name="show_spoilers">
-          <property name="text">
+         <widget class="SwitchButton" name="show_spoilers" native="true">
+          <property name="text" stdset="0">
            <string>Show spoilers</string>
           </property>
-          <property name="onText">
+          <property name="onText" stdset="0">
            <string>Show spoilers</string>
           </property>
-          <property name="offText">
+          <property name="offText" stdset="0">
            <string>Show spoilers</string>
           </property>
          </widget>
@@ -114,25 +114,10 @@
     </layout>
    </item>
    <item>
-    <widget class="QFrame" name="description_frame">
-     <property name="styleSheet">
-      <string notr="true"/>
+    <widget class="TextEdit" name="description">
+     <property name="textInteractionFlags">
+      <set>Qt::NoTextInteraction</set>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
-      <item>
-       <widget class="QTextBrowser" name="description">
-        <property name="textInteractionFlags">
-         <set>Qt::NoTextInteraction</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
     </widget>
    </item>
   </layout>
@@ -146,6 +131,17 @@
   <customwidget>
    <class>BodyLabel</class>
    <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>SimpleCardWidget</class>
+   <extends>QFrame</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TextEdit</class>
+   <extends>QTextBrowser</extends>
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>

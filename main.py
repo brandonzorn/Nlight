@@ -70,6 +70,7 @@ if __name__ == "__main__":
     if "debug" in sys.argv:
         logging.basicConfig(level=logging.WARNING, filename="latest.log", filemode="w")
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
+    QApplication.setStyle("Fusion")
     QThreadPool.globalInstance().setMaxThreadCount(32)
     app = App(sys.argv)
     Path(f"{platformdirs.user_data_dir()}/{APP_NAME}").mkdir(parents=True, exist_ok=True)
