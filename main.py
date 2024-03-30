@@ -10,7 +10,8 @@ from PySide6.QtGui import QIcon, QPalette
 from PySide6.QtWidgets import QApplication
 
 from nlightreader import ParentWindow
-from nlightreader.consts import APP_VERSION, APP_NAME, Icons
+from nlightreader.consts.app import APP_VERSION, APP_NAME
+from nlightreader.consts.files import Icons
 from nlightreader.utils import get_locale, get_ui_style, Thread
 
 
@@ -45,7 +46,6 @@ class MainWindow(ParentWindow):
         self.setWindowTitle(APP_NAME)
         self._theme_updater = Thread(target=self.theme_listener, callback=self.update_style)
         self._theme_updater.start()
-        self.show()
 
     @staticmethod
     def theme_listener():
@@ -74,4 +74,5 @@ if __name__ == "__main__":
     app = App(sys.argv)
     Path(f"{platformdirs.user_data_dir()}/{APP_NAME}").mkdir(parents=True, exist_ok=True)
     window = MainWindow()
+    window.show()
     sys.exit(app.exec())

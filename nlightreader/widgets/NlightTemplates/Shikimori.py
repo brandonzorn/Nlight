@@ -1,7 +1,7 @@
 from PySide6.QtCore import Slot
 
 from data.ui.widgets.shikimori import Ui_Form
-from nlightreader.consts import Nl
+from nlightreader.consts.enums import Nl
 from nlightreader.dialogs import FormAuth
 from nlightreader.items import Manga
 from nlightreader.parsers import ShikimoriLib

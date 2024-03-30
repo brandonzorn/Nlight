@@ -5,7 +5,8 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QListWidgetItem, QMainWindow
 
 from data.ui.windows.reader import Ui_ReaderWindow
-from nlightreader.consts import ItemsColors, Nl
+from nlightreader.consts.enums import Nl
+from nlightreader.consts.colors import ItemsColors
 from nlightreader.items import Manga, Chapter, Image, HistoryNote
 from nlightreader.utils import Database, get_catalog, FileManager, translate, get_language_icon, Thread
 from nlightreader.widgets.NlightContainers import TextArea
