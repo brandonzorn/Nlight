@@ -3,7 +3,8 @@ import re
 
 from bs4 import BeautifulSoup
 
-from nlightreader.consts import URL_SLASHLIB, URL_MANGALIB, Nl
+from nlightreader.consts.urls import URL_SLASHLIB, URL_MANGALIB
+from nlightreader.consts.enums import Nl
 from nlightreader.items import RequestForm, Manga, Chapter, Image
 from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog

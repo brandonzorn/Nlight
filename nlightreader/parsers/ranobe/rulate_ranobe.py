@@ -2,7 +2,8 @@ import base64
 
 from bs4 import BeautifulSoup
 
-from nlightreader.consts import URL_RULATE, URL_EROLATE, Nl
+from nlightreader.consts.urls import URL_RULATE, URL_EROLATE
+from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RulateItems
 from nlightreader.items import Manga, Chapter, Image, RequestForm
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog

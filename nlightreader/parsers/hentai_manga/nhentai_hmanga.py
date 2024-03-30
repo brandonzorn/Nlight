@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 
-from nlightreader.consts import URL_NHENTAI, URL_NHENTAI_API
+from nlightreader.consts.urls import URL_NHENTAI, URL_NHENTAI_API
 from nlightreader.items import Manga, Chapter, Image
 from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
 from nlightreader.utils.utils import get_html

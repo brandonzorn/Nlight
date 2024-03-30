@@ -1,4 +1,4 @@
-from nlightreader.consts import Nl
+from nlightreader.consts.enums import Nl
 from nlightreader.items.sort_items import Order, Genre, Kind
 
 
