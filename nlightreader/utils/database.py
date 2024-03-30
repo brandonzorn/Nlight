@@ -2,7 +2,8 @@ import sqlalchemy
 import platformdirs
 from sqlalchemy.dialects.sqlite import insert
 
-from nlightreader.consts import APP_NAME, Nl
+from nlightreader.consts.app import APP_NAME
+from nlightreader.consts.enums import Nl
 from nlightreader.items import Chapter, Manga, HistoryNote
 from nlightreader.utils.decorators import singleton
 

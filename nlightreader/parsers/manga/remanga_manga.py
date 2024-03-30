@@ -1,4 +1,5 @@
-from nlightreader.consts import URL_REMANGA_API, URL_REMANGA, Nl
+from nlightreader.consts.urls import URL_REMANGA_API, URL_REMANGA
+from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RemangaItems
 from nlightreader.items import RequestForm, Manga, Chapter, Image
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog

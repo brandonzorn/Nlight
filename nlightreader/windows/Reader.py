@@ -6,7 +6,8 @@ from PySide6.QtWidgets import QWidget, QListWidgetItem
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.reader import Ui_ReaderWidget
-from nlightreader.consts import ItemsColors, Nl
+from nlightreader.consts.colors import ItemsColors
+from nlightreader.consts.enums import Nl
 from nlightreader.items import Manga, Chapter, Image, HistoryNote
 from nlightreader.utils import Database, get_catalog, FileManager, translate, get_language_icon, Thread
 from nlightreader.widgets.NlightContainers import TextArea
