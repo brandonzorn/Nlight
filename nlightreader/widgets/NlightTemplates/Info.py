@@ -274,11 +274,9 @@ class FormInfo(QWidget):
 
     @Slot()
     def open_reader(self):
-        stack = self.parent()
         try:
             if self.reader_window is not None:
                 self.reader_window.close()
-                stack.removeWidget(self.reader_window)
         except RuntimeError:
             pass
         finally:
@@ -290,8 +288,6 @@ class FormInfo(QWidget):
                     self.chapters,
                     self.chapters.index(selected_chapter) + 1,
                 )
-                stack.addWidget(self.reader_window)
-                stack.setCurrentWidget(self.reader_window)
 
     @Slot()
     def open_related_manga(self):
