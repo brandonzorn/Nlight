@@ -6,7 +6,9 @@ import requests
 from PySide6.QtCore import QLocale
 from PySide6.QtWidgets import QApplication
 
-from nlightreader.consts import DEFAULT_HEADERS, Nl, StyleColors
+from nlightreader.consts.urls import DEFAULT_HEADERS
+from nlightreader.consts.enums import Nl
+from nlightreader.consts.colors import StyleColors
 from nlightreader.consts.files import LangIcons, Translations, Styles
 
 

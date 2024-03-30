@@ -2,7 +2,7 @@ import re
 
 from PySide6.QtCore import QLocale
 
-from nlightreader.consts import Nl
+from nlightreader.consts.enums import Nl
 from nlightreader.items.BaseItem import BaseItem
 from nlightreader.items.sort_items import Genre
 

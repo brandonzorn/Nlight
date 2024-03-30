@@ -6,7 +6,8 @@ from pathlib import Path
 import platformdirs
 from PySide6.QtGui import QPixmap
 
-from nlightreader.consts import APP_NAME, Nl
+from nlightreader.consts.app import APP_NAME
+from nlightreader.consts.enums import Nl
 from nlightreader.items import Manga, Chapter, Character
 
 

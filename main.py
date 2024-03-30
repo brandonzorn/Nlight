@@ -11,7 +11,8 @@ from PySide6.QtWidgets import QApplication
 from qfluentwidgets import setTheme, Theme
 
 from nlightreader import ParentWindow
-from nlightreader.consts import APP_VERSION, APP_NAME, Icons
+from nlightreader.consts.app import APP_VERSION, APP_NAME
+from nlightreader.consts.files import Icons
 from nlightreader.utils import get_locale, Thread
 
 

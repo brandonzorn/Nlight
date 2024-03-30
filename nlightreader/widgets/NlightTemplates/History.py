@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QWidget, QTreeWidgetItem
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.history import Ui_Form
-from nlightreader.consts import ItemsColors
+from nlightreader.consts.colors import ItemsColors
 from nlightreader.contexts import HistoryNoteMenu
 from nlightreader.items import HistoryNote, Manga
 from nlightreader.utils import Database
