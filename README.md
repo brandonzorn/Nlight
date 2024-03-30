@@ -31,7 +31,8 @@ Open source manga and ranobe reading application
 
 ## Screenshots
 
-| ![nl_1](./.github/Screenshots/nl_1.png) | ![nl_2](./.github/Screenshots/nl_2.png) | ![nl_3](./.github/Screenshots/nl_3.png) |
+
+| ![nl_1](https://github.com/brandonzorn/Nlight/assets/68778953/f714165d-5df6-4b38-89a6-02d940172469) | ![nl_3](https://github.com/brandonzorn/Nlight/assets/68778953/1da43e9a-52af-402d-8f30-189f31a31ba2) | ![nl_3](https://github.com/brandonzorn/Nlight/assets/68778953/168f00a3-4174-41ba-8773-4548ef7ced9b) |
 |-----------------------------------------|-----------------------------------------|-----------------------------------------|
 
 ## Installation
