@@ -1,6 +1,6 @@
 from data.ui.widgets.library import Ui_Form
 
-from nlightreader.consts import Nl
+from nlightreader.consts.enums import Nl
 from nlightreader.items import Manga
 from nlightreader.parsers import LocalLib
 from nlightreader.widgets.NlightContainers.manga_area import MangaArea

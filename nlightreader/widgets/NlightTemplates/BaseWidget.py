@@ -3,7 +3,7 @@ import time
 from PySide6.QtCore import Signal, QMutex, Slot
 from PySide6.QtWidgets import QWidget
 
-from nlightreader.consts import Nl
+from nlightreader.consts.enums import Nl
 from nlightreader.items import Manga, RequestForm
 from nlightreader.utils import Thread
 from nlightreader.widgets.NlightContainers.manga_area import MangaArea

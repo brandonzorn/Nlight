@@ -1,6 +1,7 @@
 ## Nlight
 
-![Nlight](./.github/Images/app_icon.png)
+![Nlight](https://github.com/brandonzorn/Nlight/assets/68778953/2e2d3ed8-eef6-4b44-a824-7d38c7a78ea9)
+
 
 Open source manga and ranobe reading application
 
