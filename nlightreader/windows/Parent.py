@@ -15,6 +15,7 @@ class ParentWindow(FluentWindow):
         self.facial_interface = FormFacial()
         self.shikimori_interface = FormShikimori()
         self.history_interface = FormHistory()
+        self.info_interface = None
 
         self.library_interface.manga_open.connect(self.open_info)
         self.facial_interface.manga_open.connect(self.open_info)
@@ -50,21 +51,30 @@ class ParentWindow(FluentWindow):
 
     @Slot(Manga)
     def open_info(self, manga: Manga):
+        stack = self.stackedWidget.view
         self.stackedWidget.setEnabled(False)
 
         @Slot()
         def set_info_widget():
-            self.stackedWidget.addWidget(info)
-            self.stackedWidget.setCurrentWidget(info)
+            stack.addWidget(self.info_interface)
+            stack.setCurrentWidget(self.info_interface)
             self.stackedWidget.setEnabled(True)
 
         @Slot()
         def delete_info_widget():
-            info.deleteLater()
+            self.info_interface.close()
             self.stackedWidget.setEnabled(True)
 
-        info = FormInfo()
-        info.opened_related_manga.connect(self.open_info)
-        info.setup_done.connect(set_info_widget)
-        info.setup_error.connect(delete_info_widget)
-        info.setup(manga)
+        @Slot(Manga)
+        def open_related_manga(related_manga: Manga):
+            stack.removeWidget(self.info_interface)
+            self.navigationInterface.panel.history.pop()
+            self.info_interface.deleteLater()
+            self.info_interface = None
+            self.open_info(related_manga)
+
+        self.info_interface = FormInfo()
+        self.info_interface.opened_related_manga.connect(open_related_manga)
+        self.info_interface.setup_done.connect(set_info_widget)
+        self.info_interface.setup_error.connect(delete_info_widget)
+        self.info_interface.setup(manga)
