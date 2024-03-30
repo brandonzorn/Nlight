@@ -14,6 +14,9 @@
    <locale language="English" country="UnitedStates"/>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -43,8 +46,8 @@ QScrollArea {border: none;}
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-265</y>
-        <width>448</width>
+        <y>0</y>
+        <width>454</width>
         <height>994</height>
        </rect>
       </property>
