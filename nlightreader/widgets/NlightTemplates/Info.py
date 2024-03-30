@@ -6,8 +6,9 @@ from PySide6.QtWidgets import QWidget, QListWidgetItem, QTreeWidgetItem
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.info import Ui_Form
-from nlightreader.consts import lib_lists_en, ItemsColors, Nl
-from nlightreader.consts.files.files import NlFluentIcons
+from nlightreader.consts.enums import lib_lists_en, Nl
+from nlightreader.consts.files import NlFluentIcons
+from nlightreader.consts.colors import ItemsColors
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
 from nlightreader.items import Manga, Character, Chapter, HistoryNote
@@ -222,13 +223,12 @@ class FormInfo(QWidget):
         def get_chapters():
             self.chapters = self.catalog.get_chapters(self.manga)
             self.chapters.reverse()
-            self.chapters.sort(key=lambda ch: ch.language.value if ch.language.value else False)
+            self.sort_chapters()
             self.db.add_chapters(self.chapters, self.manga)
 
         def update_chapters():
             self.ui.items_tree.clear()
             self.ui.items_frame.setVisible(bool(self.chapters))
-            self.sort_chapters()
             for lang in self.sorted_chapters:
                 lang_item = QTreeWidgetItem([translate("NlLanguage", lang.to_full_str())])
                 lang_item.setIcon(0, QIcon(get_language_icon(lang)))
@@ -274,9 +274,11 @@ class FormInfo(QWidget):
 
     @Slot()
     def open_reader(self):
+        stack = self.parent()
         try:
             if self.reader_window is not None:
                 self.reader_window.close()
+                stack.removeWidget(self.reader_window)
         except RuntimeError:
             pass
         finally:
@@ -288,7 +290,6 @@ class FormInfo(QWidget):
                     self.chapters,
                     self.chapters.index(selected_chapter) + 1,
                 )
-                stack = self.parent()
                 stack.addWidget(self.reader_window)
                 stack.setCurrentWidget(self.reader_window)
 
