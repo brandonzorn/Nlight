@@ -15,7 +15,7 @@ class ParentWindow(FluentWindow):
         self.facial_interface = FormFacial()
         self.shikimori_interface = FormShikimori()
         self.history_interface = FormHistory()
-        self.info_interface = None
+        self.info_interface: FormInfo | None = None
 
         self.library_interface.manga_open.connect(self.open_info)
         self.facial_interface.manga_open.connect(self.open_info)
@@ -40,14 +40,23 @@ class ParentWindow(FluentWindow):
             self.history_interface, FluentIcon.HISTORY, translate("MainWindow", "History"),
         )
 
-    @Slot()
-    def on_widget_change(self):
+    @Slot(int)
+    def on_widget_change(self, value):
+        if value in range(4):
+            if any(i.objectName() == "FormInfo" for i in self.stackedWidget.view.children()):
+                self.delete_info_interface()
+        self.navigationInterface.setReturnButtonVisible(self.stackedWidget.count() > 4)
         if self.stackedWidget.currentWidget().objectName() in ("FormInfo", "ReaderWidget"):
             return
         self.stackedWidget.currentWidget().setup()
 
     def set_min_size_by_screen(self):
         self.setMinimumSize(QSize(self.screen().size().width() // 2, self.screen().size().height() // 2))
+
+    def delete_info_interface(self):
+        self.stackedWidget.view.removeWidget(self.info_interface)
+        self.info_interface.deleteLater()
+        self.info_interface = None
 
     @Slot(Manga)
     def open_info(self, manga: Manga):
@@ -57,7 +66,7 @@ class ParentWindow(FluentWindow):
         @Slot()
         def set_info_widget():
             stack.addWidget(self.info_interface)
-            stack.setCurrentWidget(self.info_interface)
+            self.switchTo(self.info_interface)
             self.stackedWidget.setEnabled(True)
 
         @Slot()
@@ -65,16 +74,11 @@ class ParentWindow(FluentWindow):
             self.info_interface.close()
             self.stackedWidget.setEnabled(True)
 
-        @Slot(Manga)
-        def open_related_manga(related_manga: Manga):
-            stack.removeWidget(self.info_interface)
-            self.navigationInterface.panel.history.pop()
-            self.info_interface.deleteLater()
-            self.info_interface = None
-            self.open_info(related_manga)
+        if self.stackedWidget.currentWidget().objectName() == "FormInfo":
+            self.stackedWidget.view.removeWidget(self.info_interface)
 
         self.info_interface = FormInfo()
-        self.info_interface.opened_related_manga.connect(open_related_manga)
+        self.info_interface.opened_related_manga.connect(self.open_info)
         self.info_interface.setup_done.connect(set_info_widget)
         self.info_interface.setup_error.connect(delete_info_widget)
         self.info_interface.setup(manga)

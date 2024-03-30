@@ -10,6 +10,12 @@ class ImageArea(QWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+        self.setStyleSheet(
+            """
+            QWidget {background: transparent;}
+            QScrollArea {border: none;}
+            """
+        )
         self._image_pixmap = None
 
     def install(self, parent):
