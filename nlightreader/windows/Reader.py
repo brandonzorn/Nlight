@@ -22,7 +22,7 @@ class ReaderWindow(QMainWindow):
         self.setStyleSheet(
             """
             QScrollArea {border: none;}
-            """
+            """,
         )
         self.ui.fullscreen_btn.setIcon(FluentIcon.FULL_SCREEN)
         self.ui.ch_list_btn.setIcon(FluentIcon.TILES)
