@@ -14,7 +14,7 @@ class ImageArea(QWidget):
             """
             QWidget {background: transparent;}
             QScrollArea {border: none;}
-            """
+            """,
         )
         self._image_pixmap = None
 
