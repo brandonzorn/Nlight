@@ -27,10 +27,10 @@ class MangaItem(CardWidget):
         self.ui.name_lbl.setText(self.manga.get_name())
 
     def mouseReleaseEvent(self, event):
+        super().mouseReleaseEvent(event)
         if event.button() == Qt.MouseButton.LeftButton:
             if self.rect().contains(event.pos()):
                 self.manga_clicked.emit(self.manga)
-        event.accept()
 
     def on_context_menu(self, pos):
         catalog = get_catalog(self.manga.catalog_id)()
