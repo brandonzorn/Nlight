@@ -1,2 +1,2 @@
 APP_NAME = "Nlight"
-APP_VERSION = "1.10.0.3"
+APP_VERSION = "1.10.0.4"
