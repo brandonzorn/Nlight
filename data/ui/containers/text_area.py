@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'text_area.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.2
+## Created by: Qt User Interface Compiler version 6.6.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -46,15 +46,20 @@ class Ui_Form(object):
 
         self.frame = SimpleCardWidget(Form)
         self.frame.setObjectName(u"frame")
-        self.verticalLayout_3 = QVBoxLayout(self.frame)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
+        self.frame.setSizePolicy(sizePolicy)
+        self.horizontalLayout = QHBoxLayout(self.frame)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.text_browser = TextEdit(self.frame)
         self.text_browser.setObjectName(u"text_browser")
         self.text_browser.setFocusPolicy(Qt.NoFocus)
         self.text_browser.setFrameShape(QFrame.NoFrame)
         self.text_browser.setTextInteractionFlags(Qt.NoTextInteraction)
 
-        self.verticalLayout_3.addWidget(self.text_browser)
+        self.horizontalLayout.addWidget(self.text_browser)
 
 
         self.verticalLayout_2.addWidget(self.frame)

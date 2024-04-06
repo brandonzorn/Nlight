@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'image_area.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.2
+## Created by: Qt User Interface Compiler version 6.6.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -44,15 +44,15 @@ class Ui_Form(object):
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
         self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 652, 490))
-        self.scroll_layout = QVBoxLayout(self.scrollAreaWidgetContents)
-        self.scroll_layout.setObjectName(u"scroll_layout")
-        self.scroll_layout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2 = QHBoxLayout(self.scrollAreaWidgetContents)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.img_lbl = QLabel(self.scrollAreaWidgetContents)
         self.img_lbl.setObjectName(u"img_lbl")
         self.img_lbl.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
         self.img_lbl.setTextInteractionFlags(Qt.NoTextInteraction)
 
-        self.scroll_layout.addWidget(self.img_lbl)
+        self.horizontalLayout_2.addWidget(self.img_lbl)
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
