@@ -2,17 +2,15 @@ from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget
 
 from data.ui.containers.text_area import Ui_Form
+from nlightreader.widgets.NlightContainers.content_container import AbstractContentContainer
 
 
-class TextArea(QWidget):
+class TextArea(QWidget, AbstractContentContainer):
     def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.ui.size_slider.valueChanged.connect(self.update_text_size)
-
-    def install(self, parent):
-        parent.addWidget(self)
 
     @Slot()
     def update_text_size(self):
@@ -23,6 +21,9 @@ class TextArea(QWidget):
     def reset_reader_area(self):
         self.ui.text_browser.clear()
 
-    def set_html(self, html_text: str):
+    def set_content(self, content: str):
         self.reset_reader_area()
-        self.ui.text_browser.setHtml(html_text)
+        self.ui.text_browser.setHtml(content)
+
+    def get_content_widget(self) -> QWidget:
+        return self.ui.text_browser

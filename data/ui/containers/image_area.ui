@@ -70,7 +70,7 @@
            <height>490</height>
           </rect>
          </property>
-         <layout class="QVBoxLayout" name="scroll_layout">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
           <property name="leftMargin">
            <number>0</number>
           </property>
