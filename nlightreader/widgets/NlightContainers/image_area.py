@@ -3,9 +3,10 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QWidget
 
 from data.ui.containers.image_area import Ui_Form
+from nlightreader.widgets.NlightContainers.content_container import AbstractContentContainer
 
 
-class ImageArea(QWidget):
+class ImageArea(QWidget, AbstractContentContainer):
     def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
@@ -17,9 +18,6 @@ class ImageArea(QWidget):
             """,
         )
         self._image_pixmap = None
-
-    def install(self, parent):
-        parent.addWidget(self)
 
     def resizeEvent(self, arg__1):
         super().resizeEvent(arg__1)
@@ -58,10 +56,10 @@ class ImageArea(QWidget):
         pixmap = self._resize_pixmap(self._image_pixmap)
         self.ui.img_lbl.setPixmap(pixmap)
 
-    def set_image(self, img_pixmap: QPixmap):
+    def set_content(self, img_pixmap: QPixmap):
         self._image_pixmap = img_pixmap
         self.reset_area()
         self.update_image()
 
-    def set_text(self, text: str):
-        self.ui.img_lbl.setText(text)
+    def get_content_widget(self) -> QWidget:
+        return self.ui.img_lbl

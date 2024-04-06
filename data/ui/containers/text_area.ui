@@ -50,7 +50,13 @@
    </item>
    <item>
     <widget class="SimpleCardWidget" name="frame">
-     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="TextEdit" name="text_browser">
         <property name="focusPolicy">
