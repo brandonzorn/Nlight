@@ -32,3 +32,6 @@ DEFAULT_HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:9
 DESU_HEADERS = {"User-Agent": "Nlight"}
 SHIKIMORI_HEADERS = {"User-Agent": "Nlight"}
 MANGA_DEX_HEADERS = {"User-Agent": "Nlight"}
+
+
+GITHUB_REPO = "https://api.github.com/repos/brandonzorn/Nlight"
