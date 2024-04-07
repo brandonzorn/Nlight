@@ -299,5 +299,17 @@
         <source>Files {} have been removed.</source>
         <translation>Файли {} видалені.</translation>
     </message>
+    <message>
+        <source>Check for updates.</source>
+        <translation>Перевірка оновлень.</translation>
+    </message>
+    <message>
+        <source>Error checking for updates.</source>
+        <translation>Помилка перевірки оновлень.</translation>
+    </message>
+    <message>
+        <source>New version {result} is available! You are currently on version {APP_VERSION}.</source>
+        <translation>Нова версія {result} доступна! Ви використовуєте версію {APP_VERSION}.</translation>
+    </message>
 </context>
 </TS>
