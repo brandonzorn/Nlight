@@ -73,7 +73,7 @@ class MainWindow(ParentWindow):
                 title=info_bar_title,
                 content=translate(
                     "Message",
-                    "New version {result} is available! You are currently on version {APP_VERSION}."
+                    "New version {result} is available! You are currently on version {APP_VERSION}.",
                 ).format(result=result, APP_VERSION=APP_VERSION),
                 duration=info_bar_duration,
                 parent=self,
