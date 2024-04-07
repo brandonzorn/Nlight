@@ -8,12 +8,13 @@ import platformdirs
 from PySide6.QtCore import Qt, QTranslator, QLocale, QThreadPool
 from PySide6.QtGui import QIcon, QPalette
 from PySide6.QtWidgets import QApplication
-from qfluentwidgets import setTheme, Theme
+from qfluentwidgets import setTheme, Theme, InfoBar
 
 from nlightreader import ParentWindow
 from nlightreader.consts.app import APP_VERSION, APP_NAME
 from nlightreader.consts.files import Icons
-from nlightreader.utils import get_locale, Thread
+from nlightreader.consts.urls import GITHUB_REPO
+from nlightreader.utils import get_locale, Thread, get_html, translate
 
 
 class App(QApplication):
@@ -46,7 +47,37 @@ class MainWindow(ParentWindow):
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QIcon(Icons.App))
         self._theme_updater = Thread(target=self.theme_listener, callback=self.update_style)
+        self._update_checker = Thread(target=self.check_for_updates, callback=self.show_update_info)
         self._theme_updater.start()
+        self._update_checker.start()
+
+    def check_for_updates(self):
+        response = get_html(f"{GITHUB_REPO}/releases/latest", content_type="json")
+        if response:
+            latest_version: str = response["tag_name"]
+            return latest_version
+
+    def show_update_info(self, result):
+        info_bar_title = translate("Message", "Check for updates.")
+        info_bar_duration = 3500
+        if result is None:
+            InfoBar.error(
+                title=info_bar_title,
+                content=translate("Message", "Error checking for updates."),
+                duration=info_bar_duration,
+                parent=self,
+            )
+
+        elif result != APP_VERSION:
+            InfoBar.info(
+                title=info_bar_title,
+                content=translate(
+                    "Message",
+                    "New version {result} is available! You are currently on version {APP_VERSION}."
+                ).format(result=result, APP_VERSION=APP_VERSION),
+                duration=info_bar_duration,
+                parent=self,
+            )
 
     @staticmethod
     def theme_listener():
