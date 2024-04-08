@@ -1,9 +1,0 @@
-QPushButton:hover:!pressed
-{
-    background-color: @button_border_color;
-}
-QPushButton:hover:pressed
-{
-    background-color: @accent_color;
-	border: 2px solid @button_border_color;
-}
