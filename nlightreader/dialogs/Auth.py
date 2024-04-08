@@ -1,60 +1,79 @@
 import webbrowser
 
-from qfluentwidgets import MessageBoxBase, LineEdit, SubtitleLabel, PushButton
+from qfluentwidgets import MessageBoxBase, LineEdit, PasswordLineEdit, SubtitleLabel, PushButton
 
 from nlightreader.utils import translate
 
 
-class AuthMessageBox(MessageBoxBase):
-    def __init__(self, catalog, parent=None):
+class AbstractAuthDialog(MessageBoxBase):
+    def __init__(self, catalog, parent):
         super().__init__(parent)
-        self.titleLabel = SubtitleLabel("Authenticate", parent=self)
-        self.tokenLineEdit = LineEdit(self)
-        self.getCodeButton = PushButton(translate("Dialog", "Get code"), None)
+        self.session = catalog.session
+        self.widget.setMinimumWidth(350)
 
-        self.tokenLineEdit.setPlaceholderText(translate("Dialog", "Authorization code"))
-        self.tokenLineEdit.setClearButtonEnabled(True)
+        self.titleLabel = SubtitleLabel("Authenticate", parent=self)
+
+        self.yesButton.setText(translate("Dialog", "Sign in"))
+        self.yesButton.setEnabled(False)
+
+        self.cancelButton.setText(translate("Dialog", "Cancel"))
 
         self.viewLayout.addWidget(self.titleLabel)
+
+    def verify_user_data(self):
+        raise NotImplementedError
+
+    def get_user_data(self):
+        raise NotImplementedError
+
+
+class TokenAuthMessageBox(AbstractAuthDialog):
+    def __init__(self, catalog, parent):
+        super().__init__(catalog, parent)
+        self.getCodeButton = PushButton(translate("Dialog", "Get code"))
+        self.getCodeButton.clicked.connect(self.__open_login_page)
+
+        self.tokenLineEdit = LineEdit(self)
+        self.tokenLineEdit.setPlaceholderText(translate("Dialog", "Authorization code"))
+        self.tokenLineEdit.setClearButtonEnabled(True)
+        self.tokenLineEdit.textChanged.connect(self.verify_user_data)
+
         self.viewLayout.addWidget(self.tokenLineEdit)
         self.viewLayout.addWidget(self.getCodeButton)
 
-        self.yesButton.setText(translate("Dialog", "Sign in"))
-        self.cancelButton.setText(translate("Dialog", "Cancel"))
-
-        self.widget.setMinimumWidth(350)
-
-        self.yesButton.clicked.connect(lambda: self.verify_user_data(catalog.fields))
-        self.getCodeButton.clicked.connect(self.open_login_page)
-
-        self.session = catalog.session
-        self.setup_form(catalog.fields)
-
-    def setup_form(self, fields: int):
-        if fields == 1:
-            ...
-            # self.ui.two_frame.hide()
-        else:
-            ...
-            # self.ui.one_frame.hide()
-
-    def verify_user_data(self, fields: int):
-        if fields == 1:
-            code = self.tokenLineEdit.text()
-            if not code:
-                return
-            self.session.fetch_token(code)
-            if self.session.check_auth():
-                self.accept()
-        # else:
-        #    if self.ui.login_line.text() and self.ui.password_line.text():
-        #        self.accept()
+    def verify_user_data(self):
+        self.yesButton.setEnabled(bool(self.tokenLineEdit.text()))
 
     def get_user_data(self):
         return {
-            "username": self.ui.login_line.text(),
-            "password": self.ui.password_line.text(),
+            "token": self.tokenLineEdit.text(),
         }
 
-    def open_login_page(self):
+    def __open_login_page(self):
         webbrowser.open_new_tab(self.session.get_auth_url())
+
+
+class UserDataAuthMessageBox(AbstractAuthDialog):
+    def __init__(self, catalog, parent):
+        super().__init__(catalog, parent)
+        self.loginLineEdit = LineEdit(self)
+        self.loginLineEdit.setPlaceholderText(translate("Dialog", "Login"))
+        self.loginLineEdit.setClearButtonEnabled(True)
+        self.loginLineEdit.textChanged.connect(self.verify_user_data)
+
+        self.passwordLineEdit = PasswordLineEdit(self)
+        self.passwordLineEdit.setPlaceholderText(translate("Dialog", "Password"))
+        self.passwordLineEdit.setClearButtonEnabled(True)
+        self.passwordLineEdit.textChanged.connect(self.verify_user_data)
+
+        self.viewLayout.addWidget(self.loginLineEdit)
+        self.viewLayout.addWidget(self.passwordLineEdit)
+
+    def verify_user_data(self):
+        self.yesButton.setEnabled(bool(self.loginLineEdit.text()) and bool(self.passwordLineEdit.text()))
+
+    def get_user_data(self):
+        return {
+            "username": self.loginLineEdit.text(),
+            "password": self.passwordLineEdit.text(),
+        }
