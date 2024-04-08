@@ -1,11 +1,4 @@
 <RCC>
-  <qresource prefix="arrows_white">
-    <file>data/icons/buttons/svg_24dp_white/arrows/arrow_back.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/arrows/arrow_back_ios.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/arrows/arrow_forward_ios.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/arrows/double_arrow_left.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/arrows/double_arrow_right.svg</file>
-  </qresource>
   <qresource prefix="png_white">
     <file>data/icons/icon.png</file>
   </qresource>
@@ -16,61 +9,13 @@
     <file>data/icons/lang/ua.svg</file>
   </qresource>
   <qresource prefix="actions_white">
-    <file>data/icons/buttons/svg_24dp_white/actions/filter.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/actions/filter_filled.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/actions/library.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/actions/library_filled.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/actions/delete.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/actions/expand_less.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/actions/expand_more.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/actions/favorite.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/actions/favorite_filled.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/actions/fullscreen.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/actions/fullscreen_exit.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/actions/history.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/actions/search.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/actions/star.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/actions/star_filled.svg</file>
     <file>data/icons/buttons/svg_24dp_white/actions/shikimori.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/actions/main.svg</file>
-    <file>data/icons/buttons/svg_24dp_white/actions/list.svg</file>
-  </qresource>
-  <qresource prefix="arrows_black">
-    <file>data/icons/buttons/svg_24dp_black/arrows/arrow_back.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/arrows/arrow_back_ios.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/arrows/arrow_forward_ios.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/arrows/double_arrow_left.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/arrows/double_arrow_right.svg</file>
   </qresource>
   <qresource prefix="actions_black">
-    <file>data/icons/buttons/svg_24dp_black/actions/filter.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/actions/filter_filled.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/actions/library.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/actions/library_filled.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/actions/delete.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/actions/expand_less.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/actions/expand_more.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/actions/favorite.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/actions/favorite_filled.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/actions/fullscreen.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/actions/fullscreen_exit.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/actions/history.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/actions/search.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/actions/star.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/actions/star_filled.svg</file>
     <file>data/icons/buttons/svg_24dp_black/actions/shikimori.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/actions/main.svg</file>
-    <file>data/icons/buttons/svg_24dp_black/actions/list.svg</file>
   </qresource>
   <qresource prefix="translations">
     <file>data/translations/uk/uk.qm</file>
     <file>data/translations/ru/ru.qm</file>
-  </qresource>
-  <qresource prefix="styles">
-    <file>data/styles/default/widget_default.qss</file>
-    <file>data/styles/dark/widget_dark.qss</file>
-    <file>data/styles/dark/icons_dark.qss</file>
-    <file>data/styles/light/widget_light.qss</file>
-    <file>data/styles/light/icons_light.qss</file>
   </qresource>
 </RCC>
