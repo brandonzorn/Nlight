@@ -3,7 +3,7 @@ from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.shikimori import Ui_Form
 from nlightreader.consts.enums import Nl
-from nlightreader.dialogs import AuthMessageBox
+from nlightreader.dialogs import TokenAuthMessageBox, UserDataAuthMessageBox
 from nlightreader.items import Manga
 from nlightreader.parsers import ShikimoriLib
 from nlightreader.utils import translate, Worker
@@ -36,36 +36,36 @@ class FormShikimori(MangaItemBasedWidget):
         self.ui.title_line.searchSignal.connect(self.search)
         self.ui.auth_btn.clicked.connect(self.authorize)
         self.catalog = ShikimoriLib()
-        self.update_user_info()
+        Worker(target=self.get_user_info, callback=self.set_user_info).start()
 
     def setup_manga_item(self, manga: Manga):
         item = MangaItem(manga, is_added_to_lib=False, pool=self.manga_area.manga_thread_pool)
         item.manga_clicked.connect(self.manga_open.emit)
         return item
 
-    def update_user_info(self):
-        def get_user_info():
-            self.whoami = self.catalog.get_user()
-
-        def set_user_info():
-            if self.whoami.nickname:
-                self.ui.auth_btn.setText(self.whoami.nickname)
-            else:
-                self.ui.auth_btn.setText(translate("Other", "Sign in"))
-            self.ui.auth_btn.setEnabled(True)
-
+    def get_user_info(self):
         self.ui.auth_btn.setEnabled(False)
-        Worker(target=get_user_info, callback=set_user_info).start()
+        return self.catalog.get_user()
+
+    def set_user_info(self, whoami):
+        if whoami.nickname:
+            self.ui.auth_btn.setText(whoami.nickname)
+        else:
+            self.ui.auth_btn.setText(translate("Other", "Sign in"))
+        self.ui.auth_btn.setEnabled(True)
 
     def update_page(self):
         self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
 
     @Slot()
     def authorize(self):
-        w = AuthMessageBox(self.catalog, parent=self)
+        if self.catalog.fields == 1:
+            w = TokenAuthMessageBox(self.catalog, parent=self)
+        else:
+            w = UserDataAuthMessageBox(self.catalog, parent=self)
         if w.exec():
             self.catalog.session.auth_login(w.get_user_data())
-            self.update_user_info()
+            Worker(target=self.get_user_info, callback=self.set_user_info).start()
 
     @Slot()
     def search(self):
