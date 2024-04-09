@@ -11,7 +11,7 @@ from PySide6.QtCore import (
 
 
 class Signals(QObject):
-    finished = Signal()
+    finished = Signal(object)
 
 
 class NlThread:
@@ -28,8 +28,8 @@ class NlThread:
 
     @Slot()
     def run(self):
-        self._target(*self._args, **self._kwargs)
-        self.signals.finished.emit()
+        result = self._target(*self._args, **self._kwargs)
+        self.signals.finished.emit(result)
 
 
 class Worker(NlThread, QRunnable):

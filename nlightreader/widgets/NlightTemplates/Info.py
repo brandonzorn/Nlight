@@ -95,7 +95,7 @@ class FormInfo(QWidget):
         menu.remove_read_state.triggered.connect(remove_read_state)
         menu.exec(context_target.mapToGlobal(pos))
 
-    def resizeEvent(self, a0):
+    def resizeEvent(self, event):
         if not self.catalog or not self.manga or not self.manga_pixmap:
             return
         self.update_manga_preview()
@@ -142,9 +142,9 @@ class FormInfo(QWidget):
         else:
             self.ui.add_btn.setChecked(False)
         self.update_manga_preview()
-        self.get_chapters()
-        self.get_characters()
-        self.get_relations()
+        Worker(target=self.get_chapters, callback=self.update_chapters).start(pool=self.thread_pool)
+        Worker(target=self.get_relations, callback=self.update_relations).start(pool=self.thread_pool)
+        Worker(target=self.get_characters, callback=self.update_characters).start(pool=self.thread_pool)
         self.setup_done.emit()
 
     @Slot()
@@ -199,57 +199,48 @@ class FormInfo(QWidget):
             self.db.add_manga_library(self.manga, lib_list)
 
     def get_chapters(self):
-        def get_chapters():
-            self.chapters = self.catalog.get_chapters(self.manga)
-            self.chapters.reverse()
-            self.sort_chapters()
-            self.db.add_chapters(self.chapters, self.manga)
+        self.chapters = self.catalog.get_chapters(self.manga)
+        self.chapters.reverse()
+        self.sort_chapters()
+        self.db.add_chapters(self.chapters, self.manga)
 
-        def update_chapters():
-            self.ui.items_tree.clear()
-            self.ui.items_frame.setVisible(bool(self.chapters))
-            for lang in self.sorted_chapters:
-                lang_item = QTreeWidgetItem([translate("NlLanguage", lang.to_full_str())])
-                lang_item.setIcon(0, QIcon(get_language_icon(lang)))
-                self.ui.items_tree.addTopLevelItem(lang_item)
-                for chapter in self.sorted_chapters[lang]:
-                    ch_item = QTreeWidgetItem([chapter.get_name()])
-                    if self.db.check_complete_chapter(chapter):
-                        if self.db.get_complete_status(chapter):
-                            ch_item.setBackground(0, ItemsColors.READ)
-                        else:
-                            ch_item.setBackground(0, ItemsColors.UNREAD)
-                    lang_item.addChild(ch_item)
-                if len(self.sorted_chapters) == 1:
-                    lang_item.setExpanded(True)
-
-        Worker(target=get_chapters, callback=update_chapters).start(pool=self.thread_pool)
+    def update_chapters(self):
+        self.ui.items_tree.clear()
+        self.ui.items_frame.setVisible(bool(self.chapters))
+        for lang in self.sorted_chapters:
+            lang_item = QTreeWidgetItem([translate("NlLanguage", lang.to_full_str())])
+            lang_item.setIcon(0, QIcon(get_language_icon(lang)))
+            self.ui.items_tree.addTopLevelItem(lang_item)
+            for chapter in self.sorted_chapters[lang]:
+                ch_item = QTreeWidgetItem([chapter.get_name()])
+                if self.db.check_complete_chapter(chapter):
+                    if self.db.get_complete_status(chapter):
+                        ch_item.setBackground(0, ItemsColors.READ)
+                    else:
+                        ch_item.setBackground(0, ItemsColors.UNREAD)
+                lang_item.addChild(ch_item)
+            if len(self.sorted_chapters) == 1:
+                lang_item.setExpanded(True)
 
     def get_relations(self):
-        def get_relations():
-            self.related_mangas = self.catalog.get_relations(self.manga)
+        self.related_mangas = self.catalog.get_relations(self.manga)
 
-        def update_relations():
-            self.ui.related_list.clear()
-            self.ui.related_frame.setVisible(bool(self.related_mangas))
-            for manga in self.related_mangas:
-                item = QListWidgetItem(manga.get_name())
-                self.ui.related_list.addItem(item)
-
-        Worker(target=get_relations, callback=update_relations).start(pool=self.thread_pool)
+    def update_relations(self):
+        self.ui.related_list.clear()
+        self.ui.related_frame.setVisible(bool(self.related_mangas))
+        for manga in self.related_mangas:
+            item = QListWidgetItem(manga.get_name())
+            self.ui.related_list.addItem(item)
 
     def get_characters(self):
-        def get_characters():
-            self.related_characters = self.catalog.get_characters(self.manga)
+        self.related_characters = self.catalog.get_characters(self.manga)
 
-        def update_characters():
-            self.ui.characters_list.clear()
-            self.ui.characters_frame.setVisible(bool(self.related_characters))
-            for character in self.related_characters:
-                item = QListWidgetItem(character.get_name())
-                self.ui.characters_list.addItem(item)
-
-        Worker(target=get_characters, callback=update_characters).start(pool=self.thread_pool)
+    def update_characters(self):
+        self.ui.characters_list.clear()
+        self.ui.characters_frame.setVisible(bool(self.related_characters))
+        for character in self.related_characters:
+            item = QListWidgetItem(character.get_name())
+            self.ui.characters_list.addItem(item)
 
     @Slot()
     def open_reader(self):
@@ -259,7 +250,8 @@ class FormInfo(QWidget):
         except RuntimeError:
             pass
         finally:
-            if selected_chapter := self._get_selected_chapter():
+            selected_chapter = self._get_selected_chapter()
+            if selected_chapter:
                 self.reader_window = ReaderWindow()
                 self.reader_window.setup(
                     self.manga,

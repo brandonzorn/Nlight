@@ -3,29 +3,27 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QWidget
 
 from data.ui.containers.image_area import Ui_Form
+from nlightreader.widgets.NlightContainers.content_container import AbstractContentContainer
 
 
-class ImageArea(QWidget):
+class ImageArea(QWidget, AbstractContentContainer):
     def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self._image_pixmap = None
+        self.__image_pixmap = None
 
-    def install(self, parent):
-        parent.addWidget(self)
-
-    def resizeEvent(self, arg__1):
-        super().resizeEvent(arg__1)
-        if (self._image_pixmap is None) or (arg__1.oldSize() == arg__1.size()):
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        if (self.__image_pixmap is None) or (event.oldSize() == event.size()):
             return
         view_w = self.ui.scrollArea.viewport().width()
         self.ui.img_lbl.setFixedWidth(view_w)
         self.ui.scrollAreaWidgetContents.setFixedWidth(view_w)
         self.ui.scrollAreaWidgetContents.resize(self.ui.scrollArea.viewport().size())
-        self.update_image()
+        self.__update_image()
 
-    def reset_area(self):
+    def _reset_area(self):
         self.ui.img_lbl.clear()
         self.ui.scrollArea.verticalScrollBar().setValue(0)
         self.ui.scrollArea.horizontalScrollBar().setValue(0)
@@ -43,19 +41,25 @@ class ImageArea(QWidget):
         else:
             w = self.ui.scrollArea.viewport().width()
             h = pixmap.height()
-            self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+            self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         return pixmap.scaled(
             QSize(w, h), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation,
         )
 
-    def update_image(self):
-        pixmap = self._resize_pixmap(self._image_pixmap)
+    def __update_image(self):
+        pixmap = self._resize_pixmap(self.__image_pixmap)
         self.ui.img_lbl.setPixmap(pixmap)
 
-    def set_image(self, img_pixmap: QPixmap):
-        self._image_pixmap = img_pixmap
-        self.reset_area()
-        self.update_image()
+    def clear(self):
+        self.ui.img_lbl.clear()
 
-    def set_text(self, text: str):
-        self.ui.img_lbl.setText(text)
+    def set_content(self, content: QPixmap | str):
+        if isinstance(content, str):
+            self.ui.img_lbl.setText(content)
+        else:
+            self.__image_pixmap = content
+            self._reset_area()
+            self.__update_image()
+
+    def get_content_widget(self):
+        return self.ui.img_lbl
