@@ -53,7 +53,6 @@ class ReaderWindow(QMainWindow):
         self.manga = None
         self.chapters: list[Chapter] = []
         self.images: list[Image] = []
-        self.cur_image_pixmap = None
         self.cur_chapter = 1
         self.max_chapters = 1
         self.cur_page = 1
@@ -161,7 +160,6 @@ class ReaderWindow(QMainWindow):
     def attach_image(self):
         self._set_image_thread.terminate()
         self._set_image_thread.wait()
-        self.cur_image_pixmap = None
         if not self.images:
             return
         self.progressRing.setVisible(True)
@@ -179,18 +177,19 @@ class ReaderWindow(QMainWindow):
             if page != self.cur_page or chapter != self.cur_chapter:
                 return
         if self.manga.kind == Nl.MangaKind.ranobe:
-            self.cur_image_pixmap = FileManager.get_chapter_text_file(
-                self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog)
+            return FileManager.get_chapter_text_file(
+                self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog,
+            )
         else:
-            if not self.cur_image_pixmap:
-                self.cur_image_pixmap = FileManager.get_image_file(
-                    self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog)
+            return FileManager.get_image_file(
+                self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog,
+            )
 
-    def update_image(self):
+    def update_image(self, content):
         self.progressRing.stop()
         self.progressRing.setVisible(False)
         self.content_container.get_content_widget().setVisible(True)
-        self.content_container.set_content(self.cur_image_pixmap)
+        self.content_container.set_content(content)
 
     def get_images(self):
         chapter = self._current_chapter

@@ -10,19 +10,19 @@ class TextArea(QWidget, AbstractContentContainer):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.ui.size_slider.valueChanged.connect(self.update_text_size)
+        self.ui.size_slider.valueChanged.connect(self.__update_text_size)
 
     @Slot()
-    def update_text_size(self):
+    def __update_text_size(self):
         font = self.ui.text_browser.font()
         font.setPointSize(self.ui.size_slider.value())
         self.ui.text_browser.setFont(font)
 
-    def reset_reader_area(self):
+    def _reset_area(self):
         self.ui.text_browser.clear()
 
     def set_content(self, content: str):
-        self.reset_reader_area()
+        self._reset_area()
         self.ui.text_browser.setHtml(content)
 
     def get_content_widget(self) -> QWidget:
