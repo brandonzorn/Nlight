@@ -10,6 +10,7 @@ from nlightreader.consts.colors import ItemsColors
 from nlightreader.items import Manga, Chapter, Image, HistoryNote
 from nlightreader.utils import Database, get_catalog, FileManager, translate, get_language_icon, Thread
 from nlightreader.widgets.NlightContainers import TextArea
+from nlightreader.widgets.NlightContainers.content_container import AbstractContentContainer
 from nlightreader.widgets.NlightContainers.image_area import ImageArea
 
 
@@ -31,14 +32,12 @@ class ReaderWindow(QMainWindow):
         self.ui.items_list.doubleClicked.connect(self.change_chapter)
         self._set_image_thread = Thread(target=self.get_content, callback=self.update_image)
 
-        self.image_container = ImageArea()
-        self.text_container = TextArea()
+        self.content_container: AbstractContentContainer | None = None
 
         self.db: Database = Database()
         self.manga = None
         self.chapters: list[Chapter] = []
         self.images: list[Image] = []
-        self.cur_image_pixmap = None
         self.cur_chapter = 1
         self.max_chapters = 1
         self.cur_page = 1
@@ -49,10 +48,8 @@ class ReaderWindow(QMainWindow):
         self.ui.chapters_frame.hide()
         self.manga = manga
         self.setWindowTitle(self.manga.name)
-        if self.manga.kind == Nl.MangaKind.ranobe:
-            self.text_container.install(self.ui.reader_layout)
-        else:
-            self.image_container.install(self.ui.reader_layout)
+        self.content_container = TextArea() if self.manga.kind == Nl.MangaKind.ranobe else ImageArea()
+        self.content_container.install(self.ui.reader_layout)
         self.chapters = chapters
         self.cur_chapter = cur_chapter
         self.max_chapters = len(chapters)
@@ -147,7 +144,7 @@ class ReaderWindow(QMainWindow):
     def attach_image(self):
         self._set_image_thread.terminate()
         self._set_image_thread.wait()
-        self.cur_image_pixmap = None
+        self.content_container.clear()
         if not self.images:
             return
         self._set_image_thread.start()
@@ -158,23 +155,22 @@ class ReaderWindow(QMainWindow):
 
         if not FileManager.check_image_exists(
                 self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog):
+            if self.manga.kind != Nl.MangaKind.ranobe:
+                self.content_container.set_content(translate("Other", "Page is loading"))
             time.sleep(0.25)
             if page != self.cur_page or chapter != self.cur_chapter:
                 return
-            self.image_container.set_text(translate("Other", "Page is loading"))
         if self.manga.kind == Nl.MangaKind.ranobe:
-            self.cur_image_pixmap = FileManager.get_chapter_text_file(
-                self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog)
+            return FileManager.get_chapter_text_file(
+                self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog,
+            )
         else:
-            if not self.cur_image_pixmap:
-                self.cur_image_pixmap = FileManager.get_image_file(
-                    self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog)
+            return FileManager.get_image_file(
+                self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog,
+            )
 
-    def update_image(self):
-        if self.manga.kind == Nl.MangaKind.ranobe:
-            self.text_container.set_html(self.cur_image_pixmap)
-        else:
-            self.image_container.set_image(self.cur_image_pixmap)
+    def update_image(self, content):
+        self.content_container.set_content(content)
 
     def get_images(self):
         chapter = self._current_chapter
