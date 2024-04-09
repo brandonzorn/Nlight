@@ -160,14 +160,14 @@ class ReaderWindow(QMainWindow):
             time.sleep(0.25)
             if page != self.cur_page or chapter != self.cur_chapter:
                 return
+
         if self.manga.kind == Nl.MangaKind.ranobe:
             return FileManager.get_chapter_text_file(
                 self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog,
             )
-        else:
-            return FileManager.get_image_file(
-                self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog,
-            )
+        return FileManager.get_image_file(
+            self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog,
+        )
 
     def update_image(self, content):
         self.content_container.set_content(content)
