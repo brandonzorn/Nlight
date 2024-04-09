@@ -32,26 +32,23 @@ class FormShikimori(MangaItemBasedWidget):
         self.catalog = ShikimoriLib()
         self.Form_auth = FormAuth(self.catalog, parent=self)
         self.Form_auth.accepted.connect(self.auth_accept)
-        self.update_user_info()
+        Worker(target=self.get_user_info, callback=self.set_user_info).start()
 
     def setup_manga_item(self, manga: Manga):
         item = MangaItem(manga, is_added_to_lib=False, pool=self.manga_area.manga_thread_pool)
         item.manga_clicked.connect(self.manga_open.emit)
         return item
 
-    def update_user_info(self):
-        def get_user_info():
-            self.whoami = self.catalog.get_user()
-
-        def set_user_info():
-            if self.whoami.nickname:
-                self.ui.auth_btn.setText(self.whoami.nickname)
-            else:
-                self.ui.auth_btn.setText(translate("Other", "Sign in"))
-            self.ui.auth_btn.setEnabled(True)
-
+    def get_user_info(self):
         self.ui.auth_btn.setEnabled(False)
-        Worker(target=get_user_info, callback=set_user_info).start()
+        return self.catalog.get_user()
+
+    def set_user_info(self, whoami):
+        if whoami.nickname:
+            self.ui.auth_btn.setText(whoami.nickname)
+        else:
+            self.ui.auth_btn.setText(translate("Other", "Sign in"))
+        self.ui.auth_btn.setEnabled(True)
 
     def update_page(self):
         self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
@@ -59,7 +56,7 @@ class FormShikimori(MangaItemBasedWidget):
     @Slot()
     def auth_accept(self):
         self.catalog.session.auth_login(self.Form_auth.get_user_data())
-        self.update_user_info()
+        Worker(target=self.get_user_info, callback=self.set_user_info).start()
 
     @Slot()
     def authorize(self):
