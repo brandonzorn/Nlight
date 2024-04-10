@@ -23,7 +23,9 @@ class FormFacial(MangaItemBasedWidget):
 
         self.setObjectName("FormFacial")
 
-        self.manga_area = MangaArea(self.ui.items_layout)
+        self.manga_area = MangaArea()
+        self.manga_area.install(self.ui.items_layout)
+        self.manga_area.get_content_widget().layout().addWidget(self.progressRing)
 
         self.ui.next_btn.clicked.connect(self.turn_page_next)
         self.ui.prev_btn.clicked.connect(self.turn_page_prev)

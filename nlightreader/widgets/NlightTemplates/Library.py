@@ -18,7 +18,9 @@ class FormLibrary(MangaItemBasedWidget):
 
         self.setObjectName("FormLibrary")
 
-        self.manga_area = MangaArea(self.ui.items_layout)
+        self.manga_area = MangaArea()
+        self.manga_area.install(self.ui.items_layout)
+        self.manga_area.get_content_widget().layout().addWidget(self.progressRing)
 
         self.ui.planned_btn.clicked.connect(lambda: self.change_list(Nl.LibList.planned))
         self.ui.reading_btn.clicked.connect(lambda: self.change_list(Nl.LibList.reading))
