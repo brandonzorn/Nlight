@@ -11,7 +11,7 @@ from PySide6.QtWidgets import QApplication
 from qfluentwidgets import setTheme, Theme, InfoBar
 
 from nlightreader import ParentWindow
-from nlightreader.consts.app import APP_VERSION, APP_NAME
+from nlightreader.consts.app import APP_VERSION, APP_NAME, APP_BRANCH
 from nlightreader.consts.files import Icons
 from nlightreader.consts.urls import GITHUB_REPO
 from nlightreader.utils import get_locale, Thread, get_html, translate
@@ -52,10 +52,13 @@ class MainWindow(ParentWindow):
         self._update_checker.start()
 
     def check_for_updates(self):
-        response = get_html(f"{GITHUB_REPO}/releases/latest", content_type="json")
-        if response:
-            latest_version: str = response["tag_name"]
-            return latest_version
+        response = get_html(f"{GITHUB_REPO}/releases", params={"per_page": 3}, content_type="json")
+        if not response:
+            return
+        for release in response:
+            version = release["tag_name"]
+            if APP_BRANCH in version:
+                return version
 
     def show_update_info(self, result):
         info_bar_title = translate("Message", "Check for updates.")
