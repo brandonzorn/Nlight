@@ -52,7 +52,7 @@ class MainWindow(ParentWindow):
         self._update_checker.start()
 
     def check_for_updates(self):
-        response = get_html(f"{GITHUB_REPO}/releases", params={"per_page": 3}, content_type="json")
+        response = get_html(f"{GITHUB_REPO}/releases", params={"per_page": 2}, content_type="json")
         if not response:
             return
         for release in response:
