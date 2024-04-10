@@ -1,19 +1,18 @@
 from PySide6.QtCore import Qt, QThreadPool
 from PySide6.QtWidgets import (
     QWidget,
-    QVBoxLayout,
+    QHBoxLayout,
     QGridLayout,
-    QSpacerItem,
-    QSizePolicy,
 )
 from qfluentwidgets import ScrollArea
 
 from nlightreader.utils import Thread
+from nlightreader.widgets.NlightContainers.content_container import AbstractContentContainer
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
-class MangaArea(ScrollArea):
-    def __init__(self, parent):
+class MangaArea(ScrollArea, AbstractContentContainer):
+    def __init__(self):
         super().__init__()
         self.setWidgetResizable(True)
         self.setStyleSheet(
@@ -29,7 +28,7 @@ class MangaArea(ScrollArea):
         self._scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self._scrollAreaWidgetContents.resizeEvent = self._scroll_resize_event
 
-        self._scroll_layout = QVBoxLayout(self._scrollAreaWidgetContents)
+        self._scroll_layout = QHBoxLayout(self._scrollAreaWidgetContents)
         self._scroll_layout.setSpacing(0)
         self._scroll_layout.setContentsMargins(0, 0, 0, 0)
 
@@ -38,16 +37,11 @@ class MangaArea(ScrollArea):
 
         self._scroll_layout.addLayout(self._content_grid)
 
-        self._verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        self._scroll_layout.addItem(self._verticalSpacer)
         self.setWidget(self._scrollAreaWidgetContents)
 
         self.manga_thread_pool = QThreadPool()
         self.manga_thread_pool.setMaxThreadCount(self._column_count)
         self._set_images_thread = Thread(target=self.partial_image_addition)
-
-        if parent is not None:
-            parent.addWidget(self)
 
     def _scroll_resize_event(self, event):
         if event.oldSize().width() != event.size().width():
@@ -82,3 +76,6 @@ class MangaArea(ScrollArea):
     def update_items(self):
         size = self.size().width() // (self._column_count + 1)
         [item.set_size(size) for item in self._manga_items]
+
+    def get_content_widget(self):
+        return self._scrollAreaWidgetContents
