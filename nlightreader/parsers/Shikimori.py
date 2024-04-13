@@ -117,9 +117,9 @@ class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
             "limit": form.limit,
             "search": form.search,
             "page": form.page,
-            "genre": ",".join(form.get_genre_id()),
-            "order": form.order.content_id,
-            "kind": ",".join([i.content_id for i in form.kinds]),
+            "order": form.get_order_id(),
+            "genre": ",".join(form.get_genre_ids()),
+            "kind": ",".join(form.get_kind_ids()),
         }
         response = get_html(url, headers=self.headers, params=params, content_type="json")
         mangas = []
@@ -143,10 +143,10 @@ class ShikimoriRanobe(ShikimoriBase, AbstractRanobeCatalog):
         params = {
             "limit": form.limit,
             "search": form.search,
-            "genre": ",".join(form.get_genre_id()),
-            "order": form.order.name,
-            "kind": ",".join([i.name for i in form.kinds]),
             "page": form.page,
+            "order": form.get_order_id(),
+            "genre": ",".join(form.get_genre_ids()),
+            "kind": ",".join(form.get_kind_ids()),
         }
         response = get_html(url, headers=self.headers, params=params, content_type="json")
         mangas = []
