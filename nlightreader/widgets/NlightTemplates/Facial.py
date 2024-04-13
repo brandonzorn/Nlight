@@ -6,7 +6,6 @@ from nlightreader.controlers import FilterController
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import Manga
 from nlightreader.utils import USER_CATALOGS, translate
-from nlightreader.widgets.NlightContainers.manga_area import MangaArea
 from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
@@ -23,7 +22,6 @@ class FormFacial(MangaItemBasedWidget):
 
         self.setObjectName("FormFacial")
 
-        self.manga_area = MangaArea()
         self.manga_area.install(self.ui.items_layout)
         self.manga_area.get_content_widget().layout().addWidget(self.progressRing)
 

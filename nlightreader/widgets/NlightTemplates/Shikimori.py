@@ -7,7 +7,6 @@ from nlightreader.dialogs import TokenAuthMessageBox, UserDataAuthMessageBox
 from nlightreader.items import Manga
 from nlightreader.parsers import ShikimoriLib
 from nlightreader.utils import translate, Worker
-from nlightreader.widgets.NlightContainers.manga_area import MangaArea
 from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
@@ -23,7 +22,6 @@ class FormShikimori(MangaItemBasedWidget):
 
         self.setObjectName("FormShikimori")
 
-        self.manga_area = MangaArea()
         self.manga_area.install(self.ui.items_layout)
         self.manga_area.get_content_widget().layout().addWidget(self.progressRing)
 
