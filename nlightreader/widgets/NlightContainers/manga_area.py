@@ -1,9 +1,5 @@
 from PySide6.QtCore import Qt, QThreadPool
-from PySide6.QtWidgets import (
-    QWidget,
-    QHBoxLayout,
-    QGridLayout,
-)
+from PySide6.QtWidgets import QWidget, QHBoxLayout, QGridLayout
 from qfluentwidgets import ScrollArea
 
 from nlightreader.utils import Thread
