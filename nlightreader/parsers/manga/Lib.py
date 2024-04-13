@@ -3,6 +3,7 @@ import re
 
 from bs4 import BeautifulSoup
 
+from nlightreader.consts.items import MangaLibItems
 from nlightreader.consts.urls import URL_SLASHLIB, URL_MANGALIB
 from nlightreader.consts.enums import Nl
 from nlightreader.items import RequestForm, Manga, Chapter, Image
@@ -29,11 +30,14 @@ class LibBase(AbstractCatalog):
 
     def search_manga(self, form: RequestForm):
         url = f"{self.url}/manga-list"
+        headers = self.headers | {"Referer": "https://mangalib.me/?section=home-updates-2239878"}
         params = {
             "name": form.search,
             "page": form.page,
+            "sort": form.get_order_id(),
+            "types[]": form.get_kind_ids(),
         }
-        response = get_html(url, headers=self.headers, params=params, content_type="text")
+        response = get_html(url, headers=headers, params=params, content_type="text")
         mangas = []
         if response:
             soup = BeautifulSoup(response, "html.parser")
@@ -92,7 +96,8 @@ class LibBase(AbstractCatalog):
         return get_html(image.img, headers=headers, content_type="content")
 
     def get_preview(self, manga: Manga):
-        return get_html(manga.preview_url, content_type="content")
+        headers = self.headers | {"Referer": f"{self.url}/"}
+        return get_html(manga.preview_url, headers=headers, content_type="content")
 
     def get_manga_url(self, manga: Manga):
         return f"{self.url}/{manga.content_id}"
@@ -114,3 +119,4 @@ class MangaLib(LibBase, AbstractMangaCatalog):
     def __init__(self):
         super().__init__()
         self.url = URL_MANGALIB
+        self.items = MangaLibItems

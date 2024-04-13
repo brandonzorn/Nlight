@@ -65,7 +65,7 @@ class MangaDex(AbstractMangaCatalog):
             "limit": 50,
             "title": form.search,
             "offset": form.offset,
-            "includedTags[]": form.get_genre_id() + form.get_kind_id(),
+            "includedTags[]": form.get_genre_ids() + form.get_kind_ids(),
             "contentRating[]": [
                 "safe",
                 "suggestive",

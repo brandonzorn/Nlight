@@ -38,7 +38,7 @@ class Rulate(AbstractRanobeCatalog):
             "t": form.search,
             "cat": 12,
             "Book_page": form.page,
-            "sort": form.order.content_id,
+            "sort": form.get_order_id(),
             "adult": 0,
         }
         response = get_html(f"{self.url_api}/search", params=params, content_type="text")
@@ -134,7 +134,7 @@ class Erolate(Rulate):
             "t": form.search,
             "cat": 2,
             "Book_page": form.page,
-            "sort": form.order.content_id,
+            "sort": form.get_order_id(),
             "adult": 0,
         }
         response = get_html(f"{self.url_api}/search", params=params, content_type="text")
