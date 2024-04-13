@@ -17,12 +17,10 @@ class BaseItem:
 
     def get_name(self) -> str:
         if QLocale().language() in (
-            QLocale.Language.Russian,
-            QLocale.Language.Ukrainian,
-        ):
-            if self.russian:
-                return self.russian
-        return self.name.capitalize()
+                QLocale.Language.Russian, QLocale.Language.Ukrainian,
+        ) and self.russian:
+            return self.russian
+        return self.name
 
     @staticmethod
     def get_empty_instance():
