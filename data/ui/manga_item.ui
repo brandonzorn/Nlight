@@ -19,9 +19,6 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="image">
-     <property name="text">
-      <string/>
-     </property>
      <property name="alignment">
       <set>Qt::AlignHCenter|Qt::AlignTop</set>
      </property>
@@ -42,9 +39,6 @@
    </item>
    <item>
     <widget class="BodyLabel" name="name_lbl">
-     <property name="text">
-      <string/>
-     </property>
      <property name="wordWrap">
       <bool>true</bool>
      </property>
@@ -53,24 +47,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>CardWidget</class>
-   <extends>QFrame</extends>
-   <header>qfluentwidgets</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>ElevatedCardWidget</class>
-   <extends>SimpleCardWidget</extends>
-   <header>qfluentwidgets</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>SimpleCardWidget</class>
-   <extends>CardWidget</extends>
-   <header>qfluentwidgets</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>BodyLabel</class>
    <extends>QLabel</extends>
