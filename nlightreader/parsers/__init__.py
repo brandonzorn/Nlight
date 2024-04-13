@@ -6,5 +6,5 @@ from .Shikimori import (
     ShikimoriBase,
 )
 from .hentai_manga import NHentai, AllHentai
-from .manga import Desu, MangaDex, MangaDexLib, Remanga, SlashLib, MangaLib
+from .manga import Desu, MangaDex, MangaDexLib, Remanga, SlashLib, MangaLib, NewDesu
 from .ranobe import Rulate, Erolate, Ranobehub

@@ -1,0 +1,69 @@
+{
+    "metadata": {
+        "id": 0,
+        "name": "Desu",
+        "version": "0.1.0"
+    },
+    "consts": {
+        "url": "https://desu.win",
+        "url_api": "https://desu.win/manga/api",
+        "headers": {"User-Agent": "Nlight"},
+        "items": {
+            "genres": {
+
+            },
+            "orders": {
+
+            },
+            "kinds": {
+
+            }
+        }
+    },
+    "config": {
+        "search": {
+            "content_type": "json",
+            "url": "${url_api}",
+            "headers": "$headers",
+            "params": {
+                "limit":  {
+                    "name":  "limit",
+                    "type": "value"
+                },
+                "search": {
+                    "name":  "search",
+                    "type": "value"
+                },
+                "page": {
+                    "name":  "page",
+                    "type": "value"
+                },
+                "genres": {
+                    "name": "genres",
+                    "type": "comma"
+                },
+                "orders": {
+                    "name": "order",
+                    "type": "value"
+                },
+                "kinds": {
+                    "name": "kinds",
+                    "type": "comma"
+                }
+            },
+            "parse_data": {
+                "id": "id",
+                "name": "name",
+                "russian": "russian"
+            },
+            "iter_path": ["response"]
+        },
+        "preview": {
+            "content_type": "content",
+            "url": "${url}/data/manga/covers/preview/%{content_id}.jpg"
+        },
+        "manga_url": {
+            "url": "${url}/manga/%{content_id}"
+        }
+    }
+}
