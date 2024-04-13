@@ -6,7 +6,6 @@ from nlightreader.dialogs import FormAuth
 from nlightreader.items import Manga
 from nlightreader.parsers import ShikimoriLib
 from nlightreader.utils import translate, Worker
-from nlightreader.widgets.NlightContainers.manga_area import MangaArea
 from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
@@ -17,7 +16,7 @@ class FormShikimori(MangaItemBasedWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
-        self.manga_area = MangaArea(self.ui.items_layout)
+        self.manga_area.install(self.ui.items_layout)
 
         self.ui.planned_btn.clicked.connect(lambda: self.change_list(Nl.LibList.planned))
         self.ui.reading_btn.clicked.connect(lambda: self.change_list(Nl.LibList.reading))

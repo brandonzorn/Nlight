@@ -117,9 +117,9 @@ class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
             "limit": form.limit,
             "search": form.search,
             "page": form.page,
-            "genre": ",".join(form.get_genre_id()),
-            "order": form.order.content_id,
-            "kind": ",".join([i.content_id for i in form.kinds]),
+            "order": form.get_order_id(),
+            "genre": ",".join(form.get_genre_ids()),
+            "kind": ",".join(form.get_kind_ids()),
         }
         response = get_html(url, headers=self.headers, params=params, content_type="json")
         mangas = []
@@ -143,10 +143,10 @@ class ShikimoriRanobe(ShikimoriBase, AbstractRanobeCatalog):
         params = {
             "limit": form.limit,
             "search": form.search,
-            "genre": ",".join(form.get_genre_id()),
-            "order": form.order.name,
-            "kind": ",".join([i.name for i in form.kinds]),
             "page": form.page,
+            "order": form.get_order_id(),
+            "genre": ",".join(form.get_genre_ids()),
+            "kind": ",".join(form.get_kind_ids()),
         }
         response = get_html(url, headers=self.headers, params=params, content_type="json")
         mangas = []
@@ -174,8 +174,8 @@ class ShikimoriLib(ShikimoriBase, LibParser):
             lib_list = "rewatching"
         else:
             lib_list = req_params.lib_list.name
-        if response:
-            for i in response.json():
+        if response and (resp_json := response.json()):
+            for i in resp_json:
                 if not i.get("status") == lib_list:
                     continue
                 i = i.get("manga")
@@ -183,9 +183,9 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         return mangas
 
     def get_user(self):
-        whoami = self.session.request("GET", f"{self.url_api}/users/whoami")
-        if whoami and whoami.status_code == 200:
-            data = whoami.json()
+        response = self.session.request("GET", f"{self.url_api}/users/whoami")
+        if response and (resp_json := response.json()):
+            data = resp_json
             return User(data.get("id"), data.get("nickname"), data.get("avatar"))
         return User(None, None, None)
 
@@ -207,9 +207,9 @@ class ShikimoriLib(ShikimoriBase, LibParser):
             "user_id": self.get_user().id,
             "target_id": manga.content_id,
         }
-        html = self.session.request("GET", url, params=params)
-        if html and html.status_code == 200 and html.json():
-            for i in html.json():
+        response = self.session.request("GET", url, params=params)
+        if response and (resp_json := response.json()):
+            for i in resp_json:
                 if manga.content_id == i.get("target_id"):
                     return True
         return False
@@ -225,9 +225,9 @@ class ShikimoriLib(ShikimoriBase, LibParser):
             "user_id": self.get_user().id,
             "target_id": manga.content_id,
         }
-        html = self.session.request("GET", url, params=params)
-        if html and html.status_code == 200 and html.json():
-            for i in html.json():
+        response = self.session.request("GET", url, params=params)
+        if response and (resp_json := response.json()):
+            for i in resp_json:
                 return UserRate(i.get("id"), i.get("user_id"), i.get("target_id"),
                                 i.get("score"), i.get("status"), i.get("chapters"))
 

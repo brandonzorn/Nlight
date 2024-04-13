@@ -39,8 +39,7 @@ class ImageArea(QWidget, AbstractContentContainer):
             w, h = self.ui.scrollArea.viewport().size().toTuple()
             self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         else:
-            w = self.ui.scrollArea.viewport().width()
-            h = pixmap.height()
+            w, h = self.ui.scrollArea.viewport().width(), pixmap.height()
             self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         return pixmap.scaled(
             QSize(w, h), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation,
