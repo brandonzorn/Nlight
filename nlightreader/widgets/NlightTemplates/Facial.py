@@ -78,9 +78,9 @@ class FormFacial(MangaItemBasedWidget):
     @Slot()
     def apply_filter(self):
         self.request_params.clear()
-        self.request_params.order = self.__filter_controller.get_active_order()
-        self.request_params.kinds = self.__filter_controller.get_active_kinds()
-        self.request_params.genres = self.__filter_controller.get_active_genres()
+        self.request_params.set_order(self.__filter_controller.get_active_order())
+        self.request_params.set_kinds(self.__filter_controller.get_active_kinds())
+        self.request_params.set_genres(self.__filter_controller.get_active_genres())
         self.request_params.search = self.ui.title_line.text()
         self.get_content()
 

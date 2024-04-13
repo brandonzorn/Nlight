@@ -32,10 +32,10 @@ class Remanga(AbstractMangaCatalog):
             "page": form.page,
             "query": form.search,
             "count": 40,
-            "ordering": form.order.content_id,
+            "ordering": form.get_order_id(),
         }
         params = list(params.items())
-        [params.append(("types", kind_id)) for kind_id in form.get_kind_id()]
+        [params.append(("types", kind_id)) for kind_id in form.get_kind_ids()]
         response = get_html(url, headers=self.headers, params=params, content_type="json")
         mangas = []
         if response:
