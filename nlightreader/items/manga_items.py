@@ -19,15 +19,6 @@ class Manga(BaseItem):
         self.chapters = 0
         self.preview_url: str | None = None
 
-    def get_name(self) -> str:
-        if QLocale().language() in (
-            QLocale.Language.Russian,
-            QLocale.Language.Ukrainian,
-        ):
-            if self.russian:
-                return self.russian
-        return self.name
-
     @property
     def score(self):
         return self._score
