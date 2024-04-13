@@ -39,9 +39,9 @@ class Desu(AbstractMangaCatalog):
             "limit": form.limit,
             "search": form.search,
             "page": form.page,
-            "genres": ",".join([i.content_id for i in form.genres]),
-            "order": form.order.content_id,
-            "kinds": ",".join([i.content_id for i in form.kinds]),
+            "genres": ",".join(form.get_genre_ids()),
+            "order": form.get_order_id(),
+            "kinds": ",".join(form.get_kind_ids()),
         }
         response = get_html(url, headers=self.headers, params=params, content_type="json")
         manga = []

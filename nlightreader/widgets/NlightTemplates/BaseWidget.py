@@ -1,6 +1,6 @@
 import time
 
-from PySide6.QtCore import Signal, QMutex, Slot
+from PySide6.QtCore import Signal, Slot
 from PySide6.QtWidgets import QWidget
 
 from nlightreader.consts.enums import Nl
@@ -15,12 +15,11 @@ class MangaItemBasedWidget(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.manga_area = MangaArea(None)
+        self.manga_area = MangaArea()
         self.mangas: list[Manga] = []
 
         self._get_content_thread = Thread(target=self._get_content_thread_func, callback=self.update_content)
 
-        self.mutex = QMutex()
         self.catalog = None
         self.request_params = RequestForm()
 

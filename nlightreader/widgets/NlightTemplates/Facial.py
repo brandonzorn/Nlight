@@ -5,7 +5,6 @@ from nlightreader.controlers import FilterController
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import Manga
 from nlightreader.utils import USER_CATALOGS, translate
-from nlightreader.widgets.NlightContainers.manga_area import MangaArea
 from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
@@ -16,7 +15,7 @@ class FormFacial(MangaItemBasedWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
-        self.manga_area = MangaArea(self.ui.items_layout)
+        self.manga_area.install(self.ui.items_layout)
 
         self.ui.next_btn.clicked.connect(self.turn_page_next)
         self.ui.prev_btn.clicked.connect(self.turn_page_prev)
@@ -71,9 +70,9 @@ class FormFacial(MangaItemBasedWidget):
     @Slot()
     def apply_filter(self):
         self.request_params.clear()
-        self.request_params.order = self.__filter_controller.get_active_order()
-        self.request_params.kinds = self.__filter_controller.get_active_kinds()
-        self.request_params.genres = self.__filter_controller.get_active_genres()
+        self.request_params.set_order(self.__filter_controller.get_active_order())
+        self.request_params.set_kinds(self.__filter_controller.get_active_kinds())
+        self.request_params.set_genres(self.__filter_controller.get_active_genres())
         self.request_params.search = self.ui.title_line.text()
         self.get_content()
 

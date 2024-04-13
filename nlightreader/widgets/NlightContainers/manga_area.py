@@ -1,19 +1,13 @@
 from PySide6.QtCore import Qt, QThreadPool
-from PySide6.QtWidgets import (
-    QScrollArea,
-    QWidget,
-    QVBoxLayout,
-    QGridLayout,
-    QSpacerItem,
-    QSizePolicy,
-)
+from PySide6.QtWidgets import QScrollArea, QWidget, QVBoxLayout, QGridLayout
 
 from nlightreader.utils import Thread
+from nlightreader.widgets.NlightContainers.content_container import AbstractContentContainer
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
-class MangaArea(QScrollArea):
-    def __init__(self, parent):
+class MangaArea(QScrollArea, AbstractContentContainer):
+    def __init__(self):
         super().__init__()
         self.setWidgetResizable(True)
 
@@ -30,19 +24,15 @@ class MangaArea(QScrollArea):
 
         self._content_grid = QGridLayout()
         self._content_grid.setVerticalSpacing(12)
+        self._content_grid.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self._scroll_layout.addLayout(self._content_grid)
 
-        self._verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        self._scroll_layout.addItem(self._verticalSpacer)
         self.setWidget(self._scrollAreaWidgetContents)
 
         self.manga_thread_pool = QThreadPool()
         self.manga_thread_pool.setMaxThreadCount(self._column_count)
         self._set_images_thread = Thread(target=self.partial_image_addition)
-
-        if parent is not None:
-            parent.addWidget(self)
 
     def _scroll_resize_event(self, event):
         if event.oldSize().width() != event.size().width():
