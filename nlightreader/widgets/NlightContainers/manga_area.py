@@ -34,6 +34,7 @@ class MangaArea(ScrollArea, AbstractContentContainer):
 
         self._content_grid = QGridLayout()
         self._content_grid.setVerticalSpacing(12)
+        self._content_grid.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self._scroll_layout.addLayout(self._content_grid)
 
