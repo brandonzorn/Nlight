@@ -4,7 +4,7 @@ from qfluentwidgets import FluentIcon
 from data.ui.widgets.shikimori import Ui_Form
 from nlightreader.consts.enums import Nl
 from nlightreader.dialogs import TokenAuthMessageBox, UserDataAuthMessageBox
-from nlightreader.items import Manga
+from nlightreader.items import Manga, User
 from nlightreader.parsers import ShikimoriLib
 from nlightreader.utils import translate, Worker
 from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
@@ -47,9 +47,10 @@ class FormShikimori(MangaItemBasedWidget):
         self.ui.auth_btn.setEnabled(False)
         return self.catalog.get_user()
 
-    def set_user_info(self, whoami):
-        if whoami.nickname:
-            self.ui.auth_btn.setText(whoami.nickname)
+    def set_user_info(self, user: User):
+        if user.nickname:
+            self.ui.auth_btn.setText(user.nickname)
+            self.get_content()
         else:
             self.ui.auth_btn.setText(translate("Other", "Sign in"))
         self.ui.auth_btn.setEnabled(True)
