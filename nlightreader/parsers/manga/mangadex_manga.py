@@ -176,20 +176,20 @@ class MangaDexLib(MangaDex, LibParser):
             lib_list = "plan_to_read"
         else:
             lib_list = form.lib_list.name
-        html_statuses = self.session.get(f"{self.url_api}/manga/status", params={"status": lib_list})
+        response_statuses = self.session.get(f"{self.url_api}/manga/status", params={"status": lib_list})
         params = {"limit": form.limit, "offset": form.offset}
-        html = self.session.get(f"{self.url_api}/user/follows/manga", params=params)
-        if html and html.status_code == 200 and html.json():
-            for i in html.json().get("data"):
+        response = self.session.get(f"{self.url_api}/user/follows/manga", params=params)
+        if response and (resp_json := response.json()):
+            for i in resp_json.get("data"):
                 manga = self.setup_manga(i)
-                if manga.content_id in html_statuses.json().get("statuses"):
+                if manga.content_id in response_statuses.json().get("statuses"):
                     mangas.append(manga)
         return mangas
 
     def get_user(self):
-        whoami = self.session.get(f"{self.url_api}/user/me")
-        if whoami and whoami.status_code == 200:
-            data = whoami.json().get("data")
+        response = self.session.get(f"{self.url_api}/user/me")
+        if response and (resp_json := response.json()):
+            data = resp_json.get("data")
             return User(data.get("id"), data.get("attributes").get("username"), "")
         return User(None, None, None)
 
