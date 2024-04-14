@@ -162,18 +162,18 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         self.fields = 1
         self.session: Auth = Auth()
 
-    def search_manga(self, req_params: RequestForm):
-        url = f"{self.url_api}/users/{self.get_user().id}/manga_rates"
-        params = {"limit": 50, "page": req_params.page}
+    def search_manga(self, form: RequestForm):
+        url = f"{self.url_api}/users/{self.session.user.id}/manga_rates"
+        params = {"limit": 50, "page": form.page}
         response = self.session.request("GET", url, params=params)
         mangas = []
-        lib_list = req_params.lib_list
+        lib_list = form.lib_list
         if lib_list == Nl.LibList.reading:
             lib_list = "watching"
         elif lib_list == Nl.LibList.re_reading:
             lib_list = "rewatching"
         else:
-            lib_list = req_params.lib_list.name
+            lib_list = form.lib_list.name
         if response and (resp_json := response.json()):
             for i in resp_json:
                 if not i.get("status") == lib_list:
@@ -184,17 +184,17 @@ class ShikimoriLib(ShikimoriBase, LibParser):
 
     def get_user(self):
         response = self.session.request("GET", f"{self.url_api}/users/whoami")
+        self.session.user = User(None, None, None)
         if response and (resp_json := response.json()):
-            data = resp_json
-            return User(data.get("id"), data.get("nickname"), data.get("avatar"))
-        return User(None, None, None)
+            self.session.user = User(resp_json.get("id"), resp_json.get("nickname"), resp_json.get("avatar"))
+        return self.session.user
 
     def create_user_rate(self, manga: Manga):
         url = f"{self.url_api}/v2/user_rates"
         data = {
             "user_rate": {
                 "target_type": "Manga",
-                "user_id": self.get_user().id,
+                "user_id": self.session.user.id,
                 "target_id": manga.content_id,
             },
         }
@@ -204,7 +204,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         url = f"{self.url_api}/v2/user_rates"
         params = {
             "target_type": "Manga",
-            "user_id": self.get_user().id,
+            "user_id": self.session.user.id,
             "target_id": manga.content_id,
         }
         response = self.session.request("GET", url, params=params)
@@ -222,7 +222,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         url = f"{self.url_api}/v2/user_rates"
         params = {
             "target_type": "Manga",
-            "user_id": self.get_user().id,
+            "user_id": self.session.user.id,
             "target_id": manga.content_id,
         }
         response = self.session.request("GET", url, params=params)
@@ -259,6 +259,7 @@ class Auth:
         self.headers = {"User-Agent": "Shikimori", "Authorization": f"Bearer {self.tokens.get('access_token')}"}
         self.client = self.get_client(scope, self.redirect_uri, token)
         self.refresh_token()
+        self.user: User = User(None, None, None)
         self.is_authorized = False
         if self.token:
             self.check_auth()
