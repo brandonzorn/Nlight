@@ -70,13 +70,13 @@ class Nl:
                 return cls.doujin
             if matching_the_pattern(string, ("ranobe", "novel")):
                 return cls.ranobe
-            if matching_the_pattern(string, ("комикс", "comics")):
+            if matching_the_pattern(string, ("комикс", "comic")):
                 return cls.comics
             logging.warning(f"Unknown manga kind: {string}")
             return cls.undefined
 
         def to_full_str(self):
-            names = ["Undefined", "Manga", "Manhwa", "Manhua", "One shot", "Doujin", "Light Novel", "Comics"]
+            names = ["Undefined", "Manga", "Manhwa", "Manhua", "Oneshot", "Doujin", "Ranobe", "Comics"]
             return names[self.value]
 
     @unique
