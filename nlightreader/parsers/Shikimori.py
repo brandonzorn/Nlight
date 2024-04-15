@@ -108,9 +108,6 @@ class ShikimoriBase(AbstractCatalog):
 class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
     CATALOG_NAME = "Shikimori(Manga)"
 
-    def __init__(self):
-        super().__init__()
-
     def search_manga(self, form: RequestForm):
         url = f"{self.url_api}/mangas"
         params = {
@@ -134,9 +131,6 @@ class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
 
 class ShikimoriRanobe(ShikimoriBase, AbstractRanobeCatalog):
     CATALOG_NAME = "Shikimori(Ranobe)"
-
-    def __init__(self):
-        super().__init__()
 
     def search_manga(self, form: RequestForm):
         url = f"{self.url_api}/ranobe"
@@ -228,15 +222,17 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         response = self.session.request("GET", url, params=params)
         if response and (resp_json := response.json()):
             for i in resp_json:
-                return UserRate(i.get("id"), i.get("user_id"), i.get("target_id"),
-                                i.get("score"), i.get("status"), i.get("chapters"))
+                return UserRate(
+                    i.get("id"), i.get("user_id"), i.get("target_id"),
+                    i.get("score"), Nl.LibList.from_str(i.get("status")), i.get("chapters"),
+                )
 
     def update_user_rate(self, user_rate: UserRate):
         url = f"{self.url_api}/v2/user_rates/{user_rate.id}"
-        status = user_rate.status
-        if status == "reading":
+        status = user_rate.status.to_str()
+        if user_rate.status == Nl.LibList.reading:
             status = "watching"
-        elif status == "re-reading":
+        elif user_rate.status == Nl.LibList.re_reading:
             status = "rewatching"
         data = {
             "user_rate": {

@@ -172,10 +172,9 @@ class MangaDexLib(MangaDex, LibParser):
 
     def search_manga(self, form: RequestForm):
         mangas = []
+        lib_list = form.lib_list.name
         if form.lib_list == Nl.LibList.planned:
             lib_list = "plan_to_read"
-        else:
-            lib_list = form.lib_list.name
         response_statuses = self.session.get(f"{self.url_api}/manga/status", params={"status": lib_list})
         params = {"limit": form.limit, "offset": form.offset}
         response = self.session.get(f"{self.url_api}/user/follows/manga", params=params)

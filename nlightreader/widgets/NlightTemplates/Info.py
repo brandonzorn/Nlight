@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QWidget, QListWidgetItem, QTreeWidgetItem
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.info import Ui_Form
-from nlightreader.consts.enums import lib_lists_en, Nl
+from nlightreader.consts.enums import Nl, LIB_LISTS
 from nlightreader.consts.files import NlFluentIcons
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
@@ -38,7 +38,7 @@ class FormInfo(QWidget):
 
         self.setObjectName("FormInfo")
 
-        self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in lib_lists_en])
+        self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in LIB_LISTS])
         self.ui.items_tree.doubleClicked.connect(self.open_reader)
         self.ui.characters_list.doubleClicked.connect(self.open_character)
         self.ui.related_list.doubleClicked.connect(self.open_related_manga)
