@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'shikimori.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.1
+## Created by: Qt User Interface Compiler version 6.6.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -32,7 +32,7 @@ class Ui_Form(object):
         self.search.setObjectName(u"search")
         self.items_frame = QFrame(Form)
         self.items_frame.setObjectName(u"items_frame")
-        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.items_frame.sizePolicy().hasHeightForWidth())
@@ -161,7 +161,7 @@ class Ui_Form(object):
 
         self.verticalLayout_2.addWidget(self.dropped_btn)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_2.addItem(self.verticalSpacer)
 
