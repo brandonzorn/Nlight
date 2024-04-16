@@ -234,6 +234,8 @@ class ShikimoriLib(ShikimoriBase, LibParser):
             status = "watching"
         elif user_rate.status == Nl.LibList.re_reading:
             status = "rewatching"
+        elif user_rate.status == Nl.LibList.on_hold:
+            status = "on_hold"
         data = {
             "user_rate": {
                 "chapters": f"{user_rate.chapters}",
