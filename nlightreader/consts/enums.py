@@ -95,7 +95,7 @@ class Nl:
                 return cls.planned
             if string in ("completed",):
                 return cls.completed
-            if string in ("reading", "watching",):
+            if string in ("reading", "watching"):
                 return cls.reading
             if string in ("re-reading", "rewatching"):
                 return cls.re_reading
