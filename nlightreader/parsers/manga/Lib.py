@@ -30,14 +30,13 @@ class LibBase(AbstractCatalog):
 
     def search_manga(self, form: RequestForm):
         url = f"{self.url}/manga-list"
-        headers = self.headers | {"Referer": "https://mangalib.me/?section=home-updates-2239878"}
         params = {
             "name": form.search,
             "page": form.page,
             "sort": form.get_order_id(),
             "types[]": form.get_kind_ids(),
         }
-        response = get_html(url, headers=headers, params=params, content_type="text")
+        response = get_html(url, headers=self.headers, params=params, content_type="text")
         mangas = []
         if response:
             soup = BeautifulSoup(response, "html.parser")
@@ -78,15 +77,22 @@ class LibBase(AbstractCatalog):
         images = []
         if response:
             soup = BeautifulSoup(response, "html.parser")
-            script_tag = soup.find("script", id="pg", text=re.compile(r"window\.__pg"))
-            script_content = script_tag.text if script_tag else None
-            match = re.search(r"window\.__pg\s*=\s*(.*?}]);", script_content)
-            data = json.loads(match.group(1))
-            for i in data:
+            pages_data_tag = soup.find("script", id="pg", text=re.compile(r"window\.__pg"))
+            pages_data_content = pages_data_tag.text if pages_data_tag else None
+            pages_data_match = re.search(r"window\.__pg\s*=\s*(.*?}]);", pages_data_content)
+            pages_data = json.loads(pages_data_match.group(1))
+
+            metadata_info_tag = soup.find("script", text=re.compile(r"window\.__info"))
+            metadata_info_content = metadata_info_tag.text if metadata_info_tag else None
+            metadata_info_match = re.search(r"window\.__info\s*=\s*(.*?}});", metadata_info_content)
+            metadata_info_data = json.loads(metadata_info_match.group(1))
+
+            chapter_link = metadata_info_data["img"]["url"]
+            server_link = metadata_info_data["servers"]["main"]
+            for i in pages_data:
                 page_num = i.get("p")
                 file_name = i.get("u")
-                img_url = (f"https://img33.imgslib.link/manga/{manga.content_id}"
-                           f"/chapters/{chapter.vol}-{chapter.ch}/{file_name}")
+                img_url = f"{server_link}{chapter_link}{file_name}"
                 image = Image("", page_num, img_url)
                 images.append(image)
         return images
