@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'manga_item.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.3
+## Created by: Qt User Interface Compiler version 6.6.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -23,7 +23,7 @@ class Ui_manga_item_widget(object):
         if not manga_item_widget.objectName():
             manga_item_widget.setObjectName(u"manga_item_widget")
         manga_item_widget.resize(485, 406)
-        sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(manga_item_widget.sizePolicy().hasHeightForWidth())
@@ -49,7 +49,7 @@ class Ui_manga_item_widget(object):
 
         self.verticalLayout_2.addWidget(self.image)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_2.addItem(self.verticalSpacer)
 

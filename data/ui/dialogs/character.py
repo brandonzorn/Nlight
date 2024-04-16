@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'character.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.3
+## Created by: Qt User Interface Compiler version 6.6.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -33,7 +33,7 @@ class Ui_Dialog(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.image_frame = QFrame(Dialog)
         self.image_frame.setObjectName(u"image_frame")
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.image_frame.sizePolicy().hasHeightForWidth())
@@ -70,7 +70,7 @@ class Ui_Dialog(object):
 
         self.verticalLayout_2.addWidget(self.russian_label)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_2.addItem(self.verticalSpacer)
 

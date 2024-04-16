@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'facial.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.1
+## Created by: Qt User Interface Compiler version 6.6.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -33,7 +33,7 @@ class Ui_Form(object):
         self.search.setObjectName(u"search")
         self.items_frame = QFrame(Form)
         self.items_frame.setObjectName(u"items_frame")
-        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.items_frame.sizePolicy().hasHeightForWidth())
@@ -115,7 +115,7 @@ class Ui_Form(object):
 
         self.all_filters = QWidget(Form)
         self.all_filters.setObjectName(u"all_filters")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.all_filters.sizePolicy().hasHeightForWidth())
@@ -125,7 +125,7 @@ class Ui_Form(object):
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.catalogs_frame = QFrame(self.all_filters)
         self.catalogs_frame.setObjectName(u"catalogs_frame")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Minimum)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Minimum)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.catalogs_frame.sizePolicy().hasHeightForWidth())
@@ -136,7 +136,7 @@ class Ui_Form(object):
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.catalogs_list = QListWidget(self.catalogs_frame)
         self.catalogs_list.setObjectName(u"catalogs_list")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.catalogs_list.sizePolicy().hasHeightForWidth())
@@ -222,7 +222,7 @@ class Ui_Form(object):
 
         self.verticalLayout_2.addWidget(self.filter_catalog_frame)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_2.addItem(self.verticalSpacer)
 
