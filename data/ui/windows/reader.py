@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'reader.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.3
+## Created by: Qt User Interface Compiler version 6.6.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -32,7 +32,7 @@ class Ui_ReaderWindow(object):
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.widget = QWidget(self.centralwidget)
         self.widget.setObjectName(u"widget")
-        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
@@ -54,7 +54,7 @@ class Ui_ReaderWindow(object):
         self.actions_layout.setObjectName(u"actions_layout")
         self.actions_frame = QFrame(self.widget)
         self.actions_frame.setObjectName(u"actions_frame")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.actions_frame.sizePolicy().hasHeightForWidth())
@@ -65,13 +65,13 @@ class Ui_ReaderWindow(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.page_actions_btn = QHBoxLayout()
         self.page_actions_btn.setObjectName(u"page_actions_btn")
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.page_actions_btn.addItem(self.horizontalSpacer)
 
         self.prev_chapter_btn = QPushButton(self.actions_frame)
         self.prev_chapter_btn.setObjectName(u"prev_chapter_btn")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.prev_chapter_btn.sizePolicy().hasHeightForWidth())
@@ -120,7 +120,7 @@ class Ui_ReaderWindow(object):
 
         self.page_actions_btn.addWidget(self.next_chapter_btn)
 
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.page_actions_btn.addItem(self.horizontalSpacer_2)
 
@@ -167,7 +167,7 @@ class Ui_ReaderWindow(object):
 
         self.chapters_frame = QFrame(self.centralwidget)
         self.chapters_frame.setObjectName(u"chapters_frame")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.chapters_frame.sizePolicy().hasHeightForWidth())
