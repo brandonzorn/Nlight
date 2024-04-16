@@ -257,6 +257,14 @@
         <translation>Манга</translation>
     </message>
     <message>
+        <source>OEL-manga</source>
+        <translation>OEL-манга</translation>
+    </message>
+    <message>
+        <source>Rumanga</source>
+        <translation>Руманга</translation>
+    </message>
+    <message>
         <source>Manhwa</source>
         <translation>Манхва</translation>
     </message>
@@ -265,20 +273,36 @@
         <translation>Маньхуа</translation>
     </message>
     <message>
-        <source>One shot</source>
+        <source>Oneshot</source>
         <translation>Ваншот</translation>
+    </message>
+    <message>
+        <source>Comic</source>
+        <translation>Комикс</translation>
+    </message>
+    <message>
+        <source>Western comic</source>
+        <translation>Западный комикс</translation>
+    </message>
+    <message>
+        <source>Rucomic</source>
+        <translation>Рукомикс</translation>
+    </message>
+    <message>
+        <source>Indonesian comic</source>
+        <translation>Индонезийский комикс</translation>
     </message>
     <message>
         <source>Doujin</source>
         <translation>Додзинси</translation>
     </message>
     <message>
-        <source>Light Novel</source>
+        <source>Ranobe</source>
         <translation>Ранобэ</translation>
     </message>
     <message>
-        <source>Comics</source>
-        <translation>Комикс</translation>
+        <source>Other</source>
+        <translation>Другое</translation>
     </message>
     <message>
         <source>Undefined</source>
