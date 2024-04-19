@@ -59,10 +59,10 @@ class MainWindow(ParentWindow):
         self._theme_updater.start()
 
     def closeEvent(self, event):
+        super().closeEvent(event)
         self._theme_updater.terminate()
         self._theme_updater.wait()
         app.closeAllWindows()
-        event.accept()
 
 
 if __name__ == "__main__":

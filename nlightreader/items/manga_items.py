@@ -46,8 +46,7 @@ class Manga(BaseItem):
         if self._description.get(Nl.Language.undefined):
             return self._description.get(Nl.Language.undefined)
         if QLocale().language() in (
-            QLocale.Language.Russian,
-            QLocale.Language.Ukrainian,
+                QLocale.Language.Russian, QLocale.Language.Ukrainian,
         ) and self._description.get(Nl.Language.ru):
             return self._description.get(Nl.Language.ru)
         return self._description.get(Nl.Language.en)
