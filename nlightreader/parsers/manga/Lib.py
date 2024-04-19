@@ -16,6 +16,7 @@ class LibBase(AbstractCatalog):
     def __init__(self):
         super().__init__()
         self.url = None
+        self.items = MangaLibItems
 
     def get_manga(self, manga: Manga):
         url = f"{self.url}/manga-short-info?slug={manga.content_id}"
@@ -35,6 +36,7 @@ class LibBase(AbstractCatalog):
             "page": form.page,
             "sort": form.get_order_id(),
             "types[]": form.get_kind_ids(),
+            "genres[include][]": form.get_genre_ids(),
         }
         response = get_html(url, headers=self.headers, params=params, content_type="text")
         mangas = []
@@ -125,4 +127,3 @@ class MangaLib(LibBase, AbstractMangaCatalog):
     def __init__(self):
         super().__init__()
         self.url = URL_MANGALIB
-        self.items = MangaLibItems
