@@ -8,7 +8,7 @@ class RequestForm:
         self.search = ""
         self.page = 1
         self.__genres: list[Genre] = []
-        self.__order: Order = Order.get_empty_instance()
+        self.__order: Order | None = None
         self.__kinds: list[Kind] = []
         self.lib_list = Nl.LibList.planned
 
@@ -39,6 +39,6 @@ class RequestForm:
         self.search = ""
         self.page = 1
         self.__genres = []
-        self.__order = Order.get_empty_instance()
+        self.__order = None
         self.__kinds = []
         self.lib_list = Nl.LibList.planned
