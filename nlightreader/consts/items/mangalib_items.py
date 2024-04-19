@@ -76,5 +76,5 @@ class MangaLibItems(ParserItems):
         {"value": 71, "name": "Эротика", "russian": "Эротика"},
         {"value": 72, "name": "Этти", "russian": "Этти"},
         {"value": 73, "name": "Юри", "russian": "Юри"},
-        {"value": 74, "name": "Яой", "russian": "Яой"}
+        {"value": 74, "name": "Яой", "russian": "Яой"},
     ]
