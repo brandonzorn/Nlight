@@ -1,0 +1,88 @@
+{
+    "catalog": {
+        "id": 6,
+        "name": "ReManga"
+    },
+    "urls": {
+        "url": "https://remanga.org",
+        "url_api": "https://remanga.org/api",
+        "headers": {}
+    },
+    "filters": {
+        "orders": [
+            {
+                "value": "-id",
+                "name": "By date added",
+                "russian": "По дате добавления"
+            },
+            {
+                "value": "-chapter_date",
+                "name": "By update date",
+                "russian": "По дате обновления"
+            },
+            {
+                "value": "-rating",
+                "name": "By popularity",
+                "russian": "По популярности"
+            },
+            {
+                "value": "-votes",
+                "name": "By likes",
+                "russian": "По лайкам"
+            },
+            {
+                "value": "-views",
+                "name": "By views",
+                "russian": "По просмотрам"
+            },
+            {
+                "value": "-count_chapters",
+                "name": "By number of chapters",
+                "russian": "По количеству глав"
+            },
+            {
+                "value": "-random",
+                "name": "By random",
+                "russian": "Мне повезет"
+            }
+        ],
+        "kinds": [
+            {
+                "value": 0,
+                "name": "Manga",
+                "russian": "Манга"
+            },
+            {
+                "value": 1,
+                "name": "Manhwa",
+                "russian": "Манхва"
+            },
+            {
+                "value": 2,
+                "name": "Manhua",
+                "russian": "Маньхуа"
+            },
+            {
+                "value": 3,
+                "name": "Western comic",
+                "russian": "Западный комикс"
+            },
+            {
+                "value": 4,
+                "name": "Rucomic",
+                "russian": "Рукомикс"
+            },
+            {
+                "value": 5,
+                "name": "Indonesian comic",
+                "russian": "Индонезийский комикс"
+            },
+            {
+                "value": 6,
+                "name": "Other",
+                "russian": "Другое"
+            }
+        ],
+        "genres": []
+    }
+}

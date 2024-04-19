@@ -1,0 +1,13 @@
+{
+    "catalog": {
+        "id": 9,
+        "name": "SlashLib"
+    },
+    "urls": {
+        "url": "https://v1.slashlib.me",
+        "url_api": ""
+    },
+    "filters": {
+
+    }
+}

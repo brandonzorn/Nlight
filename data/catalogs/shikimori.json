@@ -1,0 +1,299 @@
+{
+    "catalog": {
+        "id": 1,
+        "name": "Shikimori"
+    },
+    "urls": {
+        "url": "https://shikimori.one",
+        "url_api": "https://shikimori.one/api",
+        "headers": {"User-Agent": "Nlight"}
+    },
+    "filters": {
+        "orders": [
+            {
+                "value": "rating_score",
+                "name": "By rating",
+                "russian": "По рейтингу"
+            },
+            {
+                "value": "rate",
+                "name": "By number of ratings",
+                "russian": "По количеству оценок"
+            },
+            {
+                "value": "views",
+                "name": "By views",
+                "russian": "По просмотрам"
+            },
+            {
+                "value": "created_at",
+                "name": "By date added",
+                "russian": "По дате добавления"
+            },
+            {
+                "value": "last_chapter_at",
+                "name": "By update date",
+                "russian": "По дате обновления"
+            },
+            {
+                "value": "chap_count",
+                "name": "By number of chapters",
+                "russian": "По количеству глав"
+            }
+        ],
+        "kinds": [
+            {
+                "value": 1,
+                "name": "Manga",
+                "russian": "Манга"
+            },
+            {
+                "value": 5,
+                "name": "Manhwa",
+                "russian": "Манхва"
+            },
+            {
+                "value": 8,
+                "name": "Rumanga",
+                "russian": "Руманга"
+            },
+            {
+                "value": 9,
+                "name": "Western comic",
+                "russian": "Западный комикс"
+            },
+            {
+                "value": 4,
+                "name": "OEL-manga",
+                "russian": "OEL-манга"
+            },
+            {
+                "value": 6,
+                "name": "Manhua",
+                "russian": "Маньхуа"
+            }
+        ],
+        "genres": [
+            {
+                "value": 32,
+                "name": "Арт"
+            },
+            {
+                "value": 91,
+                "name": "Безумие"
+            },
+            {
+                "value": 34,
+                "name": "Боевик"
+            },
+            {
+                "value": 35,
+                "name": "Боевые искусства"
+            },
+            {
+                "value": 36,
+                "name": "Вампиры"
+            },
+            {
+                "value": 89,
+                "name": "Военное"
+            },
+            {
+                "value": 37,
+                "name": "Гарем"
+            },
+            {
+                "value": 38,
+                "name": "Гендерная интрига"
+            },
+            {
+                "value": 39,
+                "name": "Героическое фэнтези"
+            },
+            {
+                "value": 81,
+                "name": "Демоны"
+            },
+            {
+                "value": 40,
+                "name": "Детектив"
+            },
+            {
+                "value": 88,
+                "name": "Детское"
+            },
+            {
+                "value": 41,
+                "name": "Дзёсэй"
+            },
+            {
+                "value": 43,
+                "name": "Драма"
+            },
+            {
+                "value": 44,
+                "name": "Игра"
+            },
+            {
+                "value": 79,
+                "name": "Исекай"
+            },
+            {
+                "value": 45,
+                "name": "История"
+            },
+            {
+                "value": 46,
+                "name": "Киберпанк"
+            },
+            {
+                "value": 76,
+                "name": "Кодомо"
+            },
+            {
+                "value": 47,
+                "name": "Комедия"
+            },
+            {
+                "value": 83,
+                "name": "Космос"
+            },
+            {
+                "value": 85,
+                "name": "Магия"
+            },
+            {
+                "value": 48,
+                "name": "Махо-сёдзё"
+            },
+            {
+                "value": 90,
+                "name": "Машины"
+            },
+            {
+                "value": 49,
+                "name": "Меха"
+            },
+            {
+                "value": 50,
+                "name": "Мистика"
+            },
+            {
+                "value": 80,
+                "name": "Музыка"
+            },
+            {
+                "value": 51,
+                "name": "Научная фантастика"
+            },
+            {
+                "value": 77,
+                "name": "Омегаверс"
+            },
+            {
+                "value": 86,
+                "name": "Пародия"
+            },
+            {
+                "value": 52,
+                "name": "Повседневность"
+            },
+            {
+                "value": 82,
+                "name": "Полиция"
+            },
+            {
+                "value": 53,
+                "name": "Постапокалиптика"
+            },
+            {
+                "value": 54,
+                "name": "Приключения"
+            },
+            {
+                "value": 55,
+                "name": "Психология"
+            },
+            {
+                "value": 56,
+                "name": "Романтика"
+            },
+            {
+                "value": 57,
+                "name": "Самурайский боевик"
+            },
+            {
+                "value": 58,
+                "name": "Сверхъестественное"
+            },
+            {
+                "value": 59,
+                "name": "Сёдзё"
+            },
+            {
+                "value": 60,
+                "name": "Сёдзё-ай"
+            },
+            {
+                "value": 61,
+                "name": "Сёнэн"
+            },
+            {
+                "value": 62,
+                "name": "Сёнэн-ай"
+            },
+            {
+                "value": 63,
+                "name": "Спорт"
+            },
+            {
+                "value": 87,
+                "name": "Супер сила"
+            },
+            {
+                "value": 64,
+                "name": "Сэйнэн"
+            },
+            {
+                "value": 65,
+                "name": "Трагедия"
+            },
+            {
+                "value": 66,
+                "name": "Триллер"
+            },
+            {
+                "value": 67,
+                "name": "Ужасы"
+            },
+            {
+                "value": 68,
+                "name": "Фантастика"
+            },
+            {
+                "value": 69,
+                "name": "Фэнтези"
+            },
+            {
+                "value": 70,
+                "name": "Школа"
+            },
+            {
+                "value": 71,
+                "name": "Эротика"
+            },
+            {
+                "value": 72,
+                "name": "Этти"
+            },
+            {
+                "value": 73,
+                "name": "Юри"
+            },
+            {
+                "value": 74,
+                "name": "Яой"
+            }
+        ]
+    }
+}
