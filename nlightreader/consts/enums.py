@@ -99,7 +99,7 @@ class Nl:
                 return cls.reading
             if string in ("re-reading", "rewatching"):
                 return cls.re_reading
-            if string in ("on hold",):
+            if string in ("on hold", "on_hold"):
                 return cls.on_hold
             if string in ("dropped",):
                 return cls.dropped
