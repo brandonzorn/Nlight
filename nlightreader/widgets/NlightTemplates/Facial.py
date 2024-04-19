@@ -31,6 +31,7 @@ class FormFacial(MangaItemBasedWidget):
         self.ui.apply_btn.clicked.connect(self.apply_filter)
         self.ui.reset_btn.clicked.connect(self.reset_filter)
         self.ui.filter_btn.clicked.connect(self.change_filters_visible)
+        self.ui.genres_btn.clicked.connect(self.open_genres_dialog)
         self.ui.catalogs_btn.clicked.connect(
             lambda: self.ui.catalogs_frame.setVisible(not self.ui.catalogs_list.isVisible()))
         self.ui.catalogs_list.itemClicked.connect(
@@ -41,8 +42,6 @@ class FormFacial(MangaItemBasedWidget):
         self.__filter_controller.set_kinds_container(self.ui.kinds_grid)
         self.__filter_controller.set_orders_container(self.ui.orders_grid)
         self.__filter_controller.set_genres_container(self.Form_genres)
-
-        self.ui.genres_btn.clicked.connect(self.open_genres_dialog)
 
     def setup(self):
         if not self.catalog:
