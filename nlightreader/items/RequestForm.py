@@ -7,26 +7,38 @@ class RequestForm:
         self.limit = 50
         self.search = ""
         self.page = 1
-        self.genres: list[Genre] = []
-        self.order: Order = Order.get_empty_instance()
-        self.kinds: list[Kind] = []
+        self.__genres: list[Genre] = []
+        self.__order: Order | None = None
+        self.__kinds: list[Kind] = []
         self.lib_list = Nl.LibList.planned
 
     @property
     def offset(self):
         return (self.page - 1) * 50
 
-    def get_kind_id(self) -> list[str]:
-        return [kind.content_id for kind in self.kinds]
+    def set_order(self, order: Order):
+        self.__order = order
 
-    def get_genre_id(self) -> list[str]:
-        return [genre.content_id for genre in self.genres]
+    def set_kinds(self, kinds: list[Kind]):
+        self.__kinds = kinds
+
+    def set_genres(self, genres: list[Genre]):
+        self.__genres = genres
+
+    def get_order_id(self) -> str:
+        return self.__order.content_id
+
+    def get_kind_ids(self) -> list[str]:
+        return [kind.content_id for kind in self.__kinds]
+
+    def get_genre_ids(self) -> list[str]:
+        return [genre.content_id for genre in self.__genres]
 
     def clear(self):
         self.limit = 50
         self.search = ""
         self.page = 1
-        self.genres = []
-        self.order = Order.get_empty_instance()
-        self.kinds = []
+        self.__genres = []
+        self.__order = None
+        self.__kinds = []
         self.lib_list = Nl.LibList.planned

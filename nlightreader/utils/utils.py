@@ -1,5 +1,4 @@
 import logging
-from functools import reduce
 from typing import Any
 
 import requests
@@ -110,13 +109,11 @@ def get_locale(locale: QLocale.Language) -> str:
     :return: The file path to the translation file associated with the locale as a string,
     or the default translation file if no matching translation is found.
     """
-    match locale:
-        case QLocale.Language.Russian:
-            return Translations.Ru
-        case QLocale.Language.Ukrainian:
-            return Translations.Uk
-        case _:
-            return Translations.En
+    translations = {
+        QLocale.Language.Russian: Translations.Ru,
+        QLocale.Language.Ukrainian: Translations.Uk,
+    }
+    return translations.get(locale, Translations.En)
 
 
 def get_data(data: dict, path: list, default_val=None) -> Any:
@@ -134,8 +131,9 @@ def get_data(data: dict, path: list, default_val=None) -> Any:
         raise TypeError("Data must be a dictionary")
     if default_val is None:
         default_val = None
-    current_data = data
     try:
-        return reduce(dict.__getitem__, path, current_data)
+        for key in path:
+            data = data[key]
+        return data
     except (KeyError, TypeError):
         return default_val

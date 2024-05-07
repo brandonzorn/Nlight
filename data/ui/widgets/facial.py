@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'facialzgwcxu.ui'
+## Form generated from reading UI file 'facial.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.2
+## Created by: Qt User Interface Compiler version 6.6.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -46,10 +46,12 @@ class Ui_Form(object):
 
         self.search.addWidget(self.items_frame)
 
-        self.horizontalLayout_3 = QHBoxLayout()
+        self.search_frame = QWidget(Form)
+        self.search_frame.setObjectName(u"search_frame")
+        self.horizontalLayout_3 = QHBoxLayout(self.search_frame)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.text_frame = SimpleCardWidget(Form)
+        self.text_frame = SimpleCardWidget(self.search_frame)
         self.text_frame.setObjectName(u"text_frame")
         self.horizontalLayout = QHBoxLayout(self.text_frame)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -68,7 +70,7 @@ class Ui_Form(object):
 
         self.horizontalLayout_3.addWidget(self.text_frame)
 
-        self.page_frame = SimpleCardWidget(Form)
+        self.page_frame = SimpleCardWidget(self.search_frame)
         self.page_frame.setObjectName(u"page_frame")
         self.horizontalLayout_9 = QHBoxLayout(self.page_frame)
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
@@ -93,7 +95,7 @@ class Ui_Form(object):
         self.horizontalLayout_3.addWidget(self.page_frame)
 
 
-        self.search.addLayout(self.horizontalLayout_3)
+        self.search.addWidget(self.search_frame)
 
 
         self.horizontalLayout_5.addLayout(self.search)

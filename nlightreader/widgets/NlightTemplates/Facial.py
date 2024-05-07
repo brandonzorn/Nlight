@@ -6,7 +6,6 @@ from nlightreader.controlers import FilterController
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import Manga
 from nlightreader.utils import USER_CATALOGS, translate
-from nlightreader.widgets.NlightContainers.manga_area import MangaArea
 from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
@@ -23,7 +22,6 @@ class FormFacial(MangaItemBasedWidget):
 
         self.setObjectName("FormFacial")
 
-        self.manga_area = MangaArea()
         self.manga_area.install(self.ui.items_layout)
         self.manga_area.get_content_widget().layout().addWidget(self.progressRing)
 
@@ -33,6 +31,7 @@ class FormFacial(MangaItemBasedWidget):
         self.ui.apply_btn.clicked.connect(self.apply_filter)
         self.ui.reset_btn.clicked.connect(self.reset_filter)
         self.ui.filter_btn.clicked.connect(self.change_filters_visible)
+        self.ui.genres_btn.clicked.connect(self.open_genres_dialog)
         self.ui.catalogs_btn.clicked.connect(
             lambda: self.ui.catalogs_frame.setVisible(not self.ui.catalogs_list.isVisible()))
         self.ui.catalogs_list.itemClicked.connect(
@@ -43,8 +42,6 @@ class FormFacial(MangaItemBasedWidget):
         self.__filter_controller.set_kinds_container(self.ui.kinds_grid)
         self.__filter_controller.set_orders_container(self.ui.orders_grid)
         self.__filter_controller.set_genres_container(self.Form_genres)
-
-        self.ui.genres_btn.clicked.connect(self.open_genres_dialog)
 
     def setup(self):
         if not self.catalog:
@@ -78,9 +75,9 @@ class FormFacial(MangaItemBasedWidget):
     @Slot()
     def apply_filter(self):
         self.request_params.clear()
-        self.request_params.order = self.__filter_controller.get_active_order()
-        self.request_params.kinds = self.__filter_controller.get_active_kinds()
-        self.request_params.genres = self.__filter_controller.get_active_genres()
+        self.request_params.set_order(self.__filter_controller.get_active_order())
+        self.request_params.set_kinds(self.__filter_controller.get_active_kinds())
+        self.request_params.set_genres(self.__filter_controller.get_active_genres())
         self.request_params.search = self.ui.title_line.text()
         self.get_content()
 
