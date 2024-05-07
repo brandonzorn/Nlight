@@ -32,10 +32,10 @@ class Remanga(AbstractMangaCatalog):
             "page": form.page,
             "query": form.search,
             "count": 40,
-            "ordering": form.order.content_id,
+            "ordering": form.get_order_id(),
         }
         params = list(params.items())
-        [params.append(("types", kind_id)) for kind_id in form.get_kind_id()]
+        [params.append(("types", kind_id)) for kind_id in form.get_kind_ids()]
         response = get_html(url, headers=self.headers, params=params, content_type="json")
         mangas = []
         if response:
@@ -78,10 +78,10 @@ class Remanga(AbstractMangaCatalog):
         response = get_html(url, headers=self.headers, content_type="json")
         images = []
         if response:
-            for page_data in get_data(response, ["content", "pages"], {}):
+            for i, page_data in enumerate(get_data(response, ["content", "pages"], {})):
                 page_data = page_data[0]
                 pg_id = page_data.get("id")
-                page = page_data.get("page")
+                page = i + 1
                 pg_link = page_data.get("link")
                 images.append(Image(pg_id, page, pg_link))
         return images

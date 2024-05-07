@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'historyyuCQTK.ui'
+## Form generated from reading UI file 'history.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.2
+## Created by: Qt User Interface Compiler version 6.6.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -19,7 +19,7 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
     QSizePolicy, QSpacerItem, QTreeWidgetItem, QVBoxLayout,
     QWidget)
 
-from qfluentwidgets import (CardWidget, SimpleCardWidget, ToolButton, TreeWidget)
+from qfluentwidgets import (SimpleCardWidget, ToolButton, TreeWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):

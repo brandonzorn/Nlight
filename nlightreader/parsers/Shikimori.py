@@ -108,18 +108,15 @@ class ShikimoriBase(AbstractCatalog):
 class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
     CATALOG_NAME = "Shikimori(Manga)"
 
-    def __init__(self):
-        super().__init__()
-
     def search_manga(self, form: RequestForm):
         url = f"{self.url_api}/mangas"
         params = {
             "limit": form.limit,
             "search": form.search,
             "page": form.page,
-            "genre": ",".join(form.get_genre_id()),
-            "order": form.order.content_id,
-            "kind": ",".join([i.content_id for i in form.kinds]),
+            "order": form.get_order_id(),
+            "genre": ",".join(form.get_genre_ids()),
+            "kind": ",".join(form.get_kind_ids()),
         }
         response = get_html(url, headers=self.headers, params=params, content_type="json")
         mangas = []
@@ -135,18 +132,15 @@ class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
 class ShikimoriRanobe(ShikimoriBase, AbstractRanobeCatalog):
     CATALOG_NAME = "Shikimori(Ranobe)"
 
-    def __init__(self):
-        super().__init__()
-
     def search_manga(self, form: RequestForm):
         url = f"{self.url_api}/ranobe"
         params = {
             "limit": form.limit,
             "search": form.search,
-            "genre": ",".join(form.get_genre_id()),
-            "order": form.order.name,
-            "kind": ",".join([i.name for i in form.kinds]),
             "page": form.page,
+            "order": form.get_order_id(),
+            "genre": ",".join(form.get_genre_ids()),
+            "kind": ",".join(form.get_kind_ids()),
         }
         response = get_html(url, headers=self.headers, params=params, content_type="json")
         mangas = []
@@ -162,18 +156,18 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         self.fields = 1
         self.session: Auth = Auth()
 
-    def search_manga(self, req_params: RequestForm):
-        url = f"{self.url_api}/users/{self.get_user().id}/manga_rates"
-        params = {"limit": 50, "page": req_params.page}
+    def search_manga(self, form: RequestForm):
+        url = f"{self.url_api}/users/{self.session.user.id}/manga_rates"
+        params = {"limit": 50, "page": form.page}
         response = self.session.request("GET", url, params=params)
         mangas = []
-        lib_list = req_params.lib_list
+        lib_list = form.lib_list
         if lib_list == Nl.LibList.reading:
             lib_list = "watching"
         elif lib_list == Nl.LibList.re_reading:
             lib_list = "rewatching"
         else:
-            lib_list = req_params.lib_list.name
+            lib_list = form.lib_list.name
         if response and (resp_json := response.json()):
             for i in resp_json:
                 if not i.get("status") == lib_list:
@@ -184,17 +178,17 @@ class ShikimoriLib(ShikimoriBase, LibParser):
 
     def get_user(self):
         response = self.session.request("GET", f"{self.url_api}/users/whoami")
+        self.session.user = User(None, None, None)
         if response and (resp_json := response.json()):
-            data = resp_json
-            return User(data.get("id"), data.get("nickname"), data.get("avatar"))
-        return User(None, None, None)
+            self.session.user = User(resp_json.get("id"), resp_json.get("nickname"), resp_json.get("avatar"))
+        return self.session.user
 
     def create_user_rate(self, manga: Manga):
         url = f"{self.url_api}/v2/user_rates"
         data = {
             "user_rate": {
                 "target_type": "Manga",
-                "user_id": self.get_user().id,
+                "user_id": self.session.user.id,
                 "target_id": manga.content_id,
             },
         }
@@ -204,7 +198,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         url = f"{self.url_api}/v2/user_rates"
         params = {
             "target_type": "Manga",
-            "user_id": self.get_user().id,
+            "user_id": self.session.user.id,
             "target_id": manga.content_id,
         }
         response = self.session.request("GET", url, params=params)
@@ -222,22 +216,26 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         url = f"{self.url_api}/v2/user_rates"
         params = {
             "target_type": "Manga",
-            "user_id": self.get_user().id,
+            "user_id": self.session.user.id,
             "target_id": manga.content_id,
         }
         response = self.session.request("GET", url, params=params)
         if response and (resp_json := response.json()):
             for i in resp_json:
-                return UserRate(i.get("id"), i.get("user_id"), i.get("target_id"),
-                                i.get("score"), i.get("status"), i.get("chapters"))
+                return UserRate(
+                    i.get("id"), i.get("user_id"), i.get("target_id"),
+                    i.get("score"), Nl.LibList.from_str(i.get("status")), i.get("chapters"),
+                )
 
     def update_user_rate(self, user_rate: UserRate):
         url = f"{self.url_api}/v2/user_rates/{user_rate.id}"
-        status = user_rate.status
-        if status == "reading":
+        status = user_rate.status.to_str()
+        if user_rate.status == Nl.LibList.reading:
             status = "watching"
-        elif status == "re-reading":
+        elif user_rate.status == Nl.LibList.re_reading:
             status = "rewatching"
+        elif user_rate.status == Nl.LibList.on_hold:
+            status = "on_hold"
         data = {
             "user_rate": {
                 "chapters": f"{user_rate.chapters}",
@@ -259,6 +257,7 @@ class Auth:
         self.headers = {"User-Agent": "Shikimori", "Authorization": f"Bearer {self.tokens.get('access_token')}"}
         self.client = self.get_client(scope, self.redirect_uri, token)
         self.refresh_token()
+        self.user: User = User(None, None, None)
         self.is_authorized = False
         if self.token:
             self.check_auth()

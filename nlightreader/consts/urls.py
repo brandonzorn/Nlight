@@ -24,7 +24,7 @@ URL_NHENTAI_API = "https://nhentai.net/api"
 URL_ALLHENTAI = "https://20.allhen.online"
 URL_ALLHENTAI_API = ""
 
-URL_SLASHLIB = "https://v1.slashlib.me"
+URL_SLASHLIB = "https://v2.slashlib.me"
 URL_MANGALIB = "https://mangalib.me"
 
 
