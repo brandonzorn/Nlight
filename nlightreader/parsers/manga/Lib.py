@@ -3,6 +3,7 @@ import re
 
 from bs4 import BeautifulSoup
 
+from nlightreader.consts.items import MangaLibItems
 from nlightreader.consts.urls import URL_SLASHLIB, URL_MANGALIB
 from nlightreader.consts.enums import Nl
 from nlightreader.items import RequestForm, Manga, Chapter, Image
@@ -15,6 +16,7 @@ class LibBase(AbstractCatalog):
     def __init__(self):
         super().__init__()
         self.url = None
+        self.items = MangaLibItems
 
     def get_manga(self, manga: Manga):
         url = f"{self.url}/manga-short-info?slug={manga.content_id}"
@@ -32,6 +34,9 @@ class LibBase(AbstractCatalog):
         params = {
             "name": form.search,
             "page": form.page,
+            "sort": form.get_order_id(),
+            "types[]": form.get_kind_ids(),
+            "genres[include][]": form.get_genre_ids(),
         }
         response = get_html(url, headers=self.headers, params=params, content_type="text")
         mangas = []
@@ -74,15 +79,22 @@ class LibBase(AbstractCatalog):
         images = []
         if response:
             soup = BeautifulSoup(response, "html.parser")
-            script_tag = soup.find("script", id="pg", text=re.compile(r"window\.__pg"))
-            script_content = script_tag.text if script_tag else None
-            match = re.search(r"window\.__pg\s*=\s*(.*?}]);", script_content)
-            data = json.loads(match.group(1))
-            for i in data:
+            pages_data_tag = soup.find("script", id="pg", text=re.compile(r"window\.__pg"))
+            pages_data_content = pages_data_tag.text if pages_data_tag else None
+            pages_data_match = re.search(r"window\.__pg\s*=\s*(.*?}]);", pages_data_content)
+            pages_data = json.loads(pages_data_match.group(1))
+
+            metadata_info_tag = soup.find("script", text=re.compile(r"window\.__info"))
+            metadata_info_content = metadata_info_tag.text if metadata_info_tag else None
+            metadata_info_match = re.search(r"window\.__info\s*=\s*(.*?}});", metadata_info_content)
+            metadata_info_data = json.loads(metadata_info_match.group(1))
+
+            chapter_link = metadata_info_data["img"]["url"]
+            server_link = metadata_info_data["servers"]["main"]
+            for i in pages_data:
                 page_num = i.get("p")
                 file_name = i.get("u")
-                img_url = (f"https://img33.imgslib.link/manga/{manga.content_id}"
-                           f"/chapters/{chapter.vol}-{chapter.ch}/{file_name}")
+                img_url = f"{server_link}{chapter_link}{file_name}"
                 image = Image("", page_num, img_url)
                 images.append(image)
         return images
@@ -92,7 +104,8 @@ class LibBase(AbstractCatalog):
         return get_html(image.img, headers=headers, content_type="content")
 
     def get_preview(self, manga: Manga):
-        return get_html(manga.preview_url, content_type="content")
+        headers = self.headers | {"Referer": f"{self.url}/"}
+        return get_html(manga.preview_url, headers=headers, content_type="content")
 
     def get_manga_url(self, manga: Manga):
         return f"{self.url}/{manga.content_id}"

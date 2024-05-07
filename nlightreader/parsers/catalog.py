@@ -57,19 +57,16 @@ class AbstractCatalog:
 
 
 class LibParser:
-    def __init__(self):
-        pass
-
-    def search_manga(self, params: RequestForm) -> list[Manga]:
+    def search_manga(self, form: RequestForm) -> list[Manga]:
         return []
 
     def get_user(self) -> User:
-        return User(None, "Войти", None)
+        return User(None, None, None)
 
-    def create_user_rate(self, manga: Manga):
+    def create_user_rate(self, manga: Manga) -> None:
         pass
 
-    def check_user_rate(self, manga: Manga):
+    def check_user_rate(self, manga: Manga) -> None:
         pass
 
     def delete_user_rate(self, user_rate: UserRate):

@@ -37,8 +37,8 @@ class Ranobehub(AbstractRanobeCatalog):
         params = {
             "title-contains": form.search,
             "page": form.page,
-            "sort": form.order.content_id,
-            "tags:positive[]": [int(i) for i in form.get_genre_id()],
+            "sort": form.get_order_id(),
+            "tags:positive[]": [int(i) for i in form.get_genre_ids()],
         }
         response = get_html(url, headers=self.headers, params=params, content_type="json")
         mangas = []
