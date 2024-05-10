@@ -4,12 +4,14 @@ from nlightreader.consts.items.preset_items import PresetKinds as Pk, PresetOrde
 
 class ShikimoriItems(ParserItems):
     ORDERS = [
+        {"value": "ranked"} | Po.RATING,
         {"value": "popularity"} | Po.POPULARITY,
         {"value": "name"} | Po.NAME,
         {"value": "aired_on"} | Po.AIRED_ON,
         {"value": "volumes"} | Po.VOLUMES_COUNT,
         {"value": "chapters"} | Po.CHAPTERS_COUNT,
         {"value": "status"} | Po.STATUS,
+        {"value": "id"} | Po.ID,
     ]
 
     KINDS = [
@@ -18,4 +20,29 @@ class ShikimoriItems(ParserItems):
         {"value": "manhua"} | Pk.MANHUA,
         {"value": "one_shot"} | Pk.ONESHOT,
         {"value": "doujin"} | Pk.DOUJIN,
+    ]
+
+
+class ShikimoriAnimeItems(ParserItems):
+    ORDERS = [
+        {"value": "ranked"} | Po.RATING,
+        {"value": "popularity"} | Po.POPULARITY,
+        {"value": "name"} | Po.NAME,
+        {"value": "aired_on"} | Po.AIRED_ON,
+        {"value": "status"} | Po.STATUS,
+        {"value": "id"} | Po.ID,
+    ]
+
+    KINDS = [
+        {"value": "tv"} | Pk.TV,
+        # {"value": "tv_13"} | Pk.TV_13,
+        # {"value": "tv_24"} | Pk.TV_24,
+        # {"value": "tv_48"} | Pk.TV_48,
+        {"value": "ova"} | Pk.OVA,
+        {"value": "ona"} | Pk.ONA,
+        {"value": "special"} | Pk.SPECIAL,
+        {"value": "tv_special"} | Pk.TV_SPECIAL,
+        {"value": "music"} | Pk.MUSIC,
+        {"value": "pv"} | Pk.PV,
+        {"value": "cm"} | Pk.CM,
     ]
