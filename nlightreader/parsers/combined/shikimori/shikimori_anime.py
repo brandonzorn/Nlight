@@ -1,6 +1,7 @@
 from nlightreader.consts.enums import Nl
+from nlightreader.consts.items import ShikimoriAnimeItems
 from nlightreader.consts.urls import URL_SHIKIMORI_API, URL_SHIKIMORI, SHIKIMORI_HEADERS
-from nlightreader.items import Manga, Character, RequestForm, Chapter
+from nlightreader.items import Manga, Character, RequestForm, Chapter, Genre, Order
 from nlightreader.parsers.catalogs_base import AbstractAnimeCatalog
 from nlightreader.parsers.service.kodik import Kodik
 from nlightreader.utils.utils import get_html
@@ -41,9 +42,9 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             "limit": form.limit,
             "search": form.search,
             "page": form.page,
-            # "order": form.get_order_id(),
-            # "genre": ",".join(form.get_genre_ids()),
-            # "kind": ",".join(form.get_kind_ids()),
+            "order": form.get_order_id(),
+            "genre": ",".join(form.get_genre_ids()),
+            "kind": ",".join(form.get_kind_ids()),
         }
         response = get_html(url, headers=self.headers, params=params, content_type="json")
         mangas = []
@@ -56,10 +57,9 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         translators = Kodik.search(manga.content_id)
         chapters = []
         for translator in translators:
-            vol = "1"
             for i in range(translator.episodes, 0, -1):
                 ch = str(i)
-                chapter = Chapter(ch, self.CATALOG_ID, vol, ch, translator.translator)
+                chapter = Chapter(ch, self.CATALOG_ID, translator.tr_type, ch, translator.translator)
                 chapter.__setattr__("url", f"http:{translator.kodik_url}")
                 chapter.language = Nl.Language.ru
                 chapters.append(chapter)
@@ -73,20 +73,30 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         return character
 
     def get_preview(self, manga: Manga):
-        return get_html(f"{self.url}/system/animes/preview/{manga.content_id}.jpg", content_type="content")
+        return get_html(
+            f"{self.url}/system/animes/preview/{manga.content_id}.jpg",
+            content_type="content",
+        )
 
     def get_character_preview(self, character: Character):
-        return get_html(f"{self.url}/system/characters/preview/{character.content_id}.jpg").content
+        return get_html(
+            f"{self.url}/system/characters/preview/{character.content_id}.jpg",
+            content_type="content",
+        )
 
-    # def get_genres(self):
-    #    url = f"{self.url_api}/genres"
-    #    response = get_html(url, headers=self.headers, content_type="json")
-    #    if response:
-    #        return [Genre(str(i.get("id")), self.CATALOG_ID, i.get("name"), i.get("russian")) for i in response]
-    #    return []
+    def get_genres(self):
+        url = f"{self.url_api}/genres"
+        response = get_html(url, headers=self.headers, content_type="json")
+        if response:
+           return [
+               Genre(
+                   str(i["id"]), self.CATALOG_ID, i["name"], i["russian"],
+               ) for i in response if i["entry_type"] == "Anime"
+           ]
+        return []
 
-    # def get_orders(self) -> list[Order]:
-    #    return [Order(i["value"], self.CATALOG_ID, i["name"], i["russian"]) for i in ShikimoriItems.ORDERS]
+    def get_orders(self) -> list[Order]:
+        return [Order(i["value"], self.CATALOG_ID, i["name"], i["russian"]) for i in ShikimoriAnimeItems.ORDERS]
 
     def get_characters(self, manga: Manga) -> list[Character]:
         characters = []
