@@ -44,16 +44,26 @@ class ShikimoriBase(AbstractCatalog):
         return character
 
     def get_preview(self, manga: Manga):
-        return get_html(f"{self.url}/system/mangas/preview/{manga.content_id}.jpg", content_type="content")
+        return get_html(
+            f"{self.url}/system/mangas/preview/{manga.content_id}.jpg",
+            content_type="content",
+        )
 
     def get_character_preview(self, character: Character):
-        return get_html(f"{self.url}/system/characters/preview/{character.content_id}.jpg").content
+        return get_html(
+            f"{self.url}/system/characters/preview/{character.content_id}.jpg",
+            content_type="content",
+        )
 
     def get_genres(self):
         url = f"{self.url_api}/genres"
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
-            return [Genre(str(i.get("id")), self.CATALOG_ID, i.get("name"), i.get("russian")) for i in response]
+            return [
+                Genre(
+                    str(i["id"]), self.CATALOG_ID, i["name"], i["russian"],
+                ) for i in response if i["entry_type"] == "Manga"
+            ]
         return []
 
     def get_orders(self) -> list[Order]:
