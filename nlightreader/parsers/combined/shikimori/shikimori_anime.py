@@ -88,11 +88,11 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         url = f"{self.url_api}/genres"
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
-           return [
+            return [
                Genre(
                    str(i["id"]), self.CATALOG_ID, i["name"], i["russian"],
                ) for i in response if i["entry_type"] == "Anime"
-           ]
+            ]
         return []
 
     def get_orders(self) -> list[Order]:
