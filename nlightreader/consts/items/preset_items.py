@@ -12,8 +12,22 @@ class PresetKinds:
     DOUJIN = {"name": "doujin", "russian": "Додзинси"}
     OTHER = {"name": "Other", "russian": "Другое"}
 
+    TV = {"name": "TV Series", "russian": "TV Сериал"}
+    TV_13 = {"name": "Short", "russian": "Короткие"}
+    TV_24 = {"name": "Medium", "russian": "Средние"}
+    TV_48 = {"name": "Long", "russian": "Длинные"}
+    MOVIE = {"name": "Movie", "russian": "Фильм"}
+    OVA = {"name": "OVA", "russian": "OVA"}
+    ONA = {"name": "ONA", "russian": "ONA"}
+    SPECIAL = {"name": "Special", "russian": "Спецвыпуск"}
+    TV_SPECIAL = {"name": "TV Special", "russian": "TV Спецвыпуск"}
+    MUSIC = {"name": "Clip", "russian": "Клип"}
+    PV = {"name": "Promo clip", "russian": "Проморолик"}
+    CM = {"name": "Advertising", "russian": "Реклама"}
+
 
 class PresetOrders:
+    ID = {"name": "By ID", "russian": "По ID"}
     NAME = {"name": "By name", "russian": "По названию"}
     POPULARITY = {"name": "By popularity", "russian": "По популярности"}
     LIKES_NUM = {"name": "By likes", "russian": "По лайкам"}
