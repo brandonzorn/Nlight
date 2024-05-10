@@ -26,7 +26,7 @@ class Kodik:
             for data in results:
                 translators.append(
                     KodikTranslator(
-                        data["link"], data["episodes_count"],
+                        data["link"], data["last_episode"] if "last_episode" in data else 1,
                         data["translation"]["title"], data["translation"]["type"],
                     ),
                 )
