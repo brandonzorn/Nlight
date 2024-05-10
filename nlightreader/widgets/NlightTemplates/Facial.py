@@ -79,7 +79,7 @@ class FormFacial(MangaItemBasedWidget):
     def reset_filter(self):
         self.__filter_controller.reset_items()
         self.request_params.clear()
-        self.request_params.order = self.__filter_controller.get_active_order()
+        self.request_params.set_order(self.__filter_controller.get_active_order())
         self.ui.title_line.clear()
         self.get_content()
 
