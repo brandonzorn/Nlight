@@ -270,7 +270,7 @@ class FormInfo(QWidget):
         finally:
             selected_chapter = self._get_selected_chapter()
             if selected_chapter:
-                if selected_chapter.__getattribute__("url"):
+                if hasattr(selected_chapter, "url"):
                     from render_html import render_in_browser
                     render_in_browser(
                         f"""
