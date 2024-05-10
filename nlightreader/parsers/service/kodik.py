@@ -3,7 +3,8 @@ from nlightreader.utils.utils import get_html
 
 
 class KodikTranslator:
-    def __init__(self, kodik_url, episodes, translator, tr_type):
+    def __init__(self, content_id: str, kodik_url: str, episodes, translator: str, tr_type: str):
+        self.content_id = content_id
         self.kodik_url = kodik_url
         self.episodes = int(episodes)
         self.translator = translator
@@ -26,7 +27,7 @@ class Kodik:
             for data in results:
                 translators.append(
                     KodikTranslator(
-                        data["link"], data["last_episode"] if "last_episode" in data else 1,
+                        data["id"], data["link"], data["last_episode"] if "last_episode" in data else 1,
                         data["translation"]["title"], data["translation"]["type"],
                     ),
                 )
