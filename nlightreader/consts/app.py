@@ -1,3 +1,3 @@
 APP_NAME = "Nlight"
-APP_VERSION = "1.10.0.6"
+APP_VERSION = "1.10.1"
 APP_BRANCH = "1.10"
