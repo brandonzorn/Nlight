@@ -21,3 +21,10 @@ class AbstractRanobeCatalog(AbstractCatalog):
 
     def __init__(self):
         super().__init__()
+
+
+class AbstractAnimeCatalog(AbstractCatalog):
+    CATALOG_TYPE = Nl.CatalogType.anime
+
+    def __init__(self):
+        super().__init__()

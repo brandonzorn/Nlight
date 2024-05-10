@@ -1,8 +1,9 @@
 from .LocalLib import LocalLib
-from .Shikimori import (
+from .combined.shikimori import (
     ShikimoriLib,
     ShikimoriManga,
     ShikimoriRanobe,
+    ShikimoriAnime,
     ShikimoriBase,
 )
 from .hentai_manga import NHentai, AllHentai
