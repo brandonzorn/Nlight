@@ -28,11 +28,6 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             # manga.kind = Nl.MangaKind.from_str(data.get("kind"))
             manga.score = float(data.get("score"))
             manga.status = data.get("status")
-            if data.get("volumes"):
-                manga.volumes = int(data.get("volumes"))
-            if data.get("chapters"):
-                manga.chapters = int(data.get("chapters"))
-
             manga.add_description(Nl.Language.undefined, data.get("description"))
         return manga
 
@@ -59,7 +54,10 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         for translator in translators:
             for i in range(translator.episodes, 0, -1):
                 ch = str(i)
-                chapter = Chapter(ch, self.CATALOG_ID, translator.tr_type, ch, translator.translator)
+                chapter = Chapter(
+                    f"{translator.content_id}{i}", self.CATALOG_ID,
+                    translator.tr_type, ch, translator.translator,
+                )
                 chapter.__setattr__("url", f"http:{translator.kodik_url}")
                 chapter.language = Nl.Language.ru
                 chapters.append(chapter)
