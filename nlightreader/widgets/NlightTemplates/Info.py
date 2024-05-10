@@ -273,13 +273,13 @@ class FormInfo(QWidget):
                 if selected_chapter.__getattribute__("url"):
                     from render_html import render_in_browser
                     render_in_browser(
-                        f'''
+                        f"""
                         <body style="background-color:black;">
                         <iframe src="{selected_chapter.__getattribute__("url")}?episode={selected_chapter.ch}"
                         width="100%" height="100%" frameborder="0"
                         AllowFullScreen allow="autoplay *; fullscreen *"></iframe>
                         </body>
-                        ''',
+                        """,
                     )
                     return
                 self.reader_window = ReaderWindow()
