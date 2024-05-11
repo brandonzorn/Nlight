@@ -21,6 +21,7 @@ from nlightreader.utils import (
     Worker,
     description_to_html,
 )
+from nlightreader.utils.html_video import start_html_video
 from nlightreader.windows.Reader import ReaderWindow
 
 
@@ -271,16 +272,7 @@ class FormInfo(QWidget):
             selected_chapter = self._get_selected_chapter()
             if selected_chapter:
                 if hasattr(selected_chapter, "url"):
-                    from render_html import render_in_browser
-                    render_in_browser(
-                        f"""
-                        <body style="background-color:black;">
-                        <iframe src="{selected_chapter.__getattribute__("url")}?episode={selected_chapter.ch}"
-                        width="100%" height="100%" frameborder="0"
-                        AllowFullScreen allow="autoplay *; fullscreen *"></iframe>
-                        </body>
-                        """,
-                    )
+                    start_html_video(self.manga, selected_chapter)
                     return
                 self.reader_window = ReaderWindow()
                 self.reader_window.setup(
