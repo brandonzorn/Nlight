@@ -1,4 +1,7 @@
 ## Nlight
+- [Русский](./.github/readme/README_ru.md)
+- [Українська](./.github/readme/README_uk.md)
+- [English](./.github/readme/README_en.md)
 
 ![Nlight](https://github.com/brandonzorn/Nlight/assets/68778953/2e2d3ed8-eef6-4b44-a824-7d38c7a78ea9)
 
@@ -32,7 +35,8 @@ Open source manga and ranobe reading application
 
 ## Screenshots
 
-| ![nl_1](https://github.com/brandonzorn/Nlight/assets/68778953/2f096046-0752-4455-86d8-91e90bc58d7b) | ![nl_2](https://github.com/brandonzorn/Nlight/assets/68778953/6f3ab86d-a8b0-4972-9fbb-533f33280820) | ![nl_3](https://github.com/brandonzorn/Nlight/assets/68778953/3e828d02-7046-4fee-9a47-fe52acde8b26) |
+
+| ![nl_1](https://github.com/brandonzorn/Nlight/assets/68778953/f714165d-5df6-4b38-89a6-02d940172469) | ![nl_3](https://github.com/brandonzorn/Nlight/assets/68778953/1da43e9a-52af-402d-8f30-189f31a31ba2) | ![nl_3](https://github.com/brandonzorn/Nlight/assets/68778953/168f00a3-4174-41ba-8773-4548ef7ced9b) |
 |-----------------------------------------|-----------------------------------------|-----------------------------------------|
 
 ## Installation

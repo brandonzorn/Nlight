@@ -11,14 +11,15 @@ class FormGenres(QDialog):
         self.ui_ge.setupUi(self)
         self.layout().setSizeConstraint(QLayout.SetFixedSize)
         self.setWindowTitle("Genres")
-        self.ui_ge.buttonBox.accepted.connect(self.accept_genres)
-        self.ui_ge.buttonBox.rejected.connect(self.reject_genres)
+        self.ui_ge.ok_btn.clicked.connect(self.accept_genres)
+        self.ui_ge.cancel_btn.clicked.connect(self.reject_genres)
         self.selected_genres = []
         self.genres_items = {}
 
     @Slot()
     def accept_genres(self):
         self.selected_genres = [self.genres_items.get(i) for i in self.genres_items if i.isChecked()]
+        self.accept()
 
     @Slot()
     def reject_genres(self):
@@ -27,6 +28,7 @@ class FormGenres(QDialog):
                 i.setChecked(False)
             else:
                 i.setChecked(True)
+        self.reject()
 
     def reset_items(self):
         [i.setChecked(False) for i in self.genres_items]

@@ -1,7 +1,8 @@
 import time
 
-from PySide6.QtCore import Signal, QMutex, Slot
+from PySide6.QtCore import Signal, Slot
 from PySide6.QtWidgets import QWidget
+from qfluentwidgets import IndeterminateProgressRing
 
 from nlightreader.consts.enums import Nl
 from nlightreader.items import Manga, RequestForm
@@ -13,14 +14,16 @@ from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 class MangaItemBasedWidget(QWidget):
     manga_open = Signal(Manga)
 
-    def __init__(self):
-        super().__init__()
-        self.manga_area = MangaArea(None)
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+        self.manga_area = MangaArea()
         self.mangas: list[Manga] = []
+
+        self.progressRing = IndeterminateProgressRing()
+        self.progressRing.setVisible(False)
 
         self._get_content_thread = Thread(target=self._get_content_thread_func, callback=self.update_content)
 
-        self.mutex = QMutex()
         self.catalog = None
         self.request_params = RequestForm()
 
@@ -30,6 +33,8 @@ class MangaItemBasedWidget(QWidget):
     def update_content(self):
         self.manga_area.delete_items()
         items = [self.setup_manga_item(manga) for manga in self.mangas]
+        self.progressRing.stop()
+        self.progressRing.setVisible(False)
         self.manga_area.add_items(items)
         self.manga_area.update_items()
 
@@ -52,6 +57,8 @@ class MangaItemBasedWidget(QWidget):
         self._get_content_thread.terminate()
         self._get_content_thread.wait()
         self.manga_area.delete_items()
+        self.progressRing.setVisible(True)
+        self.progressRing.start()
         self._get_content_thread.start()
 
     def _get_content_thread_func(self):

@@ -1,16 +1,48 @@
 from nlightreader.consts.items.parser_items import ParserItems
+from nlightreader.consts.items.preset_items import PresetKinds as Pk, PresetOrders as Po
 
 
 class ShikimoriItems(ParserItems):
-    ORDERS = [{"value": "popularity", "name": "popularity", "russian": "Популярность"},
-              {"value": "name", "name": "name", "russian": "Название"},
-              {"value": "aired_on", "name": "aired_on", "russian": "Дата выхода"},
-              {"value": "volumes", "name": "volumes", "russian": "Тома"},
-              {"value": "chapters", "name": "chapters", "russian": "Главы"},
-              {"value": "status", "name": "status", "russian": "Статус"}]
+    ORDERS = [
+        {"value": "ranked"} | Po.RATING,
+        {"value": "popularity"} | Po.POPULARITY,
+        {"value": "name"} | Po.NAME,
+        {"value": "aired_on"} | Po.AIRED_ON,
+        {"value": "volumes"} | Po.VOLUMES_COUNT,
+        {"value": "chapters"} | Po.CHAPTERS_COUNT,
+        {"value": "status"} | Po.STATUS,
+        {"value": "id"} | Po.ID,
+    ]
 
-    KINDS = [{"value": "manga", "name": "manga", "russian": "Манга"},
-             {"value": "manhwa", "name": "manhwa", "russian": "Манхва"},
-             {"value": "manhua", "name": "manhua", "russian": "Маньхуа"},
-             {"value": "one_shot", "name": "one_shot", "russian": "Ваншот"},
-             {"value": "doujin", "name": "doujin", "russian": "Додзинси"}]
+    KINDS = [
+        {"value": "manga"} | Pk.MANGA,
+        {"value": "manhwa"} | Pk.MANHWA,
+        {"value": "manhua"} | Pk.MANHUA,
+        {"value": "one_shot"} | Pk.ONESHOT,
+        {"value": "doujin"} | Pk.DOUJIN,
+    ]
+
+
+class ShikimoriAnimeItems(ParserItems):
+    ORDERS = [
+        {"value": "ranked"} | Po.RATING,
+        {"value": "popularity"} | Po.POPULARITY,
+        {"value": "name"} | Po.NAME,
+        {"value": "aired_on"} | Po.AIRED_ON,
+        {"value": "status"} | Po.STATUS,
+        {"value": "id"} | Po.ID,
+    ]
+
+    KINDS = [
+        {"value": "tv"} | Pk.TV,
+        # {"value": "tv_13"} | Pk.TV_13,
+        # {"value": "tv_24"} | Pk.TV_24,
+        # {"value": "tv_48"} | Pk.TV_48,
+        {"value": "ova"} | Pk.OVA,
+        {"value": "ona"} | Pk.ONA,
+        {"value": "special"} | Pk.SPECIAL,
+        {"value": "tv_special"} | Pk.TV_SPECIAL,
+        {"value": "music"} | Pk.MUSIC,
+        {"value": "pv"} | Pk.PV,
+        {"value": "cm"} | Pk.CM,
+    ]

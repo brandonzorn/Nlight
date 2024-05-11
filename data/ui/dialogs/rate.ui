@@ -21,36 +21,20 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QFrame" name="chapters_frame">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
+    <widget class="CardWidget" name="chapters_frame">
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="BodyLabel" name="label_2">
         <property name="text">
          <string>Chapters read</string>
         </property>
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>391</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
+       <widget class="HorizontalSeparator" name="HorizontalSeparator"/>
       </item>
       <item>
-       <widget class="QSpinBox" name="chapters_box">
+       <widget class="SpinBox" name="chapters_box">
         <property name="maximum">
          <number>999</number>
         </property>
@@ -60,36 +44,20 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="score_frame">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <widget class="CardWidget" name="score_frame">
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
       <item>
-       <widget class="QLabel" name="label_3">
+       <widget class="BodyLabel" name="label_3">
         <property name="text">
          <string>Rating</string>
         </property>
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>444</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
+       <widget class="HorizontalSeparator" name="HorizontalSeparator_2"/>
       </item>
       <item>
-       <widget class="QSpinBox" name="score_box">
+       <widget class="SpinBox" name="score_box">
         <property name="maximum">
          <number>10</number>
         </property>
@@ -99,36 +67,20 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="status_frame">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <widget class="CardWidget" name="status_frame">
+     <layout class="QHBoxLayout" name="horizontalLayout_7">
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="BodyLabel" name="label">
         <property name="text">
          <string>List</string>
         </property>
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>414</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
+       <widget class="HorizontalSeparator" name="HorizontalSeparator_3"/>
       </item>
       <item>
-       <widget class="QComboBox" name="lib_list_box"/>
+       <widget class="ComboBox" name="lib_list_box"/>
       </item>
      </layout>
     </widget>
@@ -142,31 +94,34 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
-       <widget class="QPushButton" name="cancel_btn">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="PushButton" name="cancel_btn">
         <property name="text">
          <string>Cancel</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="delete_btn">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="PushButton" name="delete_btn">
         <property name="text">
          <string>Delete</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="update_btn">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="PushButton" name="update_btn">
         <property name="text">
          <string>Update</string>
         </property>
@@ -177,6 +132,39 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ComboBox</class>
+   <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>PushButton</class>
+   <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>HorizontalSeparator</class>
+   <extends>QWidget</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>CardWidget</class>
+   <extends>QFrame</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BodyLabel</class>
+   <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>SpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

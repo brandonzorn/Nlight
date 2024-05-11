@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>613</width>
-    <height>290</height>
+    <width>860</width>
+    <height>508</height>
    </rect>
   </property>
   <property name="locale">
@@ -29,59 +29,51 @@
    <item>
     <layout class="QVBoxLayout" name="search">
      <item>
-      <widget class="QFrame" name="items_frame">
+      <widget class="SimpleCardWidget" name="items_frame">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
        <layout class="QVBoxLayout" name="items_layout"/>
       </widget>
      </item>
      <item>
-      <widget class="QFrame" name="search_frame">
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
+      <widget class="QWidget" name="search_frame">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
-         <widget class="QFrame" name="text_frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
+         <widget class="SimpleCardWidget" name="text_frame">
+          <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
-            <widget class="QLineEdit" name="title_line"/>
+            <widget class="SearchLineEdit" name="title_line">
+             <property name="placeholderText">
+              <string>Search</string>
+             </property>
+            </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="search_btn">
-             <property name="cursor">
-              <cursorShape>PointingHandCursor</cursorShape>
+            <widget class="PushButton" name="filter_btn">
+             <property name="text">
+              <string>Filters</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -89,62 +81,27 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="filter_btn">
-          <property name="cursor">
-           <cursorShape>PointingHandCursor</cursorShape>
-          </property>
-          <property name="text">
-           <string>Filters</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QFrame" name="page_frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
+         <widget class="SimpleCardWidget" name="page_frame">
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
            <item>
-            <widget class="QPushButton" name="prev_btn">
-             <property name="cursor">
-              <cursorShape>PointingHandCursor</cursorShape>
+            <widget class="ToolButton" name="prev_btn">
+             <property name="popupMode">
+              <enum>QToolButton::DelayedPopup</enum>
+             </property>
+             <property name="arrowType">
+              <enum>Qt::NoArrow</enum>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="page_label">
+            <widget class="BodyLabel" name="page_label">
              <property name="text">
               <string>Page 1</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="next_btn">
-             <property name="cursor">
-              <cursorShape>PointingHandCursor</cursorShape>
-             </property>
-            </widget>
+            <widget class="ToolButton" name="next_btn"/>
            </item>
           </layout>
          </widget>
@@ -176,24 +133,12 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QFrame" name="catalogs_frame">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
+       <widget class="ElevatedCardWidget" name="catalogs_frame">
+        <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <widget class="QListWidget" name="catalogs_list">
+          <widget class="ListWidget" name="catalogs_list">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -219,19 +164,10 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QFrame" name="orders_frame">
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_5">
+          <widget class="SimpleCardWidget" name="orders_frame">
+           <layout class="QVBoxLayout" name="verticalLayout">
             <item>
-             <widget class="QLabel" name="label">
+             <widget class="BodyLabel" name="label">
               <property name="text">
                <string>Order</string>
               </property>
@@ -244,19 +180,10 @@
           </widget>
          </item>
          <item>
-          <widget class="QFrame" name="kinds_frame">
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
+          <widget class="SimpleCardWidget" name="kinds_frame">
+           <layout class="QVBoxLayout" name="verticalLayout_5">
             <item>
-             <widget class="QLabel" name="label_2">
+             <widget class="BodyLabel" name="label_2">
               <property name="text">
                <string>Kind</string>
               </property>
@@ -269,18 +196,12 @@
           </widget>
          </item>
          <item>
-          <widget class="QFrame" name="genres_frame">
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_6">
+          <widget class="SimpleCardWidget" name="genres_frame">
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
             <item>
-             <widget class="QPushButton" name="genres_btn">
-              <property name="cursor">
-               <cursorShape>PointingHandCursor</cursorShape>
+             <widget class="PushButton" name="genres_btn">
+              <property name="contextMenuPolicy">
+               <enum>Qt::CustomContextMenu</enum>
               </property>
               <property name="text">
                <string>Genres list</string>
@@ -291,19 +212,10 @@
           </widget>
          </item>
          <item>
-          <widget class="QFrame" name="filter_catalog_frame">
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_7">
+          <widget class="SimpleCardWidget" name="filter_catalog_frame">
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
-             <widget class="QPushButton" name="catalogs_btn">
-              <property name="cursor">
-               <cursorShape>PointingHandCursor</cursorShape>
-              </property>
+             <widget class="PushButton" name="catalogs_btn">
               <property name="text">
                <string>Catalogs</string>
               </property>
@@ -326,29 +238,17 @@
           </spacer>
          </item>
          <item>
-          <widget class="QFrame" name="filter_actions_frame">
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <widget class="SimpleCardWidget" name="filter_actions_frame">
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
             <item>
-             <widget class="QPushButton" name="reset_btn">
-              <property name="cursor">
-               <cursorShape>PointingHandCursor</cursorShape>
-              </property>
+             <widget class="PushButton" name="reset_btn">
               <property name="text">
                <string>Reset</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="apply_btn">
-              <property name="cursor">
-               <cursorShape>PointingHandCursor</cursorShape>
-              </property>
+             <widget class="PushButton" name="apply_btn">
               <property name="text">
                <string>Apply</string>
               </property>
@@ -365,6 +265,56 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PushButton</class>
+   <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>CardWidget</class>
+   <extends>QFrame</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ElevatedCardWidget</class>
+   <extends>SimpleCardWidget</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SimpleCardWidget</class>
+   <extends>CardWidget</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BodyLabel</class>
+   <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>SearchLineEdit</class>
+   <extends>LineEdit</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>ListWidget</class>
+   <extends>QListWidget</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

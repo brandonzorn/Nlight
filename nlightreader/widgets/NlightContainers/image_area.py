@@ -11,6 +11,12 @@ class ImageArea(QWidget, AbstractContentContainer):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+        self.setStyleSheet(
+            """
+            QWidget {background: transparent;}
+            QScrollArea {border: none;}
+            """,
+        )
         self.__image_pixmap = None
 
     def resizeEvent(self, event):
@@ -39,8 +45,7 @@ class ImageArea(QWidget, AbstractContentContainer):
             w, h = self.ui.scrollArea.viewport().size().toTuple()
             self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         else:
-            w = self.ui.scrollArea.viewport().width()
-            h = pixmap.height()
+            w, h = self.ui.scrollArea.viewport().width(), pixmap.height()
             self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         return pixmap.scaled(
             QSize(w, h), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation,
@@ -50,16 +55,10 @@ class ImageArea(QWidget, AbstractContentContainer):
         pixmap = self._resize_pixmap(self.__image_pixmap)
         self.ui.img_lbl.setPixmap(pixmap)
 
-    def clear(self):
-        self.ui.img_lbl.clear()
-
-    def set_content(self, content: QPixmap | str):
-        if isinstance(content, str):
-            self.ui.img_lbl.setText(content)
-        else:
-            self.__image_pixmap = content
-            self._reset_area()
-            self.__update_image()
+    def set_content(self, img_pixmap: QPixmap):
+        self.__image_pixmap = img_pixmap
+        self._reset_area()
+        self.__update_image()
 
     def get_content_widget(self):
         return self.ui.img_lbl
