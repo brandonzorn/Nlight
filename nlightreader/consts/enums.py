@@ -1,22 +1,7 @@
 import logging
 from enum import Enum, unique
 
-lib_lists_en = (
-    "planned",
-    "completed",
-    "reading",
-    "re-reading",
-    "on hold",
-    "dropped",
-)
-
-
-def parse_lib_list(lib_list: str):
-    if lib_list == "watching":
-        return "reading"
-    if lib_list == "rewatching":
-        return "re-reading"
-    return lib_list
+LIB_LISTS = ("planned", "completed", "reading", "re-reading", "on hold", "dropped")
 
 
 class Nl:
@@ -85,13 +70,13 @@ class Nl:
                 return cls.doujin
             if matching_the_pattern(string, ("ranobe", "novel")):
                 return cls.ranobe
-            if matching_the_pattern(string, ("комикс", "comics")):
+            if matching_the_pattern(string, ("комикс", "comic")):
                 return cls.comics
             logging.warning(f"Unknown manga kind: {string}")
             return cls.undefined
 
         def to_full_str(self):
-            names = ["Undefined", "Manga", "Manhwa", "Manhua", "One shot", "Doujin", "Light Novel", "Comics"]
+            names = ["Undefined", "Manga", "Manhwa", "Manhua", "Oneshot", "Doujin", "Ranobe", "Comics"]
             return names[self.value]
 
     @unique
@@ -102,3 +87,23 @@ class Nl:
         re_reading = 3
         on_hold = 4
         dropped = 5
+
+        @classmethod
+        def from_str(cls, string: str | None):
+            string = string.lower()
+            if string in ("planned",):
+                return cls.planned
+            if string in ("completed",):
+                return cls.completed
+            if string in ("reading", "watching"):
+                return cls.reading
+            if string in ("re-reading", "rewatching"):
+                return cls.re_reading
+            if string in ("on hold", "on_hold"):
+                return cls.on_hold
+            if string in ("dropped",):
+                return cls.dropped
+            raise ValueError(f"Unknown lib_list: {string}")
+
+        def to_str(self):
+            return LIB_LISTS[self.value]

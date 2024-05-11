@@ -257,6 +257,14 @@
         <translation>Манга</translation>
     </message>
     <message>
+        <source>OEL-manga</source>
+        <translation>OEL-манга</translation>
+    </message>
+    <message>
+        <source>Rumanga</source>
+        <translation>Руманга</translation>
+    </message>
+    <message>
         <source>Manhwa</source>
         <translation>Манхва</translation>
     </message>
@@ -265,24 +273,67 @@
         <translation>Маньхуа</translation>
     </message>
     <message>
-        <source>One shot</source>
+        <source>Oneshot</source>
         <translation>Ваншот</translation>
+    </message>
+    <message>
+        <source>Comic</source>
+        <translation>Комікс</translation>
+    </message>
+    <message>
+        <source>Western comic</source>
+        <translation>Західний комікс</translation>
+    </message>
+    <message>
+        <source>Rucomic</source>
+        <translation>Рукомікс</translation>
+    </message>
+    <message>
+        <source>Indonesian comic</source>
+        <translation>Індонезійський комікс</translation>
     </message>
     <message>
         <source>Doujin</source>
         <translation>Додзинси</translation>
     </message>
     <message>
-        <source>Light Novel</source>
+        <source>Ranobe</source>
         <translation>Ранобэ</translation>
     </message>
     <message>
-        <source>Comics</source>
-        <translation>Комикс</translation>
+        <source>Other</source>
+        <translation>Інше</translation>
     </message>
     <message>
         <source>Undefined</source>
         <translation>Не визначено</translation>
+    </message>
+</context>
+<context>
+    <name>Message</name>
+    <message>
+        <source>Manga {} has been added.</source>
+        <translation>Манга {} додано.</translation>
+    </message>
+    <message>
+        <source>Manga {} has been deleted.</source>
+        <translation>Манга {} видалено.</translation>
+    </message>
+    <message>
+        <source>Files {} have been removed.</source>
+        <translation>Файли {} видалені.</translation>
+    </message>
+    <message>
+        <source>Check for updates.</source>
+        <translation>Перевірка оновлень.</translation>
+    </message>
+    <message>
+        <source>Error checking for updates.</source>
+        <translation>Помилка перевірки оновлень.</translation>
+    </message>
+    <message>
+        <source>New version {result} is available! You are currently on version {APP_VERSION}.</source>
+        <translation>Нова версія {result} доступна! Ви використовуєте версію {APP_VERSION}.</translation>
     </message>
 </context>
 </TS>

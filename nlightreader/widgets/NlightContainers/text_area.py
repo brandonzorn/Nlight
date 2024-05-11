@@ -21,9 +21,6 @@ class TextArea(QWidget, AbstractContentContainer):
     def _reset_area(self):
         self.ui.text_browser.clear()
 
-    def clear(self):
-        self._reset_area()
-
     def set_content(self, content: str):
         self._reset_area()
         self.ui.text_browser.setHtml(content)

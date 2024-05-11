@@ -1,14 +1,13 @@
-from PySide6.QtGui import QAction
-from PySide6.QtWidgets import QMenu
+from qfluentwidgets import RoundMenu, FluentIcon, Action
 
 from nlightreader.utils import translate
 
 
-class HistoryNoteMenu(QMenu):
+class HistoryNoteMenu(RoundMenu):
     def __init__(self):
         super().__init__()
-        self.set_as_read = QAction(translate("Menu", "Mark as read"))
-        self.remove_all = QAction(translate("Menu", "Remove all"))
+        self.set_as_read = Action(FluentIcon.ACCEPT_MEDIUM, translate("Menu", "Mark as read"))
+        self.remove_all = Action(FluentIcon.REMOVE, translate("Menu", "Remove all"))
 
     def set_mode(self, mode: int):
         """

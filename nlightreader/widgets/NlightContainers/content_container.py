@@ -8,9 +8,6 @@ class AbstractContentContainer:
     def _reset_area(self) -> None:
         raise NotImplementedError
 
-    def clear(self) -> None:
-        raise NotImplementedError
-
     def set_content(self, content) -> None:
         raise NotImplementedError
 

@@ -1,21 +1,21 @@
 import webbrowser
 
-from PySide6.QtCore import Qt, Signal, QSize, QThreadPool
-from PySide6.QtWidgets import QWidget
+from PySide6.QtCore import Qt, Signal, QSize
+from qfluentwidgets import InfoBar, CardWidget
 
-from data.ui.manga_item import Ui_manga_item_widget
+from data.ui.manga_item import Ui_Form
 from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.items import Manga
-from nlightreader.utils import Worker, get_catalog, FileManager, Database
+from nlightreader.utils import Worker, get_catalog, FileManager, Database, translate
 
 
-class MangaItem(QWidget):
+class MangaItem(CardWidget):
     manga_clicked = Signal(Manga)
     manga_changed = Signal()
 
-    def __init__(self, manga: Manga, *, is_added_to_lib=True, pool: QThreadPool = None):
+    def __init__(self, manga: Manga, *, is_added_to_lib=True, pool=None):
         super().__init__()
-        self.ui = Ui_manga_item_widget()
+        self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.manga = manga
         self._catalog = get_catalog(self.manga.catalog_id)()
@@ -23,36 +23,39 @@ class MangaItem(QWidget):
         self._is_added_to_lib = is_added_to_lib
         self._db: Database = Database()
         self._pool = pool
-        self.ui.manga_item_frame.customContextMenuRequested.connect(self.on_context_menu)
+        self.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.name_lbl.setText(self.manga.get_name())
 
     def mouseReleaseEvent(self, event):
+        super().mouseReleaseEvent(event)
         if event.button() == Qt.MouseButton.LeftButton:
             if self.rect().contains(event.pos()):
                 self.manga_clicked.emit(self.manga)
-        event.accept()
-
-    def enterEvent(self, event):
-        self.setProperty("is_set", 1)
-        self.style().polish(self.ui.manga_item_frame)
-        self.style().polish(self.ui.name_lbl)
-        self.style().polish(self.ui.image)
-
-    def leaveEvent(self, event):
-        self.setProperty("is_set", 0)
-        self.style().polish(self.ui.manga_item_frame)
-        self.style().polish(self.ui.name_lbl)
-        self.style().polish(self.ui.image)
 
     def on_context_menu(self, pos):
         catalog = get_catalog(self.manga.catalog_id)()
+        manga_title = self.manga.get_name()
+        info_bar_parent = self.parentWidget().parentWidget()
+        info_bar_duration = 2000
 
         def add_to_lib():
             self._db.add_manga(self.manga)
             self._db.add_manga_library(self.manga)
+            InfoBar.success(
+                title=manga_title,
+                content=translate("Message", "Manga {} has been added.").format(self.manga.get_name()),
+                duration=info_bar_duration,
+                parent=info_bar_parent,
+            )
 
         def remove_from_lib():
             self._db.rem_manga_library(self.manga)
+            InfoBar.success(
+                title=manga_title,
+                content=translate("Message", "Manga {} has been deleted.").format(self.manga.get_name()),
+                duration=info_bar_duration,
+                parent=info_bar_parent,
+            )
             self.manga_changed.emit()
 
         def open_in_browser():
@@ -60,6 +63,12 @@ class MangaItem(QWidget):
 
         def remove_files():
             FileManager.remove_manga_files(self.manga, catalog)
+            InfoBar.success(
+                title=manga_title,
+                content=translate("Message", "Files {} have been removed.").format(self.manga.get_name()),
+                duration=info_bar_duration,
+                parent=info_bar_parent,
+            )
 
         def open_local_files():
             FileManager.open_dir_in_explorer(self.manga, catalog)
@@ -77,7 +86,7 @@ class MangaItem(QWidget):
         menu.open_in_browser.triggered.connect(open_in_browser)
         menu.remove_files.triggered.connect(remove_files)
         menu.open_local_files.triggered.connect(open_local_files)
-        menu.exec(self.ui.manga_item_frame.mapToGlobal(pos))
+        menu.exec(self.mapToGlobal(pos))
 
     def set_size(self, size: int):
         current_size = self.size()

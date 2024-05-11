@@ -1,0 +1,42 @@
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: ["bug"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Also tell us, what did you expect to happen?
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+  - type: input
+    id: OS
+    attributes:
+      label: Operation System
+      description: Which operation system are you using?
+      placeholder: ex. Windows11 23H2
+    validations:
+      required: true
+  - type: input
+    id: Nlight
+    attributes:
+      label: Nlight Version
+      description: Which version of Nlight are you using?
+      placeholder: ex. 1.10.0.5
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to Reproduce?
+      description: A clear and concise description of what the bug is.
+      placeholder: Steps to reproduce the behavior. You can use gif to demonstrate the problem.
+    validations:
+      required: true

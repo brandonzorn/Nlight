@@ -1,5 +1,6 @@
 from PySide6.QtCore import Slot, Signal
 from PySide6.QtWidgets import QWidget, QTreeWidgetItem
+from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.history import Ui_Form
 from nlightreader.consts.colors import ItemsColors
@@ -11,10 +12,15 @@ from nlightreader.utils import Database
 class FormHistory(QWidget):
     manga_open = Signal(Manga)
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+
+        self.ui.delete_btn.setIcon(FluentIcon.DELETE)
+
+        self.setObjectName("FormHistory")
+
         self.ui.items_tree.customContextMenuRequested.connect(self.on_context_menu)
         self.db: Database = Database()
         self.ui.delete_btn.clicked.connect(self.delete_note)
