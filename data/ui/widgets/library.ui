@@ -27,39 +27,21 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QFrame" name="items_frame">
+    <widget class="SimpleCardWidget" name="items_frame">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
      <layout class="QVBoxLayout" name="items_layout"/>
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="lists_frame">
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QVBoxLayout" name="check_button_layout">
+    <widget class="SimpleCardWidget" name="lists_frame">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QPushButton" name="planned_btn">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="PushButton" name="planned_btn">
         <property name="text">
          <string>Planned</string>
         </property>
@@ -75,10 +57,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="completed_btn">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="PushButton" name="completed_btn">
         <property name="text">
          <string>Completed</string>
         </property>
@@ -91,10 +70,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="reading_btn">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="PushButton" name="reading_btn">
         <property name="text">
          <string>Reading</string>
         </property>
@@ -107,10 +83,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="re_reading_btn">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="PushButton" name="re_reading_btn">
         <property name="text">
          <string>Re-reading</string>
         </property>
@@ -123,10 +96,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="on_hold_btn">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="PushButton" name="on_hold_btn">
         <property name="text">
          <string>On hold</string>
         </property>
@@ -139,10 +109,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="dropped_btn">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="PushButton" name="dropped_btn">
         <property name="text">
          <string>Dropped</string>
         </property>
@@ -162,7 +129,7 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
-          <height>40</height>
+          <height>91</height>
          </size>
         </property>
        </spacer>
@@ -172,6 +139,25 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PushButton</class>
+   <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>CardWidget</class>
+   <extends>QFrame</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SimpleCardWidget</class>
+   <extends>CardWidget</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -1,4 +1,5 @@
-from PySide6.QtWidgets import QRadioButton, QCheckBox, QLayout
+from PySide6.QtWidgets import QLayout
+from qfluentwidgets import RadioButton, CheckBox
 
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import Order, Kind, Genre
@@ -32,7 +33,8 @@ class FilterController:
         if not self._orders_container:
             raise ValueError("Orders container is not set")
         for item in items:
-            item_widget = QRadioButton(item.get_name())
+            item_widget = RadioButton()
+            item_widget.setText(item.get_name())
             if not self._order_items:
                 item_widget.setChecked(True)
             self._orders_container.addWidget(item_widget)
@@ -42,7 +44,8 @@ class FilterController:
         if not self._orders_container:
             raise ValueError("Kinds container is not set")
         for item in items:
-            item_widget = QCheckBox(item.get_name())
+            item_widget = CheckBox()
+            item_widget.setText(item.get_name())
             self._kinds_container.addWidget(item_widget)
             self._kind_items.update({item_widget: item})
 
@@ -50,7 +53,8 @@ class FilterController:
         if not self._orders_container:
             raise ValueError("Genres container is not set")
         for index, item in enumerate(items):
-            item_widget = QCheckBox(item.get_name())
+            item_widget = CheckBox()
+            item_widget.setText(item.get_name())
             self._genres_container.genres_items.update({item_widget: item})
             self._genres_container.ui_ge.gridLayout.addWidget(
                 item_widget,

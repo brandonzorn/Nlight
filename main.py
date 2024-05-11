@@ -8,11 +8,13 @@ import platformdirs
 from PySide6.QtCore import Qt, QTranslator, QLocale, QThreadPool
 from PySide6.QtGui import QIcon, QPalette
 from PySide6.QtWidgets import QApplication
+from qfluentwidgets import setTheme, Theme, InfoBar
 
 from nlightreader import ParentWindow
-from nlightreader.consts.app import APP_VERSION, APP_NAME
+from nlightreader.consts.app import APP_VERSION, APP_NAME, APP_BRANCH
 from nlightreader.consts.files import Icons
-from nlightreader.utils import get_locale, get_ui_style, Thread
+from nlightreader.consts.urls import GITHUB_REPO
+from nlightreader.utils import get_locale, Thread, get_html, translate
 
 
 class App(QApplication):
@@ -35,8 +37,7 @@ class App(QApplication):
         return self.palette().color(QPalette.ColorRole.Highlight)
 
     def update_style(self):
-        accent_color = self.get_accent_color()
-        self.setStyleSheet(get_ui_style(darkdetect.theme(), accent_color.name()))
+        setTheme(Theme.DARK if darkdetect.isDark() else Theme.LIGHT)
 
 
 class MainWindow(ParentWindow):
@@ -44,8 +45,42 @@ class MainWindow(ParentWindow):
         super().__init__()
         self.set_min_size_by_screen()
         self.setWindowTitle(APP_NAME)
+        self.setWindowIcon(QIcon(Icons.App))
         self._theme_updater = Thread(target=self.theme_listener, callback=self.update_style)
+        self._update_checker = Thread(target=self.check_for_updates, callback=self.show_update_info)
         self._theme_updater.start()
+        self._update_checker.start()
+
+    def check_for_updates(self):
+        response = get_html(f"{GITHUB_REPO}/releases", params={"per_page": 2}, content_type="json")
+        if not response:
+            return
+        for release in response:
+            version = release["tag_name"]
+            if APP_BRANCH in version:
+                return version
+
+    def show_update_info(self, result):
+        info_bar_title = translate("Message", "Check for updates.")
+        info_bar_duration = 3500
+        if result is None:
+            InfoBar.error(
+                title=info_bar_title,
+                content=translate("Message", "Error checking for updates."),
+                duration=info_bar_duration,
+                parent=self,
+            )
+
+        elif result != APP_VERSION:
+            InfoBar.info(
+                title=info_bar_title,
+                content=translate(
+                    "Message",
+                    "New version {result} is available! You are currently on version {APP_VERSION}.",
+                ).format(result=result, APP_VERSION=APP_VERSION),
+                duration=info_bar_duration,
+                parent=self,
+            )
 
     @staticmethod
     def theme_listener():
@@ -59,10 +94,10 @@ class MainWindow(ParentWindow):
         self._theme_updater.start()
 
     def closeEvent(self, event):
+        super().closeEvent(event)
         self._theme_updater.terminate()
         self._theme_updater.wait()
         app.closeAllWindows()
-        event.accept()
 
 
 if __name__ == "__main__":

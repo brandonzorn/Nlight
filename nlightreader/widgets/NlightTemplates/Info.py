@@ -3,10 +3,11 @@ import logging
 from PySide6.QtCore import Qt, QSize, Slot, Signal, QThreadPool
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget, QListWidgetItem, QTreeWidgetItem
+from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.info import Ui_Form
-from nlightreader.consts.enums import lib_lists_en, Nl
-from nlightreader.consts.colors import ItemsColors
+from nlightreader.consts.enums import Nl, LIB_LISTS
+from nlightreader.consts.files import NlFluentIcons
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
 from nlightreader.items import Manga, Character, Chapter, HistoryNote
@@ -32,7 +33,12 @@ class FormInfo(QWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in lib_lists_en])
+
+        self.ui.shikimori_btn.setIcon(NlFluentIcons.SHIKIMORI.qicon())
+
+        self.setObjectName("FormInfo")
+
+        self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in LIB_LISTS])
         self.ui.items_tree.doubleClicked.connect(self.open_reader)
         self.ui.characters_list.doubleClicked.connect(self.open_character)
         self.ui.related_list.doubleClicked.connect(self.open_related_manga)
@@ -40,7 +46,9 @@ class FormInfo(QWidget):
         self.ui.add_btn.clicked.connect(self.add_to_favorites)
         self.ui.lib_list_box.currentIndexChanged.connect(self.change_lib_list)
         self.ui.items_tree.customContextMenuRequested.connect(self.on_context_menu)
-        self.ui.back_btn.clicked.connect(self.close_widget)
+
+        self.ui.scrollArea.resizeEvent = self.scroll_area_resize_event
+
         self.db: Database = Database()
         self.thread_pool = QThreadPool()
         self.thread_pool.setMaxThreadCount(3)
@@ -64,16 +72,16 @@ class FormInfo(QWidget):
                 chapter = self.sorted_chapters[list(self.sorted_chapters.keys())[top_item_id]][i]
                 history_notes.append(HistoryNote(chapter, self.manga, True))
                 item = selected_item.parent().child(i)
-                item.setBackground(0, ItemsColors.READ)
+                item.setIcon(0, FluentIcon.ACCEPT_MEDIUM.qicon())
             self.db.add_history_notes(history_notes)
 
         def set_as_read():
             self.db.add_history_note(HistoryNote(selected_chapter, self.manga, True))
-            selected_item.setBackground(0, ItemsColors.READ)
+            selected_item.setIcon(0, FluentIcon.ACCEPT_MEDIUM.qicon())
 
         def remove_read_state():
             self.db.del_history_note(selected_chapter)
-            selected_item.setBackground(0, ItemsColors.EMPTY)
+            selected_item.setIcon(0, QIcon())
 
         menu = ReadMarkMenu()
         selected_item = context_target.itemAt(pos)
@@ -100,6 +108,9 @@ class FormInfo(QWidget):
             return
         self.update_manga_preview()
 
+    def scroll_area_resize_event(self, event):
+        self.ui.scrollAreaWidgetContents.setFixedWidth(event.size().width())
+
     def sort_chapters(self):
         self.sorted_chapters.clear()
         for ch in self.chapters:
@@ -108,7 +119,7 @@ class FormInfo(QWidget):
             else:
                 self.sorted_chapters.update({ch.language: [ch]})
 
-    def _get_selected_chapter(self):
+    def _get_selected_chapter(self) -> Chapter | None:
         selected_item = self.ui.items_tree.currentItem()
         if not selected_item.parent():
             return
@@ -132,6 +143,12 @@ class FormInfo(QWidget):
 
         Worker(target=info_setup, callback=self.update_additional_info).start(pool=self.thread_pool)
 
+    def update_add_button_icon(self):
+        if self.ui.add_btn.isChecked():
+            self.ui.add_btn.setIcon(FluentIcon.REMOVE_FROM)
+        else:
+            self.ui.add_btn.setIcon(FluentIcon.ADD_TO)
+
     def update_additional_info(self):
         self.ui.lib_frame.setVisible(not self.catalog.is_primary)
         self.ui.shikimori_frame.setVisible(self.catalog.is_primary)
@@ -141,6 +158,7 @@ class FormInfo(QWidget):
             self.ui.add_btn.setChecked(True)
         else:
             self.ui.add_btn.setChecked(False)
+        self.update_add_button_icon()
         self.update_manga_preview()
         Worker(target=self.get_chapters, callback=self.update_chapters).start(pool=self.thread_pool)
         Worker(target=self.get_relations, callback=self.update_relations).start(pool=self.thread_pool)
@@ -168,6 +186,7 @@ class FormInfo(QWidget):
             Qt.AspectRatioMode.KeepAspectRatio,
             Qt.TransformationMode.SmoothTransformation,
         )
+        self.ui.image_frame.setFixedWidth(pixmap.width())
         self.ui.image.setPixmap(pixmap)
 
     def set_info(self):
@@ -191,6 +210,7 @@ class FormInfo(QWidget):
         else:
             lib_list = Nl.LibList(self.ui.lib_list_box.currentIndex())
             self.db.add_manga_library(self.manga, lib_list)
+        self.update_add_button_icon()
 
     @Slot()
     def change_lib_list(self):
@@ -215,9 +235,7 @@ class FormInfo(QWidget):
                 ch_item = QTreeWidgetItem([chapter.get_name()])
                 if self.db.check_complete_chapter(chapter):
                     if self.db.get_complete_status(chapter):
-                        ch_item.setBackground(0, ItemsColors.READ)
-                    else:
-                        ch_item.setBackground(0, ItemsColors.UNREAD)
+                        ch_item.setIcon(0, FluentIcon.ACCEPT_MEDIUM.qicon())
                 lang_item.addChild(ch_item)
             if len(self.sorted_chapters) == 1:
                 lang_item.setExpanded(True)
@@ -252,6 +270,18 @@ class FormInfo(QWidget):
         finally:
             selected_chapter = self._get_selected_chapter()
             if selected_chapter:
+                if hasattr(selected_chapter, "url"):
+                    from render_html import render_in_browser
+                    render_in_browser(
+                        f"""
+                        <body style="background-color:black;">
+                        <iframe src="{selected_chapter.__getattribute__("url")}?episode={selected_chapter.ch}"
+                        width="100%" height="100%" frameborder="0"
+                        AllowFullScreen allow="autoplay *; fullscreen *"></iframe>
+                        </body>
+                        """,
+                    )
+                    return
                 self.reader_window = ReaderWindow()
                 self.reader_window.setup(
                     self.manga,
@@ -262,10 +292,3 @@ class FormInfo(QWidget):
     @Slot()
     def open_related_manga(self):
         self.opened_related_manga.emit(self.get_current_manga())
-        self.close_widget()
-
-    @Slot()
-    def close_widget(self):
-        parent = self.parent()
-        parent.removeWidget(self)
-        self.deleteLater()

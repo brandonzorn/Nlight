@@ -2,11 +2,12 @@ import time
 
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QListWidgetItem, QMainWindow
+from PySide6.QtWidgets import QMainWindow, QListWidgetItem
+from qfluentwidgets import FluentIcon, IndeterminateProgressRing
 
 from data.ui.windows.reader import Ui_ReaderWindow
-from nlightreader.consts.enums import Nl
 from nlightreader.consts.colors import ItemsColors
+from nlightreader.consts.enums import Nl
 from nlightreader.items import Manga, Chapter, Image, HistoryNote
 from nlightreader.utils import Database, get_catalog, FileManager, translate, get_language_icon, Thread
 from nlightreader.widgets.NlightContainers import TextArea
@@ -19,6 +20,17 @@ class ReaderWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_ReaderWindow()
         self.ui.setupUi(self)
+        self.setStyleSheet(
+            """
+            QScrollArea {border: none;}
+            """,
+        )
+        self.ui.fullscreen_btn.setIcon(FluentIcon.FULL_SCREEN)
+        self.ui.ch_list_btn.setIcon(FluentIcon.TILES)
+        self.ui.next_page_btn.setIcon(FluentIcon.RIGHT_ARROW)
+        self.ui.prev_page_btn.setIcon(FluentIcon.LEFT_ARROW)
+        self.ui.next_chapter_btn.setIcon(FluentIcon.UP)
+        self.ui.prev_chapter_btn.setIcon(FluentIcon.DOWN)
 
         self.ui.next_page_btn.clicked.connect(self.turn_page_next)
         self.ui.prev_page_btn.clicked.connect(self.turn_page_prev)
@@ -33,6 +45,9 @@ class ReaderWindow(QMainWindow):
         self._set_image_thread = Thread(target=self.get_content, callback=self.update_image)
 
         self.content_container: AbstractContentContainer | None = None
+
+        self.progressRing = IndeterminateProgressRing()
+        self.progressRing.setVisible(False)
 
         self.db: Database = Database()
         self.manga = None
@@ -50,6 +65,7 @@ class ReaderWindow(QMainWindow):
         self.setWindowTitle(self.manga.name)
         self.content_container = TextArea() if self.manga.kind == Nl.MangaKind.ranobe else ImageArea()
         self.content_container.install(self.ui.reader_layout)
+        self.content_container.get_content_widget().parent().layout().addWidget(self.progressRing)
         self.chapters = chapters
         self.cur_chapter = cur_chapter
         self.max_chapters = len(chapters)
@@ -144,9 +160,11 @@ class ReaderWindow(QMainWindow):
     def attach_image(self):
         self._set_image_thread.terminate()
         self._set_image_thread.wait()
-        self.content_container.clear()
         if not self.images:
             return
+        self.progressRing.setVisible(True)
+        self.progressRing.start()
+        self.content_container.get_content_widget().setVisible(False)
         self._set_image_thread.start()
 
     def get_content(self):
@@ -155,8 +173,6 @@ class ReaderWindow(QMainWindow):
 
         if not FileManager.check_image_exists(
                 self.manga, self.chapters[chapter - 1], self.images[page - 1], self.catalog):
-            if self.manga.kind != Nl.MangaKind.ranobe:
-                self.content_container.set_content(translate("Other", "Page is loading"))
             time.sleep(0.25)
             if page != self.cur_page or chapter != self.cur_chapter:
                 return
@@ -170,6 +186,9 @@ class ReaderWindow(QMainWindow):
         )
 
     def update_image(self, content):
+        self.progressRing.stop()
+        self.progressRing.setVisible(False)
+        self.content_container.get_content_widget().setVisible(True)
         self.content_container.set_content(content)
 
     def get_images(self):
