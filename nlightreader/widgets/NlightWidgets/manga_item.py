@@ -1,7 +1,10 @@
 import webbrowser
 
-from PySide6.QtCore import Qt, Signal, QSize
-from qfluentwidgets import InfoBar, CardWidget
+from PySide6 import QtGui
+from PySide6.QtCore import Qt, Signal, QSize, QRect
+from PySide6.QtGui import QImage, QPainter, QPixmap, QColor
+from PySide6.QtWidgets import QWidget
+from qfluentwidgets import InfoBar
 
 from data.ui.manga_item import Ui_Form
 from nlightreader.contexts import LibraryMangaMenu
@@ -9,7 +12,7 @@ from nlightreader.items import Manga
 from nlightreader.utils import Worker, get_catalog, FileManager, Database, translate
 
 
-class MangaItem(CardWidget):
+class MangaItem(QWidget):
     manga_clicked = Signal(Manga)
     manga_changed = Signal()
 
@@ -25,6 +28,15 @@ class MangaItem(CardWidget):
         self._pool = pool
         self.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.name_lbl.setText(self.manga.get_name())
+
+    def enterEvent(self, event):
+        super().enterEvent(event)
+        if self.isEnabled():
+            self.set_image(0.3)
+
+    def leaveEvent(self, event):
+        super().leaveEvent(event)
+        self.set_image(1.0)
 
     def mouseReleaseEvent(self, event):
         super().mouseReleaseEvent(event)
@@ -90,11 +102,10 @@ class MangaItem(CardWidget):
 
     def set_size(self, size: int):
         current_size = self.size()
-        if abs(current_size.width() - size) < 6:
-            return
-        max_size = QSize(size, size * 2)
+        max_size = QSize(size, int(size * 1.5))
         if current_size != max_size:
-            self.setFixedSize(max_size)
+            self.setFixedWidth(max_size.width())
+            self.ui.image_card.setFixedSize(max_size)
             self.ui.image.setMaximumSize(max_size)
         if self.manga_pixmap:
             self.set_image()
@@ -102,13 +113,26 @@ class MangaItem(CardWidget):
     def get_image(self):
         self.manga_pixmap = FileManager.get_manga_preview(self.manga, self._catalog)
 
-    def set_image(self):
-        pixmap = self.manga_pixmap.scaled(
-            self.ui.image.maximumSize(),
-            Qt.AspectRatioMode.KeepAspectRatio,
-            Qt.TransformationMode.SmoothTransformation,
-        )
-        self.ui.image.setPixmap(pixmap)
+    def set_image(self, opacity: float = 1.0):
+        if not self.manga_pixmap:
+            return
+
+        image = QImage(self.ui.image.maximumSize(), QImage.Format_ARGB32)
+        image.fill(QColor(0, 0, 0, 0))
+
+        painter = QPainter(image)
+        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.SmoothPixmapTransform, True)
+
+        path = QtGui.QPainterPath()
+        path.addRoundedRect(QRect(0, 0, image.width(), image.height()), 10, 10)
+
+        painter.setClipPath(path)
+        painter.setOpacity(opacity if opacity else 1.0)
+        painter.drawPixmap(0, 0, self.manga_pixmap.scaled(self.ui.image.maximumSize()))
+        painter.end()
+
+        self.ui.image.setPixmap(QPixmap.fromImage(image))
 
     def update_image(self):
         Worker(target=self.get_image, callback=self.set_image).start(self._pool)
