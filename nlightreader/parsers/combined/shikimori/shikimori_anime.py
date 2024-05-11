@@ -72,13 +72,13 @@ class ShikimoriAnime(AbstractAnimeCatalog):
 
     def get_preview(self, manga: Manga):
         return get_html(
-            f"{self.url}/system/animes/preview/{manga.content_id}.jpg",
+            f"{self.url}/system/animes/original/{manga.content_id}.jpg",
             content_type="content",
         )
 
     def get_character_preview(self, character: Character):
         return get_html(
-            f"{self.url}/system/characters/preview/{character.content_id}.jpg",
+            f"{self.url}/system/characters/original/{character.content_id}.jpg",
             content_type="content",
         )
 
