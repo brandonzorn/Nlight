@@ -1,8 +1,9 @@
 import logging
 import sys
 import time
+from http.server import HTTPServer
 from pathlib import Path
-
+from threading import Thread as PyThread
 import darkdetect
 import platformdirs
 from PySide6.QtCore import Qt, QTranslator, QLocale, QThreadPool
@@ -15,6 +16,7 @@ from nlightreader.consts.app import APP_VERSION, APP_NAME, APP_BRANCH
 from nlightreader.consts.files import Icons
 from nlightreader.consts.urls import GITHUB_REPO
 from nlightreader.utils import get_locale, Thread, get_html, translate
+from nlightreader.utils.kodik_server import KodikHTTPRequestHandler
 
 
 class App(QApplication):
@@ -108,6 +110,8 @@ if __name__ == "__main__":
     QThreadPool.globalInstance().setMaxThreadCount(32)
     app = App(sys.argv)
     Path(f"{platformdirs.user_data_dir()}/{APP_NAME}").mkdir(parents=True, exist_ok=True)
+    httpd = HTTPServer(("localhost", 8000), KodikHTTPRequestHandler)
+    PyThread(target=httpd.serve_forever, daemon=True).start()
     window = MainWindow()
     window.show()
     sys.exit(app.exec())
