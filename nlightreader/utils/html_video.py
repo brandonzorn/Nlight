@@ -21,12 +21,12 @@ def start_html_video(manga: Manga, chapter: Chapter):
             const manga_id = '{manga.id}';
             const chapter_id = '{chapter.id}';
             const episode = {episode};
-    
+
             let max_time = 0;
             let cur_time = 0;
-    
+
             let is_completed = false;
-    
+
             function sendPostRequest() {{
                 const data = {{
                     manga_id: manga_id,
@@ -35,7 +35,7 @@ def start_html_video(manga: Manga, chapter: Chapter):
                     player_max_time: max_time,
                     is_completed: is_completed
                 }};
-    
+
                 fetch('http://localhost:8000', {{
                     method: 'POST',
                     headers: {{
@@ -45,13 +45,13 @@ def start_html_video(manga: Manga, chapter: Chapter):
                 }});
                 console.log('post', data);
             }}
-    
+
             function kodikMessageListener(message) {{
                 if (message.data.key === 'kodik_player_time_update') {{
                     let messageTime = message.data.value;
                     cur_time = messageTime;
                     if (max_time - messageTime < 300 && !is_completed) {{
-    
+
                         is_completed = true;
                         console.log("completed=", is_completed);
                         sendPostRequest();
