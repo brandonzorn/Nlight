@@ -9,6 +9,7 @@ from PySide6.QtGui import QPixmap
 from nlightreader.consts.app import APP_NAME
 from nlightreader.consts.enums import Nl
 from nlightreader.items import Manga, Chapter, Character
+from nlightreader.parsers.catalog import AbstractCatalog
 
 
 class FileManager:
@@ -17,7 +18,7 @@ class FileManager:
     preview_file = "preview.jpg"
 
     @classmethod
-    def check_image_exists(cls, manga: Manga, chapter: Chapter, image, catalog) -> bool:
+    def check_image_exists(cls, manga: Manga, chapter: Chapter, image, catalog: AbstractCatalog) -> bool:
         path = f"{cls.images_folder}/{catalog.CATALOG_NAME}/{cls.manga_folder}/{manga.content_id}/{chapter.content_id}"
         file_name = f"{image.page}.jpg"
         if manga.kind == Nl.MangaKind.ranobe:
@@ -25,7 +26,7 @@ class FileManager:
         return check_file_exists(path, file_name)
 
     @classmethod
-    def get_image_file(cls, manga: Manga, chapter: Chapter, image, catalog):
+    def get_image_file(cls, manga: Manga, chapter: Chapter, image, catalog: AbstractCatalog):
         path = f"{cls.images_folder}/{catalog.CATALOG_NAME}/{cls.manga_folder}/{manga.content_id}/{chapter.content_id}"
         file_name = f"{image.page}.jpg"
         if not check_file_exists(path, file_name):
@@ -33,7 +34,7 @@ class FileManager:
         return QPixmap(get_file_path(path, file_name))
 
     @classmethod
-    def get_chapter_text_file(cls, manga: Manga, chapter: Chapter, image, catalog) -> str:
+    def get_chapter_text_file(cls, manga: Manga, chapter: Chapter, image, catalog: AbstractCatalog) -> str:
         path = f"{cls.images_folder}/{catalog.CATALOG_NAME}/{cls.manga_folder}/{manga.content_id}/{chapter.content_id}"
         file_name = f"{image.page}.txt"
         if not check_file_exists(path, file_name):
@@ -47,31 +48,31 @@ class FileManager:
             return ""
 
     @classmethod
-    def get_manga_preview(cls, manga: Manga, catalog):
+    def get_manga_preview(cls, manga: Manga, catalog: AbstractCatalog):
         path = f"{cls.images_folder}/{catalog.CATALOG_NAME}/{cls.manga_folder}/{manga.content_id}"
         if not check_file_exists(path, cls.preview_file):
             save_file(path, cls.preview_file, catalog.get_preview(manga))
         return QPixmap(get_file_path(path, cls.preview_file))
 
     @classmethod
-    def get_character_preview(cls, character: Character, catalog) -> QPixmap:
+    def get_character_preview(cls, character: Character, catalog: AbstractCatalog) -> QPixmap:
         path = f"{cls.images_folder}/{catalog.CATALOG_NAME}/characters/{character.content_id}"
         if not check_file_exists(path, cls.preview_file):
             save_file(path, cls.preview_file, catalog.get_character_preview(character))
         return QPixmap(get_file_path(path, cls.preview_file))
 
     @classmethod
-    def remove_chapter_files(cls, manga: Manga, chapter: Chapter, catalog):
+    def remove_chapter_files(cls, manga: Manga, chapter: Chapter, catalog: AbstractCatalog):
         path = f"{cls.images_folder}/{catalog.CATALOG_NAME}/{cls.manga_folder}/{manga.content_id}/{chapter.content_id}"
         remove_file(path)
 
     @classmethod
-    def remove_manga_files(cls, manga: Manga, catalog):
+    def remove_manga_files(cls, manga: Manga, catalog: AbstractCatalog):
         path = f"{cls.images_folder}/{catalog.CATALOG_NAME}/{cls.manga_folder}/{manga.content_id}"
         remove_file(path)
 
     @classmethod
-    def open_dir_in_explorer(cls, manga: Manga, catalog):
+    def open_dir_in_explorer(cls, manga: Manga, catalog: AbstractCatalog):
         path = f"{cls.images_folder}/{catalog.CATALOG_NAME}/{cls.manga_folder}/{manga.content_id}"
         os.startfile(get_dir_path(path))
 
