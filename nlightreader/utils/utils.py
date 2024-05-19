@@ -22,7 +22,8 @@ def make_request(url: str, method: str, *,
     :param json: Optional dictionary of json to include in the request.
     :param data: Optional dictionary of data to include in the request.
     :param cookies: Optional dictionary of cookies to include in the request.
-    :param content_type: Optional string indicating the expected content type of the response ('content' or 'json').
+    :param content_type: Optional string indicating the expected content type of the response
+    ('content', 'text' or 'json').
     :return: If content_type is 'content', returns the raw response content (bytes).
              If content_type is 'json', returns the JSON-decoded response.
              Otherwise, returns the full requests.Response object.
