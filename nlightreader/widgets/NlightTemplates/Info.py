@@ -22,6 +22,7 @@ from nlightreader.utils import (
     description_to_html,
 )
 from nlightreader.utils.html_video import start_html_video
+from nlightreader.widgets.NlightWidgets import ChapterTreeItem
 from nlightreader.windows.Reader import ReaderWindow
 
 
@@ -69,8 +70,8 @@ class FormInfo(QWidget):
 
         def set_as_read_all():
             history_notes = []
-            for i in range(selected_item.parent().indexOfChild(selected_item) + 1):
-                chapter = self.sorted_chapters[list(self.sorted_chapters.keys())[top_item_id]][i]
+            chapters_by_lang: list[Chapter] = self.sorted_chapters[selected_chapter.language]
+            for i, chapter in enumerate(chapters_by_lang[:chapters_by_lang.index(selected_chapter) + 1]):
                 history_notes.append(HistoryNote(chapter, self.manga, True))
                 item = selected_item.parent().child(i)
                 item.setIcon(0, FluentIcon.ACCEPT_MEDIUM.qicon())
@@ -86,12 +87,9 @@ class FormInfo(QWidget):
 
         menu = ReadMarkMenu()
         selected_item = context_target.itemAt(pos)
-        if not selected_item or not selected_item.parent():
+        if not selected_item or not isinstance(selected_item, ChapterTreeItem):
             return
-        top_item_id = self.ui.items_tree.indexOfTopLevelItem(selected_item.parent())
-        selected_chapter = self.sorted_chapters[list(self.sorted_chapters.keys())[top_item_id]][
-            selected_item.parent().indexOfChild(selected_item)
-        ]
+        selected_chapter = selected_item.chapter
         if not self.db.check_complete_chapter(selected_chapter):
             menu.set_mode(0)
         else:
@@ -122,14 +120,11 @@ class FormInfo(QWidget):
 
     def _get_selected_chapter(self) -> Chapter | None:
         selected_item = self.ui.items_tree.currentItem()
-        if not selected_item.parent():
+        if not isinstance(selected_item, ChapterTreeItem):
             return
-        top_item_id = self.ui.items_tree.indexOfTopLevelItem(selected_item.parent())
-        return self.sorted_chapters[list(self.sorted_chapters.keys())[top_item_id]][
-            selected_item.parent().indexOfChild(selected_item)
-        ]
+        return selected_item.chapter
 
-    def get_current_manga(self):
+    def get_selected_related_title(self):
         return self.catalog.get_manga(self.related_mangas[self.ui.related_list.currentIndex().row()])
 
     def setup(self, manga):
@@ -233,7 +228,7 @@ class FormInfo(QWidget):
             lang_item.setIcon(0, QIcon(get_language_icon(lang)))
             self.ui.items_tree.addTopLevelItem(lang_item)
             for chapter in self.sorted_chapters[lang]:
-                ch_item = QTreeWidgetItem([chapter.get_name()])
+                ch_item = ChapterTreeItem(chapter)
                 if self.db.check_complete_chapter(chapter):
                     if self.db.get_complete_status(chapter):
                         ch_item.setIcon(0, FluentIcon.ACCEPT_MEDIUM.qicon())
@@ -283,4 +278,4 @@ class FormInfo(QWidget):
 
     @Slot()
     def open_related_manga(self):
-        self.opened_related_manga.emit(self.get_current_manga())
+        self.opened_related_manga.emit(self.get_selected_related_title())
