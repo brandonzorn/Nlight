@@ -11,6 +11,7 @@ from nlightreader.consts.files import NlFluentIcons
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormRate, FormCharacter
 from nlightreader.items import Manga, Character, Chapter, HistoryNote
+from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils import (
     Database,
     FileManager,
@@ -54,7 +55,7 @@ class FormInfo(QWidget):
         self.db: Database = Database()
         self.thread_pool = QThreadPool()
         self.thread_pool.setMaxThreadCount(3)
-        self.catalog = None
+        self.catalog: AbstractCatalog | None = None
         self.manga = None
         self.related_mangas: list[Manga] = []
         self.related_characters: list[Character] = []
