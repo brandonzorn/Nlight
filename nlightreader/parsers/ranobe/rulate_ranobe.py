@@ -21,7 +21,11 @@ class Rulate(AbstractRanobeCatalog):
         self.items = RulateItems
 
     def get_manga(self, manga: Manga) -> Manga:
-        response = get_html(f"{self.url_api}/book/{manga.content_id}", cookies=self.cookies, content_type="text")
+        response = get_html(
+            f"{self.url_api}/book/{manga.content_id}",
+            cookies=self.cookies,
+            content_type="text",
+        )
         if response:
             soup = BeautifulSoup(response, "html.parser")
             hranobe = soup.find("div", style="margin: 20px 0 0 0")
@@ -53,18 +57,26 @@ class Rulate(AbstractRanobeCatalog):
                 if len(name_items) == 2:
                     name = name_items[0].strip()
                     russian = name_items[1].strip()
-                ranobe_id = i.unwrap()["data-tooltip-content"].split("#book-tooltip-")[-1]
+                ranobe_id = i.unwrap()["data-tooltip-content"].split(
+                    "#book-tooltip-",
+                )[-1]
                 ranobe.append(Manga(ranobe_id, self.CATALOG_ID, name, russian))
         return ranobe
 
     def get_chapters(self, manga: Manga):
         chapters = []
-        response = get_html(f"{self.url_api}/book/{manga.content_id}", cookies=self.cookies, content_type="text")
+        response = get_html(
+            f"{self.url_api}/book/{manga.content_id}",
+            cookies=self.cookies,
+            content_type="text",
+        )
         if response:
             soup = BeautifulSoup(response, "html.parser")
             ranobe_chapters = soup.findAll("tr", class_="chapter_row")
             for chapter_data in ranobe_chapters:
-                if chapter_data.find("span", class_="disabled") or chapter_data.find("i", class_="ac_read g"):
+                if chapter_data.find(
+                        "span", class_="disabled",
+                ) or chapter_data.find("i", class_="ac_read g"):
                     continue
                 name: str = chapter_data.find("td", class_="t").text
                 name = name.strip()
@@ -102,13 +114,18 @@ class Rulate(AbstractRanobeCatalog):
             content = ""
             for p in text_container:
                 if p.find("img") and not isinstance(p.find("img"), int):
-                    content += f'<p><img src="{get_chapter_content_image(p.find("img")["src"])}"></p>'
+                    img_src = get_chapter_content_image(p.find("img")["src"])
+                    content += f'<p><img src="{img_src}"></p>'
                 else:
                     content += f"<p>{p.text}</p>"
             return content
 
     def get_preview(self, manga: Manga):
-        response = get_html(f"{self.url_api}/book/{manga.content_id}", cookies=self.cookies, content_type="text")
+        response = get_html(
+            f"{self.url_api}/book/{manga.content_id}",
+            cookies=self.cookies,
+            content_type="text",
+        )
         if response:
             soup = BeautifulSoup(response, "html.parser")
             himage = soup.find("meta", property="og:image")
@@ -137,7 +154,9 @@ class Erolate(Rulate):
             "sort": form.get_order_id(),
             "adult": 0,
         }
-        response = get_html(f"{self.url_api}/search", params=params, content_type="text")
+        response = get_html(
+            f"{self.url_api}/search", params=params, content_type="text",
+        )
         if response:
             soup = BeautifulSoup(response, "html.parser")
             hranobe = soup.findAll("p", class_="book-tooltip")
@@ -149,6 +168,10 @@ class Erolate(Rulate):
                 if len(name_items) == 2:
                     name = name_items[0].strip()
                     russian = name_items[1].strip()
-                ranobe_id = i.unwrap()["data-tooltip-content"].split("#book-tooltip-")[-1]
-                ranobe.append(Manga(ranobe_id, self.CATALOG_ID, name, russian))
+                ranobe_id = i.unwrap()["data-tooltip-content"].split(
+                    "#book-tooltip-",
+                )[-1]
+                ranobe.append(
+                    Manga(ranobe_id, self.CATALOG_ID, name, russian),
+                )
         return ranobe

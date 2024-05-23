@@ -27,21 +27,66 @@ class PresetKinds:
 
 
 class PresetOrders:
-    ID = {"name": "By ID", "russian": "По ID"}
-    NAME = {"name": "By name", "russian": "По названию"}
-    POPULARITY = {"name": "By popularity", "russian": "По популярности"}
-    LIKES_NUM = {"name": "By likes", "russian": "По лайкам"}
-    VIEWS = {"name": "By views", "russian": "По просмотрам"}
-    STATUS = {"name": "By status", "russian": "По статусу"}
-    RATING = {"name": "By rating", "russian": "По рейтингу"}
-    RANDOM = {"name": "By random", "russian": "Мне повезет"}
+    ID = {
+        "name": "By ID",
+        "russian": "По ID",
+    }
+    NAME = {
+        "name": "By name",
+        "russian": "По названию",
+    }
+    POPULARITY = {
+        "name": "By popularity",
+        "russian": "По популярности",
+    }
+    LIKES_NUM = {
+        "name": "By likes",
+        "russian": "По лайкам",
+    }
+    VIEWS = {
+        "name": "By views",
+        "russian": "По просмотрам",
+    }
+    STATUS = {
+        "name": "By status",
+        "russian": "По статусу",
+    }
+    RATING = {
+        "name": "By rating",
+        "russian": "По рейтингу",
+    }
+    RANDOM = {
+        "name": "By random",
+        "russian": "Мне повезет",
+    }
 
-    UPDATED = {"name": "By update date", "russian": "По дате обновления"}
-    CREATED = {"name": "By date added", "russian": "По дате добавления"}
-    AIRED_ON = {"name": "By release date", "russian": "По дате выхода"}
+    UPDATED = {
+        "name": "By update date",
+        "russian": "По дате обновления",
+    }
+    CREATED = {
+        "name": "By date added",
+        "russian": "По дате добавления",
+    }
+    AIRED_ON = {
+        "name": "By release date",
+        "russian": "По дате выхода",
+    }
 
-    CHAPTERS_COUNT = {"name": "By number of chapters", "russian": "По количеству глав"}
-    VOLUMES_COUNT = {"name": "By number of volumes", "russian": "По количеству томов"}
-    RATE_COUNT = {"name": "By number of ratings", "russian": "По количеству оценок"}
+    CHAPTERS_COUNT = {
+        "name": "By number of chapters",
+        "russian": "По количеству глав",
+    }
+    VOLUMES_COUNT = {
+        "name": "By number of volumes",
+        "russian": "По количеству томов",
+    }
+    RATE_COUNT = {
+        "name": "By number of ratings",
+        "russian": "По количеству оценок",
+    }
 
-    TRANSLATION_VOLUME = {"name": "By volume of translation", "russian": "По объему перевода"}
+    TRANSLATION_VOLUME = {
+        "name": "By volume of translation",
+        "russian": "По объему перевода",
+    }

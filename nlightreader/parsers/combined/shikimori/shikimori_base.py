@@ -18,7 +18,12 @@ class ShikimoriBase(AbstractCatalog):
         self.is_primary = True
 
     def setup_manga(self, data: dict) -> Manga:
-        return Manga(data.get("id"), self.CATALOG_ID, data.get("name"), data.get("russian"))
+        return Manga(
+            data.get("id"),
+            self.CATALOG_ID,
+            data.get("name"),
+            data.get("russian"),
+        )
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self.url_api}/mangas/{manga.content_id}"
@@ -67,7 +72,14 @@ class ShikimoriBase(AbstractCatalog):
         return []
 
     def get_orders(self) -> list[Order]:
-        return [Order(i["value"], self.CATALOG_ID, i["name"], i["russian"]) for i in ShikimoriItems.ORDERS]
+        return [
+            Order(
+                i["value"],
+                self.CATALOG_ID,
+                i["name"],
+                i["russian"],
+            ) for i in ShikimoriItems.ORDERS
+        ]
 
     def get_relations(self, manga: Manga) -> list[Manga]:
         mangas = []
@@ -91,8 +103,16 @@ class ShikimoriBase(AbstractCatalog):
                     if role in ["Supporting", "Main"]:
                         data = i.get("character")
                         if data:
-                            characters.append(Character(data.get("id"), self.CATALOG_ID, data.get("name"),
-                                                        data.get("russian"), "", role))
+                            characters.append(
+                                Character(
+                                    data.get("id"),
+                                    self.CATALOG_ID,
+                                    data.get("name"),
+                                    data.get("russian"),
+                                    "",
+                                    role,
+                                ),
+                            )
             characters.sort(key=lambda x: x.role)
         return characters
 

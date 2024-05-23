@@ -22,8 +22,11 @@ class Desu(AbstractMangaCatalog):
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
             data = get_data(response, ["response"], {})
-            manga.genres = [Genre(i.get("id"), self.CATALOG_ID, i.get("text"), i.get("russian"))
-                            for i in data.get("genres")]
+            manga.genres = [
+                Genre(
+                    i.get("id"), self.CATALOG_ID, i.get("text"), i.get("russian"),
+                ) for i in data.get("genres")
+            ]
             manga.score = data.get("score")
             manga.kind = Nl.MangaKind.from_str(data.get("kind"))
             manga.volumes = data.get("chapters").get("last").get("vol")
@@ -43,11 +46,23 @@ class Desu(AbstractMangaCatalog):
             "order": form.get_order_id(),
             "kinds": ",".join(form.get_kind_ids()),
         }
-        response = get_html(url, headers=self.headers, params=params, content_type="json")
+        response = get_html(
+            url,
+            headers=self.headers,
+            params=params,
+            content_type="json",
+        )
         manga = []
         if response:
             for i in get_data(response, ["response"]):
-                manga.append(Manga(i.get("id"), self.CATALOG_ID, i.get("name"), i.get("russian")))
+                manga.append(
+                    Manga(
+                        i.get("id"),
+                        self.CATALOG_ID,
+                        i.get("name"),
+                        i.get("russian"),
+                    ),
+                )
         return manga
 
     def get_chapters(self, manga: Manga):
@@ -83,7 +98,10 @@ class Desu(AbstractMangaCatalog):
         return get_html(image.img, headers=headers, content_type="content")
 
     def get_preview(self, manga: Manga):
-        return get_html(f"{self.url}/data/manga/covers/preview/{manga.content_id}.jpg", content_type="content")
+        return get_html(
+            f"{self.url}/data/manga/covers/preview/{manga.content_id}.jpg",
+            content_type="content",
+        )
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/manga/{manga.content_id}"

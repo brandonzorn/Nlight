@@ -3,7 +3,9 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QWidget
 
 from data.ui.containers.image_area import Ui_Form
-from nlightreader.widgets.NlightContainers.content_container import AbstractContentContainer
+from nlightreader.widgets.NlightContainers.content_container import (
+    AbstractContentContainer,
+)
 
 
 class ImageArea(QWidget, AbstractContentContainer):
@@ -43,12 +45,18 @@ class ImageArea(QWidget, AbstractContentContainer):
             return QPixmap()
         if 0.5 < pixmap.width() / pixmap.height() < 2:
             w, h = self.ui.scrollArea.viewport().size().toTuple()
-            self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+            self.ui.scrollArea.setVerticalScrollBarPolicy(
+                Qt.ScrollBarPolicy.ScrollBarAlwaysOff,
+            )
         else:
             w, h = self.ui.scrollArea.viewport().width(), pixmap.height()
-            self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+            self.ui.scrollArea.setVerticalScrollBarPolicy(
+                Qt.ScrollBarPolicy.ScrollBarAsNeeded,
+            )
         return pixmap.scaled(
-            QSize(w, h), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation,
+            QSize(w, h),
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation,
         )
 
     def __update_image(self):
