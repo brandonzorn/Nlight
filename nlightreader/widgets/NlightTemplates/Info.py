@@ -73,8 +73,11 @@ class FormInfo(QWidget):
 
         def set_as_read_all():
             history_notes = []
-            chapters_by_lang: list[Chapter] = self.sorted_chapters[selected_chapter.language]
-            for i, chapter in enumerate(chapters_by_lang[:chapters_by_lang.index(selected_chapter) + 1]):
+            chapters_by_lang: list[Chapter] = self.sorted_chapters[
+                selected_chapter.language][selected_chapter.translator]
+            for i, chapter in enumerate(
+                    chapters_by_lang[:chapters_by_lang.index(selected_chapter) + 1],
+            ):
                 history_notes.append(HistoryNote(chapter, self.manga, True))
                 item = selected_item.parent().child(i)
                 item.setIcon(0, FluentIcon.ACCEPT_MEDIUM.qicon())
@@ -115,11 +118,12 @@ class FormInfo(QWidget):
 
     def sort_chapters(self):
         self.sorted_chapters.clear()
-        for ch in self.chapters:
-            if ch.language in self.sorted_chapters:
-                self.sorted_chapters[ch.language].append(ch)
-            else:
-                self.sorted_chapters.update({ch.language: [ch]})
+        for chapter in self.chapters:
+            if chapter.language not in self.sorted_chapters:
+                self.sorted_chapters[chapter.language] = {}
+            if chapter.translator not in self.sorted_chapters[chapter.language]:
+                self.sorted_chapters[chapter.language][chapter.translator] = []
+            self.sorted_chapters[chapter.language][chapter.translator].append(chapter)
 
     def _get_selected_chapter(self) -> Chapter | None:
         selected_item = self.ui.items_tree.currentItem()
@@ -128,7 +132,9 @@ class FormInfo(QWidget):
         return selected_item.chapter
 
     def get_selected_related_title(self):
-        return self.catalog.get_manga(self.related_mangas[self.ui.related_list.currentIndex().row()])
+        return self.catalog.get_manga(
+            self.related_mangas[self.ui.related_list.currentIndex().row()],
+        )
 
     def setup(self, manga):
         def info_setup():
@@ -257,16 +263,24 @@ class FormInfo(QWidget):
     def update_chapters(self):
         self.ui.items_tree.clear()
         self.ui.items_frame.setVisible(bool(self.chapters))
-        for lang in self.sorted_chapters:
+        for lang, translators in self.sorted_chapters.items():
             lang_item = QTreeWidgetItem([translate("NlLanguage", lang.to_full_str())])
             lang_item.setIcon(0, QIcon(get_language_icon(lang)))
             self.ui.items_tree.addTopLevelItem(lang_item)
-            for chapter in self.sorted_chapters[lang]:
-                ch_item = ChapterTreeItem(chapter)
-                if self.db.check_complete_chapter(chapter):
-                    if self.db.get_complete_status(chapter):
-                        ch_item.setIcon(0, FluentIcon.ACCEPT_MEDIUM.qicon())
-                lang_item.addChild(ch_item)
+
+            for translator, chapters in translators.items():
+                translator_item = lang_item
+                if translator is not None:
+                    translator_item = QTreeWidgetItem([translator])
+                    lang_item.addChild(translator_item)
+
+                for chapter in chapters:
+                    ch_item = ChapterTreeItem(chapter)
+                    if self.db.check_complete_chapter(chapter):
+                        if self.db.get_complete_status(chapter):
+                            ch_item.setIcon(0, FluentIcon.ACCEPT_MEDIUM.qicon())
+                    translator_item.addChild(ch_item)
+
             if len(self.sorted_chapters) == 1:
                 lang_item.setExpanded(True)
 
