@@ -7,12 +7,11 @@ from nlightreader.consts.items import MangaLibItems
 from nlightreader.consts.urls import URL_SLASHLIB, URL_MANGALIB
 from nlightreader.consts.enums import Nl
 from nlightreader.items import RequestForm, Manga, Chapter, Image
-from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.utils import get_html, get_data
 
 
-class LibBase(AbstractCatalog):
+class LibBase(AbstractMangaCatalog):
     def __init__(self):
         super().__init__()
         self.url = None
@@ -38,7 +37,12 @@ class LibBase(AbstractCatalog):
             "types[]": form.get_kind_ids(),
             "genres[include][]": form.get_genre_ids(),
         }
-        response = get_html(url, headers=self.headers, params=params, content_type="text")
+        response = get_html(
+            url,
+            headers=self.headers,
+            params=params,
+            content_type="text",
+        )
         mangas = []
         if response:
             soup = BeautifulSoup(response, "html.parser")
@@ -46,8 +50,14 @@ class LibBase(AbstractCatalog):
             for card in cards:
                 card_sub_info = card.find("div", class_="media-card__caption")
                 kind_el = card_sub_info.find("h5", class_="media-card__subtitle")
-                title_el = card_sub_info.find("h3", class_="media-card__title line-clamp")
-                manga = Manga(card.get("data-media-slug"), self.CATALOG_ID, title_el.text, "")
+                title_el = card_sub_info.find(
+                    "h3", class_="media-card__title line-clamp")
+                manga = Manga(
+                    card.get("data-media-slug"),
+                    self.CATALOG_ID,
+                    title_el.text,
+                    "",
+                )
                 manga.kind = Nl.MangaKind.from_str(kind_el.text)
                 manga.preview_url = card.get("data-src")
                 mangas.append(manga)
@@ -68,7 +78,9 @@ class LibBase(AbstractCatalog):
                 ch = i.get("chapter_number")
                 vol = str(vol) if vol is not None else vol
                 ch = str(ch) if ch is not None else ch
-                chapter = Chapter(i.get("chapter_id"), self.CATALOG_ID, vol, ch, i.get("chapter_name"))
+                chapter = Chapter(
+                    i.get("chapter_id"), self.CATALOG_ID, vol, ch, i.get("chapter_name"),
+                )
                 chapter.language = Nl.Language.ru
                 chapters.append(chapter)
         return chapters
@@ -79,14 +91,22 @@ class LibBase(AbstractCatalog):
         images = []
         if response:
             soup = BeautifulSoup(response, "html.parser")
-            pages_data_tag = soup.find("script", id="pg", text=re.compile(r"window\.__pg"))
+            pages_data_tag = soup.find(
+                "script", id="pg", text=re.compile(r"window\.__pg"),
+            )
             pages_data_content = pages_data_tag.text if pages_data_tag else None
-            pages_data_match = re.search(r"window\.__pg\s*=\s*(.*?}]);", pages_data_content)
+            pages_data_match = re.search(
+                r"window\.__pg\s*=\s*(.*?}]);", pages_data_content,
+            )
             pages_data = json.loads(pages_data_match.group(1))
 
-            metadata_info_tag = soup.find("script", text=re.compile(r"window\.__info"))
+            metadata_info_tag = soup.find(
+                "script", text=re.compile(r"window\.__info"),
+            )
             metadata_info_content = metadata_info_tag.text if metadata_info_tag else None
-            metadata_info_match = re.search(r"window\.__info\s*=\s*(.*?}});", metadata_info_content)
+            metadata_info_match = re.search(
+                r"window\.__info\s*=\s*(.*?}});", metadata_info_content,
+            )
             metadata_info_data = json.loads(metadata_info_match.group(1))
 
             chapter_link = metadata_info_data["img"]["url"]
@@ -111,8 +131,8 @@ class LibBase(AbstractCatalog):
         return f"{self.url}/{manga.content_id}"
 
 
-class SlashLib(LibBase, AbstractMangaCatalog):
-    CATALOG_NAME = "SlashLib"
+class SlashLib(LibBase):
+    CATALOG_NAME = "SlashLib(Legacy)"
     CATALOG_ID = 9
 
     def __init__(self):
@@ -120,8 +140,8 @@ class SlashLib(LibBase, AbstractMangaCatalog):
         self.url = URL_SLASHLIB
 
 
-class MangaLib(LibBase, AbstractMangaCatalog):
-    CATALOG_NAME = "MangaLib"
+class MangaLib(LibBase):
+    CATALOG_NAME = "MangaLib(Legacy)"
     CATALOG_ID = 10
 
     def __init__(self):

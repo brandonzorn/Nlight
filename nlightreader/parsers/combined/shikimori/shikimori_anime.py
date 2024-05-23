@@ -62,13 +62,16 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         translators = Kodik.search(manga.content_id)
         chapters = []
         for translator in translators:
-            for i in range(translator.episodes, 0, -1):
-                ch = str(i)
+            for episode_num in range(translator.episodes, 0, -1):
                 chapter = Chapter(
-                    f"{translator.content_id}{i}", self.CATALOG_ID,
-                    translator.tr_type, ch, translator.translator,
+                    f"{translator.content_id}{episode_num}", self.CATALOG_ID,
+                    "", "", f"Episode {episode_num}",
                 )
-                chapter.__setattr__("url", f"http:{translator.kodik_url}")
+                chapter.translator = f"{translator.translator} ({translator.tr_type})"
+                chapter.__setattr__(
+                    "url",
+                    f"http:{translator.kodik_url}?episode={episode_num}",
+                )
                 chapter.language = Nl.Language.ru
                 chapters.append(chapter)
         return chapters
