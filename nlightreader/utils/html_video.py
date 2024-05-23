@@ -4,7 +4,6 @@ from nlightreader.items import Chapter, Manga
 
 
 def start_html_video(manga: Manga, chapter: Chapter):
-    episode = chapter.ch
     src_url = chapter.__getattribute__("url")
     render_in_browser(
         f"""
@@ -13,14 +12,14 @@ def start_html_video(manga: Manga, chapter: Chapter):
             <title>{manga.get_name()}</title>
         </head>
         <body style="background-color:black;">
-        <iframe id="player" src="{src_url}?episode={episode}&hide_selectors=true" width="100%"
-                height="100%" frameborder="0" allowfullscreen allow="autoplay *; fullscreen *">
+        <iframe id="player" src="{src_url}&hide_selectors=true" width="100%"
+                height="100%" frameborder="0"
+                allowfullscreen allow="autoplay *; fullscreen *">
         </iframe>
         <script type="text/javascript">
             const player = document.getElementById('player');
             const manga_id = '{manga.id}';
             const chapter_id = '{chapter.id}';
-            const episode = {episode};
 
             let max_time = 0;
             let cur_time = 0;

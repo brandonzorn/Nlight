@@ -41,15 +41,22 @@ class LibBase(AbstractCatalog):
         return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
-        url = f"{self.url_api}/{self.content_name}/{manga.content_id}/chapters"
+        branches_url = f"{self.url_api}/branches/{manga.content_id.split('--')[0]}"
+        branches = {}
+        if branches_response := get_html(branches_url, content_type="json"):
+            for branch in branches_response["data"]:
+                branches.update({branch["id"]: branch["teams"][0]["name"]})
+
+        chapters_url = f"{self.url_api}/{self.content_name}/{manga.content_id}/chapters"
         chapters: list[Chapter] = []
-        response = get_html(url, content_type="json")
-        if response:
-            for i in response["data"]:
+        if chapters_response := get_html(chapters_url, content_type="json"):
+            for i in chapters_response["data"]:
                 chapter = Chapter(
                         i["id"], self.CATALOG_ID, i["volume"], i["number"], i["name"],
                 )
                 chapter.language = Nl.Language.ru
+                if branches_data := i.get("branches"):
+                    chapter.translator = branches.get(branches_data[0]["branch_id"])
                 chapters.append(chapter)
         chapters.reverse()
         return chapters
