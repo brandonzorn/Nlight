@@ -122,20 +122,7 @@ class Database:
             conn.commit()
 
     def add_manga(self, manga: Manga):
-        manga_data = {
-            "id": manga.id,
-            "content_id": manga.content_id,
-            "catalog_id": manga.catalog_id,
-            "name": manga.name,
-            "russian": manga.russian,
-            "kind": manga.kind.name,
-            "description": manga.descriptions_to_str(),
-            "score": manga.score,
-            "status": manga.status,
-            "volumes": manga.volumes,
-            "chapters": manga.chapters,
-            "preview_url": manga.preview_url,
-        }
+        manga_data = manga.to_dict()
         manga_insert = insert(self._manga).values([manga_data])
         manga_insert = manga_insert.on_conflict_do_update(
             index_elements=["id"], set_=manga_data,
@@ -149,20 +136,7 @@ class Database:
             return
         with self.__engine.connect() as conn:
             for manga in mangas:
-                manga_data = {
-                    "id": manga.id,
-                    "content_id": manga.content_id,
-                    "catalog_id": manga.catalog_id,
-                    "name": manga.name,
-                    "russian": manga.russian,
-                    "kind": manga.kind.name,
-                    "description": manga.descriptions_to_str(),
-                    "score": manga.score,
-                    "status": manga.status,
-                    "volumes": manga.volumes,
-                    "chapters": manga.chapters,
-                    "preview_url": manga.preview_url,
-                }
+                manga_data = manga.to_dict()
                 manga_insert = insert(self._manga).values(manga_data)
                 manga_insert = manga_insert.on_conflict_do_update(
                     index_elements=["id"], set_=manga_data,
@@ -198,14 +172,7 @@ class Database:
             return
         with self.__engine.connect() as conn:
             for chapter in chapters:
-                chapter_data = {
-                    "id": chapter.id,
-                    "content_id": chapter.content_id,
-                    "catalog_id": chapter.catalog_id,
-                    "vol": chapter.vol,
-                    "ch": chapter.ch,
-                    "title": chapter.title,
-                    "language": chapter.language.name,
+                chapter_data = chapter.to_dict() | {
                     "manga_id": manga.id,
                 }
                 chapters_insert = insert(self._chapters).values([chapter_data])
