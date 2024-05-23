@@ -18,7 +18,9 @@ class FormGenres(QDialog):
 
     @Slot()
     def accept_genres(self):
-        self.selected_genres = [self.genres_items.get(i) for i in self.genres_items if i.isChecked()]
+        self.selected_genres = [
+            self.genres_items.get(i) for i in self.genres_items if i.isChecked()
+        ]
         self.accept()
 
     @Slot()

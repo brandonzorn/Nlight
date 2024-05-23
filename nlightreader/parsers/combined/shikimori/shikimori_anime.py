@@ -18,7 +18,12 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         self.headers = SHIKIMORI_HEADERS
 
     def setup_manga(self, data: dict) -> Manga:
-        return Manga(data.get("id"), self.CATALOG_ID, data.get("name"), data.get("russian"))
+        return Manga(
+            data.get("id"),
+            self.CATALOG_ID,
+            data.get("name"),
+            data.get("russian"),
+        )
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self.url_api}/animes/{manga.content_id}"
@@ -41,7 +46,12 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             "genre": ",".join(form.get_genre_ids()),
             "kind": ",".join(form.get_kind_ids()),
         }
-        response = get_html(url, headers=self.headers, params=params, content_type="json")
+        response = get_html(
+            url,
+            headers=self.headers,
+            params=params,
+            content_type="json",
+        )
         mangas = []
         if response:
             for i in response:
@@ -94,7 +104,14 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         return []
 
     def get_orders(self) -> list[Order]:
-        return [Order(i["value"], self.CATALOG_ID, i["name"], i["russian"]) for i in ShikimoriAnimeItems.ORDERS]
+        return [
+            Order(
+                i["value"],
+                self.CATALOG_ID,
+                i["name"],
+                i["russian"],
+            ) for i in ShikimoriAnimeItems.ORDERS
+        ]
 
     def get_characters(self, manga: Manga) -> list[Character]:
         characters = []
@@ -107,8 +124,16 @@ class ShikimoriAnime(AbstractAnimeCatalog):
                     if role in ["Supporting", "Main"]:
                         data = i.get("character")
                         if data:
-                            characters.append(Character(data.get("id"), self.CATALOG_ID, data.get("name"),
-                                                        data.get("russian"), "", role))
+                            characters.append(
+                                Character(
+                                    data.get("id"),
+                                    self.CATALOG_ID,
+                                    data.get("name"),
+                                    data.get("russian"),
+                                    "",
+                                    role,
+                                ),
+                            )
             characters.sort(key=lambda x: x.role)
         return characters
 

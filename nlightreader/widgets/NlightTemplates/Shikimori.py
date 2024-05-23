@@ -25,12 +25,24 @@ class FormShikimori(MangaItemBasedWidget):
         self.manga_area.install(self.ui.items_layout)
         self.manga_area.get_content_widget().layout().addWidget(self.progressRing)
 
-        self.ui.planned_btn.clicked.connect(lambda: self.change_list(Nl.LibList.planned))
-        self.ui.reading_btn.clicked.connect(lambda: self.change_list(Nl.LibList.reading))
-        self.ui.on_hold_btn.clicked.connect(lambda: self.change_list(Nl.LibList.on_hold))
-        self.ui.completed_btn.clicked.connect(lambda: self.change_list(Nl.LibList.completed))
-        self.ui.dropped_btn.clicked.connect(lambda: self.change_list(Nl.LibList.dropped))
-        self.ui.re_reading_btn.clicked.connect(lambda: self.change_list(Nl.LibList.re_reading))
+        self.ui.planned_btn.clicked.connect(
+            lambda: self.change_list(Nl.LibList.planned),
+        )
+        self.ui.reading_btn.clicked.connect(
+            lambda: self.change_list(Nl.LibList.reading),
+        )
+        self.ui.on_hold_btn.clicked.connect(
+            lambda: self.change_list(Nl.LibList.on_hold),
+        )
+        self.ui.completed_btn.clicked.connect(
+            lambda: self.change_list(Nl.LibList.completed),
+        )
+        self.ui.dropped_btn.clicked.connect(
+            lambda: self.change_list(Nl.LibList.dropped),
+        )
+        self.ui.re_reading_btn.clicked.connect(
+            lambda: self.change_list(Nl.LibList.re_reading),
+        )
         self.ui.next_btn.clicked.connect(self.turn_page_next)
         self.ui.prev_btn.clicked.connect(self.turn_page_prev)
         self.ui.title_line.searchSignal.connect(self.search)
@@ -39,7 +51,11 @@ class FormShikimori(MangaItemBasedWidget):
         Worker(target=self.get_user_info, callback=self.set_user_info).start()
 
     def setup_manga_item(self, manga: Manga):
-        item = MangaItem(manga, is_added_to_lib=False, pool=self.manga_area.manga_thread_pool)
+        item = MangaItem(
+            manga,
+            is_added_to_lib=False,
+            pool=self.manga_area.manga_thread_pool,
+        )
         item.manga_clicked.connect(self.manga_open.emit)
         return item
 
@@ -52,11 +68,15 @@ class FormShikimori(MangaItemBasedWidget):
             self.ui.auth_btn.setText(user.nickname)
             self.get_content()
         else:
-            self.ui.auth_btn.setText(translate("Other", "Sign in"))
+            self.ui.auth_btn.setText(
+                translate("Other", "Sign in"),
+            )
         self.ui.auth_btn.setEnabled(True)
 
     def update_page(self):
-        self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
+        self.ui.page_label.setText(
+            f"{translate('Other', 'Page')} {self.request_params.page}",
+        )
 
     @Slot()
     def authorize(self):

@@ -4,7 +4,10 @@ from qfluentwidgets import FluentWindow, FluentIcon
 from nlightreader.consts.files.files import NlFluentIcons
 from nlightreader.items import Manga
 from nlightreader.utils import translate
-from nlightreader.widgets.NlightTemplates import FormFacial, FormLibrary, FormShikimori, FormHistory, FormInfo
+from nlightreader.widgets.NlightTemplates import (
+    FormFacial, FormLibrary,
+    FormShikimori, FormHistory, FormInfo,
+)
 
 
 class ParentWindow(FluentWindow):
@@ -28,30 +31,45 @@ class ParentWindow(FluentWindow):
 
     def init_navigation(self):
         self.addSubInterface(
-            self.library_interface, FluentIcon.LIBRARY, translate("MainWindow", "Library"),
+            self.library_interface,
+            FluentIcon.LIBRARY,
+            translate("MainWindow", "Library"),
         )
         self.addSubInterface(
-            self.facial_interface, FluentIcon.HOME, translate("MainWindow", "Main"),
+            self.facial_interface,
+            FluentIcon.HOME,
+            translate("MainWindow", "Main"),
         )
         self.addSubInterface(
-            self.shikimori_interface, NlFluentIcons.SHIKIMORI, translate("MainWindow", "Shikimori"),
+            self.shikimori_interface,
+            NlFluentIcons.SHIKIMORI,
+            translate("MainWindow", "Shikimori"),
         )
         self.addSubInterface(
-            self.history_interface, FluentIcon.HISTORY, translate("MainWindow", "History"),
+            self.history_interface,
+            FluentIcon.HISTORY,
+            translate("MainWindow", "History"),
         )
 
     @Slot(int)
     def on_widget_change(self, value):
         if value in range(4):
-            if any(i.objectName() == "FormInfo" for i in self.stackedWidget.view.children()):
+            if any(i.objectName() == "FormInfo"
+                   for i in self.stackedWidget.view.children()):
                 self.delete_info_interface()
         self.navigationInterface.setReturnButtonVisible(self.stackedWidget.count() > 4)
-        if self.stackedWidget.currentWidget().objectName() in ("FormInfo", "ReaderWidget"):
+        if self.stackedWidget.currentWidget().objectName() in (
+                "FormInfo", "ReaderWidget"):
             return
         self.stackedWidget.currentWidget().setup()
 
     def set_min_size_by_screen(self):
-        self.setMinimumSize(QSize(self.screen().size().width() // 2, self.screen().size().height() // 2))
+        self.setMinimumSize(
+            QSize(
+                self.screen().size().width() // 2,
+                self.screen().size().height() // 2,
+            ),
+        )
 
     def delete_info_interface(self):
         self.stackedWidget.view.removeWidget(self.info_interface)

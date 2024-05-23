@@ -36,12 +36,20 @@ class Worker(NlThread, QRunnable):
     """
     Initializes a new `Runnable` instance.
 
-    :param target: A callable object representing the target function to run in the thread.
-    :param args: An optional tuple or list containing the arguments to pass to the target function.
-    Defaults to an empty tuple.
-    :param kwargs: An optional dictionary containing keyword arguments to pass to the target function.
-    Defaults to an empty dictionary.
-    :param callback: An optional callable object to invoke when the thread finishes running. Defaults to None.
+    :param target:
+        A callable object representing
+        the target function to run in the thread.
+    :param args:
+        An optional tuple or list containing
+        the arguments to pass to the target function.
+        Defaults to an empty tuple.
+    :param kwargs:
+        An optional dictionary containing
+        keyword arguments to pass to the target function.
+        Defaults to an empty dictionary.
+    :param callback:
+        An optional callable object to invoke
+        when the thread finishes running. Defaults to None.
     """
 
     def __init__(self, target: Callable, args=(), kwargs=None, *, callback=None):
@@ -59,12 +67,20 @@ class Thread(NlThread, QThread):
     """
     Initializes a new `Thread` instance.
 
-    :param target: A callable object representing the target function to run in the thread.
-    :param args: An optional tuple or list containing the arguments to pass to the target function.
-    Defaults to an empty tuple.
-    :param kwargs: An optional dictionary containing keyword arguments to pass to the target function.
-    Defaults to an empty dictionary.
-    :param callback: An optional callable object to invoke when the thread finishes running. Defaults to None.
+    :param target:
+        A callable object representing
+        the target function to run in the thread.
+    :param args:
+        An optional tuple or list containing
+        the arguments to pass to the target function.
+        Defaults to an empty tuple.
+    :param kwargs:
+        An optional dictionary containing
+        keyword arguments to pass to the target function.
+        Defaults to an empty dictionary.
+    :param callback:
+        An optional callable object to invoke
+        when the thread finishes running. Defaults to None.
     """
 
     def __init__(self, target: Callable, args=(), kwargs=None, *, callback=None):

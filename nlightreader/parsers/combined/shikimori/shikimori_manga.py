@@ -18,7 +18,12 @@ class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
             "genre": ",".join(form.get_genre_ids()),
             "kind": ",".join(form.get_kind_ids()),
         }
-        response = get_html(url, headers=self.headers, params=params, content_type="json")
+        response = get_html(
+            url,
+            headers=self.headers,
+            params=params,
+            content_type="json",
+        )
         mangas = []
         if response:
             for i in response:
@@ -26,4 +31,10 @@ class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
         return mangas
 
     def get_kinds(self):
-        return [Kind(i["value"], self.CATALOG_ID, i["name"], i["russian"]) for i in ShikimoriItems.KINDS]
+        return [
+            Kind(
+                i["value"],
+                self.CATALOG_ID,
+                i["name"],
+                i["russian"],
+            ) for i in ShikimoriItems.KINDS]

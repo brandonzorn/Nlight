@@ -1,7 +1,7 @@
 [flake8]
 inline-quotes=double
 import-order-style=google
-max-line-length = 120
+max-line-length = 89
 extend-ignore = R503,R502,F401,N802
 exclude =
     .git,

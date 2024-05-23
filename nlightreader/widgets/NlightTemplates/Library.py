@@ -18,12 +18,24 @@ class FormLibrary(MangaItemBasedWidget):
         self.manga_area.install(self.ui.items_layout)
         self.manga_area.get_content_widget().layout().addWidget(self.progressRing)
 
-        self.ui.planned_btn.clicked.connect(lambda: self.change_list(Nl.LibList.planned))
-        self.ui.reading_btn.clicked.connect(lambda: self.change_list(Nl.LibList.reading))
-        self.ui.on_hold_btn.clicked.connect(lambda: self.change_list(Nl.LibList.on_hold))
-        self.ui.completed_btn.clicked.connect(lambda: self.change_list(Nl.LibList.completed))
-        self.ui.dropped_btn.clicked.connect(lambda: self.change_list(Nl.LibList.dropped))
-        self.ui.re_reading_btn.clicked.connect(lambda: self.change_list(Nl.LibList.re_reading))
+        self.ui.planned_btn.clicked.connect(
+            lambda: self.change_list(Nl.LibList.planned),
+        )
+        self.ui.reading_btn.clicked.connect(
+            lambda: self.change_list(Nl.LibList.reading),
+        )
+        self.ui.on_hold_btn.clicked.connect(
+            lambda: self.change_list(Nl.LibList.on_hold),
+        )
+        self.ui.completed_btn.clicked.connect(
+            lambda: self.change_list(Nl.LibList.completed),
+        )
+        self.ui.dropped_btn.clicked.connect(
+            lambda: self.change_list(Nl.LibList.dropped),
+        )
+        self.ui.re_reading_btn.clicked.connect(
+            lambda: self.change_list(Nl.LibList.re_reading),
+        )
         self.catalog = LocalLib()
 
     def update_content(self):

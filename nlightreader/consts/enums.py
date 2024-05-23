@@ -76,7 +76,16 @@ class Nl:
             return cls.undefined
 
         def to_full_str(self):
-            names = ["Undefined", "Manga", "Manhwa", "Manhua", "Oneshot", "Doujin", "Ranobe", "Comics"]
+            names = [
+                "Undefined",
+                "Manga",
+                "Manhwa",
+                "Manhua",
+                "Oneshot",
+                "Doujin",
+                "Ranobe",
+                "Comics",
+            ]
             return names[self.value]
 
     @unique

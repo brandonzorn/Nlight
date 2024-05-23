@@ -48,13 +48,23 @@ class MainWindow(ParentWindow):
         self.set_min_size_by_screen()
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QIcon(Icons.App))
-        self._theme_updater = Thread(target=self.theme_listener, callback=self.update_style)
-        self._update_checker = Thread(target=self.check_for_updates, callback=self.show_update_info)
+        self._theme_updater = Thread(
+            target=self.theme_listener,
+            callback=self.update_style,
+        )
+        self._update_checker = Thread(
+            target=self.check_for_updates,
+            callback=self.show_update_info,
+        )
         self._theme_updater.start()
         self._update_checker.start()
 
     def check_for_updates(self):
-        response = get_html(f"{GITHUB_REPO}/releases", params={"per_page": 2}, content_type="json")
+        response = get_html(
+            f"{GITHUB_REPO}/releases",
+            params={"per_page": 2},
+            content_type="json",
+        )
         if not response:
             return
         for release in response:
@@ -78,7 +88,8 @@ class MainWindow(ParentWindow):
                 title=info_bar_title,
                 content=translate(
                     "Message",
-                    "New version {result} is available! You are currently on version {APP_VERSION}.",
+                    "New version {result} is available! "
+                    "You are currently on version {APP_VERSION}.",
                 ).format(result=result, APP_VERSION=APP_VERSION),
                 duration=info_bar_duration,
                 parent=self,
@@ -104,8 +115,12 @@ class MainWindow(ParentWindow):
 
 if __name__ == "__main__":
     if "debug" in sys.argv:
-        logging.basicConfig(level=logging.WARNING, filename="latest.log", filemode="w")
-    QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor)
+        logging.basicConfig(
+            level=logging.WARNING, filename="latest.log", filemode="w",
+        )
+    QApplication.setHighDpiScaleFactorRoundingPolicy(
+        Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor,
+    )
     QApplication.setStyle("Fusion")
     QThreadPool.globalInstance().setMaxThreadCount(32)
     app = App(sys.argv)

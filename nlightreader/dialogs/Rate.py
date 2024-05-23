@@ -18,7 +18,9 @@ class FormRate(QDialog):
         self.ui.cancel_btn.setIcon(FluentIcon.CANCEL)
         self.ui.update_btn.setIcon(FluentIcon.UPDATE)
         self.ui.delete_btn.setIcon(FluentIcon.DELETE)
-        self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in LIB_LISTS])
+        self.ui.lib_list_box.addItems(
+            [translate("Form", i.capitalize()) for i in LIB_LISTS],
+        )
         self.ui.update_btn.clicked.connect(self.send_rate)
         self.ui.cancel_btn.clicked.connect(self.close)
         self.ui.delete_btn.clicked.connect(self.delete_rate)
