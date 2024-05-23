@@ -40,7 +40,12 @@ class Ranobehub(AbstractRanobeCatalog):
             "sort": form.get_order_id(),
             "tags:positive[]": [int(i) for i in form.get_genre_ids()],
         }
-        response = get_html(url, headers=self.headers, params=params, content_type="json")
+        response = get_html(
+            url,
+            headers=self.headers,
+            params=params,
+            content_type="json",
+        )
         mangas = []
         if response:
             for i in get_data(response, ["resource"], default_val=[]):
@@ -90,7 +95,9 @@ class Ranobehub(AbstractRanobeCatalog):
         response = get_html(image.img, content_type="text")
         if response:
             soup = BeautifulSoup(response, "html.parser")
-            text_container = find_text_container(soup.findAll("div", {"class": "ui text container"}))
+            text_container = find_text_container(
+                soup.findAll("div", {"class": "ui text container"}),
+            )
             if not text_container:
                 return
 
@@ -113,7 +120,11 @@ class Ranobehub(AbstractRanobeCatalog):
 
     def get_preview(self, manga: Manga):
         if manga.preview_url:
-            return get_html(manga.preview_url, headers=self.headers, content_type="content")
+            return get_html(
+                manga.preview_url,
+                headers=self.headers,
+                content_type="content",
+            )
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{URL_RANOBEHUB}/ranobe/{manga.content_id}"

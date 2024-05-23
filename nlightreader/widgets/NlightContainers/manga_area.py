@@ -3,7 +3,9 @@ from PySide6.QtWidgets import QWidget, QHBoxLayout, QGridLayout
 from qfluentwidgets import ScrollArea
 
 from nlightreader.utils import Thread
-from nlightreader.widgets.NlightContainers.content_container import AbstractContentContainer
+from nlightreader.widgets.NlightContainers.content_container import (
+    AbstractContentContainer,
+)
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
@@ -51,7 +53,10 @@ class MangaArea(ScrollArea, AbstractContentContainer):
         i, j = 0, 0
         for item in items:
             self._manga_items.append(item)
-            self._content_grid.addWidget(item, i, j, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
+            self._content_grid.addWidget(
+                item, i, j,
+                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop,
+            )
             j += 1
             if j == self._column_count:
                 j = 0
@@ -60,7 +65,8 @@ class MangaArea(ScrollArea, AbstractContentContainer):
 
     def partial_image_addition(self):
         for item in self._manga_items:
-            if self.manga_thread_pool.activeThreadCount() == self.manga_thread_pool.maxThreadCount():
+            if (self.manga_thread_pool.activeThreadCount()
+                    == self.manga_thread_pool.maxThreadCount()):
                 self.manga_thread_pool.waitForDone()
             item.update_image()
 

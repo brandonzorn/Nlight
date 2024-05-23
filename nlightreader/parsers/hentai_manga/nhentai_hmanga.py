@@ -18,7 +18,12 @@ class NHentai(AbstractHentaiMangaCatalog):
     def search_manga(self, form):
         url = f"{self.url}/search"
         params = {"page": form.page, "q": form.search}
-        response = get_html(url, headers=self.headers, params=params, content_type="text")
+        response = get_html(
+            url,
+            headers=self.headers,
+            params=params,
+            content_type="text",
+        )
         mangas = []
         if response:
             soup = BeautifulSoup(response, "html.parser")
@@ -69,7 +74,11 @@ class NHentai(AbstractHentaiMangaCatalog):
                 img_tag = html_item.find("img")
                 if img_tag:
                     img_request_headers = self.headers | {"Referer": URL_NHENTAI}
-                    return get_html(img_tag["src"], content_type="content", headers=img_request_headers)
+                    return get_html(
+                        img_tag["src"],
+                        content_type="content",
+                        headers=img_request_headers,
+                    )
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/g/{manga.content_id}"

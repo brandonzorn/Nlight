@@ -33,9 +33,15 @@ class FormFacial(MangaItemBasedWidget):
         self.ui.filter_btn.clicked.connect(self.change_filters_visible)
         self.ui.genres_btn.clicked.connect(self.open_genres_dialog)
         self.ui.catalogs_btn.clicked.connect(
-            lambda: self.ui.catalogs_frame.setVisible(not self.ui.catalogs_list.isVisible()))
+            lambda: self.ui.catalogs_frame.setVisible(
+                not self.ui.catalogs_list.isVisible(),
+            ),
+        )
         self.ui.catalogs_list.itemClicked.connect(
-            lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row()))
+            lambda: self.change_catalog(
+                self.ui.catalogs_list.currentIndex().row(),
+            ),
+        )
 
         self.Form_genres = FormGenres(self)
         self.__filter_controller = FilterController()
@@ -64,7 +70,9 @@ class FormFacial(MangaItemBasedWidget):
         self.apply_filter()
 
     def update_page(self):
-        self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
+        self.ui.page_label.setText(
+            f"{translate('Other', 'Page')} {self.request_params.page}",
+        )
 
     @Slot()
     def search(self):

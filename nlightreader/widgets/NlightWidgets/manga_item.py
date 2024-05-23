@@ -55,7 +55,9 @@ class MangaItem(QWidget):
             self._db.add_manga_library(self.manga)
             InfoBar.success(
                 title=manga_title,
-                content=translate("Message", "Manga {} has been added.").format(self.manga.get_name()),
+                content=translate(
+                    "Message", "Manga {} has been added.",
+                ).format(self.manga.get_name()),
                 duration=info_bar_duration,
                 parent=info_bar_parent,
             )
@@ -64,7 +66,9 @@ class MangaItem(QWidget):
             self._db.rem_manga_library(self.manga)
             InfoBar.success(
                 title=manga_title,
-                content=translate("Message", "Manga {} has been deleted.").format(self.manga.get_name()),
+                content=translate(
+                    "Message", "Manga {} has been deleted.",
+                ).format(self.manga.get_name()),
                 duration=info_bar_duration,
                 parent=info_bar_parent,
             )
@@ -77,7 +81,9 @@ class MangaItem(QWidget):
             FileManager.remove_manga_files(self.manga, catalog)
             InfoBar.success(
                 title=manga_title,
-                content=translate("Message", "Files {} have been removed.").format(self.manga.get_name()),
+                content=translate(
+                    "Message", "Files {} have been removed.",
+                ).format(self.manga.get_name()),
                 duration=info_bar_duration,
                 parent=info_bar_parent,
             )

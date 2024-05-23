@@ -41,7 +41,9 @@ class FormInfo(QWidget):
 
         self.setObjectName("FormInfo")
 
-        self.ui.lib_list_box.addItems([translate("Form", i.capitalize()) for i in LIB_LISTS])
+        self.ui.lib_list_box.addItems(
+            [translate("Form", i.capitalize()) for i in LIB_LISTS],
+        )
         self.ui.items_tree.doubleClicked.connect(self.open_reader)
         self.ui.characters_list.doubleClicked.connect(self.open_character)
         self.ui.related_list.doubleClicked.connect(self.open_related_manga)
@@ -138,7 +140,10 @@ class FormInfo(QWidget):
                 logging.error(e)
                 self.setup_error.emit()
 
-        Worker(target=info_setup, callback=self.update_additional_info).start(pool=self.thread_pool)
+        Worker(
+            target=info_setup,
+            callback=self.update_additional_info,
+        ).start(pool=self.thread_pool)
 
     def update_add_button_icon(self):
         if self.ui.add_btn.isChecked():
@@ -151,15 +156,29 @@ class FormInfo(QWidget):
         self.ui.shikimori_frame.setVisible(self.catalog.is_primary)
         self.set_info()
         if self.db.check_manga_library(self.manga):
-            self.ui.lib_list_box.setCurrentIndex(self.db.get_manga_library_list(self.manga).value)
+            self.ui.lib_list_box.setCurrentIndex(
+                self.db.get_manga_library_list(self.manga).value,
+            )
             self.ui.add_btn.setChecked(True)
         else:
             self.ui.add_btn.setChecked(False)
         self.update_add_button_icon()
         self.update_manga_preview()
-        Worker(target=self.get_chapters, callback=self.update_chapters).start(pool=self.thread_pool)
-        Worker(target=self.get_relations, callback=self.update_relations).start(pool=self.thread_pool)
-        Worker(target=self.get_characters, callback=self.update_characters).start(pool=self.thread_pool)
+        Worker(
+            target=self.get_chapters,
+            callback=self.update_chapters,
+        ).start(pool=self.thread_pool)
+
+        Worker(
+            target=self.get_relations,
+            callback=self.update_relations,
+        ).start(pool=self.thread_pool)
+
+        Worker(
+            target=self.get_characters,
+            callback=self.update_characters,
+        ).start(pool=self.thread_pool)
+
         self.setup_done.emit()
 
     @Slot()
@@ -169,8 +188,12 @@ class FormInfo(QWidget):
 
     @Slot()
     def open_character(self):
-        character = self.catalog.get_character(self.related_characters[self.ui.characters_list.currentIndex().row()])
-        self.character_window = FormCharacter(character, self.manga.catalog_id, parent=self)
+        character = self.catalog.get_character(
+            self.related_characters[self.ui.characters_list.currentIndex().row()],
+        )
+        self.character_window = FormCharacter(
+            character, self.manga.catalog_id, parent=self,
+        )
         self.character_window.show()
 
     def update_manga_preview(self):
@@ -190,15 +213,25 @@ class FormInfo(QWidget):
         self.ui.name_label.setText(self.manga.name)
         self.ui.russian_label.setText(self.manga.russian)
         self.ui.status_label.setVisible(bool(self.manga.status))
-        self.ui.status_label.setText(f"{translate('Other', 'Status')}: {get_status(self.manga.status)}")
+        self.ui.status_label.setText(
+            f"{translate('Other', 'Status')}: {get_status(self.manga.status)}",
+        )
         self.ui.volumes_label.setVisible(bool(self.manga.volumes))
         self.ui.chapters_label.setVisible(bool(self.manga.chapters))
-        self.ui.volumes_label.setText(f"{translate('Other', 'Volumes')}: {self.manga.volumes}")
-        self.ui.chapters_label.setText(f"{translate('Other', 'Chapters')}: {self.manga.chapters}")
+        self.ui.volumes_label.setText(
+            f"{translate('Other', 'Volumes')}: {self.manga.volumes}",
+        )
+        self.ui.chapters_label.setText(
+            f"{translate('Other', 'Chapters')}: {self.manga.chapters}",
+        )
         self.ui.catalog_score_label.setVisible(bool(self.manga.score))
-        self.ui.catalog_score_label.setText(f"{translate('Other', 'Rating')}: {self.manga.score}")
+        self.ui.catalog_score_label.setText(
+            f"{translate('Other', 'Rating')}: {self.manga.score}",
+        )
         # self.ui.description_frame.setVisible(bool(self.manga.get_description()))
-        self.ui.description_text.setHtml(description_to_html(self.manga.get_description()))
+        self.ui.description_text.setHtml(
+            description_to_html(self.manga.get_description()),
+        )
 
     @Slot()
     def add_to_favorites(self):

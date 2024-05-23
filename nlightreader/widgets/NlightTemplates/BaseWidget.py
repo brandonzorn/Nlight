@@ -22,7 +22,10 @@ class MangaItemBasedWidget(QWidget):
         self.progressRing = IndeterminateProgressRing()
         self.progressRing.setVisible(False)
 
-        self._get_content_thread = Thread(target=self._get_content_thread_func, callback=self.update_content)
+        self._get_content_thread = Thread(
+            target=self._get_content_thread_func,
+            callback=self.update_content,
+        )
 
         self.catalog = None
         self.request_params = RequestForm()

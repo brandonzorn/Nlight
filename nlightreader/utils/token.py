@@ -24,8 +24,11 @@ class TokenManager:
         """
         Loads a token dictionary from disk.
 
-        :param catalog_name: The name of the parser for which the token is being loaded.
-        :return: A dictionary containing authentication token data, or an empty dictionary if no token is found.
+        :param catalog_name:
+            The name of the parser for which the token is being loaded.
+        :return:
+            A dictionary containing authentication token data,
+            or an empty dictionary if no token is found.
         """
         path = f"{TOKEN_PATH}/{catalog_name}"
         if Path(f"{path}/token.json").exists():
