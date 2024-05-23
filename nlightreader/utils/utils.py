@@ -11,26 +11,33 @@ from nlightreader.consts.files import LangIcons, Translations
 
 
 def make_request(
-        url: str, method: str, *,
-        headers=None, params=None,
-        json=None, data=None, cookies=None, content_type=None):
+        url: str, method: str, *, headers=None, params=None, json=None, data=None, cookies=None, content_type=None):
     """
     Sends an HTTP GET request to the specified URL with the given
     headers, query parameters, and cookies.
 
-    :param url: The URL to request.
-    :param method: The type of request (GET, POST, PUT, DELETE).
-    :param headers: Optional dictionary of request headers.
-    :param params: Optional dictionary of query parameters.
-    :param json: Optional dictionary of json to include in the request.
-    :param data: Optional dictionary of data to include in the request.
-    :param cookies: Optional dictionary of cookies to include in the request.
-    :param content_type: Optional string indicating the expected content type of the response
-    ('content', 'text' or 'json').
-    :return: If content_type is 'content', returns the raw response content (bytes).
-             If content_type is 'json', returns the JSON-decoded response.
-             Otherwise, returns the full requests.Response object.
-             Returns None if there was an error.
+    :param url:
+        The URL to request.
+    :param method:
+        The type of request (GET, POST, PUT, DELETE).
+    :param headers:
+        Optional dictionary of request headers.
+    :param params:
+        Optional dictionary of query parameters.
+    :param json:
+        Optional dictionary of json to include in the request.
+    :param data:
+        Optional dictionary of data to include in the request.
+    :param cookies:
+        Optional dictionary of cookies to include in the request.
+    :param content_type:
+        Optional string indicating the expected
+        content type of the response ('content', 'text', or 'json').
+    :return:
+        If content_type is 'content', returns the raw response content (bytes).
+        If content_type is 'json', returns the JSON-decoded response.
+        Otherwise, returns the full requests.Response object.
+        Returns None if there was an error.
     """
     if "test" in QApplication.arguments():
         return

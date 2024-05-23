@@ -62,6 +62,22 @@ class Manga(BaseItem):
         for lang, text in re.findall(r"<lang=(\w+)>(.+?)<end>", desc, re.DOTALL):
             self.add_description(Nl.Language.from_str(lang), text)
 
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "content_id": self.content_id,
+            "catalog_id": self.catalog_id,
+            "name": self.name,
+            "russian": self.russian,
+            "kind": self.kind.name,
+            "description": self.descriptions_to_str(),
+            "score": self.score,
+            "status": self.status,
+            "volumes": self.volumes,
+            "chapters": self.chapters,
+            "preview_url": self.preview_url,
+        }
+
 
 class Chapter:
     def __init__(self, content_id: str, catalog_id: int, vol: str, ch: str, title: str):
@@ -72,6 +88,7 @@ class Chapter:
         self.ch = ch
         self.title = title
         self._language = Nl.Language.undefined
+        self.translator = None
 
     def get_name(self) -> str:
         if not self.vol and not self.ch:
@@ -90,6 +107,17 @@ class Chapter:
             raise TypeError("Language must be Nl.Language")
         self._language = language
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "content_id": self.content_id,
+            "catalog_id": self.catalog_id,
+            "vol": self.vol,
+            "ch": self.ch,
+            "title": self.title,
+            "language": self.language.name,
+        }
+
 
 class Image:
     def __init__(self, image_id: str, page: int, img: str):
@@ -104,10 +132,7 @@ class Image:
 
 
 class Character(BaseItem):
-    def __init__(
-            self, content_id: str, catalog_id: int,
-            name, russian, description, role,
-    ):
+    def __init__(self, content_id: str, catalog_id: int, name, russian, description, role):
         super().__init__(content_id, catalog_id, name, russian)
         self.description = description
         self.role = role
