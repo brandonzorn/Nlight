@@ -10,7 +10,7 @@ class TextFormatter:
     :param text:
         The text to be formatted.
         show_spoilers (bool, optional):
-        Whether or not to show spoiler text. Defaults to False.
+        Whether to show spoiler text. Defaults to False.
 
     Methods:
         replace_spoilers():
