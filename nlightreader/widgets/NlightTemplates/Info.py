@@ -264,7 +264,7 @@ class FormInfo(QWidget):
         self.ui.items_tree.clear()
         self.ui.items_frame.setVisible(bool(self.chapters))
         for lang, translators in self.sorted_chapters.items():
-            lang_item = QTreeWidgetItem([translate("NlLanguage", lang.to_full_str())])
+            lang_item = QTreeWidgetItem([translate("NlLanguage", lang.to_str())])
             lang_item.setIcon(0, QIcon(get_language_icon(lang)))
             self.ui.items_tree.addTopLevelItem(lang_item)
 
