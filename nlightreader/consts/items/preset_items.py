@@ -35,6 +35,10 @@ class PresetOrders:
         "name": "By name",
         "russian": "По названию",
     }
+    RUS_NAME = {
+        "name": "By name",
+        "russian": "По названию на русском",
+    }
     POPULARITY = {
         "name": "By popularity",
         "russian": "По популярности",
@@ -76,6 +80,10 @@ class PresetOrders:
     CHAPTERS_COUNT = {
         "name": "By number of chapters",
         "russian": "По количеству глав",
+    }
+    EPISODES_COUNT = {
+        "name": "By number of episodes",
+        "russian": "По количеству эпизодов",
     }
     VOLUMES_COUNT = {
         "name": "By number of volumes",
