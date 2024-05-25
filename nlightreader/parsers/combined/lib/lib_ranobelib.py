@@ -2,6 +2,7 @@ import base64
 import re
 
 from nlightreader.consts.enums import Nl
+from nlightreader.consts.items import RanobeLibItems
 from nlightreader.consts.urls import URL_RANOBELIB
 from nlightreader.items import Manga, Chapter, Image
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
@@ -16,6 +17,7 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
     def __init__(self):
         super().__init__()
         self.url = URL_RANOBELIB
+        self.items = RanobeLibItems
 
         self.content_name = "manga"
         self.site_id = 3

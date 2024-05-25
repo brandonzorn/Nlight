@@ -28,6 +28,9 @@ class LibBase(AbstractCatalog):
         mangas = []
         params = {
             "site_id[]": self.site_id,
+            "sort_by": form.get_order_id(),
+            "types[]": form.get_kind_ids(),
+            "genres[]": form.get_genre_ids(),
             "q": form.search,
         }
         cookies = {"adult_caution": '{"media":true,"content":true}'}
