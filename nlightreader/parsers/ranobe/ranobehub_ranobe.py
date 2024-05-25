@@ -68,8 +68,8 @@ class Ranobehub(AbstractRanobeCatalog):
                     chapter = Chapter(
                         chapter_data.get("id"), self.CATALOG_ID,
                         volume_num, chapter_data.get("num"), chapter_data.get("name"),
+                        Nl.Language.ru,
                     )
-                    chapter.language = Nl.Language.ru
                     chapters.append(chapter)
             chapters.reverse()
         return chapters

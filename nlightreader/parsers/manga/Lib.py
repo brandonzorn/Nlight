@@ -79,9 +79,8 @@ class LibBase(AbstractMangaCatalog):
                 vol = str(vol) if vol is not None else vol
                 ch = str(ch) if ch is not None else ch
                 chapter = Chapter(
-                    i.get("chapter_id"), self.CATALOG_ID, vol, ch, i.get("chapter_name"),
+                    i.get("chapter_id"), self.CATALOG_ID, vol, ch, i.get("chapter_name"), Nl.Language.ru,
                 )
-                chapter.language = Nl.Language.ru
                 chapters.append(chapter)
         return chapters
 

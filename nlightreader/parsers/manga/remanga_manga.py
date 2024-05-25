@@ -80,8 +80,8 @@ class Remanga(AbstractMangaCatalog):
                             str(ch.get("tome")),
                             ch.get("chapter"),
                             ch.get("name"),
+                            Nl.Language.ru,
                         )
-                        chapter.language = Nl.Language.ru
                         chapters.append(chapter)
         return chapters
 

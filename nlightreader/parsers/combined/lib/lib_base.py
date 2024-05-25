@@ -52,9 +52,8 @@ class LibBase(AbstractCatalog):
         if chapters_response := get_html(chapters_url, content_type="json"):
             for i in chapters_response["data"]:
                 chapter = Chapter(
-                        i["id"], self.CATALOG_ID, i["volume"], i["number"], i["name"],
+                        i["id"], self.CATALOG_ID, i["volume"], i["number"], i["name"], Nl.Language.ru,
                 )
-                chapter.language = Nl.Language.ru
                 if branches_data := i.get("branches"):
                     chapter.translator = branches.get(branches_data[0]["branch_id"])
                 chapters.append(chapter)
