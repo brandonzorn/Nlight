@@ -82,8 +82,7 @@ class Rulate(AbstractRanobeCatalog):
                 name = name.strip()
                 chapter_id = chapter_data.unwrap()["data-id"]
 
-                chapter = Chapter(chapter_id, self.CATALOG_ID, "", "", name)
-                chapter.language = Nl.Language.ru
+                chapter = Chapter(chapter_id, self.CATALOG_ID, "", "", name, Nl.Language.ru)
                 chapters.append(chapter)
             chapters.reverse()
         return chapters

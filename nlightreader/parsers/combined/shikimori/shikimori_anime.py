@@ -65,14 +65,13 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             for episode_num in range(translator.episodes, 0, -1):
                 chapter = Chapter(
                     f"{translator.content_id}{episode_num}", self.CATALOG_ID,
-                    "", "", f"Episode {episode_num}",
+                    "", "", f"Episode {episode_num}", Nl.Language.ru,
                 )
                 chapter.translator = f"{translator.translator} ({translator.tr_type})"
                 chapter.__setattr__(
                     "url",
                     f"http:{translator.kodik_url}?episode={episode_num}",
                 )
-                chapter.language = Nl.Language.ru
                 chapters.append(chapter)
         return chapters
 

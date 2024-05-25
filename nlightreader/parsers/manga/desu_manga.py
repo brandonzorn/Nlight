@@ -75,8 +75,9 @@ class Desu(AbstractMangaCatalog):
                 ch = i.get("ch")
                 vol = str(vol) if vol is not None else vol
                 ch = str(ch) if ch is not None else ch
-                chapter = Chapter(i.get("id"), self.CATALOG_ID, vol, ch, i.get("title"))
-                chapter.language = Nl.Language.ru
+                chapter = Chapter(
+                    i.get("id"), self.CATALOG_ID, vol, ch, i.get("title"), Nl.Language.ru,
+                )
                 chapters.append(chapter)
         return chapters
 
