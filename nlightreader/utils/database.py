@@ -198,9 +198,9 @@ class Database:
         title = a[5]
         language = Nl.Language.from_str(a[6])
 
-        chapter = Chapter(content_id, catalog_id, vol, ch, title)
-        chapter.language = language
-        return chapter
+        return Chapter(
+            content_id, catalog_id, vol, ch, title, language,
+        )
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         select_chapters = sqlalchemy.select(self._chapters).filter_by(
@@ -210,9 +210,11 @@ class Database:
         a = select_chapters_result.fetchall()
         chapters = []
         for i in a[::-1]:
-            chapter = Chapter(i[1], i[2], i[3], i[4], i[5])
-            chapter.language = Nl.Language.from_str(a[6])
-            chapters.append(chapter)
+            chapters.append(
+                Chapter(
+                    i[1], i[2], i[3], i[4], i[5], Nl.Language.from_str(a[6]),
+                ),
+            )
         return chapters
 
     def add_manga_library(self, manga: Manga, lib_list: Nl.LibList = Nl.LibList.planned):
