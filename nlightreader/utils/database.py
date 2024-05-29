@@ -281,11 +281,7 @@ class Database:
         return bool(a[0][0])
 
     def add_history_note(self, note: HistoryNote):
-        note_data = {
-            "manga_id": note.manga.id,
-            "chapter_id": note.chapter.id,
-            "is_completed": note.is_completed,
-        }
+        note_data = note.to_dict()
         history_note_insert = insert(self._chapter_history).values([note_data])
         history_note_insert = history_note_insert.on_conflict_do_update(
             index_elements=["chapter_id"], set_=note_data,
@@ -299,11 +295,7 @@ class Database:
             return
         with self.__engine.connect() as conn:
             for note in history_notes:
-                note_data = {
-                    "manga_id": note.manga.id,
-                    "chapter_id": note.chapter.id,
-                    "is_completed": note.is_completed,
-                }
+                note_data = note.to_dict()
                 history_notes_insert = insert(self._chapter_history).values([note_data])
                 history_notes_insert = history_notes_insert.on_conflict_do_update(
                     index_elements=["chapter_id"], set_=note_data)
