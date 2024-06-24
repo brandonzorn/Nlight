@@ -10,9 +10,9 @@ from nlightreader.items.sort_items import Genre
 class Manga(BaseItem):
     def __init__(self, content_id: str, catalog_id, name, russian):
         super().__init__(content_id, catalog_id, name, russian)
-        self._kind: Nl.MangaKind = Nl.MangaKind.undefined
+        self.__kind: Nl.MangaKind = Nl.MangaKind.undefined
         self._description: dict[Nl.Language, str] = {}
-        self._score: int | float = 0
+        self.__score: int | float = 0
         self.status: str | None = None
         self.genres: list[Genre] = []
         self.volumes = 0
@@ -21,23 +21,23 @@ class Manga(BaseItem):
 
     @property
     def score(self):
-        return self._score
+        return self.__score
 
     @score.setter
     def score(self, score):
         if isinstance(score, float) and score.is_integer():
             score = int(score)
-        self._score = score
+        self.__score = score
 
     @property
     def kind(self):
-        return self._kind
+        return self.__kind
 
     @kind.setter
     def kind(self, kind):
         if not isinstance(kind, Nl.MangaKind):
             raise TypeError("Kind must be Nl.MangaKind")
-        self._kind = kind
+        self.__kind = kind
 
     def add_description(self, language: Nl.Language, description: str):
         self._description.update({language: description})

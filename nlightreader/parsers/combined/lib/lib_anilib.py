@@ -26,7 +26,7 @@ class LibAnilib(LibBase, AbstractAnimeCatalog):
         if episodes_response:
             for i in episodes_response["data"]:
                 episode = Chapter(
-                    i["id"], self.CATALOG_ID, "", "", f"Episode {i["number"]}", Nl.Language.ru,
+                    i["id"], self.CATALOG_ID, "", "", f"Episode {i['number']}", Nl.Language.ru,
                 )
                 episodes.append(episode)
         episodes.reverse()
