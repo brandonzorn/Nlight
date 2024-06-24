@@ -44,7 +44,7 @@ class NHentai(AbstractHentaiMangaCatalog):
         return [
             Chapter(
                 manga.content_id, self.CATALOG_ID, "1", "1", "",
-            )
+            ),
         ]
 
     def get_images(self, manga: Manga, chapter: Chapter):
@@ -70,13 +70,10 @@ class NHentai(AbstractHentaiMangaCatalog):
 
     def get_preview(self, manga: Manga):
         url = f"{self.url}/g/{manga.content_id}"
-        response = get_html(url, headers=self.headers, content_type="text")
-        if response:
+        if response := get_html(url, headers=self.headers, content_type="text"):
             soup = BeautifulSoup(response, "html.parser")
-            html_item = soup.find("div", id="cover")
-            if html_item:
-                img_tag = html_item.find("img")
-                if img_tag:
+            if html_item := soup.find("div", id="cover"):
+                if img_tag := html_item.find("img"):
                     img_request_headers = self.headers | {"Referer": URL_NHENTAI}
                     return get_html(
                         img_tag["src"],

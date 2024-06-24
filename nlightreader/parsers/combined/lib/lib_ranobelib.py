@@ -50,8 +50,9 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
         if response:
             data = response["data"]
             content = data["content"]
-            content = content.replace("\n", "")
-            content = content.replace("\r", "")
+            if isinstance(content, str):
+                content = content.replace("\n", "")
+                content = content.replace("\r", "")
             return replace_images(content)
 
     def get_manga_url(self, manga: Manga) -> str:
