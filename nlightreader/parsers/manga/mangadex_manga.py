@@ -124,7 +124,7 @@ class MangaDex(AbstractMangaCatalog):
                         attr.get("title"),
                         Nl.Language.from_str(
                             attr.get("translatedLanguage"),
-                        )
+                        ),
                     )
                     chapters.append(chapter)
             chapters.reverse()
