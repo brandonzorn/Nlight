@@ -137,8 +137,7 @@ class Auth:
             "client_secret": self.client_secret,
         }
         self.tokens = TokenManager.load_token(ShikimoriLib.CATALOG_NAME)
-        self.headers = {
-            "User-Agent": "Shikimori",
+        self.headers = SHIKIMORI_HEADERS | {
             "Authorization": f"Bearer {self.tokens.get('access_token')}",
         }
         self.client = self.get_client(scope, self.redirect_uri, token)
