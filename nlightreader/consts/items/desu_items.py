@@ -1,20 +1,33 @@
-from nlightreader.consts.items.parser_items import ParserItems
-from nlightreader.consts.items.preset_items import PresetKinds as Pk, PresetOrders as Po
+from nlightreader.consts.items.parser_items import (
+    ParserItems,
+)
+from nlightreader.consts.items.preset_items import (
+    PresetKinds as Pk,
+    PresetOrders as Po,
+)
 
 
 class DesuItems(ParserItems):
     ORDERS = [
-        {"value": "popular"} | Po.POPULARITY,
-        {"value": "name"} | Po.NAME,
-        {"value": "updated"} | Po.UPDATED,
+        {"value": "popular"}
+        | Po.POPULARITY,
+        {"value": "name"}
+        | Po.NAME,
+        {"value": "updated"}
+        | Po.UPDATED,
     ]
 
     KINDS = [
-        {"value": "manga"} | Pk.MANGA,
-        {"value": "manhwa"} | Pk.MANHWA,
-        {"value": "manhua"} | Pk.MANHUA,
-        {"value": "one_shot"} | Pk.ONESHOT,
-        {"value": "comics"} | Pk.COMIC,
+        {"value": "manga"}
+        | Pk.MANGA,
+        {"value": "manhwa"}
+        | Pk.MANHWA,
+        {"value": "manhua"}
+        | Pk.MANHUA,
+        {"value": "one_shot"}
+        | Pk.ONESHOT,
+        {"value": "comics"}
+        | Pk.COMIC,
     ]
 
     GENRES = [
@@ -119,16 +132,24 @@ class DesuItems(ParserItems):
             "russian": "Меха",
         },
         {
-            "value": "Mystic", "name": "Mystic", "russian": "Мистика",
+            "value": "Mystic",
+            "name": "Mystic",
+            "russian": "Мистика",
         },
         {
-            "value": "Music", "name": "Music", "russian": "Музыка",
+            "value": "Music",
+            "name": "Music",
+            "russian": "Музыка",
         },
         {
-            "value": "Sci-Fi", "name": "Sci-Fi", "russian": "Научная фантастика",
+            "value": "Sci-Fi",
+            "name": "Sci-Fi",
+            "russian": "Научная фантастика",
         },
         {
-            "value": "Parody", "name": "Parody", "russian": "Пародия",
+            "value": "Parody",
+            "name": "Parody",
+            "russian": "Пародия",
         },
         {
             "value": "Slice of Life",

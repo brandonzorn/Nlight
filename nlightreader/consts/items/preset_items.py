@@ -1,29 +1,101 @@
 class PresetKinds:
-    MANGA = {"name": "Manga", "russian": "Манга"}
-    OEL_MANGA = {"name": "OEL-manga", "russian": "OEL-манга"}
-    RU_MANGA = {"name": "Rumanga", "russian": "Руманга"}
-    MANHWA = {"name": "Manhwa", "russian": "Манхва"}
-    MANHUA = {"name": "Manhua", "russian": "Маньхуа"}
-    ONESHOT = {"name": "Oneshot", "russian": "Ваншот"}
-    COMIC = {"name": "Comic", "russian": "Комикс"}
-    WESTERN_COMIC = {"name": "Western comic", "russian": "Западный комикс"}
-    RU_COMIC = {"name": "Rucomic", "russian": "Рукомикс"}
-    INDONESIAN_COMIC = {"name": "Indonesian comic", "russian": "Индонезийский комикс"}
-    DOUJIN = {"name": "doujin", "russian": "Додзинси"}
-    OTHER = {"name": "Other", "russian": "Другое"}
+    MANGA = {
+        "name": "Manga",
+        "russian": "Манга",
+    }
+    OEL_MANGA = {
+        "name": "OEL-manga",
+        "russian": "OEL-манга",
+    }
+    RU_MANGA = {
+        "name": "Rumanga",
+        "russian": "Руманга",
+    }
+    MANHWA = {
+        "name": "Manhwa",
+        "russian": "Манхва",
+    }
+    MANHUA = {
+        "name": "Manhua",
+        "russian": "Маньхуа",
+    }
+    ONESHOT = {
+        "name": "Oneshot",
+        "russian": "Ваншот",
+    }
+    COMIC = {
+        "name": "Comic",
+        "russian": "Комикс",
+    }
+    WESTERN_COMIC = {
+        "name": "Western comic",
+        "russian": "Западный комикс",
+    }
+    RU_COMIC = {
+        "name": "Rucomic",
+        "russian": "Рукомикс",
+    }
+    INDONESIAN_COMIC = {
+        "name": "Indonesian comic",
+        "russian": "Индонезийский комикс",
+    }
+    DOUJIN = {
+        "name": "doujin",
+        "russian": "Додзинси",
+    }
+    OTHER = {
+        "name": "Other",
+        "russian": "Другое",
+    }
 
-    TV = {"name": "TV Series", "russian": "TV Сериал"}
-    TV_13 = {"name": "Short", "russian": "Короткие"}
-    TV_24 = {"name": "Medium", "russian": "Средние"}
-    TV_48 = {"name": "Long", "russian": "Длинные"}
-    MOVIE = {"name": "Movie", "russian": "Фильм"}
-    OVA = {"name": "OVA", "russian": "OVA"}
-    ONA = {"name": "ONA", "russian": "ONA"}
-    SPECIAL = {"name": "Special", "russian": "Спецвыпуск"}
-    TV_SPECIAL = {"name": "TV Special", "russian": "TV Спецвыпуск"}
-    MUSIC = {"name": "Clip", "russian": "Клип"}
-    PV = {"name": "Promo clip", "russian": "Проморолик"}
-    CM = {"name": "Advertising", "russian": "Реклама"}
+    TV = {
+        "name": "TV Series",
+        "russian": "TV Сериал",
+    }
+    TV_13 = {
+        "name": "Short",
+        "russian": "Короткие",
+    }
+    TV_24 = {
+        "name": "Medium",
+        "russian": "Средние",
+    }
+    TV_48 = {
+        "name": "Long",
+        "russian": "Длинные",
+    }
+    MOVIE = {
+        "name": "Movie",
+        "russian": "Фильм",
+    }
+    OVA = {
+        "name": "OVA",
+        "russian": "OVA",
+    }
+    ONA = {
+        "name": "ONA",
+        "russian": "ONA",
+    }
+    SPECIAL = {
+        "name": "Special",
+        "russian": "Спецвыпуск",
+    }
+    TV_SPECIAL = {
+        "name": "TV Special",
+        "russian": "TV Спецвыпуск",
+    }
+    MUSIC = {
+        "name": "Clip",
+        "russian": "Клип",
+    }
+    PV = {
+        "name": "Promo clip",
+        "russian": "Проморолик",
+    }
+    CM = {
+        "name": "Advertising",
+        "russian": "Реклама",
+    }
 
 
 class PresetOrders:
