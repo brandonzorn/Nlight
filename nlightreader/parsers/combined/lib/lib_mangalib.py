@@ -37,6 +37,5 @@ class LibMangalib(LibBase, AbstractMangaCatalog):
     def get_image(self, image: Image):
         return get_html(image.img, content_type="content")
 
-
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/ru/manga/{manga.content_id}"

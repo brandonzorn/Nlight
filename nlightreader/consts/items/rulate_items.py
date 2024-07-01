@@ -1,5 +1,9 @@
-from nlightreader.consts.items.parser_items import ParserItems
-from nlightreader.consts.items.preset_items import PresetOrders as Po
+from nlightreader.consts.items.parser_items import (
+    ParserItems,
+)
+from nlightreader.consts.items.preset_items import (
+    PresetOrders as Po,
+)
 
 
 class RulateItems(ParserItems):
@@ -21,7 +25,8 @@ class RulateItems(ParserItems):
         },
         {
             "value": "3",
-        } | Po.CREATED,
+        }
+        | Po.CREATED,
         {
             "value": "4",
             "name": "By last activity date",
@@ -29,10 +34,12 @@ class RulateItems(ParserItems):
         },
         {
             "value": "5",
-        } | Po.VIEWS,
+        }
+        | Po.VIEWS,
         {
             "value": "6",
-        } | Po.RATING,
+        }
+        | Po.RATING,
         {
             "value": "7",
             "name": "By number of translated chapters",
@@ -40,7 +47,8 @@ class RulateItems(ParserItems):
         },
         {
             "value": "8",
-        } | Po.LIKES_NUM,
+        }
+        | Po.LIKES_NUM,
         {
             "value": "10",
             "name": "By number of pages",
