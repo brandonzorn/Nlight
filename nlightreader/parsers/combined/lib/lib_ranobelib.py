@@ -33,8 +33,10 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
     def get_image(self, image: Image):
         # Function to get content images from chapter
         def get_chapter_content_image(media_id: str):
-            url = f"{media_id}"
-            chapter_image = get_html(url, headers=self.headers).content
+            url = media_id if media_id.startswith("http") else f"{self.url}{media_id}"
+            chapter_image = get_html(
+                url, headers=self.headers,
+            ).content
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/png;base64,{str_equivalent_image}"
 
