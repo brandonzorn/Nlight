@@ -25,7 +25,7 @@ URL_ALLHENTAI = "https://20.allhen.online"
 URL_ALLHENTAI_API = ""
 
 URL_SLASHLIB = "https://v2.slashlib.me"
-URL_MANGALIB = "https://mangalib.me"
+URL_MANGALIB = "https://test-front.mangalib.me"
 URL_RANOBELIB = "https://ranobelib.me"
 URL_ANILIB = "https://anilib.me"
 URL_LIB_API = "https://api.lib.social/api"
