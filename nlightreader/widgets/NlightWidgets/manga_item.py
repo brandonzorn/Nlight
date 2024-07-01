@@ -123,12 +123,12 @@ class MangaItem(QWidget):
         if not self.manga_pixmap:
             return
 
-        image = QImage(self.ui.image.maximumSize(), QImage.Format_ARGB32)
+        image = QImage(self.ui.image.maximumSize(), QImage.Format.Format_ARGB32)
         image.fill(QColor(0, 0, 0, 0))
 
         painter = QPainter(image)
-        painter.setRenderHint(QPainter.Antialiasing, True)
-        painter.setRenderHint(QPainter.SmoothPixmapTransform, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform, True)
 
         path = QtGui.QPainterPath()
         path.addRoundedRect(QRect(0, 0, image.width(), image.height()), 10, 10)
