@@ -1,6 +1,10 @@
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import ShikimoriItems
-from nlightreader.consts.urls import URL_SHIKIMORI, URL_SHIKIMORI_API, SHIKIMORI_HEADERS
+from nlightreader.consts.urls import (
+    URL_SHIKIMORI,
+    URL_SHIKIMORI_API,
+    SHIKIMORI_HEADERS,
+)
 from nlightreader.items import Manga, Character, Genre, Order
 from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils.utils import get_html
@@ -19,7 +23,7 @@ class ShikimoriBase(AbstractCatalog):
 
     def setup_manga(self, data: dict) -> Manga:
         return Manga(
-            data.get("id"),
+            str(data.get("id")),
             self.CATALOG_ID,
             data.get("name"),
             data.get("russian"),
@@ -38,7 +42,10 @@ class ShikimoriBase(AbstractCatalog):
             if data.get("chapters"):
                 manga.chapters = int(data.get("chapters"))
 
-            manga.add_description(Nl.Language.undefined, data.get("description"))
+            manga.add_description(
+                Nl.Language.undefined,
+                data.get("description"),
+            )
         return manga
 
     def get_character(self, character: Character) -> Character:
@@ -56,7 +63,8 @@ class ShikimoriBase(AbstractCatalog):
 
     def get_character_preview(self, character: Character):
         return get_html(
-            f"{self.url}/system/characters/original/{character.content_id}.jpg",
+            f"{self.url}/system/characters/"
+            f"original/{character.content_id}.jpg",
             content_type="content",
         )
 
@@ -105,7 +113,7 @@ class ShikimoriBase(AbstractCatalog):
                         if data:
                             characters.append(
                                 Character(
-                                    data.get("id"),
+                                    str(data.get("id")),
                                     self.CATALOG_ID,
                                     data.get("name"),
                                     data.get("russian"),

@@ -74,8 +74,14 @@ class ReaderWindow(QMainWindow):
                 self.manga.kind == Nl.MangaKind.ranobe
         ) else ImageArea()
         self.content_container.install(self.ui.reader_layout)
-        self.content_container.get_content_widget().parent().layout().addWidget(
-            self.progressRing,
+        (
+            self.content_container
+            .get_content_widget()
+            .parent()
+            .layout()
+            .addWidget(
+                self.progressRing,
+            )
         )
         self.chapters = chapters
         self.cur_chapter = cur_chapter
@@ -102,7 +108,9 @@ class ReaderWindow(QMainWindow):
 
     @Slot()
     def change_chapters_list_visible(self):
-        self.ui.chapters_frame.setVisible(not self.ui.chapters_frame.isVisible())
+        self.ui.chapters_frame.setVisible(
+            not self.ui.chapters_frame.isVisible(),
+        )
 
     @Slot()
     def change_chapter(self):
@@ -124,10 +132,16 @@ class ReaderWindow(QMainWindow):
 
     @Slot()
     def turn_page_next(self):
-        self.db.add_history_note(HistoryNote(self._current_chapter, self.manga, False))
+        self.db.add_history_note(
+            HistoryNote(
+                self._current_chapter, self.manga, False,
+            ),
+        )
         if self.cur_page == self.max_page:
             self.db.add_history_note(
-                HistoryNote(self._current_chapter, self.manga, True),
+                HistoryNote(
+                    self._current_chapter, self.manga, True,
+                ),
             )
             self.turn_chapter_next()
         else:
@@ -136,7 +150,13 @@ class ReaderWindow(QMainWindow):
 
     @Slot()
     def turn_page_prev(self):
-        self.db.add_history_note(HistoryNote(self._current_chapter, self.manga, False))
+        self.db.add_history_note(
+            HistoryNote(
+                self._current_chapter,
+                self.manga,
+                False,
+            ),
+        )
         if self.cur_page == 1:
             self.db.del_history_note(self._current_chapter)
             self.turn_chapter_prev()
@@ -152,7 +172,11 @@ class ReaderWindow(QMainWindow):
 
     @Slot()
     def turn_chapter_next(self):
-        self.db.add_history_note(HistoryNote(self._current_chapter, self.manga, True))
+        self.db.add_history_note(
+            HistoryNote(
+                self._current_chapter, self.manga, True,
+            ),
+        )
         if self.cur_chapter == self.max_chapters:
             self.deleteLater()
         else:

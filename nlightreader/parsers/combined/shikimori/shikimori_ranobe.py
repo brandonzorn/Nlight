@@ -1,6 +1,8 @@
 from nlightreader.items import RequestForm
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
-from nlightreader.parsers.combined.shikimori.shikimori_base import ShikimoriBase
+from nlightreader.parsers.combined.shikimori.shikimori_base import (
+    ShikimoriBase,
+)
 from nlightreader.utils.utils import get_html
 
 

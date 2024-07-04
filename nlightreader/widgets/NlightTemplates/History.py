@@ -21,7 +21,9 @@ class FormHistory(QWidget):
 
         self.setObjectName("FormHistory")
 
-        self.ui.items_tree.customContextMenuRequested.connect(self.on_context_menu)
+        self.ui.items_tree.customContextMenuRequested.connect(
+            self.on_context_menu,
+        )
         self.db: Database = Database()
         self.ui.delete_btn.clicked.connect(self.delete_note)
         self.ui.items_tree.doubleClicked.connect(self.open_info)
@@ -94,8 +96,12 @@ class FormHistory(QWidget):
     def _get_selected_note(self) -> HistoryNote:
         selected_item = self.ui.items_tree.currentItem()
         if selected_item.parent():
-            parent_index = self.ui.items_tree.indexFromItem(selected_item.parent()).row()
-            note_index = self.ui.items_tree.indexFromItem(selected_item).row()
+            parent_index = self.ui.items_tree.indexFromItem(
+                selected_item.parent(),
+            ).row()
+            note_index = self.ui.items_tree.indexFromItem(
+                selected_item,
+            ).row()
             return self.sorted_notes[
                 list(self.sorted_notes.keys())[parent_index]
             ][note_index]

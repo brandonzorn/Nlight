@@ -7,7 +7,9 @@ from nlightreader.dialogs import TokenAuthMessageBox, UserDataAuthMessageBox
 from nlightreader.items import Manga, User
 from nlightreader.parsers import ShikimoriLib
 from nlightreader.utils import translate, Worker
-from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
+from nlightreader.widgets.NlightTemplates.BaseWidget import (
+    MangaItemBasedWidget,
+)
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
@@ -23,7 +25,9 @@ class FormShikimori(MangaItemBasedWidget):
         self.setObjectName("FormShikimori")
 
         self.manga_area.install(self.ui.items_layout)
-        self.manga_area.get_content_widget().layout().addWidget(self.progressRing)
+        self.manga_area.get_content_widget().layout().addWidget(
+            self.progressRing,
+        )
 
         self.ui.planned_btn.clicked.connect(
             lambda: self.change_list(Nl.LibList.planned),
@@ -86,7 +90,10 @@ class FormShikimori(MangaItemBasedWidget):
             w = UserDataAuthMessageBox(self.catalog, parent=self)
         if w.exec():
             self.catalog.session.auth_login(w.get_user_data())
-            Worker(target=self.get_user_info, callback=self.set_user_info).start()
+            Worker(
+                target=self.get_user_info,
+                callback=self.set_user_info,
+            ).start()
 
     @Slot()
     def search(self):

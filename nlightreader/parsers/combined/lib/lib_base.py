@@ -16,11 +16,14 @@ class LibBase(AbstractCatalog):
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self.url_api}/{self.content_name}/{manga.content_id}"
-        params = {"fields[]": "summary"}
+        params = {"fields[]": ["summary", "rate_avg"]}
         response = get_html(url, params=params, content_type="json")
         if response:
             data = response["data"]
-            manga.add_description(Nl.Language.ru, data["summary"])
+            manga.preview_url = data["cover"]["md"]
+            manga.score = data["rating"]["average"]
+            if description := data.get("summary"):
+                manga.add_description(Nl.Language.ru, description)
         return manga
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
@@ -34,31 +37,56 @@ class LibBase(AbstractCatalog):
             "q": form.search,
         }
         cookies = {"adult_caution": '{"media":true,"content":true}'}
-        response = get_html(url, params=params, cookies=cookies, content_type="json")
+        response = get_html(
+            url,
+            params=params,
+            cookies=cookies,
+            content_type="json",
+        )
         if response:
             for i in response.get("data"):
-                manga = Manga(i["slug_url"], self.CATALOG_ID, i["name"], i["rus_name"])
+                manga = Manga(
+                    i["slug_url"],
+                    self.CATALOG_ID,
+                    i["name"],
+                    i["rus_name"],
+                )
                 manga.preview_url = i["cover"]["md"]
                 manga.score = i["rating"]["average"]
                 mangas.append(manga)
         return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
-        branches_url = f"{self.url_api}/branches/{manga.content_id.split('--')[0]}"
+        branches_url = (
+            f"{self.url_api}/"
+            f"branches/{manga.content_id.split('--')[0]}"
+        )
+
         branches = {}
         if branches_response := get_html(branches_url, content_type="json"):
             for branch in branches_response["data"]:
                 branches.update({branch["id"]: branch["teams"][0]["name"]})
 
-        chapters_url = f"{self.url_api}/{self.content_name}/{manga.content_id}/chapters"
+        chapters_url = (
+            f"{self.url_api}/{self.content_name}/"
+            f"{manga.content_id}/chapters"
+        )
+
         chapters: list[Chapter] = []
         if chapters_response := get_html(chapters_url, content_type="json"):
             for i in chapters_response["data"]:
                 chapter = Chapter(
-                        i["id"], self.CATALOG_ID, i["volume"], i["number"], i["name"], Nl.Language.ru,
+                    str(i["id"]),
+                    self.CATALOG_ID,
+                    i["volume"],
+                    i["number"],
+                    i["name"],
+                    Nl.Language.ru,
                 )
                 if branches_data := i.get("branches"):
-                    chapter.translator = branches.get(branches_data[0]["branch_id"])
+                    chapter.translator = branches.get(
+                        branches_data[0]["branch_id"],
+                    )
                 chapters.append(chapter)
         chapters.reverse()
         return chapters

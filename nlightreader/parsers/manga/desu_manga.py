@@ -24,7 +24,10 @@ class Desu(AbstractMangaCatalog):
             data = get_data(response, ["response"], {})
             manga.genres = [
                 Genre(
-                    i.get("id"), self.CATALOG_ID, i.get("text"), i.get("russian"),
+                    str(i.get("id")),
+                    self.CATALOG_ID,
+                    i.get("text"),
+                    i.get("russian"),
                 ) for i in data.get("genres")
             ]
             manga.score = data.get("score")
@@ -33,7 +36,10 @@ class Desu(AbstractMangaCatalog):
             manga.chapters = data.get("chapters").get("last").get("ch")
             manga.status = data.get("status")
 
-            manga.add_description(Nl.Language.undefined, data.get("description"))
+            manga.add_description(
+                Nl.Language.undefined,
+                data.get("description"),
+            )
         return manga
 
     def search_manga(self, form: RequestForm):
@@ -57,7 +63,7 @@ class Desu(AbstractMangaCatalog):
             for i in get_data(response, ["response"]):
                 manga.append(
                     Manga(
-                        i.get("id"),
+                        str(i.get("id")),
                         self.CATALOG_ID,
                         i.get("name"),
                         i.get("russian"),
@@ -76,7 +82,12 @@ class Desu(AbstractMangaCatalog):
                 vol = str(vol) if vol is not None else vol
                 ch = str(ch) if ch is not None else ch
                 chapter = Chapter(
-                    i.get("id"), self.CATALOG_ID, vol, ch, i.get("title"), Nl.Language.ru,
+                    str(i.get("id")),
+                    self.CATALOG_ID,
+                    vol,
+                    ch,
+                    i.get("title"),
+                    Nl.Language.ru,
                 )
                 chapters.append(chapter)
         return chapters
@@ -87,7 +98,7 @@ class Desu(AbstractMangaCatalog):
         images = []
         if response:
             for i in get_data(response, ["response", "pages", "list"]):
-                image_id = i.get("id")
+                image_id = str(i.get("id"))
                 page = i.get("page")
                 img: str = i.get("img")
                 img = img.replace("desu.me", "desu.win")

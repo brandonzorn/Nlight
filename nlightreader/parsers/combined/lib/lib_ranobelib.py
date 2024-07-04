@@ -27,13 +27,18 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
         return super().get_manga(manga)
 
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
-        url = f"{self.url_api}/{self.content_name}/{manga.content_id}/chapter?number={chapter.ch}&volume={chapter.vol}"
+        url = (
+            f"{self.url_api}/{self.content_name}/{manga.content_id}/"
+            f"chapter?number={chapter.ch}&volume={chapter.vol}"
+        )
         return [Image("", 1, url)]
 
     def get_image(self, image: Image):
         # Function to get content images from chapter
         def get_chapter_content_image(media_id: str):
-            url = media_id if media_id.startswith("http") else f"{self.url}{media_id}"
+            url = media_id if media_id.startswith(
+                "http",
+            ) else f"{self.url}{media_id}"
             chapter_image = get_html(
                 url, headers=self.headers,
             ).content

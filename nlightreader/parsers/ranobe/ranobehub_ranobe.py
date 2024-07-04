@@ -29,7 +29,10 @@ class Ranobehub(AbstractRanobeCatalog):
             manga.kind = Nl.MangaKind.ranobe
             manga.score = data.get("rating")
 
-            manga.add_description(Nl.Language.undefined, data.get("description"))
+            manga.add_description(
+                Nl.Language.undefined,
+                data.get("description"),
+            )
         return manga
 
     def search_manga(self, form: RequestForm):
@@ -49,7 +52,7 @@ class Ranobehub(AbstractRanobeCatalog):
         mangas = []
         if response:
             for i in get_data(response, ["resource"], default_val=[]):
-                manga_id = i.get("id")
+                manga_id = str(i.get("id"))
                 name = i.get("names").get("eng")
                 russian = i.get("names").get("rus")
                 manga = Manga(manga_id, self.CATALOG_ID, name, russian)
@@ -66,8 +69,11 @@ class Ranobehub(AbstractRanobeCatalog):
                 volume_num = i.get("num")
                 for chapter_data in get_data(i, ["chapters"], []):
                     chapter = Chapter(
-                        chapter_data.get("id"), self.CATALOG_ID,
-                        volume_num, chapter_data.get("num"), chapter_data.get("name"),
+                        str(chapter_data.get("id")),
+                        self.CATALOG_ID,
+                        volume_num,
+                        chapter_data.get("num"),
+                        chapter_data.get("name"),
                         Nl.Language.ru,
                     )
                     chapters.append(chapter)
@@ -75,7 +81,10 @@ class Ranobehub(AbstractRanobeCatalog):
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
-        url = f"{self.url}/ranobe/{manga.content_id}/{chapter.vol}/{chapter.ch}"
+        url = (
+            f"{self.url}/ranobe/"
+            f"{manga.content_id}/{chapter.vol}/{chapter.ch}"
+        )
         return [Image("", 1, url)]
 
     def get_image(self, image: Image):
@@ -86,7 +95,9 @@ class Ranobehub(AbstractRanobeCatalog):
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/png;base64,{str_equivalent_image}"
 
-        def find_text_container(containers: bs4.element.ResultSet) -> bs4.element.Tag:
+        def find_text_container(
+                containers: bs4.element.ResultSet,
+        ) -> bs4.element.Tag:
             for container in containers:
                 if container.has_attr("data-container"):
                     return container
@@ -113,7 +124,11 @@ class Ranobehub(AbstractRanobeCatalog):
             for p in text_container.findAll("p"):
                 if p.find("img"):
                     media: str = p.find("img")["data-media-id"]
-                    content += f'<p><img src="{get_chapter_content_image(media)}"></p>'
+                    content += (
+                        f"<p>"
+                        f'<img src="{get_chapter_content_image(media)}">'
+                        f"</p>"
+                    )
                 else:
                     content += str(p)
             return content

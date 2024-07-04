@@ -40,7 +40,9 @@ class TokenAuthMessageBox(AbstractAuthDialog):
         self.getCodeButton.clicked.connect(self.__open_login_page)
 
         self.tokenLineEdit = LineEdit(self)
-        self.tokenLineEdit.setPlaceholderText(translate("Dialog", "Authorization code"))
+        self.tokenLineEdit.setPlaceholderText(
+            translate("Dialog", "Authorization code"),
+        )
         self.tokenLineEdit.setClearButtonEnabled(True)
         self.tokenLineEdit.textChanged.connect(self.verify_user_data)
 
@@ -63,12 +65,16 @@ class UserDataAuthMessageBox(AbstractAuthDialog):
     def __init__(self, catalog, parent):
         super().__init__(catalog, parent)
         self.loginLineEdit = LineEdit(self)
-        self.loginLineEdit.setPlaceholderText(translate("Dialog", "Login"))
+        self.loginLineEdit.setPlaceholderText(
+            translate("Dialog", "Login"),
+        )
         self.loginLineEdit.setClearButtonEnabled(True)
         self.loginLineEdit.textChanged.connect(self.verify_user_data)
 
         self.passwordLineEdit = PasswordLineEdit(self)
-        self.passwordLineEdit.setPlaceholderText(translate("Dialog", "Password"))
+        self.passwordLineEdit.setPlaceholderText(
+            translate("Dialog", "Password"),
+        )
         self.passwordLineEdit.setClearButtonEnabled(True)
         self.passwordLineEdit.textChanged.connect(self.verify_user_data)
 
@@ -77,7 +83,11 @@ class UserDataAuthMessageBox(AbstractAuthDialog):
 
     def verify_user_data(self):
         self.yesButton.setEnabled(
-            bool(self.loginLineEdit.text()) and bool(self.passwordLineEdit.text()),
+            bool(
+                self.loginLineEdit.text(),
+            ) and bool(
+                self.passwordLineEdit.text(),
+            ),
         )
 
     def get_user_data(self):

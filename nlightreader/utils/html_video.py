@@ -61,7 +61,9 @@ def start_html_video(manga: Manga, chapter: Chapter):
                         sendPostRequest();
                     }}
                 }}
-                else if (message.data.key === 'kodik_player_duration_update') {{
+                else if (
+                message.data.key === 'kodik_player_duration_update'
+                ) {{
                     max_time = message.data.value;
                 }}
                 else if (message.data.key === 'kodik_player_video_ended') {{

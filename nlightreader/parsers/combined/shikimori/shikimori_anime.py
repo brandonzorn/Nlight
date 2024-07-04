@@ -1,7 +1,18 @@
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import ShikimoriAnimeItems
-from nlightreader.consts.urls import URL_SHIKIMORI_API, URL_SHIKIMORI, SHIKIMORI_HEADERS
-from nlightreader.items import Manga, Character, RequestForm, Chapter, Genre, Order
+from nlightreader.consts.urls import (
+    URL_SHIKIMORI_API,
+    URL_SHIKIMORI,
+    SHIKIMORI_HEADERS,
+)
+from nlightreader.items import (
+    Manga,
+    Character,
+    RequestForm,
+    Chapter,
+    Genre,
+    Order,
+)
 from nlightreader.parsers.catalogs_base import AbstractAnimeCatalog
 from nlightreader.parsers.service.kodik import Kodik
 from nlightreader.utils.utils import get_html
@@ -19,7 +30,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
 
     def setup_manga(self, data: dict) -> Manga:
         return Manga(
-            data.get("id"),
+            str(data.get("id")),
             self.CATALOG_ID,
             data.get("name"),
             data.get("russian"),
@@ -33,7 +44,10 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             # manga.kind = Nl.MangaKind.from_str(data.get("kind"))
             manga.score = float(data.get("score"))
             manga.status = data.get("status")
-            manga.add_description(Nl.Language.undefined, data.get("description"))
+            manga.add_description(
+                Nl.Language.undefined,
+                data.get("description"),
+            )
         return manga
 
     def search_manga(self, form: RequestForm):
@@ -67,7 +81,10 @@ class ShikimoriAnime(AbstractAnimeCatalog):
                     f"{translator.content_id}{episode_num}", self.CATALOG_ID,
                     "", "", f"Episode {episode_num}", Nl.Language.ru,
                 )
-                chapter.translator = f"{translator.translator} ({translator.tr_type})"
+                chapter.translator = (
+                    f"{translator.translator} "
+                    f"({translator.tr_type})"
+                )
                 chapter.__setattr__(
                     "url",
                     f"http:{translator.kodik_url}?episode={episode_num}",
@@ -90,7 +107,8 @@ class ShikimoriAnime(AbstractAnimeCatalog):
 
     def get_character_preview(self, character: Character):
         return get_html(
-            f"{self.url}/system/characters/original/{character.content_id}.jpg",
+            f"{self.url}/system/characters/"
+            f"original/{character.content_id}.jpg",
             content_type="content",
         )
 
@@ -128,7 +146,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
                         if data:
                             characters.append(
                                 Character(
-                                    data.get("id"),
+                                    str(data.get("id")),
                                     self.CATALOG_ID,
                                     data.get("name"),
                                     data.get("russian"),

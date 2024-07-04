@@ -28,7 +28,9 @@ class ImageArea(QWidget, AbstractContentContainer):
         view_w = self.ui.scrollArea.viewport().width()
         self.ui.img_lbl.setFixedWidth(view_w)
         self.ui.scrollAreaWidgetContents.setFixedWidth(view_w)
-        self.ui.scrollAreaWidgetContents.resize(self.ui.scrollArea.viewport().size())
+        self.ui.scrollAreaWidgetContents.resize(
+            self.ui.scrollArea.viewport().size(),
+        )
         self.__update_image()
 
     def _reset_area(self):
@@ -38,7 +40,9 @@ class ImageArea(QWidget, AbstractContentContainer):
         view_w = self.ui.scrollArea.viewport().width()
         self.ui.img_lbl.setFixedWidth(view_w)
         self.ui.scrollAreaWidgetContents.setFixedWidth(view_w)
-        self.ui.scrollAreaWidgetContents.resize(self.ui.scrollArea.viewport().size())
+        self.ui.scrollAreaWidgetContents.resize(
+            self.ui.scrollArea.viewport().size(),
+        )
 
     def _resize_pixmap(self, pixmap: QPixmap) -> QPixmap:
         if pixmap is None or pixmap.isNull():

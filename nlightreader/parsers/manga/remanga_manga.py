@@ -21,7 +21,10 @@ class Remanga(AbstractMangaCatalog):
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
             data = response.get("content")
-            manga.add_description(Nl.Language.undefined, data.get("description"))
+            manga.add_description(
+                Nl.Language.undefined,
+                data.get("description"),
+            )
         return manga
 
     def search_manga(self, form: RequestForm):
@@ -64,7 +67,8 @@ class Remanga(AbstractMangaCatalog):
             data = response.get("content")
             branch_id = data.get("branches")[0].get("id")
             chapters_data = get_html(
-                f"{self.url_api}/titles/chapters?branch_id={branch_id}&user_data=0",
+                f"{self.url_api}/titles/chapters"
+                f"?branch_id={branch_id}&user_data=0",
                 headers=self.headers,
                 content_type="json",
             )
@@ -90,7 +94,13 @@ class Remanga(AbstractMangaCatalog):
         response = get_html(url, headers=self.headers, content_type="json")
         images = []
         if response:
-            for i, page_data in enumerate(get_data(response, ["content", "pages"], {})):
+            for i, page_data in enumerate(
+                    get_data(
+                        response,
+                        ["content", "pages"],
+                        {},
+                    ),
+            ):
                 page_data = page_data[0]
                 pg_id = page_data.get("id")
                 page = i + 1
@@ -99,8 +109,15 @@ class Remanga(AbstractMangaCatalog):
         return images
 
     def get_image(self, image: Image):
-        headers = {"User-Agent": "Nlight", "Referer": "https://remanga.org/"}
-        return get_html(f"{image.img}", headers=headers, content_type="content")
+        headers = {
+            "User-Agent": "Nlight",
+            "Referer": "https://remanga.org/",
+        }
+        return get_html(
+            f"{image.img}",
+            headers=headers,
+            content_type="content",
+        )
 
     def get_preview(self, manga: Manga):
         if manga.preview_url and manga.preview_url != "/media/None":
