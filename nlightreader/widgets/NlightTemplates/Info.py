@@ -37,20 +37,36 @@ class FormInfo(QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
-        self.ui.shikimori_btn.setIcon(NlFluentIcons.SHIKIMORI.qicon())
+        self.ui.shikimori_btn.setIcon(
+            NlFluentIcons.SHIKIMORI.qicon(),
+        )
 
         self.setObjectName("FormInfo")
 
         self.ui.lib_list_box.addItems(
             [translate("Form", i.capitalize()) for i in LIB_LISTS],
         )
-        self.ui.items_tree.doubleClicked.connect(self.open_reader)
-        self.ui.characters_list.doubleClicked.connect(self.open_character)
-        self.ui.related_list.doubleClicked.connect(self.open_related_manga)
-        self.ui.shikimori_btn.clicked.connect(self.open_rate)
-        self.ui.add_btn.clicked.connect(self.add_to_favorites)
-        self.ui.lib_list_box.currentIndexChanged.connect(self.change_lib_list)
-        self.ui.items_tree.customContextMenuRequested.connect(self.on_context_menu)
+        self.ui.items_tree.doubleClicked.connect(
+            self.open_reader,
+        )
+        self.ui.characters_list.doubleClicked.connect(
+            self.open_character,
+        )
+        self.ui.related_list.doubleClicked.connect(
+            self.open_related_manga,
+        )
+        self.ui.shikimori_btn.clicked.connect(
+            self.open_rate,
+        )
+        self.ui.add_btn.clicked.connect(
+            self.add_to_favorites,
+        )
+        self.ui.lib_list_box.currentIndexChanged.connect(
+            self.change_lib_list,
+        )
+        self.ui.items_tree.customContextMenuRequested.connect(
+            self.on_context_menu,
+        )
 
         self.ui.scrollArea.resizeEvent = self.scroll_area_resize_event
 
@@ -76,16 +92,26 @@ class FormInfo(QWidget):
             chapters_by_lang: list[Chapter] = self.sorted_chapters[
                 selected_chapter.language][selected_chapter.translator]
             for i, chapter in enumerate(
-                    chapters_by_lang[:chapters_by_lang.index(selected_chapter) + 1],
+                    chapters_by_lang[:chapters_by_lang.index(
+                        selected_chapter,
+                    ) + 1],
             ):
-                history_notes.append(HistoryNote(chapter, self.manga, True))
+                history_notes.append(
+                    HistoryNote(chapter, self.manga, True),
+                )
                 item = selected_item.parent().child(i)
-                item.setIcon(0, FluentIcon.ACCEPT_MEDIUM.qicon())
+                item.setIcon(
+                    0, FluentIcon.ACCEPT_MEDIUM.qicon(),
+                )
             self.db.add_history_notes(history_notes)
 
         def set_as_read():
-            self.db.add_history_note(HistoryNote(selected_chapter, self.manga, True))
-            selected_item.setIcon(0, FluentIcon.ACCEPT_MEDIUM.qicon())
+            self.db.add_history_note(
+                HistoryNote(selected_chapter, self.manga, True),
+            )
+            selected_item.setIcon(
+                0, FluentIcon.ACCEPT_MEDIUM.qicon(),
+            )
 
         def remove_read_state():
             self.db.del_history_note(selected_chapter)
@@ -114,16 +140,24 @@ class FormInfo(QWidget):
         self.update_manga_preview()
 
     def scroll_area_resize_event(self, event):
-        self.ui.scrollAreaWidgetContents.setFixedWidth(event.size().width())
+        self.ui.scrollAreaWidgetContents.setFixedWidth(
+            event.size().width(),
+        )
 
     def sort_chapters(self):
         self.sorted_chapters.clear()
         for chapter in self.chapters:
-            if chapter.language not in self.sorted_chapters:
-                self.sorted_chapters[chapter.language] = {}
-            if chapter.translator not in self.sorted_chapters[chapter.language]:
-                self.sorted_chapters[chapter.language][chapter.translator] = []
-            self.sorted_chapters[chapter.language][chapter.translator].append(chapter)
+            ch_lang = chapter.language
+            if ch_lang not in self.sorted_chapters:
+                self.sorted_chapters[ch_lang] = {}
+            if chapter.translator not in self.sorted_chapters[ch_lang]:
+                self.sorted_chapters[ch_lang][chapter.translator] = []
+            (
+                self.sorted_chapters
+                [ch_lang]
+                [chapter.translator]
+                .append(chapter)
+            )
 
     def _get_selected_chapter(self) -> Chapter | None:
         selected_item = self.ui.items_tree.currentItem()
@@ -195,7 +229,9 @@ class FormInfo(QWidget):
     @Slot()
     def open_character(self):
         character = self.catalog.get_character(
-            self.related_characters[self.ui.characters_list.currentIndex().row()],
+            self.related_characters[
+                self.ui.characters_list.currentIndex().row()
+            ],
         )
         self.character_window = FormCharacter(
             character, self.manga.catalog_id, parent=self,
@@ -205,7 +241,9 @@ class FormInfo(QWidget):
     def update_manga_preview(self):
         self.ui.image.clear()
         if not self.manga_pixmap:
-            self.manga_pixmap = FileManager.get_manga_preview(self.manga, self.catalog)
+            self.manga_pixmap = FileManager.get_manga_preview(
+                self.manga, self.catalog,
+            )
         image_size = QSize(self.width() // 5, self.height() // 2)
         pixmap = self.manga_pixmap.scaled(
             image_size,
@@ -264,7 +302,9 @@ class FormInfo(QWidget):
         self.ui.items_tree.clear()
         self.ui.items_frame.setVisible(bool(self.chapters))
         for lang, translators in self.sorted_chapters.items():
-            lang_item = QTreeWidgetItem([translate("NlLanguage", lang.to_str())])
+            lang_item = QTreeWidgetItem(
+                [translate("NlLanguage", lang.to_str())],
+            )
             lang_item.setIcon(0, QIcon(get_language_icon(lang)))
             self.ui.items_tree.addTopLevelItem(lang_item)
 
@@ -278,7 +318,9 @@ class FormInfo(QWidget):
                     ch_item = ChapterTreeItem(chapter)
                     if self.db.check_complete_chapter(chapter):
                         if self.db.get_complete_status(chapter):
-                            ch_item.setIcon(0, FluentIcon.ACCEPT_MEDIUM.qicon())
+                            ch_item.setIcon(
+                                0, FluentIcon.ACCEPT_MEDIUM.qicon(),
+                            )
                     translator_item.addChild(ch_item)
 
             if len(self.sorted_chapters) == 1:

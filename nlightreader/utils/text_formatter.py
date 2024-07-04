@@ -121,8 +121,9 @@ def get_status(status: str) -> str:
         status (str or None): The status of the manga.
 
     Returns:
-        A translation of the status if it is 'ongoing', 'completed', or 'released'.
-        Otherwise, returns the original status.
+        A translation of the status if it is
+            'ongoing', 'completed', or 'released'.
+            Otherwise, returns the original status.
     """
     if status is None:
         return ""

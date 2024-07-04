@@ -9,7 +9,7 @@ from nlightreader.utils.utils import get_html
 
 class LibAnilib(LibBase, AbstractAnimeCatalog):
     CATALOG_NAME = "AniLib"
-    CATALOG_ID = 15
+    CATALOG_ID = 14
 
     def __init__(self):
         super().__init__()
@@ -26,7 +26,12 @@ class LibAnilib(LibBase, AbstractAnimeCatalog):
         if episodes_response:
             for i in episodes_response["data"]:
                 episode = Chapter(
-                    i["id"], self.CATALOG_ID, "", "", f"Episode {i['number']}", Nl.Language.ru,
+                    i["id"],
+                    self.CATALOG_ID,
+                    "",
+                    "",
+                    f"Episode {i['number']}",
+                    Nl.Language.ru,
                 )
                 episodes.append(episode)
         episodes.reverse()

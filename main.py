@@ -35,9 +35,6 @@ class App(QApplication):
         self.translator.load(get_locale(QLocale().language()))
         self.installTranslator(self.translator)
 
-    def get_accent_color(self):
-        return self.palette().color(QPalette.ColorRole.Highlight)
-
     def update_style(self):
         setTheme(Theme.DARK if darkdetect.isDark() else Theme.LIGHT)
 
@@ -73,12 +70,18 @@ class MainWindow(ParentWindow):
                 return version
 
     def show_update_info(self, result):
-        info_bar_title = translate("Message", "Check for updates.")
+        info_bar_title = translate(
+            "Message",
+            "Check for updates.",
+        )
         info_bar_duration = 3500
         if result is None:
             InfoBar.error(
                 title=info_bar_title,
-                content=translate("Message", "Error checking for updates."),
+                content=translate(
+                    "Message",
+                    "Error checking for updates.",
+                ),
                 duration=info_bar_duration,
                 parent=self,
             )
@@ -98,8 +101,7 @@ class MainWindow(ParentWindow):
     @staticmethod
     def theme_listener():
         theme = darkdetect.theme()
-        accent_color = app.get_accent_color()
-        while darkdetect.theme() == theme and accent_color == app.get_accent_color():
+        while darkdetect.theme() == theme:
             time.sleep(1)
 
     def update_style(self):
@@ -118,15 +120,21 @@ if __name__ == "__main__":
         logging.basicConfig(
             level=logging.WARNING, filename="latest.log", filemode="w",
         )
+
     QApplication.setHighDpiScaleFactorRoundingPolicy(
         Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor,
     )
     QApplication.setStyle("Fusion")
     QThreadPool.globalInstance().setMaxThreadCount(32)
     app = App(sys.argv)
-    Path(f"{platformdirs.user_data_dir()}/{APP_NAME}").mkdir(parents=True, exist_ok=True)
+
+    Path(
+        platformdirs.user_data_path() / APP_NAME,
+    ).mkdir(parents=True, exist_ok=True)
+
     httpd = HTTPServer(("localhost", 8000), KodikHTTPRequestHandler)
     PyThread(target=httpd.serve_forever, daemon=True).start()
+
     window = MainWindow()
     window.show()
     sys.exit(app.exec())

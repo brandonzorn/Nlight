@@ -9,7 +9,13 @@ from qfluentwidgets import InfoBar
 from data.ui.manga_item import Ui_Form
 from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.items import Manga
-from nlightreader.utils import Worker, get_catalog, FileManager, Database, translate
+from nlightreader.utils import (
+    Worker,
+    get_catalog,
+    FileManager,
+    Database,
+    translate,
+)
 
 
 class MangaItem(QWidget):
@@ -117,28 +123,54 @@ class MangaItem(QWidget):
             self.set_image()
 
     def get_image(self):
-        self.manga_pixmap = FileManager.get_manga_preview(self.manga, self._catalog)
+        self.manga_pixmap = FileManager.get_manga_preview(
+            self.manga, self._catalog,
+        )
 
     def set_image(self, opacity: float = 1.0):
         if not self.manga_pixmap:
             return
 
-        image = QImage(self.ui.image.maximumSize(), QImage.Format.Format_ARGB32)
+        image = QImage(
+            self.ui.image.maximumSize(),
+            QImage.Format.Format_ARGB32,
+        )
         image.fill(QColor(0, 0, 0, 0))
 
         painter = QPainter(image)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
-        painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform, True)
+        painter.setRenderHint(
+            QPainter.RenderHint.Antialiasing,
+            True,
+        )
+        painter.setRenderHint(
+            QPainter.RenderHint.SmoothPixmapTransform,
+            True,
+        )
 
         path = QtGui.QPainterPath()
-        path.addRoundedRect(QRect(0, 0, image.width(), image.height()), 10, 10)
+        path.addRoundedRect(
+            QRect(
+                0, 0, image.width(), image.height(),
+            ),
+            10,
+            10,
+        )
 
         painter.setClipPath(path)
         painter.setOpacity(opacity if opacity else 1.0)
-        painter.drawPixmap(0, 0, self.manga_pixmap.scaled(self.ui.image.maximumSize()))
+        painter.drawPixmap(
+            0,
+            0,
+            self.manga_pixmap.scaled(
+                self.ui.image.maximumSize(),
+            ),
+        )
         painter.end()
 
         self.ui.image.setPixmap(QPixmap.fromImage(image))
 
     def update_image(self):
-        Worker(target=self.get_image, callback=self.set_image).start(self._pool)
+        Worker(
+            target=self.get_image,
+            callback=self.set_image,
+        ).start(self._pool)

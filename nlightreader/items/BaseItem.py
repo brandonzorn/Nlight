@@ -2,7 +2,13 @@ from PySide6.QtCore import QLocale
 
 
 class BaseItem:
-    def __init__(self, content_id: str, catalog_id: int, name: str, russian: str):
+    def __init__(
+            self,
+            content_id: str,
+            catalog_id: int,
+            name: str,
+            russian: str,
+    ):
         self.__id = f"|{catalog_id}|_|{content_id}|"
         self.__content_id = content_id
         self.__catalog_id = catalog_id

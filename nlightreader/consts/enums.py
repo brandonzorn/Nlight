@@ -1,7 +1,14 @@
 import logging
 from enum import Enum, unique
 
-LIB_LISTS = ("planned", "completed", "reading", "re-reading", "on hold", "dropped")
+LIB_LISTS = (
+    "planned",
+    "completed",
+    "reading",
+    "re-reading",
+    "on hold",
+    "dropped",
+)
 
 
 class Nl:
@@ -29,7 +36,13 @@ class Nl:
             return cls.undefined
 
         def to_str(self) -> str:
-            names = ["Undefined", "English", "Russian", "Ukrainian", "Japanese"]
+            names = [
+                "Undefined",
+                "English",
+                "Russian",
+                "Ukrainian",
+                "Japanese",
+            ]
             return names[self.value]
 
     @unique

@@ -46,7 +46,9 @@ class AllHentai(AbstractHentaiMangaCatalog):
         if response:
             soup = BeautifulSoup(response, "html.parser")
             chapters_list_item = soup.find("div", id="chapters-list")
-            for chapter_item in chapters_list_item.findAll("tr", class_="item-row"):
+            for chapter_item in chapters_list_item.findAll(
+                    "tr", class_="item-row",
+            ):
                 volume: str = chapter_item.get("data-vol")
                 chapter_num: str = chapter_item.get("data-num")
                 if chapter_num.isdigit():
