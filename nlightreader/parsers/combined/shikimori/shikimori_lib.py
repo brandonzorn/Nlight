@@ -4,11 +4,16 @@ import requests
 from PySide6.QtWidgets import QApplication
 from requests_oauthlib import OAuth2Session
 
-from nlightreader.consts.urls import URL_SHIKIMORI_API, SHIKIMORI_HEADERS, URL_SHIKIMORI, URL_SHIKIMORI_TOKEN
+from nlightreader.consts.urls import (
+    URL_SHIKIMORI_API, SHIKIMORI_HEADERS,
+    URL_SHIKIMORI, URL_SHIKIMORI_TOKEN,
+)
 from nlightreader.consts.enums import Nl
 from nlightreader.items import Manga, RequestForm, User, UserRate
 from nlightreader.parsers.catalog import LibParser
-from nlightreader.parsers.combined.shikimori.shikimori_base import ShikimoriBase
+from nlightreader.parsers.combined.shikimori.shikimori_base import (
+    ShikimoriBase,
+)
 from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
 
@@ -49,7 +54,11 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         response = self.session.request("GET", f"{self.url_api}/users/whoami")
         self.session.user = User(None, None, None)
         if response and (resp_json := response.json()):
-            self.session.user = User(resp_json.get("id"), resp_json.get("nickname"), resp_json.get("avatar"))
+            self.session.user = User(
+                resp_json.get("id"),
+                resp_json.get("nickname"),
+                resp_json.get("avatar"),
+            )
         return self.session.user
 
     def create_user_rate(self, manga: Manga):
@@ -92,8 +101,12 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         if response and (resp_json := response.json()):
             for i in resp_json:
                 return UserRate(
-                    i.get("id"), i.get("user_id"), i.get("target_id"),
-                    i.get("score"), Nl.LibList.from_str(i.get("status")), i.get("chapters"),
+                    i.get("id"),
+                    i.get("user_id"),
+                    i.get("target_id"),
+                    i.get("score"),
+                    Nl.LibList.from_str(i.get("status")),
+                    i.get("chapters"),
                 )
 
     def update_user_rate(self, user_rate: UserRate):
@@ -121,9 +134,14 @@ class Auth:
         self.client_id = SHIKIMORI_CLIENT_ID
         self.client_secret = SHIKIMORI_CLIENT_SECRET
         self.redirect_uri = "urn:ietf:wg:oauth:2.0:oob"
-        self.extra = {"client_id": self.client_id, "client_secret": self.client_secret}
+        self.extra = {
+            "client_id": self.client_id,
+            "client_secret": self.client_secret,
+        }
         self.tokens = TokenManager.load_token(ShikimoriLib.CATALOG_NAME)
-        self.headers = {"User-Agent": "Shikimori", "Authorization": f"Bearer {self.tokens.get('access_token')}"}
+        self.headers = SHIKIMORI_HEADERS | {
+            "Authorization": f"Bearer {self.tokens.get('access_token')}",
+        }
         self.client = self.get_client(scope, self.redirect_uri, token)
         self.refresh_token()
         self.user: User = User(None, None, None)
@@ -136,9 +154,15 @@ class Auth:
         self.check_auth()
 
     def get_client(self, scope, redirect_uri, token):
-        client = OAuth2Session(self.client_id, auto_refresh_url=URL_SHIKIMORI_TOKEN, auto_refresh_kwargs=self.extra,
-                               scope=scope, redirect_uri=redirect_uri, token=token,
-                               token_updater=TokenManager.save_token)
+        client = OAuth2Session(
+            self.client_id,
+            auto_refresh_url=URL_SHIKIMORI_TOKEN,
+            auto_refresh_kwargs=self.extra,
+            scope=scope,
+            redirect_uri=redirect_uri,
+            token=token,
+            token_updater=TokenManager.save_token,
+        )
         client.headers.update(self.headers)
         return client
 
@@ -148,7 +172,11 @@ class Auth:
 
     def fetch_token(self, code):
         try:
-            self.client.fetch_token(URL_SHIKIMORI_TOKEN, code, client_secret=self.client_secret)
+            self.client.fetch_token(
+                URL_SHIKIMORI_TOKEN,
+                code,
+                client_secret=self.client_secret,
+            )
         except Exception as e:
             logging.error(e)
         TokenManager.save_token(self.token, ShikimoriLib.CATALOG_NAME)
@@ -156,8 +184,13 @@ class Auth:
 
     def update_token(self, token):
         if token and "access_token" in token and "refresh_token" in token:
-            token = {"access_token": token["access_token"], "refresh_token": token["refresh_token"]}
-            TokenManager.save_token(token, catalog_name=ShikimoriLib.CATALOG_NAME)
+            token = {
+                "access_token": token["access_token"],
+                "refresh_token": token["refresh_token"],
+            }
+            TokenManager.save_token(
+                token, catalog_name=ShikimoriLib.CATALOG_NAME,
+            )
             self.tokens = token
 
     def refresh_token(self):
@@ -166,22 +199,43 @@ class Auth:
         try:
             self.client.headers.clear()
             self.client.headers.update(SHIKIMORI_HEADERS)
-            self.client.refresh_token(URL_SHIKIMORI_TOKEN, refresh_token=TokenManager.load_token(
-                ShikimoriLib.CATALOG_NAME).get("refresh_token"))
+            self.client.refresh_token(
+                URL_SHIKIMORI_TOKEN,
+                refresh_token=TokenManager.load_token(
+                    ShikimoriLib.CATALOG_NAME,
+                ).get("refresh_token"),
+            )
             self.update_token(self.token)
-            self.client.headers.update({
-                "Authorization": f"Bearer {TokenManager.load_token(ShikimoriLib.CATALOG_NAME).get('access_token')}"})
+            access_token = TokenManager.load_token(
+                ShikimoriLib.CATALOG_NAME,
+            ).get("access_token")
+            self.client.headers.update(
+                {
+                    "Authorization":
+                        f"Bearer {access_token}",
+                },
+            )
             return self.token
         except Exception as e:
             logging.error(e)
 
-    def request(self, method, url, *, params=None, json=None, ignore_authorize=False):
+    def request(
+            self,
+            method,
+            url,
+            *,
+            params=None,
+            json=None,
+            ignore_authorize=False,
+    ):
         if ((not ignore_authorize and not self.is_authorized) or
                 "test" in QApplication.arguments() or
                 "noshiki" in QApplication.arguments()):
             return
         try:
-            response = self.client.request(method, url, params=params, json=json)
+            response = self.client.request(
+                method, url, params=params, json=json,
+            )
             response.raise_for_status()
             return response
         except requests.exceptions.RequestException as e:

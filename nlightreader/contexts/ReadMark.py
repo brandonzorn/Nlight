@@ -6,13 +6,23 @@ from nlightreader.utils import translate
 class ReadMarkMenu(RoundMenu):
     def __init__(self):
         super().__init__()
-        self.set_as_read = Action(FluentIcon.ACCEPT_MEDIUM, translate("Menu", "Mark as read"))
-        self.set_as_read_all = Action(FluentIcon.COMPLETED, translate("Menu", "Mark as read all previous"))
-        self.remove_read_state = Action(FluentIcon.REMOVE, translate("Menu", "Remove read mark"))
+        self.set_as_read = Action(
+            FluentIcon.ACCEPT_MEDIUM,
+            translate("Menu", "Mark as read"),
+        )
+        self.set_as_read_all = Action(
+            FluentIcon.COMPLETED,
+            translate("Menu", "Mark as read all previous"),
+        )
+        self.remove_read_state = Action(
+            FluentIcon.REMOVE,
+            translate("Menu", "Remove read mark"),
+        )
 
     def set_mode(self, mode: int):
         """
-        Sets the mode of this object and adds the appropriate actions based on the mode.
+        Sets the mode of this object and
+        adds the appropriate actions based on the mode.
 
         Args:
             mode (int): The mode to set. Valid values are 0, 1, 2.

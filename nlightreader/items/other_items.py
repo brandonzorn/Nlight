@@ -11,9 +11,19 @@ class HistoryNote:
     def get_name(self):
         return f"{self.manga.get_name()}: {self.chapter.get_name()}"
 
+    def to_dict(self) -> dict:
+        return {
+            "manga_id": self.manga.id,
+            "chapter_id": self.chapter.id,
+            "is_completed": self.is_completed,
+        }
+
 
 class UserRate:
-    def __init__(self, rate_id, user_id, target_id, score: int, status: Nl.LibList, chapters):
+    def __init__(
+            self, rate_id, user_id, target_id, score: int,
+            status: Nl.LibList, chapters,
+    ):
         self.id = rate_id
         self.user_id = user_id
         self.target_id = target_id

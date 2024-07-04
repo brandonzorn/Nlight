@@ -21,7 +21,10 @@ class Remanga(AbstractMangaCatalog):
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
             data = response.get("content")
-            manga.add_description(Nl.Language.undefined, data.get("description"))
+            manga.add_description(
+                Nl.Language.undefined,
+                data.get("description"),
+            )
         return manga
 
     def search_manga(self, form: RequestForm):
@@ -36,7 +39,12 @@ class Remanga(AbstractMangaCatalog):
         }
         params = list(params.items())
         [params.append(("types", kind_id)) for kind_id in form.get_kind_ids()]
-        response = get_html(url, headers=self.headers, params=params, content_type="json")
+        response = get_html(
+            url,
+            headers=self.headers,
+            params=params,
+            content_type="json",
+        )
         mangas = []
         if response:
             for i in response.get("content"):
@@ -58,18 +66,26 @@ class Remanga(AbstractMangaCatalog):
         if response:
             data = response.get("content")
             branch_id = data.get("branches")[0].get("id")
-            chapters_data = get_html(f"{self.url_api}/titles/chapters?branch_id={branch_id}&user_data=0",
-                                     headers=self.headers)
-            if chapters_data and chapters_data.status_code == 200 and chapters_data.json():
-                data = chapters_data.json().get("content")
+            chapters_data = get_html(
+                f"{self.url_api}/titles/chapters"
+                f"?branch_id={branch_id}&user_data=0",
+                headers=self.headers,
+                content_type="json",
+            )
+            if chapters_data:
+                data = chapters_data.get("content")
                 if data:
                     for ch in data:
                         if ch.get("is_paid"):
                             continue
                         chapter = Chapter(
-                            ch.get("id"), self.CATALOG_ID, str(ch.get("tome")), ch.get("chapter"), ch.get("name"),
+                            ch.get("id"),
+                            self.CATALOG_ID,
+                            str(ch.get("tome")),
+                            ch.get("chapter"),
+                            ch.get("name"),
+                            Nl.Language.ru,
                         )
-                        chapter.language = Nl.Language.ru
                         chapters.append(chapter)
         return chapters
 
@@ -78,7 +94,13 @@ class Remanga(AbstractMangaCatalog):
         response = get_html(url, headers=self.headers, content_type="json")
         images = []
         if response:
-            for i, page_data in enumerate(get_data(response, ["content", "pages"], {})):
+            for i, page_data in enumerate(
+                    get_data(
+                        response,
+                        ["content", "pages"],
+                        {},
+                    ),
+            ):
                 page_data = page_data[0]
                 pg_id = page_data.get("id")
                 page = i + 1
@@ -87,12 +109,23 @@ class Remanga(AbstractMangaCatalog):
         return images
 
     def get_image(self, image: Image):
-        headers = {"User-Agent": "Nlight", "Referer": "https://remanga.org/"}
-        return get_html(f"{image.img}", headers=headers, content_type="content")
+        headers = {
+            "User-Agent": "Nlight",
+            "Referer": "https://remanga.org/",
+        }
+        return get_html(
+            f"{image.img}",
+            headers=headers,
+            content_type="content",
+        )
 
     def get_preview(self, manga: Manga):
         if manga.preview_url and manga.preview_url != "/media/None":
-            return get_html(f"{self.url}{manga.preview_url}", headers=self.headers, content_type="content")
+            return get_html(
+                f"{self.url}{manga.preview_url}",
+                headers=self.headers,
+                content_type="content",
+            )
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/manga/{manga.content_id}"
