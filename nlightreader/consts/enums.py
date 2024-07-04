@@ -1,7 +1,14 @@
 import logging
 from enum import Enum, unique
 
-LIB_LISTS = ("planned", "completed", "reading", "re-reading", "on hold", "dropped")
+LIB_LISTS = (
+    "planned",
+    "completed",
+    "reading",
+    "re-reading",
+    "on hold",
+    "dropped",
+)
 
 
 class Nl:
@@ -28,8 +35,14 @@ class Nl:
             logging.warning(f"Unknown language {string}")
             return cls.undefined
 
-        def to_full_str(self):
-            names = ["Undefined", "English", "Russian", "Ukrainian", "Japanese"]
+        def to_str(self) -> str:
+            names = [
+                "Undefined",
+                "English",
+                "Russian",
+                "Ukrainian",
+                "Japanese",
+            ]
             return names[self.value]
 
     @unique
@@ -75,8 +88,17 @@ class Nl:
             logging.warning(f"Unknown manga kind: {string}")
             return cls.undefined
 
-        def to_full_str(self):
-            names = ["Undefined", "Manga", "Manhwa", "Manhua", "Oneshot", "Doujin", "Ranobe", "Comics"]
+        def to_str(self) -> str:
+            names = [
+                "Undefined",
+                "Manga",
+                "Manhwa",
+                "Manhua",
+                "Oneshot",
+                "Doujin",
+                "Ranobe",
+                "Comics",
+            ]
             return names[self.value]
 
     @unique
@@ -105,5 +127,5 @@ class Nl:
                 return cls.dropped
             raise ValueError(f"Unknown lib_list: {string}")
 
-        def to_str(self):
+        def to_str(self) -> str:
             return LIB_LISTS[self.value]

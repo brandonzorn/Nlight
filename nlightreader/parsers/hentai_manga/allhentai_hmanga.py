@@ -19,7 +19,13 @@ class AllHentai(AbstractHentaiMangaCatalog):
     def search_manga(self, form):
         url = f"{self.url}/search"
         params = {"q": form.search, "+": "Искать!", "fast-filter": "CREATION"}
-        response = make_request(url, "POST", headers=self.headers, data=params, content_type="text")
+        response = make_request(
+            url,
+            "POST",
+            headers=self.headers,
+            data=params,
+            content_type="text",
+        )
         mangas = []
         if response:
             soup = BeautifulSoup(response, "html.parser")
@@ -40,7 +46,9 @@ class AllHentai(AbstractHentaiMangaCatalog):
         if response:
             soup = BeautifulSoup(response, "html.parser")
             chapters_list_item = soup.find("div", id="chapters-list")
-            for chapter_item in chapters_list_item.findAll("tr", class_="item-row"):
+            for chapter_item in chapters_list_item.findAll(
+                    "tr", class_="item-row",
+            ):
                 volume: str = chapter_item.get("data-vol")
                 chapter_num: str = chapter_item.get("data-num")
                 if chapter_num.isdigit():
@@ -49,8 +57,14 @@ class AllHentai(AbstractHentaiMangaCatalog):
                         chapter_as_num = int(chapter_as_num)
                     chapter_num = str(chapter_as_num)
 
-                chapter = Chapter(manga.content_id, self.CATALOG_ID, volume, chapter_num, "")
-                chapter.language = Nl.Language.ru
+                chapter = Chapter(
+                    manga.content_id,
+                    self.CATALOG_ID,
+                    volume,
+                    chapter_num,
+                    "",
+                    Nl.Language.ru,
+                )
                 chapters.append(chapter)
         return chapters
 
@@ -69,7 +83,11 @@ class AllHentai(AbstractHentaiMangaCatalog):
             if html_item:
                 img_src = html_item.get("src")
                 if img_src:
-                    return get_html(img_src, content_type="content", headers=self.headers)
+                    return get_html(
+                        img_src,
+                        content_type="content",
+                        headers=self.headers,
+                    )
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/{manga.content_id}"

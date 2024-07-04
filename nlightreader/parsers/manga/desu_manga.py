@@ -22,15 +22,24 @@ class Desu(AbstractMangaCatalog):
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
             data = get_data(response, ["response"], {})
-            manga.genres = [Genre(i.get("id"), self.CATALOG_ID, i.get("text"), i.get("russian"))
-                            for i in data.get("genres")]
+            manga.genres = [
+                Genre(
+                    str(i.get("id")),
+                    self.CATALOG_ID,
+                    i.get("text"),
+                    i.get("russian"),
+                ) for i in data.get("genres")
+            ]
             manga.score = data.get("score")
             manga.kind = Nl.MangaKind.from_str(data.get("kind"))
             manga.volumes = data.get("chapters").get("last").get("vol")
             manga.chapters = data.get("chapters").get("last").get("ch")
             manga.status = data.get("status")
 
-            manga.add_description(Nl.Language.undefined, data.get("description"))
+            manga.add_description(
+                Nl.Language.undefined,
+                data.get("description"),
+            )
         return manga
 
     def search_manga(self, form: RequestForm):
@@ -43,11 +52,23 @@ class Desu(AbstractMangaCatalog):
             "order": form.get_order_id(),
             "kinds": ",".join(form.get_kind_ids()),
         }
-        response = get_html(url, headers=self.headers, params=params, content_type="json")
+        response = get_html(
+            url,
+            headers=self.headers,
+            params=params,
+            content_type="json",
+        )
         manga = []
         if response:
             for i in get_data(response, ["response"]):
-                manga.append(Manga(i.get("id"), self.CATALOG_ID, i.get("name"), i.get("russian")))
+                manga.append(
+                    Manga(
+                        str(i.get("id")),
+                        self.CATALOG_ID,
+                        i.get("name"),
+                        i.get("russian"),
+                    ),
+                )
         return manga
 
     def get_chapters(self, manga: Manga):
@@ -60,8 +81,14 @@ class Desu(AbstractMangaCatalog):
                 ch = i.get("ch")
                 vol = str(vol) if vol is not None else vol
                 ch = str(ch) if ch is not None else ch
-                chapter = Chapter(i.get("id"), self.CATALOG_ID, vol, ch, i.get("title"))
-                chapter.language = Nl.Language.ru
+                chapter = Chapter(
+                    str(i.get("id")),
+                    self.CATALOG_ID,
+                    vol,
+                    ch,
+                    i.get("title"),
+                    Nl.Language.ru,
+                )
                 chapters.append(chapter)
         return chapters
 
@@ -71,7 +98,7 @@ class Desu(AbstractMangaCatalog):
         images = []
         if response:
             for i in get_data(response, ["response", "pages", "list"]):
-                image_id = i.get("id")
+                image_id = str(i.get("id"))
                 page = i.get("page")
                 img: str = i.get("img")
                 img = img.replace("desu.me", "desu.win")
@@ -83,7 +110,10 @@ class Desu(AbstractMangaCatalog):
         return get_html(image.img, headers=headers, content_type="content")
 
     def get_preview(self, manga: Manga):
-        return get_html(f"{self.url}/data/manga/covers/preview/{manga.content_id}.jpg", content_type="content")
+        return get_html(
+            f"{self.url}/data/manga/covers/preview/{manga.content_id}.jpg",
+            content_type="content",
+        )
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/manga/{manga.content_id}"

@@ -1,6 +1,9 @@
 from nlightreader.consts.urls import DEFAULT_HEADERS
 from nlightreader.consts.items.parser_items import ParserItems
-from nlightreader.items import Manga, Chapter, Image, RequestForm, Genre, Kind, Order, Character, User, UserRate
+from nlightreader.items import (
+    Manga, Chapter, Image, RequestForm,
+    Genre, Kind, Order, Character, User, UserRate,
+)
 
 
 class AbstractCatalog:
@@ -38,13 +41,25 @@ class AbstractCatalog:
         return
 
     def get_genres(self):
-        return [Genre(i["value"], self.CATALOG_ID, i["name"], i["russian"]) for i in self.items.GENRES]
+        return [
+            Genre(
+                i["value"], self.CATALOG_ID, i["name"], i["russian"],
+            ) for i in self.items.GENRES
+        ]
 
     def get_kinds(self) -> list[Kind]:
-        return [Kind(i["value"], self.CATALOG_ID, i["name"], i["russian"]) for i in self.items.KINDS]
+        return [
+            Kind(
+                i["value"], self.CATALOG_ID, i["name"], i["russian"],
+            ) for i in self.items.KINDS
+        ]
 
     def get_orders(self) -> list[Order]:
-        return [Order(i["value"], self.CATALOG_ID, i["name"], i["russian"]) for i in self.items.ORDERS]
+        return [
+            Order(
+                i["value"], self.CATALOG_ID, i["name"], i["russian"],
+            ) for i in self.items.ORDERS
+        ]
 
     def get_relations(self, manga: Manga) -> list[Manga]:
         return []

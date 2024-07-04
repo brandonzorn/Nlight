@@ -1,3 +1,4 @@
+import logging
 import re
 
 from PySide6.QtCore import QLocale
@@ -10,9 +11,9 @@ from nlightreader.items.sort_items import Genre
 class Manga(BaseItem):
     def __init__(self, content_id: str, catalog_id, name, russian):
         super().__init__(content_id, catalog_id, name, russian)
-        self._kind: Nl.MangaKind = Nl.MangaKind.undefined
+        self.__kind: Nl.MangaKind = Nl.MangaKind.undefined
         self._description: dict[Nl.Language, str] = {}
-        self._score: int | float = 0
+        self.__score: int | float = 0
         self.status: str | None = None
         self.genres: list[Genre] = []
         self.volumes = 0
@@ -21,23 +22,23 @@ class Manga(BaseItem):
 
     @property
     def score(self):
-        return self._score
+        return self.__score
 
     @score.setter
     def score(self, score):
         if isinstance(score, float) and score.is_integer():
             score = int(score)
-        self._score = score
+        self.__score = score
 
     @property
     def kind(self):
-        return self._kind
+        return self.__kind
 
     @kind.setter
     def kind(self, kind):
         if not isinstance(kind, Nl.MangaKind):
             raise TypeError("Kind must be Nl.MangaKind")
-        self._kind = kind
+        self.__kind = kind
 
     def add_description(self, language: Nl.Language, description: str):
         self._description.update({language: description})
@@ -55,23 +56,59 @@ class Manga(BaseItem):
         desc_str = ""
         for key in self._description:
             if self._description.get(key):
-                desc_str += f"<lang={key.name}>{self._description.get(key)}<end>"
+                desc_str += (
+                    f"<lang={key.name}>"
+                    f"{self._description.get(key)}"
+                    f"<end>"
+                )
         return desc_str
 
     def set_description_from_str(self, desc: str):
-        for lang, text in re.findall(r"<lang=(\w+)>(.+?)<end>", desc, re.DOTALL):
-            self.add_description(Nl.Language.from_str(lang), text)
+        for lang, text in re.findall(
+                r"<lang=(\w+)>(.+?)<end>",
+                desc,
+                re.DOTALL,
+        ):
+            self.add_description(
+                Nl.Language.from_str(lang),
+                text,
+            )
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "content_id": self.content_id,
+            "catalog_id": self.catalog_id,
+            "name": self.name,
+            "russian": self.russian,
+            "kind": self.kind.name,
+            "description": self.descriptions_to_str(),
+            "score": self.score,
+            "status": self.status,
+            "volumes": self.volumes,
+            "chapters": self.chapters,
+            "preview_url": self.preview_url,
+        }
 
 
 class Chapter:
-    def __init__(self, content_id: str, catalog_id: int, vol: str, ch: str, title: str):
+    def __init__(
+            self,
+            content_id: str,
+            catalog_id: int,
+            vol: str,
+            ch: str,
+            title: str,
+            language: Nl.Language = Nl.Language.undefined,
+    ):
         self.id = f"|{catalog_id}|_|{content_id}|"
         self.content_id = content_id
         self.catalog_id = catalog_id
         self.vol = vol
         self.ch = ch
         self.title = title
-        self._language = Nl.Language.undefined
+        self.__language = language
+        self.translator = None
 
     def get_name(self) -> str:
         if not self.vol and not self.ch:
@@ -82,13 +119,18 @@ class Chapter:
 
     @property
     def language(self):
-        return self._language
+        return self.__language
 
-    @language.setter
-    def language(self, language):
-        if not isinstance(language, Nl.Language):
-            raise TypeError("Language must be Nl.Language")
-        self._language = language
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "content_id": self.content_id,
+            "catalog_id": self.catalog_id,
+            "vol": self.vol,
+            "ch": self.ch,
+            "title": self.title,
+            "language": self.language.name,
+        }
 
 
 class Image:
@@ -104,7 +146,15 @@ class Image:
 
 
 class Character(BaseItem):
-    def __init__(self, content_id: str, catalog_id: int, name, russian, description, role):
+    def __init__(
+            self,
+            content_id: str,
+            catalog_id: int,
+            name,
+            russian,
+            description,
+            role,
+    ):
         super().__init__(content_id, catalog_id, name, russian)
         self.description = description
         self.role = role

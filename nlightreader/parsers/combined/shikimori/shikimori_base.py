@@ -1,6 +1,10 @@
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import ShikimoriItems
-from nlightreader.consts.urls import URL_SHIKIMORI, URL_SHIKIMORI_API, SHIKIMORI_HEADERS
+from nlightreader.consts.urls import (
+    URL_SHIKIMORI,
+    URL_SHIKIMORI_API,
+    SHIKIMORI_HEADERS,
+)
 from nlightreader.items import Manga, Character, Genre, Order
 from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils.utils import get_html
@@ -18,7 +22,12 @@ class ShikimoriBase(AbstractCatalog):
         self.is_primary = True
 
     def setup_manga(self, data: dict) -> Manga:
-        return Manga(data.get("id"), self.CATALOG_ID, data.get("name"), data.get("russian"))
+        return Manga(
+            str(data.get("id")),
+            self.CATALOG_ID,
+            data.get("name"),
+            data.get("russian"),
+        )
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self.url_api}/mangas/{manga.content_id}"
@@ -33,7 +42,10 @@ class ShikimoriBase(AbstractCatalog):
             if data.get("chapters"):
                 manga.chapters = int(data.get("chapters"))
 
-            manga.add_description(Nl.Language.undefined, data.get("description"))
+            manga.add_description(
+                Nl.Language.undefined,
+                data.get("description"),
+            )
         return manga
 
     def get_character(self, character: Character) -> Character:
@@ -45,13 +57,14 @@ class ShikimoriBase(AbstractCatalog):
 
     def get_preview(self, manga: Manga):
         return get_html(
-            f"{self.url}/system/mangas/preview/{manga.content_id}.jpg",
+            f"{self.url}/system/mangas/original/{manga.content_id}.jpg",
             content_type="content",
         )
 
     def get_character_preview(self, character: Character):
         return get_html(
-            f"{self.url}/system/characters/preview/{character.content_id}.jpg",
+            f"{self.url}/system/characters/"
+            f"original/{character.content_id}.jpg",
             content_type="content",
         )
 
@@ -67,7 +80,14 @@ class ShikimoriBase(AbstractCatalog):
         return []
 
     def get_orders(self) -> list[Order]:
-        return [Order(i["value"], self.CATALOG_ID, i["name"], i["russian"]) for i in ShikimoriItems.ORDERS]
+        return [
+            Order(
+                i["value"],
+                self.CATALOG_ID,
+                i["name"],
+                i["russian"],
+            ) for i in ShikimoriItems.ORDERS
+        ]
 
     def get_relations(self, manga: Manga) -> list[Manga]:
         mangas = []
@@ -91,8 +111,16 @@ class ShikimoriBase(AbstractCatalog):
                     if role in ["Supporting", "Main"]:
                         data = i.get("character")
                         if data:
-                            characters.append(Character(data.get("id"), self.CATALOG_ID, data.get("name"),
-                                                        data.get("russian"), "", role))
+                            characters.append(
+                                Character(
+                                    str(data.get("id")),
+                                    self.CATALOG_ID,
+                                    data.get("name"),
+                                    data.get("russian"),
+                                    "",
+                                    role,
+                                ),
+                            )
             characters.sort(key=lambda x: x.role)
         return characters
 

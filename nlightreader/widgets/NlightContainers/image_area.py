@@ -3,7 +3,9 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QWidget
 
 from data.ui.containers.image_area import Ui_Form
-from nlightreader.widgets.NlightContainers.content_container import AbstractContentContainer
+from nlightreader.widgets.NlightContainers.content_container import (
+    AbstractContentContainer,
+)
 
 
 class ImageArea(QWidget, AbstractContentContainer):
@@ -26,7 +28,9 @@ class ImageArea(QWidget, AbstractContentContainer):
         view_w = self.ui.scrollArea.viewport().width()
         self.ui.img_lbl.setFixedWidth(view_w)
         self.ui.scrollAreaWidgetContents.setFixedWidth(view_w)
-        self.ui.scrollAreaWidgetContents.resize(self.ui.scrollArea.viewport().size())
+        self.ui.scrollAreaWidgetContents.resize(
+            self.ui.scrollArea.viewport().size(),
+        )
         self.__update_image()
 
     def _reset_area(self):
@@ -36,19 +40,27 @@ class ImageArea(QWidget, AbstractContentContainer):
         view_w = self.ui.scrollArea.viewport().width()
         self.ui.img_lbl.setFixedWidth(view_w)
         self.ui.scrollAreaWidgetContents.setFixedWidth(view_w)
-        self.ui.scrollAreaWidgetContents.resize(self.ui.scrollArea.viewport().size())
+        self.ui.scrollAreaWidgetContents.resize(
+            self.ui.scrollArea.viewport().size(),
+        )
 
     def _resize_pixmap(self, pixmap: QPixmap) -> QPixmap:
         if pixmap is None or pixmap.isNull():
             return QPixmap()
         if 0.5 < pixmap.width() / pixmap.height() < 2:
             w, h = self.ui.scrollArea.viewport().size().toTuple()
-            self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+            self.ui.scrollArea.setVerticalScrollBarPolicy(
+                Qt.ScrollBarPolicy.ScrollBarAlwaysOff,
+            )
         else:
             w, h = self.ui.scrollArea.viewport().width(), pixmap.height()
-            self.ui.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+            self.ui.scrollArea.setVerticalScrollBarPolicy(
+                Qt.ScrollBarPolicy.ScrollBarAsNeeded,
+            )
         return pixmap.scaled(
-            QSize(w, h), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation,
+            QSize(w, h),
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation,
         )
 
     def __update_image(self):

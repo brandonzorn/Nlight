@@ -22,7 +22,10 @@ class MangaItemBasedWidget(QWidget):
         self.progressRing = IndeterminateProgressRing()
         self.progressRing.setVisible(False)
 
-        self._get_content_thread = Thread(target=self._get_content_thread_func, callback=self.update_content)
+        self._get_content_thread = Thread(
+            target=self._get_content_thread_func,
+            callback=self.update_content,
+        )
 
         self.catalog = None
         self.request_params = RequestForm()
@@ -65,7 +68,10 @@ class MangaItemBasedWidget(QWidget):
         page = self.request_params.page
         lib_list = self.request_params.lib_list
         time.sleep(0.25)
-        if page != self.request_params.page or lib_list != self.request_params.lib_list:
+        if (
+                page != self.request_params.page
+                or lib_list != self.request_params.lib_list
+        ):
             return
         self.mangas = self.catalog.search_manga(self.request_params)
 
