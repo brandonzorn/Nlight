@@ -8,7 +8,7 @@ from nlightreader.utils.utils import get_html
 
 class LibMangalib(LibBase, AbstractMangaCatalog):
     CATALOG_NAME = "MangaLib"
-    CATALOG_ID = 14
+    CATALOG_ID = 10
 
     def __init__(self):
         super().__init__()
@@ -19,8 +19,12 @@ class LibMangalib(LibBase, AbstractMangaCatalog):
         self.site_id = 1
 
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
-        url = f"{self.url_api}/{self.content_name}/{manga.content_id}/chapter?number={chapter.ch}&volume={chapter.vol}"
-        response = get_html(url, content_type="json")
+        url = f"{self.url_api}/{self.content_name}/{manga.content_id}/chapter"
+        params = {
+            "number": chapter.ch,
+            "volume": chapter.vol,
+        }
+        response = get_html(url, params=params, content_type="json")
         images = []
         if response:
             data = response["data"]

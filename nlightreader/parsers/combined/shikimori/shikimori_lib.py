@@ -11,7 +11,9 @@ from nlightreader.consts.urls import (
 from nlightreader.consts.enums import Nl
 from nlightreader.items import Manga, RequestForm, User, UserRate
 from nlightreader.parsers.catalog import LibParser
-from nlightreader.parsers.combined.shikimori.shikimori_base import ShikimoriBase
+from nlightreader.parsers.combined.shikimori.shikimori_base import (
+    ShikimoriBase,
+)
 from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
 
@@ -186,7 +188,9 @@ class Auth:
                 "access_token": token["access_token"],
                 "refresh_token": token["refresh_token"],
             }
-            TokenManager.save_token(token, catalog_name=ShikimoriLib.CATALOG_NAME)
+            TokenManager.save_token(
+                token, catalog_name=ShikimoriLib.CATALOG_NAME,
+            )
             self.tokens = token
 
     def refresh_token(self):
@@ -214,13 +218,23 @@ class Auth:
         except Exception as e:
             logging.error(e)
 
-    def request(self, method, url, *, params=None, json=None, ignore_authorize=False):
+    def request(
+            self,
+            method,
+            url,
+            *,
+            params=None,
+            json=None,
+            ignore_authorize=False,
+    ):
         if ((not ignore_authorize and not self.is_authorized) or
                 "test" in QApplication.arguments() or
                 "noshiki" in QApplication.arguments()):
             return
         try:
-            response = self.client.request(method, url, params=params, json=json)
+            response = self.client.request(
+                method, url, params=params, json=json,
+            )
             response.raise_for_status()
             return response
         except requests.exceptions.RequestException as e:

@@ -6,7 +6,9 @@ from nlightreader.controlers import FilterController
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import Manga
 from nlightreader.utils import USER_CATALOGS, translate
-from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
+from nlightreader.widgets.NlightTemplates.BaseWidget import (
+    MangaItemBasedWidget,
+)
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
@@ -23,7 +25,13 @@ class FormFacial(MangaItemBasedWidget):
         self.setObjectName("FormFacial")
 
         self.manga_area.install(self.ui.items_layout)
-        self.manga_area.get_content_widget().layout().addWidget(self.progressRing)
+        (
+            self.manga_area.get_content_widget()
+            .layout()
+            .addWidget(
+                self.progressRing,
+            )
+        )
 
         self.ui.next_btn.clicked.connect(self.turn_page_next)
         self.ui.prev_btn.clicked.connect(self.turn_page_prev)
@@ -53,7 +61,9 @@ class FormFacial(MangaItemBasedWidget):
         if not self.catalog:
             self.ui.catalogs_frame.hide()
             self.ui.catalogs_list.clear()
-            self.ui.catalogs_list.addItems([i.CATALOG_NAME for i in USER_CATALOGS])
+            self.ui.catalogs_list.addItems(
+                [i.CATALOG_NAME for i in USER_CATALOGS],
+            )
             self.change_catalog(0)
         else:
             self.get_content()
@@ -83,9 +93,15 @@ class FormFacial(MangaItemBasedWidget):
     @Slot()
     def apply_filter(self):
         self.request_params.clear()
-        self.request_params.set_order(self.__filter_controller.get_active_order())
-        self.request_params.set_kinds(self.__filter_controller.get_active_kinds())
-        self.request_params.set_genres(self.__filter_controller.get_active_genres())
+        self.request_params.set_order(
+            self.__filter_controller.get_active_order(),
+        )
+        self.request_params.set_kinds(
+            self.__filter_controller.get_active_kinds(),
+        )
+        self.request_params.set_genres(
+            self.__filter_controller.get_active_genres(),
+        )
         self.request_params.search = self.ui.title_line.text()
         self.get_content()
 
@@ -93,7 +109,9 @@ class FormFacial(MangaItemBasedWidget):
     def reset_filter(self):
         self.__filter_controller.reset_items()
         self.request_params.clear()
-        self.request_params.set_order(self.__filter_controller.get_active_order())
+        self.request_params.set_order(
+            self.__filter_controller.get_active_order(),
+        )
         self.ui.title_line.clear()
         self.get_content()
 

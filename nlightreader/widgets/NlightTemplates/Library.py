@@ -3,7 +3,9 @@ from data.ui.widgets.library import Ui_Form
 from nlightreader.consts.enums import Nl
 from nlightreader.items import Manga
 from nlightreader.parsers import LocalLib
-from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
+from nlightreader.widgets.NlightTemplates.BaseWidget import (
+    MangaItemBasedWidget,
+)
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
@@ -16,7 +18,9 @@ class FormLibrary(MangaItemBasedWidget):
         self.setObjectName("FormLibrary")
 
         self.manga_area.install(self.ui.items_layout)
-        self.manga_area.get_content_widget().layout().addWidget(self.progressRing)
+        self.manga_area.get_content_widget().layout().addWidget(
+            self.progressRing,
+        )
 
         self.ui.planned_btn.clicked.connect(
             lambda: self.change_list(Nl.LibList.planned),

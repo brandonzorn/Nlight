@@ -1,3 +1,4 @@
+import logging
 import re
 
 from PySide6.QtCore import QLocale
@@ -55,12 +56,23 @@ class Manga(BaseItem):
         desc_str = ""
         for key in self._description:
             if self._description.get(key):
-                desc_str += f"<lang={key.name}>{self._description.get(key)}<end>"
+                desc_str += (
+                    f"<lang={key.name}>"
+                    f"{self._description.get(key)}"
+                    f"<end>"
+                )
         return desc_str
 
     def set_description_from_str(self, desc: str):
-        for lang, text in re.findall(r"<lang=(\w+)>(.+?)<end>", desc, re.DOTALL):
-            self.add_description(Nl.Language.from_str(lang), text)
+        for lang, text in re.findall(
+                r"<lang=(\w+)>(.+?)<end>",
+                desc,
+                re.DOTALL,
+        ):
+            self.add_description(
+                Nl.Language.from_str(lang),
+                text,
+            )
 
     def to_dict(self) -> dict:
         return {
@@ -81,8 +93,14 @@ class Manga(BaseItem):
 
 class Chapter:
     def __init__(
-            self, content_id: str, catalog_id: int, vol: str, ch: str, title: str,
-            language: Nl.Language = Nl.Language.undefined):
+            self,
+            content_id: str,
+            catalog_id: int,
+            vol: str,
+            ch: str,
+            title: str,
+            language: Nl.Language = Nl.Language.undefined,
+    ):
         self.id = f"|{catalog_id}|_|{content_id}|"
         self.content_id = content_id
         self.catalog_id = catalog_id
@@ -128,7 +146,15 @@ class Image:
 
 
 class Character(BaseItem):
-    def __init__(self, content_id: str, catalog_id: int, name, russian, description, role):
+    def __init__(
+            self,
+            content_id: str,
+            catalog_id: int,
+            name,
+            russian,
+            description,
+            role,
+    ):
         super().__init__(content_id, catalog_id, name, russian)
         self.description = description
         self.role = role

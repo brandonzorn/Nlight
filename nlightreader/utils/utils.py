@@ -11,7 +11,16 @@ from nlightreader.consts.files import LangIcons, Translations
 
 
 def make_request(
-        url: str, method: str, *, headers=None, params=None, json=None, data=None, cookies=None, content_type=None):
+        url: str,
+        method: str,
+        *,
+        headers=None,
+        params=None,
+        json=None,
+        data=None,
+        cookies=None,
+        content_type=None,
+):
     """
     Sends an HTTP GET request to the specified URL with the given
     headers, query parameters, and cookies.
@@ -73,7 +82,16 @@ def make_request(
         )
 
 
-def get_html(url: str, *, headers=None, params=None, json=None, data=None, cookies=None, content_type=None):
+def get_html(
+        url: str,
+        *,
+        headers=None,
+        params=None,
+        json=None,
+        data=None,
+        cookies=None,
+        content_type=None,
+):
     """
     Sends an HTTP GET request to the specified
     URL with the given headers, query parameters, and cookies.
@@ -99,8 +117,16 @@ def get_html(url: str, *, headers=None, params=None, json=None, data=None, cooki
         Otherwise, returns the full requests.Response object.
         Returns None if there was an error.
     """
-    return make_request(url, "GET", headers=headers, params=params,
-                        json=json, data=data, cookies=cookies, content_type=content_type)
+    return make_request(
+        url,
+        "GET",
+        headers=headers,
+        params=params,
+        json=json,
+        data=data,
+        cookies=cookies,
+        content_type=content_type,
+    )
 
 
 def get_language_icon(language: Nl.Language) -> str:

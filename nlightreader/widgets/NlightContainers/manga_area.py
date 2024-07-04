@@ -24,7 +24,9 @@ class MangaArea(ScrollArea, AbstractContentContainer):
         self._manga_items: list[MangaItem] = []
 
         self._scrollAreaWidgetContents = QWidget()
-        self._scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self._scrollAreaWidgetContents.setObjectName(
+            "scrollAreaWidgetContents",
+        )
 
         self._scroll_layout = QHBoxLayout(self._scrollAreaWidgetContents)
         self._scroll_layout.setSpacing(0)

@@ -37,7 +37,14 @@ class NHentai(AbstractHentaiMangaCatalog):
                         manga_id = cover_tag["href"].split("/")[-2]
                         if not manga_id:
                             continue
-                        mangas.append(Manga(manga_id, self.CATALOG_ID, name, ""))
+                        mangas.append(
+                            Manga(
+                                manga_id,
+                                self.CATALOG_ID,
+                                name,
+                                "",
+                            ),
+                        )
         return mangas
 
     def get_chapters(self, manga: Manga):
@@ -59,22 +66,39 @@ class NHentai(AbstractHentaiMangaCatalog):
                 img_url: str = img_tag["src"]
                 for img_format in ["png", "jpg", "gif"]:
                     if img_url.endswith(f"t.{img_format}"):
-                        img_url = img_url.replace(f"t.{img_format}", f".{img_format}", 1)
+                        img_url = img_url.replace(
+                            f"t.{img_format}",
+                            f".{img_format}",
+                            1,
+                        )
                         break
                 images.append(Image("", html_items.index(i) + 1, img_url))
         return images
 
     def get_image(self, image: Image):
-        img_request_headers = self.headers | {"Referer": URL_NHENTAI}
-        return get_html(image.img, headers=img_request_headers, content_type="content")
+        img_request_headers = self.headers | {
+            "Referer": URL_NHENTAI,
+        }
+        return get_html(
+            image.img,
+            headers=img_request_headers,
+            content_type="content",
+        )
 
     def get_preview(self, manga: Manga):
         url = f"{self.url}/g/{manga.content_id}"
-        if response := get_html(url, headers=self.headers, content_type="text"):
+        response = get_html(
+            url,
+            headers=self.headers,
+            content_type="text",
+        )
+        if response:
             soup = BeautifulSoup(response, "html.parser")
             if html_item := soup.find("div", id="cover"):
                 if img_tag := html_item.find("img"):
-                    img_request_headers = self.headers | {"Referer": URL_NHENTAI}
+                    img_request_headers = self.headers | {
+                        "Referer": URL_NHENTAI,
+                    }
                     return get_html(
                         img_tag["src"],
                         content_type="content",

@@ -15,7 +15,14 @@ class Signals(QObject):
 
 
 class NlThread:
-    def __init__(self, target: Callable, args=(), kwargs=None, *, callback=None):
+    def __init__(
+            self,
+            target: Callable,
+            args=(),
+            kwargs=None,
+            *,
+            callback=None,
+    ):
         super().__init__()
         if kwargs is None:
             kwargs = {}
@@ -52,7 +59,14 @@ class Worker(NlThread, QRunnable):
         when the thread finishes running. Defaults to None.
     """
 
-    def __init__(self, target: Callable, args=(), kwargs=None, *, callback=None):
+    def __init__(
+            self,
+            target: Callable,
+            args=(),
+            kwargs=None,
+            *,
+            callback=None,
+    ):
         super().__init__(target, args, kwargs, callback=callback)
 
     def start(self, pool=None):
@@ -83,5 +97,7 @@ class Thread(NlThread, QThread):
         when the thread finishes running. Defaults to None.
     """
 
-    def __init__(self, target: Callable, args=(), kwargs=None, *, callback=None):
+    def __init__(
+            self, target: Callable, args=(), kwargs=None, *, callback=None,
+    ):
         super().__init__(target, args, kwargs, callback=callback)

@@ -29,7 +29,8 @@ class LibraryMangaMenu(RoundMenu):
 
     def set_mode(self, mode: int):
         """
-        Sets the mode of this object and adds the appropriate actions based on the mode.
+        Sets the mode of this object and
+        adds the appropriate actions based on the mode.
 
         Args:
             mode: The mode to set. Valid values are 0, 1, 2.

@@ -5,7 +5,15 @@ from nlightreader.consts.urls import (
     MANGA_DEX_HEADERS, URL_MANGA_DEX_TOKEN,
 )
 from nlightreader.consts.enums import Nl
-from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm, User, Kind
+from nlightreader.items import (
+    Manga,
+    Chapter,
+    Image,
+    Genre,
+    RequestForm,
+    User,
+    Kind,
+)
 from nlightreader.parsers.catalog import LibParser
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.decorators import singleton
@@ -38,9 +46,15 @@ class MangaDex(AbstractMangaCatalog):
             description = get_data(data, ["attributes", "description"])
             if description:
                 if description.get("en"):
-                    manga.add_description(Nl.Language.en, description.get("en"))
+                    manga.add_description(
+                        Nl.Language.en,
+                        description.get("en"),
+                    )
                 if description.get("ru"):
-                    manga.add_description(Nl.Language.ru, description.get("ru"))
+                    manga.add_description(
+                        Nl.Language.ru,
+                        description.get("ru"),
+                    )
             volumes = get_data(data, ["attributes", "lastVolume"])
             chapters = get_data(data, ["attributes", "lastChapter"])
             if volumes:
@@ -145,7 +159,11 @@ class MangaDex(AbstractMangaCatalog):
         return images
 
     def get_image(self, image: Image):
-        return get_html(image.img, headers=self.headers, content_type="content")
+        return get_html(
+            image.img,
+            headers=self.headers,
+            content_type="content",
+        )
 
     def get_preview(self, manga: Manga):
         url = f"{self.url_api}/cover"
@@ -158,9 +176,16 @@ class MangaDex(AbstractMangaCatalog):
         )
         filename = ""
         if covers_list_response:
-            filename = covers_list_response["data"][0]["attributes"]["fileName"]
+            filename = (
+                covers_list_response
+                ["data"]
+                [0]
+                ["attributes"]
+                ["fileName"]
+            )
         return get_html(
-            f"https://uploads.mangadex.org/covers/{manga.content_id}/{filename}.256.jpg",
+            f"https://uploads.mangadex.org/"
+            f"covers/{manga.content_id}/{filename}.256.jpg",
             content_type="content")
 
     def get_genres(self):
@@ -186,9 +211,12 @@ class MangaDex(AbstractMangaCatalog):
         response = get_html(url, headers=self.headers, content_type="json")
         kinds = []
         if response:
-            for i in list(filter(
-                    lambda x: x["attributes"]["group"] in ["format"], response["data"],
-            )):
+            for i in list(
+                    filter(
+                        lambda x: x["attributes"]["group"] in ["format"],
+                        response["data"],
+                    ),
+            ):
                 kinds.append(
                     Kind(
                         i.get("id"),
@@ -226,7 +254,9 @@ class MangaDexLib(MangaDex, LibParser):
         if response and (resp_json := response.json()):
             for i in resp_json.get("data"):
                 manga = self.setup_manga(i)
-                if manga.content_id in response_statuses.json().get("statuses"):
+                if manga.content_id in response_statuses.json().get(
+                        "statuses",
+                ):
                     mangas.append(manga)
         return mangas
 
@@ -234,7 +264,11 @@ class MangaDexLib(MangaDex, LibParser):
         response = self.session.get(f"{self.url_api}/user/me")
         if response and (resp_json := response.json()):
             data = resp_json.get("data")
-            return User(data.get("id"), data.get("attributes").get("username"), "")
+            return User(
+                data.get("id"),
+                data.get("attributes").get("username"),
+                "",
+            )
         return User(None, None, None)
 
 
