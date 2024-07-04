@@ -7,7 +7,10 @@ URL_SHIKIMORI_TOKEN = "https://shikimori.one/oauth/token"
 
 URL_MANGA_DEX = "https://mangadex.org"
 URL_MANGA_DEX_API = "https://api.mangadex.org"
-URL_MANGA_DEX_TOKEN = "https://auth.mangadex.org/realms/mangadex/protocol/openid-connect/token"
+URL_MANGA_DEX_TOKEN = (
+    "https://auth.mangadex.org/"
+    "realms/mangadex/protocol/openid-connect/token"
+)
 
 URL_RULATE = "https://tl.rulate.ru"
 URL_EROLATE = "https://erolate.com"
@@ -25,10 +28,19 @@ URL_ALLHENTAI = "https://20.allhen.online"
 URL_ALLHENTAI_API = ""
 
 URL_SLASHLIB = "https://v2.slashlib.me"
-URL_MANGALIB = "https://mangalib.me"
+URL_MANGALIB = "https://test-front.mangalib.me"
+URL_RANOBELIB = "https://ranobelib.me"
+URL_ANILIB = "https://anilib.me"
+URL_LIB_API = "https://api.lib.social/api"
+
+URL_ANISTAR = "https://v3.astar.bz"
 
 
-DEFAULT_HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:99.0) Gecko/20100101 Firefox/99.0"}
+DEFAULT_HEADERS = {
+    "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:99.0)"
+        "Gecko/20100101 Firefox/99.0",
+}
 DESU_HEADERS = {"User-Agent": "Nlight"}
 SHIKIMORI_HEADERS = {"User-Agent": "Nlight"}
 MANGA_DEX_HEADERS = {"User-Agent": "Nlight"}

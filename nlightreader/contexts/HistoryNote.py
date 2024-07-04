@@ -6,12 +6,19 @@ from nlightreader.utils import translate
 class HistoryNoteMenu(RoundMenu):
     def __init__(self):
         super().__init__()
-        self.set_as_read = Action(FluentIcon.ACCEPT_MEDIUM, translate("Menu", "Mark as read"))
-        self.remove_all = Action(FluentIcon.REMOVE, translate("Menu", "Remove all"))
+        self.set_as_read = Action(
+            FluentIcon.ACCEPT_MEDIUM,
+            translate("Menu", "Mark as read"),
+        )
+        self.remove_all = Action(
+            FluentIcon.REMOVE,
+            translate("Menu", "Remove all"),
+        )
 
     def set_mode(self, mode: int):
         """
-        Sets the mode of this object and adds the appropriate actions based on the mode.
+        Sets the mode of this object and
+        adds the appropriate actions based on the mode.
 
         Args:
             mode (int): The mode to set. Valid values are 0, 1.

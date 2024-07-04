@@ -6,7 +6,9 @@ from nlightreader.controlers import FilterController
 from nlightreader.dialogs import FormGenres
 from nlightreader.items import Manga
 from nlightreader.utils import USER_CATALOGS, translate
-from nlightreader.widgets.NlightTemplates.BaseWidget import MangaItemBasedWidget
+from nlightreader.widgets.NlightTemplates.BaseWidget import (
+    MangaItemBasedWidget,
+)
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
@@ -23,7 +25,13 @@ class FormFacial(MangaItemBasedWidget):
         self.setObjectName("FormFacial")
 
         self.manga_area.install(self.ui.items_layout)
-        self.manga_area.get_content_widget().layout().addWidget(self.progressRing)
+        (
+            self.manga_area.get_content_widget()
+            .layout()
+            .addWidget(
+                self.progressRing,
+            )
+        )
 
         self.ui.next_btn.clicked.connect(self.turn_page_next)
         self.ui.prev_btn.clicked.connect(self.turn_page_prev)
@@ -33,9 +41,15 @@ class FormFacial(MangaItemBasedWidget):
         self.ui.filter_btn.clicked.connect(self.change_filters_visible)
         self.ui.genres_btn.clicked.connect(self.open_genres_dialog)
         self.ui.catalogs_btn.clicked.connect(
-            lambda: self.ui.catalogs_frame.setVisible(not self.ui.catalogs_list.isVisible()))
+            lambda: self.ui.catalogs_frame.setVisible(
+                not self.ui.catalogs_list.isVisible(),
+            ),
+        )
         self.ui.catalogs_list.itemClicked.connect(
-            lambda: self.change_catalog(self.ui.catalogs_list.currentIndex().row()))
+            lambda: self.change_catalog(
+                self.ui.catalogs_list.currentIndex().row(),
+            ),
+        )
 
         self.Form_genres = FormGenres(self)
         self.__filter_controller = FilterController()
@@ -47,7 +61,9 @@ class FormFacial(MangaItemBasedWidget):
         if not self.catalog:
             self.ui.catalogs_frame.hide()
             self.ui.catalogs_list.clear()
-            self.ui.catalogs_list.addItems([i.CATALOG_NAME for i in USER_CATALOGS])
+            self.ui.catalogs_list.addItems(
+                [i.CATALOG_NAME for i in USER_CATALOGS],
+            )
             self.change_catalog(0)
         else:
             self.get_content()
@@ -64,7 +80,9 @@ class FormFacial(MangaItemBasedWidget):
         self.apply_filter()
 
     def update_page(self):
-        self.ui.page_label.setText(f"{translate('Other', 'Page')} {self.request_params.page}")
+        self.ui.page_label.setText(
+            f"{translate('Other', 'Page')} {self.request_params.page}",
+        )
 
     @Slot()
     def search(self):
@@ -75,9 +93,15 @@ class FormFacial(MangaItemBasedWidget):
     @Slot()
     def apply_filter(self):
         self.request_params.clear()
-        self.request_params.set_order(self.__filter_controller.get_active_order())
-        self.request_params.set_kinds(self.__filter_controller.get_active_kinds())
-        self.request_params.set_genres(self.__filter_controller.get_active_genres())
+        self.request_params.set_order(
+            self.__filter_controller.get_active_order(),
+        )
+        self.request_params.set_kinds(
+            self.__filter_controller.get_active_kinds(),
+        )
+        self.request_params.set_genres(
+            self.__filter_controller.get_active_genres(),
+        )
         self.request_params.search = self.ui.title_line.text()
         self.get_content()
 
@@ -85,7 +109,9 @@ class FormFacial(MangaItemBasedWidget):
     def reset_filter(self):
         self.__filter_controller.reset_items()
         self.request_params.clear()
-        self.request_params.set_order(self.__filter_controller.get_active_order())
+        self.request_params.set_order(
+            self.__filter_controller.get_active_order(),
+        )
         self.ui.title_line.clear()
         self.get_content()
 

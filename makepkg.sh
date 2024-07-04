@@ -43,3 +43,4 @@ function make_package()
 }
 
 make_package deb $DEB_FILE
+make_package rpm $RPM_FILE
