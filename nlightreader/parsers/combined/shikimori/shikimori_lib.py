@@ -206,12 +206,13 @@ class Auth:
                 ).get("refresh_token"),
             )
             self.update_token(self.token)
+            access_token = TokenManager.load_token(
+                ShikimoriLib.CATALOG_NAME,
+            ).get("access_token")
             self.client.headers.update(
                 {
                     "Authorization":
-                        f"Bearer {TokenManager.load_token(
-                            ShikimoriLib.CATALOG_NAME,
-                        ).get('access_token')}",
+                        f"Bearer {access_token}",
                 },
             )
             return self.token
