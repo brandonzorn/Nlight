@@ -56,7 +56,9 @@ class MangaArea(ScrollArea, AbstractContentContainer):
         for item in items:
             self._manga_items.append(item)
             self._content_grid.addWidget(
-                item, i, j,
+                item,
+                i,
+                j,
                 Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop,
             )
             j += 1
@@ -67,8 +69,10 @@ class MangaArea(ScrollArea, AbstractContentContainer):
 
     def partial_image_addition(self):
         for item in self._manga_items:
-            if (self.manga_thread_pool.activeThreadCount()
-                    == self.manga_thread_pool.maxThreadCount()):
+            if (
+                self.manga_thread_pool.activeThreadCount()
+                == self.manga_thread_pool.maxThreadCount()
+            ):
                 self.manga_thread_pool.waitForDone()
             item.update_image()
 
@@ -81,9 +85,10 @@ class MangaArea(ScrollArea, AbstractContentContainer):
         self._manga_items.clear()
 
     def update_items(self):
-        size = (self.size().width() - (
-                self._content_grid.horizontalSpacing() * self._column_count)
-                ) // self._column_count
+        size = (
+            self.size().width()
+            - (self._content_grid.horizontalSpacing() * self._column_count)
+        ) // self._column_count
         [item.set_size(size) for item in self._manga_items]
 
     def get_content_widget(self):

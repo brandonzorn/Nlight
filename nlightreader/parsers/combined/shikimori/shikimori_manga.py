@@ -39,4 +39,6 @@ class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
                 self.CATALOG_ID,
                 i["name"],
                 i["russian"],
-            ) for i in ShikimoriItems.KINDS]
+            )
+            for i in ShikimoriItems.KINDS
+        ]

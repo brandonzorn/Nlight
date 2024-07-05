@@ -20,7 +20,9 @@ class FileManager:
 
     @classmethod
     def __get_manga_folder(
-            cls, manga: Manga, catalog: AbstractCatalog,
+        cls,
+        manga: Manga,
+        catalog: AbstractCatalog,
     ) -> Path:
         return Path(
             cls.__IMAGES_FOLDER,
@@ -31,17 +33,23 @@ class FileManager:
 
     @classmethod
     def __get_chapter_folder(
-            cls, manga: Manga, chapter: Chapter, catalog: AbstractCatalog,
+        cls,
+        manga: Manga,
+        chapter: Chapter,
+        catalog: AbstractCatalog,
     ) -> Path:
         return cls.__get_manga_folder(
-            manga, catalog,
+            manga,
+            catalog,
         ) / fix_folder_name(
             str(chapter.content_id),
         )
 
     @classmethod
     def __get_character_folder(
-            cls, character: Character, catalog: AbstractCatalog,
+        cls,
+        character: Character,
+        catalog: AbstractCatalog,
     ) -> Path:
         return Path(
             cls.__IMAGES_FOLDER,
@@ -52,11 +60,11 @@ class FileManager:
 
     @classmethod
     def check_image_exists(
-            cls,
-            manga: Manga,
-            chapter: Chapter,
-            image: Image,
-            catalog: AbstractCatalog,
+        cls,
+        manga: Manga,
+        chapter: Chapter,
+        image: Image,
+        catalog: AbstractCatalog,
     ) -> bool:
         file_name = f"{image.page}.jpg"
         if manga.kind == Nl.MangaKind.ranobe:
@@ -68,11 +76,11 @@ class FileManager:
 
     @classmethod
     def get_image_file(
-            cls,
-            manga: Manga,
-            chapter: Chapter,
-            image: Image,
-            catalog: AbstractCatalog,
+        cls,
+        manga: Manga,
+        chapter: Chapter,
+        image: Image,
+        catalog: AbstractCatalog,
     ):
         path = cls.__get_chapter_folder(manga, chapter, catalog)
         file_name = f"{image.page}.jpg"
@@ -82,11 +90,11 @@ class FileManager:
 
     @classmethod
     def get_chapter_text_file(
-            cls,
-            manga: Manga,
-            chapter: Chapter,
-            image: Image,
-            catalog: AbstractCatalog,
+        cls,
+        manga: Manga,
+        chapter: Chapter,
+        image: Image,
+        catalog: AbstractCatalog,
     ) -> str:
         path = cls.__get_chapter_folder(manga, chapter, catalog)
         file_name = f"{image.page}.txt"
@@ -94,7 +102,7 @@ class FileManager:
             save_file(path, file_name, catalog.get_image(image))
         try:
             with Path(
-                    get_full_file_path(path, file_name),
+                get_full_file_path(path, file_name),
             ).open(encoding="utf8") as f:
                 text = f.read()
                 text = text.replace("\n", "<br>")
@@ -111,7 +119,9 @@ class FileManager:
 
     @classmethod
     def get_character_preview(
-            cls, character: Character, catalog: AbstractCatalog,
+        cls,
+        character: Character,
+        catalog: AbstractCatalog,
     ) -> QPixmap:
         path = cls.__get_character_folder(character, catalog)
         if not check_file_exists(path, cls.__PREVIEW_FILE):
@@ -124,7 +134,10 @@ class FileManager:
 
     @classmethod
     def remove_chapter_files(
-            cls, manga: Manga, chapter: Chapter, catalog: AbstractCatalog,
+        cls,
+        manga: Manga,
+        chapter: Chapter,
+        catalog: AbstractCatalog,
     ):
         remove_file(
             cls.__get_chapter_folder(manga, chapter, catalog),
@@ -184,5 +197,5 @@ def fix_folder_name(name: str) -> str:
 def fix_path(path: Path) -> Path:
     new_path = Path()
     for p_dir in path.parts:
-        new_path /= (fix_folder_name(p_dir))
+        new_path /= fix_folder_name(p_dir)
     return new_path

@@ -28,7 +28,8 @@ class Desu(AbstractMangaCatalog):
                     self.CATALOG_ID,
                     i.get("text"),
                     i.get("russian"),
-                ) for i in data.get("genres")
+                )
+                for i in data.get("genres")
             ]
             manga.score = data.get("score")
             manga.kind = Nl.MangaKind.from_str(data.get("kind"))

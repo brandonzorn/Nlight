@@ -74,8 +74,13 @@ class ShikimoriBase(AbstractCatalog):
         if response:
             return [
                 Genre(
-                    str(i["id"]), self.CATALOG_ID, i["name"], i["russian"],
-                ) for i in response if i["entry_type"] == "Manga"
+                    str(i["id"]),
+                    self.CATALOG_ID,
+                    i["name"],
+                    i["russian"],
+                )
+                for i in response
+                if i["entry_type"] == "Manga"
             ]
         return []
 
@@ -86,7 +91,8 @@ class ShikimoriBase(AbstractCatalog):
                 self.CATALOG_ID,
                 i["name"],
                 i["russian"],
-            ) for i in ShikimoriItems.ORDERS
+            )
+            for i in ShikimoriItems.ORDERS
         ]
 
     def get_relations(self, manga: Manga) -> list[Manga]:

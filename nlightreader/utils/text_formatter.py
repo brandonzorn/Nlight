@@ -29,9 +29,9 @@ class TextFormatter:
 
     def replace_spoilers(self):
         for i, spoiler_text in re.findall(
-                r"\[spoiler=(\w+)](.+?)\[/spoiler]",
-                self._text,
-                re.DOTALL,
+            r"\[spoiler=(\w+)](.+?)\[/spoiler]",
+            self._text,
+            re.DOTALL,
         ):
             spoiler = spoiler_text
             if not self._show_spoilers:
@@ -41,9 +41,9 @@ class TextFormatter:
                 f'<span style=" color:#951a00;">{spoiler}</span>',
             )
         for spoiler_text in re.findall(
-                r"\[spoiler](.+?)\[/spoiler]",
-                self._text,
-                re.DOTALL,
+            r"\[spoiler](.+?)\[/spoiler]",
+            self._text,
+            re.DOTALL,
         ):
             spoiler = spoiler_text
             if not self._show_spoilers:
@@ -55,18 +55,18 @@ class TextFormatter:
 
     def replace_characters(self):
         for ch_id, name in re.findall(
-                r"\[character=(\w+)](.+?)\[/character]",
-                self._text,
-                re.DOTALL,
+            r"\[character=(\w+)](.+?)\[/character]",
+            self._text,
+            re.DOTALL,
         ):
             self._text = self._text.replace(
                 f"[character={ch_id}]{name}[/character]",
                 f'<span style=" color:#177e00;">{name}</span>',
             )
         for ch_id, name in re.findall(
-                r"\[character=(\w+) (.+?)]",
-                self._text,
-                re.DOTALL,
+            r"\[character=(\w+) (.+?)]",
+            self._text,
+            re.DOTALL,
         ):
             self._text = self._text.replace(
                 f"[character={ch_id} {name}]",
@@ -75,9 +75,9 @@ class TextFormatter:
 
     def replace_urls(self):
         for url, url_text in re.findall(
-                r"\[url=(.+?)](.+?)\[/url]",
-                self._text,
-                re.DOTALL,
+            r"\[url=(.+?)](.+?)\[/url]",
+            self._text,
+            re.DOTALL,
         ):
             self._text = self._text.replace(
                 f"[url={url}]{url_text}[/url]",

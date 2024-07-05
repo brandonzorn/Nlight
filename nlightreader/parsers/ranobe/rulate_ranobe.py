@@ -66,9 +66,11 @@ class Rulate(AbstractRanobeCatalog):
                 if len(name_items) == 2:
                     name = name_items[0].strip()
                     russian = name_items[1].strip()
-                ranobe_id = str(i.unwrap()["data-tooltip-content"].split(
-                    "#book-tooltip-",
-                )[-1])
+                ranobe_id = str(
+                    i.unwrap()["data-tooltip-content"].split(
+                        "#book-tooltip-",
+                    )[-1],
+                )
                 ranobe.append(
                     Manga(
                         ranobe_id,
@@ -91,7 +93,8 @@ class Rulate(AbstractRanobeCatalog):
             ranobe_chapters = soup.findAll("tr", class_="chapter_row")
             for chapter_data in ranobe_chapters:
                 if chapter_data.find(
-                        "span", class_="disabled",
+                    "span",
+                    class_="disabled",
                 ) or chapter_data.find("i", class_="ac_read g"):
                     continue
                 name: str = chapter_data.find("td", class_="t").text
@@ -190,7 +193,9 @@ class Erolate(Rulate):
             "adult": 0,
         }
         response = get_html(
-            f"{self.url_api}/search", params=params, content_type="text",
+            f"{self.url_api}/search",
+            params=params,
+            content_type="text",
         )
         if response:
             soup = BeautifulSoup(response, "html.parser")

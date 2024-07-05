@@ -90,18 +90,23 @@ class FormInfo(QWidget):
         def set_as_read_all():
             history_notes = []
             chapters_by_lang: list[Chapter] = self.sorted_chapters[
-                selected_chapter.language][selected_chapter.translator]
+                selected_chapter.language
+            ][selected_chapter.translator]
             for i, chapter in enumerate(
-                    chapters_by_lang[:chapters_by_lang.index(
+                chapters_by_lang[
+                    : chapters_by_lang.index(
                         selected_chapter,
-                    ) + 1],
+                    )
+                    + 1
+                ],
             ):
                 history_notes.append(
                     HistoryNote(chapter, self.manga, True),
                 )
                 item = selected_item.parent().child(i)
                 item.setIcon(
-                    0, FluentIcon.ACCEPT_MEDIUM.qicon(),
+                    0,
+                    FluentIcon.ACCEPT_MEDIUM.qicon(),
                 )
             self.db.add_history_notes(history_notes)
 
@@ -110,7 +115,8 @@ class FormInfo(QWidget):
                 HistoryNote(selected_chapter, self.manga, True),
             )
             selected_item.setIcon(
-                0, FluentIcon.ACCEPT_MEDIUM.qicon(),
+                0,
+                FluentIcon.ACCEPT_MEDIUM.qicon(),
             )
 
         def remove_read_state():
@@ -152,12 +158,7 @@ class FormInfo(QWidget):
                 self.sorted_chapters[ch_lang] = {}
             if chapter.translator not in self.sorted_chapters[ch_lang]:
                 self.sorted_chapters[ch_lang][chapter.translator] = []
-            (
-                self.sorted_chapters
-                [ch_lang]
-                [chapter.translator]
-                .append(chapter)
-            )
+            (self.sorted_chapters[ch_lang][chapter.translator].append(chapter))
 
     def _get_selected_chapter(self) -> Chapter | None:
         selected_item = self.ui.items_tree.currentItem()
@@ -234,7 +235,9 @@ class FormInfo(QWidget):
             ],
         )
         self.character_window = FormCharacter(
-            character, self.manga.catalog_id, parent=self,
+            character,
+            self.manga.catalog_id,
+            parent=self,
         )
         self.character_window.show()
 
@@ -242,7 +245,8 @@ class FormInfo(QWidget):
         self.ui.image.clear()
         if not self.manga_pixmap:
             self.manga_pixmap = FileManager.get_manga_preview(
-                self.manga, self.catalog,
+                self.manga,
+                self.catalog,
             )
         image_size = QSize(self.width() // 5, self.height() // 2)
         pixmap = self.manga_pixmap.scaled(
@@ -319,7 +323,8 @@ class FormInfo(QWidget):
                     if self.db.check_complete_chapter(chapter):
                         if self.db.get_complete_status(chapter):
                             ch_item.setIcon(
-                                0, FluentIcon.ACCEPT_MEDIUM.qicon(),
+                                0,
+                                FluentIcon.ACCEPT_MEDIUM.qicon(),
                             )
                     translator_item.addChild(ch_item)
 
