@@ -95,11 +95,11 @@ class Remanga(AbstractMangaCatalog):
         images = []
         if response:
             for i, page_data in enumerate(
-                    get_data(
-                        response,
-                        ["content", "pages"],
-                        {},
-                    ),
+                get_data(
+                    response,
+                    ["content", "pages"],
+                    {},
+                ),
             ):
                 page_data = page_data[0]
                 pg_id = page_data.get("id")

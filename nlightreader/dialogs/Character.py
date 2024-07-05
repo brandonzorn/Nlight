@@ -29,13 +29,15 @@ class FormCharacter(QDialog):
     def update_description(self):
         self.ui.description.setHtml(
             description_to_html(
-                self.character.description, self.ui.show_spoilers.isChecked(),
+                self.character.description,
+                self.ui.show_spoilers.isChecked(),
             ),
         )
 
     def setup_image(self):
         self.ui.image.setPixmap(
             FileManager.get_character_preview(
-                self.character, self.catalog,
+                self.character,
+                self.catalog,
             ),
         )

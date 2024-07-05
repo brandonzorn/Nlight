@@ -69,8 +69,8 @@ class MangaItemBasedWidget(QWidget):
         lib_list = self.request_params.lib_list
         time.sleep(0.25)
         if (
-                page != self.request_params.page
-                or lib_list != self.request_params.lib_list
+            page != self.request_params.page
+            or lib_list != self.request_params.lib_list
         ):
             return
         self.mangas = self.catalog.search_manga(self.request_params)

@@ -96,7 +96,7 @@ class Ranobehub(AbstractRanobeCatalog):
             return f"data:image/png;base64,{str_equivalent_image}"
 
         def find_text_container(
-                containers: bs4.element.ResultSet,
+            containers: bs4.element.ResultSet,
         ) -> bs4.element.Tag:
             for container in containers:
                 if container.has_attr("data-container"):

@@ -16,7 +16,8 @@ class Database:
         self._metadata = sqlalchemy.MetaData()
 
         self._manga = sqlalchemy.Table(
-            "manga", self._metadata,
+            "manga",
+            self._metadata,
             sqlalchemy.Column(
                 "id",
                 sqlalchemy.Text,
@@ -72,7 +73,8 @@ class Database:
         )
 
         self._chapters = sqlalchemy.Table(
-            "chapters", self._metadata,
+            "chapters",
+            self._metadata,
             sqlalchemy.Column(
                 "id",
                 sqlalchemy.Text,
@@ -112,7 +114,8 @@ class Database:
         )
 
         self._library = sqlalchemy.Table(
-            "library", self._metadata,
+            "library",
+            self._metadata,
             sqlalchemy.Column(
                 "manga_id",
                 sqlalchemy.Text,
@@ -127,7 +130,8 @@ class Database:
         )
 
         self._chapter_history = sqlalchemy.Table(
-            "chapter_history", self._metadata,
+            "chapter_history",
+            self._metadata,
             sqlalchemy.Column(
                 "manga_id",
                 sqlalchemy.Text,
@@ -165,13 +169,17 @@ class Database:
 
     def add_manga(self, manga: Manga):
         manga_data = manga.to_dict()
-        manga_insert = insert(
-            self._manga,
-        ).values(
-            [manga_data],
-        ).on_conflict_do_update(
-            index_elements=["id"],
-            set_=manga_data,
+        manga_insert = (
+            insert(
+                self._manga,
+            )
+            .values(
+                [manga_data],
+            )
+            .on_conflict_do_update(
+                index_elements=["id"],
+                set_=manga_data,
+            )
         )
         with self.__engine.connect() as conn:
             conn.execute(manga_insert)
@@ -183,13 +191,17 @@ class Database:
         with self.__engine.connect() as conn:
             for manga in mangas:
                 manga_data = manga.to_dict()
-                manga_insert = insert(
-                    self._manga,
-                ).values(
-                    manga_data,
-                ).on_conflict_do_update(
-                    index_elements=["id"],
-                    set_=manga_data,
+                manga_insert = (
+                    insert(
+                        self._manga,
+                    )
+                    .values(
+                        manga_data,
+                    )
+                    .on_conflict_do_update(
+                        index_elements=["id"],
+                        set_=manga_data,
+                    )
                 )
                 conn.execute(manga_insert)
             conn.commit()
@@ -229,9 +241,17 @@ class Database:
                 chapter_data = chapter.to_dict() | {
                     "manga_id": manga.id,
                 }
-                chapters_insert = insert(self._chapters).values([chapter_data])
-                chapters_insert = chapters_insert.on_conflict_do_update(
-                    index_elements=["id"], set_=chapter_data,
+                chapters_insert = (
+                    insert(
+                        self._chapters,
+                    )
+                    .values(
+                        [chapter_data],
+                    )
+                    .on_conflict_do_update(
+                        index_elements=["id"],
+                        set_=chapter_data,
+                    )
                 )
                 conn.execute(chapters_insert)
             conn.commit()
@@ -253,12 +273,18 @@ class Database:
         language = Nl.Language.from_str(a[6])
 
         return Chapter(
-            content_id, catalog_id, vol, ch, title, language,
+            content_id,
+            catalog_id,
+            vol,
+            ch,
+            title,
+            language,
         )
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         select_chapters = sqlalchemy.select(self._chapters).filter_by(
-            manga_id=manga.id)
+            manga_id=manga.id,
+        )
         with self.__engine.connect() as conn:
             select_chapters_result = conn.execute(select_chapters)
         a = select_chapters_result.fetchall()
@@ -266,30 +292,50 @@ class Database:
         for i in a[::-1]:
             chapters.append(
                 Chapter(
-                    i[1], i[2], i[3], i[4], i[5], Nl.Language.from_str(a[6]),
+                    i[1],
+                    i[2],
+                    i[3],
+                    i[4],
+                    i[5],
+                    Nl.Language.from_str(a[6]),
                 ),
             )
         return chapters
 
     def add_manga_library(
-            self, manga: Manga, lib_list: Nl.LibList = Nl.LibList.planned,
+        self,
+        manga: Manga,
+        lib_list: Nl.LibList = Nl.LibList.planned,
     ):
         lib_manga_data = {"manga_id": manga.id, "list": lib_list.value}
-        manga_library_insert = insert(self._library).values([lib_manga_data])
-        manga_library_insert = manga_library_insert.on_conflict_do_update(
-            index_elements=["manga_id"], set_=lib_manga_data)
+        manga_library_insert = (
+            insert(
+                self._library,
+            )
+            .values(
+                [lib_manga_data],
+            )
+            .on_conflict_do_update(
+                index_elements=["manga_id"],
+                set_=lib_manga_data,
+            )
+        )
         with self.__engine.connect() as conn:
             conn.execute(manga_library_insert)
             conn.commit()
 
     def get_manga_library(self, lib_list: Nl.LibList) -> list[Manga]:
-        select_manga_library = sqlalchemy.select(
-            self._manga,
-        ).join(
-            self._library,
-            self._manga.c.id == self._library.c.manga_id,
-        ).filter_by(
-            list=lib_list.value,
+        select_manga_library = (
+            sqlalchemy.select(
+                self._manga,
+            )
+            .join(
+                self._library,
+                self._manga.c.id == self._library.c.manga_id,
+            )
+            .filter_by(
+                list=lib_list.value,
+            )
         )
         with self.__engine.connect() as conn:
             select_chapter_result = conn.execute(select_manga_library)
@@ -320,7 +366,8 @@ class Database:
 
     def rem_manga_library(self, manga: Manga):
         delete_manga_library = sqlalchemy.delete(self._library).filter_by(
-            manga_id=manga.id)
+            manga_id=manga.id,
+        )
         with self.__engine.connect() as conn:
             conn.execute(delete_manga_library)
             conn.commit()
@@ -349,9 +396,17 @@ class Database:
 
     def add_history_note(self, note: HistoryNote):
         note_data = note.to_dict()
-        history_note_insert = insert(self._chapter_history).values([note_data])
-        history_note_insert = history_note_insert.on_conflict_do_update(
-            index_elements=["chapter_id"], set_=note_data,
+        history_note_insert = (
+            insert(
+                self._chapter_history,
+            )
+            .values(
+                [note_data],
+            )
+            .on_conflict_do_update(
+                index_elements=["chapter_id"],
+                set_=note_data,
+            )
         )
         with self.__engine.connect() as conn:
             conn.execute(history_note_insert)
@@ -363,13 +418,17 @@ class Database:
         with self.__engine.connect() as conn:
             for note in history_notes:
                 note_data = note.to_dict()
-                history_notes_insert = insert(
-                    self._chapter_history,
-                ).values(
-                    [note_data],
-                ).on_conflict_do_update(
-                    index_elements=["chapter_id"],
-                    set_=note_data,
+                history_notes_insert = (
+                    insert(
+                        self._chapter_history,
+                    )
+                    .values(
+                        [note_data],
+                    )
+                    .on_conflict_do_update(
+                        index_elements=["chapter_id"],
+                        set_=note_data,
+                    )
                 )
                 conn.execute(history_notes_insert)
             conn.commit()

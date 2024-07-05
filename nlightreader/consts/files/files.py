@@ -23,7 +23,7 @@ class Icons:
 
 
 class NlFluentIcons(FluentIconBase, Enum):
-    """ Custom icons """
+    """Custom icons"""
 
     SHIKIMORI = "shikimori"
 

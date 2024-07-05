@@ -1,4 +1,3 @@
-
 from nlightreader.consts.items import MangaLibItems
 from nlightreader.consts.urls import URL_SLASHLIB
 from nlightreader.items import Manga

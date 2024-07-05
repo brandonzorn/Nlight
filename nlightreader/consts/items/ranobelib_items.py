@@ -8,24 +8,15 @@ from nlightreader.consts.items.preset_items import (
 
 class RanobeLibItems(LibBaseItems):
     ORDERS = [
-        {"value": None}
-        | Po.POPULARITY,
-        {"value": "rate_avg"}
-        | Po.RATING,
-        {"value": "views"}
-        | Po.VIEWS,
-        {"value": "chap_count"}
-        | Po.CHAPTERS_COUNT,
-        {"value": "releaseDate"}
-        | Po.AIRED_ON,
-        {"value": "last_chapter_at"}
-        | Po.UPDATED,
-        {"value": "created_at"}
-        | Po.CREATED,
-        {"value": "name"}
-        | Po.NAME,
-        {"value": "rus_name"}
-        | Po.RUS_NAME,
+        {"value": None} | Po.POPULARITY,
+        {"value": "rate_avg"} | Po.RATING,
+        {"value": "views"} | Po.VIEWS,
+        {"value": "chap_count"} | Po.CHAPTERS_COUNT,
+        {"value": "releaseDate"} | Po.AIRED_ON,
+        {"value": "last_chapter_at"} | Po.UPDATED,
+        {"value": "created_at"} | Po.CREATED,
+        {"value": "name"} | Po.NAME,
+        {"value": "rus_name"} | Po.RUS_NAME,
     ]
 
     KINDS = [

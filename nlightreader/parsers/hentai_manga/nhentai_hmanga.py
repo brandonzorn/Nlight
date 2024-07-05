@@ -50,7 +50,11 @@ class NHentai(AbstractHentaiMangaCatalog):
     def get_chapters(self, manga: Manga):
         return [
             Chapter(
-                manga.content_id, self.CATALOG_ID, "1", "1", "",
+                manga.content_id,
+                self.CATALOG_ID,
+                "1",
+                "1",
+                "",
             ),
         ]
 

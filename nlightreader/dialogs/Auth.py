@@ -85,7 +85,8 @@ class UserDataAuthMessageBox(AbstractAuthDialog):
         self.yesButton.setEnabled(
             bool(
                 self.loginLineEdit.text(),
-            ) and bool(
+            )
+            and bool(
                 self.passwordLineEdit.text(),
             ),
         )

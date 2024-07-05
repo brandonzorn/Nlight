@@ -47,7 +47,8 @@ class Manga(BaseItem):
         if self._description.get(Nl.Language.undefined):
             return self._description.get(Nl.Language.undefined)
         if QLocale().language() in (
-                QLocale.Language.Russian, QLocale.Language.Ukrainian,
+            QLocale.Language.Russian,
+            QLocale.Language.Ukrainian,
         ) and self._description.get(Nl.Language.ru):
             return self._description.get(Nl.Language.ru)
         return self._description.get(Nl.Language.en)
@@ -65,9 +66,9 @@ class Manga(BaseItem):
 
     def set_description_from_str(self, desc: str):
         for lang, text in re.findall(
-                r"<lang=(\w+)>(.+?)<end>",
-                desc,
-                re.DOTALL,
+            r"<lang=(\w+)>(.+?)<end>",
+            desc,
+            re.DOTALL,
         ):
             self.add_description(
                 Nl.Language.from_str(lang),
@@ -93,13 +94,13 @@ class Manga(BaseItem):
 
 class Chapter:
     def __init__(
-            self,
-            content_id: str,
-            catalog_id: int,
-            vol: str,
-            ch: str,
-            title: str,
-            language: Nl.Language = Nl.Language.undefined,
+        self,
+        content_id: str,
+        catalog_id: int,
+        vol: str,
+        ch: str,
+        title: str,
+        language: Nl.Language = Nl.Language.undefined,
     ):
         self.id = f"|{catalog_id}|_|{content_id}|"
         self.content_id = content_id
@@ -147,13 +148,13 @@ class Image:
 
 class Character(BaseItem):
     def __init__(
-            self,
-            content_id: str,
-            catalog_id: int,
-            name,
-            russian,
-            description,
-            role,
+        self,
+        content_id: str,
+        catalog_id: int,
+        name,
+        russian,
+        description,
+        role,
     ):
         super().__init__(content_id, catalog_id, name, russian)
         self.description = description
