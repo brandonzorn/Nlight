@@ -1,8 +1,16 @@
 from nlightreader.consts.urls import DEFAULT_HEADERS
 from nlightreader.consts.items.parser_items import ParserItems
 from nlightreader.items import (
-    Manga, Chapter, Image, RequestForm,
-    Genre, Kind, Order, Character, User, UserRate,
+    Chapter,
+    Character,
+    Genre,
+    Image,
+    Kind,
+    Manga,
+    Order,
+    RequestForm,
+    User,
+    UserRate,
 )
 
 

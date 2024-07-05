@@ -1,4 +1,4 @@
-from qfluentwidgets import RoundMenu, FluentIcon, Action
+from qfluentwidgets import Action, FluentIcon, RoundMenu
 
 from nlightreader.utils import translate
 

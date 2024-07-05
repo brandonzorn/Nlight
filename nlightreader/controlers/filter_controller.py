@@ -1,8 +1,8 @@
 from PySide6.QtWidgets import QLayout
-from qfluentwidgets import RadioButton, CheckBox
+from qfluentwidgets import CheckBox, RadioButton
 
 from nlightreader.dialogs import FormGenres
-from nlightreader.items import Order, Kind, Genre
+from nlightreader.items import Genre, Kind, Order
 
 
 class FilterController:

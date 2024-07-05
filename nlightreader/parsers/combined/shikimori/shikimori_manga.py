@@ -1,5 +1,5 @@
 from nlightreader.consts.items import ShikimoriItems
-from nlightreader.items import RequestForm, Kind
+from nlightreader.items import Kind, RequestForm
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.parsers.combined.shikimori.shikimori_base import (
     ShikimoriBase,

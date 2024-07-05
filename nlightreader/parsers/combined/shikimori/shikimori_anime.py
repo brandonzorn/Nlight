@@ -1,17 +1,17 @@
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import ShikimoriAnimeItems
 from nlightreader.consts.urls import (
-    URL_SHIKIMORI_API,
-    URL_SHIKIMORI,
     SHIKIMORI_HEADERS,
+    URL_SHIKIMORI,
+    URL_SHIKIMORI_API,
 )
 from nlightreader.items import (
-    Manga,
-    Character,
-    RequestForm,
     Chapter,
+    Character,
     Genre,
+    Manga,
     Order,
+    RequestForm,
 )
 from nlightreader.parsers.catalogs_base import AbstractAnimeCatalog
 from nlightreader.parsers.service.kodik import Kodik

@@ -1,26 +1,26 @@
 import logging
 
-from PySide6.QtCore import Qt, QSize, Slot, Signal, QThreadPool
+from PySide6.QtCore import QSize, Qt, QThreadPool, Signal, Slot
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QWidget, QListWidgetItem, QTreeWidgetItem
+from PySide6.QtWidgets import QListWidgetItem, QTreeWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.info import Ui_Form
-from nlightreader.consts.enums import Nl, LIB_LISTS
+from nlightreader.consts.enums import LIB_LISTS, Nl
 from nlightreader.consts.files import NlFluentIcons
 from nlightreader.contexts import ReadMarkMenu
-from nlightreader.dialogs import FormRate, FormCharacter
-from nlightreader.items import Manga, Character, Chapter, HistoryNote
+from nlightreader.dialogs import FormCharacter, FormRate
+from nlightreader.items import Chapter, Character, HistoryNote, Manga
 from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils import (
     Database,
+    description_to_html,
     FileManager,
     get_catalog,
-    get_status,
     get_language_icon,
+    get_status,
     translate,
     Worker,
-    description_to_html,
 )
 from nlightreader.utils.html_video import start_html_video
 from nlightreader.widgets.NlightWidgets import ChapterTreeItem
