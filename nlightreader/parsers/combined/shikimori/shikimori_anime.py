@@ -78,12 +78,15 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         for translator in translators:
             for episode_num in range(translator.episodes, 0, -1):
                 chapter = Chapter(
-                    f"{translator.content_id}{episode_num}", self.CATALOG_ID,
-                    "", "", f"Episode {episode_num}", Nl.Language.ru,
+                    f"{translator.content_id}{episode_num}",
+                    self.CATALOG_ID,
+                    "",
+                    "",
+                    f"Episode {episode_num}",
+                    Nl.Language.ru,
                 )
                 chapter.translator = (
-                    f"{translator.translator} "
-                    f"({translator.tr_type})"
+                    f"{translator.translator} " f"({translator.tr_type})"
                 )
                 chapter.__setattr__(
                     "url",
@@ -117,9 +120,14 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
             return [
-               Genre(
-                   str(i["id"]), self.CATALOG_ID, i["name"], i["russian"],
-               ) for i in response if i["entry_type"] == "Anime"
+                Genre(
+                    str(i["id"]),
+                    self.CATALOG_ID,
+                    i["name"],
+                    i["russian"],
+                )
+                for i in response
+                if i["entry_type"] == "Anime"
             ]
         return []
 
@@ -130,7 +138,8 @@ class ShikimoriAnime(AbstractAnimeCatalog):
                 self.CATALOG_ID,
                 i["name"],
                 i["russian"],
-            ) for i in ShikimoriAnimeItems.ORDERS
+            )
+            for i in ShikimoriAnimeItems.ORDERS
         ]
 
     def get_characters(self, manga: Manga) -> list[Character]:

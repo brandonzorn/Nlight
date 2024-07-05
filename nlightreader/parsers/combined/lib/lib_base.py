@@ -58,8 +58,7 @@ class LibBase(AbstractCatalog):
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         branches_url = (
-            f"{self.url_api}/"
-            f"branches/{manga.content_id.split('--')[0]}"
+            f"{self.url_api}/" f"branches/{manga.content_id.split('--')[0]}"
         )
 
         branches = {}

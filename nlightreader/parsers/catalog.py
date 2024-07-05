@@ -51,22 +51,34 @@ class AbstractCatalog:
     def get_genres(self):
         return [
             Genre(
-                i["value"], self.CATALOG_ID, i["name"], i["russian"],
-            ) for i in self.items.GENRES
+                i["value"],
+                self.CATALOG_ID,
+                i["name"],
+                i["russian"],
+            )
+            for i in self.items.GENRES
         ]
 
     def get_kinds(self) -> list[Kind]:
         return [
             Kind(
-                i["value"], self.CATALOG_ID, i["name"], i["russian"],
-            ) for i in self.items.KINDS
+                i["value"],
+                self.CATALOG_ID,
+                i["name"],
+                i["russian"],
+            )
+            for i in self.items.KINDS
         ]
 
     def get_orders(self) -> list[Order]:
         return [
             Order(
-                i["value"], self.CATALOG_ID, i["name"], i["russian"],
-            ) for i in self.items.ORDERS
+                i["value"],
+                self.CATALOG_ID,
+                i["name"],
+                i["russian"],
+            )
+            for i in self.items.ORDERS
         ]
 
     def get_relations(self, manga: Manga) -> list[Manga]:

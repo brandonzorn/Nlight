@@ -11,15 +11,15 @@ from nlightreader.consts.files import LangIcons, Translations
 
 
 def make_request(
-        url: str,
-        method: str,
-        *,
-        headers=None,
-        params=None,
-        json=None,
-        data=None,
-        cookies=None,
-        content_type=None,
+    url: str,
+    method: str,
+    *,
+    headers=None,
+    params=None,
+    json=None,
+    data=None,
+    cookies=None,
+    content_type=None,
 ):
     """
     Sends an HTTP GET request to the specified URL with the given
@@ -83,14 +83,14 @@ def make_request(
 
 
 def get_html(
-        url: str,
-        *,
-        headers=None,
-        params=None,
-        json=None,
-        data=None,
-        cookies=None,
-        content_type=None,
+    url: str,
+    *,
+    headers=None,
+    params=None,
+    json=None,
+    data=None,
+    cookies=None,
+    content_type=None,
 ):
     """
     Sends an HTTP GET request to the specified

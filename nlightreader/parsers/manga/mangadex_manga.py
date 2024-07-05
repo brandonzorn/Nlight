@@ -178,17 +178,14 @@ class MangaDex(AbstractMangaCatalog):
         )
         filename = ""
         if covers_list_response:
-            filename = (
-                covers_list_response
-                ["data"]
-                [0]
-                ["attributes"]
-                ["fileName"]
-            )
+            filename = covers_list_response["data"][0]["attributes"][
+                "fileName"
+            ]
         return get_html(
             f"https://uploads.mangadex.org/"
             f"covers/{manga.content_id}/{filename}.256.jpg",
-            content_type="content")
+            content_type="content",
+        )
 
     def get_genres(self):
         url = f"{self.url_api}/manga/tag"
@@ -214,10 +211,10 @@ class MangaDex(AbstractMangaCatalog):
         kinds = []
         if response:
             for i in list(
-                    filter(
-                        lambda x: x["attributes"]["group"] in ["format"],
-                        response["data"],
-                    ),
+                filter(
+                    lambda x: x["attributes"]["group"] in ["format"],
+                    response["data"],
+                ),
             ):
                 kinds.append(
                     Kind(
@@ -257,7 +254,7 @@ class MangaDexLib(MangaDex, LibParser):
             for i in resp_json.get("data"):
                 manga = self.setup_manga(i)
                 if manga.content_id in response_statuses.json().get(
-                        "statuses",
+                    "statuses",
                 ):
                     mangas.append(manga)
         return mangas

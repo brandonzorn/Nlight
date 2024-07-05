@@ -57,14 +57,18 @@ class ParentWindow(FluentWindow):
     @Slot(int)
     def on_widget_change(self, value):
         if value in range(4):
-            if any(i.objectName() == "FormInfo"
-                   for i in self.stackedWidget.view.children()):
+            if any(
+                i.objectName() == "FormInfo"
+                for i in self.stackedWidget.view.children()
+            ):
                 self.delete_info_interface()
         self.navigationInterface.setReturnButtonVisible(
             self.stackedWidget.count() > 4,
         )
         if self.stackedWidget.currentWidget().objectName() in (
-                "FormInfo", "ReaderWidget"):
+            "FormInfo",
+            "ReaderWidget",
+        ):
             return
         self.stackedWidget.currentWidget().setup()
 
