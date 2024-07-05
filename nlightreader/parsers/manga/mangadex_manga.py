@@ -1,18 +1,20 @@
 import logging
 
 from nlightreader.consts.urls import (
-    URL_MANGA_DEX_API, URL_MANGA_DEX,
-    MANGA_DEX_HEADERS, URL_MANGA_DEX_TOKEN,
+    MANGA_DEX_HEADERS,
+    URL_MANGA_DEX,
+    URL_MANGA_DEX_API,
+    URL_MANGA_DEX_TOKEN,
 )
 from nlightreader.consts.enums import Nl
 from nlightreader.items import (
-    Manga,
     Chapter,
-    Image,
     Genre,
+    Image,
+    Kind,
+    Manga,
     RequestForm,
     User,
-    Kind,
 )
 from nlightreader.parsers.catalog import LibParser
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog

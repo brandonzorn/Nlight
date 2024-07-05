@@ -1,12 +1,12 @@
 from typing import Callable
 
 from PySide6.QtCore import (
-    QThreadPool,
-    QRunnable,
     QObject,
+    QRunnable,
+    QThread,
+    QThreadPool,
     Signal,
     Slot,
-    QThread,
 )
 
 

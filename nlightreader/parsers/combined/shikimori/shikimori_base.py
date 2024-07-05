@@ -1,11 +1,11 @@
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import ShikimoriItems
 from nlightreader.consts.urls import (
+    SHIKIMORI_HEADERS,
     URL_SHIKIMORI,
     URL_SHIKIMORI_API,
-    SHIKIMORI_HEADERS,
 )
-from nlightreader.items import Manga, Character, Genre, Order
+from nlightreader.items import Character, Genre, Manga, Order
 from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils.utils import get_html
 

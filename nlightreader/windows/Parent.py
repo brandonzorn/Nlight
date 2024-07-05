@@ -1,12 +1,15 @@
-from PySide6.QtCore import Slot, QSize
-from qfluentwidgets import FluentWindow, FluentIcon
+from PySide6.QtCore import QSize, Slot
+from qfluentwidgets import FluentIcon, FluentWindow
 
 from nlightreader.consts.files.files import NlFluentIcons
 from nlightreader.items import Manga
 from nlightreader.utils import translate
 from nlightreader.widgets.NlightTemplates import (
-    FormFacial, FormLibrary,
-    FormShikimori, FormHistory, FormInfo,
+    FormFacial,
+    FormHistory,
+    FormInfo,
+    FormLibrary,
+    FormShikimori,
 )
 
 

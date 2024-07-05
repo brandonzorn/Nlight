@@ -1,7 +1,7 @@
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import AniLibItems
 from nlightreader.consts.urls import URL_ANILIB
-from nlightreader.items import Manga, Chapter
+from nlightreader.items import Chapter, Manga
 from nlightreader.parsers.catalogs_base import AbstractAnimeCatalog
 from nlightreader.parsers.combined.lib.lib_base import LibBase
 from nlightreader.utils.utils import get_html

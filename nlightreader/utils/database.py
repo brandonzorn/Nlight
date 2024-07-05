@@ -4,7 +4,7 @@ from sqlalchemy.dialects.sqlite import insert
 
 from nlightreader.consts.app import APP_NAME
 from nlightreader.consts.enums import Nl
-from nlightreader.items import Chapter, Manga, HistoryNote
+from nlightreader.items import Chapter, HistoryNote, Manga
 from nlightreader.utils.decorators import singleton
 
 

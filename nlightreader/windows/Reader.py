@@ -2,16 +2,20 @@ import time
 
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QMainWindow, QListWidgetItem
+from PySide6.QtWidgets import QListWidgetItem, QMainWindow
 from qfluentwidgets import FluentIcon, IndeterminateProgressRing
 
 from data.ui.windows.reader import Ui_ReaderWindow
 from nlightreader.consts.colors import ItemsColors
 from nlightreader.consts.enums import Nl
-from nlightreader.items import Manga, Chapter, Image, HistoryNote
+from nlightreader.items import Chapter, HistoryNote, Image, Manga
 from nlightreader.utils import (
-    Database, get_catalog, FileManager,
-    translate, get_language_icon, Thread,
+    Database,
+    FileManager,
+    get_catalog,
+    get_language_icon,
+    Thread,
+    translate,
 )
 from nlightreader.widgets.NlightContainers import TextArea
 from nlightreader.widgets.NlightContainers.content_container import (

@@ -3,12 +3,12 @@ import base64
 import bs4.element
 from bs4 import BeautifulSoup
 
-from nlightreader.consts.urls import URL_RANOBEHUB_API, URL_RANOBEHUB
+from nlightreader.consts.urls import URL_RANOBEHUB, URL_RANOBEHUB_API
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RanobehubItems
-from nlightreader.items import RequestForm, Manga, Chapter, Image
+from nlightreader.items import Chapter, Image, Manga, RequestForm
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
-from nlightreader.utils.utils import get_html, get_data
+from nlightreader.utils.utils import get_data, get_html
 
 
 class Ranobehub(AbstractRanobeCatalog):

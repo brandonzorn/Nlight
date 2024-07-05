@@ -1,8 +1,8 @@
 import webbrowser
 
 from PySide6 import QtGui
-from PySide6.QtCore import Qt, Signal, QSize, QRect
-from PySide6.QtGui import QImage, QPainter, QPixmap, QColor
+from PySide6.QtCore import QRect, QSize, Qt, Signal
+from PySide6.QtGui import QColor, QImage, QPainter, QPixmap
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import InfoBar
 
@@ -10,11 +10,11 @@ from data.ui.manga_item import Ui_Form
 from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.items import Manga
 from nlightreader.utils import (
-    Worker,
-    get_catalog,
-    FileManager,
     Database,
+    FileManager,
+    get_catalog,
     translate,
+    Worker,
 )
 
 

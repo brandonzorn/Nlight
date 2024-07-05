@@ -1,5 +1,5 @@
-from PySide6.QtCore import Slot, Signal
-from PySide6.QtWidgets import QWidget, QTreeWidgetItem
+from PySide6.QtCore import Signal, Slot
+from PySide6.QtWidgets import QTreeWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.history import Ui_Form

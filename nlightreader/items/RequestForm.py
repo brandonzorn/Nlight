@@ -1,5 +1,5 @@
 from nlightreader.consts.enums import Nl
-from nlightreader.items.sort_items import Order, Genre, Kind
+from nlightreader.items.sort_items import Genre, Kind, Order
 
 
 class RequestForm:
