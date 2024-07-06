@@ -1,5 +1,5 @@
-from PySide6.QtCore import Slot, Signal
-from PySide6.QtWidgets import QWidget, QTreeWidgetItem
+from PySide6.QtCore import Signal, Slot
+from PySide6.QtWidgets import QTreeWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.history import Ui_Form
@@ -34,7 +34,9 @@ class FormHistory(QWidget):
         def set_as_read():
             self.db.add_history_note(
                 HistoryNote(
-                    selected_note.chapter, selected_note.manga, True,
+                    selected_note.chapter,
+                    selected_note.manga,
+                    True,
                 ),
             )
             selected_item.setBackground(0, ItemsColors.READ)
@@ -51,8 +53,9 @@ class FormHistory(QWidget):
         selected_note = self._get_selected_note()
         selected_manga = self._get_selected_manga()
 
-        if (selected_item.parent() and
-                not self.db.get_complete_status(selected_note.chapter)):
+        if selected_item.parent() and not self.db.get_complete_status(
+            selected_note.chapter,
+        ):
             menu.set_mode(0)
         else:
             menu.set_mode(1)

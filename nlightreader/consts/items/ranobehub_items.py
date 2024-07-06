@@ -8,20 +8,13 @@ from nlightreader.consts.items.preset_items import (
 
 class RanobehubItems(ParserItems):
     ORDERS = [
-        {"value": ""}
-        | Po.UPDATED,
-        {"value": "created_at"}
-        | Po.CREATED,
-        {"value": "name_rus"}
-        | Po.NAME,
-        {"value": "views"}
-        | Po.VIEWS,
-        {"value": "computed_rating"}
-        | Po.RATING,
-        {"value": "count_chapters"}
-        | Po.CHAPTERS_COUNT,
-        {"value": "count_of_symbols"}
-        | Po.TRANSLATION_VOLUME,
+        {"value": ""} | Po.UPDATED,
+        {"value": "created_at"} | Po.CREATED,
+        {"value": "name_rus"} | Po.NAME,
+        {"value": "views"} | Po.VIEWS,
+        {"value": "computed_rating"} | Po.RATING,
+        {"value": "count_chapters"} | Po.CHAPTERS_COUNT,
+        {"value": "count_of_symbols"} | Po.TRANSLATION_VOLUME,
     ]
 
     GENRES = [

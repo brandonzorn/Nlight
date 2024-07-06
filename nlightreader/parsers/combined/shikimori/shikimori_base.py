@@ -1,11 +1,11 @@
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import ShikimoriItems
 from nlightreader.consts.urls import (
+    SHIKIMORI_HEADERS,
     URL_SHIKIMORI,
     URL_SHIKIMORI_API,
-    SHIKIMORI_HEADERS,
 )
-from nlightreader.items import Manga, Character, Genre, Order
+from nlightreader.items import Character, Genre, Manga, Order
 from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils.utils import get_html
 
@@ -74,8 +74,13 @@ class ShikimoriBase(AbstractCatalog):
         if response:
             return [
                 Genre(
-                    str(i["id"]), self.CATALOG_ID, i["name"], i["russian"],
-                ) for i in response if i["entry_type"] == "Manga"
+                    str(i["id"]),
+                    self.CATALOG_ID,
+                    i["name"],
+                    i["russian"],
+                )
+                for i in response
+                if i["entry_type"] == "Manga"
             ]
         return []
 
@@ -86,7 +91,8 @@ class ShikimoriBase(AbstractCatalog):
                 self.CATALOG_ID,
                 i["name"],
                 i["russian"],
-            ) for i in ShikimoriItems.ORDERS
+            )
+            for i in ShikimoriItems.ORDERS
         ]
 
     def get_relations(self, manga: Manga) -> list[Manga]:

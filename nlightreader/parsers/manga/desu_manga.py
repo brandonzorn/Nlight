@@ -1,9 +1,9 @@
-from nlightreader.consts.urls import URL_DESU_API, DESU_HEADERS, URL_DESU
+from nlightreader.consts.urls import DESU_HEADERS, URL_DESU, URL_DESU_API
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import DesuItems
-from nlightreader.items import Manga, Chapter, Image, Genre, RequestForm
+from nlightreader.items import Chapter, Genre, Image, Manga, RequestForm
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
-from nlightreader.utils.utils import get_html, get_data
+from nlightreader.utils.utils import get_data, get_html
 
 
 class Desu(AbstractMangaCatalog):
@@ -28,7 +28,8 @@ class Desu(AbstractMangaCatalog):
                     self.CATALOG_ID,
                     i.get("text"),
                     i.get("russian"),
-                ) for i in data.get("genres")
+                )
+                for i in data.get("genres")
             ]
             manga.score = data.get("score")
             manga.kind = Nl.MangaKind.from_str(data.get("kind"))

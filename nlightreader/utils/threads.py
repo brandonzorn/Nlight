@@ -1,12 +1,12 @@
 from typing import Callable
 
 from PySide6.QtCore import (
-    QThreadPool,
-    QRunnable,
     QObject,
+    QRunnable,
+    QThread,
+    QThreadPool,
     Signal,
     Slot,
-    QThread,
 )
 
 
@@ -16,12 +16,12 @@ class Signals(QObject):
 
 class NlThread:
     def __init__(
-            self,
-            target: Callable,
-            args=(),
-            kwargs=None,
-            *,
-            callback=None,
+        self,
+        target: Callable,
+        args=(),
+        kwargs=None,
+        *,
+        callback=None,
     ):
         super().__init__()
         if kwargs is None:
@@ -60,12 +60,12 @@ class Worker(NlThread, QRunnable):
     """
 
     def __init__(
-            self,
-            target: Callable,
-            args=(),
-            kwargs=None,
-            *,
-            callback=None,
+        self,
+        target: Callable,
+        args=(),
+        kwargs=None,
+        *,
+        callback=None,
     ):
         super().__init__(target, args, kwargs, callback=callback)
 
@@ -98,6 +98,11 @@ class Thread(NlThread, QThread):
     """
 
     def __init__(
-            self, target: Callable, args=(), kwargs=None, *, callback=None,
+        self,
+        target: Callable,
+        args=(),
+        kwargs=None,
+        *,
+        callback=None,
     ):
         super().__init__(target, args, kwargs, callback=callback)
