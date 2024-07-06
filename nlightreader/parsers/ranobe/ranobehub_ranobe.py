@@ -3,12 +3,12 @@ import base64
 import bs4.element
 from bs4 import BeautifulSoup
 
-from nlightreader.consts.urls import URL_RANOBEHUB_API, URL_RANOBEHUB
+from nlightreader.consts.urls import URL_RANOBEHUB, URL_RANOBEHUB_API
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RanobehubItems
-from nlightreader.items import RequestForm, Manga, Chapter, Image
+from nlightreader.items import Chapter, Image, Manga, RequestForm
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
-from nlightreader.utils.utils import get_html, get_data
+from nlightreader.utils.utils import get_data, get_html
 
 
 class Ranobehub(AbstractRanobeCatalog):
@@ -96,7 +96,7 @@ class Ranobehub(AbstractRanobeCatalog):
             return f"data:image/png;base64,{str_equivalent_image}"
 
         def find_text_container(
-                containers: bs4.element.ResultSet,
+            containers: bs4.element.ResultSet,
         ) -> bs4.element.Tag:
             for container in containers:
                 if container.has_attr("data-container"):

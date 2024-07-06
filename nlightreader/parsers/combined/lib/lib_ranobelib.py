@@ -4,7 +4,7 @@ import re
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RanobeLibItems
 from nlightreader.consts.urls import URL_RANOBELIB
-from nlightreader.items import Manga, Chapter, Image
+from nlightreader.items import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.parsers.combined.lib.lib_base import LibBase
 from nlightreader.utils.utils import get_html
@@ -36,11 +36,16 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
     def get_image(self, image: Image):
         # Function to get content images from chapter
         def get_chapter_content_image(media_id: str):
-            url = media_id if media_id.startswith(
-                "http",
-            ) else f"{self.url}{media_id}"
+            url = (
+                media_id
+                if media_id.startswith(
+                    "http",
+                )
+                else f"{self.url}{media_id}"
+            )
             chapter_image = get_html(
-                url, headers=self.headers,
+                url,
+                headers=self.headers,
             ).content
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/png;base64,{str_equivalent_image}"
