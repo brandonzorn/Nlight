@@ -1,12 +1,15 @@
-from PySide6.QtCore import Slot, QSize
-from qfluentwidgets import FluentWindow, FluentIcon
+from PySide6.QtCore import QSize, Slot
+from qfluentwidgets import FluentIcon, FluentWindow
 
 from nlightreader.consts.files.files import NlFluentIcons
 from nlightreader.items import Manga
 from nlightreader.utils import translate
 from nlightreader.widgets.NlightTemplates import (
-    FormFacial, FormLibrary,
-    FormShikimori, FormHistory, FormInfo,
+    FormFacial,
+    FormHistory,
+    FormInfo,
+    FormLibrary,
+    FormShikimori,
 )
 
 
@@ -54,14 +57,18 @@ class ParentWindow(FluentWindow):
     @Slot(int)
     def on_widget_change(self, value):
         if value in range(4):
-            if any(i.objectName() == "FormInfo"
-                   for i in self.stackedWidget.view.children()):
+            if any(
+                i.objectName() == "FormInfo"
+                for i in self.stackedWidget.view.children()
+            ):
                 self.delete_info_interface()
         self.navigationInterface.setReturnButtonVisible(
             self.stackedWidget.count() > 4,
         )
         if self.stackedWidget.currentWidget().objectName() in (
-                "FormInfo", "ReaderWidget"):
+            "FormInfo",
+            "ReaderWidget",
+        ):
             return
         self.stackedWidget.currentWidget().setup()
 

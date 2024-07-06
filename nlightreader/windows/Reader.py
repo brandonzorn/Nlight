@@ -2,16 +2,20 @@ import time
 
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QMainWindow, QListWidgetItem
+from PySide6.QtWidgets import QListWidgetItem, QMainWindow
 from qfluentwidgets import FluentIcon, IndeterminateProgressRing
 
 from data.ui.windows.reader import Ui_ReaderWindow
 from nlightreader.consts.colors import ItemsColors
 from nlightreader.consts.enums import Nl
-from nlightreader.items import Manga, Chapter, Image, HistoryNote
+from nlightreader.items import Chapter, HistoryNote, Image, Manga
 from nlightreader.utils import (
-    Database, get_catalog, FileManager,
-    translate, get_language_icon, Thread,
+    Database,
+    FileManager,
+    get_catalog,
+    get_language_icon,
+    Thread,
+    translate,
 )
 from nlightreader.widgets.NlightContainers import TextArea
 from nlightreader.widgets.NlightContainers.content_container import (
@@ -48,7 +52,8 @@ class ReaderWindow(QMainWindow):
 
         self.ui.items_list.doubleClicked.connect(self.change_chapter)
         self._set_image_thread = Thread(
-            target=self.get_content, callback=self.update_image,
+            target=self.get_content,
+            callback=self.update_image,
         )
 
         self.content_container: AbstractContentContainer | None = None
@@ -70,13 +75,14 @@ class ReaderWindow(QMainWindow):
         self.ui.chapters_frame.hide()
         self.manga = manga
         self.setWindowTitle(self.manga.name)
-        self.content_container = TextArea() if (
-                self.manga.kind == Nl.MangaKind.ranobe
-        ) else ImageArea()
+        self.content_container = (
+            TextArea()
+            if (self.manga.kind == Nl.MangaKind.ranobe)
+            else ImageArea()
+        )
         self.content_container.install(self.ui.reader_layout)
         (
-            self.content_container
-            .get_content_widget()
+            self.content_container.get_content_widget()
             .parent()
             .layout()
             .addWidget(
@@ -134,13 +140,17 @@ class ReaderWindow(QMainWindow):
     def turn_page_next(self):
         self.db.add_history_note(
             HistoryNote(
-                self._current_chapter, self.manga, False,
+                self._current_chapter,
+                self.manga,
+                False,
             ),
         )
         if self.cur_page == self.max_page:
             self.db.add_history_note(
                 HistoryNote(
-                    self._current_chapter, self.manga, True,
+                    self._current_chapter,
+                    self.manga,
+                    True,
                 ),
             )
             self.turn_chapter_next()
@@ -174,7 +184,9 @@ class ReaderWindow(QMainWindow):
     def turn_chapter_next(self):
         self.db.add_history_note(
             HistoryNote(
-                self._current_chapter, self.manga, True,
+                self._current_chapter,
+                self.manga,
+                True,
             ),
         )
         if self.cur_chapter == self.max_chapters:
@@ -211,10 +223,10 @@ class ReaderWindow(QMainWindow):
         chapter = self.cur_chapter
 
         if not FileManager.check_image_exists(
-                self.manga,
-                self.chapters[chapter - 1],
-                self.images[page - 1],
-                self.catalog,
+            self.manga,
+            self.chapters[chapter - 1],
+            self.images[page - 1],
+            self.catalog,
         ):
             time.sleep(0.25)
             if page != self.cur_page or chapter != self.cur_chapter:

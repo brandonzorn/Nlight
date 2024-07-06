@@ -4,18 +4,19 @@ import time
 from http.server import HTTPServer
 from pathlib import Path
 from threading import Thread as PyThread
+
 import darkdetect
 import platformdirs
-from PySide6.QtCore import Qt, QTranslator, QLocale, QThreadPool
-from PySide6.QtGui import QIcon, QPalette
+from PySide6.QtCore import QLocale, Qt, QThreadPool, QTranslator
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
-from qfluentwidgets import setTheme, Theme, InfoBar
+from qfluentwidgets import InfoBar, setTheme, Theme
 
 from nlightreader import ParentWindow
-from nlightreader.consts.app import APP_VERSION, APP_NAME, APP_BRANCH
+from nlightreader.consts.app import APP_BRANCH, APP_NAME, APP_VERSION
 from nlightreader.consts.files import Icons
 from nlightreader.consts.urls import GITHUB_REPO
-from nlightreader.utils import get_locale, Thread, get_html, translate
+from nlightreader.utils import get_html, get_locale, Thread, translate
 from nlightreader.utils.kodik_server import KodikHTTPRequestHandler
 
 
@@ -118,7 +119,9 @@ class MainWindow(ParentWindow):
 if __name__ == "__main__":
     if "debug" in sys.argv:
         logging.basicConfig(
-            level=logging.WARNING, filename="latest.log", filemode="w",
+            level=logging.WARNING,
+            filename="latest.log",
+            filemode="w",
         )
 
     QApplication.setHighDpiScaleFactorRoundingPolicy(

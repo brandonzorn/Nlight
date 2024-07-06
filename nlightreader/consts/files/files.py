@@ -1,6 +1,6 @@
 from enum import Enum
 
-from qfluentwidgets import FluentIconBase, Theme, getIconColor
+from qfluentwidgets import FluentIconBase, getIconColor, Theme
 
 import nlight_res_rc
 
@@ -23,7 +23,7 @@ class Icons:
 
 
 class NlFluentIcons(FluentIconBase, Enum):
-    """ Custom icons """
+    """Custom icons"""
 
     SHIKIMORI = "shikimori"
 

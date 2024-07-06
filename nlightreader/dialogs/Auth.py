@@ -1,11 +1,11 @@
 import webbrowser
 
 from qfluentwidgets import (
-    MessageBoxBase,
     LineEdit,
+    MessageBoxBase,
     PasswordLineEdit,
-    SubtitleLabel,
     PushButton,
+    SubtitleLabel,
 )
 
 from nlightreader.utils import translate
@@ -85,7 +85,8 @@ class UserDataAuthMessageBox(AbstractAuthDialog):
         self.yesButton.setEnabled(
             bool(
                 self.loginLineEdit.text(),
-            ) and bool(
+            )
+            and bool(
                 self.passwordLineEdit.text(),
             ),
         )

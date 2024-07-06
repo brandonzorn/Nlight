@@ -5,8 +5,10 @@ from PySide6.QtWidgets import QApplication
 from requests_oauthlib import OAuth2Session
 
 from nlightreader.consts.urls import (
-    URL_SHIKIMORI_API, SHIKIMORI_HEADERS,
-    URL_SHIKIMORI, URL_SHIKIMORI_TOKEN,
+    SHIKIMORI_HEADERS,
+    URL_SHIKIMORI,
+    URL_SHIKIMORI_API,
+    URL_SHIKIMORI_TOKEN,
 )
 from nlightreader.consts.enums import Nl
 from nlightreader.items import Manga, RequestForm, User, UserRate
@@ -189,7 +191,8 @@ class Auth:
                 "refresh_token": token["refresh_token"],
             }
             TokenManager.save_token(
-                token, catalog_name=ShikimoriLib.CATALOG_NAME,
+                token,
+                catalog_name=ShikimoriLib.CATALOG_NAME,
             )
             self.tokens = token
 
@@ -211,8 +214,7 @@ class Auth:
             ).get("access_token")
             self.client.headers.update(
                 {
-                    "Authorization":
-                        f"Bearer {access_token}",
+                    "Authorization": f"Bearer {access_token}",
                 },
             )
             return self.token
@@ -220,21 +222,26 @@ class Auth:
             logging.error(e)
 
     def request(
-            self,
-            method,
-            url,
-            *,
-            params=None,
-            json=None,
-            ignore_authorize=False,
+        self,
+        method,
+        url,
+        *,
+        params=None,
+        json=None,
+        ignore_authorize=False,
     ):
-        if ((not ignore_authorize and not self.is_authorized) or
-                "test" in QApplication.arguments() or
-                "noshiki" in QApplication.arguments()):
+        if (
+            (not ignore_authorize and not self.is_authorized)
+            or "test" in QApplication.arguments()
+            or "noshiki" in QApplication.arguments()
+        ):
             return
         try:
             response = self.client.request(
-                method, url, params=params, json=json,
+                method,
+                url,
+                params=params,
+                json=json,
             )
             response.raise_for_status()
             return response

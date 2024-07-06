@@ -1,6 +1,6 @@
 from nlightreader.consts.items import MangaLibItems
 from nlightreader.consts.urls import URL_MANGALIB
-from nlightreader.items import Manga, Chapter, Image
+from nlightreader.items import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.parsers.combined.lib.lib_base import LibBase
 from nlightreader.utils.utils import get_html

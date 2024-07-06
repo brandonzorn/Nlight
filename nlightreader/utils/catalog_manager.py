@@ -1,13 +1,21 @@
 from nlightreader.parsers import (
+    AllHentai,
     Desu,
-    MangaDex, MangaDexLib,
-    ShikimoriBase, ShikimoriRanobe, ShikimoriManga,
-    ShikimoriLib, ShikimoriAnime,
-    Rulate, Erolate,
+    Erolate,
+    LibAnilib,
+    LibMangalib,
+    LibRanobelib,
+    MangaDex,
+    MangaDexLib,
+    NHentai,
     Ranobehub,
     Remanga,
-    NHentai, AllHentai,
-    LibRanobelib, LibMangalib, LibAnilib,
+    Rulate,
+    ShikimoriAnime,
+    ShikimoriBase,
+    ShikimoriLib,
+    ShikimoriManga,
+    ShikimoriRanobe,
     SlashLib,
 )
 
@@ -33,19 +41,15 @@ USER_CATALOGS = [
     Desu,
     MangaDex,
     Remanga,
-
     ShikimoriManga,
     ShikimoriRanobe,
     ShikimoriAnime,
-
     LibMangalib,
     LibRanobelib,
     LibAnilib,
-
     Rulate,
     Erolate,
     Ranobehub,
-
     NHentai,
     AllHentai,
 ]

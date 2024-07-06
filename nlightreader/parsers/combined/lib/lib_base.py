@@ -1,6 +1,6 @@
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.urls import URL_LIB_API
-from nlightreader.items import Manga, RequestForm, Chapter
+from nlightreader.items import Chapter, Manga, RequestForm
 from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils.utils import get_html
 
@@ -58,8 +58,7 @@ class LibBase(AbstractCatalog):
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         branches_url = (
-            f"{self.url_api}/"
-            f"branches/{manga.content_id.split('--')[0]}"
+            f"{self.url_api}/" f"branches/{manga.content_id.split('--')[0]}"
         )
 
         branches = {}

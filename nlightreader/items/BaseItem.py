@@ -3,11 +3,11 @@ from PySide6.QtCore import QLocale
 
 class BaseItem:
     def __init__(
-            self,
-            content_id: str,
-            catalog_id: int,
-            name: str,
-            russian: str,
+        self,
+        content_id: str,
+        catalog_id: int,
+        name: str,
+        russian: str,
     ):
         self.__id = f"|{catalog_id}|_|{content_id}|"
         self.__content_id = content_id
@@ -34,9 +34,14 @@ class BaseItem:
         return self.__catalog_id
 
     def get_name(self) -> str:
-        if QLocale().language() in (
-                QLocale.Language.Russian, QLocale.Language.Ukrainian,
-        ) and self.russian:
+        if (
+            QLocale().language()
+            in (
+                QLocale.Language.Russian,
+                QLocale.Language.Ukrainian,
+            )
+            and self.russian
+        ):
             return self.russian
         return self.name
 
