@@ -123,7 +123,9 @@ class Auth:
         self.redirect_uri = "urn:ietf:wg:oauth:2.0:oob"
         self.extra = {"client_id": self.client_id, "client_secret": self.client_secret}
         self.tokens = TokenManager.load_token(ShikimoriLib.CATALOG_NAME)
-        self.headers = {"User-Agent": "Shikimori", "Authorization": f"Bearer {self.tokens.get('access_token')}"}
+        self.headers = SHIKIMORI_HEADERS | {
+            "Authorization": f"Bearer {self.tokens.get('access_token')}",
+        }
         self.client = self.get_client(scope, self.redirect_uri, token)
         self.refresh_token()
         self.user: User = User(None, None, None)
@@ -136,9 +138,15 @@ class Auth:
         self.check_auth()
 
     def get_client(self, scope, redirect_uri, token):
-        client = OAuth2Session(self.client_id, auto_refresh_url=URL_SHIKIMORI_TOKEN, auto_refresh_kwargs=self.extra,
-                               scope=scope, redirect_uri=redirect_uri, token=token,
-                               token_updater=TokenManager.save_token)
+        client = OAuth2Session(
+            self.client_id,
+            auto_refresh_url=URL_SHIKIMORI_TOKEN,
+            auto_refresh_kwargs=self.extra,
+            scope=scope,
+            redirect_uri=redirect_uri,
+            token=token,
+            token_updater=TokenManager.save_token,
+        )
         client.headers.update(self.headers)
         return client
 
