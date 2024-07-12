@@ -1,19 +1,17 @@
 import time
 
 from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QListWidgetItem, QMainWindow
 from qfluentwidgets import FluentIcon, IndeterminateProgressRing
 
 from data.ui.windows.reader import Ui_ReaderWindow
-from nlightreader.consts.colors import ItemsColors
+from nlightreader.consts.colors import ItemsIcons
 from nlightreader.consts.enums import Nl
 from nlightreader.items import Chapter, HistoryNote, Image, Manga
 from nlightreader.utils import (
     Database,
     FileManager,
     get_catalog_by_id,
-    get_language_icon,
     Thread,
     translate,
 )
@@ -126,15 +124,13 @@ class ReaderWindow(QMainWindow):
     def update_chapters_list(self):
         self.ui.items_list.clear()
         for chapter in self.__chapters:
-            item = QListWidgetItem(chapter.get_name())
+            ch_item = QListWidgetItem(chapter.get_name())
             if self.__db.check_complete_chapter(chapter):
                 if self.__db.get_complete_status(chapter):
-                    item.setBackground(ItemsColors.READ)
+                    ch_item.setIcon(ItemsIcons.READ.qicon())
                 else:
-                    item.setBackground(ItemsColors.UNREAD)
-            if chapter.language:
-                item.setIcon(QIcon(get_language_icon(chapter.language)))
-            self.ui.items_list.addItem(item)
+                    ch_item.setIcon(ItemsIcons.UNREAD)
+            self.ui.items_list.addItem(ch_item)
 
     @Slot()
     def turn_page_next(self):
