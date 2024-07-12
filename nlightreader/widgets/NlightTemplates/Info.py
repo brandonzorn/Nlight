@@ -6,6 +6,7 @@ from PySide6.QtWidgets import QListWidgetItem, QTreeWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.info import Ui_Form
+from nlightreader.consts.colors import ItemsIcons
 from nlightreader.consts.enums import LIB_LISTS, Nl
 from nlightreader.consts.files import NlFluentIcons
 from nlightreader.contexts import ReadMarkMenu
@@ -327,10 +328,9 @@ class FormInfo(QWidget):
                     ch_item = ChapterTreeItem(chapter)
                     if self.__db.check_complete_chapter(chapter):
                         if self.__db.get_complete_status(chapter):
-                            ch_item.setIcon(
-                                0,
-                                FluentIcon.ACCEPT_MEDIUM.qicon(),
-                            )
+                            ch_item.setIcon(0, ItemsIcons.READ.qicon())
+                        else:
+                            ch_item.setIcon(0, ItemsIcons.UNREAD)
                     translator_item.addChild(ch_item)
 
             if len(self.__sorted_chapters) == 1:
