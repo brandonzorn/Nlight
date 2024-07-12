@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'rate.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.3
+## Created by: Qt User Interface Compiler version 6.7.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -107,19 +107,19 @@ class Ui_Dialog(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.cancel_btn = QPushButton(self.actions_frame)
         self.cancel_btn.setObjectName(u"cancel_btn")
-        self.cancel_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.cancel_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.horizontalLayout.addWidget(self.cancel_btn)
 
         self.delete_btn = QPushButton(self.actions_frame)
         self.delete_btn.setObjectName(u"delete_btn")
-        self.delete_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.delete_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.horizontalLayout.addWidget(self.delete_btn)
 
         self.update_btn = QPushButton(self.actions_frame)
         self.update_btn.setObjectName(u"update_btn")
-        self.update_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.update_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.horizontalLayout.addWidget(self.update_btn)
 

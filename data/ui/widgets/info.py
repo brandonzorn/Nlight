@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'info.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.3
+## Created by: Qt User Interface Compiler version 6.7.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -40,7 +40,7 @@ class Ui_Form(object):
         self.horizontalLayout_3.setContentsMargins(9, 9, 9, 9)
         self.back_btn = QPushButton(self.header_frame)
         self.back_btn.setObjectName(u"back_btn")
-        self.back_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.back_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.horizontalLayout_3.addWidget(self.back_btn)
 
@@ -74,7 +74,7 @@ class Ui_Form(object):
 
         self.add_btn = QPushButton(self.lib_frame)
         self.add_btn.setObjectName(u"add_btn")
-        self.add_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.add_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.add_btn.setCheckable(True)
 
         self.horizontalLayout.addWidget(self.add_btn)
@@ -91,7 +91,7 @@ class Ui_Form(object):
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.shikimori_btn = QPushButton(self.shikimori_frame)
         self.shikimori_btn.setObjectName(u"shikimori_btn")
-        self.shikimori_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.shikimori_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.horizontalLayout_2.addWidget(self.shikimori_btn)
 

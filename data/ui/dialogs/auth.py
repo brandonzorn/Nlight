@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'auth.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.3
+## Created by: Qt User Interface Compiler version 6.7.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -72,7 +72,7 @@ class Ui_Dialog(object):
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.get_code_btn = QPushButton(self.one_frame)
         self.get_code_btn.setObjectName(u"get_code_btn")
-        self.get_code_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.get_code_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.horizontalLayout_3.addWidget(self.get_code_btn)
 
@@ -133,7 +133,7 @@ class Ui_Dialog(object):
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.auth_btn = QPushButton(self.frame)
         self.auth_btn.setObjectName(u"auth_btn")
-        self.auth_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.auth_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.horizontalLayout_4.addWidget(self.auth_btn)
 

@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'manga_item.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.3
+## Created by: Qt User Interface Compiler version 6.7.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -36,7 +36,7 @@ class Ui_manga_item_widget(object):
         self.manga_item_frame.setObjectName(u"manga_item_frame")
         sizePolicy.setHeightForWidth(self.manga_item_frame.sizePolicy().hasHeightForWidth())
         self.manga_item_frame.setSizePolicy(sizePolicy)
-        self.manga_item_frame.setCursor(QCursor(Qt.PointingHandCursor))
+        self.manga_item_frame.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.manga_item_frame.setContextMenuPolicy(Qt.CustomContextMenu)
         self.manga_item_frame.setStyleSheet(u"")
         self.manga_item_frame.setFrameShape(QFrame.StyledPanel)
