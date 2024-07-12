@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'reader.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.3
+## Created by: Qt User Interface Compiler version 6.7.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -76,7 +76,7 @@ class Ui_ReaderWindow(object):
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.prev_chapter_btn.sizePolicy().hasHeightForWidth())
         self.prev_chapter_btn.setSizePolicy(sizePolicy2)
-        self.prev_chapter_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.prev_chapter_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.prev_chapter_btn.setFocusPolicy(Qt.NoFocus)
 
         self.page_actions_btn.addWidget(self.prev_chapter_btn)
@@ -85,7 +85,7 @@ class Ui_ReaderWindow(object):
         self.prev_page_btn.setObjectName(u"prev_page_btn")
         sizePolicy2.setHeightForWidth(self.prev_page_btn.sizePolicy().hasHeightForWidth())
         self.prev_page_btn.setSizePolicy(sizePolicy2)
-        self.prev_page_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.prev_page_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.prev_page_btn.setFocusPolicy(Qt.NoFocus)
 
         self.page_actions_btn.addWidget(self.prev_page_btn)
@@ -106,7 +106,7 @@ class Ui_ReaderWindow(object):
         self.next_page_btn.setObjectName(u"next_page_btn")
         sizePolicy2.setHeightForWidth(self.next_page_btn.sizePolicy().hasHeightForWidth())
         self.next_page_btn.setSizePolicy(sizePolicy2)
-        self.next_page_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.next_page_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.next_page_btn.setFocusPolicy(Qt.NoFocus)
 
         self.page_actions_btn.addWidget(self.next_page_btn)
@@ -115,7 +115,7 @@ class Ui_ReaderWindow(object):
         self.next_chapter_btn.setObjectName(u"next_chapter_btn")
         sizePolicy2.setHeightForWidth(self.next_chapter_btn.sizePolicy().hasHeightForWidth())
         self.next_chapter_btn.setSizePolicy(sizePolicy2)
-        self.next_chapter_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.next_chapter_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.next_chapter_btn.setFocusPolicy(Qt.NoFocus)
 
         self.page_actions_btn.addWidget(self.next_chapter_btn)
@@ -140,7 +140,7 @@ class Ui_ReaderWindow(object):
         self.fullscreen_btn.setObjectName(u"fullscreen_btn")
         sizePolicy2.setHeightForWidth(self.fullscreen_btn.sizePolicy().hasHeightForWidth())
         self.fullscreen_btn.setSizePolicy(sizePolicy2)
-        self.fullscreen_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.fullscreen_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.fullscreen_btn.setFocusPolicy(Qt.NoFocus)
         self.fullscreen_btn.setCheckable(True)
 
@@ -150,7 +150,7 @@ class Ui_ReaderWindow(object):
         self.ch_list_btn.setObjectName(u"ch_list_btn")
         sizePolicy2.setHeightForWidth(self.ch_list_btn.sizePolicy().hasHeightForWidth())
         self.ch_list_btn.setSizePolicy(sizePolicy2)
-        self.ch_list_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.ch_list_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.ch_list_btn.setFocusPolicy(Qt.NoFocus)
         self.ch_list_btn.setCheckable(True)
 

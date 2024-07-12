@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'mainWindow.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.3
+## Created by: Qt User Interface Compiler version 6.7.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -50,7 +50,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.btn_library.sizePolicy().hasHeightForWidth())
         self.btn_library.setSizePolicy(sizePolicy)
-        self.btn_library.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_library.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_library.setStyleSheet(u"")
         self.btn_library.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.btn_library.setCheckable(True)
@@ -63,7 +63,7 @@ class Ui_MainWindow(object):
         self.btn_main.setObjectName(u"btn_main")
         sizePolicy.setHeightForWidth(self.btn_main.sizePolicy().hasHeightForWidth())
         self.btn_main.setSizePolicy(sizePolicy)
-        self.btn_main.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_main.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_main.setStyleSheet(u"")
         self.btn_main.setCheckable(True)
         self.btn_main.setChecked(True)
@@ -76,7 +76,7 @@ class Ui_MainWindow(object):
         self.btn_shikimori.setObjectName(u"btn_shikimori")
         sizePolicy.setHeightForWidth(self.btn_shikimori.sizePolicy().hasHeightForWidth())
         self.btn_shikimori.setSizePolicy(sizePolicy)
-        self.btn_shikimori.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_shikimori.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_shikimori.setStyleSheet(u"")
         self.btn_shikimori.setCheckable(True)
         self.btn_shikimori.setAutoRepeat(False)
@@ -88,7 +88,7 @@ class Ui_MainWindow(object):
         self.btn_history.setObjectName(u"btn_history")
         sizePolicy.setHeightForWidth(self.btn_history.sizePolicy().hasHeightForWidth())
         self.btn_history.setSizePolicy(sizePolicy)
-        self.btn_history.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_history.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_history.setStyleSheet(u"")
         self.btn_history.setCheckable(True)
         self.btn_history.setAutoRepeat(False)

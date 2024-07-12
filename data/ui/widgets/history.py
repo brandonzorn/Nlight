@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'history.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.3
+## Created by: Qt User Interface Compiler version 6.7.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -56,7 +56,7 @@ class Ui_Form(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.delete_btn = QPushButton(self.frame)
         self.delete_btn.setObjectName(u"delete_btn")
-        self.delete_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.delete_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.verticalLayout.addWidget(self.delete_btn)
 

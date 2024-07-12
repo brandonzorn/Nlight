@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'facial.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.3
+## Created by: Qt User Interface Compiler version 6.7.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -65,7 +65,7 @@ class Ui_Form(object):
 
         self.search_btn = QPushButton(self.text_frame)
         self.search_btn.setObjectName(u"search_btn")
-        self.search_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.search_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.horizontalLayout_2.addWidget(self.search_btn)
 
@@ -74,7 +74,7 @@ class Ui_Form(object):
 
         self.filter_btn = QPushButton(self.search_frame)
         self.filter_btn.setObjectName(u"filter_btn")
-        self.filter_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.filter_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.filter_btn.setCheckable(True)
         self.filter_btn.setChecked(True)
 
@@ -89,7 +89,7 @@ class Ui_Form(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.prev_btn = QPushButton(self.page_frame)
         self.prev_btn.setObjectName(u"prev_btn")
-        self.prev_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.prev_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.horizontalLayout.addWidget(self.prev_btn)
 
@@ -100,7 +100,7 @@ class Ui_Form(object):
 
         self.next_btn = QPushButton(self.page_frame)
         self.next_btn.setObjectName(u"next_btn")
-        self.next_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.next_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.horizontalLayout.addWidget(self.next_btn)
 
@@ -200,7 +200,7 @@ class Ui_Form(object):
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.genres_btn = QPushButton(self.genres_frame)
         self.genres_btn.setObjectName(u"genres_btn")
-        self.genres_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.genres_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.verticalLayout_6.addWidget(self.genres_btn)
 
@@ -215,7 +215,7 @@ class Ui_Form(object):
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.catalogs_btn = QPushButton(self.filter_catalog_frame)
         self.catalogs_btn.setObjectName(u"catalogs_btn")
-        self.catalogs_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.catalogs_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.verticalLayout_7.addWidget(self.catalogs_btn)
 
@@ -234,13 +234,13 @@ class Ui_Form(object):
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.reset_btn = QPushButton(self.filter_actions_frame)
         self.reset_btn.setObjectName(u"reset_btn")
-        self.reset_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.reset_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.horizontalLayout_4.addWidget(self.reset_btn)
 
         self.apply_btn = QPushButton(self.filter_actions_frame)
         self.apply_btn.setObjectName(u"apply_btn")
-        self.apply_btn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.apply_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         self.horizontalLayout_4.addWidget(self.apply_btn)
 
