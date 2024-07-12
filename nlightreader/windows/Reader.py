@@ -12,7 +12,7 @@ from nlightreader.items import Chapter, HistoryNote, Image, Manga
 from nlightreader.utils import (
     Database,
     FileManager,
-    get_catalog,
+    get_catalog_by_id,
     get_language_icon,
     Thread,
     translate,
@@ -56,43 +56,43 @@ class ReaderWindow(QMainWindow):
             callback=self.update_image,
         )
 
-        self.content_container: AbstractContentContainer | None = None
+        self.__content_container: AbstractContentContainer | None = None
 
-        self.progressRing = IndeterminateProgressRing()
-        self.progressRing.setVisible(False)
+        self.__progressRing = IndeterminateProgressRing()
+        self.__progressRing.setVisible(False)
 
-        self.db: Database = Database()
-        self.manga = None
-        self.chapters: list[Chapter] = []
-        self.images: list[Image] = []
-        self.cur_chapter = 1
-        self.max_chapters = 1
-        self.cur_page = 1
-        self.max_page = 1
-        self.catalog = None
+        self.__db: Database = Database()
+        self.__manga = None
+        self.__chapters: list[Chapter] = []
+        self.__images: list[Image] = []
+        self.__cur_chapter = 1
+        self.__max_chapters = 1
+        self.__cur_page = 1
+        self.__max_page = 1
+        self.__catalog = None
 
     def setup(self, manga: Manga, chapters: list[Chapter], cur_chapter=1):
         self.ui.chapters_frame.hide()
-        self.manga = manga
-        self.setWindowTitle(self.manga.name)
-        self.content_container = (
+        self.__manga = manga
+        self.setWindowTitle(self.__manga.name)
+        self.__content_container = (
             TextArea()
-            if (self.manga.kind == Nl.MangaKind.ranobe)
+            if (self.__manga.kind == Nl.MangaKind.ranobe)
             else ImageArea()
         )
-        self.content_container.install(self.ui.reader_layout)
+        self.__content_container.install(self.ui.reader_layout)
         (
-            self.content_container.get_content_widget()
+            self.__content_container.get_content_widget()
             .parent()
             .layout()
             .addWidget(
-                self.progressRing,
+                self.__progressRing,
             )
         )
-        self.chapters = chapters
-        self.cur_chapter = cur_chapter
-        self.max_chapters = len(chapters)
-        self.catalog = get_catalog(manga.catalog_id)()
+        self.__chapters = chapters
+        self.__cur_chapter = cur_chapter
+        self.__max_chapters = len(chapters)
+        self.__catalog = get_catalog_by_id(manga.catalog_id)
         self.showMaximized()
         self.update_chapters_list()
         self.update_chapter()
@@ -120,15 +120,15 @@ class ReaderWindow(QMainWindow):
 
     @Slot()
     def change_chapter(self):
-        self.cur_chapter = self.ui.items_list.currentIndex().row() + 1
+        self.__cur_chapter = self.ui.items_list.currentIndex().row() + 1
         self.update_chapter()
 
     def update_chapters_list(self):
         self.ui.items_list.clear()
-        for chapter in self.chapters:
+        for chapter in self.__chapters:
             item = QListWidgetItem(chapter.get_name())
-            if self.db.check_complete_chapter(chapter):
-                if self.db.get_complete_status(chapter):
+            if self.__db.check_complete_chapter(chapter):
+                if self.__db.get_complete_status(chapter):
                     item.setBackground(ItemsColors.READ)
                 else:
                     item.setBackground(ItemsColors.UNREAD)
@@ -138,72 +138,73 @@ class ReaderWindow(QMainWindow):
 
     @Slot()
     def turn_page_next(self):
-        self.db.add_history_note(
+        self.__db.add_history_note(
             HistoryNote(
                 self._current_chapter,
-                self.manga,
+                self.__manga,
                 False,
             ),
         )
-        if self.cur_page == self.max_page:
-            self.db.add_history_note(
+        if self.__cur_page == self.__max_page:
+            self.__db.add_history_note(
                 HistoryNote(
                     self._current_chapter,
-                    self.manga,
+                    self.__manga,
                     True,
                 ),
             )
             self.turn_chapter_next()
         else:
-            self.cur_page += 1
+            self.__cur_page += 1
             self.update_page()
 
     @Slot()
     def turn_page_prev(self):
-        self.db.add_history_note(
+        self.__db.add_history_note(
             HistoryNote(
                 self._current_chapter,
-                self.manga,
+                self.__manga,
                 False,
             ),
         )
-        if self.cur_page == 1:
-            self.db.del_history_note(self._current_chapter)
+        if self.__cur_page == 1:
+            self.__db.del_history_note(self._current_chapter)
             self.turn_chapter_prev()
         else:
-            self.cur_page -= 1
+            self.__cur_page -= 1
             self.update_page()
 
     def update_page(self):
         self.ui.page_label.setText(
-            f"{translate('Other', 'Page')} {self.cur_page} / {self.max_page}",
+            f"{translate('Other', 'Page')} "
+            f"{self.__cur_page} / {self.__max_page}",
         )
         self.attach_image()
 
     @Slot()
     def turn_chapter_next(self):
-        self.db.add_history_note(
+        self.__db.add_history_note(
             HistoryNote(
                 self._current_chapter,
-                self.manga,
+                self.__manga,
                 True,
             ),
         )
-        if self.cur_chapter == self.max_chapters:
+        if self.__cur_chapter == self.__max_chapters:
             self.deleteLater()
         else:
-            self.cur_chapter += 1
+            self.__cur_chapter += 1
         self.update_chapter()
 
     @Slot()
     def turn_chapter_prev(self):
-        if self.cur_chapter == 1:
+        if self.__cur_chapter == 1:
             return
-        self.cur_chapter -= 1
+        self.__cur_chapter -= 1
         self.update_chapter()
 
     def update_chapter(self):
-        self.cur_page = 1
+        self.__cur_page = 1
         self.get_images()
         self.update_page()
         self.ui.chapter_label.setText(self._current_chapter.get_name())
@@ -211,57 +212,57 @@ class ReaderWindow(QMainWindow):
     def attach_image(self):
         self._set_image_thread.terminate()
         self._set_image_thread.wait()
-        if not self.images:
+        if not self.__images:
             return
-        self.progressRing.setVisible(True)
-        self.progressRing.start()
-        self.content_container.get_content_widget().setVisible(False)
+        self.__progressRing.setVisible(True)
+        self.__progressRing.start()
+        self.__content_container.get_content_widget().setVisible(False)
         self._set_image_thread.start()
 
     def get_content(self):
-        page = self.cur_page
-        chapter = self.cur_chapter
+        page = self.__cur_page
+        chapter = self.__cur_chapter
 
         if not FileManager.check_image_exists(
-            self.manga,
-            self.chapters[chapter - 1],
-            self.images[page - 1],
-            self.catalog,
+            self.__manga,
+            self.__chapters[chapter - 1],
+            self.__images[page - 1],
+            self.__catalog,
         ):
             time.sleep(0.25)
-            if page != self.cur_page or chapter != self.cur_chapter:
+            if page != self.__cur_page or chapter != self.__cur_chapter:
                 return
 
-        if self.manga.kind == Nl.MangaKind.ranobe:
+        if self.__manga.kind == Nl.MangaKind.ranobe:
             return FileManager.get_chapter_text_file(
-                self.manga,
-                self.chapters[chapter - 1],
-                self.images[page - 1],
-                self.catalog,
+                self.__manga,
+                self.__chapters[chapter - 1],
+                self.__images[page - 1],
+                self.__catalog,
             )
         return FileManager.get_image_file(
-            self.manga,
-            self.chapters[chapter - 1],
-            self.images[page - 1],
-            self.catalog,
+            self.__manga,
+            self.__chapters[chapter - 1],
+            self.__images[page - 1],
+            self.__catalog,
         )
 
     def update_image(self, content):
-        self.progressRing.stop()
-        self.progressRing.setVisible(False)
-        self.content_container.get_content_widget().setVisible(True)
-        self.content_container.set_content(content)
+        self.__progressRing.stop()
+        self.__progressRing.setVisible(False)
+        self.__content_container.get_content_widget().setVisible(True)
+        self.__content_container.set_content(content)
 
     def get_images(self):
         chapter = self._current_chapter
-        self.images = self.catalog.get_images(self.manga, chapter)
-        if not self.images:
-            self.images = [Image.get_empty_instance()]
-        self.max_page = self.get_chapter_pages()
+        self.__images = self.__catalog.get_images(self.__manga, chapter)
+        if not self.__images:
+            self.__images = [Image.get_empty_instance()]
+        self.__max_page = self.get_chapter_pages()
 
     def get_chapter_pages(self) -> int:
-        return self.images[-1].page
+        return self.__images[-1].page
 
     @property
     def _current_chapter(self) -> Chapter:
-        return self.chapters[self.cur_chapter - 1]
+        return self.__chapters[self.__cur_chapter - 1]
