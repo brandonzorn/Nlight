@@ -2,7 +2,7 @@ from .catalog_manager import (
     CATALOGS,
     USER_CATALOGS,
     LIB_CATALOGS,
-    get_catalog,
+    get_catalog_by_id,
     get_lib_catalog,
 )
 from .database import Database

@@ -6,7 +6,10 @@ from data.ui.dialogs.rate import Ui_Dialog
 from nlightreader.consts.enums import LIB_LISTS, Nl
 from nlightreader.items import Manga
 from nlightreader.utils import translate
-from nlightreader.utils.catalog_manager import get_catalog, get_lib_catalog
+from nlightreader.utils.catalog_manager import (
+    get_catalog_by_id,
+    get_lib_catalog,
+)
 
 
 class FormRate(QDialog):
@@ -24,23 +27,27 @@ class FormRate(QDialog):
         self.ui.update_btn.clicked.connect(self.send_rate)
         self.ui.cancel_btn.clicked.connect(self.close)
         self.ui.delete_btn.clicked.connect(self.delete_rate)
-        self.manga = manga
-        self.catalog = get_lib_catalog(get_catalog(self.manga.catalog_id))()
 
+        self.__manga = manga
+        self.__catalog = get_lib_catalog(
+            get_catalog_by_id(
+                self.__manga.catalog_id,
+            ).__class__,
+        )
         self.user_rate = None
 
-        self.setWindowTitle(f"{self.manga.get_name()}")
+        self.setWindowTitle(self.__manga.get_name())
 
         self.setup()
 
     def setup(self):
-        if not self.catalog.check_user_rate(self.manga):
-            self.catalog.create_user_rate(self.manga)
-        self.user_rate = self.catalog.get_user_rate(self.manga)
+        if not self.__catalog.check_user_rate(self.__manga):
+            self.__catalog.create_user_rate(self.__manga)
+        self.user_rate = self.__catalog.get_user_rate(self.__manga)
         self.ui.score_box.setValue(self.user_rate.score)
         self.ui.chapters_box.setValue(self.user_rate.chapters)
-        if self.manga.chapters:
-            self.ui.chapters_box.setMaximum(self.manga.chapters)
+        if self.__manga.chapters:
+            self.ui.chapters_box.setMaximum(self.__manga.chapters)
         self.ui.lib_list_box.setCurrentIndex(self.user_rate.status.value)
 
     def closeEvent(self, arg__1):
@@ -51,10 +58,10 @@ class FormRate(QDialog):
         self.user_rate.score = self.ui.score_box.value()
         self.user_rate.chapters = self.ui.chapters_box.value()
         self.user_rate.status = Nl.LibList(self.ui.lib_list_box.currentIndex())
-        self.catalog.update_user_rate(self.user_rate)
+        self.__catalog.update_user_rate(self.user_rate)
         self.close()
 
     @Slot()
     def delete_rate(self):
-        self.catalog.delete_user_rate(self.user_rate)
+        self.__catalog.delete_user_rate(self.user_rate)
         self.close()
