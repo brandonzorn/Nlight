@@ -111,7 +111,7 @@ class Nl:
         dropped = 5
 
         @classmethod
-        def from_str(cls, string: str | None):
+        def from_str(cls, string: str):
             string = string.lower()
             if string in ("planned",):
                 return cls.planned
@@ -129,3 +129,34 @@ class Nl:
 
         def to_str(self) -> str:
             return LIB_LISTS[self.value]
+
+    @unique
+    class MangaStatus(Enum):
+        undefined = 0
+        ongoing = 1
+        released = 2
+        frozen = 3
+
+        @classmethod
+        def from_str(cls, string: str | None):
+            if string is None or string.lower() in ("undefined", "неизвестно"):
+                return cls.undefined
+
+            string = string.lower()
+            if string in ("ongoing", "в процессе"):
+                return cls.ongoing
+            if string in ("released", "completed", "завершено"):
+                return cls.released
+            if string in ("frozen", "заморожено"):
+                return cls.frozen
+            logging.warning(f"Unknown manga status: {string}")
+            return cls.undefined
+
+        def to_str(self) -> str:
+            names = [
+                "Undefined",
+                "Ongoing",
+                "Released",
+                "Frozen",
+            ]
+            return names[self.value]
