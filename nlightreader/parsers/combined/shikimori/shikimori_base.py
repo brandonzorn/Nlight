@@ -5,7 +5,8 @@ from nlightreader.consts.urls import (
     URL_SHIKIMORI,
     URL_SHIKIMORI_API,
 )
-from nlightreader.items import Character, Genre, Manga, Order
+from nlightreader.items import Character, Genre, Order
+from nlightreader.models import Manga
 from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils.utils import get_html
 
@@ -36,16 +37,17 @@ class ShikimoriBase(AbstractCatalog):
             data = response
             manga.kind = Nl.MangaKind.from_str(data.get("kind"))
             manga.score = float(data.get("score"))
-            manga.status = data.get("status")
+            manga.status = Nl.MangaStatus.from_str(data.get("status"))
             if data.get("volumes"):
                 manga.volumes = int(data.get("volumes"))
             if data.get("chapters"):
                 manga.chapters = int(data.get("chapters"))
 
-            manga.add_description(
-                Nl.Language.undefined,
-                data.get("description"),
-            )
+            if description := data.get("description"):
+                manga.add_description(
+                    Nl.Language.undefined,
+                    description,
+                )
         return manga
 
     def get_character(self, character: Character) -> Character:

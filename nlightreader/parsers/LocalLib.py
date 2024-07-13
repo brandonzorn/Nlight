@@ -1,4 +1,5 @@
-from nlightreader.items import Manga, RequestForm
+from nlightreader.items import RequestForm
+from nlightreader.models import Manga
 from nlightreader.utils.database import Database
 
 

@@ -2,7 +2,7 @@ from PySide6.QtCore import QSize, Slot
 from qfluentwidgets import FluentIcon, FluentWindow
 
 from nlightreader.consts.files.files import NlFluentIcons
-from nlightreader.items import Manga
+from nlightreader.models import Manga
 from nlightreader.utils import translate
 from nlightreader.widgets.NlightTemplates import (
     FormFacial,

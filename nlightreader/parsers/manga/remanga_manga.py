@@ -1,7 +1,8 @@
 from nlightreader.consts.urls import URL_REMANGA, URL_REMANGA_API
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RemangaItems
-from nlightreader.items import Chapter, Image, Manga, RequestForm
+from nlightreader.items import Chapter, Image, RequestForm
+from nlightreader.models import Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.utils import get_data, get_html
 
@@ -21,6 +22,13 @@ class Remanga(AbstractMangaCatalog):
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
             data = response.get("content")
+
+            if kind_name := data.get("type").get("name"):
+                manga.kind = Nl.MangaKind.from_str(kind_name)
+
+            manga.score = float(data.get("avg_rating"))
+            manga.preview_url = data.get("img").get("high")
+
             manga.add_description(
                 Nl.Language.undefined,
                 data.get("description"),
@@ -36,9 +44,8 @@ class Remanga(AbstractMangaCatalog):
             "query": form.search,
             "count": 40,
             "ordering": form.get_order_id(),
+            "types": form.get_kind_ids(),
         }
-        params = list(params.items())
-        [params.append(("types", kind_id)) for kind_id in form.get_kind_ids()]
         response = get_html(
             url,
             headers=self.headers,
@@ -51,10 +58,9 @@ class Remanga(AbstractMangaCatalog):
                 manga_id = i.get("dir")
                 name = i.get("en_name")
                 russian = i.get("rus_name")
-                kind = Nl.MangaKind.from_str(i.get("type"))
                 manga = Manga(manga_id, self.CATALOG_ID, name, russian)
-                manga.kind = kind
-                manga.score = i.get("avg_rating")
+                manga.kind = Nl.MangaKind.from_str(i.get("type"))
+                manga.score = float(i.get("avg_rating"))
                 manga.preview_url = i.get("img").get("high")
                 mangas.append(manga)
         return mangas

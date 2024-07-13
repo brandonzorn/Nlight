@@ -5,7 +5,8 @@ from PySide6.QtWidgets import QWidget
 from qfluentwidgets import IndeterminateProgressRing
 
 from nlightreader.consts.enums import Nl
-from nlightreader.items import Manga, RequestForm
+from nlightreader.items import RequestForm
+from nlightreader.models import Manga
 from nlightreader.utils import Thread
 from nlightreader.widgets.NlightContainers.manga_area import MangaArea
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem

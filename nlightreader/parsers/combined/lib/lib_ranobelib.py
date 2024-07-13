@@ -4,7 +4,8 @@ import re
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RanobeLibItems
 from nlightreader.consts.urls import URL_RANOBELIB
-from nlightreader.items import Chapter, Image, Manga
+from nlightreader.items import Chapter, Image
+from nlightreader.models import Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.parsers.combined.lib.lib_base import LibBase
 from nlightreader.utils.utils import get_html
