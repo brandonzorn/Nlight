@@ -12,10 +12,10 @@ from nlightreader.items import (
     Genre,
     Image,
     Kind,
-    Manga,
     RequestForm,
     User,
 )
+from nlightreader.models import Manga
 from nlightreader.parsers.catalog import LibParser
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.decorators import singleton
@@ -45,8 +45,7 @@ class MangaDex(AbstractMangaCatalog):
         if response:
             data = get_data(response, ["data"])
             manga.kind = Nl.MangaKind.from_str(data.get("type"))
-            description = get_data(data, ["attributes", "description"])
-            if description:
+            if description := get_data(data, ["attributes", "description"]):
                 if description.get("en"):
                     manga.add_description(
                         Nl.Language.en,
@@ -57,13 +56,11 @@ class MangaDex(AbstractMangaCatalog):
                         Nl.Language.ru,
                         description.get("ru"),
                     )
-            volumes = get_data(data, ["attributes", "lastVolume"])
-            chapters = get_data(data, ["attributes", "lastChapter"])
-            if volumes:
-                manga.volumes = volumes
-            if chapters:
-                manga.chapters = chapters
-            manga.status = get_data(data, ["attributes", "status"])
+            if volumes := get_data(data, ["attributes", "lastVolume"]):
+                manga.volumes = int(volumes)
+            if chapters := get_data(data, ["attributes", "lastChapter"]):
+                manga.chapters = int(chapters)
+            manga.status = Nl.MangaStatus.from_str(get_data(data, ["attributes", "status"]))
         return manga
 
     def setup_manga(self, data: dict):

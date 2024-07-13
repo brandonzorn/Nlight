@@ -6,12 +6,12 @@ from nlightreader.items import (
     Genre,
     Image,
     Kind,
-    Manga,
     Order,
     RequestForm,
     User,
     UserRate,
 )
+from nlightreader.models import Manga
 
 
 class AbstractCatalog:

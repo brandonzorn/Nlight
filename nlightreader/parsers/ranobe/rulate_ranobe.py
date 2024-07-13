@@ -5,7 +5,8 @@ from bs4 import BeautifulSoup
 from nlightreader.consts.urls import URL_EROLATE, URL_RULATE
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RulateItems
-from nlightreader.items import Chapter, Image, Manga, RequestForm
+from nlightreader.items import Chapter, Image, RequestForm
+from nlightreader.models import Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.utils.utils import get_html
 
