@@ -1,7 +1,8 @@
 from nlightreader.consts.urls import DESU_HEADERS, URL_DESU, URL_DESU_API
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import DesuItems
-from nlightreader.items import Chapter, Genre, Image, Manga, RequestForm
+from nlightreader.items import Chapter, Genre, Image, RequestForm
+from nlightreader.models import Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.utils import get_data, get_html
 
@@ -22,20 +23,11 @@ class Desu(AbstractMangaCatalog):
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
             data = get_data(response, ["response"], {})
-            manga.genres = [
-                Genre(
-                    str(i.get("id")),
-                    self.CATALOG_ID,
-                    i.get("text"),
-                    i.get("russian"),
-                )
-                for i in data.get("genres")
-            ]
             manga.score = data.get("score")
             manga.kind = Nl.MangaKind.from_str(data.get("kind"))
-            manga.volumes = data.get("chapters").get("last").get("vol")
-            manga.chapters = data.get("chapters").get("last").get("ch")
-            manga.status = data.get("status")
+            manga.volumes = int(data["chapters"].get("last").get("vol"))
+            manga.chapters = int(data["chapters"]["count"])
+            manga.status = Nl.MangaStatus.from_str(data.get("status"))
 
             manga.add_description(
                 Nl.Language.undefined,

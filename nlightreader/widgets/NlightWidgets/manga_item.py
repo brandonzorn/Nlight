@@ -8,7 +8,7 @@ from qfluentwidgets import InfoBar
 
 from data.ui.manga_item import Ui_Form
 from nlightreader.contexts import LibraryMangaMenu
-from nlightreader.items import Manga
+from nlightreader.models import Manga
 from nlightreader.utils import (
     Database,
     FileManager,

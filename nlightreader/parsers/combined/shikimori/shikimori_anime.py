@@ -9,10 +9,10 @@ from nlightreader.items import (
     Chapter,
     Character,
     Genre,
-    Manga,
     Order,
     RequestForm,
 )
+from nlightreader.models import Manga
 from nlightreader.parsers.catalogs_base import AbstractAnimeCatalog
 from nlightreader.parsers.service.kodik import Kodik
 from nlightreader.utils.utils import get_html
@@ -43,11 +43,13 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             data = response
             # manga.kind = Nl.MangaKind.from_str(data.get("kind"))
             manga.score = float(data.get("score"))
-            manga.status = data.get("status")
-            manga.add_description(
-                Nl.Language.undefined,
-                data.get("description"),
-            )
+            manga.status = Nl.MangaStatus.from_str(data.get("status"))
+
+            if description := data.get("description"):
+                manga.add_description(
+                    Nl.Language.undefined,
+                    description,
+                )
         return manga
 
     def search_manga(self, form: RequestForm):

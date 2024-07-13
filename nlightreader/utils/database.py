@@ -1,10 +1,13 @@
+import logging
+
 import sqlalchemy
 import platformdirs
 from sqlalchemy.dialects.sqlite import insert
 
 from nlightreader.consts.app import APP_NAME
 from nlightreader.consts.enums import Nl
-from nlightreader.items import Chapter, HistoryNote, Manga
+from nlightreader.items import Chapter, HistoryNote
+from nlightreader.models import Manga
 from nlightreader.utils.decorators import singleton
 
 
@@ -216,9 +219,14 @@ class Database:
         manga.kind = Nl.MangaKind.from_str(manga_data[5])
         manga.set_description_from_str(manga_data[6])
         manga.score = manga_data[7]
-        manga.status = manga_data[8]
+        manga.status = Nl.MangaStatus.from_str(manga_data[8])
         manga.volumes = manga_data[9]
-        manga.chapters = manga_data[10]
+
+        chapters = manga_data[10]
+        if not isinstance(chapters, int):
+            logging.warning(f"Chapters must be int got {type(chapters)}")
+            chapters = 0
+        manga.chapters = chapters
         manga.preview_url = manga_data[11]
         return manga
 

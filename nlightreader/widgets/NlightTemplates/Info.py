@@ -11,7 +11,8 @@ from nlightreader.consts.enums import LIB_LISTS, Nl
 from nlightreader.consts.files import NlFluentIcons
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormCharacter, FormRate
-from nlightreader.items import Chapter, Character, HistoryNote, Manga
+from nlightreader.items import Chapter, Character, HistoryNote
+from nlightreader.models import Manga
 from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils import (
     Database,
@@ -19,7 +20,6 @@ from nlightreader.utils import (
     FileManager,
     get_catalog_by_id,
     get_language_icon,
-    get_status,
     translate,
     Worker,
 )
@@ -268,7 +268,7 @@ class FormInfo(QWidget):
         self.ui.status_label.setVisible(bool(self.__manga.status))
         self.ui.status_label.setText(
             f"{translate('Other', 'Status')}: "
-            f"{get_status(self.__manga.status)}",
+            f"{translate('Status', self.__manga.status.to_str())}",
         )
         self.ui.volumes_label.setVisible(bool(self.__manga.volumes))
         self.ui.chapters_label.setVisible(bool(self.__manga.chapters))

@@ -11,7 +11,8 @@ from nlightreader.consts.urls import (
     URL_SHIKIMORI_TOKEN,
 )
 from nlightreader.consts.enums import Nl
-from nlightreader.items import Manga, RequestForm, User, UserRate
+from nlightreader.items import RequestForm, User, UserRate
+from nlightreader.models import Manga
 from nlightreader.parsers.catalog import LibParser
 from nlightreader.parsers.combined.shikimori.shikimori_base import (
     ShikimoriBase,

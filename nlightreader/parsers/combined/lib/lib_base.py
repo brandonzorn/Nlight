@@ -1,6 +1,7 @@
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.urls import URL_LIB_API
-from nlightreader.items import Chapter, Manga, RequestForm
+from nlightreader.items import Chapter, RequestForm
+from nlightreader.models import Manga
 from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils.utils import get_html
 
@@ -21,7 +22,7 @@ class LibBase(AbstractCatalog):
         if response:
             data = response["data"]
             manga.preview_url = data["cover"]["md"]
-            manga.score = data["rating"]["average"]
+            manga.score = float(data["rating"]["average"])
             if description := data.get("summary"):
                 manga.add_description(Nl.Language.ru, description)
         return manga
@@ -52,7 +53,7 @@ class LibBase(AbstractCatalog):
                     i["rus_name"],
                 )
                 manga.preview_url = i["cover"]["md"]
-                manga.score = i["rating"]["average"]
+                manga.score = float(i["rating"]["average"])
                 mangas.append(manga)
         return mangas
 
