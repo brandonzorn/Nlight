@@ -57,10 +57,7 @@ class FormRate(QDialog):
         self.ui.chapters_box.setValue(self.__user_rate.chapters)
         if self.__manga.chapters:
             self.ui.chapters_box.setMaximum(self.__manga.chapters)
-        self.ui.lib_list_box.setCurrentIndex(self.user_rate.status.value)
-
-    def closeEvent(self, arg__1):
-        self.deleteLater()
+        self.ui.lib_list_box.setCurrentIndex(self.__user_rate.status.value)
 
     @Slot()
     def send_user_rate(self):
