@@ -19,11 +19,11 @@ class RemangaItems(ParserItems):
     ]
 
     KINDS = [
-        {"value": 0} | Pk.MANGA,
-        {"value": 1} | Pk.MANHWA,
-        {"value": 2} | Pk.MANHUA,
-        {"value": 3} | Pk.WESTERN_COMIC,
-        {"value": 4} | Pk.RU_COMIC,
-        {"value": 5} | Pk.INDONESIAN_COMIC,
-        {"value": 6} | Pk.OTHER,
+        {"value": 1} | Pk.MANGA,
+        {"value": 2} | Pk.MANHWA,
+        {"value": 3} | Pk.MANHUA,
+        {"value": 4} | Pk.WESTERN_COMIC,
+        {"value": 5} | Pk.RU_COMIC,
+        {"value": 6} | Pk.INDONESIAN_COMIC,
+        {"value": 7} | Pk.OTHER,
     ]
