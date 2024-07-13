@@ -111,26 +111,3 @@ def translate(context, string):
         A translated version of the input string.
     """
     return QApplication.translate(context, string, None)
-
-
-def get_status(status: str) -> str:
-    """
-    Translates the status of a manga.
-
-    Args:
-        status (str or None): The status of the manga.
-
-    Returns:
-        A translation of the status if it is
-            'ongoing', 'completed', or 'released'.
-            Otherwise, returns the original status.
-    """
-    if status is None:
-        return ""
-    match status:
-        case "ongoing":
-            return translate("Status", status.capitalize())
-        case "completed" | "released":
-            return translate("Status", "completed".capitalize())
-        case _:
-            return status.capitalize()
