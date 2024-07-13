@@ -223,8 +223,12 @@
         <translation>Виходить</translation>
     </message>
     <message>
-        <source>Completed</source>
+        <source>Released</source>
         <translation>Видано</translation>
+    </message>
+    <message>
+        <source>Frozen</source>
+        <translation>Заморожено</translation>
     </message>
 </context>
 <context>
