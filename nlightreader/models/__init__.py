@@ -1,1 +1,1 @@
-from . manga_model import Manga
+from .manga_model import Manga

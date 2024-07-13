@@ -60,7 +60,9 @@ class MangaDex(AbstractMangaCatalog):
                 manga.volumes = int(volumes)
             if chapters := get_data(data, ["attributes", "lastChapter"]):
                 manga.chapters = int(chapters)
-            manga.status = Nl.MangaStatus.from_str(get_data(data, ["attributes", "status"]))
+            manga.status = Nl.MangaStatus.from_str(
+                get_data(data, ["attributes", "status"]),
+            )
         return manga
 
     def setup_manga(self, data: dict):
