@@ -17,6 +17,9 @@ Open source manga and ranobe reading application
     - Available in 🇷🇺Russian 🇺🇦Ukrainian and 🇬🇧English languages
 
 ## Currently supported catalogs
+    Anime:
+     - Shikimori (🇷🇺)
+     - AniLib (🇷🇺)
 
     Manga:
      - Desu (🇷🇺)
@@ -29,8 +32,10 @@ Open source manga and ranobe reading application
      - Rulate (🇷🇺)
      - Erolate (🇷🇺)
      - Ranobehub (🇷🇺)
+     - RanobeLib (🇷🇺)
 
     Hentai Manga:
+     - AllHentai (🇷🇺)
      - NHentai (🇬🇧)
 
 ## Screenshots
