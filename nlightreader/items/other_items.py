@@ -1,6 +1,5 @@
 from nlightreader.consts.enums import Nl
-from nlightreader.items import Chapter
-from nlightreader.models import Manga
+from nlightreader.models import Chapter, Manga
 
 
 class HistoryNote:
