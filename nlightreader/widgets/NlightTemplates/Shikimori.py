@@ -71,7 +71,6 @@ class FormShikimori(MangaItemBasedWidget):
     def set_user_info(self, user: User):
         if user.nickname:
             self.ui.auth_btn.setText(user.nickname)
-            self.get_content()
         else:
             self.ui.auth_btn.setText(
                 translate("Other", "Sign in"),
@@ -83,6 +82,10 @@ class FormShikimori(MangaItemBasedWidget):
             f"{translate('Other', 'Page')} {self.request_params.page}",
         )
 
+    def auth_success_callback(self, user: User):
+        self.set_user_info(user)
+        self.get_content()
+
     @Slot()
     def authorize(self):
         if self.catalog.fields == 1:
@@ -93,7 +96,7 @@ class FormShikimori(MangaItemBasedWidget):
             self.catalog.session.auth_login(w.get_user_data())
             Worker(
                 target=self.get_user_info,
-                callback=self.set_user_info,
+                callback=self.auth_success_callback,
             ).start()
 
     @Slot()
