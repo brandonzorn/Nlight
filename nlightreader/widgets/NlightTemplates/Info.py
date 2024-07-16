@@ -11,8 +11,8 @@ from nlightreader.consts.enums import LIB_LISTS, Nl
 from nlightreader.consts.files import NlFluentIcons
 from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormCharacter, FormRate
-from nlightreader.items import Chapter, Character, HistoryNote
-from nlightreader.models import Manga
+from nlightreader.items import HistoryNote
+from nlightreader.models import Chapter, Character, Manga
 from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils import (
     Database,

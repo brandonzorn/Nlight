@@ -1,7 +1,6 @@
 from render_html import render_in_browser
 
-from nlightreader.items import Chapter
-from nlightreader.models import Manga
+from nlightreader.models import Chapter, Manga
 
 
 def start_html_video(manga: Manga, chapter: Chapter):

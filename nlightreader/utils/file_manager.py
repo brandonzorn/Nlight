@@ -8,8 +8,8 @@ from PySide6.QtGui import QPixmap
 
 from nlightreader.consts.app import APP_NAME
 from nlightreader.consts.enums import Nl
-from nlightreader.items import Chapter, Character, Image
-from nlightreader.models import Manga
+from nlightreader.items import Image
+from nlightreader.models import Chapter, Character, Manga
 from nlightreader.parsers.catalog import AbstractCatalog
 
 

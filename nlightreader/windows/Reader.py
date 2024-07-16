@@ -7,8 +7,8 @@ from qfluentwidgets import FluentIcon, IndeterminateProgressRing
 from data.ui.windows.reader import Ui_ReaderWindow
 from nlightreader.consts.colors import ItemsIcons
 from nlightreader.consts.enums import Nl
-from nlightreader.items import Chapter, HistoryNote, Image
-from nlightreader.models import Manga
+from nlightreader.items import HistoryNote, Image
+from nlightreader.models import Chapter, Manga
 from nlightreader.utils import (
     Database,
     FileManager,

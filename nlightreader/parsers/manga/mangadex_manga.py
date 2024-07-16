@@ -8,14 +8,11 @@ from nlightreader.consts.urls import (
 )
 from nlightreader.consts.enums import Nl
 from nlightreader.items import (
-    Chapter,
-    Genre,
     Image,
-    Kind,
     RequestForm,
     User,
 )
-from nlightreader.models import Manga
+from nlightreader.models import Chapter, Genre, Kind, Manga
 from nlightreader.parsers.catalog import LibParser
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.decorators import singleton
