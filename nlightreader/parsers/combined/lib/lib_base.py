@@ -1,7 +1,7 @@
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.urls import URL_LIB_API
-from nlightreader.items import Chapter, RequestForm
-from nlightreader.models import Manga
+from nlightreader.items import RequestForm
+from nlightreader.models import Chapter, Manga
 from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils.utils import get_html
 

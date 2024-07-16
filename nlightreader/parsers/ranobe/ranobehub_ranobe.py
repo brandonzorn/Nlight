@@ -6,8 +6,8 @@ from bs4 import BeautifulSoup
 from nlightreader.consts.urls import URL_RANOBEHUB, URL_RANOBEHUB_API
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RanobehubItems
-from nlightreader.items import Chapter, Image, RequestForm
-from nlightreader.models import Manga
+from nlightreader.items import Image, RequestForm
+from nlightreader.models import Chapter, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.utils.utils import get_data, get_html
 
@@ -90,8 +90,8 @@ class Ranobehub(AbstractRanobeCatalog):
 
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = (
-            f"{self.url}/ranobe/"
-            f"{manga.content_id}/{chapter.vol}/{chapter.ch}"
+            f"{self.url}/ranobe/{manga.content_id}/"
+            f"{chapter.volume_number}/{chapter.chapter_number}"
         )
         return [Image("", 1, url)]
 

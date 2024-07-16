@@ -1,7 +1,7 @@
 from nlightreader.consts.items import MangaLibItems
 from nlightreader.consts.urls import URL_MANGALIB
-from nlightreader.items import Chapter, Image
-from nlightreader.models import Manga
+from nlightreader.items import Image
+from nlightreader.models import Chapter, Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.parsers.combined.lib.lib_base import LibBase
 from nlightreader.utils.utils import get_html
@@ -22,8 +22,8 @@ class LibMangalib(LibBase, AbstractMangaCatalog):
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = f"{self.url_api}/{self.content_name}/{manga.content_id}/chapter"
         params = {
-            "number": chapter.ch,
-            "volume": chapter.vol,
+            "number": chapter.chapter_number,
+            "volume": chapter.volume_number,
         }
         response = get_html(url, params=params, content_type="json")
         images = []

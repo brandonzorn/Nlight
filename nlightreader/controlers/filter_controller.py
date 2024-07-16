@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QLayout
 from qfluentwidgets import CheckBox, RadioButton
 
 from nlightreader.dialogs import FormGenres
-from nlightreader.items import Genre, Kind, Order
+from nlightreader.models import Genre, Kind, Order
 
 
 class FilterController:
@@ -16,17 +16,15 @@ class FilterController:
         self._kinds_container = None
         self._genres_container = None
 
-    def get_active_order(self):
-        if not self._order_items:
-            return Order.get_empty_instance()
+    def get_active_order(self) -> Order | None:
         for item in self._order_items:
             if item.isChecked():
                 return self._order_items[item]
 
-    def get_active_kinds(self):
+    def get_active_kinds(self) -> list[Kind]:
         return [self._kind_items[i] for i in self._kind_items if i.isChecked()]
 
-    def get_active_genres(self):
+    def get_active_genres(self) -> list[Genre]:
         return self._genres_container.selected_genres
 
     def add_orders(self, items: list[Order]):
