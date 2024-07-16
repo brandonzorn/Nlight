@@ -1,3 +1,6 @@
+from PySide6.QtCore import QLocale
+
+
 class BaseModel:
     def __init__(self, content_id: str, catalog_id: int):
         self.__id = f"|{catalog_id}|_|{content_id}|"
@@ -24,3 +27,36 @@ class BaseModel:
 
     def to_dict(self) -> dict:
         raise NotImplementedError
+
+
+class NamedBaseModel(BaseModel):
+    def __init__(
+        self,
+        content_id: str,
+        catalog_id: int,
+        name: str,
+        russian: str,
+    ):
+        super().__init__(content_id, catalog_id)
+        self.__name = name
+        self.__russian = russian
+
+    @property
+    def name(self):
+        return self.__name
+
+    @property
+    def russian(self):
+        return self.__russian
+
+    def get_name(self) -> str:
+        if (
+            QLocale().language()
+            in (
+                QLocale.Language.Russian,
+                QLocale.Language.Ukrainian,
+            )
+            and self.__russian
+        ):
+            return self.__russian
+        return self.__name

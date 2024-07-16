@@ -5,10 +5,10 @@ from typing import override
 from PySide6.QtCore import QLocale
 
 from nlightreader.consts.enums import Nl
-from nlightreader.models.base_model import BaseModel
+from nlightreader.models.base_model import NamedBaseModel
 
 
-class Manga(BaseModel):
+class Manga(NamedBaseModel):
     def __init__(
         self,
         content_id: str,
@@ -16,10 +16,8 @@ class Manga(BaseModel):
         name: str,
         russian: str,
     ):
-        super().__init__(content_id, catalog_id)
+        super().__init__(content_id, catalog_id, name, russian)
 
-        self.__name = name
-        self.__russian = russian
         self.__kind: Nl.MangaKind = Nl.MangaKind.undefined
         self.__status: Nl.MangaStatus = Nl.MangaStatus.undefined
         self.__score: int | float = 0
@@ -29,14 +27,6 @@ class Manga(BaseModel):
         self.__chapters = 0
 
         self.__descriptions: dict[Nl.Language, str] = {}
-
-    @property
-    def name(self):
-        return self.__name
-
-    @property
-    def russian(self):
-        return self.__russian
 
     @property
     def kind(self):
@@ -103,18 +93,6 @@ class Manga(BaseModel):
             raise TypeError(f"Chapters must be int got {type(chapters)}")
         self.__chapters = chapters
 
-    def get_name(self) -> str:
-        if (
-            QLocale().language()
-            in (
-                QLocale.Language.Russian,
-                QLocale.Language.Ukrainian,
-            )
-            and self.__russian
-        ):
-            return self.__russian
-        return self.__name
-
     def add_description(self, language: Nl.Language, description: str):
         if not isinstance(language, Nl.Language):
             raise TypeError(
@@ -164,8 +142,8 @@ class Manga(BaseModel):
             "id": self.id,
             "content_id": self.content_id,
             "catalog_id": self.catalog_id,
-            "name": self.__name,
-            "russian": self.__russian,
+            "name": self.name,
+            "russian": self.russian,
             "kind": self.kind.name,
             "description": self.descriptions_to_str(),
             "score": self.score,
