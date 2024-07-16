@@ -5,8 +5,8 @@ from bs4 import BeautifulSoup
 from nlightreader.consts.urls import URL_EROLATE, URL_RULATE
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RulateItems
-from nlightreader.items import Chapter, Image, RequestForm
-from nlightreader.models import Manga
+from nlightreader.items import Image, RequestForm
+from nlightreader.models import Chapter, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.utils.utils import get_html
 
@@ -105,7 +105,7 @@ class Rulate(AbstractRanobeCatalog):
                 chapter = Chapter(
                     chapter_id,
                     self.CATALOG_ID,
-                    "",
+                    None,
                     "",
                     name,
                     Nl.Language.ru,

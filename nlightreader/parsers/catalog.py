@@ -1,17 +1,12 @@
 from nlightreader.consts.urls import DEFAULT_HEADERS
 from nlightreader.consts.items.parser_items import ParserItems
 from nlightreader.items import (
-    Chapter,
-    Character,
-    Genre,
     Image,
-    Kind,
-    Order,
     RequestForm,
     User,
     UserRate,
 )
-from nlightreader.models import Manga
+from nlightreader.models import Chapter, Character, Genre, Kind, Manga, Order
 
 
 class AbstractCatalog:

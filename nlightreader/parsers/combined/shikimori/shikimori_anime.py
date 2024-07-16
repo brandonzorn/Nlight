@@ -6,13 +6,9 @@ from nlightreader.consts.urls import (
     URL_SHIKIMORI_API,
 )
 from nlightreader.items import (
-    Chapter,
-    Character,
-    Genre,
-    Order,
     RequestForm,
 )
-from nlightreader.models import Manga
+from nlightreader.models import Chapter, Character, Genre, Manga, Order
 from nlightreader.parsers.catalogs_base import AbstractAnimeCatalog
 from nlightreader.parsers.service.kodik import Kodik
 from nlightreader.utils.utils import get_html
@@ -82,7 +78,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
                 chapter = Chapter(
                     f"{translator.content_id}{episode_num}",
                     self.CATALOG_ID,
-                    "",
+                    None,
                     "",
                     f"Episode {episode_num}",
                     Nl.Language.ru,
