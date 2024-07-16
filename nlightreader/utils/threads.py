@@ -1,3 +1,4 @@
+import traceback
 from typing import Callable
 
 from PySide6.QtCore import (
@@ -11,6 +12,7 @@ from PySide6.QtCore import (
 
 
 class Signals(QObject):
+    error = Signal(Exception)
     finished = Signal(object)
 
 
@@ -22,6 +24,7 @@ class NlThread:
         kwargs=None,
         *,
         callback=None,
+        error_callback=None,
     ):
         super().__init__()
         if kwargs is None:
@@ -32,11 +35,18 @@ class NlThread:
         self.signals = Signals()
         if callback:
             self.signals.finished.connect(callback)
+        if error_callback:
+            self.signals.error.connect(error_callback)
 
     @Slot()
     def run(self):
-        result = self._target(*self._args, **self._kwargs)
-        self.signals.finished.emit(result)
+        try:
+            result = self._target(*self._args, **self._kwargs)
+        except Exception as e:
+            traceback.print_exc()
+            self.signals.error.emit(e)
+        else:
+            self.signals.finished.emit(result)
 
 
 class Worker(NlThread, QRunnable):
@@ -66,8 +76,15 @@ class Worker(NlThread, QRunnable):
         kwargs=None,
         *,
         callback=None,
+        error_callback=None,
     ):
-        super().__init__(target, args, kwargs, callback=callback)
+        super().__init__(
+            target,
+            args,
+            kwargs,
+            callback=callback,
+            error_callback=error_callback,
+        )
 
     def start(self, pool=None):
         if pool is None:
@@ -104,5 +121,12 @@ class Thread(NlThread, QThread):
         kwargs=None,
         *,
         callback=None,
+        error_callback=None,
     ):
-        super().__init__(target, args, kwargs, callback=callback)
+        super().__init__(
+            target,
+            args,
+            kwargs,
+            callback=callback,
+            error_callback=error_callback,
+        )
