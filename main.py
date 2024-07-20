@@ -15,6 +15,7 @@ from qfluentwidgets import InfoBar, setTheme, Theme
 from nlightreader import ParentWindow
 from nlightreader.consts.app import APP_BRANCH, APP_NAME, APP_VERSION
 from nlightreader.consts.files import Icons
+from nlightreader.consts.paths import APP_DATA_PATH
 from nlightreader.consts.urls import GITHUB_REPO
 from nlightreader.utils import get_html, get_locale, Thread, translate
 from nlightreader.utils.kodik_server import KodikHTTPRequestHandler
@@ -131,9 +132,7 @@ if __name__ == "__main__":
     QThreadPool.globalInstance().setMaxThreadCount(32)
     app = App(sys.argv)
 
-    Path(
-        platformdirs.user_data_path() / APP_NAME,
-    ).mkdir(parents=True, exist_ok=True)
+    APP_DATA_PATH.mkdir(parents=True, exist_ok=True)
 
     httpd = HTTPServer(("localhost", 8000), KodikHTTPRequestHandler)
     PyThread(target=httpd.serve_forever, daemon=True).start()
