@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU" sourcelanguage="en_US">
+<TS version="2.1" language="ru_RU">
 <context>
     <name>Dialog</name>
     <message>
@@ -89,6 +89,10 @@
     <message>
         <source>Sign in</source>
         <translation>Войти</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation>Поиск</translation>
     </message>
     <message>
         <source>Related</source>
@@ -336,8 +340,87 @@
         <translation>Ошибка проверки обновлений.</translation>
     </message>
     <message>
+        <source>No updates available. You are using the latest version.</source>
+        <translation>Нет доступных обновлений. Вы используете последнюю версию.</translation>
+    </message>
+    <message>
         <source>New version {result} is available! You are currently on version {APP_VERSION}.</source>
         <translation>Новая версия {result} доступна! Вы используете версию {APP_VERSION}.</translation>
+    </message>
+</context>
+<context>
+    <name>SettingsInterface</name>
+    <message>
+        <source>Use system setting</source>
+        <translation>Использовать системные настройки</translation>
+    </message>
+    <message>
+        <source>Interface zoom</source>
+        <translation>Масштабирование</translation>
+    </message>
+    <message>
+        <source>Change the size of widgets and fonts</source>
+        <translation>Изменение размера виджетов и шрифтов</translation>
+    </message>
+    <message>
+        <source>Language</source>
+        <translation>Язык</translation>
+    </message>
+    <message>
+        <source>Set your preferred language for UI</source>
+        <translation>Установите предпочитаемый язык пользовательского интерфейса</translation>
+    </message>
+    <message>
+        <source>Software update</source>
+        <translation>Обновления</translation>
+    </message>
+    <message>
+        <source>Check for updates when the application starts</source>
+        <translation>Проверять наличие обновлений при запуске приложения</translation>
+    </message>
+    <message>
+        <source>The new version will be more stable and have more features</source>
+        <translation>Новая версия будет более стабильной и будет иметь больше возможностей</translation>
+    </message>
+    <message>
+        <source>Changes will take effect after restarting the application</source>
+        <translation>Изменения вступят в силу после перезапуска приложения</translation>
+    </message>
+    <message>
+        <source>Check for updates</source>
+        <translation>Проверить обновления</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Параметры</translation>
+    </message>
+    <message>
+        <source>Application theme</source>
+        <translation>Тема приложения</translation>
+    </message>
+    <message>
+        <source>Change the appearance of application</source>
+        <translation>Изменить внешний вид приложения</translation>
+    </message>
+    <message>
+        <source>Dark</source>
+        <translation>Темная</translation>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation>Светлая</translation>
+    </message>
+    <message>
+        <source>Personalization</source>
+        <translation>Персонализация</translation>
+    </message>
+    <message>
+        <source>About</source>
+        <translation>О проекте</translation>
+    </message>
+    <message>
+        <source>Project on GitHub</source>
+        <translation>Проект на GitHub</translation>
     </message>
 </context>
 </TS>
