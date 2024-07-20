@@ -3,7 +3,7 @@ from qfluentwidgets import FluentIcon, FluentWindow
 
 from nlightreader.consts.files.files import NlFluentIcons
 from nlightreader.models import Manga
-from nlightreader.utils import translate
+from nlightreader.utils.translator import translate
 from nlightreader.widgets.NlightTemplates import (
     FormFacial,
     FormHistory,
