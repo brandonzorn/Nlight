@@ -2,12 +2,18 @@ import time
 
 from PySide6.QtCore import Signal, Slot
 from PySide6.QtWidgets import QWidget
-from qfluentwidgets import IndeterminateProgressRing
 
 from nlightreader.consts.enums import Nl
+from nlightreader.exceptions.parser_content_exc import (
+    FetchContentError,
+    NoContentError,
+)
 from nlightreader.items import RequestForm
 from nlightreader.models import Manga
-from nlightreader.utils import Thread
+from nlightreader.utils.threads import Thread
+from nlightreader.widgets.NlightContainers.content_container import (
+    ContentContainerState,
+)
 from nlightreader.widgets.NlightContainers.manga_area import MangaArea
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
@@ -20,12 +26,10 @@ class MangaItemBasedWidget(QWidget):
         self.manga_area = MangaArea()
         self.mangas: list[Manga] = []
 
-        self.progressRing = IndeterminateProgressRing()
-        self.progressRing.setVisible(False)
-
         self._get_content_thread = Thread(
             target=self._get_content_thread_func,
             callback=self.update_content,
+            error_callback=self.__process_errors,
         )
 
         self.catalog = None
@@ -36,11 +40,18 @@ class MangaItemBasedWidget(QWidget):
 
     def update_content(self):
         self.manga_area.delete_items()
-        items = [self.setup_manga_item(manga) for manga in self.mangas]
-        self.progressRing.stop()
-        self.progressRing.setVisible(False)
+        items = [self._setup_manga_item(manga) for manga in self.mangas]
+        self.manga_area.set_state(ContentContainerState.show_content)
         self.manga_area.add_items(items)
         self.manga_area.update_items()
+
+    def __process_errors(self, exception: Exception):
+        try:
+            raise exception
+        except FetchContentError:
+            self.manga_area.set_state(ContentContainerState.fetch_error)
+        except NoContentError:
+            self.manga_area.set_state(ContentContainerState.no_content)
 
     @Slot()
     def turn_page_next(self):
@@ -61,8 +72,7 @@ class MangaItemBasedWidget(QWidget):
         self._get_content_thread.terminate()
         self._get_content_thread.wait()
         self.manga_area.delete_items()
-        self.progressRing.setVisible(True)
-        self.progressRing.start()
+        self.manga_area.set_state(ContentContainerState.fetch_content)
         self._get_content_thread.start()
 
     def _get_content_thread_func(self):
@@ -75,9 +85,11 @@ class MangaItemBasedWidget(QWidget):
         ):
             return
         self.mangas = self.catalog.search_manga(self.request_params)
+        if not self.mangas:
+            raise NoContentError
 
-    def setup_manga_item(self, manga: Manga) -> MangaItem:
-        pass
+    def _setup_manga_item(self, manga: Manga) -> MangaItem:
+        raise NotImplementedError
 
     def update_page(self):
         pass

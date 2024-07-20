@@ -2,7 +2,7 @@ import json
 from http.server import BaseHTTPRequestHandler
 
 from nlightreader.items import HistoryNote
-from nlightreader.utils import Database
+from nlightreader.utils.database import Database
 
 
 class KodikHTTPRequestHandler(BaseHTTPRequestHandler):

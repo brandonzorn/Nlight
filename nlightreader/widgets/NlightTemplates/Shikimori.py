@@ -1,3 +1,5 @@
+from typing import override
+
 from PySide6.QtCore import Slot
 from qfluentwidgets import FluentIcon
 
@@ -27,9 +29,6 @@ class FormShikimori(MangaItemBasedWidget):
         self.setObjectName("FormShikimori")
 
         self.manga_area.install(self.ui.items_layout)
-        self.manga_area.get_content_widget().layout().addWidget(
-            self.progressRing,
-        )
 
         self.ui.planned_btn.clicked.connect(
             lambda: self.change_list(Nl.LibList.planned),
@@ -56,7 +55,8 @@ class FormShikimori(MangaItemBasedWidget):
         self.catalog = ShikimoriLib()
         Worker(target=self.get_user_info, callback=self.set_user_info).start()
 
-    def setup_manga_item(self, manga: Manga):
+    @override
+    def _setup_manga_item(self, manga: Manga):
         item = MangaItem(
             manga,
             is_added_to_lib=False,
@@ -78,6 +78,7 @@ class FormShikimori(MangaItemBasedWidget):
             )
         self.ui.auth_btn.setEnabled(True)
 
+    @override
     def update_page(self):
         self.ui.page_label.setText(
             f"{translate('Other', 'Page')} {self.request_params.page}",
