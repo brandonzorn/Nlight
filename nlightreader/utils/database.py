@@ -1,11 +1,10 @@
 import logging
 
 import sqlalchemy
-import platformdirs
 from sqlalchemy.dialects.sqlite import insert
 
-from nlightreader.consts.app import APP_NAME
 from nlightreader.consts.enums import Nl
+from nlightreader.consts.paths import APP_DATA_PATH
 from nlightreader.items import HistoryNote
 from nlightreader.models import Chapter, Manga
 from nlightreader.utils.decorators import singleton
@@ -14,7 +13,7 @@ from nlightreader.utils.decorators import singleton
 @singleton
 class Database:
     def __init__(self):
-        db_file_path = f"{platformdirs.user_data_dir()}/{APP_NAME}/data.db"
+        db_file_path = APP_DATA_PATH / "data.db"
         self.__engine = sqlalchemy.create_engine(f"sqlite:///{db_file_path}")
         self._metadata = sqlalchemy.MetaData()
 
@@ -264,21 +263,19 @@ class Database:
                 conn.execute(chapters_insert)
             conn.commit()
 
-    def get_chapter(self, chapter_id: str):
-        select_chapter = sqlalchemy.select(
-            self._chapters,
-        ).where(
-            self._chapters.c.id == chapter_id,
-        )
-        with self.__engine.connect() as conn:
-            select_chapter_result = conn.execute(select_chapter)
-        a = select_chapter_result.fetchone()
-        content_id = str(a[1])
-        catalog_id = a[2]
-        vol = a[3]
-        ch = a[4]
-        title = a[5]
-        language = Nl.Language.from_str(a[6])
+    @staticmethod
+    def __make_chapter(chapter_data) -> Chapter:
+        content_id = str(chapter_data[1])
+        catalog_id = chapter_data[2]
+
+        vol_raw = chapter_data[3]
+        vol = str(vol_raw) if vol_raw is not None else vol_raw
+
+        ch_raw = chapter_data[4]
+        ch = str(ch_raw) if ch_raw is not None else ch_raw
+
+        title = chapter_data[5]
+        language = Nl.Language.from_str(chapter_data[6])
 
         return Chapter(
             content_id,
@@ -288,6 +285,17 @@ class Database:
             title,
             language,
         )
+
+    def get_chapter(self, chapter_id: str):
+        select_chapter = sqlalchemy.select(
+            self._chapters,
+        ).where(
+            self._chapters.c.id == chapter_id,
+        )
+        with self.__engine.connect() as conn:
+            select_chapter_result = conn.execute(select_chapter)
+        a = select_chapter_result.fetchone()
+        return self.__make_chapter(a)
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         select_chapters = sqlalchemy.select(self._chapters).filter_by(
@@ -299,14 +307,7 @@ class Database:
         chapters = []
         for i in a[::-1]:
             chapters.append(
-                Chapter(
-                    i[1],
-                    i[2],
-                    i[3],
-                    i[4],
-                    i[5],
-                    Nl.Language.from_str(a[6]),
-                ),
+                self.__make_chapter(i),
             )
         return chapters
 
