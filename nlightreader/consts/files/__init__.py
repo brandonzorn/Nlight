@@ -1,1 +1,1 @@
-from .files import Icons, LangIcons, Translations, NlFluentIcons
+from .files import Icons, LangIcons, NlFluentIcons
