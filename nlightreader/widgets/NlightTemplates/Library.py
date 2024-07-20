@@ -1,3 +1,5 @@
+from typing import override
+
 from data.ui.widgets.library import Ui_Form
 
 from nlightreader.consts.enums import Nl
@@ -18,9 +20,6 @@ class FormLibrary(MangaItemBasedWidget):
         self.setObjectName("FormLibrary")
 
         self.manga_area.install(self.ui.items_layout)
-        self.manga_area.get_content_widget().layout().addWidget(
-            self.progressRing,
-        )
 
         self.ui.planned_btn.clicked.connect(
             lambda: self.change_list(Nl.LibList.planned),
@@ -42,15 +41,9 @@ class FormLibrary(MangaItemBasedWidget):
         )
         self.catalog = LocalLib()
 
-    def update_content(self):
-        self.mangas = self.catalog.search_manga(self.request_params)
-        super().update_content()
-
-    def setup_manga_item(self, manga: Manga):
+    @override
+    def _setup_manga_item(self, manga: Manga):
         item = MangaItem(manga, pool=self.manga_area.manga_thread_pool)
         item.manga_clicked.connect(self.manga_open.emit)
         item.manga_changed.connect(self.get_content)
         return item
-
-    def get_content(self):
-        self.update_content()

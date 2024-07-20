@@ -11,6 +11,7 @@ from nlightreader.consts.urls import (
     URL_SHIKIMORI_TOKEN,
 )
 from nlightreader.consts.enums import Nl
+from nlightreader.exceptions.parser_content_exc import FetchContentError
 from nlightreader.items import RequestForm, User, UserRate
 from nlightreader.models import Manga
 from nlightreader.parsers.catalog import LibParser
@@ -231,12 +232,10 @@ class Auth:
         json=None,
         ignore_authorize=False,
     ):
-        if (
-            (not ignore_authorize and not self.is_authorized)
-            or "test" in QApplication.arguments()
-            or "noshiki" in QApplication.arguments()
-        ):
-            return
+        if "test" in QApplication.arguments() or "noshiki" in QApplication.arguments():
+            raise FetchContentError
+        if not ignore_authorize and not self.is_authorized:
+            raise FetchContentError
         try:
             response = self.client.request(
                 method,
@@ -255,6 +254,7 @@ class Auth:
                 f"\t\tCookies: {self.client.cookies}\n"
                 f"\t\tJson: {json}\n",
             )
+            raise FetchContentError
 
     def check_auth(self):
         url = f"{URL_SHIKIMORI_API}/users/whoami"

@@ -2,12 +2,12 @@ import logging
 from typing import Any
 
 import requests
-from PySide6.QtCore import QLocale
 from PySide6.QtWidgets import QApplication
 
 from nlightreader.consts.urls import DEFAULT_HEADERS
 from nlightreader.consts.enums import Nl
-from nlightreader.consts.files import LangIcons, Translations
+from nlightreader.consts.files import LangIcons
+from nlightreader.exceptions.parser_content_exc import FetchContentError
 
 
 def make_request(
@@ -49,7 +49,7 @@ def make_request(
         Returns None if there was an error.
     """
     if "test" in QApplication.arguments():
-        return
+        raise FetchContentError
     if headers is None:
         headers = DEFAULT_HEADERS
     try:
@@ -80,6 +80,7 @@ def make_request(
             f"\t\tJson: {json}\n"
             f"\t\tData: {data}",
         )
+        raise FetchContentError
 
 
 def get_html(

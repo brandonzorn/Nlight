@@ -19,6 +19,7 @@ class ImageArea(QWidget, AbstractContentContainer):
             QScrollArea {border: none;}
             """,
         )
+        self._content_widget = self.ui.img_lbl
         self.__image_pixmap = None
 
     def resizeEvent(self, event):
@@ -73,4 +74,4 @@ class ImageArea(QWidget, AbstractContentContainer):
         self.__update_image()
 
     def get_content_widget(self):
-        return self.ui.img_lbl
+        return self.ui.img_lbl.parent()
