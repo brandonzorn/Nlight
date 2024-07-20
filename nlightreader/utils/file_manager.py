@@ -3,11 +3,10 @@ import re
 import shutil
 from pathlib import Path
 
-import platformdirs
 from PySide6.QtGui import QPixmap
 
-from nlightreader.consts.app import APP_NAME
 from nlightreader.consts.enums import Nl
+from nlightreader.consts.paths import APP_DATA_PATH
 from nlightreader.items import Image
 from nlightreader.models import Chapter, Character, Manga
 from nlightreader.parsers.catalog import AbstractCatalog
@@ -161,7 +160,7 @@ class FileManager:
 
 def get_full_dir_path(path: Path) -> Path:
     path = fix_path(path)
-    return platformdirs.user_data_path() / APP_NAME / path
+    return APP_DATA_PATH / path
 
 
 def get_full_file_path(path: Path, file_name: str | Path) -> Path:
