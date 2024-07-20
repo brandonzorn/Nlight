@@ -62,6 +62,14 @@ class MainWindow(ParentWindow):
             callback=self.show_update_info,
             error_callback=lambda: self.show_update_info(None),
         )
+
+        self.settings_interface.check_for_updates_signal.connect(
+            self.start_check_for_updates_thread,
+        )
+        self.settings_interface.theme_changed.connect(
+            app.update_style,
+        )
+
         self._theme_updater.start()
         if cfg.get(cfg.check_updates_at_startup):
             self.start_check_for_updates_thread()
