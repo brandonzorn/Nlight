@@ -1,11 +1,12 @@
 import logging
+import os
 import sys
 import time
 from http.server import HTTPServer
 from threading import Thread as PyThread
 
 import darkdetect
-from PySide6.QtCore import Qt, QThreadPool
+from PySide6.QtCore import QThreadPool
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from qfluentwidgets import InfoBar, setTheme, Theme
@@ -155,12 +156,12 @@ if __name__ == "__main__":
             filename="latest.log",
             filemode="w",
         )
-
-    QApplication.setHighDpiScaleFactorRoundingPolicy(
-        Qt.HighDpiScaleFactorRoundingPolicy.RoundPreferFloor,
-    )
-    QApplication.setStyle("Fusion")
     QThreadPool.globalInstance().setMaxThreadCount(32)
+
+    if cfg.get(cfg.dpi_scale) != "Auto":
+        os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
+        os.environ["QT_SCALE_FACTOR"] = str(cfg.get(cfg.dpi_scale))
+
     app = App(sys.argv)
 
     APP_DATA_PATH.mkdir(parents=True, exist_ok=True)
