@@ -18,6 +18,10 @@ from nlightreader.utils.catalog_manager import get_catalog_by_id
 from nlightreader.utils.database import Database
 from nlightreader.utils.file_manager import FileManager
 from nlightreader.utils.html_video import start_html_video
+from nlightreader.utils.text_formatter import description_to_html
+from nlightreader.utils.threads import Worker
+from nlightreader.utils.translator import translate
+from nlightreader.utils.utils import get_language_icon
 from nlightreader.widgets.NlightWidgets import ChapterTreeItem
 from nlightreader.windows.Reader import ReaderWindow
 

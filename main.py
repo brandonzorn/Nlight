@@ -6,8 +6,7 @@ from pathlib import Path
 from threading import Thread as PyThread
 
 import darkdetect
-import platformdirs
-from PySide6.QtCore import QLocale, Qt, QThreadPool, QTranslator
+from PySide6.QtCore import Qt, QThreadPool
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from qfluentwidgets import InfoBar, setTheme, Theme

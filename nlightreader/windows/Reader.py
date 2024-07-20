@@ -2,11 +2,15 @@ import time
 
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import QListWidgetItem, QMainWindow
-from qfluentwidgets import FluentIcon, IndeterminateProgressRing
+from qfluentwidgets import FluentIcon
 
 from data.ui.windows.reader import Ui_ReaderWindow
 from nlightreader.consts.colors import ItemsIcons
 from nlightreader.consts.enums import Nl
+from nlightreader.exceptions.parser_content_exc import (
+    FetchContentError,
+    NoContentError,
+)
 from nlightreader.items import HistoryNote, Image
 from nlightreader.models import Chapter, Manga
 from nlightreader.utils.catalog_manager import get_catalog_by_id
@@ -17,6 +21,7 @@ from nlightreader.utils.translator import translate
 from nlightreader.widgets.NlightContainers import TextArea
 from nlightreader.widgets.NlightContainers.content_container import (
     AbstractContentContainer,
+    ContentContainerState,
 )
 from nlightreader.widgets.NlightContainers.image_area import ImageArea
 
@@ -51,12 +56,10 @@ class ReaderWindow(QMainWindow):
         self._set_image_thread = Thread(
             target=self.get_content,
             callback=self.update_image,
+            error_callback=self.__process_errors,
         )
 
         self.__content_container: AbstractContentContainer | None = None
-
-        self.__progressRing = IndeterminateProgressRing()
-        self.__progressRing.setVisible(False)
 
         self.__db: Database = Database()
         self.__manga = None
@@ -78,14 +81,6 @@ class ReaderWindow(QMainWindow):
             else ImageArea()
         )
         self.__content_container.install(self.ui.reader_layout)
-        (
-            self.__content_container.get_content_widget()
-            .parent()
-            .layout()
-            .addWidget(
-                self.__progressRing,
-            )
-        )
         self.__chapters = chapters
         self.__cur_chapter = cur_chapter
         self.__max_chapters = len(chapters)
@@ -209,10 +204,20 @@ class ReaderWindow(QMainWindow):
         self._set_image_thread.wait()
         if not self.__images:
             return
-        self.__progressRing.setVisible(True)
-        self.__progressRing.start()
-        self.__content_container.get_content_widget().setVisible(False)
+        self.__content_container.set_state(ContentContainerState.fetch_content)
         self._set_image_thread.start()
+
+    def __process_errors(self, exception: Exception):
+        try:
+            raise exception
+        except FetchContentError:
+            self.__content_container.set_state(
+                ContentContainerState.fetch_error,
+            )
+        except NoContentError:
+            self.__content_container.set_state(
+                ContentContainerState.no_content,
+            )
 
     def get_content(self):
         page = self.__cur_page
@@ -243,9 +248,7 @@ class ReaderWindow(QMainWindow):
         )
 
     def update_image(self, content):
-        self.__progressRing.stop()
-        self.__progressRing.setVisible(False)
-        self.__content_container.get_content_widget().setVisible(True)
+        self.__content_container.set_state(ContentContainerState.show_content)
         self.__content_container.set_content(content)
 
     def get_images(self):

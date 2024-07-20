@@ -2,9 +2,10 @@ from PySide6.QtCore import QSize, Slot
 from PySide6.QtWidgets import QDialog
 
 from data.ui.dialogs.character import Ui_Dialog
-from nlightreader.utils import description_to_html, Worker
 from nlightreader.utils.catalog_manager import get_catalog_by_id
 from nlightreader.utils.file_manager import FileManager
+from nlightreader.utils.text_formatter import description_to_html
+from nlightreader.utils.threads import Worker
 
 
 class FormCharacter(QDialog):
