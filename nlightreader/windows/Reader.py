@@ -9,13 +9,11 @@ from nlightreader.consts.colors import ItemsIcons
 from nlightreader.consts.enums import Nl
 from nlightreader.items import HistoryNote, Image
 from nlightreader.models import Chapter, Manga
-from nlightreader.utils import (
-    Database,
-    FileManager,
-    get_catalog_by_id,
-    Thread,
-    translate,
-)
+from nlightreader.utils.catalog_manager import get_catalog_by_id
+from nlightreader.utils.database import Database
+from nlightreader.utils.file_manager import FileManager
+from nlightreader.utils.threads import Thread
+from nlightreader.utils.translator import translate
 from nlightreader.widgets.NlightContainers import TextArea
 from nlightreader.widgets.NlightContainers.content_container import (
     AbstractContentContainer,

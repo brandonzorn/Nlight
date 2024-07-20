@@ -151,26 +151,6 @@ def get_language_icon(language: Nl.Language) -> str:
     return lang_icons.get(language)
 
 
-def get_locale(locale: QLocale.Language) -> str:
-    """
-    Returns the translation file path for the specified locale.
-
-    :param locale:
-        A QLocale.Language object
-        representing the target language.
-    :return:
-        The file path to the translation
-        file associated with the locale as a string,
-        or the default translation file if no
-        matching translation is found.
-    """
-    translations = {
-        QLocale.Language.Russian: Translations.Ru,
-        QLocale.Language.Ukrainian: Translations.Uk,
-    }
-    return translations.get(locale, Translations.En)
-
-
 def get_data(data: dict, path: list, default_val=None) -> Any:
     """
     Retrieves a value from a dictionary using a list of nested keys.

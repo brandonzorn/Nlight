@@ -7,7 +7,8 @@ from nlightreader.dialogs import TokenAuthMessageBox, UserDataAuthMessageBox
 from nlightreader.items import User
 from nlightreader.models import Manga
 from nlightreader.parsers import ShikimoriLib
-from nlightreader.utils import translate, Worker
+from nlightreader.utils.threads import Worker
+from nlightreader.utils.translator import translate
 from nlightreader.widgets.NlightTemplates.BaseWidget import (
     MangaItemBasedWidget,
 )

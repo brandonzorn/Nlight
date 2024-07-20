@@ -5,7 +5,7 @@ from qfluentwidgets import FluentIcon
 from data.ui.dialogs.rate import Ui_Dialog
 from nlightreader.consts.enums import LIB_LISTS, Nl
 from nlightreader.models import Manga
-from nlightreader.utils import translate
+from nlightreader.utils.translator import translate
 from nlightreader.utils.catalog_manager import (
     get_catalog_by_id,
     get_lib_catalog,

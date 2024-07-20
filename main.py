@@ -20,6 +20,9 @@ from nlightreader.consts.paths import APP_DATA_PATH
 from nlightreader.consts.urls import GITHUB_REPO
 from nlightreader.utils import get_html, get_locale, Thread, translate
 from nlightreader.utils.kodik_server import KodikHTTPRequestHandler
+from nlightreader.utils.threads import Thread
+from nlightreader.utils.translator import NlightTranslator, translate
+from nlightreader.utils.utils import get_html
 
 
 class App(QApplication):
@@ -29,7 +32,7 @@ class App(QApplication):
         self.setApplicationVersion(APP_VERSION)
         self.setWindowIcon(QIcon(Icons.App))
 
-        self.translator = QTranslator()
+        self.translator = NlightTranslator()
 
         self.load_translator()
         self.update_style()

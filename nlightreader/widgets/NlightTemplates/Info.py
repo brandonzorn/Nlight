@@ -14,15 +14,9 @@ from nlightreader.dialogs import FormCharacter, FormRate
 from nlightreader.items import HistoryNote
 from nlightreader.models import Chapter, Character, Manga
 from nlightreader.parsers.catalog import AbstractCatalog
-from nlightreader.utils import (
-    Database,
-    description_to_html,
-    FileManager,
-    get_catalog_by_id,
-    get_language_icon,
-    translate,
-    Worker,
-)
+from nlightreader.utils.catalog_manager import get_catalog_by_id
+from nlightreader.utils.database import Database
+from nlightreader.utils.file_manager import FileManager
 from nlightreader.utils.html_video import start_html_video
 from nlightreader.widgets.NlightWidgets import ChapterTreeItem
 from nlightreader.windows.Reader import ReaderWindow
