@@ -22,8 +22,6 @@ class Language(Enum):
 
 
 class LanguageSerializer(ConfigSerializer):
-    """ Language serializer """
-
     def serialize(self, language):
         return language.value.name() if language != Language.AUTO else "Auto"
 
