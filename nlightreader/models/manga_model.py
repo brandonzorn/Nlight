@@ -6,6 +6,7 @@ from PySide6.QtCore import QLocale
 
 from nlightreader.consts.enums import Nl
 from nlightreader.models.base_model import NamedBaseModel
+from nlightreader.utils.config import cfg
 
 
 class Manga(NamedBaseModel):
@@ -107,7 +108,9 @@ class Manga(NamedBaseModel):
     def get_description(self) -> str:
         if self.__descriptions.get(Nl.Language.undefined):
             return self.__descriptions.get(Nl.Language.undefined)
-        if QLocale().language() in (
+
+        locale = cfg.get(cfg.language).value.language()
+        if locale in (
             QLocale.Language.Russian,
             QLocale.Language.Ukrainian,
         ) and self.__descriptions.get(Nl.Language.ru):

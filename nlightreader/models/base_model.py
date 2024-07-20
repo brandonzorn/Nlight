@@ -1,5 +1,7 @@
 from PySide6.QtCore import QLocale
 
+from nlightreader.utils.config import cfg
+
 
 class BaseModel:
     def __init__(self, content_id: str, catalog_id: int):
@@ -50,8 +52,9 @@ class NamedBaseModel(BaseModel):
         return self.__russian
 
     def get_name(self) -> str:
+        locale = cfg.get(cfg.language).value.language()
         if (
-            QLocale().language()
+            locale
             in (
                 QLocale.Language.Russian,
                 QLocale.Language.Ukrainian,
