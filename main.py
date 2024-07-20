@@ -12,6 +12,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from qfluentwidgets import InfoBar, setTheme, Theme
 
+from data import resource
 from nlightreader import ParentWindow
 from nlightreader.consts.app import APP_BRANCH, APP_NAME, APP_VERSION
 from nlightreader.consts.files import Icons
