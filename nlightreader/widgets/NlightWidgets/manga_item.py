@@ -9,13 +9,11 @@ from qfluentwidgets import InfoBar
 from data.ui.manga_item import Ui_Form
 from nlightreader.contexts import LibraryMangaMenu
 from nlightreader.models import Manga
-from nlightreader.utils import (
-    Database,
-    FileManager,
-    get_catalog_by_id,
-    translate,
-    Worker,
-)
+from nlightreader.utils.catalog_manager import get_catalog_by_id
+from nlightreader.utils.database import Database
+from nlightreader.utils.file_manager import FileManager
+from nlightreader.utils.threads import Worker
+from nlightreader.utils.translator import translate
 
 
 class MangaItem(QWidget):

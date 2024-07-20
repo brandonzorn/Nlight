@@ -97,17 +97,3 @@ def description_to_html(text: str, show_spoilers=False) -> str:
     if not text:
         return ""
     return TextFormatter(text, show_spoilers).to_html_text()
-
-
-def translate(context, string):
-    """
-    Translates a string using the current translation context.
-
-    Args:
-        context: The context in which the string appears.
-        string: The string to be translated.
-
-    Returns:
-        A translated version of the input string.
-    """
-    return QApplication.translate(context, string, None)

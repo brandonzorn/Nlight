@@ -7,7 +7,7 @@ from nlightreader.consts.colors import ItemsIcons
 from nlightreader.contexts import HistoryNoteMenu
 from nlightreader.items import HistoryNote
 from nlightreader.models import Manga
-from nlightreader.utils import Database
+from nlightreader.utils.database import Database
 
 
 class FormHistory(QWidget):

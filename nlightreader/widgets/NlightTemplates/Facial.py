@@ -5,7 +5,8 @@ from data.ui.widgets.facial import Ui_Form
 from nlightreader.controlers import FilterController
 from nlightreader.dialogs import FormGenres
 from nlightreader.models import Manga
-from nlightreader.utils import translate, USER_CATALOGS
+from nlightreader.utils.catalog_manager import USER_CATALOGS
+from nlightreader.utils.translator import translate
 from nlightreader.widgets.NlightTemplates.BaseWidget import (
     MangaItemBasedWidget,
 )
