@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'character.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.3
+## Created by: Qt User Interface Compiler version 6.7.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -40,8 +40,8 @@ class Ui_Dialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.image_frame.sizePolicy().hasHeightForWidth())
         self.image_frame.setSizePolicy(sizePolicy)
-        self.image_frame.setFrameShape(QFrame.StyledPanel)
-        self.image_frame.setFrameShadow(QFrame.Raised)
+        self.image_frame.setFrameShape(QFrame.Shape.StyledPanel)
+        self.image_frame.setFrameShadow(QFrame.Shadow.Raised)
         self.verticalLayout = QVBoxLayout(self.image_frame)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.image = QLabel(self.image_frame)
@@ -56,8 +56,8 @@ class Ui_Dialog(object):
         self.title_frame = SimpleCardWidget(Dialog)
         self.title_frame.setObjectName(u"title_frame")
         self.title_frame.setStyleSheet(u"")
-        self.title_frame.setFrameShape(QFrame.StyledPanel)
-        self.title_frame.setFrameShadow(QFrame.Raised)
+        self.title_frame.setFrameShape(QFrame.Shape.StyledPanel)
+        self.title_frame.setFrameShadow(QFrame.Shadow.Raised)
         self.verticalLayout_2 = QVBoxLayout(self.title_frame)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.name_label = BodyLabel(self.title_frame)
@@ -89,7 +89,8 @@ class Ui_Dialog(object):
 
         self.description = TextEdit(Dialog)
         self.description.setObjectName(u"description")
-        self.description.setTextInteractionFlags(Qt.NoTextInteraction)
+        self.description.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.description.setTextInteractionFlags(Qt.TextInteractionFlag.NoTextInteraction)
 
         self.verticalLayout_3.addWidget(self.description)
 
