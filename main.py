@@ -2,7 +2,6 @@ import logging
 import sys
 import time
 from http.server import HTTPServer
-from pathlib import Path
 from threading import Thread as PyThread
 
 import darkdetect
@@ -118,7 +117,7 @@ class MainWindow(ParentWindow):
                 title=info_bar_title,
                 content=translate(
                     "Message",
-                    "No updates available. You are using the latest version."
+                    "No updates available. You are using the latest version.",
                 ),
                 duration=info_bar_duration,
                 parent=self,

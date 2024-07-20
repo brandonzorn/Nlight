@@ -232,7 +232,10 @@ class Auth:
         json=None,
         ignore_authorize=False,
     ):
-        if "test" in QApplication.arguments() or "noshiki" in QApplication.arguments():
+        if (
+            "test" in QApplication.arguments()
+            or "noshiki" in QApplication.arguments()
+        ):
             raise FetchContentError
         if not ignore_authorize and not self.is_authorized:
             raise FetchContentError
