@@ -17,7 +17,7 @@ from nlightreader.consts.app import APP_BRANCH, APP_NAME, APP_VERSION
 from nlightreader.consts.files import Icons
 from nlightreader.consts.paths import APP_DATA_PATH
 from nlightreader.consts.urls import GITHUB_REPO
-from nlightreader.utils import get_html, get_locale, Thread, translate
+from nlightreader.utils.config import cfg
 from nlightreader.utils.kodik_server import KodikHTTPRequestHandler
 from nlightreader.utils.threads import Thread
 from nlightreader.utils.translator import NlightTranslator, translate
@@ -37,11 +37,15 @@ class App(QApplication):
         self.update_style()
 
     def load_translator(self):
-        self.translator.load(get_locale(QLocale().language()))
+        locale = cfg.get(cfg.language).value
+        self.translator.load(locale)
         self.installTranslator(self.translator)
 
     def update_style(self):
-        setTheme(Theme.DARK if darkdetect.isDark() else Theme.LIGHT)
+        if (theme_mode := cfg.get(cfg.theme_mode)) == "Auto":
+            setTheme(Theme.DARK if darkdetect.isDark() else Theme.LIGHT)
+        else:
+            setTheme(Theme.DARK if theme_mode == "Dark" else Theme.LIGHT)
 
 
 class MainWindow(ParentWindow):
@@ -57,8 +61,15 @@ class MainWindow(ParentWindow):
         self._update_checker = Thread(
             target=self.check_for_updates,
             callback=self.show_update_info,
+            error_callback=lambda: self.show_update_info(None),
         )
         self._theme_updater.start()
+        if cfg.get(cfg.check_updates_at_startup):
+            self.start_check_for_updates_thread()
+
+    def start_check_for_updates_thread(self):
+        self._update_checker.terminate()
+        self._update_checker.wait()
         self._update_checker.start()
 
     def check_for_updates(self):
@@ -102,11 +113,21 @@ class MainWindow(ParentWindow):
                 duration=info_bar_duration,
                 parent=self,
             )
+        else:
+            InfoBar.success(
+                title=info_bar_title,
+                content=translate(
+                    "Message",
+                    "No updates available. You are using the latest version."
+                ),
+                duration=info_bar_duration,
+                parent=self,
+            )
 
     @staticmethod
     def theme_listener():
         theme = darkdetect.theme()
-        while darkdetect.theme() == theme:
+        while darkdetect.theme() == theme or cfg.get(cfg.theme_mode) != "Auto":
             time.sleep(1)
 
     def update_style(self):
