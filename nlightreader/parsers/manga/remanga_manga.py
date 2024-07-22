@@ -52,17 +52,20 @@ class Remanga(AbstractMangaCatalog):
             params=params,
             content_type="json",
         )
+
         mangas = []
-        if response:
-            for i in response.get("content"):
-                manga_id = i.get("dir")
-                name = i.get("en_name")
-                russian = i.get("rus_name")
-                manga = Manga(manga_id, self.CATALOG_ID, name, russian)
-                manga.kind = Nl.MangaKind.from_str(i.get("type"))
-                manga.score = float(i.get("avg_rating"))
-                manga.preview_url = i.get("img").get("high")
-                mangas.append(manga)
+        if not response:
+            return mangas
+
+        for i in response.get("content"):
+            manga_id = i.get("dir")
+            name = i.get("en_name")
+            russian = i.get("rus_name")
+            manga = Manga(manga_id, self.CATALOG_ID, name, russian)
+            manga.kind = Nl.MangaKind.from_str(i.get("type"))
+            manga.score = float(i.get("avg_rating"))
+            manga.preview_url = i.get("img").get("high")
+            mangas.append(manga)
         return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:

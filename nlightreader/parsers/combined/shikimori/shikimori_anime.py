@@ -64,6 +64,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             params=params,
             content_type="json",
         )
+
         mangas = []
         if response:
             for i in response:
@@ -97,7 +98,8 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         url = f"{self.url_api}/characters/{character.content_id}"
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
-            character.description = response.get("description")
+            if description := response.get("description"):
+                character.description = description
         return character
 
     def get_preview(self, manga: Manga):

@@ -2,8 +2,6 @@ from enum import Enum
 
 from qfluentwidgets import FluentIconBase, getIconColor, Theme
 
-from data import resource
-
 
 class LangIcons:
     Gb = ":/lang_icons/icons/lang/gb.svg"

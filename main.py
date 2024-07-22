@@ -80,18 +80,20 @@ class MainWindow(ParentWindow):
         self._update_checker.wait()
         self._update_checker.start()
 
-    def check_for_updates(self):
+    def check_for_updates(self) -> str | None:
         response = get_html(
             f"{GITHUB_REPO}/releases",
             params={"per_page": 2},
             content_type="json",
         )
         if not response:
-            return
+            return None
+        latest_version = None
         for release in response:
             version = release["tag_name"]
             if APP_BRANCH in version:
-                return version
+                latest_version = version
+        return latest_version
 
     def show_update_info(self, result):
         info_bar_title = translate(
