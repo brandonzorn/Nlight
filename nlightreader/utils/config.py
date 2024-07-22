@@ -72,6 +72,12 @@ class Config(QConfig):
         True,
         BoolValidator(),
     )
+    enable_kodik_server = ConfigItem(
+        "Utils",
+        "EnableKodikServer",
+        True,
+        BoolValidator(),
+    )
 
 
 cfg = Config()
