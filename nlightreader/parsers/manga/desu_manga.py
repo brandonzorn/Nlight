@@ -51,18 +51,21 @@ class Desu(AbstractMangaCatalog):
             params=params,
             content_type="json",
         )
-        manga = []
-        if response:
-            for i in get_data(response, ["response"]):
-                manga.append(
-                    Manga(
-                        str(i.get("id")),
-                        self.CATALOG_ID,
-                        i.get("name"),
-                        i.get("russian"),
-                    ),
-                )
-        return manga
+
+        mangas = []
+        if not response:
+            return mangas
+
+        for i in get_data(response, ["response"]):
+            mangas.append(
+                Manga(
+                    str(i.get("id")),
+                    self.CATALOG_ID,
+                    i.get("name"),
+                    i.get("russian"),
+                ),
+            )
+        return mangas
 
     def get_chapters(self, manga: Manga):
         url = f"{self.url_api}/{manga.content_id}"

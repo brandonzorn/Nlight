@@ -1,7 +1,5 @@
 import re
 
-from PySide6.QtWidgets import QApplication
-
 
 class TextFormatter:
     """

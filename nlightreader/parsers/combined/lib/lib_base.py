@@ -29,7 +29,6 @@ class LibBase(AbstractCatalog):
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self.url_api}/{self.content_name}"
-        mangas = []
         params = {
             "site_id[]": self.site_id,
             "sort_by": form.get_order_id(),
@@ -44,6 +43,8 @@ class LibBase(AbstractCatalog):
             cookies=cookies,
             content_type="json",
         )
+
+        mangas = []
         if response:
             for i in response.get("data"):
                 manga = Manga(

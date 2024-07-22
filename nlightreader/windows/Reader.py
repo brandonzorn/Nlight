@@ -231,7 +231,7 @@ class ReaderWindow(QMainWindow):
         ):
             time.sleep(0.25)
             if page != self.__cur_page or chapter != self.__cur_chapter:
-                return
+                return None
 
         if self.__manga.kind == Nl.MangaKind.ranobe:
             return FileManager.get_chapter_text_file(

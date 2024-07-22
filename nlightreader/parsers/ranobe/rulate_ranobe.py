@@ -43,7 +43,6 @@ class Rulate(AbstractRanobeCatalog):
         return manga
 
     def search_manga(self, form: RequestForm):
-        ranobe = []
         params = {
             "t": form.search,
             "cat": 12,
@@ -56,30 +55,34 @@ class Rulate(AbstractRanobeCatalog):
             params=params,
             content_type="text",
         )
-        if response:
-            soup = BeautifulSoup(response, "html.parser")
-            hranobe = soup.findAll("p", class_="book-tooltip")
-            for i in hranobe:
-                name_text = i.text.strip()
-                name_items = name_text.split("/")
-                name = name_text
-                russian = ""
-                if len(name_items) == 2:
-                    name = name_items[0].strip()
-                    russian = name_items[1].strip()
-                ranobe_id = str(
-                    i.unwrap()["data-tooltip-content"].split(
-                        "#book-tooltip-",
-                    )[-1],
-                )
-                ranobe.append(
-                    Manga(
-                        ranobe_id,
-                        self.CATALOG_ID,
-                        name,
-                        russian,
-                    ),
-                )
+
+        ranobe = []
+        if not response:
+            return ranobe
+
+        soup = BeautifulSoup(response, "html.parser")
+        hranobe = soup.findAll("p", class_="book-tooltip")
+        for i in hranobe:
+            name_text = i.text.strip()
+            name_items = name_text.split("/")
+            name = name_text
+            russian = ""
+            if len(name_items) == 2:
+                name = name_items[0].strip()
+                russian = name_items[1].strip()
+            ranobe_id = str(
+                i.unwrap()["data-tooltip-content"].split(
+                    "#book-tooltip-",
+                )[-1],
+            )
+            ranobe.append(
+                Manga(
+                    ranobe_id,
+                    self.CATALOG_ID,
+                    name,
+                    russian,
+                ),
+            )
         return ranobe
 
     def get_chapters(self, manga: Manga):
@@ -145,7 +148,7 @@ class Rulate(AbstractRanobeCatalog):
             soup = BeautifulSoup(response, "html.parser")
             text_container = soup.find("div", class_="content-text")
             if not text_container:
-                return
+                return None
 
             # Construct content with images
             content = ""

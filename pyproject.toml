@@ -14,7 +14,6 @@ inline-quotes = "double"
 import-order-style = "google"
 ignore = [
     "R503",
-    "R502",
     "F401",
     "N802",
     "I100",

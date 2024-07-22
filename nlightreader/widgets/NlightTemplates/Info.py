@@ -166,7 +166,7 @@ class FormInfo(QWidget):
     def _get_selected_chapter(self) -> Chapter | None:
         selected_item = self.ui.items_tree.currentItem()
         if not isinstance(selected_item, ChapterTreeItem):
-            return
+            return None
         return selected_item.chapter
 
     def get_selected_related_title(self):
