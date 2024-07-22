@@ -422,5 +422,13 @@
         <source>Project on GitHub</source>
         <translation>Project on GitHub</translation>
     </message>
+    <message>
+        <source>Episodes</source>
+        <translation>Episodes</translation>
+    </message>
+    <message>
+        <source>Automatically mark episodes as watched</source>
+        <translation>Automatically mark episodes as watched</translation>
+    </message>
 </context>
 </TS>
