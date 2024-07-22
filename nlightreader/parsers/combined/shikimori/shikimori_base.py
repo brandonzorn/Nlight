@@ -52,12 +52,9 @@ class ShikimoriBase(AbstractCatalog):
     def get_character(self, character: Character) -> Character:
         url = f"{self.url_api}/characters/{character.content_id}"
         response = get_html(url, headers=self.headers, content_type="json")
-        if not response:
-            return character
-
-        description = response.get("description")
-        if description:
-            character.description = description
+        if response:
+            if description := response.get("description"):
+                character.description = description
         return character
 
     def get_preview(self, manga: Manga):

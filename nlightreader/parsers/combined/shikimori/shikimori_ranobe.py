@@ -25,6 +25,7 @@ class ShikimoriRanobe(ShikimoriBase, AbstractRanobeCatalog):
             params=params,
             content_type="json",
         )
+
         mangas = []
         if response:
             for i in response:

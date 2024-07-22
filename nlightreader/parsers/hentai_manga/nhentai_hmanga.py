@@ -25,27 +25,30 @@ class NHentai(AbstractHentaiMangaCatalog):
             params=params,
             content_type="text",
         )
+
         mangas = []
-        if response:
-            soup = BeautifulSoup(response, "html.parser")
-            html_items = soup.findAll("div", class_="gallery")
-            for i in html_items:
-                caption_tag = i.find("div", class_="caption")
-                if caption_tag is not None:
-                    name = i.find("div", class_="caption").text
-                    cover_tag = i.find("a", {"class": "cover"})
-                    if cover_tag is not None:
-                        manga_id = cover_tag["href"].split("/")[-2]
-                        if not manga_id:
-                            continue
-                        mangas.append(
-                            Manga(
-                                manga_id,
-                                self.CATALOG_ID,
-                                name,
-                                "",
-                            ),
-                        )
+        if not response:
+            return mangas
+
+        soup = BeautifulSoup(response, "html.parser")
+        html_items = soup.findAll("div", class_="gallery")
+        for i in html_items:
+            caption_tag = i.find("div", class_="caption")
+            if caption_tag is not None:
+                name = i.find("div", class_="caption").text
+                cover_tag = i.find("a", {"class": "cover"})
+                if cover_tag is not None:
+                    manga_id = cover_tag["href"].split("/")[-2]
+                    if not manga_id:
+                        continue
+                    mangas.append(
+                        Manga(
+                            manga_id,
+                            self.CATALOG_ID,
+                            name,
+                            "",
+                        ),
+                    )
         return mangas
 
     def get_chapters(self, manga: Manga):

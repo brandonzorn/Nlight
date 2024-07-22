@@ -43,31 +43,34 @@ class AllHentai(AbstractHentaiMangaCatalog):
     def get_chapters(self, manga: Manga):
         url = f"{self.url}/{manga.content_id}"
         response = get_html(url, headers=self.headers, content_type="text")
-        chapters = []
-        if response:
-            soup = BeautifulSoup(response, "html.parser")
-            chapters_list_item = soup.find("div", id="chapters-list")
-            for chapter_item in chapters_list_item.findAll(
-                "tr",
-                class_="item-row",
-            ):
-                volume: str = chapter_item.get("data-vol")
-                chapter_num: str = chapter_item.get("data-num")
-                if chapter_num.isdigit():
-                    chapter_as_num = int(chapter_num) / 10
-                    if chapter_as_num.is_integer():
-                        chapter_as_num = int(chapter_as_num)
-                    chapter_num = str(chapter_as_num)
 
-                chapter = Chapter(
-                    manga.content_id,
-                    self.CATALOG_ID,
-                    volume,
-                    chapter_num,
-                    "",
-                    Nl.Language.ru,
-                )
-                chapters.append(chapter)
+        chapters = []
+        if not response:
+            return chapters
+
+        soup = BeautifulSoup(response, "html.parser")
+        chapters_list_item = soup.find("div", id="chapters-list")
+        for chapter_item in chapters_list_item.findAll(
+            "tr",
+            class_="item-row",
+        ):
+            volume: str = chapter_item.get("data-vol")
+            chapter_num: str = chapter_item.get("data-num")
+            if chapter_num.isdigit():
+                chapter_as_num = int(chapter_num) / 10
+                if chapter_as_num.is_integer():
+                    chapter_as_num = int(chapter_as_num)
+                chapter_num = str(chapter_as_num)
+
+            chapter = Chapter(
+                manga.content_id,
+                self.CATALOG_ID,
+                volume,
+                chapter_num,
+                "",
+                Nl.Language.ru,
+            )
+            chapters.append(chapter)
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter):

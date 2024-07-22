@@ -54,18 +54,21 @@ class Ranobehub(AbstractRanobeCatalog):
             params=params,
             content_type="json",
         )
+
         mangas = []
-        if response:
-            for i in get_data(response, ["resource"], default_val=[]):
-                manga_id = str(i.get("id"))
-                name = i.get("names").get("eng")
-                russian = i.get("names").get("rus")
+        if not response:
+            return mangas
 
-                manga = Manga(manga_id, self.CATALOG_ID, name, russian)
-                manga.status = Nl.MangaStatus.from_str(i.get("status"))
-                manga.preview_url = i.get("poster").get("medium")
+        for i in get_data(response, ["resource"], default_val=[]):
+            manga_id = str(i.get("id"))
+            name = i.get("names").get("eng")
+            russian = i.get("names").get("rus")
 
-                mangas.append(manga)
+            manga = Manga(manga_id, self.CATALOG_ID, name, russian)
+            manga.status = Nl.MangaStatus.from_str(i.get("status"))
+            manga.preview_url = i.get("poster").get("medium")
+
+            mangas.append(manga)
         return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
@@ -118,7 +121,7 @@ class Ranobehub(AbstractRanobeCatalog):
                 soup.findAll("div", {"class": "ui text container"}),
             )
             if not text_container:
-                return
+                return None
 
             # Construct content with images
             content = ""

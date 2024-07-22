@@ -88,16 +88,19 @@ class MangaDex(AbstractMangaCatalog):
                 "pornographic",
             ],
         }
-        mangas = []
         response = get_html(
             url,
             headers=self.headers,
             params=params,
             content_type="json",
         )
-        if response:
-            for i in get_data(response, ["data"]):
-                mangas.append(self.setup_manga(i))
+
+        mangas = []
+        if not response:
+            return mangas
+
+        for i in get_data(response, ["data"]):
+            mangas.append(self.setup_manga(i))
         return mangas
 
     def get_chapters(self, manga: Manga):
@@ -328,8 +331,9 @@ class Auth:
             self.refresh_token()
 
     def get(self, url, params=None):
-        if self.is_authorized:
-            return get_html(url, params=params, headers=self.headers)
+        if not self.is_authorized:
+            return None
+        return get_html(url, params=params, headers=self.headers)
 
     @property
     def headers(self):

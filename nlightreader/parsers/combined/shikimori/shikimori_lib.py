@@ -11,7 +11,6 @@ from nlightreader.consts.urls import (
     URL_SHIKIMORI_TOKEN,
 )
 from nlightreader.consts.enums import Nl
-from nlightreader.exceptions.parser_content_exc import FetchContentError
 from nlightreader.items import RequestForm, User, UserRate
 from nlightreader.models import Manga
 from nlightreader.parsers.catalog import LibParser
@@ -38,7 +37,6 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         url = f"{self.url_api}/users/{self.session.user.id}/manga_rates"
         params = {"limit": 50, "page": form.page}
         response = self.session.request("GET", url, params=params)
-        mangas = []
         lib_list = form.lib_list
         if lib_list == Nl.LibList.reading:
             lib_list = "watching"
@@ -46,6 +44,8 @@ class ShikimoriLib(ShikimoriBase, LibParser):
             lib_list = "rewatching"
         else:
             lib_list = form.lib_list.name
+
+        mangas = []
         if response and (resp_json := response.json()):
             for i in resp_json:
                 if not i.get("status") == lib_list:
@@ -236,9 +236,9 @@ class Auth:
             "test" in QApplication.arguments()
             or "noshiki" in QApplication.arguments()
         ):
-            raise FetchContentError
+            return None
         if not ignore_authorize and not self.is_authorized:
-            raise FetchContentError
+            return None
         try:
             response = self.client.request(
                 method,
@@ -257,12 +257,11 @@ class Auth:
                 f"\t\tCookies: {self.client.cookies}\n"
                 f"\t\tJson: {json}\n",
             )
-            raise FetchContentError
 
-    def check_auth(self):
+    def check_auth(self) -> bool:
         url = f"{URL_SHIKIMORI_API}/users/whoami"
         whoami = self.request("GET", url, ignore_authorize=True)
-        self.is_authorized = whoami and whoami.json()
+        self.is_authorized = bool(whoami) and bool(whoami.json())
         return self.is_authorized
 
     @property
