@@ -82,6 +82,19 @@ class SettingsInterface(ScrollArea):
             parent=self.personalGroup,
         )
 
+        self.utilsSoftwareGroup = SettingCardGroup(
+            self.tr("Episodes"),
+            self.scrollWidget,
+        )
+        self.enableKodikServerCard = SwitchSettingCard(
+            FluentIcon.ACCEPT,
+            self.tr(
+                "Automatically mark episodes as watched",
+            ),
+            configItem=cfg.enable_kodik_server,
+            parent=self.utilsSoftwareGroup,
+        )
+
         self.updateSoftwareGroup = SettingCardGroup(
             self.tr("Software update"),
             self.scrollWidget,
@@ -144,6 +157,8 @@ class SettingsInterface(ScrollArea):
         self.personalGroup.addSettingCard(self.zoomCard)
         self.personalGroup.addSettingCard(self.languageCard)
 
+        self.utilsSoftwareGroup.addSettingCard(self.enableKodikServerCard)
+
         self.updateSoftwareGroup.addSettingCard(self.updateOnStartUpCard)
 
         self.aboutGroup.addSettingCard(self.projectCard)
@@ -152,6 +167,7 @@ class SettingsInterface(ScrollArea):
         self.expandLayout.setSpacing(28)
         self.expandLayout.setContentsMargins(60, 10, 60, 0)
         self.expandLayout.addWidget(self.personalGroup)
+        self.expandLayout.addWidget(self.utilsSoftwareGroup)
         self.expandLayout.addWidget(self.updateSoftwareGroup)
         self.expandLayout.addWidget(self.aboutGroup)
 

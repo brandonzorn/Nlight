@@ -168,8 +168,9 @@ if __name__ == "__main__":
 
     APP_DATA_PATH.mkdir(parents=True, exist_ok=True)
 
-    httpd = HTTPServer(("localhost", 8000), KodikHTTPRequestHandler)
-    PyThread(target=httpd.serve_forever, daemon=True).start()
+    if cfg.get(cfg.enable_kodik_server):
+        httpd = HTTPServer(("localhost", 8000), KodikHTTPRequestHandler)
+        PyThread(target=httpd.serve_forever, daemon=True).start()
 
     window = MainWindow()
     window.show()
