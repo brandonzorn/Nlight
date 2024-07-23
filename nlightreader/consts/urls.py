@@ -21,8 +21,7 @@ URL_RANOBEHUB_API = "https://ranobehub.org/api"
 URL_REMANGA = "https://remanga.org"
 URL_REMANGA_API = "https://remanga.org/api"
 
-URL_NHENTAI = "https://nhentai.to"
-URL_NHENTAI_API = "https://nhentai.net/api"
+URL_NHENTAI = "https://nhentai.net"
 
 URL_ALLHENTAI = "https://20.allhen.online"
 URL_ALLHENTAI_API = ""
