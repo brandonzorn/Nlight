@@ -1,4 +1,5 @@
-from bs4 import BeautifulSoup
+import validators
+from bs4 import BeautifulSoup, element
 
 from nlightreader.consts.urls import URL_NHENTAI
 from nlightreader.models import Chapter, Image, Manga
@@ -13,7 +14,6 @@ class NHentai(AbstractHentaiMangaCatalog):
     def __init__(self):
         super().__init__()
         self.url = URL_NHENTAI
-        self.url_api = URL_NHENTAI_API
 
     def search_manga(self, form):
         url = f"{self.url}/search"
@@ -35,19 +35,26 @@ class NHentai(AbstractHentaiMangaCatalog):
             caption_tag = i.find("div", class_="caption")
             if caption_tag is not None:
                 name = i.find("div", class_="caption").text
-                cover_tag = i.find("a", {"class": "cover"})
+                cover_tag: element.Tag = i.find("a", {"class": "cover"})
                 if cover_tag is not None:
                     manga_id = cover_tag["href"].split("/")[-2]
                     if not manga_id:
                         continue
-                    mangas.append(
-                        Manga(
-                            manga_id,
-                            self.CATALOG_ID,
-                            name,
-                            "",
-                        ),
+
+                    manga = Manga(
+                        manga_id,
+                        self.CATALOG_ID,
+                        name,
+                        "",
                     )
+
+                    if (noscript_img_tag := cover_tag.find("noscript")) and (
+                        img_tag := noscript_img_tag.find("img")
+                    ):
+                        src = img_tag.get("src")
+                        if validators.url(src):
+                            manga.preview_url = src
+                    mangas.append(manga)
         return mangas
 
     def get_chapters(self, manga: Manga):
@@ -71,14 +78,8 @@ class NHentai(AbstractHentaiMangaCatalog):
             for i in html_items:
                 img_tag = i.find("img", class_="")
                 img_url: str = img_tag["src"]
-                for img_format in ["png", "jpg", "gif"]:
-                    if img_url.endswith(f"t.{img_format}"):
-                        img_url = img_url.replace(
-                            f"t.{img_format}",
-                            f".{img_format}",
-                            1,
-                        )
-                        break
+                if not validators.url(img_url):
+                    continue
                 images.append(Image("", html_items.index(i) + 1, img_url))
         return images
 
@@ -93,24 +94,11 @@ class NHentai(AbstractHentaiMangaCatalog):
         )
 
     def get_preview(self, manga: Manga):
-        url = f"{self.url}/g/{manga.content_id}"
-        response = get_html(
-            url,
+        return get_html(
+            manga.preview_url,
             headers=self.headers,
-            content_type="text",
+            content_type="content",
         )
-        if response:
-            soup = BeautifulSoup(response, "html.parser")
-            if html_item := soup.find("div", id="cover"):
-                if img_tag := html_item.find("img"):
-                    img_request_headers = self.headers | {
-                        "Referer": URL_NHENTAI,
-                    }
-                    return get_html(
-                        img_tag["src"],
-                        content_type="content",
-                        headers=img_request_headers,
-                    )
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/g/{manga.content_id}"
