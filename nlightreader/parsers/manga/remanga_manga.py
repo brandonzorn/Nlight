@@ -1,8 +1,8 @@
 from nlightreader.consts.urls import URL_REMANGA, URL_REMANGA_API
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RemangaItems
-from nlightreader.items import Image, RequestForm
-from nlightreader.models import Chapter, Manga
+from nlightreader.items import RequestForm
+from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.utils import get_data, get_html
 
@@ -27,7 +27,8 @@ class Remanga(AbstractMangaCatalog):
                 manga.kind = Nl.MangaKind.from_str(kind_name)
 
             manga.score = float(data.get("avg_rating"))
-            manga.preview_url = data.get("img").get("high")
+            if (img := data.get("img").get("high")) and (img != "/media/None"):
+                manga.preview_url = f"{self.url}{img}"
 
             manga.add_description(
                 Nl.Language.undefined,
@@ -57,14 +58,16 @@ class Remanga(AbstractMangaCatalog):
         if not response:
             return mangas
 
-        for i in response.get("content"):
-            manga_id = i.get("dir")
-            name = i.get("en_name")
-            russian = i.get("rus_name")
+        for data in response.get("content"):
+            manga_id = data.get("dir")
+            name = data.get("en_name")
+            russian = data.get("rus_name")
             manga = Manga(manga_id, self.CATALOG_ID, name, russian)
-            manga.kind = Nl.MangaKind.from_str(i.get("type"))
-            manga.score = float(i.get("avg_rating"))
-            manga.preview_url = i.get("img").get("high")
+            manga.kind = Nl.MangaKind.from_str(data.get("type"))
+            manga.score = float(data.get("avg_rating"))
+
+            if (img := data.get("img").get("high")) and (img != "/media/None"):
+                manga.preview_url = f"{self.url}{img}"
             mangas.append(manga)
         return mangas
 
@@ -120,21 +123,20 @@ class Remanga(AbstractMangaCatalog):
     def get_image(self, image: Image):
         headers = {
             "User-Agent": "Nlight",
-            "Referer": "https://remanga.org/",
+            "Referer": f"{self.url}/",
         }
         return get_html(
-            f"{image.img}",
+            f"{image.url}",
             headers=headers,
             content_type="content",
         )
 
     def get_preview(self, manga: Manga):
-        if manga.preview_url and manga.preview_url != "/media/None":
-            return get_html(
-                f"{self.url}{manga.preview_url}",
-                headers=self.headers,
-                content_type="content",
-            )
+        return get_html(
+            manga.preview_url,
+            headers=self.headers,
+            content_type="content",
+        )
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/manga/{manga.content_id}"

@@ -6,8 +6,8 @@ from bs4 import BeautifulSoup
 from nlightreader.consts.urls import URL_RANOBEHUB, URL_RANOBEHUB_API
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RanobehubItems
-from nlightreader.items import Image, RequestForm
-from nlightreader.models import Chapter, Manga
+from nlightreader.items import RequestForm
+from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.utils.utils import get_data, get_html
 
@@ -114,7 +114,7 @@ class Ranobehub(AbstractRanobeCatalog):
                     return container
 
         # Parse HTML content and extract text container
-        response = get_html(image.img, content_type="text")
+        response = get_html(image.url, content_type="text")
         if response:
             soup = BeautifulSoup(response, "html.parser")
             text_container = find_text_container(
