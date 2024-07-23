@@ -22,7 +22,3 @@ class Image:
         if url is not None and not validators.url(url):
             raise ValueError(f"Url {url} is not valid")
         self.__url = url
-
-    @staticmethod
-    def get_empty_instance():
-        return Image("", 1, None)

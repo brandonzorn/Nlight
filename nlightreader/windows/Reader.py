@@ -255,7 +255,7 @@ class ReaderWindow(QMainWindow):
         chapter = self._current_chapter
         self.__images = self.__catalog.get_images(self.__manga, chapter)
         if not self.__images:
-            self.__images = [Image.get_empty_instance()]
+            self.__images = [Image("", 1, None)]
         self.__max_page = self.get_chapter_pages()
 
     def get_chapter_pages(self) -> int:
