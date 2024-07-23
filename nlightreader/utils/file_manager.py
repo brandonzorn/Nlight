@@ -7,8 +7,7 @@ from PySide6.QtGui import QPixmap
 
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.paths import APP_DATA_PATH
-from nlightreader.items import Image
-from nlightreader.models import Chapter, Character, Manga
+from nlightreader.models import Chapter, Character, Image, Manga
 from nlightreader.parsers.catalog import AbstractCatalog
 
 
@@ -66,9 +65,9 @@ class FileManager:
         image: Image,
         catalog: AbstractCatalog,
     ) -> bool:
-        file_name = f"{image.page}.jpg"
+        file_name = f"{image.page_number}.jpg"
         if manga.kind == Nl.MangaKind.ranobe:
-            file_name = f"{image.page}.txt"
+            file_name = f"{image.page_number}.txt"
         return check_file_exists(
             cls.__get_chapter_folder(manga, chapter, catalog),
             file_name,
@@ -83,7 +82,7 @@ class FileManager:
         catalog: AbstractCatalog,
     ):
         path = cls.__get_chapter_folder(manga, chapter, catalog)
-        file_name = f"{image.page}.jpg"
+        file_name = f"{image.page_number}.jpg"
         if not check_file_exists(path, file_name):
             save_file(path, file_name, catalog.get_image(image))
         return QPixmap(get_full_file_path(path, file_name))
@@ -97,7 +96,7 @@ class FileManager:
         catalog: AbstractCatalog,
     ) -> str:
         path = cls.__get_chapter_folder(manga, chapter, catalog)
-        file_name = f"{image.page}.txt"
+        file_name = f"{image.page_number}.txt"
         if not check_file_exists(path, file_name):
             save_file(path, file_name, catalog.get_image(image))
         try:

@@ -2,8 +2,7 @@ from bs4 import BeautifulSoup
 
 from nlightreader.consts.urls import URL_ALLHENTAI, URL_ALLHENTAI_API
 from nlightreader.consts.enums import Nl
-from nlightreader.items import Image
-from nlightreader.models import Chapter, Manga
+from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
 from nlightreader.utils.utils import get_html, make_request
 
