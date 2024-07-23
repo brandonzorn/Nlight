@@ -1,8 +1,7 @@
 from bs4 import BeautifulSoup
 
-from nlightreader.consts.urls import URL_NHENTAI, URL_NHENTAI_API
-from nlightreader.items import Image
-from nlightreader.models import Chapter, Manga
+from nlightreader.consts.urls import URL_NHENTAI
+from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
 from nlightreader.utils.utils import get_html
 
@@ -88,7 +87,7 @@ class NHentai(AbstractHentaiMangaCatalog):
             "Referer": URL_NHENTAI,
         }
         return get_html(
-            image.img,
+            image.url,
             headers=img_request_headers,
             content_type="content",
         )

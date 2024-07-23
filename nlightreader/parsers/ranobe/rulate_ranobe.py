@@ -5,8 +5,8 @@ from bs4 import BeautifulSoup
 from nlightreader.consts.urls import URL_EROLATE, URL_RULATE
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RulateItems
-from nlightreader.items import Image, RequestForm
-from nlightreader.models import Chapter, Manga
+from nlightreader.items import RequestForm
+from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.utils.utils import get_html
 
@@ -140,7 +140,7 @@ class Rulate(AbstractRanobeCatalog):
 
         # Parse HTML content and extract text container
         response = get_html(
-            image.img,
+            image.url,
             cookies=self.cookies,
             content_type="text",
         )

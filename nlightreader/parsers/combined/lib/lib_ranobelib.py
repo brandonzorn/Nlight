@@ -4,8 +4,7 @@ import re
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RanobeLibItems
 from nlightreader.consts.urls import URL_RANOBELIB
-from nlightreader.items import Image
-from nlightreader.models import Chapter, Manga
+from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.parsers.combined.lib.lib_base import LibBase
 from nlightreader.utils.utils import get_html
@@ -60,7 +59,7 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
                 text,
             )
 
-        response = get_html(image.img, content_type="json")
+        response = get_html(image.url, content_type="json")
         if response:
             data = response["data"]
             content = data["content"]

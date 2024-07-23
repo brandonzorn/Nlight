@@ -11,8 +11,8 @@ from nlightreader.exceptions.parser_content_exc import (
     FetchContentError,
     NoContentError,
 )
-from nlightreader.items import HistoryNote, Image
-from nlightreader.models import Chapter, Manga
+from nlightreader.items import HistoryNote
+from nlightreader.models import Chapter, Image, Manga
 from nlightreader.utils.catalog_manager import get_catalog_by_id
 from nlightreader.utils.database import Database
 from nlightreader.utils.file_manager import FileManager
@@ -259,7 +259,7 @@ class ReaderWindow(QMainWindow):
         self.__max_page = self.get_chapter_pages()
 
     def get_chapter_pages(self) -> int:
-        return self.__images[-1].page
+        return self.__images[-1].page_number
 
     @property
     def _current_chapter(self) -> Chapter:

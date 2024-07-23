@@ -8,11 +8,10 @@ from nlightreader.consts.urls import (
 )
 from nlightreader.consts.enums import Nl
 from nlightreader.items import (
-    Image,
     RequestForm,
     User,
 )
-from nlightreader.models import Chapter, Genre, Kind, Manga
+from nlightreader.models import Chapter, Genre, Image, Kind, Manga
 from nlightreader.parsers.catalog import LibParser
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.decorators import singleton
@@ -161,7 +160,7 @@ class MangaDex(AbstractMangaCatalog):
 
     def get_image(self, image: Image):
         return get_html(
-            image.img,
+            image.url,
             headers=self.headers,
             content_type="content",
         )
