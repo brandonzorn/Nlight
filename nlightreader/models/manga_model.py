@@ -2,6 +2,7 @@ import re
 from types import NoneType
 from typing import override
 
+import validators
 from PySide6.QtCore import QLocale
 
 from nlightreader.consts.enums import Nl
@@ -71,7 +72,9 @@ class Manga(NamedBaseModel):
     @preview_url.setter
     def preview_url(self, url: str | None):
         if not isinstance(url, (str, NoneType)):
-            raise TypeError(f"Preview url must be str got {type(url)}")
+            raise TypeError(f"Preview url must be str or None got {type(url)}")
+        if url is not None and not validators.url(url):
+            raise ValueError(f"Url {url} is not valid")
         self.__preview_url = url
 
     @property
