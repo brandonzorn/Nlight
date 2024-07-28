@@ -1,5 +1,5 @@
 import logging
-from enum import Enum, unique
+from enum import IntEnum, unique
 
 LIB_LISTS = (
     "planned",
@@ -13,7 +13,7 @@ LIB_LISTS = (
 
 class Nl:
     @unique
-    class Language(Enum):
+    class Language(IntEnum):
         undefined = 0
         en = 1
         ru = 2
@@ -46,14 +46,14 @@ class Nl:
             return names[self.value]
 
     @unique
-    class CatalogType(Enum):
+    class CatalogType(IntEnum):
         manga = 0
         hentai_manga = 1
         ranobe = 2
         anime = 3
 
     @unique
-    class MangaKind(Enum):
+    class MangaKind(IntEnum):
         undefined = 0
         manga = 1
         manhwa = 2
@@ -102,7 +102,7 @@ class Nl:
             return names[self.value]
 
     @unique
-    class LibList(Enum):
+    class LibList(IntEnum):
         planned = 0
         completed = 1
         reading = 2
@@ -131,7 +131,7 @@ class Nl:
             return LIB_LISTS[self.value]
 
     @unique
-    class MangaStatus(Enum):
+    class MangaStatus(IntEnum):
         undefined = 0
         ongoing = 1
         released = 2
