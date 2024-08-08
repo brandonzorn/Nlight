@@ -36,7 +36,9 @@ class AllHentai(AbstractHentaiMangaCatalog):
                 manga_id = base_info.get("href")
                 name = base_info.get("title")
                 if manga_id and name:
-                    mangas.append(Manga(manga_id, self.CATALOG_ID, name, ""))
+                    mangas.append(
+                        Manga(manga_id, self.CATALOG_ID, name, ""),
+                    )
         return mangas
 
     def get_chapters(self, manga: Manga):

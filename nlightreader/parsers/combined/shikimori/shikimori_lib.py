@@ -134,7 +134,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
 
 @singleton
 class Auth:
-    def __init__(self, token=None, scope=None):
+    def __init__(self):
         self.client_id = SHIKIMORI_CLIENT_ID
         self.client_secret = SHIKIMORI_CLIENT_SECRET
         self.redirect_uri = "urn:ietf:wg:oauth:2.0:oob"
@@ -146,7 +146,7 @@ class Auth:
         self.headers = SHIKIMORI_HEADERS | {
             "Authorization": f"Bearer {self.tokens.get('access_token')}",
         }
-        self.client = self.get_client(scope, self.redirect_uri, token)
+        self.client = self.get_client("user_rates", self.redirect_uri, None)
         self.refresh_token()
         self.user: User = User(None, None, None)
         self.is_authorized = False
@@ -157,7 +157,7 @@ class Auth:
         self.fetch_token(params["token"])
         self.check_auth()
 
-    def get_client(self, scope, redirect_uri, token):
+    def get_client(self, scope, redirect_uri, token: dict | None):
         client = OAuth2Session(
             self.client_id,
             auto_refresh_url=URL_SHIKIMORI_TOKEN,
