@@ -187,10 +187,14 @@ class MangaDex(AbstractMangaCatalog):
 
     def get_genres(self):
         url = f"{self.url_api}/manga/tag"
-        html = get_html(url, headers=self.headers)
+        response = get_html(
+            url,
+            headers=self.headers,
+            content_type="json",
+        )
         genres = []
-        if html and html.status_code == 200 and html.json():
-            for i in html.json().get("data"):
+        if response:
+            for i in response.get("data"):
                 if i.get("attributes").get("group") not in ["genre", "theme"]:
                     continue
                 genres.append(
