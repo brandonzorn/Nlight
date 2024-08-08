@@ -26,7 +26,7 @@ class AbstractContentContainer:
 
         self._fetch_error_widget = TransparentPushButton(
             FluentIcon.CLOUD,
-            translate("Message", "No connection")
+            translate("Message", "No connection"),
         )
         self._fetch_error_widget.setEnabled(False)
         self._fetch_error_widget.setVisible(False)
