@@ -347,6 +347,14 @@
         <source>New version {result} is available! You are currently on version {APP_VERSION}.</source>
         <translation>New version {result} is available! You are currently on version {APP_VERSION}.</translation>
     </message>
+    <message>
+        <source>No connection</source>
+        <translation>No connection</translation>
+    </message>
+    <message>
+        <source>Nothing found</source>
+        <translation>Nothing found</translation>
+    </message>
 </context>
 <context>
     <name>SettingsInterface</name>

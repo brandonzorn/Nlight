@@ -347,6 +347,14 @@
         <source>New version {result} is available! You are currently on version {APP_VERSION}.</source>
         <translation>Новая версия {result} доступна! Вы используете версию {APP_VERSION}.</translation>
     </message>
+    <message>
+        <source>No connection</source>
+        <translation>Нет соединения</translation>
+    </message>
+    <message>
+        <source>Nothing found</source>
+        <translation>Ничего не найдено</translation>
+    </message>
 </context>
 <context>
     <name>SettingsInterface</name>
