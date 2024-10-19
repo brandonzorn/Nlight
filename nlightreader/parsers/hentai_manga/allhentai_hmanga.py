@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 
 from nlightreader.consts.urls import URL_ALLHENTAI, URL_ALLHENTAI_API
 from nlightreader.consts.enums import Nl
+from nlightreader.exceptions import parser_content_exc
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
 from nlightreader.utils.utils import get_html, make_request
@@ -18,7 +19,15 @@ class AllHentai(AbstractHentaiMangaCatalog):
 
     def search_manga(self, form):
         url = f"{self.url}/search"
-        params = {"q": form.search, "+": "Искать!", "fast-filter": "CREATION"}
+        if not form.search:
+            raise parser_content_exc.RequestsParamsError(
+                "Search field is empty",
+            )
+        params = {
+            "q": form.search,
+            "+": "Искать!",
+            "fast-filter": "CREATION",
+        }
         response = make_request(
             url,
             "POST",
