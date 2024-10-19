@@ -1,0 +1,22 @@
+<RCC>
+  <qresource prefix="png_white">
+    <file>icons/icon.png</file>
+  </qresource>
+  <qresource prefix="lang_icons">
+    <file>icons/lang/gb.svg</file>
+    <file>icons/lang/jp.svg</file>
+    <file>icons/lang/ru.svg</file>
+    <file>icons/lang/ua.svg</file>
+  </qresource>
+  <qresource prefix="actions_white">
+    <file>icons/buttons/svg_24dp_white/actions/shikimori.svg</file>
+  </qresource>
+  <qresource prefix="actions_black">
+    <file>icons/buttons/svg_24dp_black/actions/shikimori.svg</file>
+  </qresource>
+  <qresource prefix="translations">
+    <file>i18n/en_US.qm</file>
+    <file>i18n/ru_RU.qm</file>
+    <file>i18n/uk_UA.qm</file>
+  </qresource>
+</RCC>

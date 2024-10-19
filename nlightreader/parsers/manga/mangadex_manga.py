@@ -8,14 +8,10 @@ from nlightreader.consts.urls import (
 )
 from nlightreader.consts.enums import Nl
 from nlightreader.items import (
-    Chapter,
-    Genre,
-    Image,
-    Kind,
-    Manga,
     RequestForm,
     User,
 )
+from nlightreader.models import Chapter, Genre, Image, Kind, Manga
 from nlightreader.parsers.catalog import LibParser
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.decorators import singleton
@@ -45,8 +41,7 @@ class MangaDex(AbstractMangaCatalog):
         if response:
             data = get_data(response, ["data"])
             manga.kind = Nl.MangaKind.from_str(data.get("type"))
-            description = get_data(data, ["attributes", "description"])
-            if description:
+            if description := get_data(data, ["attributes", "description"]):
                 if description.get("en"):
                     manga.add_description(
                         Nl.Language.en,
@@ -57,13 +52,13 @@ class MangaDex(AbstractMangaCatalog):
                         Nl.Language.ru,
                         description.get("ru"),
                     )
-            volumes = get_data(data, ["attributes", "lastVolume"])
-            chapters = get_data(data, ["attributes", "lastChapter"])
-            if volumes:
-                manga.volumes = volumes
-            if chapters:
-                manga.chapters = chapters
-            manga.status = get_data(data, ["attributes", "status"])
+            if volumes := get_data(data, ["attributes", "lastVolume"]):
+                manga.volumes = int(volumes)
+            if chapters := get_data(data, ["attributes", "lastChapter"]):
+                manga.chapters = int(chapters)
+            manga.status = Nl.MangaStatus.from_str(
+                get_data(data, ["attributes", "status"]),
+            )
         return manga
 
     def setup_manga(self, data: dict):
@@ -92,16 +87,19 @@ class MangaDex(AbstractMangaCatalog):
                 "pornographic",
             ],
         }
-        mangas = []
         response = get_html(
             url,
             headers=self.headers,
             params=params,
             content_type="json",
         )
-        if response:
-            for i in get_data(response, ["data"]):
-                mangas.append(self.setup_manga(i))
+
+        mangas = []
+        if not response:
+            return mangas
+
+        for i in get_data(response, ["data"]):
+            mangas.append(self.setup_manga(i))
         return mangas
 
     def get_chapters(self, manga: Manga):
@@ -162,7 +160,7 @@ class MangaDex(AbstractMangaCatalog):
 
     def get_image(self, image: Image):
         return get_html(
-            image.img,
+            image.url,
             headers=self.headers,
             content_type="content",
         )
@@ -189,10 +187,14 @@ class MangaDex(AbstractMangaCatalog):
 
     def get_genres(self):
         url = f"{self.url_api}/manga/tag"
-        html = get_html(url, headers=self.headers)
+        response = get_html(
+            url,
+            headers=self.headers,
+            content_type="json",
+        )
         genres = []
-        if html and html.status_code == 200 and html.json():
-            for i in html.json().get("data"):
+        if response:
+            for i in response.get("data"):
                 if i.get("attributes").get("group") not in ["genre", "theme"]:
                     continue
                 genres.append(
@@ -332,8 +334,9 @@ class Auth:
             self.refresh_token()
 
     def get(self, url, params=None):
-        if self.is_authorized:
-            return get_html(url, params=params, headers=self.headers)
+        if not self.is_authorized:
+            return None
+        return get_html(url, params=params, headers=self.headers)
 
     @property
     def headers(self):

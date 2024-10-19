@@ -13,6 +13,7 @@ class TextArea(QWidget, AbstractContentContainer):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.ui.size_slider.valueChanged.connect(self.__update_text_size)
+        self._content_widget = self.ui.text_browser
 
     @Slot()
     def __update_text_size(self):
@@ -28,4 +29,4 @@ class TextArea(QWidget, AbstractContentContainer):
         self.ui.text_browser.setHtml(content)
 
     def get_content_widget(self) -> QWidget:
-        return self.ui.text_browser
+        return self.ui.text_browser.parent()

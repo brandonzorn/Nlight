@@ -9,7 +9,7 @@ class FormGenres(QDialog):
         super().__init__(parent)
         self.ui_ge = Ui_Dialog()
         self.ui_ge.setupUi(self)
-        self.layout().setSizeConstraint(QLayout.SetFixedSize)
+        self.layout().setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
         self.setWindowTitle("Genres")
         self.ui_ge.ok_btn.clicked.connect(self.accept_genres)
         self.ui_ge.cancel_btn.clicked.connect(self.reject_genres)

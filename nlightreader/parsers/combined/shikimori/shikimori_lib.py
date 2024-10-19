@@ -11,7 +11,8 @@ from nlightreader.consts.urls import (
     URL_SHIKIMORI_TOKEN,
 )
 from nlightreader.consts.enums import Nl
-from nlightreader.items import Manga, RequestForm, User, UserRate
+from nlightreader.items import RequestForm, User, UserRate
+from nlightreader.models import Manga
 from nlightreader.parsers.catalog import LibParser
 from nlightreader.parsers.combined.shikimori.shikimori_base import (
     ShikimoriBase,
@@ -36,7 +37,6 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         url = f"{self.url_api}/users/{self.session.user.id}/manga_rates"
         params = {"limit": 50, "page": form.page}
         response = self.session.request("GET", url, params=params)
-        mangas = []
         lib_list = form.lib_list
         if lib_list == Nl.LibList.reading:
             lib_list = "watching"
@@ -44,6 +44,8 @@ class ShikimoriLib(ShikimoriBase, LibParser):
             lib_list = "rewatching"
         else:
             lib_list = form.lib_list.name
+
+        mangas = []
         if response and (resp_json := response.json()):
             for i in resp_json:
                 if not i.get("status") == lib_list:
@@ -132,7 +134,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
 
 @singleton
 class Auth:
-    def __init__(self, token=None, scope=None):
+    def __init__(self):
         self.client_id = SHIKIMORI_CLIENT_ID
         self.client_secret = SHIKIMORI_CLIENT_SECRET
         self.redirect_uri = "urn:ietf:wg:oauth:2.0:oob"
@@ -144,7 +146,7 @@ class Auth:
         self.headers = SHIKIMORI_HEADERS | {
             "Authorization": f"Bearer {self.tokens.get('access_token')}",
         }
-        self.client = self.get_client(scope, self.redirect_uri, token)
+        self.client = self.get_client("user_rates", self.redirect_uri, None)
         self.refresh_token()
         self.user: User = User(None, None, None)
         self.is_authorized = False
@@ -155,7 +157,7 @@ class Auth:
         self.fetch_token(params["token"])
         self.check_auth()
 
-    def get_client(self, scope, redirect_uri, token):
+    def get_client(self, scope, redirect_uri, token: dict | None):
         client = OAuth2Session(
             self.client_id,
             auto_refresh_url=URL_SHIKIMORI_TOKEN,
@@ -231,11 +233,12 @@ class Auth:
         ignore_authorize=False,
     ):
         if (
-            (not ignore_authorize and not self.is_authorized)
-            or "test" in QApplication.arguments()
+            "test" in QApplication.arguments()
             or "noshiki" in QApplication.arguments()
         ):
-            return
+            return None
+        if not ignore_authorize and not self.is_authorized:
+            return None
         try:
             response = self.client.request(
                 method,
@@ -255,10 +258,10 @@ class Auth:
                 f"\t\tJson: {json}\n",
             )
 
-    def check_auth(self):
+    def check_auth(self) -> bool:
         url = f"{URL_SHIKIMORI_API}/users/whoami"
         whoami = self.request("GET", url, ignore_authorize=True)
-        self.is_authorized = whoami and whoami.json()
+        self.is_authorized = bool(whoami) and bool(whoami.json())
         return self.is_authorized
 
     @property

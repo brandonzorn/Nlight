@@ -1,6 +1,6 @@
 from qfluentwidgets import Action, FluentIcon, RoundMenu
 
-from nlightreader.utils import translate
+from nlightreader.utils.translator import translate
 
 
 class ReadMarkMenu(RoundMenu):

@@ -10,9 +10,16 @@ exclude = """
 
 [tool.flake8]
 max-line-length = 79
-inline-quotes="double"
-import-order-style="google"
-ignore = ["R503", "R502", "F401", "N802", "I100", "I202", "W503"]
+inline-quotes = "double"
+import-order-style = "google"
+ignore = [
+    "R503",
+    "F401",
+    "N802",
+    "I100",
+    "I202",
+    "W503",
+]
 exclude = [
     ".git",
     "__pycache__",
@@ -24,5 +31,5 @@ exclude = [
     "venv-fluent",
     "data",
     "__init__.py",
-    "nlight_res_rc.py"
+    "nlight_res_rc.py",
 ]

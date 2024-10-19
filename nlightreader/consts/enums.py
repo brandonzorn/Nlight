@@ -1,5 +1,5 @@
 import logging
-from enum import Enum, unique
+from enum import IntEnum, unique
 
 LIB_LISTS = (
     "planned",
@@ -13,7 +13,7 @@ LIB_LISTS = (
 
 class Nl:
     @unique
-    class Language(Enum):
+    class Language(IntEnum):
         undefined = 0
         en = 1
         ru = 2
@@ -46,14 +46,14 @@ class Nl:
             return names[self.value]
 
     @unique
-    class CatalogType(Enum):
+    class CatalogType(IntEnum):
         manga = 0
         hentai_manga = 1
         ranobe = 2
         anime = 3
 
     @unique
-    class MangaKind(Enum):
+    class MangaKind(IntEnum):
         undefined = 0
         manga = 1
         manhwa = 2
@@ -102,7 +102,7 @@ class Nl:
             return names[self.value]
 
     @unique
-    class LibList(Enum):
+    class LibList(IntEnum):
         planned = 0
         completed = 1
         reading = 2
@@ -111,7 +111,7 @@ class Nl:
         dropped = 5
 
         @classmethod
-        def from_str(cls, string: str | None):
+        def from_str(cls, string: str):
             string = string.lower()
             if string in ("planned",):
                 return cls.planned
@@ -129,3 +129,34 @@ class Nl:
 
         def to_str(self) -> str:
             return LIB_LISTS[self.value]
+
+    @unique
+    class MangaStatus(IntEnum):
+        undefined = 0
+        ongoing = 1
+        released = 2
+        frozen = 3
+
+        @classmethod
+        def from_str(cls, string: str | None):
+            if string is None or string.lower() in ("undefined", "неизвестно"):
+                return cls.undefined
+
+            string = string.lower()
+            if string in ("ongoing", "в процессе"):
+                return cls.ongoing
+            if string in ("released", "completed", "завершено"):
+                return cls.released
+            if string in ("frozen", "заморожено"):
+                return cls.frozen
+            logging.warning(f"Unknown manga status: {string}")
+            return cls.undefined
+
+        def to_str(self) -> str:
+            names = [
+                "Undefined",
+                "Ongoing",
+                "Released",
+                "Frozen",
+            ]
+            return names[self.value]

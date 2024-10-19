@@ -8,7 +8,7 @@ from qfluentwidgets import (
     SubtitleLabel,
 )
 
-from nlightreader.utils import translate
+from nlightreader.utils.translator import translate
 
 
 class AbstractAuthDialog(MessageBoxBase):
