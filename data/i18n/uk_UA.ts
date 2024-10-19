@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="uk_UA" sourcelanguage="en_US">
+<TS version="2.1" language="uk_UA">
 <context>
     <name>Dialog</name>
     <message>
@@ -89,6 +89,10 @@
     <message>
         <source>Sign in</source>
         <translation>Увійти</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation>Пошук</translation>
     </message>
     <message>
         <source>Related</source>
@@ -223,8 +227,12 @@
         <translation>Виходить</translation>
     </message>
     <message>
-        <source>Completed</source>
+        <source>Released</source>
         <translation>Видано</translation>
+    </message>
+    <message>
+        <source>Frozen</source>
+        <translation>Заморожено</translation>
     </message>
 </context>
 <context>
@@ -332,8 +340,103 @@
         <translation>Помилка перевірки оновлень.</translation>
     </message>
     <message>
+        <source>No updates available. You are using the latest version.</source>
+        <translation>Немає доступних оновлень. Ви використовуєте останню версію.</translation>
+    </message>
+    <message>
         <source>New version {result} is available! You are currently on version {APP_VERSION}.</source>
         <translation>Нова версія {result} доступна! Ви використовуєте версію {APP_VERSION}.</translation>
+    </message>
+    <message>
+        <source>No connection</source>
+        <translation>Немає з'єднання</translation>
+    </message>
+    <message>
+        <source>Nothing found</source>
+        <translation>Нічого не знайдено</translation>
+    </message>
+</context>
+<context>
+    <name>SettingsInterface</name>
+    <message>
+        <source>Use system setting</source>
+        <translation>Використовувати системні налаштування</translation>
+    </message>
+    <message>
+        <source>Interface zoom</source>
+        <translation>Масштабування</translation>
+    </message>
+    <message>
+        <source>Change the size of widgets and fonts</source>
+        <translation>Зміна розміру віджетів та шрифтів</translation>
+    </message>
+    <message>
+        <source>Language</source>
+        <translation>Мова</translation>
+    </message>
+    <message>
+        <source>Set your preferred language for UI</source>
+        <translation>Встановіть бажану мову інтерфейсу користувача</translation>
+    </message>
+    <message>
+        <source>Software update</source>
+        <translation>Оновлення</translation>
+    </message>
+    <message>
+        <source>Check for updates when the application starts</source>
+        <translation>Перевірити наявність оновлень під час запуску програми</translation>
+    </message>
+    <message>
+        <source>The new version will be more stable and have more features</source>
+        <translation>Нова версія буде більш стабільною і матиме більше можливостей</translation>
+    </message>
+    <message>
+        <source>Changes will take effect after restarting the application</source>
+        <translation>Зміни набудуть чинності після перезапуску програми</translation>
+    </message>
+    <message>
+        <source>Check for updates</source>
+        <translation>Перевірити оновлення</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Параметри</translation>
+    </message>
+    <message>
+        <source>Application theme</source>
+        <translation>Тема програми</translation>
+    </message>
+    <message>
+        <source>Change the appearance of application</source>
+        <translation>Змінити зовнішній вигляд програми</translation>
+    </message>
+    <message>
+        <source>Dark</source>
+        <translation>Темна</translation>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation>Світла</translation>
+    </message>
+    <message>
+        <source>Personalization</source>
+        <translation>Персоналізація</translation>
+    </message>
+    <message>
+        <source>About</source>
+        <translation>Про проект</translation>
+    </message>
+    <message>
+        <source>Project on GitHub</source>
+        <translation>Проект на GitHub</translation>
+    </message>
+    <message>
+        <source>Episodes</source>
+        <translation>Епізоди</translation>
+    </message>
+    <message>
+        <source>Automatically mark episodes as watched</source>
+        <translation>Автоматично позначати епізоди як переглянуті</translation>
     </message>
 </context>
 </TS>

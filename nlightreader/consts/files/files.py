@@ -2,24 +2,16 @@ from enum import Enum
 
 from qfluentwidgets import FluentIconBase, getIconColor, Theme
 
-import nlight_res_rc
-
 
 class LangIcons:
-    Gb = ":/lang_icons/data/icons/lang/gb.svg"
-    Ru = ":/lang_icons/data/icons/lang/ru.svg"
-    Jp = ":/lang_icons/data/icons/lang/jp.svg"
-    Ua = ":/lang_icons/data/icons/lang/ua.svg"
-
-
-class Translations:
-    En = ""
-    Ru = ":/translations/data/translations/ru/ru.qm"
-    Uk = ":/translations/data/translations/uk/uk.qm"
+    Gb = ":/lang_icons/icons/lang/gb.svg"
+    Ru = ":/lang_icons/icons/lang/ru.svg"
+    Jp = ":/lang_icons/icons/lang/jp.svg"
+    Ua = ":/lang_icons/icons/lang/ua.svg"
 
 
 class Icons:
-    App = ":/png_white/data/icons/icon.png"
+    App = ":/png_white/icons/icon.png"
 
 
 class NlFluentIcons(FluentIconBase, Enum):
@@ -30,6 +22,6 @@ class NlFluentIcons(FluentIconBase, Enum):
     def path(self, theme=Theme.AUTO):
         return (
             f":/actions_{getIconColor(theme)}"
-            f"/data/icons/buttons/svg_24dp_{getIconColor(theme)}"
+            f"/icons/buttons/svg_24dp_{getIconColor(theme)}"
             f"/actions/{self.value}.svg"
         )

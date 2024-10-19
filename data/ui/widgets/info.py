@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'info.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.3
+## Created by: Qt User Interface Compiler version 6.7.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -38,18 +38,18 @@ class Ui_Form(object):
         self.scrollArea.setStyleSheet(u"QWidget {background: transparent;}\n"
 "QScrollArea {border: none;}\n"
 "")
-        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 454, 994))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 459, 990))
         self.verticalLayout = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, -1, 0)
         self.header_frame = SimpleCardWidget(self.scrollAreaWidgetContents)
         self.header_frame.setObjectName(u"header_frame")
-        self.header_frame.setFrameShape(QFrame.StyledPanel)
-        self.header_frame.setFrameShadow(QFrame.Raised)
+        self.header_frame.setFrameShape(QFrame.Shape.StyledPanel)
+        self.header_frame.setFrameShadow(QFrame.Shadow.Raised)
         self.horizontalLayout_3 = QHBoxLayout(self.header_frame)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(9, 9, 9, 9)
@@ -61,8 +61,8 @@ class Ui_Form(object):
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.lib_frame = SimpleCardWidget(self.header_frame)
         self.lib_frame.setObjectName(u"lib_frame")
-        self.lib_frame.setFrameShape(QFrame.StyledPanel)
-        self.lib_frame.setFrameShadow(QFrame.Raised)
+        self.lib_frame.setFrameShape(QFrame.Shape.StyledPanel)
+        self.lib_frame.setFrameShadow(QFrame.Shadow.Raised)
         self.horizontalLayout = QHBoxLayout(self.lib_frame)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -82,8 +82,8 @@ class Ui_Form(object):
 
         self.shikimori_frame = SimpleCardWidget(self.header_frame)
         self.shikimori_frame.setObjectName(u"shikimori_frame")
-        self.shikimori_frame.setFrameShape(QFrame.StyledPanel)
-        self.shikimori_frame.setFrameShadow(QFrame.Raised)
+        self.shikimori_frame.setFrameShape(QFrame.Shape.StyledPanel)
+        self.shikimori_frame.setFrameShadow(QFrame.Shadow.Raised)
         self.horizontalLayout_2 = QHBoxLayout(self.shikimori_frame)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -177,10 +177,11 @@ class Ui_Form(object):
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
         self.description_text = TextEdit(self.scrollAreaWidgetContents)
         self.description_text.setObjectName(u"description_text")
-        self.description_text.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.description_text.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.description_text.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         self.description_text.setUndoRedoEnabled(False)
         self.description_text.setReadOnly(True)
-        self.description_text.setTextInteractionFlags(Qt.NoTextInteraction)
+        self.description_text.setTextInteractionFlags(Qt.TextInteractionFlag.NoTextInteraction)
 
         self.verticalLayout_9.addWidget(self.description_text)
 
@@ -195,7 +196,7 @@ class Ui_Form(object):
 
         self.characters_list = ListWidget(self.characters_frame)
         self.characters_list.setObjectName(u"characters_list")
-        self.characters_list.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.characters_list.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.characters_list.setWordWrap(True)
 
         self.verticalLayout_2.addWidget(self.characters_list)
@@ -214,7 +215,7 @@ class Ui_Form(object):
 
         self.related_list = ListWidget(self.related_frame)
         self.related_list.setObjectName(u"related_list")
-        self.related_list.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.related_list.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.related_list.setWordWrap(True)
 
         self.verticalLayout_4.addWidget(self.related_list)
@@ -247,7 +248,7 @@ class Ui_Form(object):
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.items_tree.sizePolicy().hasHeightForWidth())
         self.items_tree.setSizePolicy(sizePolicy2)
-        self.items_tree.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.items_tree.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.items_tree.header().setVisible(False)
 
         self.verticalLayout_5.addWidget(self.items_tree)

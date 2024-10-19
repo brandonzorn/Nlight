@@ -1,11 +1,14 @@
+from typing import override
+
 from PySide6.QtCore import Slot
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.facial import Ui_Form
 from nlightreader.controlers import FilterController
 from nlightreader.dialogs import FormGenres
-from nlightreader.items import Manga
-from nlightreader.utils import translate, USER_CATALOGS
+from nlightreader.models import Manga
+from nlightreader.utils.catalog_manager import USER_CATALOGS
+from nlightreader.utils.translator import translate
 from nlightreader.widgets.NlightTemplates.BaseWidget import (
     MangaItemBasedWidget,
 )
@@ -25,13 +28,6 @@ class FormFacial(MangaItemBasedWidget):
         self.setObjectName("FormFacial")
 
         self.manga_area.install(self.ui.items_layout)
-        (
-            self.manga_area.get_content_widget()
-            .layout()
-            .addWidget(
-                self.progressRing,
-            )
-        )
 
         self.ui.next_btn.clicked.connect(self.turn_page_next)
         self.ui.prev_btn.clicked.connect(self.turn_page_prev)
@@ -57,6 +53,7 @@ class FormFacial(MangaItemBasedWidget):
         self.__filter_controller.set_orders_container(self.ui.orders_grid)
         self.__filter_controller.set_genres_container(self.Form_genres)
 
+    @override
     def setup(self):
         if not self.catalog:
             self.ui.catalogs_frame.hide()
@@ -68,7 +65,8 @@ class FormFacial(MangaItemBasedWidget):
         else:
             self.get_content()
 
-    def setup_manga_item(self, manga: Manga):
+    @override
+    def _setup_manga_item(self, manga: Manga):
         item = MangaItem(manga, pool=self.manga_area.manga_thread_pool)
         item.manga_clicked.connect(self.manga_open.emit)
         return item
@@ -79,6 +77,7 @@ class FormFacial(MangaItemBasedWidget):
         self.setup_filters()
         self.apply_filter()
 
+    @override
     def update_page(self):
         self.ui.page_label.setText(
             f"{translate('Other', 'Page')} {self.request_params.page}",

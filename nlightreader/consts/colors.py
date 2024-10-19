@@ -1,8 +1,7 @@
 from PySide6.QtGui import QColor
+from qfluentwidgets import FluentIcon
 
 
-class ItemsColors:
-    READ = QColor("GREEN")
-    UNREAD = QColor("RED")
-    IN_LIBRARY = QColor("ORANGE")
-    EMPTY = QColor(255, 255, 255, 0)
+class ItemsIcons:
+    READ = FluentIcon.ACCEPT_MEDIUM
+    UNREAD = FluentIcon.ACCEPT_MEDIUM.icon(color=QColor("RED"))

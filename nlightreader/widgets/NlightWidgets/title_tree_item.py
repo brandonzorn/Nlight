@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QTreeWidgetItem
 
-from nlightreader.items import Chapter
+from nlightreader.models import Chapter
 
 
 class ChapterTreeItem(QTreeWidgetItem):

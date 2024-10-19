@@ -1,7 +1,8 @@
 from nlightreader.consts.urls import URL_REMANGA, URL_REMANGA_API
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RemangaItems
-from nlightreader.items import Chapter, Image, Manga, RequestForm
+from nlightreader.items import RequestForm
+from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.utils import get_data, get_html
 
@@ -21,6 +22,14 @@ class Remanga(AbstractMangaCatalog):
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
             data = response.get("content")
+
+            if kind_name := data.get("type").get("name"):
+                manga.kind = Nl.MangaKind.from_str(kind_name)
+
+            manga.score = float(data.get("avg_rating"))
+            if (img := data.get("img").get("high")) and (img != "/media/None"):
+                manga.preview_url = f"{self.url}{img}"
+
             manga.add_description(
                 Nl.Language.undefined,
                 data.get("description"),
@@ -36,27 +45,30 @@ class Remanga(AbstractMangaCatalog):
             "query": form.search,
             "count": 40,
             "ordering": form.get_order_id(),
+            "types": form.get_kind_ids(),
         }
-        params = list(params.items())
-        [params.append(("types", kind_id)) for kind_id in form.get_kind_ids()]
         response = get_html(
             url,
             headers=self.headers,
             params=params,
             content_type="json",
         )
+
         mangas = []
-        if response:
-            for i in response.get("content"):
-                manga_id = i.get("dir")
-                name = i.get("en_name")
-                russian = i.get("rus_name")
-                kind = Nl.MangaKind.from_str(i.get("type"))
-                manga = Manga(manga_id, self.CATALOG_ID, name, russian)
-                manga.kind = kind
-                manga.score = i.get("avg_rating")
-                manga.preview_url = i.get("img").get("high")
-                mangas.append(manga)
+        if not response:
+            return mangas
+
+        for data in response.get("content"):
+            manga_id = data.get("dir")
+            name = data.get("en_name")
+            russian = data.get("rus_name")
+            manga = Manga(manga_id, self.CATALOG_ID, name, russian)
+            manga.kind = Nl.MangaKind.from_str(data.get("type"))
+            manga.score = float(data.get("avg_rating"))
+
+            if (img := data.get("img").get("high")) and (img != "/media/None"):
+                manga.preview_url = f"{self.url}{img}"
+            mangas.append(manga)
         return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
@@ -111,21 +123,20 @@ class Remanga(AbstractMangaCatalog):
     def get_image(self, image: Image):
         headers = {
             "User-Agent": "Nlight",
-            "Referer": "https://remanga.org/",
+            "Referer": f"{self.url}/",
         }
         return get_html(
-            f"{image.img}",
+            f"{image.url}",
             headers=headers,
             content_type="content",
         )
 
     def get_preview(self, manga: Manga):
-        if manga.preview_url and manga.preview_url != "/media/None":
-            return get_html(
-                f"{self.url}{manga.preview_url}",
-                headers=self.headers,
-                content_type="content",
-            )
+        return get_html(
+            manga.preview_url,
+            headers=self.headers,
+            content_type="content",
+        )
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/manga/{manga.content_id}"
