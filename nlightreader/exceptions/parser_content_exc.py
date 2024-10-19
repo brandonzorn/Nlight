@@ -4,3 +4,7 @@ class NoContentError(Exception):
 
 class FetchContentError(Exception):
     pass
+
+
+class RequestsParamsError(Exception):
+    pass
