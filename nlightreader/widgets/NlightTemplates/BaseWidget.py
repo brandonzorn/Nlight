@@ -7,6 +7,7 @@ from nlightreader.consts.enums import Nl
 from nlightreader.exceptions.parser_content_exc import (
     FetchContentError,
     NoContentError,
+    RequestsParamsError,
 )
 from nlightreader.items import RequestForm
 from nlightreader.models import Manga
@@ -50,7 +51,7 @@ class MangaItemBasedWidget(QWidget):
             raise exception
         except FetchContentError:
             self.manga_area.set_state(ContentContainerState.fetch_error)
-        except NoContentError:
+        except (NoContentError, RequestsParamsError):
             self.manga_area.set_state(ContentContainerState.no_content)
 
     @Slot()
