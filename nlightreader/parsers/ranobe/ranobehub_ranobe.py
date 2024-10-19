@@ -6,7 +6,8 @@ from bs4 import BeautifulSoup
 from nlightreader.consts.urls import URL_RANOBEHUB, URL_RANOBEHUB_API
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RanobehubItems
-from nlightreader.items import Chapter, Image, Manga, RequestForm
+from nlightreader.items import RequestForm
+from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.utils.utils import get_data, get_html
 
@@ -26,8 +27,12 @@ class Ranobehub(AbstractRanobeCatalog):
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
             data = response.get("data")
-            manga.kind = Nl.MangaKind.ranobe
+
             manga.score = data.get("rating")
+            manga.kind = Nl.MangaKind.ranobe
+
+            if status_name := data.get("status").get("title"):
+                manga.status = Nl.MangaStatus.from_str(status_name)
 
             manga.add_description(
                 Nl.Language.undefined,
@@ -49,15 +54,21 @@ class Ranobehub(AbstractRanobeCatalog):
             params=params,
             content_type="json",
         )
+
         mangas = []
-        if response:
-            for i in get_data(response, ["resource"], default_val=[]):
-                manga_id = str(i.get("id"))
-                name = i.get("names").get("eng")
-                russian = i.get("names").get("rus")
-                manga = Manga(manga_id, self.CATALOG_ID, name, russian)
-                manga.preview_url = i.get("poster").get("medium")
-                mangas.append(manga)
+        if not response:
+            return mangas
+
+        for i in get_data(response, ["resource"], default_val=[]):
+            manga_id = str(i.get("id"))
+            name = i.get("names").get("eng")
+            russian = i.get("names").get("rus")
+
+            manga = Manga(manga_id, self.CATALOG_ID, name, russian)
+            manga.status = Nl.MangaStatus.from_str(i.get("status"))
+            manga.preview_url = i.get("poster").get("medium")
+
+            mangas.append(manga)
         return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
@@ -82,8 +93,8 @@ class Ranobehub(AbstractRanobeCatalog):
 
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = (
-            f"{self.url}/ranobe/"
-            f"{manga.content_id}/{chapter.vol}/{chapter.ch}"
+            f"{self.url}/ranobe/{manga.content_id}/"
+            f"{chapter.volume_number}/{chapter.chapter_number}"
         )
         return [Image("", 1, url)]
 
@@ -103,14 +114,14 @@ class Ranobehub(AbstractRanobeCatalog):
                     return container
 
         # Parse HTML content and extract text container
-        response = get_html(image.img, content_type="text")
+        response = get_html(image.url, content_type="text")
         if response:
             soup = BeautifulSoup(response, "html.parser")
             text_container = find_text_container(
                 soup.findAll("div", {"class": "ui text container"}),
             )
             if not text_container:
-                return
+                return None
 
             # Construct content with images
             content = ""

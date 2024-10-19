@@ -1,3 +1,5 @@
+import logging
+
 from nlightreader.parsers import (
     AllHentai,
     Desu,
@@ -18,7 +20,7 @@ from nlightreader.parsers import (
     ShikimoriRanobe,
     SlashLib,
 )
-
+from nlightreader.parsers.catalog import AbstractCatalog
 
 CATALOGS = {
     0: Desu,
@@ -56,9 +58,12 @@ USER_CATALOGS = [
 LIB_CATALOGS = {ShikimoriBase: ShikimoriLib, MangaDex: MangaDexLib}
 
 
-def get_catalog(catalog_id=0):
-    return CATALOGS.get(catalog_id)
+def get_catalog_by_id(catalog_id):
+    if catalog_id not in CATALOGS:
+        logging.warning(f"Catalog with id {catalog_id} not found.")
+        return AbstractCatalog()
+    return CATALOGS[catalog_id]()
 
 
 def get_lib_catalog(base_catalog):
-    return LIB_CATALOGS.get(base_catalog)
+    return LIB_CATALOGS.get(base_catalog)()

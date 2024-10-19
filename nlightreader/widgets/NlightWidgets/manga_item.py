@@ -8,14 +8,12 @@ from qfluentwidgets import InfoBar
 
 from data.ui.manga_item import Ui_Form
 from nlightreader.contexts import LibraryMangaMenu
-from nlightreader.items import Manga
-from nlightreader.utils import (
-    Database,
-    FileManager,
-    get_catalog,
-    translate,
-    Worker,
-)
+from nlightreader.models import Manga
+from nlightreader.utils.catalog_manager import get_catalog_by_id
+from nlightreader.utils.database import Database
+from nlightreader.utils.file_manager import FileManager
+from nlightreader.utils.threads import Worker
+from nlightreader.utils.translator import translate
 
 
 class MangaItem(QWidget):
@@ -26,14 +24,14 @@ class MangaItem(QWidget):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.manga = manga
-        self._catalog = get_catalog(self.manga.catalog_id)()
-        self.manga_pixmap = None
-        self._is_added_to_lib = is_added_to_lib
-        self._db: Database = Database()
-        self._pool = pool
+        self.__manga = manga
+        self.__catalog = get_catalog_by_id(self.__manga.catalog_id)
+        self.__manga_pixmap = None
+        self.__is_added_to_lib = is_added_to_lib
+        self.__db: Database = Database()
+        self.__pool = pool
         self.customContextMenuRequested.connect(self.on_context_menu)
-        self.ui.name_lbl.setText(self.manga.get_name())
+        self.ui.name_lbl.setText(self.__manga.get_name())
 
     def enterEvent(self, event):
         super().enterEvent(event)
@@ -48,61 +46,60 @@ class MangaItem(QWidget):
         super().mouseReleaseEvent(event)
         if event.button() == Qt.MouseButton.LeftButton:
             if self.rect().contains(event.pos()):
-                self.manga_clicked.emit(self.manga)
+                self.manga_clicked.emit(self.__manga)
 
     def on_context_menu(self, pos):
-        catalog = get_catalog(self.manga.catalog_id)()
-        manga_title = self.manga.get_name()
+        manga_title = self.__manga.get_name()
         info_bar_parent = self.parentWidget().parentWidget()
         info_bar_duration = 2000
 
         def add_to_lib():
-            self._db.add_manga(self.manga)
-            self._db.add_manga_library(self.manga)
+            self.__db.add_manga(self.__manga)
+            self.__db.add_manga_library(self.__manga)
             InfoBar.success(
                 title=manga_title,
                 content=translate(
                     "Message",
                     "Manga {} has been added.",
-                ).format(self.manga.get_name()),
+                ).format(self.__manga.get_name()),
                 duration=info_bar_duration,
                 parent=info_bar_parent,
             )
 
         def remove_from_lib():
-            self._db.rem_manga_library(self.manga)
+            self.__db.rem_manga_library(self.__manga)
             InfoBar.success(
                 title=manga_title,
                 content=translate(
                     "Message",
                     "Manga {} has been deleted.",
-                ).format(self.manga.get_name()),
+                ).format(self.__manga.get_name()),
                 duration=info_bar_duration,
                 parent=info_bar_parent,
             )
             self.manga_changed.emit()
 
         def open_in_browser():
-            webbrowser.open_new_tab(catalog.get_manga_url(self.manga))
+            webbrowser.open_new_tab(self.__catalog.get_manga_url(self.__manga))
 
         def remove_files():
-            FileManager.remove_manga_files(self.manga, catalog)
+            FileManager.remove_manga_files(self.__manga, self.__catalog)
             InfoBar.success(
                 title=manga_title,
                 content=translate(
                     "Message",
                     "Files {} have been removed.",
-                ).format(self.manga.get_name()),
+                ).format(self.__manga.get_name()),
                 duration=info_bar_duration,
                 parent=info_bar_parent,
             )
 
         def open_local_files():
-            FileManager.open_dir_in_explorer(self.manga, catalog)
+            FileManager.open_dir_in_explorer(self.__manga, self.__catalog)
 
         menu = LibraryMangaMenu()
-        if self._is_added_to_lib and not self._catalog.is_primary:
-            if self._db.check_manga_library(self.manga):
+        if self.__is_added_to_lib and not self.__catalog.is_primary:
+            if self.__db.check_manga_library(self.__manga):
                 menu.set_mode(1)
             else:
                 menu.set_mode(0)
@@ -122,17 +119,17 @@ class MangaItem(QWidget):
             self.setFixedWidth(max_size.width())
             self.ui.image_card.setFixedSize(max_size)
             self.ui.image.setMaximumSize(max_size)
-        if self.manga_pixmap:
+        if self.__manga_pixmap:
             self.set_image()
 
     def get_image(self):
-        self.manga_pixmap = FileManager.get_manga_preview(
-            self.manga,
-            self._catalog,
+        self.__manga_pixmap = FileManager.get_manga_preview(
+            self.__manga,
+            self.__catalog,
         )
 
     def set_image(self, opacity: float = 1.0):
-        if not self.manga_pixmap:
+        if not self.__manga_pixmap:
             return
 
         image = QImage(
@@ -168,7 +165,7 @@ class MangaItem(QWidget):
         painter.drawPixmap(
             0,
             0,
-            self.manga_pixmap.scaled(
+            self.__manga_pixmap.scaled(
                 self.ui.image.maximumSize(),
             ),
         )
@@ -180,4 +177,4 @@ class MangaItem(QWidget):
         Worker(
             target=self.get_image,
             callback=self.set_image,
-        ).start(self._pool)
+        ).start(self.__pool)

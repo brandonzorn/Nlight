@@ -3,10 +3,11 @@ from PySide6.QtWidgets import QTreeWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.history import Ui_Form
-from nlightreader.consts.colors import ItemsColors
+from nlightreader.consts.colors import ItemsIcons
 from nlightreader.contexts import HistoryNoteMenu
-from nlightreader.items import HistoryNote, Manga
-from nlightreader.utils import Database
+from nlightreader.items import HistoryNote
+from nlightreader.models import Manga
+from nlightreader.utils.database import Database
 
 
 class FormHistory(QWidget):
@@ -39,7 +40,7 @@ class FormHistory(QWidget):
                     True,
                 ),
             )
-            selected_item.setBackground(0, ItemsColors.READ)
+            selected_item.setIcon(0, ItemsIcons.READ)
 
         def remove_all():
             self.db.del_history_notes(selected_manga)
@@ -91,9 +92,9 @@ class FormHistory(QWidget):
             for note in self.sorted_notes[manga]:
                 ch_item = QTreeWidgetItem([note.chapter.get_name()])
                 if note.is_completed:
-                    ch_item.setBackground(0, ItemsColors.READ)
+                    ch_item.setIcon(0, ItemsIcons.READ.qicon())
                 else:
-                    ch_item.setBackground(0, ItemsColors.UNREAD)
+                    ch_item.setIcon(0, ItemsIcons.UNREAD)
                 top_item.addChild(ch_item)
 
     def _get_selected_note(self) -> HistoryNote:

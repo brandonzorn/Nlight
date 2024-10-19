@@ -2,12 +2,11 @@ import logging
 from typing import Any
 
 import requests
-from PySide6.QtCore import QLocale
 from PySide6.QtWidgets import QApplication
 
 from nlightreader.consts.urls import DEFAULT_HEADERS
 from nlightreader.consts.enums import Nl
-from nlightreader.consts.files import LangIcons, Translations
+from nlightreader.consts.files import LangIcons
 
 
 def make_request(
@@ -49,7 +48,7 @@ def make_request(
         Returns None if there was an error.
     """
     if "test" in QApplication.arguments():
-        return
+        return None
     if headers is None:
         headers = DEFAULT_HEADERS
     try:
@@ -149,26 +148,6 @@ def get_language_icon(language: Nl.Language) -> str:
         Nl.Language.undefined: "",
     }
     return lang_icons.get(language)
-
-
-def get_locale(locale: QLocale.Language) -> str:
-    """
-    Returns the translation file path for the specified locale.
-
-    :param locale:
-        A QLocale.Language object
-        representing the target language.
-    :return:
-        The file path to the translation
-        file associated with the locale as a string,
-        or the default translation file if no
-        matching translation is found.
-    """
-    translations = {
-        QLocale.Language.Russian: Translations.Ru,
-        QLocale.Language.Ukrainian: Translations.Uk,
-    }
-    return translations.get(locale, Translations.En)
 
 
 def get_data(data: dict, path: list, default_val=None) -> Any:

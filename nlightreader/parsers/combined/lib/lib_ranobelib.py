@@ -4,7 +4,7 @@ import re
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RanobeLibItems
 from nlightreader.consts.urls import URL_RANOBELIB
-from nlightreader.items import Chapter, Image, Manga
+from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.parsers.combined.lib.lib_base import LibBase
 from nlightreader.utils.utils import get_html
@@ -28,8 +28,9 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
 
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = (
-            f"{self.url_api}/{self.content_name}/{manga.content_id}/"
-            f"chapter?number={chapter.ch}&volume={chapter.vol}"
+            f"{self.url_api}/{self.content_name}/{manga.content_id}/chapter"
+            f"?number={chapter.chapter_number}"
+            f"&volume={chapter.volume_number}"
         )
         return [Image("", 1, url)]
 
@@ -58,7 +59,7 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
                 text,
             )
 
-        response = get_html(image.img, content_type="json")
+        response = get_html(image.url, content_type="json")
         if response:
             data = response["data"]
             content = data["content"]

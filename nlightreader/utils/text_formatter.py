@@ -1,7 +1,5 @@
 import re
 
-from PySide6.QtWidgets import QApplication
-
 
 class TextFormatter:
     """
@@ -97,40 +95,3 @@ def description_to_html(text: str, show_spoilers=False) -> str:
     if not text:
         return ""
     return TextFormatter(text, show_spoilers).to_html_text()
-
-
-def translate(context, string):
-    """
-    Translates a string using the current translation context.
-
-    Args:
-        context: The context in which the string appears.
-        string: The string to be translated.
-
-    Returns:
-        A translated version of the input string.
-    """
-    return QApplication.translate(context, string, None)
-
-
-def get_status(status: str) -> str:
-    """
-    Translates the status of a manga.
-
-    Args:
-        status (str or None): The status of the manga.
-
-    Returns:
-        A translation of the status if it is
-            'ongoing', 'completed', or 'released'.
-            Otherwise, returns the original status.
-    """
-    if status is None:
-        return ""
-    match status:
-        case "ongoing":
-            return translate("Status", status.capitalize())
-        case "completed" | "released":
-            return translate("Status", "completed".capitalize())
-        case _:
-            return status.capitalize()

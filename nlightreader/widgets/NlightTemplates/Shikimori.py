@@ -1,12 +1,16 @@
+from typing import override
+
 from PySide6.QtCore import Slot
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.shikimori import Ui_Form
 from nlightreader.consts.enums import Nl
 from nlightreader.dialogs import TokenAuthMessageBox, UserDataAuthMessageBox
-from nlightreader.items import Manga, User
+from nlightreader.items import User
+from nlightreader.models import Manga
 from nlightreader.parsers import ShikimoriLib
-from nlightreader.utils import translate, Worker
+from nlightreader.utils.threads import Worker
+from nlightreader.utils.translator import translate
 from nlightreader.widgets.NlightTemplates.BaseWidget import (
     MangaItemBasedWidget,
 )
@@ -25,9 +29,6 @@ class FormShikimori(MangaItemBasedWidget):
         self.setObjectName("FormShikimori")
 
         self.manga_area.install(self.ui.items_layout)
-        self.manga_area.get_content_widget().layout().addWidget(
-            self.progressRing,
-        )
 
         self.ui.planned_btn.clicked.connect(
             lambda: self.change_list(Nl.LibList.planned),
@@ -54,7 +55,8 @@ class FormShikimori(MangaItemBasedWidget):
         self.catalog = ShikimoriLib()
         Worker(target=self.get_user_info, callback=self.set_user_info).start()
 
-    def setup_manga_item(self, manga: Manga):
+    @override
+    def _setup_manga_item(self, manga: Manga):
         item = MangaItem(
             manga,
             is_added_to_lib=False,
@@ -70,17 +72,21 @@ class FormShikimori(MangaItemBasedWidget):
     def set_user_info(self, user: User):
         if user.nickname:
             self.ui.auth_btn.setText(user.nickname)
-            self.get_content()
         else:
             self.ui.auth_btn.setText(
                 translate("Other", "Sign in"),
             )
         self.ui.auth_btn.setEnabled(True)
 
+    @override
     def update_page(self):
         self.ui.page_label.setText(
             f"{translate('Other', 'Page')} {self.request_params.page}",
         )
+
+    def auth_success_callback(self, user: User):
+        self.set_user_info(user)
+        self.get_content()
 
     @Slot()
     def authorize(self):
@@ -92,7 +98,7 @@ class FormShikimori(MangaItemBasedWidget):
             self.catalog.session.auth_login(w.get_user_data())
             Worker(
                 target=self.get_user_info,
-                callback=self.set_user_info,
+                callback=self.auth_success_callback,
             ).start()
 
     @Slot()
