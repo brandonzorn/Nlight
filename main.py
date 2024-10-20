@@ -89,7 +89,7 @@ class MainWindow(ParentWindow):
         if not response:
             return None
         latest_version = None
-        for release in response:
+        for release in reversed(response):
             version = release["tag_name"]
             if APP_BRANCH in version:
                 latest_version = version
