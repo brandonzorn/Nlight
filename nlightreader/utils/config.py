@@ -77,6 +77,7 @@ class Config(QConfig):
         "EnableKodikServer",
         True,
         BoolValidator(),
+        restart=True,
     )
 
 
