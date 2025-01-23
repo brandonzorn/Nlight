@@ -9,13 +9,11 @@ from nlightreader.dialogs import FormGenres
 from nlightreader.models import Manga
 from nlightreader.utils.catalog_manager import USER_CATALOGS
 from nlightreader.utils.translator import translate
-from nlightreader.widgets.NlightTemplates.BaseWidget import (
-    MangaItemBasedWidget,
-)
+from nlightreader.widgets.pages.base_page import BasePage
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
-class FormFacial(MangaItemBasedWidget):
+class MainPage(BasePage):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_Form()

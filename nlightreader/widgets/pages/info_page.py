@@ -26,7 +26,7 @@ from nlightreader.widgets.NlightWidgets import ChapterTreeItem
 from nlightreader.windows.Reader import ReaderWindow
 
 
-class FormInfo(QWidget):
+class InfoPage(QWidget):
     opened_related_manga = Signal(Manga)
     setup_done = Signal()
     setup_error = Signal()

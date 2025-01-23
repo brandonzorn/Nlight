@@ -10,7 +10,7 @@ from nlightreader.models import Manga
 from nlightreader.utils.database import Database
 
 
-class FormHistory(QWidget):
+class HistoryPage(QWidget):
     manga_open = Signal(Manga)
 
     def __init__(self, parent=None):

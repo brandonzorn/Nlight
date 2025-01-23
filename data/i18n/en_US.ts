@@ -357,7 +357,7 @@
     </message>
 </context>
 <context>
-    <name>SettingsInterface</name>
+    <name>SettingsPage</name>
     <message>
         <source>Use system setting</source>
         <translation>Use system setting</translation>
