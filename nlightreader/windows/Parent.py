@@ -4,32 +4,32 @@ from qfluentwidgets import FluentIcon, FluentWindow, NavigationItemPosition
 from nlightreader.consts.files.files import NlFluentIcons
 from nlightreader.models import Manga
 from nlightreader.utils.translator import translate
-from nlightreader.widgets.NlightTemplates import (
-    FormFacial,
-    FormHistory,
-    FormInfo,
-    FormLibrary,
-    FormShikimori,
+from nlightreader.widgets.pages import (
+    LibraryPage,
+    MainPage,
+    InfoPage,
+    SettingsPage,
+    HistoryPage,
+    ExternalLibraryPage,
 )
-from nlightreader.widgets.interfaces import SettingsInterface
 
 
 class ParentWindow(FluentWindow):
     def __init__(self):
         super().__init__()
 
-        self.library_interface = FormLibrary()
-        self.facial_interface = FormFacial()
-        self.shikimori_interface = FormShikimori()
-        self.history_interface = FormHistory()
+        self.library_interface = LibraryPage()
+        self.main_interface = MainPage()
+        self.external_library_interface = ExternalLibraryPage()
+        self.history_interface = HistoryPage()
 
-        self.settings_interface = SettingsInterface()
+        self.settings_interface = SettingsPage()
 
-        self.info_interface: FormInfo | None = None
+        self.info_interface: InfoPage | None = None
 
         self.library_interface.manga_open.connect(self.open_info)
-        self.facial_interface.manga_open.connect(self.open_info)
-        self.shikimori_interface.manga_open.connect(self.open_info)
+        self.main_interface.manga_open.connect(self.open_info)
+        self.external_library_interface.manga_open.connect(self.open_info)
         self.history_interface.manga_open.connect(self.open_info)
 
         self.stackedWidget.currentChanged.connect(self.on_widget_change)
@@ -43,12 +43,12 @@ class ParentWindow(FluentWindow):
             translate("MainWindow", "Library"),
         )
         self.addSubInterface(
-            self.facial_interface,
+            self.main_interface,
             FluentIcon.HOME,
             translate("MainWindow", "Main"),
         )
         self.addSubInterface(
-            self.shikimori_interface,
+            self.external_library_interface,
             NlFluentIcons.SHIKIMORI,
             translate("MainWindow", "Shikimori"),
         )
@@ -114,7 +114,7 @@ class ParentWindow(FluentWindow):
         if self.stackedWidget.currentWidget().objectName() == "FormInfo":
             self.stackedWidget.view.removeWidget(self.info_interface)
 
-        self.info_interface = FormInfo()
+        self.info_interface = InfoPage()
         self.info_interface.opened_related_manga.connect(self.open_info)
         self.info_interface.setup_done.connect(set_info_widget)
         self.info_interface.setup_error.connect(delete_info_widget)

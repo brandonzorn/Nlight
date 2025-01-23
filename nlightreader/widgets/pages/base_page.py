@@ -19,7 +19,7 @@ from nlightreader.widgets.NlightContainers.manga_area import MangaArea
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
-class MangaItemBasedWidget(QWidget):
+class BasePage(QWidget):
     manga_open = Signal(Manga)
 
     def __init__(self, parent=None):

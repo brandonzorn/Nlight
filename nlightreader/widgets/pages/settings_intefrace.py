@@ -16,7 +16,7 @@ from nlightreader.consts.app import APP_VERSION
 from nlightreader.utils.config import cfg
 
 
-class SettingsInterface(ScrollArea):
+class SettingsPage(ScrollArea):
     check_for_updates_signal = Signal()
     theme_changed = Signal()
 
