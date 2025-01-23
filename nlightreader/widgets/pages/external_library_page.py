@@ -11,13 +11,11 @@ from nlightreader.models import Manga
 from nlightreader.parsers import ShikimoriLib
 from nlightreader.utils.threads import Worker
 from nlightreader.utils.translator import translate
-from nlightreader.widgets.NlightTemplates.BaseWidget import (
-    MangaItemBasedWidget,
-)
+from nlightreader.widgets.pages.base_page import BasePage
 from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
-class FormShikimori(MangaItemBasedWidget):
+class ExternalLibraryPage(BasePage):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_Form()
