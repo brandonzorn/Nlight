@@ -3,7 +3,7 @@ from nlightreader.models import Manga
 from nlightreader.utils.database import Database
 
 
-class LocalLib:
+class LocalLibrary:
     CATALOG_NAME = "LocalLib"
 
     def __init__(self):

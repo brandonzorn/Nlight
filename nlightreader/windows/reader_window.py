@@ -18,12 +18,12 @@ from nlightreader.utils.database import Database
 from nlightreader.utils.file_manager import FileManager
 from nlightreader.utils.threads import Thread
 from nlightreader.utils.translator import translate
-from nlightreader.widgets.NlightContainers import TextArea
-from nlightreader.widgets.NlightContainers.content_container import (
+from nlightreader.widgets.containers import TextArea
+from nlightreader.widgets.containers.content_container import (
     AbstractContentContainer,
     ContentContainerState,
 )
-from nlightreader.widgets.NlightContainers.image_area import ImageArea
+from nlightreader.widgets.containers.image_area import ImageArea
 
 
 class ReaderWindow(QMainWindow):

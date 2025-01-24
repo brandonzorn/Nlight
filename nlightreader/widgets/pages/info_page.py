@@ -23,7 +23,7 @@ from nlightreader.utils.threads import Worker
 from nlightreader.utils.translator import translate
 from nlightreader.utils.utils import get_language_icon
 from nlightreader.widgets.NlightWidgets import ChapterTreeItem
-from nlightreader.windows.Reader import ReaderWindow
+from nlightreader.windows.reader_window import ReaderWindow
 
 
 class InfoPage(QWidget):
