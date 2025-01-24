@@ -1,4 +1,4 @@
-from .LocalLib import LocalLib
+from .local_library import LocalLibrary
 from .combined.shikimori import (
     ShikimoriLib,
     ShikimoriManga,

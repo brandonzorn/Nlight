@@ -5,7 +5,7 @@ from qfluentwidgets import (
 )
 
 from nlightreader.utils.threads import Thread
-from nlightreader.widgets.NlightContainers.content_container import (
+from nlightreader.widgets.containers.content_container import (
     AbstractContentContainer,
     ContentContainerState,
 )
