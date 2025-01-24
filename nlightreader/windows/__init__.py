@@ -1,2 +1,2 @@
-from .Parent import ParentWindow
-from .Reader import ReaderWindow
+from .parent_window import ParentWindow
+from .reader_window import ReaderWindow

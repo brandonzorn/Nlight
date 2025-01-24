@@ -5,12 +5,12 @@ from nlightreader.consts.files.files import NlFluentIcons
 from nlightreader.models import Manga
 from nlightreader.utils.translator import translate
 from nlightreader.widgets.pages import (
+    ExternalLibraryPage,
+    HistoryPage,
+    InfoPage,
     LibraryPage,
     MainPage,
-    InfoPage,
     SettingsPage,
-    HistoryPage,
-    ExternalLibraryPage,
 )
 
 
