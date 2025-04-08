@@ -3,9 +3,9 @@ import base64
 import bs4.element
 from bs4 import BeautifulSoup
 
-from nlightreader.consts.urls import URL_RANOBEHUB, URL_RANOBEHUB_API
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RanobehubItems
+from nlightreader.consts.urls import URL_RANOBEHUB, URL_RANOBEHUB_API
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
