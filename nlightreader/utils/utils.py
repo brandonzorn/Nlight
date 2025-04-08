@@ -4,9 +4,9 @@ from typing import Any
 import requests
 from PySide6.QtWidgets import QApplication
 
-from nlightreader.consts.urls import DEFAULT_HEADERS
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.files import LangIcons
+from nlightreader.consts.urls import DEFAULT_HEADERS
 
 
 def make_request(
