@@ -16,7 +16,7 @@ from nlightreader import ParentWindow
 from nlightreader.consts.app import APP_BRANCH, APP_NAME, APP_VERSION
 from nlightreader.consts.files import Icons
 from nlightreader.consts.paths import APP_DATA_PATH
-from nlightreader.consts.urls import GITHUB_REPO
+from nlightreader.consts.urls import GITHUB_REPO_API
 from nlightreader.utils.config import cfg
 from nlightreader.utils.kodik_server import KodikHTTPRequestHandler
 from nlightreader.utils.threads import Thread
@@ -82,7 +82,7 @@ class MainWindow(ParentWindow):
 
     def check_for_updates(self) -> str | None:
         response = get_html(
-            f"{GITHUB_REPO}/releases",
+            f"{GITHUB_REPO_API}/releases",
             params={"per_page": 2},
             content_type="json",
         )
