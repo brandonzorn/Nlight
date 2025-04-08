@@ -43,4 +43,5 @@ SHIKIMORI_HEADERS = {"User-Agent": "Nlight"}
 MANGA_DEX_HEADERS = {"User-Agent": "Nlight"}
 
 
-GITHUB_REPO = "https://api.github.com/repos/brandonzorn/Nlight"
+GITHUB_REPO = "https://github.com/brandonzorn/Nlight/"
+GITHUB_REPO_API = "https://api.github.com/repos/brandonzorn/Nlight"

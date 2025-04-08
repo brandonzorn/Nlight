@@ -13,6 +13,7 @@ from qfluentwidgets import FluentIcon
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QWidget
 from nlightreader.consts.app import APP_VERSION
+from nlightreader.consts.urls import GITHUB_REPO
 from nlightreader.utils.config import cfg
 
 
@@ -116,7 +117,7 @@ class SettingsPage(ScrollArea):
             self.scrollWidget,
         )
         self.projectCard = HyperlinkCard(
-            "https://github.com/brandonzorn/Nlight/",
+            GITHUB_REPO,
             self.tr("Project on GitHub"),
             FluentIcon.GITHUB,
             self.tr("Project on GitHub"),
