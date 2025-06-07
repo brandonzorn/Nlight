@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'character.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.2
+## Created by: Qt User Interface Compiler version 6.9.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -104,9 +104,9 @@ class Ui_Dialog(object):
         self.image.setText("")
         self.name_label.setText(QCoreApplication.translate("Dialog", u"Body label", None))
         self.russian_label.setText(QCoreApplication.translate("Dialog", u"Body label", None))
-        self.show_spoilers.setProperty("text", QCoreApplication.translate("Dialog", u"Show spoilers", None))
-        self.show_spoilers.setProperty("onText", QCoreApplication.translate("Dialog", u"Show spoilers", None))
-        self.show_spoilers.setProperty("offText", QCoreApplication.translate("Dialog", u"Show spoilers", None))
+        self.show_spoilers.setProperty(u"text", QCoreApplication.translate("Dialog", u"Show spoilers", None))
+        self.show_spoilers.setProperty(u"onText", QCoreApplication.translate("Dialog", u"Show spoilers", None))
+        self.show_spoilers.setProperty(u"offText", QCoreApplication.translate("Dialog", u"Show spoilers", None))
         pass
     # retranslateUi
 
