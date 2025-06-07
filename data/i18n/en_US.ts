@@ -149,6 +149,10 @@
         <source>Shikimori</source>
         <translation>Shikimori</translation>
     </message>
+    <message>
+        <source>Settings</source>
+        <translation>Settings</translation>
+    </message>
 </context>
 <context>
     <name>Menu</name>

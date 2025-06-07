@@ -149,6 +149,10 @@
         <source>Shikimori</source>
         <translation>Шикимори</translation>
     </message>
+    <message>
+        <source>Settings</source>
+        <translation>Налаштування</translation>
+    </message>
 </context>
 <context>
     <name>Menu</name>
@@ -400,7 +404,7 @@
     </message>
     <message>
         <source>Settings</source>
-        <translation>Параметри</translation>
+        <translation>Налаштування</translation>
     </message>
     <message>
         <source>Application theme</source>

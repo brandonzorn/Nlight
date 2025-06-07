@@ -60,7 +60,7 @@ class ParentWindow(FluentWindow):
         self.addSubInterface(
             self.settings_interface,
             FluentIcon.SETTING,
-            translate("SettingsInterface", "Settings"),
+            translate("MainWindow", "Settings"),
             position=NavigationItemPosition.BOTTOM,
         )
 
