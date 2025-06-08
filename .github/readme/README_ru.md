@@ -2,7 +2,7 @@
 
 🌐 [Українська](README_uk.md) • [English](README_en.md)
 
-![Nlight Logo](https://github.com/brandonzorn/Nlight/assets/68778953/2e2d3ed8-eef6-4b44-a824-7d38c7a78ea9)
+![Nlight Logo](../assets/readme_logo.png)
 
 **Nlight** — это приложение для чтения манги и ранобэ, с поддержкой Shikimori, каталогов на русском и английском языках.
 
