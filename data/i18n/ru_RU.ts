@@ -2,57 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
-    <name>Dialog</name>
-    <message>
-        <source>Show spoilers</source>
-        <translation>Показывать спойлеры</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Отмена</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Удалить</translation>
-    </message>
-    <message>
-        <source>Update</source>
-        <translation>Обновить</translation>
-    </message>
-    <message>
-        <source>List</source>
-        <translation>Список</translation>
-    </message>
-    <message>
-        <source>Chapters read</source>
-        <translation>Прочитано глав</translation>
-    </message>
-    <message>
-        <source>Rating</source>
-        <translation>Рейтинг</translation>
-    </message>
-    <message>
-        <source>Get code</source>
-        <translation>Получить код</translation>
-    </message>
-    <message>
-        <source>Authorization code</source>
-        <translation>Код авторизации</translation>
-    </message>
-    <message>
-        <source>Login</source>
-        <translation>Логин</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Пароль</translation>
-    </message>
-    <message>
-        <source>Sign in</source>
-        <translation>Войти</translation>
-    </message>
-</context>
-<context>
     <name>Form</name>
     <message>
         <source>MainWindow</source>
@@ -148,6 +97,10 @@
     <message>
         <source>Shikimori</source>
         <translation>Шикимори</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Настройки</translation>
     </message>
 </context>
 <context>
@@ -357,7 +310,7 @@
     </message>
 </context>
 <context>
-    <name>SettingsInterface</name>
+    <name>SettingsPage</name>
     <message>
         <source>Use system setting</source>
         <translation>Использовать системные настройки</translation>
@@ -400,7 +353,7 @@
     </message>
     <message>
         <source>Settings</source>
-        <translation>Параметры</translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <source>Application theme</source>
@@ -437,6 +390,82 @@
     <message>
         <source>Automatically mark episodes as watched</source>
         <translation>Автоматически отмечать эпизоды как просмотренные</translation>
+    </message>
+</context>
+<context>
+    <name>RateDialog</name>
+    <message>
+        <source>Change rating</source>
+        <translation>Изменить оценку</translation>
+    </message>
+    <message>
+        <source>Chapters read</source>
+        <translation>Прочитано глав</translation>
+    </message>
+    <message>
+        <source>Rating</source>
+        <translation>Рейтинг</translation>
+    </message>
+    <message>
+        <source>List</source>
+        <translation>Список</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Удалить</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>Обновить</translation>
+    </message>
+</context>
+<context>
+    <name>AbstractAuthDialog</name>
+    <message>
+        <source>Get code</source>
+        <translation>Получить код</translation>
+    </message>
+    <message>
+        <source>Authorization code</source>
+        <translation>Код авторизации</translation>
+    </message>
+    <message>
+        <source>Login</source>
+        <translation>Логин</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Пароль</translation>
+    </message>
+    <message>
+        <source>Sign in</source>
+        <translation>Войти</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+</context>
+<context>
+    <name>CharacterInfoDialog</name>
+    <message>
+        <source>Show spoilers</source>
+        <translation>Показывать спойлеры</translation>
+    </message>
+</context>
+<context>
+    <name>GenresDialog</name>
+    <message>
+        <source>Genres</source>
+        <translation>Жанры</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
     </message>
 </context>
 </TS>

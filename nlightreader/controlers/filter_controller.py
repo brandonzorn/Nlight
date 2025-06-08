@@ -1,8 +1,8 @@
 from PySide6.QtWidgets import QLayout
 from qfluentwidgets import CheckBox, RadioButton
 
-from nlightreader.dialogs import FormGenres
 from nlightreader.models import Genre, Kind, Order
+from nlightreader.widgets.dialogs import GenresDialog
 
 
 class FilterController:
@@ -75,7 +75,7 @@ class FilterController:
         self._kinds_container = container
 
     def set_genres_container(self, container):
-        if not isinstance(container, FormGenres):
+        if not isinstance(container, GenresDialog):
             raise ValueError("Container must be a FormGenres")
         if self._genres_container:
             raise ValueError("Genres container is already set")

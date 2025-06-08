@@ -4,13 +4,13 @@ import requests
 from PySide6.QtWidgets import QApplication
 from requests_oauthlib import OAuth2Session
 
+from nlightreader.consts.enums import Nl
 from nlightreader.consts.urls import (
     SHIKIMORI_HEADERS,
     URL_SHIKIMORI,
     URL_SHIKIMORI_API,
     URL_SHIKIMORI_TOKEN,
 )
-from nlightreader.consts.enums import Nl
 from nlightreader.items import RequestForm, User, UserRate
 from nlightreader.models import Manga
 from nlightreader.parsers.catalog import LibParser

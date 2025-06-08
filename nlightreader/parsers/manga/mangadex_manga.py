@@ -1,12 +1,12 @@
 import logging
 
+from nlightreader.consts.enums import Nl
 from nlightreader.consts.urls import (
     MANGA_DEX_HEADERS,
     URL_MANGA_DEX,
     URL_MANGA_DEX_API,
     URL_MANGA_DEX_TOKEN,
 )
-from nlightreader.consts.enums import Nl
 from nlightreader.items import (
     RequestForm,
     User,
