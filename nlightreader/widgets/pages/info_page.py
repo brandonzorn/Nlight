@@ -80,7 +80,6 @@ class InfoPage(QWidget):
         self.__sorted_chapters = {}
         self.__manga_pixmap = None
         self.__reader_window = None
-        self.__rate_window = None
         self.__character_window = None
 
     def on_context_menu(self, pos):
@@ -227,8 +226,7 @@ class InfoPage(QWidget):
 
     @Slot()
     def open_rate(self):
-        self.__rate_window = FormRate(self.__manga, parent=self)
-        self.__rate_window.exec()
+        RateDialog(self.__manga, parent=self).exec()
 
     @Slot()
     def open_character(self):
