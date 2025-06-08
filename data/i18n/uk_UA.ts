@@ -2,57 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="uk_UA">
 <context>
-    <name>Dialog</name>
-    <message>
-        <source>Show spoilers</source>
-        <translation>Показувати спойлери</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Скасування</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Вилучити</translation>
-    </message>
-    <message>
-        <source>Update</source>
-        <translation>Оновити</translation>
-    </message>
-    <message>
-        <source>List</source>
-        <translation>Перелік</translation>
-    </message>
-    <message>
-        <source>Chapters read</source>
-        <translation>Прочитано розділів</translation>
-    </message>
-    <message>
-        <source>Rating</source>
-        <translation>Рейтинг</translation>
-    </message>
-    <message>
-        <source>Get code</source>
-        <translation>Отримати код</translation>
-    </message>
-    <message>
-        <source>Authorization code</source>
-        <translation>Код авторизації</translation>
-    </message>
-    <message>
-        <source>Login</source>
-        <translation>Логін</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Пароль</translation>
-    </message>
-    <message>
-        <source>Sign in</source>
-        <translation>Увійти</translation>
-    </message>
-</context>
-<context>
     <name>Form</name>
     <message>
         <source>MainWindow</source>
@@ -148,6 +97,10 @@
     <message>
         <source>Shikimori</source>
         <translation>Шикимори</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Налаштування</translation>
     </message>
 </context>
 <context>
@@ -357,7 +310,7 @@
     </message>
 </context>
 <context>
-    <name>SettingsInterface</name>
+    <name>SettingsPage</name>
     <message>
         <source>Use system setting</source>
         <translation>Використовувати системні налаштування</translation>
@@ -400,7 +353,7 @@
     </message>
     <message>
         <source>Settings</source>
-        <translation>Параметри</translation>
+        <translation>Налаштування</translation>
     </message>
     <message>
         <source>Application theme</source>
@@ -437,6 +390,82 @@
     <message>
         <source>Automatically mark episodes as watched</source>
         <translation>Автоматично позначати епізоди як переглянуті</translation>
+    </message>
+</context>
+<context>
+    <name>RateDialog</name>
+    <message>
+        <source>Change rating</source>
+        <translation>Змінити оцінку</translation>
+    </message>
+    <message>
+        <source>Chapters read</source>
+        <translation>Прочитано розділів</translation>
+    </message>
+    <message>
+        <source>Rating</source>
+        <translation>Рейтинг</translation>
+    </message>
+    <message>
+        <source>List</source>
+        <translation>Перелік</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Скасування</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Вилучити</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>Оновити</translation>
+    </message>
+</context>
+<context>
+    <name>AbstractAuthDialog</name>
+    <message>
+        <source>Get code</source>
+        <translation>Отримати код</translation>
+    </message>
+    <message>
+        <source>Authorization code</source>
+        <translation>Код авторизації</translation>
+    </message>
+    <message>
+        <source>Login</source>
+        <translation>Логін</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Пароль</translation>
+    </message>
+    <message>
+        <source>Sign in</source>
+        <translation>Увійти</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Скасування</translation>
+    </message>
+</context>
+<context>
+    <name>CharacterInfoDialog</name>
+    <message>
+        <source>Show spoilers</source>
+        <translation>Показувати спойлери</translation>
+    </message>
+</context>
+<context>
+    <name>GenresDialog</name>
+    <message>
+        <source>Genres</source>
+        <translation>Жанри</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Скасування</translation>
     </message>
 </context>
 </TS>

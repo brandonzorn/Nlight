@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'genres.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.3
+## Created by: Qt User Interface Compiler version 6.9.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -20,16 +20,16 @@ from PySide6.QtWidgets import (QApplication, QDialog, QGridLayout, QHBoxLayout,
 
 from qfluentwidgets import (CardWidget, PushButton, SimpleCardWidget)
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        if not Dialog.objectName():
-            Dialog.setObjectName(u"Dialog")
-        Dialog.resize(489, 239)
-        Dialog.setStyleSheet(u"")
-        Dialog.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
-        self.verticalLayout_2 = QVBoxLayout(Dialog)
+class Ui_GenresDialog(object):
+    def setupUi(self, GenresDialog):
+        if not GenresDialog.objectName():
+            GenresDialog.setObjectName(u"GenresDialog")
+        GenresDialog.resize(489, 239)
+        GenresDialog.setStyleSheet(u"")
+        GenresDialog.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
+        self.verticalLayout_2 = QVBoxLayout(GenresDialog)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.frame = SimpleCardWidget(Dialog)
+        self.frame = SimpleCardWidget(GenresDialog)
         self.frame.setObjectName(u"frame")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -46,7 +46,7 @@ class Ui_Dialog(object):
 
         self.verticalLayout_2.addWidget(self.frame)
 
-        self.acrions_frame = SimpleCardWidget(Dialog)
+        self.acrions_frame = SimpleCardWidget(GenresDialog)
         self.acrions_frame.setObjectName(u"acrions_frame")
         self.horizontalLayout_2 = QHBoxLayout(self.acrions_frame)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
@@ -73,14 +73,14 @@ class Ui_Dialog(object):
         self.verticalLayout_2.addWidget(self.acrions_frame)
 
 
-        self.retranslateUi(Dialog)
+        self.retranslateUi(GenresDialog)
 
-        QMetaObject.connectSlotsByName(Dialog)
+        QMetaObject.connectSlotsByName(GenresDialog)
     # setupUi
 
-    def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
-        self.ok_btn.setText(QCoreApplication.translate("Dialog", u"OK", None))
-        self.cancel_btn.setText(QCoreApplication.translate("Dialog", u"Cancel", None))
+    def retranslateUi(self, GenresDialog):
+        GenresDialog.setWindowTitle(QCoreApplication.translate("GenresDialog", u"Genres", None))
+        self.ok_btn.setText(QCoreApplication.translate("GenresDialog", u"OK", None))
+        self.cancel_btn.setText(QCoreApplication.translate("GenresDialog", u"Cancel", None))
     # retranslateUi
 

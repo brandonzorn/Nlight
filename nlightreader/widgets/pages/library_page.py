@@ -1,17 +1,14 @@
 from typing import override
 
 from data.ui.widgets.library import Ui_Form
-
 from nlightreader.consts.enums import Nl
 from nlightreader.models import Manga
-from nlightreader.parsers import LocalLib
-from nlightreader.widgets.NlightTemplates.BaseWidget import (
-    MangaItemBasedWidget,
-)
-from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
+from nlightreader.parsers import LocalLibrary
+from nlightreader.widgets.items.manga_item import MangaItem
+from nlightreader.widgets.pages.base_page import BasePage
 
 
-class FormLibrary(MangaItemBasedWidget):
+class LibraryPage(BasePage):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_Form()
@@ -39,7 +36,7 @@ class FormLibrary(MangaItemBasedWidget):
         self.ui.re_reading_btn.clicked.connect(
             lambda: self.change_list(Nl.LibList.re_reading),
         )
-        self.catalog = LocalLib()
+        self.catalog = LocalLibrary()
 
     @override
     def _setup_manga_item(self, manga: Manga):

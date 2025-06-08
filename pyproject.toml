@@ -4,6 +4,7 @@ exclude = """
 /(
   data/
   | venv/
+  | build_nuitka/
   | nlight_res_rc.py
 )
 """
@@ -26,6 +27,7 @@ exclude = [
     "docs/source/conf.py",
     "old",
     "build",
+    "build_nuitka",
     "dist",
     "venv",
     "venv-fluent",

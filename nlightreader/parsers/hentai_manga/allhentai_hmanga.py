@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
-from nlightreader.consts.urls import URL_ALLHENTAI, URL_ALLHENTAI_API
 from nlightreader.consts.enums import Nl
+from nlightreader.consts.urls import URL_ALLHENTAI
 from nlightreader.exceptions import parser_content_exc
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
@@ -15,7 +15,6 @@ class AllHentai(AbstractHentaiMangaCatalog):
     def __init__(self):
         super().__init__()
         self.url = URL_ALLHENTAI
-        self.url_api = URL_ALLHENTAI_API
 
     def search_manga(self, form):
         url = f"{self.url}/search"

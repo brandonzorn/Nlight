@@ -9,8 +9,6 @@ from data.ui.widgets.info import Ui_Form
 from nlightreader.consts.colors import ItemsIcons
 from nlightreader.consts.enums import LIB_LISTS, Nl
 from nlightreader.consts.files import NlFluentIcons
-from nlightreader.contexts import ReadMarkMenu
-from nlightreader.dialogs import FormCharacter, FormRate
 from nlightreader.items import HistoryNote
 from nlightreader.models import Chapter, Character, Manga
 from nlightreader.parsers.catalog import AbstractCatalog
@@ -22,11 +20,13 @@ from nlightreader.utils.text_formatter import description_to_html
 from nlightreader.utils.threads import Worker
 from nlightreader.utils.translator import translate
 from nlightreader.utils.utils import get_language_icon
-from nlightreader.widgets.NlightWidgets import ChapterTreeItem
-from nlightreader.windows.Reader import ReaderWindow
+from nlightreader.widgets.dialogs import CharacterInfoDialog, RateDialog
+from nlightreader.widgets.items import ChapterTreeItem
+from nlightreader.widgets.contexts import ReadMarkMenu
+from nlightreader.windows.reader_window import ReaderWindow
 
 
-class FormInfo(QWidget):
+class InfoPage(QWidget):
     opened_related_manga = Signal(Manga)
     setup_done = Signal()
     setup_error = Signal()
@@ -80,7 +80,6 @@ class FormInfo(QWidget):
         self.__sorted_chapters = {}
         self.__manga_pixmap = None
         self.__reader_window = None
-        self.__rate_window = None
         self.__character_window = None
 
     def on_context_menu(self, pos):
@@ -227,8 +226,7 @@ class FormInfo(QWidget):
 
     @Slot()
     def open_rate(self):
-        self.__rate_window = FormRate(self.__manga, parent=self)
-        self.__rate_window.exec()
+        RateDialog(self.__manga, parent=self).exec()
 
     @Slot()
     def open_character(self):
@@ -237,7 +235,7 @@ class FormInfo(QWidget):
                 self.ui.characters_list.currentIndex().row()
             ],
         )
-        self.__character_window = FormCharacter(
+        self.__character_window = CharacterInfoDialog(
             character,
             self.__manga.catalog_id,
             parent=self,

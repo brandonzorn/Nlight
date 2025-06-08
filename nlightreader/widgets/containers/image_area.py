@@ -3,7 +3,7 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QWidget
 
 from data.ui.containers.image_area import Ui_Form
-from nlightreader.widgets.NlightContainers.content_container import (
+from nlightreader.widgets.containers.content_container import (
     AbstractContentContainer,
 )
 
