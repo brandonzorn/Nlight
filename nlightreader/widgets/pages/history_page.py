@@ -4,10 +4,10 @@ from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.history import Ui_Form
 from nlightreader.consts.colors import ItemsIcons
-from nlightreader.contexts import HistoryNoteMenu
 from nlightreader.items import HistoryNote
 from nlightreader.models import Manga
 from nlightreader.utils.database import Database
+from nlightreader.widgets.contexts import HistoryNoteMenu
 
 
 class HistoryPage(QWidget):

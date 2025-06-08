@@ -9,8 +9,8 @@ from nlightreader.dialogs import FormGenres
 from nlightreader.models import Manga
 from nlightreader.utils.catalog_manager import USER_CATALOGS
 from nlightreader.utils.translator import translate
+from nlightreader.widgets.items.manga_item import MangaItem
 from nlightreader.widgets.pages.base_page import BasePage
-from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
 class MainPage(BasePage):
