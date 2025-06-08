@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'character.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.2
+## Created by: Qt User Interface Compiler version 6.9.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -21,19 +21,19 @@ from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QHBoxLayout,
 
 from qfluentwidgets import (BodyLabel, SimpleCardWidget, SwitchButton, TextEdit)
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        if not Dialog.objectName():
-            Dialog.setObjectName(u"Dialog")
-        Dialog.resize(601, 616)
-        Dialog.setWindowTitle(u"Dialog")
-        Dialog.setStyleSheet(u"")
-        Dialog.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
-        self.verticalLayout_3 = QVBoxLayout(Dialog)
+class Ui_CharacterInfoDialog(object):
+    def setupUi(self, CharacterInfoDialog):
+        if not CharacterInfoDialog.objectName():
+            CharacterInfoDialog.setObjectName(u"CharacterInfoDialog")
+        CharacterInfoDialog.resize(601, 616)
+        CharacterInfoDialog.setWindowTitle(u"Dialog")
+        CharacterInfoDialog.setStyleSheet(u"")
+        CharacterInfoDialog.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
+        self.verticalLayout_3 = QVBoxLayout(CharacterInfoDialog)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.image_frame = SimpleCardWidget(Dialog)
+        self.image_frame = SimpleCardWidget(CharacterInfoDialog)
         self.image_frame.setObjectName(u"image_frame")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -53,7 +53,7 @@ class Ui_Dialog(object):
 
         self.horizontalLayout.addWidget(self.image_frame)
 
-        self.title_frame = SimpleCardWidget(Dialog)
+        self.title_frame = SimpleCardWidget(CharacterInfoDialog)
         self.title_frame.setObjectName(u"title_frame")
         self.title_frame.setStyleSheet(u"")
         self.title_frame.setFrameShape(QFrame.Shape.StyledPanel)
@@ -87,7 +87,7 @@ class Ui_Dialog(object):
 
         self.verticalLayout_3.addLayout(self.horizontalLayout)
 
-        self.description = TextEdit(Dialog)
+        self.description = TextEdit(CharacterInfoDialog)
         self.description.setObjectName(u"description")
         self.description.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.description.setTextInteractionFlags(Qt.TextInteractionFlag.NoTextInteraction)
@@ -95,18 +95,18 @@ class Ui_Dialog(object):
         self.verticalLayout_3.addWidget(self.description)
 
 
-        self.retranslateUi(Dialog)
+        self.retranslateUi(CharacterInfoDialog)
 
-        QMetaObject.connectSlotsByName(Dialog)
+        QMetaObject.connectSlotsByName(CharacterInfoDialog)
     # setupUi
 
-    def retranslateUi(self, Dialog):
+    def retranslateUi(self, CharacterInfoDialog):
         self.image.setText("")
-        self.name_label.setText(QCoreApplication.translate("Dialog", u"Body label", None))
-        self.russian_label.setText(QCoreApplication.translate("Dialog", u"Body label", None))
-        self.show_spoilers.setProperty("text", QCoreApplication.translate("Dialog", u"Show spoilers", None))
-        self.show_spoilers.setProperty("onText", QCoreApplication.translate("Dialog", u"Show spoilers", None))
-        self.show_spoilers.setProperty("offText", QCoreApplication.translate("Dialog", u"Show spoilers", None))
+        self.name_label.setText(QCoreApplication.translate("CharacterInfoDialog", u"Body label", None))
+        self.russian_label.setText(QCoreApplication.translate("CharacterInfoDialog", u"Body label", None))
+        self.show_spoilers.setProperty(u"text", QCoreApplication.translate("CharacterInfoDialog", u"Show spoilers", None))
+        self.show_spoilers.setProperty(u"onText", QCoreApplication.translate("CharacterInfoDialog", u"Show spoilers", None))
+        self.show_spoilers.setProperty(u"offText", QCoreApplication.translate("CharacterInfoDialog", u"Show spoilers", None))
         pass
     # retranslateUi
 
