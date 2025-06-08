@@ -8,8 +8,6 @@ from qfluentwidgets import (
     SubtitleLabel,
 )
 
-from nlightreader.utils.translator import translate
-
 
 class AbstractAuthDialog(MessageBoxBase):
     def __init__(self, catalog, parent):
@@ -17,12 +15,12 @@ class AbstractAuthDialog(MessageBoxBase):
         self.session = catalog.session
         self.widget.setMinimumWidth(350)
 
-        self.titleLabel = SubtitleLabel("Authenticate", parent=self)
+        self.titleLabel = SubtitleLabel(self.tr("Authenticate"), parent=self)
 
-        self.yesButton.setText(translate("Dialog", "Sign in"))
+        self.yesButton.setText(self.tr("Sign in"))
         self.yesButton.setEnabled(False)
 
-        self.cancelButton.setText(translate("Dialog", "Cancel"))
+        self.cancelButton.setText(self.tr("Cancel"))
 
         self.viewLayout.addWidget(self.titleLabel)
 
@@ -36,13 +34,11 @@ class AbstractAuthDialog(MessageBoxBase):
 class TokenAuthMessageBox(AbstractAuthDialog):
     def __init__(self, catalog, parent):
         super().__init__(catalog, parent)
-        self.getCodeButton = PushButton(translate("Dialog", "Get code"))
+        self.getCodeButton = PushButton(self.tr("Get code"))
         self.getCodeButton.clicked.connect(self.__open_login_page)
 
         self.tokenLineEdit = LineEdit(self)
-        self.tokenLineEdit.setPlaceholderText(
-            translate("Dialog", "Authorization code"),
-        )
+        self.tokenLineEdit.setPlaceholderText(self.tr("Authorization code"))
         self.tokenLineEdit.setClearButtonEnabled(True)
         self.tokenLineEdit.textChanged.connect(self.verify_user_data)
 
@@ -65,16 +61,12 @@ class UserDataAuthMessageBox(AbstractAuthDialog):
     def __init__(self, catalog, parent):
         super().__init__(catalog, parent)
         self.loginLineEdit = LineEdit(self)
-        self.loginLineEdit.setPlaceholderText(
-            translate("Dialog", "Login"),
-        )
+        self.loginLineEdit.setPlaceholderText(self.tr("Login"))
         self.loginLineEdit.setClearButtonEnabled(True)
         self.loginLineEdit.textChanged.connect(self.verify_user_data)
 
         self.passwordLineEdit = PasswordLineEdit(self)
-        self.passwordLineEdit.setPlaceholderText(
-            translate("Dialog", "Password"),
-        )
+        self.passwordLineEdit.setPlaceholderText(self.tr("Password"))
         self.passwordLineEdit.setClearButtonEnabled(True)
         self.passwordLineEdit.textChanged.connect(self.verify_user_data)
 
