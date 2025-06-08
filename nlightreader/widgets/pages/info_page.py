@@ -9,7 +9,6 @@ from data.ui.widgets.info import Ui_Form
 from nlightreader.consts.colors import ItemsIcons
 from nlightreader.consts.enums import LIB_LISTS, Nl
 from nlightreader.consts.files import NlFluentIcons
-from nlightreader.contexts import ReadMarkMenu
 from nlightreader.dialogs import FormCharacter, FormRate
 from nlightreader.items import HistoryNote
 from nlightreader.models import Chapter, Character, Manga
@@ -22,7 +21,8 @@ from nlightreader.utils.text_formatter import description_to_html
 from nlightreader.utils.threads import Worker
 from nlightreader.utils.translator import translate
 from nlightreader.utils.utils import get_language_icon
-from nlightreader.widgets.NlightWidgets import ChapterTreeItem
+from nlightreader.widgets.items import ChapterTreeItem
+from nlightreader.widgets.contexts import ReadMarkMenu
 from nlightreader.windows.reader_window import ReaderWindow
 
 
