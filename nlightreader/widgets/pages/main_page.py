@@ -5,10 +5,10 @@ from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.facial import Ui_Form
 from nlightreader.controlers import FilterController
-from nlightreader.dialogs import FormGenres
 from nlightreader.models import Manga
 from nlightreader.utils.catalog_manager import USER_CATALOGS
 from nlightreader.utils.translator import translate
+from nlightreader.widgets.dialogs import GenresDialog
 from nlightreader.widgets.items.manga_item import MangaItem
 from nlightreader.widgets.pages.base_page import BasePage
 
@@ -45,7 +45,7 @@ class MainPage(BasePage):
             ),
         )
 
-        self.Form_genres = FormGenres(self)
+        self.Form_genres = GenresDialog(self)
         self.__filter_controller = FilterController()
         self.__filter_controller.set_kinds_container(self.ui.kinds_grid)
         self.__filter_controller.set_orders_container(self.ui.orders_grid)
