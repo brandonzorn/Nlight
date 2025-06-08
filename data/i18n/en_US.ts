@@ -2,57 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
-    <name>Dialog</name>
-    <message>
-        <source>Show spoilers</source>
-        <translation>Show spoilers</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Delete</translation>
-    </message>
-    <message>
-        <source>Update</source>
-        <translation>Update</translation>
-    </message>
-    <message>
-        <source>List</source>
-        <translation>List</translation>
-    </message>
-    <message>
-        <source>Chapters read</source>
-        <translation>Chapters read</translation>
-    </message>
-    <message>
-        <source>Rating</source>
-        <translation>Rating</translation>
-    </message>
-    <message>
-        <source>Get code</source>
-        <translation>Get code</translation>
-    </message>
-    <message>
-        <source>Authorization code</source>
-        <translation>Authorization code</translation>
-    </message>
-    <message>
-        <source>Login</source>
-        <translation>Login</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Password</translation>
-    </message>
-    <message>
-        <source>Sign in</source>
-        <translation>Sign in</translation>
-    </message>
-</context>
-<context>
     <name>Form</name>
     <message>
         <source>MainWindow</source>
@@ -441,6 +390,82 @@
     <message>
         <source>Automatically mark episodes as watched</source>
         <translation>Automatically mark episodes as watched</translation>
+    </message>
+</context>
+<context>
+    <name>RateDialog</name>
+    <message>
+        <source>Change rating</source>
+        <translation>Change rating</translation>
+    </message>
+    <message>
+        <source>Chapters read</source>
+        <translation>Chapters read</translation>
+    </message>
+    <message>
+        <source>Rating</source>
+        <translation>Rating</translation>
+    </message>
+    <message>
+        <source>List</source>
+        <translation>List</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Delete</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>Update</translation>
+    </message>
+</context>
+<context>
+    <name>AbstractAuthDialog</name>
+    <message>
+        <source>Get code</source>
+        <translation>Get code</translation>
+    </message>
+    <message>
+        <source>Authorization code</source>
+        <translation>Authorization code</translation>
+    </message>
+    <message>
+        <source>Login</source>
+        <translation>Login</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Password</translation>
+    </message>
+    <message>
+        <source>Sign in</source>
+        <translation>Sign in</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+</context>
+<context>
+    <name>CharacterInfoDialog</name>
+    <message>
+        <source>Show spoilers</source>
+        <translation>Show spoilers</translation>
+    </message>
+</context>
+<context>
+    <name>GenresDialog</name>
+    <message>
+        <source>Genres</source>
+        <translation>Genres</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
     </message>
 </context>
 </TS>
