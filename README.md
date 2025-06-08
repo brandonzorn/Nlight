@@ -1,67 +1,71 @@
-## Nlight
-- [Русский](./.github/readme/README_ru.md)
-- [Українська](./.github/readme/README_uk.md)
-- [English](./.github/readme/README_en.md)
+# Nlight
 
-![Nlight](https://github.com/brandonzorn/Nlight/assets/68778953/2e2d3ed8-eef6-4b44-a824-7d38c7a78ea9)
+🌐 [Русский](.github/readme/README_ru.md) • [Українська](.github/readme/README_uk.md) • [English](.github/readme/README_en.md)
 
+![Nlight Logo](https://github.com/brandonzorn/Nlight/assets/68778953/2e2d3ed8-eef6-4b44-a824-7d38c7a78ea9)
 
-Open source manga and ranobe reading application
+**Nlight** is an application for reading manga and ranobe, with support for Shikimori and catalogs in Russian and English.
 
-## Features
+---
 
-    - Browse, search, and read.
-    - Filter by genre, kind and sort order
-    - Shikimori support
-    - Light and dark themes
-    - Available in 🇷🇺Russian 🇺🇦Ukrainian and 🇬🇧English languages
+## 🚀 Features
 
-## Currently supported catalogs
-    Anime:
-     - Shikimori (🇷🇺)
-     - AniLib (🇷🇺)
+* 🔍 Browse, search, and read content
+* 📚 Filter by genre, type, and sort order
+* 🧩 Shikimori integration
+* 🌗 Light and dark theme support
+* 🌍 Available in 🇷🇺 Russian, 🇺🇦 Ukrainian, and 🇬🇧 English
 
-    Manga:
-     - Desu (🇷🇺)
-     - Shikimori (🇷🇺)
-     - MangaDex (🇷🇺, 🇬🇧)
-     - Remanga (🇷🇺)
-     - MangaLib (🇷🇺)
+---
 
-    Ranobe:
-     - Rulate (🇷🇺)
-     - Erolate (🇷🇺)
-     - Ranobehub (🇷🇺)
-     - RanobeLib (🇷🇺)
+## 📖 Supported Catalogs
 
-    Hentai Manga:
-     - AllHentai (🇷🇺)
-     - NHentai (🇬🇧)
+### 📺 Anime
 
-## Screenshots
+* Shikimori (🇷🇺)
+* AniLib (🇷🇺)
 
+### 📚 Manga
 
-| ![nl_1](https://github.com/brandonzorn/Nlight/assets/68778953/f714165d-5df6-4b38-89a6-02d940172469) | ![nl_3](https://github.com/brandonzorn/Nlight/assets/68778953/1da43e9a-52af-402d-8f30-189f31a31ba2) | ![nl_3](https://github.com/brandonzorn/Nlight/assets/68778953/168f00a3-4174-41ba-8773-4548ef7ced9b) |
-|-----------------------------------------|-----------------------------------------|-----------------------------------------|
+* Desu (🇷🇺)
+* Shikimori (🇷🇺)
+* MangaDex (🇷🇺, 🇬🇧)
+* Remanga (🇷🇺)
+* MangaLib (🇷🇺)
 
-## Installation
+### 📘 Ranobe
 
-1. Clone the project repository:
-    ```bash
-    git clone https://github.com/brandonzorn/Nlight.git
-    ```
+* Rulate (🇷🇺)
+* Erolate (🇷🇺)
+* Ranobehub (🇷🇺)
+* RanobeLib (🇷🇺)
 
-2. Navigate to the project directory:
-    ```bash
-    cd Nlight
-    ```
+### 🔞 Hentai Manga
 
-3. Install the required dependencies from the `requirements.txt` file:
-    ```bash
-    pip install -r requirements.txt
-    ```
+* AllHentai (🇷🇺)
+* NHentai (🇬🇧)
 
-4. Once the dependencies are installed, you can run the application by executing the `main.py` file:
-    ```bash
-    python main.py
-    ```
+---
+
+## 🖼️ Screenshots
+
+| ![Screenshot 1](https://github.com/brandonzorn/Nlight/assets/68778953/f714165d-5df6-4b38-89a6-02d940172469) | ![Screenshot 2](https://github.com/brandonzorn/Nlight/assets/68778953/1da43e9a-52af-402d-8f30-189f31a31ba2) | ![Screenshot 3](https://github.com/brandonzorn/Nlight/assets/68778953/168f00a3-4174-41ba-8773-4548ef7ced9b) |
+| :---------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------: |
+
+---
+
+## 🧩 Contribution & Support
+
+You are welcome to:
+
+* Suggest improvements
+* Report issues or bugs
+* Help with translations
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
