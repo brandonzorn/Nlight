@@ -1,6 +1,9 @@
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtWidgets import QWidget
 from qfluentwidgets import (
     BodyLabel,
     ExpandLayout,
+    FluentIcon,
     HyperlinkCard,
     InfoBar,
     OptionsSettingCard,
@@ -9,9 +12,7 @@ from qfluentwidgets import (
     SettingCardGroup,
     SwitchSettingCard,
 )
-from qfluentwidgets import FluentIcon
-from PySide6.QtCore import Qt, Signal
-from PySide6.QtWidgets import QWidget
+
 from nlightreader.consts.app import APP_VERSION
 from nlightreader.consts.urls import GITHUB_REPO
 from nlightreader.utils.config import cfg

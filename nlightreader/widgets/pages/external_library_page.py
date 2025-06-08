@@ -11,8 +11,8 @@ from nlightreader.models import Manga
 from nlightreader.parsers import ShikimoriLib
 from nlightreader.utils.threads import Worker
 from nlightreader.utils.translator import translate
+from nlightreader.widgets.items.manga_item import MangaItem
 from nlightreader.widgets.pages.base_page import BasePage
-from nlightreader.widgets.NlightWidgets.manga_item import MangaItem
 
 
 class ExternalLibraryPage(BasePage):
