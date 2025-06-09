@@ -138,3 +138,8 @@ class MainPage(BasePage):
     @Slot()
     def open_genres_dialog(self):
         self.Form_genres.exec()
+
+
+__all__ = [
+    "MainPage",
+]

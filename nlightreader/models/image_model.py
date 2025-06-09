@@ -22,3 +22,8 @@ class Image:
         if url is not None and not validators.url(url):
             raise ValueError(f"Url {url} is not valid")
         self.__url = url
+
+
+__all__ = [
+    "Image",
+]

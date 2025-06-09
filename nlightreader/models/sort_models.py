@@ -43,3 +43,11 @@ class Status(NamedBaseModel):
         russian: str,
     ):
         super().__init__(content_id, catalog_id, name, russian)
+
+
+__all__ = [
+    "Kind",
+    "Order",
+    "Genre",
+    "Status",
+]

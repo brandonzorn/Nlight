@@ -281,3 +281,8 @@ class LibBaseItems(ParserItems):
             "russian": "Яой",
         },
     ]
+
+
+__all__ = [
+    "LibBaseItems",
+]

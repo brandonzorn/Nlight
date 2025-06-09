@@ -31,3 +31,8 @@ class ShikimoriRanobe(ShikimoriBase, AbstractRanobeCatalog):
             for i in response:
                 mangas.append(self.setup_manga(i))
         return mangas
+
+
+__all__ = [
+    "ShikimoriRanobe",
+]

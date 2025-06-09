@@ -83,3 +83,8 @@ class Config(QConfig):
 
 cfg = Config()
 qconfig.load(APP_DATA_PATH / "config.json", cfg)
+
+
+__all__ = [
+    "cfg",
+]

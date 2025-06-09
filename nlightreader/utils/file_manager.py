@@ -198,3 +198,8 @@ def fix_path(path: Path) -> Path:
     for p_dir in path.parts:
         new_path /= fix_folder_name(p_dir)
     return new_path
+
+
+__all__ = [
+    "FileManager",
+]

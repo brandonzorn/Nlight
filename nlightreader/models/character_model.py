@@ -36,3 +36,8 @@ class Character(NamedBaseModel):
         if not isinstance(role, str):
             raise TypeError(f"Role must be a string got {type(role)}")
         self.__role = role
+
+
+__all__ = [
+    "Character",
+]

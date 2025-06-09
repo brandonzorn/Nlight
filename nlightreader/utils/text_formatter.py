@@ -95,3 +95,9 @@ def description_to_html(text: str, show_spoilers=False) -> str:
     if not text:
         return ""
     return TextFormatter(text, show_spoilers).to_html_text()
+
+
+__all__ = [
+    "TextFormatter",
+    "description_to_html",
+]

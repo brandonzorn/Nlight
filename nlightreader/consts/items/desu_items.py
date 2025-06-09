@@ -274,3 +274,8 @@ class DesuItems(ParserItems):
             "russian": "Яой",
         },
     ]
+
+
+__all__ = [
+    "DesuItems",
+]

@@ -24,6 +24,9 @@ from nlightreader.utils.translator import NlightTranslator, translate
 from nlightreader.utils.utils import get_html
 
 
+__all__ = []
+
+
 class App(QApplication):
     def __init__(self, argv):
         super().__init__(argv)

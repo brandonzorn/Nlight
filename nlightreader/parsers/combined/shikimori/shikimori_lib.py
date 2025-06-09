@@ -267,3 +267,8 @@ class Auth:
     @property
     def token(self):
         return self.client.token
+
+
+__all__ = [
+    "ShikimoriLib",
+]

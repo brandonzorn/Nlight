@@ -80,3 +80,8 @@ def start_html_video(manga: Manga, chapter: Chapter):
         </html>
         """,
     )
+
+
+__all__ = [
+    "start_html_video",
+]

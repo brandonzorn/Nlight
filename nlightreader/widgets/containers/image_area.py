@@ -75,3 +75,8 @@ class ImageArea(QWidget, AbstractContentContainer):
 
     def get_content_widget(self):
         return self.ui.img_lbl.parent()
+
+
+__all__ = [
+    "ImageArea",
+]

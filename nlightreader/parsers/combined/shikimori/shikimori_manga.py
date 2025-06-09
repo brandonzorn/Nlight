@@ -44,3 +44,8 @@ class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
             )
             for i in ShikimoriItems.KINDS
         ]
+
+
+__all__ = [
+    "ShikimoriManga",
+]

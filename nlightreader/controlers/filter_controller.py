@@ -93,3 +93,8 @@ class FilterController:
             list(self._order_items.keys())[0].setChecked(True)
         [i.setChecked(False) for i in self._kind_items]
         self._genres_container.reset_items()
+
+
+__all__ = [
+    "FilterController",
+]

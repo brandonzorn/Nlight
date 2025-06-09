@@ -128,3 +128,8 @@ class HistoryPage(QWidget):
 
     def get_content(self):
         self.update_content()
+
+
+__all__ = [
+    "HistoryPage",
+]
