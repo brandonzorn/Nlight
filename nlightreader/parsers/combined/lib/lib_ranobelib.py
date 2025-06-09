@@ -66,6 +66,7 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
                 content = content.replace("\n", "")
                 content = content.replace("\r", "")
             return replace_images(content)
+        return None
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/ru/book/{manga.content_id}"

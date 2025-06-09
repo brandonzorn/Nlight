@@ -9,7 +9,7 @@ from .combined.shikimori import (
     ShikimoriBase,
     ShikimoriLib,
     ShikimoriManga,
-    ShikimoriRanobe
+    ShikimoriRanobe,
 )
 from .hentai_manga import AllHentai, NHentai
 from .local_library import LocalLibrary
