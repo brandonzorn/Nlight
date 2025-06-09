@@ -474,3 +474,8 @@ class Database:
         with self.__engine.connect() as conn:
             conn.execute(delete_history_note)
             conn.commit()
+
+
+__all__ = [
+    "Database",
+]

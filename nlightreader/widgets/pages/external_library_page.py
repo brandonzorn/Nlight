@@ -107,3 +107,8 @@ class ExternalLibraryPage(BasePage):
         self.request_params.page = 1
         self.request_params.search = self.ui.title_line.text()
         self.get_content()
+
+
+__all__ = [
+    "ExternalLibraryPage",
+]

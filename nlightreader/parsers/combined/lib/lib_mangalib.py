@@ -43,3 +43,8 @@ class LibMangalib(LibBase, AbstractMangaCatalog):
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/ru/manga/{manga.content_id}"
+
+
+__all__ = [
+    "LibMangalib",
+]

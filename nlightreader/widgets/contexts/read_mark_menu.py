@@ -42,3 +42,8 @@ class ReadMarkMenu(RoundMenu):
         if mode not in actions:
             raise ValueError("Invalid mode: must be 0, 1 or 2")
         self.addActions(actions.get(mode, []))
+
+
+__all__ = [
+    "ReadMarkMenu",
+]

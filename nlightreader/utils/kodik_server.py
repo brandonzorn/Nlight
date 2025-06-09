@@ -36,3 +36,8 @@ class KodikHTTPRequestHandler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Methods", "POST")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
+
+
+__all__ = [
+    "KodikHTTPRequestHandler",
+]

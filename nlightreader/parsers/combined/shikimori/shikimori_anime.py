@@ -168,3 +168,8 @@ class ShikimoriAnime(AbstractAnimeCatalog):
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/animes/{manga.content_id}"
+
+
+__all__ = [
+    "ShikimoriAnime",
+]

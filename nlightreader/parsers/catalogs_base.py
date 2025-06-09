@@ -28,3 +28,11 @@ class AbstractAnimeCatalog(AbstractCatalog):
 
     def __init__(self):
         super().__init__()
+
+
+__all__ = [
+    "AbstractMangaCatalog",
+    "AbstractAnimeCatalog",
+    "AbstractRanobeCatalog",
+    "AbstractHentaiMangaCatalog",
+]

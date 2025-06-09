@@ -51,3 +51,9 @@ class ShikimoriAnimeItems(ParserItems):
         {"value": "pv"} | Pk.PV,
         {"value": "cm"} | Pk.CM,
     ]
+
+
+__all__ = [
+    "ShikimoriAnimeItems",
+    "ShikimoriItems",
+]

@@ -352,3 +352,9 @@ class Auth:
     @property
     def _auth_headers(self):
         return {"grant_type": "password"} | self.client_headers
+
+
+__all__ = [
+    "MangaDex",
+    "MangaDexLib",
+]

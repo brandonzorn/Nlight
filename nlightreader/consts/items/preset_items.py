@@ -170,3 +170,9 @@ class PresetOrders:
         "name": "By volume of translation",
         "russian": "По объему перевода",
     }
+
+
+__all__ = [
+    "PresetKinds",
+    "PresetOrders",
+]

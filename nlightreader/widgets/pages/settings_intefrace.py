@@ -186,3 +186,8 @@ class SettingsPage(ScrollArea):
         cfg.appRestartSig.connect(self.__show_restart_tooltip)
         self.aboutCard.clicked.connect(self.check_for_updates_signal)
         self.themeCard.optionChanged.connect(self.theme_changed)
+
+
+__all__ = [
+    "SettingsPage",
+]

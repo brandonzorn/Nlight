@@ -42,3 +42,8 @@ class CharacterInfoDialog(QDialog):
                 self.__catalog,
             ),
         )
+
+
+__all__ = [
+    "CharacterInfoDialog",
+]

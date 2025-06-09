@@ -132,3 +132,8 @@ class RateDialog(MessageBoxBase):
     def delete_user_rate(self):
         self.__catalog.delete_user_rate(self.__user_rate)
         self.close()
+
+
+__all__ = [
+    "RateDialog",
+]

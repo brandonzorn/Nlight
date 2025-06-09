@@ -25,3 +25,8 @@ class MangaLibItems(LibBaseItems):
         {"value": 4} | Pk.OEL_MANGA,
         {"value": 6} | Pk.MANHUA,
     ]
+
+
+__all__ = [
+    "MangaLibItems",
+]

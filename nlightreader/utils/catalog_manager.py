@@ -67,3 +67,10 @@ def get_catalog_by_id(catalog_id):
 
 def get_lib_catalog(base_catalog):
     return LIB_CATALOGS.get(base_catalog)()
+
+
+__all__ = [
+    "get_catalog_by_id",
+    "get_lib_catalog",
+    "USER_CATALOGS",
+]

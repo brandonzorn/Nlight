@@ -70,3 +70,8 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/ru/book/{manga.content_id}"
+
+
+__all__ = [
+    "LibRanobelib",
+]

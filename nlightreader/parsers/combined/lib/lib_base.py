@@ -94,3 +94,8 @@ class LibBase(AbstractCatalog):
 
     def get_preview(self, manga: Manga):
         return get_html(manga.preview_url, content_type="content")
+
+
+__all__ = [
+    "LibBase",
+]

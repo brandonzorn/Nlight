@@ -158,3 +158,8 @@ class Manga(NamedBaseModel):
             "chapters": self.__chapters,
             "preview_url": self.__preview_url,
         }
+
+
+__all__ = [
+    "Manga",
+]

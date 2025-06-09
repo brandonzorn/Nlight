@@ -88,3 +88,9 @@ class UserDataAuthMessageBox(AbstractAuthDialog):
             "username": self.loginLineEdit.text(),
             "password": self.passwordLineEdit.text(),
         }
+
+
+__all__ = [
+    "TokenAuthMessageBox",
+    "UserDataAuthMessageBox",
+]
