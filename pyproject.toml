@@ -2,10 +2,11 @@
 line-length = 79
 exclude = """
 /(
-  data/
-  | venv/
+  build/
   | build_nuitka/
-  | nlight_res_rc.py
+  | data/
+  | dist/
+  | venv/
 )
 """
 
@@ -26,7 +27,7 @@ ignore = [
 exclude = [
     "build",
     "build_nuitka",
+    "data",
     "dist",
     "venv",
-    "data",
 ]
