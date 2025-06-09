@@ -178,3 +178,8 @@ class MangaItem(QWidget):
             target=self.get_image,
             callback=self.set_image,
         ).start(self.__pool)
+
+
+__all__ = [
+    "MangaItem",
+]

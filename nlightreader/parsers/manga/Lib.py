@@ -30,3 +30,9 @@ class SlashLib(LibBase):
     def __init__(self):
         super().__init__()
         self.url = URL_SLASHLIB
+
+
+__all__ = [
+    "LibBase",
+    "SlashLib",
+]

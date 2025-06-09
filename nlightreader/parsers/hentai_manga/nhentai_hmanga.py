@@ -110,3 +110,8 @@ class NHentai(AbstractHentaiMangaCatalog):
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/g/{manga.content_id}"
+
+
+__all__ = [
+    "NHentai",
+]

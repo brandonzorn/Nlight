@@ -36,3 +36,8 @@ class LibAnilib(LibBase, AbstractAnimeCatalog):
                 episodes.append(episode)
         episodes.reverse()
         return episodes
+
+
+__all__ = [
+    "LibAnilib",
+]

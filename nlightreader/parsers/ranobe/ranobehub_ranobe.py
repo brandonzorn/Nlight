@@ -154,3 +154,8 @@ class Ranobehub(AbstractRanobeCatalog):
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{URL_RANOBEHUB}/ranobe/{manga.content_id}"
+
+
+__all__ = [
+    "Ranobehub",
+]

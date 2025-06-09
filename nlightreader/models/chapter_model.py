@@ -64,3 +64,8 @@ class Chapter(BaseModel):
             "title": self.__title,
             "language": self.language.name,
         }
+
+
+__all__ = [
+    "Chapter",
+]

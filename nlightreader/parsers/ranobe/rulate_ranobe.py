@@ -219,3 +219,9 @@ class Erolate(Rulate):
                     Manga(ranobe_id, self.CATALOG_ID, name, russian),
                 )
         return ranobe
+
+
+__all__ = [
+    "Rulate",
+    "Erolate",
+]

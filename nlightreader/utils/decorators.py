@@ -20,3 +20,8 @@ def singleton(cls):
         return instance[0]
 
     return wrapper
+
+
+__all__ = [
+    "singleton",
+]
