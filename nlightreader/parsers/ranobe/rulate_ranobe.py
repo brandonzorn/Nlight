@@ -125,7 +125,6 @@ class Rulate(AbstractRanobeCatalog):
         return [Image("", 1, url)]
 
     def get_image(self, image: Image):
-        # Function to get content images from chapter
         def get_chapter_content_image(media_id: str):
             url = f"{self.url_api}/{media_id}"
             if media_id.startswith("http"):
@@ -138,7 +137,6 @@ class Rulate(AbstractRanobeCatalog):
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/jpg;base64,{str_equivalent_image}"
 
-        # Parse HTML content and extract text container
         response = get_html(
             image.url,
             cookies=self.cookies,
@@ -150,7 +148,6 @@ class Rulate(AbstractRanobeCatalog):
             if not text_container:
                 return None
 
-            # Construct content with images
             content = ""
             for p in text_container:
                 if p.find("img") and not isinstance(p.find("img"), int):

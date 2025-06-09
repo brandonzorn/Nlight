@@ -278,7 +278,6 @@ class InfoPage(QWidget):
         self.ui.catalog_score_label.setText(
             f"{translate('Other', 'Rating')}: {self.__manga.score}",
         )
-        # self.ui.description_frame.setVisible(bool(self.__manga.get_description()))
         self.ui.description_text.setHtml(
             description_to_html(self.__manga.get_description()),
         )
