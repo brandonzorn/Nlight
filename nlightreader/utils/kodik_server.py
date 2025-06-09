@@ -13,8 +13,6 @@ class KodikHTTPRequestHandler(BaseHTTPRequestHandler):
 
         manga_id = data.get("manga_id", "")
         chapter_id = data.get("chapter_id", "")
-        # player_cur_time = data.get("player_cur_time", "")
-        # player_max_time = data.get("player_max_time", "")
         is_completed = bool(data.get("is_completed", False))
 
         db = Database()
