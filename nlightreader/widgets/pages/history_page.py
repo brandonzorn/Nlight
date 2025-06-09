@@ -107,8 +107,7 @@ class HistoryPage(QWidget):
         note_index = self.ui.items_tree.indexFromItem(
             selected_item,
         ).row()
-        return self.sorted_notes[
-            list(self.sorted_notes.keys())[parent_index]][
+        return self.sorted_notes[list(self.sorted_notes.keys())[parent_index]][
             note_index
         ]
 
