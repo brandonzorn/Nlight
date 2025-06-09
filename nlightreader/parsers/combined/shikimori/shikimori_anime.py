@@ -37,7 +37,6 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         response = get_html(url, headers=self.headers, content_type="json")
         if response:
             data = response
-            # manga.kind = Nl.MangaKind.from_str(data.get("kind"))
             manga.score = float(data.get("score"))
             manga.status = Nl.MangaStatus.from_str(data.get("status"))
 

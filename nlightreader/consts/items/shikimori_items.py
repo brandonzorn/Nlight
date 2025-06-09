@@ -40,9 +40,6 @@ class ShikimoriAnimeItems(ParserItems):
 
     KINDS = [
         {"value": "tv"} | Pk.TV,
-        # {"value": "tv_13"} | Pk.TV_13,
-        # {"value": "tv_24"} | Pk.TV_24,
-        # {"value": "tv_48"} | Pk.TV_48,
         {"value": "ova"} | Pk.OVA,
         {"value": "ona"} | Pk.ONA,
         {"value": "special"} | Pk.SPECIAL,

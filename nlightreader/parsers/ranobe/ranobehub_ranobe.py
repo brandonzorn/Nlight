@@ -114,7 +114,6 @@ class Ranobehub(AbstractRanobeCatalog):
                     return container
             return None
 
-        # Parse HTML content and extract text container
         response = get_html(image.url, content_type="text")
         if response:
             soup = BeautifulSoup(response, "html.parser")
@@ -124,7 +123,6 @@ class Ranobehub(AbstractRanobeCatalog):
             if not text_container:
                 return None
 
-            # Construct content with images
             content = ""
 
             header = soup.find("div", class_="title-wrapper")
