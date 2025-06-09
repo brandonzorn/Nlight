@@ -12,12 +12,15 @@ exclude = """
 [tool.flake8]
 max-line-length = 79
 inline-quotes = "double"
-import-order-style = "google"
+import-order-style = "pep8"
+application-import-names = [
+    "data",
+    "nlightreader",
+    "keys",
+]
 ignore = [
     "F401",
     "N802",
-    "I100",
-    "I202",
     "W503",
 ]
 exclude = [
