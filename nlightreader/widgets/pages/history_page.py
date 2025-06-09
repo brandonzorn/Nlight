@@ -108,8 +108,9 @@ class HistoryPage(QWidget):
             selected_item,
         ).row()
         return self.sorted_notes[
-            list(self.sorted_notes.keys())[parent_index]
-        ][note_index]
+            list(self.sorted_notes.keys())[parent_index]][
+            note_index
+        ]
 
     def _get_selected_manga(self) -> Manga:
         selected_item = self.ui.items_tree.currentItem()
