@@ -159,6 +159,7 @@ class Rulate(AbstractRanobeCatalog):
                 else:
                     content += f"<p>{p.text}</p>"
             return content
+        return None
 
     def get_preview(self, manga: Manga):
         response = get_html(
@@ -171,6 +172,7 @@ class Rulate(AbstractRanobeCatalog):
             himage = soup.find("meta", property="og:image")
             if himage:
                 return get_html(str(himage["content"]), content_type="content")
+        return None
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url_api}/book/{manga.content_id}"

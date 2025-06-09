@@ -20,6 +20,7 @@ class FilterController:
         for item in self._order_items:
             if item.isChecked():
                 return self._order_items[item]
+        return None
 
     def get_active_kinds(self) -> list[Kind]:
         return [self._kind_items[i] for i in self._kind_items if i.isChecked()]

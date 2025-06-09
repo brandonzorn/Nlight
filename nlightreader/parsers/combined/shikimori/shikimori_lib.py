@@ -112,6 +112,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                     Nl.LibList.from_str(i.get("status")),
                     i.get("chapters"),
                 )
+        return None
 
     def update_user_rate(self, user_rate: UserRate):
         url = f"{self.url_api}/v2/user_rates/{user_rate.id}"
