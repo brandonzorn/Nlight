@@ -26,7 +26,7 @@ class MangaItem(QWidget):
         self.ui.setupUi(self)
         self.__manga = manga
         self.__catalog = get_catalog_by_id(self.__manga.catalog_id)
-        self.__manga_pixmap = None
+        self.__manga_pixmap: QPixmap | None = None
         self.__is_added_to_lib = is_added_to_lib
         self.__db: Database = Database()
         self.__pool = pool
@@ -131,9 +131,11 @@ class MangaItem(QWidget):
     def set_image(self, opacity: float = 1.0):
         if not self.__manga_pixmap:
             return
+        device_pixel_ratio = self.devicePixelRatio()
+        image_maximum_size = self.ui.image.maximumSize() * device_pixel_ratio
 
         image = QImage(
-            self.ui.image.maximumSize(),
+            image_maximum_size,
             QImage.Format.Format_ARGB32,
         )
         image.fill(QColor(0, 0, 0, 0))
@@ -162,16 +164,15 @@ class MangaItem(QWidget):
 
         painter.setClipPath(path)
         painter.setOpacity(opacity if opacity else 1.0)
-        painter.drawPixmap(
-            0,
-            0,
-            self.__manga_pixmap.scaled(
-                self.ui.image.maximumSize(),
-            ),
-        )
+
+        scaled_pixmap = self.__manga_pixmap.scaled(image_maximum_size)
+
+        painter.drawPixmap(0, 0, scaled_pixmap)
         painter.end()
 
-        self.ui.image.setPixmap(QPixmap.fromImage(image))
+        result_pixmap = QPixmap.fromImage(image)
+        result_pixmap.setDevicePixelRatio(device_pixel_ratio)
+        self.ui.image.setPixmap(result_pixmap)
 
     def update_image(self):
         Worker(
