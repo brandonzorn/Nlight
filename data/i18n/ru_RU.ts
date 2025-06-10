@@ -426,6 +426,10 @@
 <context>
     <name>AbstractAuthDialog</name>
     <message>
+        <source>Authentication</source>
+        <translation>Аутентификация</translation>
+    </message>
+    <message>
         <source>Get code</source>
         <translation>Получить код</translation>
     </message>
