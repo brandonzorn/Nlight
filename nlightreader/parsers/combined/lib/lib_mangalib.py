@@ -39,7 +39,11 @@ class LibMangalib(LibBase, AbstractMangaCatalog):
         return images
 
     def get_image(self, image: Image):
-        return get_html(image.url, content_type="content")
+        return get_html(
+            image.url,
+            content_type="content",
+            headers={"Referer": f"{self.url}/"},
+        )
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/ru/manga/{manga.content_id}"
