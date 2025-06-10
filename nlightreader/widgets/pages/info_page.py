@@ -142,6 +142,7 @@ class InfoPage(QWidget):
         if not self.__catalog or not self.__manga or not self.__manga_pixmap:
             return
         self.update_manga_preview()
+        super().resizeEvent(event)
 
     def scroll_area_resize_event(self, event):
         self.ui.scrollAreaWidgetContents.setFixedWidth(
