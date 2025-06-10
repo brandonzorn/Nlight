@@ -49,13 +49,13 @@ class InfoPage(QWidget):
             self.open_reader,
         )
         self.ui.characters_list.doubleClicked.connect(
-            self.open_character,
+            self.open_character_dialog,
         )
         self.ui.related_list.doubleClicked.connect(
             self.open_related_manga,
         )
         self.ui.shikimori_btn.clicked.connect(
-            self.open_rate,
+            self.open_rate_dialog,
         )
         self.ui.add_btn.clicked.connect(
             self.add_to_favorites,
@@ -226,11 +226,11 @@ class InfoPage(QWidget):
         self.setup_done.emit()
 
     @Slot()
-    def open_rate(self):
+    def open_rate_dialog(self):
         RateDialog(self.__manga, parent=self).exec()
 
     @Slot()
-    def open_character(self):
+    def open_character_dialog(self):
         character = self.__catalog.get_character(
             self.__related_characters[
                 self.ui.characters_list.currentIndex().row()
@@ -238,7 +238,6 @@ class InfoPage(QWidget):
         )
         self.__character_window = CharacterInfoDialog(
             character,
-            self.__manga.catalog_id,
             parent=self,
         )
         self.__character_window.show()
