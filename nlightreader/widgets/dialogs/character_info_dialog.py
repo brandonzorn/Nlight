@@ -37,7 +37,10 @@ class CharacterInfoDialog(MessageBoxBase):
         self.name_label = BodyLabel(self.__character.name)
         self.russian_label = BodyLabel(self.__character.russian)
         self.title_frame_spacer = QSpacerItem(
-            20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding,
+            20,
+            40,
+            QSizePolicy.Policy.Minimum,
+            QSizePolicy.Policy.Expanding,
         )
         self.show_spoilers_switch = SwitchButton()
         self.show_spoilers_switch.setText(self.tr("Show spoilers"))
