@@ -80,7 +80,6 @@ class InfoPage(QWidget):
         self.__sorted_chapters = {}
         self.__manga_pixmap = None
         self.__reader_window = None
-        self.__character_window = None
 
     def on_context_menu(self, pos):
         context_target = self.ui.items_tree
@@ -236,11 +235,7 @@ class InfoPage(QWidget):
                 self.ui.characters_list.currentIndex().row()
             ],
         )
-        self.__character_window = CharacterInfoDialog(
-            character,
-            parent=self,
-        )
-        self.__character_window.show()
+        CharacterInfoDialog(character, parent=self).exec()
 
     def update_manga_preview(self):
         self.ui.image.clear()
