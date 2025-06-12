@@ -1,6 +1,7 @@
 import logging
 
 from nlightreader.consts.enums import Nl
+from nlightreader.consts.items import MangaDexItems
 from nlightreader.consts.urls import (
     MANGA_DEX_HEADERS,
     URL_MANGA_DEX,
@@ -34,6 +35,7 @@ class MangaDex(AbstractMangaCatalog):
         self.url = URL_MANGA_DEX
         self.url_api = URL_MANGA_DEX_API
         self.headers = MANGA_DEX_HEADERS
+        self.items = MangaDexItems
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self.url_api}/manga/{manga.content_id}"
@@ -77,6 +79,7 @@ class MangaDex(AbstractMangaCatalog):
         url = f"{self.url_api}/manga"
         params = {
             "limit": 50,
+            f"order[{form.get_order_id()}]": "desc",
             "title": form.search,
             "offset": form.offset,
             "includedTags[]": form.get_genre_ids() + form.get_kind_ids(),
