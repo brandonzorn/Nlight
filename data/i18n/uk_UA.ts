@@ -462,7 +462,7 @@
     </message>
 </context>
 <context>
-    <name>GenresDialog</name>
+    <name>GenresDialogUi</name>
     <message>
         <source>Genres</source>
         <translation>Жанри</translation>
