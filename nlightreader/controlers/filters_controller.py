@@ -7,14 +7,12 @@ from nlightreader.widgets.dialogs import GenresDialog
 
 class FiltersController:
     def __init__(self):
-        self.max_genres_per_row = 5
-
         self._order_items = {}
         self._kind_items = {}
 
-        self._orders_container = None
-        self._kinds_container = None
-        self._genres_container = None
+        self._orders_container: QLayout | None = None
+        self._kinds_container: QLayout | None = None
+        self._genres_container: GenresDialog | None = None
 
     def get_active_order(self) -> Order | None:
         for item in self._order_items:
@@ -51,15 +49,7 @@ class FiltersController:
     def add_genres(self, items: list[Genre]):
         if not self._orders_container:
             raise ValueError("Genres container is not set")
-        for index, item in enumerate(items):
-            item_widget = CheckBox()
-            item_widget.setText(item.get_name())
-            self._genres_container.genres_items.update({item_widget: item})
-            self._genres_container.ui_ge.gridLayout.addWidget(
-                item_widget,
-                index // self.max_genres_per_row,
-                index % self.max_genres_per_row,
-            )
+        self._genres_container.set_genres(items)
 
     def set_orders_container(self, container):
         if not isinstance(container, QLayout):
