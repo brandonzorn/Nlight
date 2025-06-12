@@ -5,7 +5,7 @@ from nlightreader.models import Genre, Kind, Order
 from nlightreader.widgets.dialogs import GenresDialog
 
 
-class FilterController:
+class FiltersController:
     def __init__(self):
         self.max_genres_per_row = 5
 
@@ -97,5 +97,5 @@ class FilterController:
 
 
 __all__ = [
-    "FilterController",
+    "FiltersController",
 ]
