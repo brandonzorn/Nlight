@@ -45,11 +45,11 @@ class MainPage(BasePage):
             ),
         )
 
-        self.Form_genres = GenresDialog(self)
+        self.__genres_dialog = GenresDialog(self)
         self.__filters_controller = FiltersController()
         self.__filters_controller.set_kinds_container(self.ui.kinds_grid)
         self.__filters_controller.set_orders_container(self.ui.orders_grid)
-        self.__filters_controller.set_genres_container(self.Form_genres)
+        self.__filters_controller.set_genres_container(self.__genres_dialog)
 
     @override
     def setup(self):
@@ -137,7 +137,7 @@ class MainPage(BasePage):
 
     @Slot()
     def open_genres_dialog(self):
-        self.Form_genres.exec()
+        self.__genres_dialog.show()
 
 
 __all__ = [
