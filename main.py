@@ -156,12 +156,6 @@ class MainWindow(ParentWindow):
 
 
 if __name__ == "__main__":
-    if "debug" in sys.argv:
-        logging.basicConfig(
-            level=logging.WARNING,
-            filename="latest.log",
-            filemode="w",
-        )
     QThreadPool.globalInstance().setMaxThreadCount(32)
 
     if cfg.get(cfg.dpi_scale) != "Auto":
