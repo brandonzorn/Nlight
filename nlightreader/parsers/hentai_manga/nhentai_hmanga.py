@@ -84,8 +84,8 @@ class NHentai(AbstractHentaiMangaCatalog):
             soup = BeautifulSoup(response, "html.parser")
             html_items = soup.findAll("a", class_="gallerythumb")
             for i in html_items:
-                img_tag = i.find("img", class_="")
-                img_url: str = img_tag["src"]
+                img_tag = i.find("img")
+                img_url: str = img_tag.get("data-src")
                 if not validators.url(img_url):
                     continue
                 images.append(Image("", html_items.index(i) + 1, img_url))
