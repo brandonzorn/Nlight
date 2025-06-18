@@ -188,48 +188,46 @@ class MangaDex(AbstractMangaCatalog):
             content_type="content",
         )
 
-    def get_genres(self):
+    def _get_tags_data_by_group(self, groups: list[str]) -> list[dict]:
         url = f"{self.url_api}/manga/tag"
         response = get_html(
             url,
             headers=self.headers,
             content_type="json",
         )
-        genres = []
-        if response:
-            for i in response.get("data"):
-                if i.get("attributes").get("group") not in ["genre", "theme"]:
-                    continue
-                genres.append(
-                    Genre(
-                        i.get("id"),
-                        self.CATALOG_ID,
-                        get_data(i, ["attributes", "name", "en"]),
-                        "",
-                    ),
-                )
-        return genres
-
-    def get_kinds(self):
-        url = f"{self.url_api}/manga/tag"
-        response = get_html(url, headers=self.headers, content_type="json")
-        kinds = []
-        if response:
-            for i in list(
+        if not response:
+            return []
+        return [
+            tag_data
+            for tag_data in list(
                 filter(
-                    lambda x: x["attributes"]["group"] in ["format"],
+                    lambda x: x["attributes"]["group"] in groups,
                     response["data"],
                 ),
-            ):
-                kinds.append(
-                    Kind(
-                        i.get("id"),
-                        self.CATALOG_ID,
-                        i.get("attributes").get("name").get("en"),
-                        "",
-                    ),
-                )
-        return kinds
+            )
+        ]
+
+    def get_genres(self):
+        return [
+            Genre(
+                tag_data.get("id"),
+                self.CATALOG_ID,
+                get_data(tag_data, ["attributes", "name", "en"]),
+                "",
+            )
+            for tag_data in self._get_tags_data_by_group(["genre", "theme"])
+        ]
+
+    def get_kinds(self):
+        return [
+            Kind(
+                tag_data.get("id"),
+                self.CATALOG_ID,
+                get_data(tag_data, ["attributes", "name", "en"]),
+                "",
+            )
+            for tag_data in self._get_tags_data_by_group(["format"])
+        ]
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/title/{manga.content_id}"
