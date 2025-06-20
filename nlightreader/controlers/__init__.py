@@ -1,1 +1,1 @@
-from .filter_controller import FilterController
+from .filters_controller import FiltersController

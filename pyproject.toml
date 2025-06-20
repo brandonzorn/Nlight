@@ -2,36 +2,32 @@
 line-length = 79
 exclude = """
 /(
-  data/
-  | venv/
+  build/
   | build_nuitka/
-  | nlight_res_rc.py
+  | data/
+  | dist/
+  | venv/
 )
 """
 
 [tool.flake8]
 max-line-length = 79
 inline-quotes = "double"
-import-order-style = "google"
+import-order-style = "pep8"
+application-import-names = [
+    "data",
+    "nlightreader",
+    "keys",
+]
 ignore = [
-    "R503",
     "F401",
     "N802",
-    "I100",
-    "I202",
     "W503",
 ]
 exclude = [
-    ".git",
-    "__pycache__",
-    "docs/source/conf.py",
-    "old",
     "build",
     "build_nuitka",
+    "data",
     "dist",
     "venv",
-    "venv-fluent",
-    "data",
-    "__init__.py",
-    "nlight_res_rc.py",
 ]

@@ -23,3 +23,9 @@ def translate(context, string):
         A translated version of the input string.
     """
     return QApplication.translate(context, string, None)
+
+
+__all__ = [
+    "NlightTranslator",
+    "translate",
+]

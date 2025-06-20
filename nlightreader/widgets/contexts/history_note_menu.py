@@ -33,3 +33,8 @@ class HistoryNoteMenu(RoundMenu):
         if mode not in actions:
             raise ValueError("Invalid mode: must be 0 or 1")
         self.addActions(actions[mode])
+
+
+__all__ = [
+    "HistoryNoteMenu",
+]

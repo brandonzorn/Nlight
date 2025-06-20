@@ -11,3 +11,8 @@ class LocalLibrary:
 
     def search_manga(self, params: RequestForm) -> list[Manga]:
         return self.db.get_manga_library(params.lib_list)
+
+
+__all__ = [
+    "LocalLibrary",
+]

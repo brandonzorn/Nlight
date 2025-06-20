@@ -42,3 +42,10 @@ class User:
         self.id = user_id
         self.nickname = nickname
         self.avatar = avatar
+
+
+__all__ = [
+    "HistoryNote",
+    "UserRate",
+    "User",
+]

@@ -4,7 +4,7 @@ from PySide6.QtCore import Slot
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.facial import Ui_Form
-from nlightreader.controlers import FilterController
+from nlightreader.controlers import FiltersController
 from nlightreader.models import Manga
 from nlightreader.utils.catalog_manager import USER_CATALOGS
 from nlightreader.utils.translator import translate
@@ -45,11 +45,11 @@ class MainPage(BasePage):
             ),
         )
 
-        self.Form_genres = GenresDialog(self)
-        self.__filter_controller = FilterController()
-        self.__filter_controller.set_kinds_container(self.ui.kinds_grid)
-        self.__filter_controller.set_orders_container(self.ui.orders_grid)
-        self.__filter_controller.set_genres_container(self.Form_genres)
+        self.__genres_dialog = GenresDialog(self)
+        self.__filters_controller = FiltersController()
+        self.__filters_controller.set_kinds_container(self.ui.kinds_grid)
+        self.__filters_controller.set_orders_container(self.ui.orders_grid)
+        self.__filters_controller.set_genres_container(self.__genres_dialog)
 
     @override
     def setup(self):
@@ -91,23 +91,23 @@ class MainPage(BasePage):
     def apply_filter(self):
         self.request_params.clear()
         self.request_params.set_order(
-            self.__filter_controller.get_active_order(),
+            self.__filters_controller.get_active_order(),
         )
         self.request_params.set_kinds(
-            self.__filter_controller.get_active_kinds(),
+            self.__filters_controller.get_active_kinds(),
         )
         self.request_params.set_genres(
-            self.__filter_controller.get_active_genres(),
+            self.__filters_controller.get_active_genres(),
         )
         self.request_params.search = self.ui.title_line.text()
         self.get_content()
 
     @Slot()
     def reset_filter(self):
-        self.__filter_controller.reset_items()
+        self.__filters_controller.reset_items()
         self.request_params.clear()
         self.request_params.set_order(
-            self.__filter_controller.get_active_order(),
+            self.__filters_controller.get_active_order(),
         )
         self.ui.title_line.clear()
         self.get_content()
@@ -120,12 +120,12 @@ class MainPage(BasePage):
         self.ui.kinds_frame.setVisible(bool(kinds))
         self.ui.orders_frame.setVisible(bool(orders))
         self.ui.genres_frame.setVisible(bool(genres))
-        self.__filter_controller.add_orders(orders)
-        self.__filter_controller.add_kinds(kinds)
-        self.__filter_controller.add_genres(genres)
+        self.__filters_controller.add_orders(orders)
+        self.__filters_controller.add_kinds(kinds)
+        self.__filters_controller.add_genres(genres)
 
     def clear_filters_items(self):
-        self.__filter_controller.clear()
+        self.__filters_controller.clear()
 
     @Slot()
     def change_filters_visible(self):
@@ -137,4 +137,9 @@ class MainPage(BasePage):
 
     @Slot()
     def open_genres_dialog(self):
-        self.Form_genres.exec()
+        self.__genres_dialog.show()
+
+
+__all__ = [
+    "MainPage",
+]

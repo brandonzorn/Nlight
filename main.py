@@ -1,4 +1,3 @@
-import logging
 import os
 import sys
 import time
@@ -24,6 +23,9 @@ from nlightreader.utils.translator import NlightTranslator, translate
 from nlightreader.utils.utils import get_html
 
 
+__all__ = []
+
+
 class App(QApplication):
     def __init__(self, argv):
         super().__init__(argv)
@@ -34,14 +36,15 @@ class App(QApplication):
         self.translator = NlightTranslator()
 
         self.load_translator()
-        self.update_style()
+        self.update_theme_mode()
 
     def load_translator(self):
         locale = cfg.get(cfg.language).value
         self.translator.load(locale)
         self.installTranslator(self.translator)
 
-    def update_style(self):
+    @staticmethod
+    def update_theme_mode():
         if (theme_mode := cfg.get(cfg.theme_mode)) == "Auto":
             setTheme(Theme.DARK if darkdetect.isDark() else Theme.LIGHT)
         else:
@@ -68,12 +71,18 @@ class MainWindow(ParentWindow):
             self.start_check_for_updates_thread,
         )
         self.settings_interface.theme_changed.connect(
-            app.update_style,
+            app.update_theme_mode,
         )
 
         self._theme_updater.start()
         if cfg.get(cfg.check_updates_at_startup):
             self.start_check_for_updates_thread()
+
+    def closeEvent(self, event, /):
+        self._theme_updater.terminate()
+        self._theme_updater.deleteLater()
+        app.closeAllWindows()
+        super().closeEvent(event)
 
     def start_check_for_updates_thread(self):
         self._update_checker.terminate()
@@ -141,23 +150,11 @@ class MainWindow(ParentWindow):
             time.sleep(1)
 
     def update_style(self):
-        app.update_style()
+        app.update_theme_mode()
         self._theme_updater.start()
-
-    def closeEvent(self, event):
-        super().closeEvent(event)
-        self._theme_updater.terminate()
-        self._theme_updater.wait()
-        app.closeAllWindows()
 
 
 if __name__ == "__main__":
-    if "debug" in sys.argv:
-        logging.basicConfig(
-            level=logging.WARNING,
-            filename="latest.log",
-            filemode="w",
-        )
     QThreadPool.globalInstance().setMaxThreadCount(32)
 
     if cfg.get(cfg.dpi_scale) != "Auto":

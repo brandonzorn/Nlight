@@ -25,3 +25,10 @@ class NlFluentIcons(FluentIconBase, Enum):
             f"/icons/buttons/svg_24dp_{getIconColor(theme)}"
             f"/actions/{self.value}.svg"
         )
+
+
+__all__ = [
+    "Icons",
+    "LangIcons",
+    "NlFluentIcons",
+]

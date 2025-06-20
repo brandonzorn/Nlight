@@ -1,1 +1,1 @@
-from .paths import TOKEN_PATH, APP_DATA_PATH
+from .paths import APP_DATA_PATH, TOKEN_PATH

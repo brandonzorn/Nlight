@@ -264,3 +264,8 @@ class ReaderWindow(QMainWindow):
     @property
     def _current_chapter(self) -> Chapter:
         return self.__chapters[self.__cur_chapter - 1]
+
+
+__all__ = [
+    "ReaderWindow",
+]
