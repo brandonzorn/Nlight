@@ -44,3 +44,8 @@ class LibraryPage(BasePage):
         item.manga_clicked.connect(self.manga_open.emit)
         item.manga_changed.connect(self.get_content)
         return item
+
+
+__all__ = [
+    "LibraryPage",
+]

@@ -51,3 +51,8 @@ class RanobeLibItems(LibBaseItems):
             "russian": "Фанфик",
         },
     ]
+
+
+__all__ = [
+    "RanobeLibItems",
+]

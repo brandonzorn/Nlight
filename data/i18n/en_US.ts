@@ -426,6 +426,10 @@
 <context>
     <name>AbstractAuthDialog</name>
     <message>
+        <source>Authentication</source>
+        <translation>Authentication</translation>
+    </message>
+    <message>
         <source>Get code</source>
         <translation>Get code</translation>
     </message>
@@ -458,7 +462,7 @@
     </message>
 </context>
 <context>
-    <name>GenresDialog</name>
+    <name>GenresDialogUi</name>
     <message>
         <source>Genres</source>
         <translation>Genres</translation>

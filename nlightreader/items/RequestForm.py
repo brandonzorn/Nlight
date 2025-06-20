@@ -42,3 +42,8 @@ class RequestForm:
         self.__order = None
         self.__kinds = []
         self.lib_list = Nl.LibList.planned
+
+
+__all__ = [
+    "RequestForm",
+]

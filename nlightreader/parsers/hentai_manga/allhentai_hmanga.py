@@ -91,17 +91,22 @@ class AllHentai(AbstractHentaiMangaCatalog):
     def get_preview(self, manga: Manga):
         url = f"{self.url}/{manga.content_id}"
         response = get_html(url, headers=self.headers, content_type="text")
-        if response:
-            soup = BeautifulSoup(response, "html.parser")
-            html_item = soup.find("img", class_="")
-            if html_item:
-                img_src = html_item.get("src")
-                if img_src:
-                    return get_html(
-                        img_src,
-                        content_type="content",
-                        headers=self.headers,
-                    )
+        if not response:
+            return None
+        soup = BeautifulSoup(response, "html.parser")
+        html_item = soup.find("img", class_="")
+        if not (html_item and (img_src := html_item.get("src"))):
+            return None
+        return get_html(
+            img_src,
+            content_type="content",
+            headers=self.headers,
+        )
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self.url}/{manga.content_id}"
+
+
+__all__ = [
+    "AllHentai",
+]

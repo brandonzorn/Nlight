@@ -33,3 +33,8 @@ class AniLibItems(LibBaseItems):
         {"value": 21} | Pk.ONA,
         {"value": 22} | Pk.MUSIC,
     ]
+
+
+__all__ = [
+    "AniLibItems",
+]

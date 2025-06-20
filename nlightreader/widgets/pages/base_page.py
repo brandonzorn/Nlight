@@ -12,11 +12,11 @@ from nlightreader.exceptions.parser_content_exc import (
 from nlightreader.items import RequestForm
 from nlightreader.models import Manga
 from nlightreader.utils.threads import Thread
-from nlightreader.widgets.items.manga_item import MangaItem
 from nlightreader.widgets.containers.content_container import (
     ContentContainerState,
 )
 from nlightreader.widgets.containers.manga_area import MangaArea
+from nlightreader.widgets.items.manga_item import MangaItem
 
 
 class BasePage(QWidget):
@@ -99,3 +99,8 @@ class BasePage(QWidget):
     def change_list(self, lst: Nl.LibList):
         self.request_params.lib_list = lst
         self.get_content()
+
+
+__all__ = [
+    "BasePage",
+]

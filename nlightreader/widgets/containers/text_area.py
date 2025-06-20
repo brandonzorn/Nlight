@@ -30,3 +30,8 @@ class TextArea(QWidget, AbstractContentContainer):
 
     def get_content_widget(self) -> QWidget:
         return self.ui.text_browser.parent()
+
+
+__all__ = [
+    "TextArea",
+]

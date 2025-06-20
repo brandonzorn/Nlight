@@ -119,3 +119,8 @@ class ParentWindow(FluentWindow):
         self.info_interface.setup_done.connect(set_info_widget)
         self.info_interface.setup_error.connect(delete_info_widget)
         self.info_interface.setup(manga)
+
+
+__all__ = [
+    "ParentWindow",
+]

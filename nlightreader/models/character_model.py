@@ -12,8 +12,8 @@ class Character(NamedBaseModel):
         role: str,
     ):
         super().__init__(content_id, catalog_id, name, russian)
-        self.description = description
-        self.role = role
+        self.__description = description
+        self.__role = role
 
     @property
     def description(self):
@@ -36,3 +36,8 @@ class Character(NamedBaseModel):
         if not isinstance(role, str):
             raise TypeError(f"Role must be a string got {type(role)}")
         self.__role = role
+
+
+__all__ = [
+    "Character",
+]

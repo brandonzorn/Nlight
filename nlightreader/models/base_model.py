@@ -63,3 +63,9 @@ class NamedBaseModel(BaseModel):
         ):
             return self.__russian
         return self.__name
+
+
+__all__ = [
+    "BaseModel",
+    "NamedBaseModel",
+]

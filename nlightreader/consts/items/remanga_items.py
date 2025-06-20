@@ -27,3 +27,8 @@ class RemangaItems(ParserItems):
         {"value": 6} | Pk.INDONESIAN_COMIC,
         {"value": 7} | Pk.OTHER,
     ]
+
+
+__all__ = [
+    "RemangaItems",
+]
