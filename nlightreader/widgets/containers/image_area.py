@@ -49,20 +49,26 @@ class ImageArea(QWidget, AbstractContentContainer):
         if pixmap is None or pixmap.isNull():
             return QPixmap()
         if 0.5 < pixmap.width() / pixmap.height() < 2:
-            w, h = self.ui.scrollArea.viewport().size().toTuple()
+            viewport_size = self.ui.scrollArea.viewport().size()
             self.ui.scrollArea.setVerticalScrollBarPolicy(
                 Qt.ScrollBarPolicy.ScrollBarAlwaysOff,
             )
         else:
-            w, h = self.ui.scrollArea.viewport().width(), pixmap.height()
+            viewport_size = QSize(
+                self.ui.scrollArea.viewport().width(),
+                pixmap.height(),
+            )
             self.ui.scrollArea.setVerticalScrollBarPolicy(
                 Qt.ScrollBarPolicy.ScrollBarAsNeeded,
             )
-        return pixmap.scaled(
-            QSize(w, h),
+        device_pixel_ratio = self.devicePixelRatio()
+        scaled_pixmap = pixmap.scaled(
+            viewport_size * device_pixel_ratio,
             Qt.AspectRatioMode.KeepAspectRatio,
             Qt.TransformationMode.SmoothTransformation,
         )
+        scaled_pixmap.setDevicePixelRatio(device_pixel_ratio)
+        return scaled_pixmap
 
     def __update_image(self):
         pixmap = self._resize_pixmap(self.__image_pixmap)
@@ -75,3 +81,8 @@ class ImageArea(QWidget, AbstractContentContainer):
 
     def get_content_widget(self):
         return self.ui.img_lbl.parent()
+
+
+__all__ = [
+    "ImageArea",
+]

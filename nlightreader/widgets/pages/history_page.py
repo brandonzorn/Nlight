@@ -97,18 +97,19 @@ class HistoryPage(QWidget):
                     ch_item.setIcon(0, ItemsIcons.UNREAD)
                 top_item.addChild(ch_item)
 
-    def _get_selected_note(self) -> HistoryNote:
+    def _get_selected_note(self) -> HistoryNote | None:
         selected_item = self.ui.items_tree.currentItem()
-        if selected_item.parent():
-            parent_index = self.ui.items_tree.indexFromItem(
-                selected_item.parent(),
-            ).row()
-            note_index = self.ui.items_tree.indexFromItem(
-                selected_item,
-            ).row()
-            return self.sorted_notes[
-                list(self.sorted_notes.keys())[parent_index]
-            ][note_index]
+        if not selected_item.parent():
+            return None
+        parent_index = self.ui.items_tree.indexFromItem(
+            selected_item.parent(),
+        ).row()
+        note_index = self.ui.items_tree.indexFromItem(
+            selected_item,
+        ).row()
+        return self.sorted_notes[list(self.sorted_notes.keys())[parent_index]][
+            note_index
+        ]
 
     def _get_selected_manga(self) -> Manga:
         selected_item = self.ui.items_tree.currentItem()
@@ -128,3 +129,8 @@ class HistoryPage(QWidget):
 
     def get_content(self):
         self.update_content()
+
+
+__all__ = [
+    "HistoryPage",
+]

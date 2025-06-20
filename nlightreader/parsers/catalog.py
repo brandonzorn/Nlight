@@ -114,3 +114,9 @@ class LibParser:
 
     def update_user_rate(self, user_rate: UserRate):
         pass
+
+
+__all__ = [
+    "AbstractCatalog",
+    "LibParser",
+]

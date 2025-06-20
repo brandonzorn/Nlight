@@ -130,3 +130,9 @@ class Thread(NlThread, QThread):
             callback=callback,
             error_callback=error_callback,
         )
+
+
+__all__ = [
+    "Worker",
+    "Thread",
+]

@@ -5,11 +5,11 @@ from qfluentwidgets import (
 )
 
 from nlightreader.utils.threads import Thread
-from nlightreader.widgets.items import MangaItem
 from nlightreader.widgets.containers.content_container import (
     AbstractContentContainer,
     ContentContainerState,
 )
+from nlightreader.widgets.items import MangaItem
 
 
 class MangaArea(ScrollArea, AbstractContentContainer):
@@ -101,3 +101,8 @@ class MangaArea(ScrollArea, AbstractContentContainer):
 
     def get_content_widget(self):
         return self._scrollAreaWidgetContents
+
+
+__all__ = [
+    "MangaArea",
+]

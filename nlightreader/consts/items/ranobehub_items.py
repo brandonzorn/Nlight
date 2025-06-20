@@ -229,3 +229,8 @@ class RanobehubItems(ParserItems):
             "russian": "isekai",
         },
     ]
+
+
+__all__ = [
+    "RanobehubItems",
+]

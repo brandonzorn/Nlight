@@ -108,12 +108,12 @@ class Ranobehub(AbstractRanobeCatalog):
 
         def find_text_container(
             containers: bs4.element.ResultSet,
-        ) -> bs4.element.Tag:
+        ) -> bs4.element.Tag | None:
             for container in containers:
                 if container.has_attr("data-container"):
                     return container
+            return None
 
-        # Parse HTML content and extract text container
         response = get_html(image.url, content_type="text")
         if response:
             soup = BeautifulSoup(response, "html.parser")
@@ -123,7 +123,6 @@ class Ranobehub(AbstractRanobeCatalog):
             if not text_container:
                 return None
 
-            # Construct content with images
             content = ""
 
             header = soup.find("div", class_="title-wrapper")
@@ -143,14 +142,21 @@ class Ranobehub(AbstractRanobeCatalog):
                 else:
                     content += str(p)
             return content
+        return None
 
     def get_preview(self, manga: Manga):
-        if manga.preview_url:
-            return get_html(
-                manga.preview_url,
-                headers=self.headers,
-                content_type="content",
-            )
+        if not manga.preview_url:
+            return None
+        return get_html(
+            manga.preview_url,
+            headers=self.headers,
+            content_type="content",
+        )
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{URL_RANOBEHUB}/ranobe/{manga.content_id}"
+
+
+__all__ = [
+    "Ranobehub",
+]

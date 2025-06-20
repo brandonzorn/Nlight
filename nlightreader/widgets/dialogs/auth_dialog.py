@@ -15,7 +15,7 @@ class AbstractAuthDialog(MessageBoxBase):
         self.session = catalog.session
         self.widget.setMinimumWidth(350)
 
-        self.titleLabel = SubtitleLabel(self.tr("Authenticate"), parent=self)
+        self.titleLabel = SubtitleLabel(self.tr("Authentication"), parent=self)
 
         self.yesButton.setText(self.tr("Sign in"))
         self.yesButton.setEnabled(False)
@@ -88,3 +88,9 @@ class UserDataAuthMessageBox(AbstractAuthDialog):
             "username": self.loginLineEdit.text(),
             "password": self.passwordLineEdit.text(),
         }
+
+
+__all__ = [
+    "TokenAuthMessageBox",
+    "UserDataAuthMessageBox",
+]

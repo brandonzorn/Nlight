@@ -60,7 +60,7 @@ class LibBase(AbstractCatalog):
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         branches_url = (
-            f"{self.url_api}/" f"branches/{manga.content_id.split('--')[0]}"
+            f"{self.url_api}/branches/{manga.content_id.split('--')[0]}"
         )
 
         branches = {}
@@ -69,8 +69,7 @@ class LibBase(AbstractCatalog):
                 branches.update({branch["id"]: branch["teams"][0]["name"]})
 
         chapters_url = (
-            f"{self.url_api}/{self.content_name}/"
-            f"{manga.content_id}/chapters"
+            f"{self.url_api}/{self.content_name}/{manga.content_id}/chapters"
         )
 
         chapters: list[Chapter] = []
@@ -94,3 +93,8 @@ class LibBase(AbstractCatalog):
 
     def get_preview(self, manga: Manga):
         return get_html(manga.preview_url, content_type="content")
+
+
+__all__ = [
+    "LibBase",
+]

@@ -75,3 +75,8 @@ class RulateItems(ParserItems):
             "russian": "По кол-ву в избранном",
         },
     ]
+
+
+__all__ = [
+    "RulateItems",
+]
