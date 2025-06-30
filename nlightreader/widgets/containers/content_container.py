@@ -12,11 +12,11 @@ from nlightreader.utils.translator import translate
 
 @unique
 class ContentContainerState(Enum):
-    empty = 0
-    show_content = 1
-    fetch_content = 2
-    no_content = 3
-    fetch_error = 4
+    EMPTY = 0
+    SHOW_CONTENT = 1
+    FETCH_CONTENT = 2
+    NO_CONTENT = 3
+    FETCH_ERROR = 4
 
 
 class AbstractContentContainer:
@@ -40,7 +40,7 @@ class AbstractContentContainer:
 
         self._content_widget = None
 
-        self._state = ContentContainerState.empty
+        self._state = ContentContainerState.EMPTY
 
     def install(self, parent):
         self.get_content_widget().layout().addWidget(
@@ -72,19 +72,19 @@ class AbstractContentContainer:
         self._state = state
 
         state_obj = None
-        if state == ContentContainerState.empty:
+        if state == ContentContainerState.EMPTY:
             state_obj = None
 
-        elif state == ContentContainerState.show_content:
+        elif state == ContentContainerState.SHOW_CONTENT:
             state_obj = self._content_widget
 
-        elif state == ContentContainerState.fetch_content:
+        elif state == ContentContainerState.FETCH_CONTENT:
             state_obj = self._progress_ring
 
-        elif state == ContentContainerState.no_content:
+        elif state == ContentContainerState.NO_CONTENT:
             state_obj = self._no_content_error_widget
 
-        elif state == ContentContainerState.fetch_error:
+        elif state == ContentContainerState.FETCH_ERROR:
             state_obj = self._fetch_error_widget
 
         [

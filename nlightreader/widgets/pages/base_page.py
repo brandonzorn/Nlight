@@ -42,7 +42,7 @@ class BasePage(QWidget):
     def update_content(self):
         self.manga_area.delete_items()
         items = [self._setup_manga_item(manga) for manga in self.mangas]
-        self.manga_area.set_state(ContentContainerState.show_content)
+        self.manga_area.set_state(ContentContainerState.SHOW_CONTENT)
         self.manga_area.add_items(items)
         self.manga_area.update_items()
 
@@ -50,9 +50,9 @@ class BasePage(QWidget):
         try:
             raise exception
         except FetchContentError:
-            self.manga_area.set_state(ContentContainerState.fetch_error)
+            self.manga_area.set_state(ContentContainerState.FETCH_ERROR)
         except (NoContentError, RequestsParamsError):
-            self.manga_area.set_state(ContentContainerState.no_content)
+            self.manga_area.set_state(ContentContainerState.NO_CONTENT)
 
     @Slot()
     def turn_page_next(self):
@@ -73,7 +73,7 @@ class BasePage(QWidget):
         self._get_content_thread.terminate()
         self._get_content_thread.wait()
         self.manga_area.delete_items()
-        self.manga_area.set_state(ContentContainerState.fetch_content)
+        self.manga_area.set_state(ContentContainerState.FETCH_CONTENT)
         self._get_content_thread.start()
 
     def _get_content_thread_func(self):

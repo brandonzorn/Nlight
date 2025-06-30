@@ -204,7 +204,7 @@ class ReaderWindow(QMainWindow):
         self._set_image_thread.wait()
         if not self.__images:
             return
-        self.__content_container.set_state(ContentContainerState.fetch_content)
+        self.__content_container.set_state(ContentContainerState.FETCH_CONTENT)
         self._set_image_thread.start()
 
     def __process_errors(self, exception: Exception):
@@ -212,11 +212,11 @@ class ReaderWindow(QMainWindow):
             raise exception
         except FetchContentError:
             self.__content_container.set_state(
-                ContentContainerState.fetch_error,
+                ContentContainerState.FETCH_ERROR,
             )
         except NoContentError:
             self.__content_container.set_state(
-                ContentContainerState.no_content,
+                ContentContainerState.NO_CONTENT,
             )
 
     def get_content(self):
@@ -248,7 +248,7 @@ class ReaderWindow(QMainWindow):
         )
 
     def update_image(self, content):
-        self.__content_container.set_state(ContentContainerState.show_content)
+        self.__content_container.set_state(ContentContainerState.SHOW_CONTENT)
         self.__content_container.set_content(content)
 
     def get_images(self):
