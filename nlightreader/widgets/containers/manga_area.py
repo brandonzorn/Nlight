@@ -52,11 +52,11 @@ class MangaArea(ScrollArea, AbstractContentContainer):
         super().resizeEvent(arg__1)
         if arg__1.oldSize().width() != arg__1.size().width():
             self._scrollAreaWidgetContents.setFixedWidth(arg__1.size().width())
-            if self._state == ContentContainerState.show_content:
+            if self._state == ContentContainerState.SHOW_CONTENT:
                 self.update_items()
 
     def add_items(self, items: list[MangaItem]):
-        if self._state != ContentContainerState.show_content:
+        if self._state != ContentContainerState.SHOW_CONTENT:
             raise PermissionError("this method is now available in this state")
         i, j = 0, 0
         for item in items:
@@ -91,7 +91,7 @@ class MangaArea(ScrollArea, AbstractContentContainer):
         self._manga_items.clear()
 
     def update_items(self):
-        if self._state != ContentContainerState.show_content:
+        if self._state != ContentContainerState.SHOW_CONTENT:
             raise PermissionError("this method is now available in this state")
         size = (
             self.size().width()
