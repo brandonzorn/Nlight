@@ -12,7 +12,7 @@ class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
     CATALOG_NAME = "Shikimori(Manga)"
 
     def search_manga(self, form: RequestForm):
-        url = f"{self.url_api}/mangas"
+        url = f"{self._URL_API}/mangas"
         params = {
             "limit": form.limit,
             "search": form.search,
@@ -23,7 +23,7 @@ class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
         }
         response = get_html(
             url,
-            headers=self.headers,
+            headers=self._HEADERS,
             params=params,
             content_type="json",
         )
@@ -31,7 +31,7 @@ class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
         mangas = []
         if response:
             for i in response:
-                mangas.append(self.setup_manga(i))
+                mangas.append(self._setup_manga(i))
         return mangas
 
     def get_kinds(self):

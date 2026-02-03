@@ -3,7 +3,6 @@ import re
 
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RanobeLibItems
-from nlightreader.consts.urls import URL_RANOBELIB
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.parsers.combined.lib.lib_base import LibBase
@@ -13,14 +12,11 @@ from nlightreader.utils.utils import get_html
 class LibRanobelib(LibBase, AbstractRanobeCatalog):
     CATALOG_NAME = "RanobeLib"
     CATALOG_ID = 13
+    _FILTERS = RanobeLibItems
+    _URL = "https://ranobelib.me"
 
-    def __init__(self):
-        super().__init__()
-        self.url = URL_RANOBELIB
-        self.items = RanobeLibItems
-
-        self.content_name = "manga"
-        self.site_id = 3
+    _CONTENT_NAME = "manga"
+    _SITE_ID = 3
 
     def get_manga(self, manga: Manga) -> Manga:
         manga.kind = Nl.MangaKind.ranobe
@@ -28,7 +24,7 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
 
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = (
-            f"{self.url_api}/{self.content_name}/{manga.content_id}/chapter"
+            f"{self._URL_API}/{self._CONTENT_NAME}/{manga.content_id}/chapter"
             f"?number={chapter.chapter_number}"
             f"&volume={chapter.volume_number}"
         )
@@ -41,11 +37,11 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
                 if media_id.startswith(
                     "http",
                 )
-                else f"{self.url}{media_id}"
+                else f"{self._URL}{media_id}"
             )
             chapter_image = get_html(
                 url,
-                headers=self.headers,
+                headers=self._HEADERS,
             ).content
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/png;base64,{str_equivalent_image}"
@@ -69,7 +65,7 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
         return None
 
     def get_manga_url(self, manga: Manga) -> str:
-        return f"{self.url}/ru/book/{manga.content_id}"
+        return f"{self._URL}/ru/book/{manga.content_id}"
 
 
 __all__ = [
