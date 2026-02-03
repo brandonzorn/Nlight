@@ -21,7 +21,7 @@ from nlightreader.utils.translator import translate
 
 
 class RateDialog(MessageBoxBase):
-    def __init__(self, manga: Manga, parent):
+    def __init__(self, manga: Manga, parent) -> None:
         super().__init__(parent)
         self.__manga = manga
         self.__catalog = get_lib_catalog(
@@ -97,7 +97,7 @@ class RateDialog(MessageBoxBase):
 
         self._display_user_rate()
 
-    def closeEvent(self, arg__1):
+    def closeEvent(self, arg__1) -> None:
         self.deleteLater()
 
     def _fetch_user_rate(self):
@@ -105,7 +105,7 @@ class RateDialog(MessageBoxBase):
             self.__catalog.create_user_rate(self.__manga)
         return self.__catalog.get_user_rate(self.__manga)
 
-    def _display_user_rate(self):
+    def _display_user_rate(self) -> None:
         self.score_spin.setValue(self.__user_rate.score)
         self.chapters_count_spin.setValue(self.__user_rate.chapters)
         if self.__manga.chapters:
@@ -113,7 +113,7 @@ class RateDialog(MessageBoxBase):
         self.lib_list_combo.setCurrentIndex(self.__user_rate.status.value)
 
     @Slot()
-    def _send_user_rate(self):
+    def _send_user_rate(self) -> None:
         self.__user_rate.score = self.score_spin.value()
         self.__user_rate.chapters = self.chapters_count_spin.value()
         self.__user_rate.status = Nl.LibList(
@@ -123,7 +123,7 @@ class RateDialog(MessageBoxBase):
         self.close()
 
     @Slot()
-    def _delete_user_rate(self):
+    def _delete_user_rate(self) -> None:
         self.__catalog.delete_user_rate(self.__user_rate)
         self.close()
 

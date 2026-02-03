@@ -3,11 +3,11 @@ from PySide6.QtWidgets import QApplication
 
 
 class NlightTranslator(QTranslator):
-    def __init__(self, locale: QLocale = None, parent=None):
+    def __init__(self, locale: QLocale = None, parent=None) -> None:
         super().__init__(parent=parent)
         self.load(locale or QLocale())
 
-    def load(self, locale: QLocale):
+    def load(self, locale: QLocale) -> None:
         super().load(f":/translations/i18n/{locale.name()}.qm")
 
 

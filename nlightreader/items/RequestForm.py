@@ -3,7 +3,7 @@ from nlightreader.models.sort_models import Genre, Kind, Order
 
 
 class RequestForm:
-    def __init__(self):
+    def __init__(self) -> None:
         self.limit = 50
         self.search = ""
         self.page = 1
@@ -16,13 +16,13 @@ class RequestForm:
     def offset(self):
         return (self.page - 1) * 50
 
-    def set_order(self, order: Order):
+    def set_order(self, order: Order) -> None:
         self.__order = order
 
-    def set_kinds(self, kinds: list[Kind]):
+    def set_kinds(self, kinds: list[Kind]) -> None:
         self.__kinds = kinds
 
-    def set_genres(self, genres: list[Genre]):
+    def set_genres(self, genres: list[Genre]) -> None:
         self.__genres = genres
 
     def get_order_id(self) -> str:
@@ -34,7 +34,7 @@ class RequestForm:
     def get_genre_ids(self) -> list[str]:
         return [genre.content_id for genre in self.__genres]
 
-    def clear(self):
+    def clear(self) -> None:
         self.limit = 50
         self.search = ""
         self.page = 1

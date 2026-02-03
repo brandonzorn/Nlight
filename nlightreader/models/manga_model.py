@@ -2,8 +2,8 @@ import re
 from types import NoneType
 from typing import override
 
-import validators
 from PySide6.QtCore import QLocale
+import validators
 
 from nlightreader.consts.enums import Nl
 from nlightreader.models.base_model import NamedBaseModel
@@ -17,7 +17,7 @@ class Manga(NamedBaseModel):
         catalog_id: int,
         name: str,
         russian: str,
-    ):
+    ) -> None:
         super().__init__(content_id, catalog_id, name, russian)
 
         self.__kind: Nl.MangaKind = Nl.MangaKind.undefined
@@ -35,9 +35,10 @@ class Manga(NamedBaseModel):
         return self.__kind
 
     @kind.setter
-    def kind(self, kind):
+    def kind(self, kind) -> None:
         if not isinstance(kind, Nl.MangaKind):
-            raise TypeError(f"Kind must be Nl.MangaKind got {type(kind)}")
+            msg = f"Kind must be Nl.MangaKind got {type(kind)}"
+            raise TypeError(msg)
         self.__kind = kind
 
     @property
@@ -45,11 +46,10 @@ class Manga(NamedBaseModel):
         return self.__status
 
     @status.setter
-    def status(self, status: Nl.MangaStatus):
+    def status(self, status: Nl.MangaStatus) -> None:
         if not isinstance(status, Nl.MangaStatus):
-            raise TypeError(
-                f"Status must be Nl.MangaStatus got {type(status)}",
-            )
+            msg = f"Status must be Nl.MangaStatus got {type(status)}"
+            raise TypeError(msg)
         self.__status = status
 
     @property
@@ -57,9 +57,10 @@ class Manga(NamedBaseModel):
         return self.__score
 
     @score.setter
-    def score(self, score: int | float):
+    def score(self, score: int | float) -> None:
         if not isinstance(score, (int, float)):
-            raise TypeError(f"Score must be int or float got {type(score)}")
+            msg = f"Score must be int or float got {type(score)}"
+            raise TypeError(msg)
 
         if isinstance(score, float) and score.is_integer():
             score = int(score)
@@ -70,11 +71,13 @@ class Manga(NamedBaseModel):
         return self.__preview_url
 
     @preview_url.setter
-    def preview_url(self, url: str | None):
+    def preview_url(self, url: str | None) -> None:
         if not isinstance(url, (str, NoneType)):
-            raise TypeError(f"Preview url must be str or None got {type(url)}")
+            msg = f"Preview url must be str or None got {type(url)}"
+            raise TypeError(msg)
         if url is not None and not validators.url(url):
-            raise ValueError(f"Url {url} is not valid")
+            msg = f"Url {url} is not valid"
+            raise ValueError(msg)
         self.__preview_url = url
 
     @property
@@ -82,9 +85,10 @@ class Manga(NamedBaseModel):
         return self.__volumes
 
     @volumes.setter
-    def volumes(self, volumes: int):
+    def volumes(self, volumes: int) -> None:
         if not isinstance(volumes, int):
-            raise TypeError(f"Volumes must be int got {type(volumes)}")
+            msg = f"Volumes must be int got {type(volumes)}"
+            raise TypeError(msg)
         self.__volumes = volumes
 
     @property
@@ -92,20 +96,19 @@ class Manga(NamedBaseModel):
         return self.__chapters
 
     @chapters.setter
-    def chapters(self, chapters: int):
+    def chapters(self, chapters: int) -> None:
         if not isinstance(chapters, int):
-            raise TypeError(f"Chapters must be int got {type(chapters)}")
+            msg = f"Chapters must be int got {type(chapters)}"
+            raise TypeError(msg)
         self.__chapters = chapters
 
-    def add_description(self, language: Nl.Language, description: str):
+    def add_description(self, language: Nl.Language, description: str) -> None:
         if not isinstance(language, Nl.Language):
-            raise TypeError(
-                f"Language must be Nl.Language got {type(language)}",
-            )
+            msg = f"Language must be Nl.Language got {type(language)}"
+            raise TypeError(msg)
         if not isinstance(description, str):
-            raise TypeError(
-                f"Description must be str got {type(description)}",
-            )
+            msg = f"Description must be str got {type(description)}"
+            raise TypeError(msg)
         self.__descriptions.update({language: description})
 
     def get_description(self) -> str:
@@ -125,13 +128,11 @@ class Manga(NamedBaseModel):
         for key in self.__descriptions:
             if self.__descriptions.get(key):
                 desc_str += (
-                    f"<lang={key.name}>"
-                    f"{self.__descriptions.get(key)}"
-                    f"<end>"
+                    f"<lang={key.name}>{self.__descriptions.get(key)}<end>"
                 )
         return desc_str
 
-    def set_description_from_str(self, desc: str):
+    def set_description_from_str(self, desc: str) -> None:
         for lang, text in re.findall(
             r"<lang=(\w+)>(.+?)<end>",
             desc,

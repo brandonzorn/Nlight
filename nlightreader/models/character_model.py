@@ -10,7 +10,7 @@ class Character(NamedBaseModel):
         russian: str,
         description: str,
         role: str,
-    ):
+    ) -> None:
         super().__init__(content_id, catalog_id, name, russian)
         self.__description = description
         self.__role = role
@@ -20,11 +20,10 @@ class Character(NamedBaseModel):
         return self.__description
 
     @description.setter
-    def description(self, description: str):
+    def description(self, description: str) -> None:
         if not isinstance(description, str):
-            raise TypeError(
-                f"Description must be a string got {type(description)}",
-            )
+            msg = f"Description must be a string got {type(description)}"
+            raise TypeError(msg)
         self.__description = description
 
     @property
@@ -32,9 +31,10 @@ class Character(NamedBaseModel):
         return self.__role
 
     @role.setter
-    def role(self, role: str):
+    def role(self, role: str) -> None:
         if not isinstance(role, str):
-            raise TypeError(f"Role must be a string got {type(role)}")
+            msg = f"Role must be a string got {type(role)}"
+            raise TypeError(msg)
         self.__role = role
 
 

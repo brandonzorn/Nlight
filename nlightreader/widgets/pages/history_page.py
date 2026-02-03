@@ -13,7 +13,7 @@ from nlightreader.widgets.contexts import HistoryNoteMenu
 class HistoryPage(QWidget):
     manga_open = Signal(Manga)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None) -> None:
         super().__init__(parent=parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
@@ -31,8 +31,8 @@ class HistoryPage(QWidget):
         self.notes: list[HistoryNote] = []
         self.sorted_notes = {}
 
-    def on_context_menu(self, pos):
-        def set_as_read():
+    def on_context_menu(self, pos) -> None:
+        def set_as_read() -> None:
             self.db.add_history_note(
                 HistoryNote(
                     selected_note.chapter,
@@ -42,7 +42,7 @@ class HistoryPage(QWidget):
             )
             selected_item.setIcon(0, ItemsIcons.READ)
 
-        def remove_all():
+        def remove_all() -> None:
             self.db.del_history_notes(selected_manga)
             self.get_content()
 
@@ -65,16 +65,16 @@ class HistoryPage(QWidget):
         menu.remove_all.triggered.connect(remove_all)
         menu.exec(self.ui.items_tree.mapToGlobal(pos))
 
-    def setup(self):
+    def setup(self) -> None:
         self.get_content()
 
     @Slot()
-    def open_info(self):
+    def open_info(self) -> None:
         selected_item = self.ui.items_tree.currentItem()
         if selected_item.parent():
             self.manga_open.emit(self._get_selected_manga())
 
-    def sort_notes(self):
+    def sort_notes(self) -> None:
         self.sorted_notes.clear()
         for note in self.notes:
             if note.manga in self.sorted_notes:
@@ -82,7 +82,7 @@ class HistoryPage(QWidget):
             else:
                 self.sorted_notes.update({note.manga: [note]})
 
-    def update_content(self):
+    def update_content(self) -> None:
         self.ui.items_tree.clear()
         self.notes: list[HistoryNote] = self.db.get_history_notes()
         self.sort_notes()
@@ -119,7 +119,7 @@ class HistoryPage(QWidget):
         return self._get_selected_note().manga
 
     @Slot()
-    def delete_note(self):
+    def delete_note(self) -> None:
         selected_item = self.ui.items_tree.currentItem()
         if not selected_item or not selected_item.parent():
             return
@@ -127,7 +127,7 @@ class HistoryPage(QWidget):
         selected_item.parent().removeChild(selected_item)
         self.get_content()
 
-    def get_content(self):
+    def get_content(self) -> None:
         self.update_content()
 
 

@@ -9,7 +9,7 @@ from nlightreader.widgets.containers.content_container import (
 
 
 class ImageArea(QWidget, AbstractContentContainer):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
@@ -22,7 +22,7 @@ class ImageArea(QWidget, AbstractContentContainer):
         self._content_widget = self.ui.img_lbl
         self.__image_pixmap = None
 
-    def resizeEvent(self, event):
+    def resizeEvent(self, event) -> None:
         super().resizeEvent(event)
         if (self.__image_pixmap is None) or (event.oldSize() == event.size()):
             return
@@ -34,7 +34,7 @@ class ImageArea(QWidget, AbstractContentContainer):
         )
         self.__update_image()
 
-    def _reset_area(self):
+    def _reset_area(self) -> None:
         self.ui.img_lbl.clear()
         self.ui.scrollArea.verticalScrollBar().setValue(0)
         self.ui.scrollArea.horizontalScrollBar().setValue(0)
@@ -70,11 +70,11 @@ class ImageArea(QWidget, AbstractContentContainer):
         scaled_pixmap.setDevicePixelRatio(device_pixel_ratio)
         return scaled_pixmap
 
-    def __update_image(self):
+    def __update_image(self) -> None:
         pixmap = self._resize_pixmap(self.__image_pixmap)
         self.ui.img_lbl.setPixmap(pixmap)
 
-    def set_content(self, img_pixmap: QPixmap):
+    def set_content(self, img_pixmap: QPixmap) -> None:
         self.__image_pixmap = img_pixmap
         self._reset_area()
         self.__update_image()

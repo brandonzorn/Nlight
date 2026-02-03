@@ -6,7 +6,7 @@ from nlightreader.consts.paths import TOKEN_PATH
 
 class TokenManager:
     @staticmethod
-    def save_token(token: dict, catalog_name: str):
+    def save_token(token: dict, catalog_name: str) -> None:
         """
         Saves a token dictionary to disk.
 

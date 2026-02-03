@@ -8,7 +8,7 @@ from nlightreader.widgets.containers.content_container import (
 
 
 class TextArea(QWidget, AbstractContentContainer):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
@@ -16,15 +16,15 @@ class TextArea(QWidget, AbstractContentContainer):
         self._content_widget = self.ui.text_browser
 
     @Slot()
-    def __update_text_size(self):
+    def __update_text_size(self) -> None:
         font = self.ui.text_browser.font()
         font.setPointSize(self.ui.size_slider.value())
         self.ui.text_browser.setFont(font)
 
-    def _reset_area(self):
+    def _reset_area(self) -> None:
         self.ui.text_browser.clear()
 
-    def set_content(self, content: str):
+    def set_content(self, content: str) -> None:
         self._reset_area()
         self.ui.text_browser.setHtml(content)
 

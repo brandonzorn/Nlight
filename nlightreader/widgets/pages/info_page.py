@@ -31,7 +31,7 @@ class InfoPage(QWidget):
     setup_done = Signal()
     setup_error = Signal()
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
@@ -81,10 +81,10 @@ class InfoPage(QWidget):
         self.__manga_pixmap = None
         self.__reader_window = None
 
-    def on_context_menu(self, pos):
+    def on_context_menu(self, pos) -> None:
         context_target = self.ui.items_tree
 
-        def set_as_read_all():
+        def set_as_read_all() -> None:
             history_notes = []
             chapters_by_lang: list[Chapter] = self.__sorted_chapters[
                 selected_chapter.language
@@ -107,7 +107,7 @@ class InfoPage(QWidget):
                 )
             self.__db.add_history_notes(history_notes)
 
-        def set_as_read():
+        def set_as_read() -> None:
             self.__db.add_history_note(
                 HistoryNote(selected_chapter, self.__manga, True),
             )
@@ -116,7 +116,7 @@ class InfoPage(QWidget):
                 FluentIcon.ACCEPT_MEDIUM.qicon(),
             )
 
-        def remove_read_state():
+        def remove_read_state() -> None:
             self.__db.del_history_note(selected_chapter)
             selected_item.setIcon(0, QIcon())
 
@@ -136,18 +136,18 @@ class InfoPage(QWidget):
         menu.remove_read_state.triggered.connect(remove_read_state)
         menu.exec(context_target.mapToGlobal(pos))
 
-    def resizeEvent(self, event):
+    def resizeEvent(self, event) -> None:
         if not self.__catalog or not self.__manga or not self.__manga_pixmap:
             return
         self.update_manga_preview()
         super().resizeEvent(event)
 
-    def scroll_area_resize_event(self, event):
+    def scroll_area_resize_event(self, event) -> None:
         self.ui.scrollAreaWidgetContents.setFixedWidth(
             event.size().width(),
         )
 
-    def sort_chapters(self):
+    def sort_chapters(self) -> None:
         self.__sorted_chapters.clear()
         for chapter in self.__chapters:
             ch_lang = chapter.language
@@ -172,8 +172,8 @@ class InfoPage(QWidget):
             self.__related_mangas[self.ui.related_list.currentIndex().row()],
         )
 
-    def setup(self, manga):
-        def info_setup():
+    def setup(self, manga) -> None:
+        def info_setup() -> None:
             try:
                 self.__catalog = get_catalog_by_id(manga.catalog_id)
                 self.__manga = self.__catalog.get_manga(manga)
@@ -187,13 +187,13 @@ class InfoPage(QWidget):
             callback=self.update_additional_info,
         ).start(pool=self.__thread_pool)
 
-    def update_add_button_icon(self):
+    def update_add_button_icon(self) -> None:
         if self.ui.add_btn.isChecked():
             self.ui.add_btn.setIcon(FluentIcon.REMOVE_FROM)
         else:
             self.ui.add_btn.setIcon(FluentIcon.ADD_TO)
 
-    def update_additional_info(self):
+    def update_additional_info(self) -> None:
         self.ui.lib_frame.setVisible(not self.__catalog.is_primary)
         self.ui.shikimori_frame.setVisible(self.__catalog.is_primary)
         self.set_info()
@@ -224,11 +224,11 @@ class InfoPage(QWidget):
         self.setup_done.emit()
 
     @Slot()
-    def open_rate_dialog(self):
+    def open_rate_dialog(self) -> None:
         RateDialog(self.__manga, parent=self).exec()
 
     @Slot()
-    def open_character_dialog(self):
+    def open_character_dialog(self) -> None:
         character = self.__catalog.get_character(
             self.__related_characters[
                 self.ui.characters_list.currentIndex().row()
@@ -236,7 +236,7 @@ class InfoPage(QWidget):
         )
         CharacterInfoDialog(character, parent=self).exec()
 
-    def update_manga_preview(self):
+    def update_manga_preview(self) -> None:
         self.ui.image.clear()
         if not self.__manga_pixmap:
             self.__manga_pixmap = FileManager.get_manga_preview(
@@ -252,7 +252,7 @@ class InfoPage(QWidget):
         self.ui.image_frame.setFixedWidth(pixmap.width())
         self.ui.image.setPixmap(pixmap)
 
-    def set_info(self):
+    def set_info(self) -> None:
         self.ui.name_label.setText(self.__manga.name)
         self.ui.russian_label.setText(self.__manga.russian)
         self.ui.status_label.setVisible(bool(self.__manga.status))
@@ -277,7 +277,7 @@ class InfoPage(QWidget):
         )
 
     @Slot()
-    def add_to_favorites(self):
+    def add_to_favorites(self) -> None:
         if self.__db.check_manga_library(self.__manga):
             self.__db.rem_manga_library(self.__manga)
         else:
@@ -286,18 +286,18 @@ class InfoPage(QWidget):
         self.update_add_button_icon()
 
     @Slot()
-    def change_lib_list(self):
+    def change_lib_list(self) -> None:
         if self.__db.check_manga_library(self.__manga):
             lib_list = Nl.LibList(self.ui.lib_list_box.currentIndex())
             self.__db.add_manga_library(self.__manga, lib_list)
 
-    def get_chapters(self):
+    def get_chapters(self) -> None:
         self.__chapters = self.__catalog.get_chapters(self.__manga)
         self.__chapters.reverse()
         self.sort_chapters()
         self.__db.add_chapters(self.__chapters, self.__manga)
 
-    def update_chapters(self):
+    def update_chapters(self) -> None:
         self.ui.items_tree.clear()
         self.ui.items_frame.setVisible(bool(self.__chapters))
         for lang, translators in self.__sorted_chapters.items():
@@ -325,20 +325,20 @@ class InfoPage(QWidget):
             if len(self.__sorted_chapters) == 1:
                 lang_item.setExpanded(True)
 
-    def get_relations(self):
+    def get_relations(self) -> None:
         self.__related_mangas = self.__catalog.get_relations(self.__manga)
 
-    def update_relations(self):
+    def update_relations(self) -> None:
         self.ui.related_list.clear()
         self.ui.related_frame.setVisible(bool(self.__related_mangas))
         for manga in self.__related_mangas:
             item = QListWidgetItem(manga.get_name())
             self.ui.related_list.addItem(item)
 
-    def get_characters(self):
+    def get_characters(self) -> None:
         self.__related_characters = self.__catalog.get_characters(self.__manga)
 
-    def update_characters(self):
+    def update_characters(self) -> None:
         self.ui.characters_list.clear()
         self.ui.characters_frame.setVisible(bool(self.__related_characters))
         for character in self.__related_characters:
@@ -346,7 +346,7 @@ class InfoPage(QWidget):
             self.ui.characters_list.addItem(item)
 
     @Slot()
-    def open_reader(self):
+    def open_reader(self) -> None:
         try:
             if self.__reader_window is not None:
                 self.__reader_window.close()
@@ -366,7 +366,7 @@ class InfoPage(QWidget):
                 )
 
     @Slot()
-    def open_related_manga(self):
+    def open_related_manga(self) -> None:
         self.opened_related_manga.emit(self.get_selected_related_title())
 
 

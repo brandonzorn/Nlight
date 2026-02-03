@@ -13,7 +13,7 @@ class Chapter(BaseModel):
         chapter_number: str | None,
         title: str,
         language: Nl.Language = Nl.Language.undefined,
-    ):
+    ) -> None:
         super().__init__(content_id, catalog_id)
         self.__volume_number = volume_number
         self.__chapter_number = chapter_number
@@ -38,11 +38,10 @@ class Chapter(BaseModel):
         return self.__translator
 
     @translator.setter
-    def translator(self, translator: str):
+    def translator(self, translator: str) -> None:
         if not isinstance(translator, (str, NoneType)):
-            raise TypeError(
-                f"Translator must be a string or None got {type(translator)}",
-            )
+            msg = f"Translator must be a string or None got {type(translator)}"
+            raise TypeError(msg)
         self.__translator = translator
 
     def get_name(self) -> str:

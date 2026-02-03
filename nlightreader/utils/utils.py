@@ -1,8 +1,8 @@
 import logging
 from typing import Any
 
-import requests
 from PySide6.QtWidgets import QApplication
+import requests
 
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.files import LangIcons
@@ -139,7 +139,8 @@ def get_language_icon(language: Nl.Language) -> str:
         empty string if no icon is found.
     """
     if not isinstance(language, Nl.Language):
-        raise TypeError("Language must be Nl.Language")
+        msg = "Language must be Nl.Language"
+        raise TypeError(msg)
     lang_icons = {
         Nl.Language.ru: LangIcons.Ru,
         Nl.Language.en: LangIcons.Gb,
@@ -170,7 +171,8 @@ def get_data(data: dict, path: list, default_val=None) -> Any:
         If the input data is not a dictionary.
     """
     if not isinstance(data, dict):
-        raise TypeError("Data must be a dictionary")
+        msg = "Data must be a dictionary"
+        raise TypeError(msg)
     if default_val is None:
         default_val = None
     try:

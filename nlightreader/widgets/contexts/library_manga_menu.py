@@ -2,7 +2,7 @@ from qfluentwidgets import Action, FluentIcon, RoundMenu
 
 
 class LibraryMangaMenu(RoundMenu):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.add_to_lib = Action(
             FluentIcon.ADD_TO,
@@ -25,7 +25,7 @@ class LibraryMangaMenu(RoundMenu):
             self.tr("Open local files"),
         )
 
-    def set_mode(self, mode: int):
+    def set_mode(self, mode: int) -> None:
         """
         Sets the mode of this object and
         adds the appropriate actions based on the mode.
@@ -56,7 +56,8 @@ class LibraryMangaMenu(RoundMenu):
             ],
         }
         if mode not in actions:
-            raise ValueError("Invalid mode: must be 0, 1 or 2")
+            msg = "Invalid mode: must be 0, 1 or 2"
+            raise ValueError(msg)
         self.addActions(actions.get(mode, []))
 
 

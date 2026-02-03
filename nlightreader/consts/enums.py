@@ -1,5 +1,6 @@
-import logging
 from enum import IntEnum, unique
+import logging
+from typing import Self
 
 LIB_LISTS = (
     "planned",
@@ -20,7 +21,7 @@ class Language(IntEnum):
     jp = 4
 
     @classmethod
-    def from_str(cls, string: str):
+    def from_str(cls, string: str) -> Self:
         if string in ("en", "eng"):
             return cls.en
         if string in ("ru", "rus"):
@@ -65,7 +66,7 @@ class MangaKind(IntEnum):
     comics = 7
 
     @classmethod
-    def from_str(cls, string: str | None):
+    def from_str(cls, string: str | None) -> Self:
         def matching_the_pattern(text: str, pattern: tuple) -> bool:
             text = text.lower()
             return any([i in text for i in pattern])
@@ -113,7 +114,7 @@ class LibList(IntEnum):
     dropped = 5
 
     @classmethod
-    def from_str(cls, string: str):
+    def from_str(cls, string: str) -> Self:
         string = string.lower()
         if string in ("planned",):
             return cls.planned
@@ -127,7 +128,8 @@ class LibList(IntEnum):
             return cls.on_hold
         if string in ("dropped",):
             return cls.dropped
-        raise ValueError(f"Unknown lib_list: {string}")
+        msg = f"Unknown lib_list: {string}"
+        raise ValueError(msg)
 
     def to_str(self) -> str:
         return LIB_LISTS[self.value]
@@ -141,7 +143,7 @@ class MangaStatus(IntEnum):
     frozen = 3
 
     @classmethod
-    def from_str(cls, string: str | None):
+    def from_str(cls, string: str | None) -> Self:
         if string is None or string.lower() in ("undefined", "неизвестно"):
             return cls.undefined
 

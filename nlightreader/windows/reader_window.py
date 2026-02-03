@@ -27,7 +27,7 @@ from nlightreader.widgets.containers.image_area import ImageArea
 
 
 class ReaderWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.ui = Ui_ReaderWindow()
         self.ui.setupUi(self)
@@ -71,7 +71,7 @@ class ReaderWindow(QMainWindow):
         self.__max_page = 1
         self.__catalog = None
 
-    def setup(self, manga: Manga, chapters: list[Chapter], cur_chapter=1):
+    def setup(self, manga: Manga, chapters: list[Chapter], cur_chapter=1) -> None:
         self.ui.chapters_frame.hide()
         self.__manga = manga
         self.setWindowTitle(self.__manga.name)
@@ -89,33 +89,33 @@ class ReaderWindow(QMainWindow):
         self.update_chapters_list()
         self.update_chapter()
 
-    def keyPressEvent(self, event):
+    def keyPressEvent(self, event) -> None:
         if event.key() == Qt.Key.Key_Escape:
             self.close()
         event.accept()
 
-    def closeEvent(self, event):
+    def closeEvent(self, event) -> None:
         self.deleteLater()
 
     @Slot()
-    def change_fullscreen(self):
+    def change_fullscreen(self) -> None:
         if self.isFullScreen():
             self.showMaximized()
         else:
             self.showFullScreen()
 
     @Slot()
-    def change_chapters_list_visible(self):
+    def change_chapters_list_visible(self) -> None:
         self.ui.chapters_frame.setVisible(
             not self.ui.chapters_frame.isVisible(),
         )
 
     @Slot()
-    def change_chapter(self):
+    def change_chapter(self) -> None:
         self.__cur_chapter = self.ui.items_list.currentIndex().row() + 1
         self.update_chapter()
 
-    def update_chapters_list(self):
+    def update_chapters_list(self) -> None:
         self.ui.items_list.clear()
         for chapter in self.__chapters:
             ch_item = QListWidgetItem(chapter.get_name())
@@ -127,7 +127,7 @@ class ReaderWindow(QMainWindow):
             self.ui.items_list.addItem(ch_item)
 
     @Slot()
-    def turn_page_next(self):
+    def turn_page_next(self) -> None:
         self.__db.add_history_note(
             HistoryNote(
                 self._current_chapter,
@@ -149,7 +149,7 @@ class ReaderWindow(QMainWindow):
             self.update_page()
 
     @Slot()
-    def turn_page_prev(self):
+    def turn_page_prev(self) -> None:
         self.__db.add_history_note(
             HistoryNote(
                 self._current_chapter,
@@ -164,7 +164,7 @@ class ReaderWindow(QMainWindow):
             self.__cur_page -= 1
             self.update_page()
 
-    def update_page(self):
+    def update_page(self) -> None:
         self.ui.page_label.setText(
             f"{translate('Other', 'Page')} "
             f"{self.__cur_page} / {self.__max_page}",
@@ -172,7 +172,7 @@ class ReaderWindow(QMainWindow):
         self.attach_image()
 
     @Slot()
-    def turn_chapter_next(self):
+    def turn_chapter_next(self) -> None:
         self.__db.add_history_note(
             HistoryNote(
                 self._current_chapter,
@@ -187,19 +187,19 @@ class ReaderWindow(QMainWindow):
         self.update_chapter()
 
     @Slot()
-    def turn_chapter_prev(self):
+    def turn_chapter_prev(self) -> None:
         if self.__cur_chapter == 1:
             return
         self.__cur_chapter -= 1
         self.update_chapter()
 
-    def update_chapter(self):
+    def update_chapter(self) -> None:
         self.__cur_page = 1
         self.get_images()
         self.update_page()
         self.ui.chapter_label.setText(self._current_chapter.get_name())
 
-    def attach_image(self):
+    def attach_image(self) -> None:
         self._set_image_thread.terminate()
         self._set_image_thread.wait()
         if not self.__images:
@@ -207,7 +207,7 @@ class ReaderWindow(QMainWindow):
         self.__content_container.set_state(ContentContainerState.FETCH_CONTENT)
         self._set_image_thread.start()
 
-    def __process_errors(self, exception: Exception):
+    def __process_errors(self, exception: Exception) -> None:
         try:
             raise exception
         except FetchContentError:
@@ -247,11 +247,11 @@ class ReaderWindow(QMainWindow):
             self.__catalog,
         )
 
-    def update_image(self, content):
+    def update_image(self, content) -> None:
         self.__content_container.set_state(ContentContainerState.SHOW_CONTENT)
         self.__content_container.set_content(content)
 
-    def get_images(self):
+    def get_images(self) -> None:
         chapter = self._current_chapter
         self.__images = self.__catalog.get_images(self.__manga, chapter)
         if not self.__images:

@@ -22,7 +22,7 @@ class SettingsPage(ScrollArea):
     check_for_updates_signal = Signal()
     theme_changed = Signal()
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None) -> None:
         super().__init__(parent=parent)
         self.setObjectName("SettingsInterface")
         self.scrollWidget = QWidget()
@@ -137,10 +137,10 @@ class SettingsPage(ScrollArea):
 
         self.__init_widget()
 
-    def setup(self):
+    def setup(self) -> None:
         pass
 
-    def __init_widget(self):
+    def __init_widget(self) -> None:
         self.resize(1000, 800)
         self.setHorizontalScrollBarPolicy(
             Qt.ScrollBarPolicy.ScrollBarAlwaysOff,
@@ -152,7 +152,7 @@ class SettingsPage(ScrollArea):
         self.__init_layout()
         self.__connect_signals()
 
-    def __init_layout(self):
+    def __init_layout(self) -> None:
         self.settingLabel.move(60, 63)
 
         self.personalGroup.addSettingCard(self.themeCard)
@@ -173,7 +173,7 @@ class SettingsPage(ScrollArea):
         self.expandLayout.addWidget(self.updateSoftwareGroup)
         self.expandLayout.addWidget(self.aboutGroup)
 
-    def __show_restart_tooltip(self):
+    def __show_restart_tooltip(self) -> None:
         InfoBar.warning(
             "",
             self.tr(
@@ -182,7 +182,7 @@ class SettingsPage(ScrollArea):
             parent=self.window(),
         )
 
-    def __connect_signals(self):
+    def __connect_signals(self) -> None:
         cfg.appRestartSig.connect(self.__show_restart_tooltip)
         self.aboutCard.clicked.connect(self.check_for_updates_signal)
         self.themeCard.optionChanged.connect(self.theme_changed)

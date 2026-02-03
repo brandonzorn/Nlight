@@ -11,7 +11,7 @@ class ReadMarkMode(IntEnum):
 
 
 class ReadMarkMenu(RoundMenu):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.set_as_read = Action(
             FluentIcon.ACCEPT_MEDIUM,
@@ -26,7 +26,7 @@ class ReadMarkMenu(RoundMenu):
             self.tr("Remove read mark"),
         )
 
-    def set_mode(self, mode: ReadMarkMode):
+    def set_mode(self, mode: ReadMarkMode) -> None:
         """
         Sets the mode of this object and
         adds the appropriate actions based on the mode.
@@ -53,7 +53,8 @@ class ReadMarkMenu(RoundMenu):
             ],
         }
         if mode not in actions:
-            raise ValueError("Invalid mode: must be a ReadMarkMode")
+            msg = "Invalid mode: must be a ReadMarkMode"
+            raise ValueError(msg)
         self.addActions(actions.get(mode, []))
 
 

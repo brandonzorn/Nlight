@@ -13,7 +13,7 @@ from nlightreader.widgets.items import MangaItem
 
 
 class MangaArea(ScrollArea, AbstractContentContainer):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.setWidgetResizable(True)
         self.setStyleSheet(
@@ -48,16 +48,17 @@ class MangaArea(ScrollArea, AbstractContentContainer):
         self.manga_thread_pool.setMaxThreadCount(self._column_count)
         self._set_images_thread = Thread(target=self.partial_image_addition)
 
-    def resizeEvent(self, arg__1):
+    def resizeEvent(self, arg__1) -> None:
         super().resizeEvent(arg__1)
         if arg__1.oldSize().width() != arg__1.size().width():
             self._scrollAreaWidgetContents.setFixedWidth(arg__1.size().width())
             if self._state == ContentContainerState.SHOW_CONTENT:
                 self.update_items()
 
-    def add_items(self, items: list[MangaItem]):
+    def add_items(self, items: list[MangaItem]) -> None:
         if self._state != ContentContainerState.SHOW_CONTENT:
-            raise PermissionError("this method is now available in this state")
+            msg = "this method is now available in this state"
+            raise PermissionError(msg)
         i, j = 0, 0
         for item in items:
             self._manga_items.append(item)
@@ -73,7 +74,7 @@ class MangaArea(ScrollArea, AbstractContentContainer):
                 i += 1
         self._set_images_thread.start()
 
-    def partial_image_addition(self):
+    def partial_image_addition(self) -> None:
         for item in self._manga_items:
             if (
                 self.manga_thread_pool.activeThreadCount()
@@ -82,7 +83,7 @@ class MangaArea(ScrollArea, AbstractContentContainer):
                 self.manga_thread_pool.waitForDone()
             item.update_image()
 
-    def delete_items(self):
+    def delete_items(self) -> None:
         self._set_images_thread.terminate()
         self.verticalScrollBar().setValue(0)
         for item in self._manga_items:
@@ -90,9 +91,10 @@ class MangaArea(ScrollArea, AbstractContentContainer):
             item.deleteLater()
         self._manga_items.clear()
 
-    def update_items(self):
+    def update_items(self) -> None:
         if self._state != ContentContainerState.SHOW_CONTENT:
-            raise PermissionError("this method is now available in this state")
+            msg = "this method is now available in this state"
+            raise PermissionError(msg)
         size = (
             self.size().width()
             - (self._content_grid.horizontalSpacing() * self._column_count)

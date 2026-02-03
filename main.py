@@ -1,8 +1,8 @@
+from http.server import HTTPServer
 import os
 import sys
-import time
-from http.server import HTTPServer
 from threading import Thread as PyThread
+import time
 
 import darkdetect
 from PySide6.QtCore import QThreadPool
@@ -10,7 +10,6 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from qfluentwidgets import InfoBar, setTheme, Theme
 
-from data import resource
 from nlightreader import ParentWindow
 from nlightreader.consts.app import APP_BRANCH, APP_NAME, APP_VERSION
 from nlightreader.consts.files import Icons
@@ -22,12 +21,11 @@ from nlightreader.utils.threads import Thread
 from nlightreader.utils.translator import NlightTranslator, translate
 from nlightreader.utils.utils import get_html
 
-
 __all__ = []
 
 
 class App(QApplication):
-    def __init__(self, argv):
+    def __init__(self, argv) -> None:
         super().__init__(argv)
         self.setApplicationDisplayName(APP_NAME)
         self.setApplicationVersion(APP_VERSION)
@@ -38,13 +36,13 @@ class App(QApplication):
         self.load_translator()
         self.update_theme_mode()
 
-    def load_translator(self):
+    def load_translator(self) -> None:
         locale = cfg.get(cfg.language).value
         self.translator.load(locale)
         self.installTranslator(self.translator)
 
     @staticmethod
-    def update_theme_mode():
+    def update_theme_mode() -> None:
         if (theme_mode := cfg.get(cfg.theme_mode)) == "Auto":
             setTheme(Theme.DARK if darkdetect.isDark() else Theme.LIGHT)
         else:
@@ -52,7 +50,7 @@ class App(QApplication):
 
 
 class MainWindow(ParentWindow):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.set_min_size_by_screen()
         self.setWindowTitle(APP_NAME)
@@ -78,13 +76,13 @@ class MainWindow(ParentWindow):
         if cfg.get(cfg.check_updates_at_startup):
             self.start_check_for_updates_thread()
 
-    def closeEvent(self, event, /):
+    def closeEvent(self, event, /) -> None:
         self._theme_updater.terminate()
         self._theme_updater.deleteLater()
         app.closeAllWindows()
         super().closeEvent(event)
 
-    def start_check_for_updates_thread(self):
+    def start_check_for_updates_thread(self) -> None:
         self._update_checker.terminate()
         self._update_checker.wait()
         self._update_checker.start()
@@ -104,7 +102,7 @@ class MainWindow(ParentWindow):
                 latest_version = version
         return latest_version
 
-    def show_update_info(self, result):
+    def show_update_info(self, result) -> None:
         info_bar_title = translate(
             "Message",
             "Check for updates.",
@@ -144,12 +142,12 @@ class MainWindow(ParentWindow):
             )
 
     @staticmethod
-    def theme_listener():
+    def theme_listener() -> None:
         theme = darkdetect.theme()
         while darkdetect.theme() == theme or cfg.get(cfg.theme_mode) != "Auto":
             time.sleep(1)
 
-    def update_style(self):
+    def update_style(self) -> None:
         app.update_theme_mode()
         self._theme_updater.start()
 

@@ -9,7 +9,7 @@ from nlightreader.widgets.pages.base_page import BasePage
 
 
 class LibraryPage(BasePage):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None) -> None:
         super().__init__(parent=parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)

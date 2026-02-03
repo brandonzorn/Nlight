@@ -4,7 +4,7 @@ import validators
 
 
 class Image:
-    def __init__(self, image_id: str, page_number: int, url: str | None):
+    def __init__(self, image_id: str, page_number: int, url: str | None) -> None:
         self.id = image_id
         self.page_number = page_number
         self.__url = None
@@ -16,11 +16,13 @@ class Image:
         return self.__url
 
     @url.setter
-    def url(self, url: str | None):
+    def url(self, url: str | None) -> None:
         if not isinstance(url, (str, NoneType)):
-            raise TypeError(f"Url must be str or None got {type(url)}")
+            msg = f"Url must be str or None got {type(url)}"
+            raise TypeError(msg)
         if url is not None and not validators.url(url):
-            raise ValueError(f"Url {url} is not valid")
+            msg = f"Url {url} is not valid"
+            raise ValueError(msg)
         self.__url = url
 
 

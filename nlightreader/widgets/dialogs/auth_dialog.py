@@ -1,3 +1,4 @@
+from typing import Never
 import webbrowser
 
 from qfluentwidgets import (
@@ -10,7 +11,7 @@ from qfluentwidgets import (
 
 
 class AbstractAuthDialog(MessageBoxBase):
-    def __init__(self, catalog, parent):
+    def __init__(self, catalog, parent) -> None:
         super().__init__(parent)
         self.session = catalog.session
         self.widget.setMinimumWidth(350)
@@ -24,15 +25,15 @@ class AbstractAuthDialog(MessageBoxBase):
 
         self.viewLayout.addWidget(self.titleLabel)
 
-    def verify_user_data(self):
+    def verify_user_data(self) -> Never:
         raise NotImplementedError
 
-    def get_user_data(self):
+    def get_user_data(self) -> Never:
         raise NotImplementedError
 
 
 class TokenAuthMessageBox(AbstractAuthDialog):
-    def __init__(self, catalog, parent):
+    def __init__(self, catalog, parent) -> None:
         super().__init__(catalog, parent)
         self.getCodeButton = PushButton(self.tr("Get code"))
         self.getCodeButton.clicked.connect(self.__open_login_page)
@@ -45,7 +46,7 @@ class TokenAuthMessageBox(AbstractAuthDialog):
         self.viewLayout.addWidget(self.tokenLineEdit)
         self.viewLayout.addWidget(self.getCodeButton)
 
-    def verify_user_data(self):
+    def verify_user_data(self) -> None:
         self.yesButton.setEnabled(bool(self.tokenLineEdit.text()))
 
     def get_user_data(self):
@@ -53,12 +54,12 @@ class TokenAuthMessageBox(AbstractAuthDialog):
             "token": self.tokenLineEdit.text(),
         }
 
-    def __open_login_page(self):
+    def __open_login_page(self) -> None:
         webbrowser.open_new_tab(self.session.get_auth_url())
 
 
 class UserDataAuthMessageBox(AbstractAuthDialog):
-    def __init__(self, catalog, parent):
+    def __init__(self, catalog, parent) -> None:
         super().__init__(catalog, parent)
         self.loginLineEdit = LineEdit(self)
         self.loginLineEdit.setPlaceholderText(self.tr("Login"))
@@ -73,7 +74,7 @@ class UserDataAuthMessageBox(AbstractAuthDialog):
         self.viewLayout.addWidget(self.loginLineEdit)
         self.viewLayout.addWidget(self.passwordLineEdit)
 
-    def verify_user_data(self):
+    def verify_user_data(self) -> None:
         self.yesButton.setEnabled(
             bool(
                 self.loginLineEdit.text(),

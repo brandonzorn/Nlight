@@ -4,7 +4,7 @@ from nlightreader.utils.config import cfg
 
 
 class BaseModel:
-    def __init__(self, content_id: str, catalog_id: int):
+    def __init__(self, content_id: str, catalog_id: int) -> None:
         self.__id = f"|{catalog_id}|_|{content_id}|"
         self.__content_id = content_id
         self.__catalog_id = catalog_id
@@ -38,7 +38,7 @@ class NamedBaseModel(BaseModel):
         catalog_id: int,
         name: str,
         russian: str,
-    ):
+    ) -> None:
         super().__init__(content_id, catalog_id)
         self.__name = name
         self.__russian = russian

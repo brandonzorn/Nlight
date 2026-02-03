@@ -20,7 +20,7 @@ class MangaItem(QWidget):
     manga_clicked = Signal(Manga)
     manga_changed = Signal()
 
-    def __init__(self, manga: Manga, *, is_added_to_lib=True, pool=None):
+    def __init__(self, manga: Manga, *, is_added_to_lib=True, pool=None) -> None:
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
@@ -33,27 +33,27 @@ class MangaItem(QWidget):
         self.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.name_lbl.setText(self.__manga.get_name())
 
-    def enterEvent(self, event):
+    def enterEvent(self, event) -> None:
         super().enterEvent(event)
         if self.isEnabled():
             self.set_image(0.3)
 
-    def leaveEvent(self, event):
+    def leaveEvent(self, event) -> None:
         super().leaveEvent(event)
         self.set_image(1.0)
 
-    def mouseReleaseEvent(self, event):
+    def mouseReleaseEvent(self, event) -> None:
         super().mouseReleaseEvent(event)
         if event.button() == Qt.MouseButton.LeftButton:
             if self.rect().contains(event.pos()):
                 self.manga_clicked.emit(self.__manga)
 
-    def on_context_menu(self, pos):
+    def on_context_menu(self, pos) -> None:
         manga_title = self.__manga.get_name()
         info_bar_parent = self.parentWidget().parentWidget()
         info_bar_duration = 2000
 
-        def add_to_lib():
+        def add_to_lib() -> None:
             self.__db.add_manga(self.__manga)
             self.__db.add_manga_library(self.__manga)
             InfoBar.success(
@@ -66,7 +66,7 @@ class MangaItem(QWidget):
                 parent=info_bar_parent,
             )
 
-        def remove_from_lib():
+        def remove_from_lib() -> None:
             self.__db.rem_manga_library(self.__manga)
             InfoBar.success(
                 title=manga_title,
@@ -79,10 +79,10 @@ class MangaItem(QWidget):
             )
             self.manga_changed.emit()
 
-        def open_in_browser():
+        def open_in_browser() -> None:
             webbrowser.open_new_tab(self.__catalog.get_manga_url(self.__manga))
 
-        def remove_files():
+        def remove_files() -> None:
             FileManager.remove_manga_files(self.__manga, self.__catalog)
             InfoBar.success(
                 title=manga_title,
@@ -94,7 +94,7 @@ class MangaItem(QWidget):
                 parent=info_bar_parent,
             )
 
-        def open_local_files():
+        def open_local_files() -> None:
             FileManager.open_dir_in_explorer(self.__manga, self.__catalog)
 
         menu = LibraryMangaMenu()
@@ -112,7 +112,7 @@ class MangaItem(QWidget):
         menu.open_local_files.triggered.connect(open_local_files)
         menu.exec(self.mapToGlobal(pos))
 
-    def set_size(self, size: int):
+    def set_size(self, size: int) -> None:
         current_size = self.size()
         max_size = QSize(size, int(size * 1.5))
         if current_size != max_size:
@@ -122,13 +122,13 @@ class MangaItem(QWidget):
         if self.__manga_pixmap:
             self.set_image()
 
-    def get_image(self):
+    def get_image(self) -> None:
         self.__manga_pixmap = FileManager.get_manga_preview(
             self.__manga,
             self.__catalog,
         )
 
-    def set_image(self, opacity: float = 1.0):
+    def set_image(self, opacity: float = 1.0) -> None:
         if not self.__manga_pixmap:
             return
         device_pixel_ratio = self.devicePixelRatio()
@@ -174,7 +174,7 @@ class MangaItem(QWidget):
         result_pixmap.setDevicePixelRatio(device_pixel_ratio)
         self.ui.image.setPixmap(result_pixmap)
 
-    def update_image(self):
+    def update_image(self) -> None:
         Worker(
             target=self.get_image,
             callback=self.set_image,

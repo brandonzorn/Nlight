@@ -12,7 +12,7 @@ from nlightreader.utils.decorators import singleton
 
 @singleton
 class Database:
-    def __init__(self):
+    def __init__(self) -> None:
         db_file_path = APP_DATA_PATH / "data.db"
         self.__engine = sqlalchemy.create_engine(f"sqlite:///{db_file_path}")
         self._metadata = sqlalchemy.MetaData()
@@ -157,7 +157,7 @@ class Database:
         migrate1 = ("preview_url", "manga", "TEXT")
         self.add_column_migration(*migrate1)
 
-    def add_column_migration(self, column, table, params):
+    def add_column_migration(self, column, table, params) -> None:
         inspector = sqlalchemy.inspect(self.__engine)
         columns = inspector.get_columns(table)
         columns_names = [column["name"] for column in columns]
@@ -169,7 +169,7 @@ class Database:
             )
             conn.commit()
 
-    def add_manga(self, manga: Manga):
+    def add_manga(self, manga: Manga) -> None:
         manga_data = manga.to_dict()
         manga_insert = (
             insert(
@@ -187,7 +187,7 @@ class Database:
             conn.execute(manga_insert)
             conn.commit()
 
-    def add_mangas(self, mangas: list[Manga]):
+    def add_mangas(self, mangas: list[Manga]) -> None:
         if not mangas:
             return
         with self.__engine.connect() as conn:
@@ -240,7 +240,7 @@ class Database:
         x = select_manga_result.fetchone()
         return self._make_manga(x)
 
-    def add_chapters(self, chapters: list[Chapter], manga: Manga):
+    def add_chapters(self, chapters: list[Chapter], manga: Manga) -> None:
         if not chapters or not manga:
             return
         with self.__engine.connect() as conn:
@@ -315,7 +315,7 @@ class Database:
         self,
         manga: Manga,
         lib_list: Nl.LibList = Nl.LibList.planned,
-    ):
+    ) -> None:
         lib_manga_data = {"manga_id": manga.id, "list": lib_list.value}
         manga_library_insert = (
             insert(
@@ -373,7 +373,7 @@ class Database:
         a = select_chapter_result.fetchone()
         return bool(a)
 
-    def rem_manga_library(self, manga: Manga):
+    def rem_manga_library(self, manga: Manga) -> None:
         delete_manga_library = sqlalchemy.delete(self._library).filter_by(
             manga_id=manga.id,
         )
@@ -403,7 +403,7 @@ class Database:
         a = select_chapter_result.fetchall()
         return bool(a[0][0])
 
-    def add_history_note(self, note: HistoryNote):
+    def add_history_note(self, note: HistoryNote) -> None:
         note_data = note.to_dict()
         history_note_insert = (
             insert(
@@ -421,7 +421,7 @@ class Database:
             conn.execute(history_note_insert)
             conn.commit()
 
-    def add_history_notes(self, history_notes: list[HistoryNote]):
+    def add_history_notes(self, history_notes: list[HistoryNote]) -> None:
         if not history_notes:
             return
         with self.__engine.connect() as conn:
@@ -455,7 +455,7 @@ class Database:
             notes.append(HistoryNote(chapter, manga, is_completed))
         return notes
 
-    def del_history_notes(self, manga: Manga):
+    def del_history_notes(self, manga: Manga) -> None:
         delete_history_notes = sqlalchemy.delete(
             self._chapter_history,
         ).filter_by(
@@ -465,7 +465,7 @@ class Database:
             conn.execute(delete_history_notes)
             conn.commit()
 
-    def del_history_note(self, chapter: Chapter):
+    def del_history_note(self, chapter: Chapter) -> None:
         delete_history_note = sqlalchemy.delete(
             self._chapter_history,
         ).filter_by(
