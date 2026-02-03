@@ -20,7 +20,7 @@ from nlightreader.utils.text_formatter import description_to_html
 from nlightreader.utils.threads import Worker
 from nlightreader.utils.translator import translate
 from nlightreader.utils.utils import get_language_icon
-from nlightreader.widgets.contexts import ReadMarkMenu
+from nlightreader.widgets.contexts import ReadMarkMenu, ReadMarkMode
 from nlightreader.widgets.dialogs import CharacterInfoDialog, RateDialog
 from nlightreader.widgets.items import ChapterTreeItem
 from nlightreader.windows.reader_window import ReaderWindow
@@ -126,12 +126,11 @@ class InfoPage(QWidget):
             return
         selected_chapter = selected_item.chapter
         if not self.__db.check_complete_chapter(selected_chapter):
-            menu.set_mode(0)
+            menu.set_mode(ReadMarkMode.SET_AS_READ)
+        elif self.__db.get_complete_status(selected_chapter):
+            menu.set_mode(ReadMarkMode.REMOVE_ONLY)
         else:
-            if self.__db.get_complete_status(selected_chapter):
-                menu.set_mode(1)
-            else:
-                menu.set_mode(2)
+            menu.set_mode(ReadMarkMode.ALL)
         menu.set_as_read.triggered.connect(set_as_read)
         menu.set_as_read_all.triggered.connect(set_as_read_all)
         menu.remove_read_state.triggered.connect(remove_read_state)

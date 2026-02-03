@@ -3,7 +3,6 @@ from qfluentwidgets import FluentIcon, FluentWindow, NavigationItemPosition
 
 from nlightreader.consts.files.files import NlFluentIcons
 from nlightreader.models import Manga
-from nlightreader.utils.translator import translate
 from nlightreader.widgets.pages import (
     ExternalLibraryPage,
     HistoryPage,
@@ -40,27 +39,27 @@ class ParentWindow(FluentWindow):
         self.addSubInterface(
             self.library_interface,
             FluentIcon.LIBRARY,
-            translate("MainWindow", "Library"),
+            self.tr("Library"),
         )
         self.addSubInterface(
             self.main_interface,
             FluentIcon.HOME,
-            translate("MainWindow", "Main"),
+            self.tr("Main"),
         )
         self.addSubInterface(
             self.external_library_interface,
             NlFluentIcons.SHIKIMORI,
-            translate("MainWindow", "Shikimori"),
+            self.tr("Shikimori"),
         )
         self.addSubInterface(
             self.history_interface,
             FluentIcon.HISTORY,
-            translate("MainWindow", "History"),
+            self.tr("History"),
         )
         self.addSubInterface(
             self.settings_interface,
             FluentIcon.SETTING,
-            translate("MainWindow", "Settings"),
+            self.tr("Settings"),
             position=NavigationItemPosition.BOTTOM,
         )
 
