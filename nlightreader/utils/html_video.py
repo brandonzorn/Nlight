@@ -3,7 +3,7 @@ from render_html import render_in_browser
 from nlightreader.models import Chapter, Manga
 
 
-def start_html_video(manga: Manga, chapter: Chapter):
+def start_html_video(manga: Manga, chapter: Chapter) -> None:
     src_url = chapter.__getattribute__("url")
     render_in_browser(
         f"""

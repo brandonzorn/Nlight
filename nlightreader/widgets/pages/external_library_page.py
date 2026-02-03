@@ -19,7 +19,7 @@ from nlightreader.widgets.pages.base_page import BasePage
 
 
 class ExternalLibraryPage(BasePage):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None) -> None:
         super().__init__(parent=parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
@@ -70,7 +70,7 @@ class ExternalLibraryPage(BasePage):
         self.ui.auth_btn.setEnabled(False)
         return self.catalog.get_user()
 
-    def set_user_info(self, user: User):
+    def set_user_info(self, user: User) -> None:
         if user.nickname:
             self.ui.auth_btn.setText(user.nickname)
         else:
@@ -80,17 +80,17 @@ class ExternalLibraryPage(BasePage):
         self.ui.auth_btn.setEnabled(True)
 
     @override
-    def update_page(self):
+    def update_page(self) -> None:
         self.ui.page_label.setText(
             f"{translate('Other', 'Page')} {self.request_params.page}",
         )
 
-    def auth_success_callback(self, user: User):
+    def auth_success_callback(self, user: User) -> None:
         self.set_user_info(user)
         self.get_content()
 
     @Slot()
-    def authorize(self):
+    def authorize(self) -> None:
         if self.catalog.fields == 1:
             w = TokenAuthMessageBox(self.catalog, parent=self)
         else:
@@ -103,7 +103,7 @@ class ExternalLibraryPage(BasePage):
             ).start()
 
     @Slot()
-    def search(self):
+    def search(self) -> None:
         self.request_params.page = 1
         self.request_params.search = self.ui.title_line.text()
         self.get_content()

@@ -14,7 +14,7 @@ from nlightreader.widgets.pages.base_page import BasePage
 
 
 class MainPage(BasePage):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None) -> None:
         super().__init__(parent=parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
@@ -52,7 +52,7 @@ class MainPage(BasePage):
         self.__filters_controller.set_genres_container(self.__genres_dialog)
 
     @override
-    def setup(self):
+    def setup(self) -> None:
         if not self.catalog:
             self.ui.catalogs_frame.hide()
             self.ui.catalogs_list.clear()
@@ -69,26 +69,26 @@ class MainPage(BasePage):
         item.manga_clicked.connect(self.manga_open.emit)
         return item
 
-    def change_catalog(self, index: int):
+    def change_catalog(self, index: int) -> None:
         catalog = USER_CATALOGS[index]
         self.catalog = catalog()
         self.setup_filters()
         self.apply_filter()
 
     @override
-    def update_page(self):
+    def update_page(self) -> None:
         self.ui.page_label.setText(
             f"{translate('Other', 'Page')} {self.request_params.page}",
         )
 
     @Slot()
-    def search(self):
+    def search(self) -> None:
         self.request_params.page = 1
         self.request_params.search = self.ui.title_line.text()
         self.get_content()
 
     @Slot()
-    def apply_filter(self):
+    def apply_filter(self) -> None:
         self.request_params.clear()
         self.request_params.set_order(
             self.__filters_controller.get_active_order(),
@@ -103,7 +103,7 @@ class MainPage(BasePage):
         self.get_content()
 
     @Slot()
-    def reset_filter(self):
+    def reset_filter(self) -> None:
         self.__filters_controller.reset_items()
         self.request_params.clear()
         self.request_params.set_order(
@@ -112,7 +112,7 @@ class MainPage(BasePage):
         self.ui.title_line.clear()
         self.get_content()
 
-    def setup_filters(self):
+    def setup_filters(self) -> None:
         self.clear_filters_items()
         orders = self.catalog.get_orders()
         kinds = self.catalog.get_kinds()
@@ -124,11 +124,11 @@ class MainPage(BasePage):
         self.__filters_controller.add_kinds(kinds)
         self.__filters_controller.add_genres(genres)
 
-    def clear_filters_items(self):
+    def clear_filters_items(self) -> None:
         self.__filters_controller.clear()
 
     @Slot()
-    def change_filters_visible(self):
+    def change_filters_visible(self) -> None:
         if self.ui.filter_btn.isChecked():
             self.ui.filters_widget.setVisible(True)
         else:
@@ -136,7 +136,7 @@ class MainPage(BasePage):
             self.ui.catalogs_frame.setVisible(False)
 
     @Slot()
-    def open_genres_dialog(self):
+    def open_genres_dialog(self) -> None:
         self.__genres_dialog.show()
 
 

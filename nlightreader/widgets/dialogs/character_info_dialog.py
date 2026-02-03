@@ -22,7 +22,7 @@ from nlightreader.utils.threads import Worker
 
 
 class CharacterInfoDialog(MessageBoxBase):
-    def __init__(self, character: Character, parent):
+    def __init__(self, character: Character, parent) -> None:
         super().__init__(parent)
         self.__character = character
         self.__catalog = get_catalog_by_id(character.catalog_id)
@@ -74,11 +74,11 @@ class CharacterInfoDialog(MessageBoxBase):
         self.update_description()
         Worker(self.setup_image).start()
 
-    def closeEvent(self, arg__1):
+    def closeEvent(self, arg__1) -> None:
         self.deleteLater()
 
     @Slot()
-    def update_description(self):
+    def update_description(self) -> None:
         self.description_text.setHtml(
             description_to_html(
                 self.__character.description,
@@ -86,7 +86,7 @@ class CharacterInfoDialog(MessageBoxBase):
             ),
         )
 
-    def setup_image(self):
+    def setup_image(self) -> None:
         self.image_label.setPixmap(
             FileManager.get_character_preview(
                 self.__character,

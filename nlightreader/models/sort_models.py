@@ -8,7 +8,7 @@ class Kind(NamedBaseModel):
         catalog_id: int,
         name: str,
         russian: str,
-    ):
+    ) -> None:
         super().__init__(content_id, catalog_id, name, russian)
 
 
@@ -19,7 +19,7 @@ class Order(NamedBaseModel):
         catalog_id: int,
         name: str,
         russian: str,
-    ):
+    ) -> None:
         super().__init__(content_id, catalog_id, name, russian)
 
 
@@ -30,7 +30,7 @@ class Genre(NamedBaseModel):
         catalog_id: int,
         name: str,
         russian: str,
-    ):
+    ) -> None:
         super().__init__(content_id, catalog_id, name, russian)
 
 
@@ -41,7 +41,7 @@ class Status(NamedBaseModel):
         catalog_id: int,
         name: str,
         russian: str,
-    ):
+    ) -> None:
         super().__init__(content_id, catalog_id, name, russian)
 
 

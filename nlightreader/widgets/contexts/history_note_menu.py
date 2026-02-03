@@ -2,7 +2,7 @@ from qfluentwidgets import Action, FluentIcon, RoundMenu
 
 
 class HistoryNoteMenu(RoundMenu):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.set_as_read = Action(
             FluentIcon.ACCEPT_MEDIUM,
@@ -13,7 +13,7 @@ class HistoryNoteMenu(RoundMenu):
             self.tr("Remove all"),
         )
 
-    def set_mode(self, mode: int):
+    def set_mode(self, mode: int) -> None:
         """
         Sets the mode of this object and
         adds the appropriate actions based on the mode.
@@ -29,7 +29,8 @@ class HistoryNoteMenu(RoundMenu):
             1: [self.remove_all],
         }
         if mode not in actions:
-            raise ValueError("Invalid mode: must be 0 or 1")
+            msg = "Invalid mode: must be 0 or 1"
+            raise ValueError(msg)
         self.addActions(actions[mode])
 
 

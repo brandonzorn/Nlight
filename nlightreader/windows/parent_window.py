@@ -14,7 +14,7 @@ from nlightreader.widgets.pages import (
 
 
 class ParentWindow(FluentWindow):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.library_interface = LibraryPage()
@@ -35,7 +35,7 @@ class ParentWindow(FluentWindow):
 
         self.init_navigation()
 
-    def init_navigation(self):
+    def init_navigation(self) -> None:
         self.addSubInterface(
             self.library_interface,
             FluentIcon.LIBRARY,
@@ -64,7 +64,7 @@ class ParentWindow(FluentWindow):
         )
 
     @Slot(int)
-    def on_widget_change(self, value):
+    def on_widget_change(self, value) -> None:
         if value in range(4):
             if any(
                 i.objectName() == "FormInfo"
@@ -81,7 +81,7 @@ class ParentWindow(FluentWindow):
             return
         self.stackedWidget.currentWidget().setup()
 
-    def set_min_size_by_screen(self):
+    def set_min_size_by_screen(self) -> None:
         self.setMinimumSize(
             QSize(
                 self.screen().size().width() // 2,
@@ -89,24 +89,24 @@ class ParentWindow(FluentWindow):
             ),
         )
 
-    def delete_info_interface(self):
+    def delete_info_interface(self) -> None:
         self.stackedWidget.view.removeWidget(self.info_interface)
         self.info_interface.deleteLater()
         self.info_interface = None
 
     @Slot(Manga)
-    def open_info(self, manga: Manga):
+    def open_info(self, manga: Manga) -> None:
         stack = self.stackedWidget.view
         self.stackedWidget.setEnabled(False)
 
         @Slot()
-        def set_info_widget():
+        def set_info_widget() -> None:
             stack.addWidget(self.info_interface)
             self.switchTo(self.info_interface)
             self.stackedWidget.setEnabled(True)
 
         @Slot()
-        def delete_info_widget():
+        def delete_info_widget() -> None:
             self.info_interface.close()
             self.stackedWidget.setEnabled(True)
 

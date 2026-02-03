@@ -5,7 +5,7 @@ from nlightreader.models import Genre
 
 
 class GenresDialogUi(MessageBoxBase):
-    def __init__(self, genres: dict[Genre, bool], parent=None):
+    def __init__(self, genres: dict[Genre, bool], parent=None) -> None:
         super().__init__(parent)
         self.genres_items = {}
         self.max_genres_per_row = 5
@@ -24,7 +24,7 @@ class GenresDialogUi(MessageBoxBase):
             if checkbox.isChecked()
         ]
 
-    def _populate_genres(self, genres: dict[Genre, bool]):
+    def _populate_genres(self, genres: dict[Genre, bool]) -> None:
         for index, (genre, selected) in enumerate(genres.items()):
             checkbox = CheckBox(genre.get_name())
             checkbox.setChecked(selected)
@@ -34,28 +34,28 @@ class GenresDialogUi(MessageBoxBase):
 
 
 class GenresDialog:
-    def __init__(self, parent):
+    def __init__(self, parent) -> None:
         self.parent = parent
         self.genres: dict[Genre, bool] = {}
 
-    def set_genres(self, genres: list[Genre]):
+    def set_genres(self, genres: list[Genre]) -> None:
         self.genres = {genre: False for genre in genres}
 
     @property
     def selected_genres(self):
         return [genre for genre, selected in self.genres.items() if selected]
 
-    def show(self):
+    def show(self) -> None:
         w = GenresDialogUi(self.genres, parent=self.parent)
         if w.exec():
             for genre in w.get_selected_genres():
                 self.genres[genre] = True
 
-    def reset_items(self):
+    def reset_items(self) -> None:
         for genre in self.genres:
             self.genres[genre] = False
 
-    def clear(self):
+    def clear(self) -> None:
         self.genres.clear()
 
 

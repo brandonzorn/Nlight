@@ -20,7 +20,7 @@ class ContentContainerState(Enum):
 
 
 class AbstractContentContainer:
-    def __init__(self):
+    def __init__(self) -> None:
         self._progress_ring = IndeterminateProgressRing()
         self._progress_ring.setVisible(False)
 
@@ -42,7 +42,7 @@ class AbstractContentContainer:
 
         self._state = ContentContainerState.EMPTY
 
-    def install(self, parent):
+    def install(self, parent) -> None:
         self.get_content_widget().layout().addWidget(
             self._no_content_error_widget,
         )
@@ -57,7 +57,7 @@ class AbstractContentContainer:
     def _reset_area(self) -> None:
         raise NotImplementedError
 
-    def set_state(self, state: ContentContainerState):
+    def set_state(self, state: ContentContainerState) -> None:
         state_objects = (
             self._progress_ring,
             self._no_content_error_widget,
@@ -65,9 +65,8 @@ class AbstractContentContainer:
             self._content_widget,
         )
         if not isinstance(state, ContentContainerState):
-            raise TypeError(
-                f"state must be ContentContainerState got {type(state)}",
-            )
+            msg = f"state must be ContentContainerState got {type(state)}"
+            raise TypeError(msg)
 
         self._state = state
 

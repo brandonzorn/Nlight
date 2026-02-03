@@ -1,12 +1,12 @@
-import json
 from http.server import BaseHTTPRequestHandler
+import json
 
 from nlightreader.items import HistoryNote
 from nlightreader.utils.database import Database
 
 
 class KodikHTTPRequestHandler(BaseHTTPRequestHandler):
-    def do_POST(self):
+    def do_POST(self) -> None:
         content_length = int(self.headers["Content-Length"])
         post_data = self.rfile.read(content_length)
         data = json.loads(post_data)
@@ -27,7 +27,7 @@ class KodikHTTPRequestHandler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
 
-    def do_OPTIONS(self):
+    def do_OPTIONS(self) -> None:
         self.send_response(200)
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Methods", "POST")

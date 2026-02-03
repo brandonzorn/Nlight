@@ -1,7 +1,7 @@
 import os
+from pathlib import Path
 import re
 import shutil
-from pathlib import Path
 
 from PySide6.QtGui import QPixmap
 
@@ -104,8 +104,7 @@ class FileManager:
                 get_full_file_path(path, file_name),
             ).open(encoding="utf8") as f:
                 text = f.read()
-                text = text.replace("\n", "<br>")
-                return text
+                return text.replace("\n", "<br>")
         except FileNotFoundError:
             return ""
 
@@ -137,19 +136,19 @@ class FileManager:
         manga: Manga,
         chapter: Chapter,
         catalog: AbstractCatalog,
-    ):
+    ) -> None:
         remove_file(
             cls.__get_chapter_folder(manga, chapter, catalog),
         )
 
     @classmethod
-    def remove_manga_files(cls, manga: Manga, catalog: AbstractCatalog):
+    def remove_manga_files(cls, manga: Manga, catalog: AbstractCatalog) -> None:
         remove_file(
             cls.__get_manga_folder(manga, catalog),
         )
 
     @classmethod
-    def open_dir_in_explorer(cls, manga: Manga, catalog: AbstractCatalog):
+    def open_dir_in_explorer(cls, manga: Manga, catalog: AbstractCatalog) -> None:
         os.startfile(
             get_full_dir_path(
                 cls.__get_manga_folder(manga, catalog),
@@ -170,7 +169,7 @@ def check_file_exists(path: Path, file_name: str | Path) -> bool:
     return get_full_file_path(path, file_name).exists()
 
 
-def save_file(path: Path, file_name: str | Path, file_content):
+def save_file(path: Path, file_name: str | Path, file_content) -> None:
     full_path = get_full_dir_path(path)
     full_file_path = Path(full_path, file_name)
     if not full_file_path.exists():

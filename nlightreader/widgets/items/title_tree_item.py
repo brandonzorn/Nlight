@@ -4,7 +4,7 @@ from nlightreader.models import Chapter
 
 
 class ChapterTreeItem(QTreeWidgetItem):
-    def __init__(self, chapter: Chapter):
+    def __init__(self, chapter: Chapter) -> None:
         super().__init__([chapter.get_name()])
         self.chapter = chapter
 
