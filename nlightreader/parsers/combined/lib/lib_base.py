@@ -1,5 +1,4 @@
 from nlightreader.consts.enums import Nl
-from nlightreader.consts.urls import URL_LIB_API
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Manga
 from nlightreader.parsers.catalog import AbstractCatalog
@@ -7,16 +6,13 @@ from nlightreader.utils.utils import get_html
 
 
 class LibBase(AbstractCatalog):
-    def __init__(self):
-        super().__init__()
-        self.url_api = URL_LIB_API
+    _URL_API = "https://api.cdnlibs.org/api"
 
-        # override in subclass
-        self.content_name = None
-        self.site_id = None
+    _CONTENT_NAME = None
+    _SITE_ID = None
 
     def get_manga(self, manga: Manga) -> Manga:
-        url = f"{self.url_api}/{self.content_name}/{manga.content_id}"
+        url = f"{self._URL_API}/{self._CONTENT_NAME}/{manga.content_id}"
         params = {"fields[]": ["summary", "rate_avg"]}
         response = get_html(url, params=params, content_type="json")
         if response:
@@ -28,9 +24,9 @@ class LibBase(AbstractCatalog):
         return manga
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
-        url = f"{self.url_api}/{self.content_name}"
+        url = f"{self._URL_API}/{self._CONTENT_NAME}"
         params = {
-            "site_id[]": self.site_id,
+            "site_id[]": self._SITE_ID,
             "sort_by": form.get_order_id(),
             "types[]": form.get_kind_ids(),
             "genres[]": form.get_genre_ids(),
@@ -60,7 +56,7 @@ class LibBase(AbstractCatalog):
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         branches_url = (
-            f"{self.url_api}/branches/{manga.content_id.split('--')[0]}"
+            f"{self._URL_API}/branches/{manga.content_id.split('--')[0]}"
         )
 
         branches = {}
@@ -69,7 +65,7 @@ class LibBase(AbstractCatalog):
                 branches.update({branch["id"]: branch["teams"][0]["name"]})
 
         chapters_url = (
-            f"{self.url_api}/{self.content_name}/{manga.content_id}/chapters"
+            f"{self._URL_API}/{self._CONTENT_NAME}/{manga.content_id}/chapters"
         )
 
         chapters: list[Chapter] = []

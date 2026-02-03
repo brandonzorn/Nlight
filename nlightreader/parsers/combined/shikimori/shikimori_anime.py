@@ -17,14 +17,11 @@ from nlightreader.utils.utils import get_html
 class ShikimoriAnime(AbstractAnimeCatalog):
     CATALOG_ID = 11
     CATALOG_NAME = "Shikimori(Anime)"
+    _URL = URL_SHIKIMORI
+    _URL_API = URL_SHIKIMORI_API
+    _HEADERS = SHIKIMORI_HEADERS
 
-    def __init__(self):
-        super().__init__()
-        self.url = URL_SHIKIMORI
-        self.url_api = URL_SHIKIMORI_API
-        self.headers = SHIKIMORI_HEADERS
-
-    def setup_manga(self, data: dict) -> Manga:
+    def _setup_manga(self, data: dict) -> Manga:
         return Manga(
             str(data.get("id")),
             self.CATALOG_ID,
@@ -33,8 +30,8 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         )
 
     def get_manga(self, manga: Manga) -> Manga:
-        url = f"{self.url_api}/animes/{manga.content_id}"
-        response = get_html(url, headers=self.headers, content_type="json")
+        url = f"{self._URL_API}/animes/{manga.content_id}"
+        response = get_html(url, headers=self._HEADERS, content_type="json")
         if response:
             data = response
             manga.score = float(data.get("score"))
@@ -48,7 +45,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         return manga
 
     def search_manga(self, form: RequestForm):
-        url = f"{self.url_api}/animes"
+        url = f"{self._URL_API}/animes"
         params = {
             "limit": form.limit,
             "search": form.search,
@@ -59,7 +56,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         }
         response = get_html(
             url,
-            headers=self.headers,
+            headers=self._HEADERS,
             params=params,
             content_type="json",
         )
@@ -67,7 +64,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         mangas = []
         if response:
             for i in response:
-                mangas.append(self.setup_manga(i))
+                mangas.append(self._setup_manga(i))
         return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
@@ -94,8 +91,8 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         return chapters
 
     def get_character(self, character: Character) -> Character:
-        url = f"{self.url_api}/characters/{character.content_id}"
-        response = get_html(url, headers=self.headers, content_type="json")
+        url = f"{self._URL_API}/characters/{character.content_id}"
+        response = get_html(url, headers=self._HEADERS, content_type="json")
         if response:
             if description := response.get("description"):
                 character.description = description
@@ -103,20 +100,20 @@ class ShikimoriAnime(AbstractAnimeCatalog):
 
     def get_preview(self, manga: Manga):
         return get_html(
-            f"{self.url}/system/animes/original/{manga.content_id}.jpg",
+            f"{self._URL}/system/animes/original/{manga.content_id}.jpg",
             content_type="content",
         )
 
     def get_character_preview(self, character: Character):
         return get_html(
-            f"{self.url}/system/characters/"
+            f"{self._URL}/system/characters/"
             f"original/{character.content_id}.jpg",
             content_type="content",
         )
 
     def get_genres(self):
-        url = f"{self.url_api}/genres"
-        response = get_html(url, headers=self.headers, content_type="json")
+        url = f"{self._URL_API}/genres"
+        response = get_html(url, headers=self._HEADERS, content_type="json")
         if response:
             return [
                 Genre(
@@ -143,8 +140,8 @@ class ShikimoriAnime(AbstractAnimeCatalog):
 
     def get_characters(self, manga: Manga) -> list[Character]:
         characters = []
-        url = f"{self.url_api}/animes/{manga.content_id}/roles"
-        response = get_html(url, headers=self.headers, content_type="json")
+        url = f"{self._URL_API}/animes/{manga.content_id}/roles"
+        response = get_html(url, headers=self._HEADERS, content_type="json")
         if response:
             for i in response:
                 if i.get("roles"):
@@ -166,7 +163,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         return characters
 
     def get_manga_url(self, manga: Manga) -> str:
-        return f"{self.url}/animes/{manga.content_id}"
+        return f"{self._URL}/animes/{manga.content_id}"
 
 
 __all__ = [
