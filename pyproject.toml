@@ -31,3 +31,54 @@ exclude = [
     "dist",
     "venv",
 ]
+
+
+[tool.ruff]
+line-length = 79
+target-version = "py311"
+extend-exclude = ["data"]
+
+[tool.ruff.format]
+indent-style = "space"
+quote-style = "double"
+
+[tool.ruff.lint]
+select = [
+    "A",
+    "ANN",
+    "ARG",
+    "COM",
+    "E",
+    "EM",
+    "ERA",
+    "F",
+    "FIX",
+    "I",
+    "ISC",
+    "N",
+    "PTH",
+    "RET",
+    "RSE",
+    "Q",
+    "T20",
+    "UP",
+    "W",
+]
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+order-by-type = false
+known-first-party = [
+    "nlightreader",
+    "data",
+    "keys",
+]
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+inline-quotes = "double"
+multiline-quotes = "double"
+
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = true
+suppress-dummy-args = true
