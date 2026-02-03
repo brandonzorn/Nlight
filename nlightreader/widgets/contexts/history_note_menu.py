@@ -1,18 +1,16 @@
 from qfluentwidgets import Action, FluentIcon, RoundMenu
 
-from nlightreader.utils.translator import translate
-
 
 class HistoryNoteMenu(RoundMenu):
     def __init__(self):
         super().__init__()
         self.set_as_read = Action(
             FluentIcon.ACCEPT_MEDIUM,
-            translate("Menu", "Mark as read"),
+            self.tr("Mark as read"),
         )
         self.remove_all = Action(
             FluentIcon.REMOVE,
-            translate("Menu", "Remove all"),
+            self.tr("Remove all"),
         )
 
     def set_mode(self, mode: int):
