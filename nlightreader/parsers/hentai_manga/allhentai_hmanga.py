@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 
 from nlightreader.consts.enums import Nl
-from nlightreader.consts.urls import URL_ALLHENTAI
 from nlightreader.exceptions import parser_content_exc
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
@@ -11,13 +10,10 @@ from nlightreader.utils.utils import get_html, make_request
 class AllHentai(AbstractHentaiMangaCatalog):
     CATALOG_ID = 8
     CATALOG_NAME = "AllHentai"
-
-    def __init__(self):
-        super().__init__()
-        self.url = URL_ALLHENTAI
+    _URL = "https://20.allhen.online"
 
     def search_manga(self, form):
-        url = f"{self.url}/search"
+        url = f"{self._URL}/search"
         if not form.search:
             raise parser_content_exc.RequestsParamsError(
                 "Search field is empty",
@@ -30,7 +26,7 @@ class AllHentai(AbstractHentaiMangaCatalog):
         response = make_request(
             url,
             "POST",
-            headers=self.headers,
+            headers=self._HEADERS,
             data=params,
             content_type="text",
         )
@@ -50,8 +46,8 @@ class AllHentai(AbstractHentaiMangaCatalog):
         return mangas
 
     def get_chapters(self, manga: Manga):
-        url = f"{self.url}/{manga.content_id}"
-        response = get_html(url, headers=self.headers, content_type="text")
+        url = f"{self._URL}/{manga.content_id}"
+        response = get_html(url, headers=self._HEADERS, content_type="text")
 
         chapters = []
         if not response:
@@ -89,8 +85,8 @@ class AllHentai(AbstractHentaiMangaCatalog):
         return
 
     def get_preview(self, manga: Manga):
-        url = f"{self.url}/{manga.content_id}"
-        response = get_html(url, headers=self.headers, content_type="text")
+        url = f"{self._URL}/{manga.content_id}"
+        response = get_html(url, headers=self._HEADERS, content_type="text")
         if not response:
             return None
         soup = BeautifulSoup(response, "html.parser")
@@ -100,11 +96,11 @@ class AllHentai(AbstractHentaiMangaCatalog):
         return get_html(
             img_src,
             content_type="content",
-            headers=self.headers,
+            headers=self._HEADERS,
         )
 
     def get_manga_url(self, manga: Manga) -> str:
-        return f"{self.url}/{manga.content_id}"
+        return f"{self._URL}/{manga.content_id}"
 
 
 __all__ = [

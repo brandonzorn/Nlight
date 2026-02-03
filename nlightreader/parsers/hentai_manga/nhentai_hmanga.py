@@ -1,7 +1,6 @@
 import validators
 from bs4 import BeautifulSoup, element
 
-from nlightreader.consts.urls import URL_NHENTAI
 from nlightreader.exceptions import parser_content_exc
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
@@ -11,13 +10,10 @@ from nlightreader.utils.utils import get_html
 class NHentai(AbstractHentaiMangaCatalog):
     CATALOG_ID = 7
     CATALOG_NAME = "NHentai"
-
-    def __init__(self):
-        super().__init__()
-        self.url = URL_NHENTAI
+    _URL = "https://nhentai.net"
 
     def search_manga(self, form):
-        url = f"{self.url}/search"
+        url = f"{self._URL}/search"
         if not form.search:
             raise parser_content_exc.RequestsParamsError(
                 "Search field is empty",
@@ -28,7 +24,7 @@ class NHentai(AbstractHentaiMangaCatalog):
         }
         response = get_html(
             url,
-            headers=self.headers,
+            headers=self._HEADERS,
             params=params,
             content_type="text",
         )
@@ -77,9 +73,9 @@ class NHentai(AbstractHentaiMangaCatalog):
         ]
 
     def get_images(self, manga: Manga, chapter: Chapter):
-        url = f"{self.url}/g/{manga.content_id}"
+        url = f"{self._URL}/g/{manga.content_id}"
         images = []
-        response = get_html(url, headers=self.headers, content_type="text")
+        response = get_html(url, headers=self._HEADERS, content_type="text")
         if response:
             soup = BeautifulSoup(response, "html.parser")
             html_items = soup.findAll("a", class_="gallerythumb")
@@ -92,8 +88,8 @@ class NHentai(AbstractHentaiMangaCatalog):
         return images
 
     def get_image(self, image: Image):
-        img_request_headers = self.headers | {
-            "Referer": URL_NHENTAI,
+        img_request_headers = self._HEADERS | {
+            "Referer": self._URL,
         }
         return get_html(
             image.url,
@@ -104,12 +100,12 @@ class NHentai(AbstractHentaiMangaCatalog):
     def get_preview(self, manga: Manga):
         return get_html(
             manga.preview_url,
-            headers=self.headers,
+            headers=self._HEADERS,
             content_type="content",
         )
 
     def get_manga_url(self, manga: Manga) -> str:
-        return f"{self.url}/g/{manga.content_id}"
+        return f"{self._URL}/g/{manga.content_id}"
 
 
 __all__ = [

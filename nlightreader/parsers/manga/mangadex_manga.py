@@ -2,12 +2,6 @@ import logging
 
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import MangaDexItems
-from nlightreader.consts.urls import (
-    MANGA_DEX_HEADERS,
-    URL_MANGA_DEX,
-    URL_MANGA_DEX_API,
-    URL_MANGA_DEX_TOKEN,
-)
 from nlightreader.items import (
     RequestForm,
     User,
@@ -29,17 +23,14 @@ except (ModuleNotFoundError, ImportError):
 class MangaDex(AbstractMangaCatalog):
     CATALOG_ID = 2
     CATALOG_NAME = "MangaDex"
-
-    def __init__(self):
-        super().__init__()
-        self.url = URL_MANGA_DEX
-        self.url_api = URL_MANGA_DEX_API
-        self.headers = MANGA_DEX_HEADERS
-        self.items = MangaDexItems
+    _FILTERS = MangaDexItems
+    _URL = "https://mangadex.org"
+    _URL_API = "https://api.mangadex.org"
+    _HEADERS = {"User-Agent": "Nlight"}
 
     def get_manga(self, manga: Manga) -> Manga:
-        url = f"{self.url_api}/manga/{manga.content_id}"
-        response = get_html(url, headers=self.headers, content_type="json")
+        url = f"{self._URL_API}/manga/{manga.content_id}"
+        response = get_html(url, headers=self._HEADERS, content_type="json")
         if response:
             data = get_data(response, ["data"])
             manga.kind = Nl.MangaKind.from_str(data.get("type"))
@@ -76,7 +67,7 @@ class MangaDex(AbstractMangaCatalog):
         return Manga(manga_id, self.CATALOG_ID, name, russian)
 
     def search_manga(self, form: RequestForm):
-        url = f"{self.url_api}/manga"
+        url = f"{self._URL_API}/manga"
         params = {
             "limit": 50,
             f"order[{form.get_order_id()}]": "desc",
@@ -92,7 +83,7 @@ class MangaDex(AbstractMangaCatalog):
         }
         response = get_html(
             url,
-            headers=self.headers,
+            headers=self._HEADERS,
             params=params,
             content_type="json",
         )
@@ -106,7 +97,7 @@ class MangaDex(AbstractMangaCatalog):
         return mangas
 
     def get_chapters(self, manga: Manga):
-        url = f"{self.url_api}/chapter"
+        url = f"{self._URL_API}/chapter"
         params = {
             "manga": manga.content_id,
             "limit": 1,
@@ -121,7 +112,7 @@ class MangaDex(AbstractMangaCatalog):
         }
         response = get_html(
             url,
-            headers=self.headers,
+            headers=self._HEADERS,
             params=params,
             content_type="json",
         )
@@ -130,7 +121,7 @@ class MangaDex(AbstractMangaCatalog):
             params.update({"limit": 100})
             for j in range(response.get("total") // 100 + 1):
                 params.update({"offset": j * 100})
-                html = get_html(url, headers=self.headers, params=params)
+                html = get_html(url, headers=self._HEADERS, params=params)
                 for i in get_data(html.json(), ["data"]):
                     attr = i.get("attributes")
                     chapter = Chapter(
@@ -148,8 +139,8 @@ class MangaDex(AbstractMangaCatalog):
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter):
-        url = f"{self.url_api}/at-home/server/{chapter.content_id}"
-        response = get_html(url, headers=self.headers, content_type="json")
+        url = f"{self._URL_API}/at-home/server/{chapter.content_id}"
+        response = get_html(url, headers=self._HEADERS, content_type="json")
         images = []
         if response:
             img_host = response["baseUrl"]
@@ -164,17 +155,17 @@ class MangaDex(AbstractMangaCatalog):
     def get_image(self, image: Image):
         return get_html(
             image.url,
-            headers=self.headers,
+            headers=self._HEADERS,
             content_type="content",
         )
 
     def get_preview(self, manga: Manga):
-        url = f"{self.url_api}/cover"
+        url = f"{self._URL_API}/cover"
         params = {"manga[]": manga.content_id}
         covers_list_response = get_html(
             url,
             params=params,
-            headers=self.headers,
+            headers=self._HEADERS,
             content_type="json",
         )
         filename = ""
@@ -189,10 +180,10 @@ class MangaDex(AbstractMangaCatalog):
         )
 
     def _get_tags_data_by_group(self, groups: list[str]) -> list[dict]:
-        url = f"{self.url_api}/manga/tag"
+        url = f"{self._URL_API}/manga/tag"
         response = get_html(
             url,
-            headers=self.headers,
+            headers=self._HEADERS,
             content_type="json",
         )
         if not response:
@@ -230,7 +221,7 @@ class MangaDex(AbstractMangaCatalog):
         ]
 
     def get_manga_url(self, manga: Manga) -> str:
-        return f"{self.url}/title/{manga.content_id}"
+        return f"{self._URL}/title/{manga.content_id}"
 
 
 class MangaDexLib(MangaDex, LibParser):
@@ -245,12 +236,12 @@ class MangaDexLib(MangaDex, LibParser):
         if form.lib_list == Nl.LibList.planned:
             lib_list = "plan_to_read"
         response_statuses = self.session.get(
-            f"{self.url_api}/manga/status",
+            f"{self._URL_API}/manga/status",
             params={"status": lib_list},
         )
         params = {"limit": form.limit, "offset": form.offset}
         response = self.session.get(
-            f"{self.url_api}/user/follows/manga",
+            f"{self._URL_API}/user/follows/manga",
             params=params,
         )
         if response and (resp_json := response.json()):
@@ -263,7 +254,7 @@ class MangaDexLib(MangaDex, LibParser):
         return mangas
 
     def get_user(self):
-        response = self.session.get(f"{self.url_api}/user/me")
+        response = self.session.get(f"{self._URL_API}/user/me")
         if response and (resp_json := response.json()):
             data = resp_json.get("data")
             return User(
@@ -276,8 +267,9 @@ class MangaDexLib(MangaDex, LibParser):
 
 @singleton
 class Auth:
+    _URL_TOKEN = "https://auth.mangadex.org/realms/mangadex/protocol/openid-connect/token"
+
     def __init__(self):
-        self.url_api = URL_MANGA_DEX_API
         self.tokens = TokenManager.load_token(MangaDex.CATALOG_NAME)
 
         self.client_headers = {
@@ -309,7 +301,7 @@ class Auth:
     def refresh_token(self):
         request_data = self._refresh_headers
         response = make_request(
-            URL_MANGA_DEX_TOKEN,
+            self._URL_TOKEN,
             "POST",
             data=request_data,
             content_type="json",
@@ -323,7 +315,7 @@ class Auth:
     def auth_login(self, params):
         request_data = self._auth_headers | params
         response = make_request(
-            URL_MANGA_DEX_TOKEN,
+            self._URL_TOKEN,
             "POST",
             data=request_data,
             content_type="json",
