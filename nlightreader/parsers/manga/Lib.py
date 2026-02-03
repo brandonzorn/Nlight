@@ -1,18 +1,15 @@
 from nlightreader.consts.items import MangaLibItems
-from nlightreader.consts.urls import URL_SLASHLIB
 from nlightreader.models import Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.utils import get_html
 
 
 class LibBase(AbstractMangaCatalog):
-    def __init__(self):
-        super().__init__()
-        self.url = None
-        self.items = MangaLibItems
+    _FILTERS = MangaLibItems
+    _URL = None
 
     def get_preview(self, manga: Manga):
-        headers = self.headers | {"Referer": f"{self.url}/"}
+        headers = self._HEADERS | {"Referer": f"{self._URL}/"}
         return get_html(
             manga.preview_url,
             headers=headers,
@@ -20,16 +17,13 @@ class LibBase(AbstractMangaCatalog):
         )
 
     def get_manga_url(self, manga: Manga):
-        return f"{self.url}/{manga.content_id}"
+        return f"{self._URL}/{manga.content_id}"
 
 
 class SlashLib(LibBase):
     CATALOG_NAME = "SlashLib(Legacy)"
     CATALOG_ID = 9
-
-    def __init__(self):
-        super().__init__()
-        self.url = URL_SLASHLIB
+    _URL = "https://v2.slashlib.me"
 
 
 __all__ = [

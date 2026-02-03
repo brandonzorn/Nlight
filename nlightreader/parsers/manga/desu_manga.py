@@ -1,6 +1,5 @@
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import DesuItems
-from nlightreader.consts.urls import DESU_HEADERS, URL_DESU, URL_DESU_API
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
@@ -10,17 +9,14 @@ from nlightreader.utils.utils import get_data, get_html
 class Desu(AbstractMangaCatalog):
     CATALOG_ID = 0
     CATALOG_NAME = "Desu"
-
-    def __init__(self):
-        super().__init__()
-        self.url = URL_DESU
-        self.url_api = URL_DESU_API
-        self.headers = DESU_HEADERS
-        self.items = DesuItems
+    _FILTERS = DesuItems
+    _URL = "https://desu.uno"
+    _URL_API = f"{_URL}/manga/api"
+    _HEADERS = {"User-Agent": "Nlight"}
 
     def get_manga(self, manga: Manga):
-        url = f"{self.url_api}/{manga.content_id}"
-        response = get_html(url, headers=self.headers, content_type="json")
+        url = f"{self._URL_API}/{manga.content_id}"
+        response = get_html(url, headers=self._HEADERS, content_type="json")
         if response:
             data = get_data(response, ["response"], {})
             manga.score = data.get("score")
@@ -36,7 +32,7 @@ class Desu(AbstractMangaCatalog):
         return manga
 
     def search_manga(self, form: RequestForm):
-        url = f"{self.url_api}"
+        url = f"{self._URL_API}"
         params = {
             "limit": form.limit,
             "search": form.search,
@@ -47,7 +43,7 @@ class Desu(AbstractMangaCatalog):
         }
         response = get_html(
             url,
-            headers=self.headers,
+            headers=self._HEADERS,
             params=params,
             content_type="json",
         )
@@ -68,8 +64,8 @@ class Desu(AbstractMangaCatalog):
         return mangas
 
     def get_chapters(self, manga: Manga):
-        url = f"{self.url_api}/{manga.content_id}"
-        response = get_html(url, headers=self.headers, content_type="json")
+        url = f"{self._URL_API}/{manga.content_id}"
+        response = get_html(url, headers=self._HEADERS, content_type="json")
         chapters = []
         if response:
             for i in get_data(response, ["response", "chapters", "list"]):
@@ -89,30 +85,33 @@ class Desu(AbstractMangaCatalog):
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter):
-        url = f"{self.url_api}/{manga.content_id}/chapter/{chapter.content_id}"
-        response = get_html(url, headers=self.headers, content_type="json")
+        url = (
+            f"{self._URL_API}/{manga.content_id}/chapter/{chapter.content_id}"
+        )
+        response = get_html(url, headers=self._HEADERS, content_type="json")
         images = []
         if response:
             for i in get_data(response, ["response", "pages", "list"]):
                 image_id = str(i.get("id"))
                 page = i.get("page")
                 img: str = i.get("img")
-                img = img.replace("desu.me", "desu.win")
+                if "?" in img:
+                    img = img.split("?")[0]
                 images.append(Image(image_id, page, img))
         return images
 
     def get_image(self, image: Image):
-        headers = self.headers | {"Referer": f"{self.url}/"}
+        headers = self._HEADERS | {"Referer": f"{self._URL}/"}
         return get_html(image.url, headers=headers, content_type="content")
 
     def get_preview(self, manga: Manga):
         return get_html(
-            f"{self.url}/data/manga/covers/preview/{manga.content_id}.jpg",
+            f"{self._URL}/data/manga/covers/preview/{manga.content_id}.jpg",
             content_type="content",
         )
 
     def get_manga_url(self, manga: Manga) -> str:
-        return f"{self.url}/manga/{manga.content_id}"
+        return f"{self._URL}/manga/{manga.content_id}"
 
 
 __all__ = [

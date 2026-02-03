@@ -20,11 +20,9 @@ class AbstractCatalog:
     CATALOG_NAME = "CATALOG"
     CATALOG_ID = -1
     is_primary = False
-
-    def __init__(self):
-        self.headers = DEFAULT_HEADERS
-        self.cookies = None
-        self.items = ParserItems
+    _HEADERS = DEFAULT_HEADERS
+    _COOKIES = None
+    _FILTERS = ParserItems
 
     def get_manga(self, manga: Manga) -> Manga:
         return manga
@@ -58,7 +56,7 @@ class AbstractCatalog:
                 i["name"],
                 i["russian"],
             )
-            for i in self.items.GENRES
+            for i in self._FILTERS.GENRES
         ]
 
     def get_kinds(self) -> list[Kind]:
@@ -69,7 +67,7 @@ class AbstractCatalog:
                 i["name"],
                 i["russian"],
             )
-            for i in self.items.KINDS
+            for i in self._FILTERS.KINDS
         ]
 
     def get_orders(self) -> list[Order]:
@@ -80,7 +78,7 @@ class AbstractCatalog:
                 i["name"],
                 i["russian"],
             )
-            for i in self.items.ORDERS
+            for i in self._FILTERS.ORDERS
         ]
 
     def get_relations(self, manga: Manga) -> list[Manga]:

@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RulateItems
-from nlightreader.consts.urls import URL_EROLATE, URL_RULATE
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
@@ -14,19 +13,16 @@ from nlightreader.utils.utils import get_html
 class Rulate(AbstractRanobeCatalog):
     CATALOG_ID = 3
     CATALOG_NAME = "Rulate"
-
-    def __init__(self):
-        super().__init__()
-        self.url_api = URL_RULATE
-        self.cookies = {
-            "mature": "c3a2ed4b199a1a15f5a5483504c7a75a7030dc4bi%3A1%3B",
-        }
-        self.items = RulateItems
+    _FILTERS = RulateItems
+    _URL = "https://tl.rulate.ru"
+    _COOKIES = {
+        "mature": "c3a2ed4b199a1a15f5a5483504c7a75a7030dc4bi%3A1%3B",
+    }
 
     def get_manga(self, manga: Manga) -> Manga:
         response = get_html(
-            f"{self.url_api}/book/{manga.content_id}",
-            cookies=self.cookies,
+            f"{self._URL}/book/{manga.content_id}",
+            cookies=self._COOKIES,
             content_type="text",
         )
         if response:
@@ -51,7 +47,7 @@ class Rulate(AbstractRanobeCatalog):
             "adult": 0,
         }
         response = get_html(
-            f"{self.url_api}/search",
+            f"{self._URL}/search",
             params=params,
             content_type="text",
         )
@@ -88,8 +84,8 @@ class Rulate(AbstractRanobeCatalog):
     def get_chapters(self, manga: Manga):
         chapters = []
         response = get_html(
-            f"{self.url_api}/book/{manga.content_id}",
-            cookies=self.cookies,
+            f"{self._URL}/book/{manga.content_id}",
+            cookies=self._COOKIES,
             content_type="text",
         )
         if response:
@@ -119,19 +115,19 @@ class Rulate(AbstractRanobeCatalog):
 
     def get_images(self, manga: Manga, chapter: Chapter):
         url = (
-            f"{self.url_api}/book/"
+            f"{self._URL}/book/"
             f"{manga.content_id}/{chapter.content_id}/ready_new"
         )
         return [Image("", 1, url)]
 
     def get_image(self, image: Image):
         def get_chapter_content_image(media_id: str):
-            url = f"{self.url_api}/{media_id}"
+            url = f"{self._URL}/{media_id}"
             if media_id.startswith("http"):
                 url = media_id
             chapter_image = get_html(
                 url,
-                headers=self.headers,
+                headers=self._HEADERS,
                 content_type="content",
             )
             str_equivalent_image = base64.b64encode(chapter_image).decode()
@@ -139,7 +135,7 @@ class Rulate(AbstractRanobeCatalog):
 
         response = get_html(
             image.url,
-            cookies=self.cookies,
+            cookies=self._COOKIES,
             content_type="text",
         )
         if response:
@@ -160,8 +156,8 @@ class Rulate(AbstractRanobeCatalog):
 
     def get_preview(self, manga: Manga):
         response = get_html(
-            f"{self.url_api}/book/{manga.content_id}",
-            cookies=self.cookies,
+            f"{self._URL}/book/{manga.content_id}",
+            cookies=self._COOKIES,
             content_type="text",
         )
         if response:
@@ -172,19 +168,16 @@ class Rulate(AbstractRanobeCatalog):
         return None
 
     def get_manga_url(self, manga: Manga) -> str:
-        return f"{self.url_api}/book/{manga.content_id}"
+        return f"{self._URL}/book/{manga.content_id}"
 
 
 class Erolate(Rulate):
     CATALOG_ID = 5
     CATALOG_NAME = "Erolate"
-
-    def __init__(self):
-        super().__init__()
-        self.url_api = URL_EROLATE
-        self.cookies = {
-            "mature": "7da3ee594b38fc5355692d978fe8f5adbeb3d17di%3A1%3B",
-        }
+    _URL = "https://erolate.com"
+    _COOKIES = {
+        "mature": "7da3ee594b38fc5355692d978fe8f5adbeb3d17di%3A1%3B",
+    }
 
     def search_manga(self, form: RequestForm):
         ranobe = []
@@ -196,7 +189,7 @@ class Erolate(Rulate):
             "adult": 0,
         }
         response = get_html(
-            f"{self.url_api}/search",
+            f"{self._URL}/search",
             params=params,
             content_type="text",
         )

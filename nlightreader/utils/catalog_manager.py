@@ -22,7 +22,7 @@ from nlightreader.parsers import (
 )
 from nlightreader.parsers.catalog import AbstractCatalog
 
-CATALOGS = {
+CATALOG_CLASSES = {
     0: Desu,
     1: ShikimoriBase,
     2: MangaDex,
@@ -58,11 +58,18 @@ USER_CATALOGS = [
 LIB_CATALOGS = {ShikimoriBase: ShikimoriLib, MangaDex: MangaDexLib}
 
 
+_initialized_catalogs = {}
+
+
 def get_catalog_by_id(catalog_id):
-    if catalog_id not in CATALOGS:
-        logging.warning(f"Catalog with id {catalog_id} not found.")
-        return AbstractCatalog()
-    return CATALOGS[catalog_id]()
+    if catalog_id in _initialized_catalogs:
+        return _initialized_catalogs[catalog_id]
+    if catalog_id in CATALOG_CLASSES:
+        instance = CATALOG_CLASSES[catalog_id]()
+        _initialized_catalogs[catalog_id] = instance
+        return instance
+    logging.warning(f"Catalog with id {catalog_id} not found.")
+    return AbstractCatalog()
 
 
 def get_lib_catalog(base_catalog):

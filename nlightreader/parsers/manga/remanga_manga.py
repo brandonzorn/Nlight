@@ -1,6 +1,5 @@
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RemangaItems
-from nlightreader.consts.urls import URL_REMANGA, URL_REMANGA_API
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
@@ -10,16 +9,13 @@ from nlightreader.utils.utils import get_data, get_html
 class Remanga(AbstractMangaCatalog):
     CATALOG_ID = 6
     CATALOG_NAME = "ReManga"
-
-    def __init__(self):
-        super().__init__()
-        self.url = URL_REMANGA
-        self.url_api = URL_REMANGA_API
-        self.items = RemangaItems
+    _FILTERS = RemangaItems
+    _URL = "https://remanga.org"
+    _URL_API = f"{_URL}/api"
 
     def get_manga(self, manga: Manga) -> Manga:
-        url = f"{self.url_api}/titles/{manga.content_id}/"
-        response = get_html(url, headers=self.headers, content_type="json")
+        url = f"{self._URL_API}/titles/{manga.content_id}/"
+        response = get_html(url, headers=self._HEADERS, content_type="json")
         if response:
             data = response.get("content")
 
@@ -28,7 +24,7 @@ class Remanga(AbstractMangaCatalog):
 
             manga.score = float(data.get("avg_rating"))
             if (img := data.get("img").get("high")) and (img != "/media/None"):
-                manga.preview_url = f"{self.url}{img}"
+                manga.preview_url = f"{self._URL}{img}"
 
             manga.add_description(
                 Nl.Language.undefined,
@@ -37,9 +33,9 @@ class Remanga(AbstractMangaCatalog):
         return manga
 
     def search_manga(self, form: RequestForm):
-        url = f"{self.url_api}/search/catalog"
+        url = f"{self._URL_API}/search/catalog"
         if form.search:
-            url = f"{self.url_api}/search"
+            url = f"{self._URL_API}/search"
         params = {
             "page": form.page,
             "query": form.search,
@@ -49,7 +45,7 @@ class Remanga(AbstractMangaCatalog):
         }
         response = get_html(
             url,
-            headers=self.headers,
+            headers=self._HEADERS,
             params=params,
             content_type="json",
         )
@@ -67,21 +63,21 @@ class Remanga(AbstractMangaCatalog):
             manga.score = float(data.get("avg_rating"))
 
             if (img := data.get("img").get("high")) and (img != "/media/None"):
-                manga.preview_url = f"{self.url}{img}"
+                manga.preview_url = f"{self._URL}{img}"
             mangas.append(manga)
         return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
-        url = f"{self.url_api}/titles/{manga.content_id}/"
-        response = get_html(url, headers=self.headers, content_type="json")
+        url = f"{self._URL_API}/titles/{manga.content_id}/"
+        response = get_html(url, headers=self._HEADERS, content_type="json")
         chapters = []
         if response:
             data = response.get("content")
             branch_id = data.get("branches")[0].get("id")
             chapters_data = get_html(
-                f"{self.url_api}/titles/chapters"
+                f"{self._URL_API}/titles/chapters"
                 f"?branch_id={branch_id}&user_data=0",
-                headers=self.headers,
+                headers=self._HEADERS,
                 content_type="json",
             )
             if chapters_data:
@@ -102,8 +98,8 @@ class Remanga(AbstractMangaCatalog):
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter):
-        url = f"{self.url_api}/titles/chapters/{chapter.content_id}/"
-        response = get_html(url, headers=self.headers, content_type="json")
+        url = f"{self._URL_API}/titles/chapters/{chapter.content_id}/"
+        response = get_html(url, headers=self._HEADERS, content_type="json")
         images = []
         if response:
             for i, page_data in enumerate(
@@ -123,7 +119,7 @@ class Remanga(AbstractMangaCatalog):
     def get_image(self, image: Image):
         headers = {
             "User-Agent": "Nlight",
-            "Referer": f"{self.url}/",
+            "Referer": f"{self._URL}/",
         }
         return get_html(
             f"{image.url}",
@@ -134,12 +130,12 @@ class Remanga(AbstractMangaCatalog):
     def get_preview(self, manga: Manga):
         return get_html(
             manga.preview_url,
-            headers=self.headers,
+            headers=self._HEADERS,
             content_type="content",
         )
 
     def get_manga_url(self, manga: Manga) -> str:
-        return f"{self.url}/manga/{manga.content_id}"
+        return f"{self._URL}/manga/{manga.content_id}"
 
 
 __all__ = [
