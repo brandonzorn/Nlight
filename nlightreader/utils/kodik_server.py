@@ -21,11 +21,10 @@ class KodikHTTPRequestHandler(BaseHTTPRequestHandler):
         note = HistoryNote(chapter, manga, is_completed)
         db.add_history_note(note)
 
+        self.send_response(200)
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Methods", "POST")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
-
-        self.send_response(200)
         self.end_headers()
 
     def do_OPTIONS(self):
