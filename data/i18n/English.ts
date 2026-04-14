@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU">
+<TS version="2.1" language="en" sourcelanguage="en">
 <context>
     <name>Form</name>
     <message>
@@ -9,71 +9,71 @@
     </message>
     <message>
         <source>Kind</source>
-        <translation>Тип</translation>
+        <translation>Kind</translation>
     </message>
     <message>
         <source>Order</source>
-        <translation>Сортировка</translation>
+        <translation>Order</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation>Применить</translation>
+        <translation>Apply</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation>Сбросить</translation>
+        <translation>Reset</translation>
     </message>
     <message>
         <source>Filters</source>
-        <translation>Фильтры</translation>
+        <translation>Filters</translation>
     </message>
     <message>
         <source>Genres list</source>
-        <translation>Список жанров</translation>
+        <translation>Genres list</translation>
     </message>
     <message>
         <source>Catalogs</source>
-        <translation>Каталоги</translation>
+        <translation>Catalogs</translation>
     </message>
     <message>
         <source>Sign in</source>
-        <translation>Войти</translation>
+        <translation>Sign in</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation>Поиск</translation>
+        <translation>Search</translation>
     </message>
     <message>
         <source>Related</source>
-        <translation>Связанное</translation>
+        <translation>Related</translation>
     </message>
     <message>
         <source>Characters</source>
-        <translation>Персонажи</translation>
+        <translation>Characters</translation>
     </message>
     <message>
         <source>Planned</source>
-        <translation>Запланированно</translation>
+        <translation>Planned</translation>
     </message>
     <message>
         <source>Completed</source>
-        <translation>Прочитано</translation>
+        <translation>Completed</translation>
     </message>
     <message>
         <source>Reading</source>
-        <translation>Читаю</translation>
+        <translation>Reading</translation>
     </message>
     <message>
         <source>Re-reading</source>
-        <translation>Перечитываю</translation>
+        <translation>Re-reading</translation>
     </message>
     <message>
         <source>On hold</source>
-        <translation>Отложено</translation>
+        <translation>On hold</translation>
     </message>
     <message>
         <source>Dropped</source>
-        <translation>Брошено</translation>
+        <translation>Dropped</translation>
     </message>
 </context>
 <context>
@@ -84,392 +84,392 @@
     </message>
     <message>
         <source>Main</source>
-        <translation>Главная</translation>
+        <translation>Main</translation>
     </message>
     <message>
         <source>Library</source>
-        <translation>Библиотека</translation>
+        <translation>Library</translation>
     </message>
     <message>
         <source>History</source>
-        <translation>История</translation>
+        <translation>History</translation>
     </message>
     <message>
         <source>Shikimori</source>
-        <translation>Шикимори</translation>
+        <translation>Shikimori</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation>Настройки</translation>
+        <translation>Settings</translation>
     </message>
 </context>
 <context>
     <name>Menu</name>
     <message>
         <source>Open in browser</source>
-        <translation>Открыть в браузере</translation>
+        <translation>Open in browser</translation>
     </message>
     <message>
         <source>Remove from library</source>
-        <translation>Удалить из библиотеки</translation>
+        <translation>Remove from library</translation>
     </message>
     <message>
         <source>Add to Library</source>
-        <translation>Добавить в библиотеку</translation>
+        <translation>Add to Library</translation>
     </message>
     <message>
         <source>Mark as read</source>
-        <translation>Отметить прочитанным</translation>
+        <translation>Mark as read</translation>
     </message>
     <message>
         <source>Remove all</source>
-        <translation>Удалить все</translation>
+        <translation>Remove all</translation>
     </message>
     <message>
         <source>Mark as read all previous</source>
-        <translation>Отметить прочитанным все предыдущие</translation>
+        <translation>Mark as read all previous</translation>
     </message>
     <message>
         <source>Remove read mark</source>
-        <translation>Удалить отметку о прочтении</translation>
+        <translation>Remove read mark</translation>
     </message>
     <message>
         <source>Clear local files</source>
-        <translation>Очистить локальные файлы</translation>
+        <translation>Clear local files</translation>
     </message>
     <message>
         <source>Open local files</source>
-        <translation>Открыть локальные файлы</translation>
+        <translation>Open local files</translation>
     </message>
 </context>
 <context>
     <name>Other</name>
     <message>
         <source>Page</source>
-        <translation>Страница</translation>
+        <translation>Page</translation>
     </message>
     <message>
         <source>Sign in</source>
-        <translation>Войти</translation>
+        <translation>Sign in</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation>Статус</translation>
+        <translation>Status</translation>
     </message>
     <message>
         <source>Volumes</source>
-        <translation>Томов</translation>
+        <translation>Volumes</translation>
     </message>
     <message>
         <source>Chapters</source>
-        <translation>Глав</translation>
+        <translation>Chapters</translation>
     </message>
     <message>
         <source>Rating</source>
-        <translation>Рейтинг</translation>
+        <translation>Rating</translation>
     </message>
     <message>
         <source>Page is loading</source>
-        <translation>Страница загружается</translation>
+        <translation>Page is loading</translation>
     </message>
 </context>
 <context>
     <name>Status</name>
     <message>
         <source>Ongoing</source>
-        <translation>Выходит</translation>
+        <translation>Ongoing</translation>
     </message>
     <message>
         <source>Released</source>
-        <translation>Издано</translation>
+        <translation>Released</translation>
     </message>
     <message>
         <source>Frozen</source>
-        <translation>Заморожено</translation>
+        <translation>Frozen</translation>
     </message>
 </context>
 <context>
     <name>NlLanguage</name>
     <message>
         <source>Russian</source>
-        <translation>Русский</translation>
+        <translation>Russian</translation>
     </message>
     <message>
         <source>Ukrainian</source>
-        <translation>Украинский</translation>
+        <translation>Ukrainian</translation>
     </message>
     <message>
         <source>Japanese</source>
-        <translation>Японский</translation>
+        <translation>Japanese</translation>
     </message>
     <message>
         <source>English</source>
-        <translation>Английский</translation>
+        <translation>English</translation>
     </message>
     <message>
         <source>Undefined</source>
-        <translation>Не определено</translation>
+        <translation>Undefined</translation>
     </message>
 </context>
 <context>
     <name>NlKind</name>
     <message>
         <source>Manga</source>
-        <translation>Манга</translation>
+        <translation>Manga</translation>
     </message>
     <message>
         <source>OEL-manga</source>
-        <translation>OEL-манга</translation>
+        <translation>OEL-manga</translation>
     </message>
     <message>
         <source>Rumanga</source>
-        <translation>Руманга</translation>
+        <translation>Rumanga</translation>
     </message>
     <message>
         <source>Manhwa</source>
-        <translation>Манхва</translation>
+        <translation>Manhwa</translation>
     </message>
     <message>
         <source>Manhua</source>
-        <translation>Маньхуа</translation>
+        <translation>Manhua</translation>
     </message>
     <message>
         <source>Oneshot</source>
-        <translation>Ваншот</translation>
+        <translation>Oneshot</translation>
     </message>
     <message>
         <source>Comic</source>
-        <translation>Комикс</translation>
+        <translation>Comic</translation>
     </message>
     <message>
         <source>Western comic</source>
-        <translation>Западный комикс</translation>
+        <translation>Western comic</translation>
     </message>
     <message>
         <source>Rucomic</source>
-        <translation>Рукомикс</translation>
+        <translation>Rucomic</translation>
     </message>
     <message>
         <source>Indonesian comic</source>
-        <translation>Индонезийский комикс</translation>
+        <translation>Indonesian comic</translation>
     </message>
     <message>
         <source>Doujin</source>
-        <translation>Додзинси</translation>
+        <translation>Doujin</translation>
     </message>
     <message>
         <source>Ranobe</source>
-        <translation>Ранобэ</translation>
+        <translation>Ranobe</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation>Другое</translation>
+        <translation>Other</translation>
     </message>
     <message>
         <source>Undefined</source>
-        <translation>Не определено</translation>
+        <translation>Undefined</translation>
     </message>
 </context>
 <context>
     <name>Message</name>
     <message>
         <source>Manga {} has been added.</source>
-        <translation>Манга {} добавлена.</translation>
+        <translation>Manga {} has been added.</translation>
     </message>
     <message>
         <source>Manga {} has been deleted.</source>
-        <translation>Манга {} удалена.</translation>
+        <translation>Manga {} has been deleted.</translation>
     </message>
     <message>
         <source>Files {} have been removed.</source>
-        <translation>Файлы {} удалены.</translation>
+        <translation>Files {} have been removed.</translation>
     </message>
     <message>
         <source>Check for updates.</source>
-        <translation>Проверка обновлений.</translation>
+        <translation>Check for updates.</translation>
     </message>
     <message>
         <source>Error checking for updates.</source>
-        <translation>Ошибка проверки обновлений.</translation>
+        <translation>Error checking for updates.</translation>
     </message>
     <message>
         <source>No updates available. You are using the latest version.</source>
-        <translation>Нет доступных обновлений. Вы используете последнюю версию.</translation>
+        <translation>No updates available. You are using the latest version.</translation>
     </message>
     <message>
         <source>New version {result} is available! You are currently on version {APP_VERSION}.</source>
-        <translation>Новая версия {result} доступна! Вы используете версию {APP_VERSION}.</translation>
+        <translation>New version {result} is available! You are currently on version {APP_VERSION}.</translation>
     </message>
     <message>
         <source>No connection</source>
-        <translation>Нет соединения</translation>
+        <translation>No connection</translation>
     </message>
     <message>
         <source>Nothing found</source>
-        <translation>Ничего не найдено</translation>
+        <translation>Nothing found</translation>
     </message>
 </context>
 <context>
     <name>SettingsPage</name>
     <message>
         <source>Use system setting</source>
-        <translation>Использовать системные настройки</translation>
+        <translation>Use system setting</translation>
     </message>
     <message>
         <source>Interface zoom</source>
-        <translation>Масштабирование</translation>
+        <translation>Interface zoom</translation>
     </message>
     <message>
         <source>Change the size of widgets and fonts</source>
-        <translation>Изменение размера виджетов и шрифтов</translation>
+        <translation>Change the size of widgets and fonts</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation>Язык</translation>
+        <translation>Language</translation>
     </message>
     <message>
         <source>Set your preferred language for UI</source>
-        <translation>Установите предпочитаемый язык пользовательского интерфейса</translation>
+        <translation>Set your preferred language for UI</translation>
     </message>
     <message>
         <source>Software update</source>
-        <translation>Обновления</translation>
+        <translation>Software update</translation>
     </message>
     <message>
         <source>Check for updates when the application starts</source>
-        <translation>Проверять наличие обновлений при запуске приложения</translation>
+        <translation>Check for updates when the application starts</translation>
     </message>
     <message>
         <source>The new version will be more stable and have more features</source>
-        <translation>Новая версия будет более стабильной и будет иметь больше возможностей</translation>
+        <translation>The new version will be more stable and have more features</translation>
     </message>
     <message>
         <source>Changes will take effect after restarting the application</source>
-        <translation>Изменения вступят в силу после перезапуска приложения</translation>
+        <translation>Changes will take effect after restarting the application</translation>
     </message>
     <message>
         <source>Check for updates</source>
-        <translation>Проверить обновления</translation>
+        <translation>Check for updates</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation>Настройки</translation>
+        <translation>Settings</translation>
     </message>
     <message>
         <source>Application theme</source>
-        <translation>Тема приложения</translation>
+        <translation>Application theme</translation>
     </message>
     <message>
         <source>Change the appearance of application</source>
-        <translation>Изменить внешний вид приложения</translation>
+        <translation>Change the appearance of application</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation>Темная</translation>
+        <translation>Dark</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation>Светлая</translation>
+        <translation>Light</translation>
     </message>
     <message>
         <source>Personalization</source>
-        <translation>Персонализация</translation>
+        <translation>Personalization</translation>
     </message>
     <message>
         <source>About</source>
-        <translation>О проекте</translation>
+        <translation>About</translation>
     </message>
     <message>
         <source>Project on GitHub</source>
-        <translation>Проект на GitHub</translation>
+        <translation>Project on GitHub</translation>
     </message>
     <message>
         <source>Episodes</source>
-        <translation>Эпизоды</translation>
+        <translation>Episodes</translation>
     </message>
     <message>
         <source>Automatically mark episodes as watched</source>
-        <translation>Автоматически отмечать эпизоды как просмотренные</translation>
+        <translation>Automatically mark episodes as watched</translation>
     </message>
 </context>
 <context>
     <name>RateDialog</name>
     <message>
         <source>Change rating</source>
-        <translation>Изменить оценку</translation>
+        <translation>Change rating</translation>
     </message>
     <message>
         <source>Chapters read</source>
-        <translation>Прочитано глав</translation>
+        <translation>Chapters read</translation>
     </message>
     <message>
         <source>Rating</source>
-        <translation>Рейтинг</translation>
+        <translation>Rating</translation>
     </message>
     <message>
         <source>List</source>
-        <translation>Список</translation>
+        <translation>List</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Отмена</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Удалить</translation>
+        <translation>Delete</translation>
     </message>
     <message>
         <source>Update</source>
-        <translation>Обновить</translation>
+        <translation>Update</translation>
     </message>
 </context>
 <context>
     <name>AbstractAuthDialog</name>
     <message>
         <source>Authentication</source>
-        <translation>Аутентификация</translation>
+        <translation>Authentication</translation>
     </message>
     <message>
         <source>Get code</source>
-        <translation>Получить код</translation>
+        <translation>Get code</translation>
     </message>
     <message>
         <source>Authorization code</source>
-        <translation>Код авторизации</translation>
+        <translation>Authorization code</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation>Логин</translation>
+        <translation>Login</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation>Пароль</translation>
+        <translation>Password</translation>
     </message>
     <message>
         <source>Sign in</source>
-        <translation>Войти</translation>
+        <translation>Sign in</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Отмена</translation>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
     <name>CharacterInfoDialog</name>
     <message>
         <source>Show spoilers</source>
-        <translation>Показывать спойлеры</translation>
+        <translation>Show spoilers</translation>
     </message>
 </context>
 <context>
     <name>GenresDialogUi</name>
     <message>
         <source>Genres</source>
-        <translation>Жанры</translation>
+        <translation>Genres</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Отмена</translation>
+        <translation>Cancel</translation>
     </message>
 </context>
 </TS>

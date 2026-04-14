@@ -10,6 +10,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from qfluentwidgets import InfoBar, setTheme, Theme
 
+from data import resource
 from nlightreader import ParentWindow
 from nlightreader.consts.app import APP_BRANCH, APP_NAME, APP_VERSION
 from nlightreader.consts.files import Icons
@@ -29,7 +30,7 @@ class App(QApplication):
         super().__init__(argv)
         self.setApplicationDisplayName(APP_NAME)
         self.setApplicationVersion(APP_VERSION)
-        self.setWindowIcon(QIcon(Icons.App))
+        self.setWindowIcon(QIcon(Icons.APP))
 
         self.translator = NlightTranslator()
 
@@ -54,7 +55,7 @@ class MainWindow(ParentWindow):
         super().__init__()
         self.set_min_size_by_screen()
         self.setWindowTitle(APP_NAME)
-        self.setWindowIcon(QIcon(Icons.App))
+        self.setWindowIcon(QIcon(Icons.APP))
         self._theme_updater = Thread(
             target=self.theme_listener,
             callback=self.update_style,
