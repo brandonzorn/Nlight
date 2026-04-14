@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="uk_UA">
+<TS version="2.1" language="uk" sourcelanguage="en">
 <context>
     <name>Form</name>
     <message>
@@ -302,7 +302,7 @@
     </message>
     <message>
         <source>No connection</source>
-        <translation>Немає з'єднання</translation>
+        <translation>Немає з&apos;єднання</translation>
     </message>
     <message>
         <source>Nothing found</source>

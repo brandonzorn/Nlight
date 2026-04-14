@@ -8,20 +8,10 @@ class NlightTranslator(QTranslator):
         self.load(locale or QLocale())
 
     def load(self, locale: QLocale) -> None:
-        super().load(f":/translations/i18n/{locale.name()}.qm")
+        super().load(f":/i18n/{locale.language().name}.qm")
 
 
 def translate(context, string):
-    """
-    Translates a string using the current translation context.
-
-    Args:
-        context: The context in which the string appears.
-        string: The string to be translated.
-
-    Returns:
-        A translated version of the input string.
-    """
     return QApplication.translate(context, string, None)
 
 

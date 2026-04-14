@@ -1,22 +1,26 @@
 <RCC>
-  <qresource prefix="png_white">
-    <file>icons/icon.png</file>
+  <qresource prefix="/i18n">
+    <file alias="English.qm">i18n/English.qm</file>
+    <file alias="Russian.qm">i18n/Russian.qm</file>
+    <file alias="Ukrainian.qm">i18n/Ukrainian.qm</file>
   </qresource>
-  <qresource prefix="lang_icons">
-    <file>icons/lang/gb.svg</file>
-    <file>icons/lang/jp.svg</file>
-    <file>icons/lang/ru.svg</file>
-    <file>icons/lang/ua.svg</file>
+
+  <qresource prefix="/icons/common">
+    <file alias="app-icon.png">icons/app-icon.png</file>
   </qresource>
-  <qresource prefix="actions_white">
-    <file>icons/buttons/svg_24dp_white/actions/shikimori.svg</file>
+
+  <qresource prefix="/icons/black">
+    <file alias="shikimori.svg">icons/black/shikimori.svg</file>
   </qresource>
-  <qresource prefix="actions_black">
-    <file>icons/buttons/svg_24dp_black/actions/shikimori.svg</file>
+
+  <qresource prefix="/icons/white">
+    <file alias="shikimori.svg">icons/white/shikimori.svg</file>
   </qresource>
-  <qresource prefix="translations">
-    <file>i18n/en_US.qm</file>
-    <file>i18n/ru_RU.qm</file>
-    <file>i18n/uk_UA.qm</file>
+
+  <qresource prefix="/icons/flags">
+    <file alias="gb.svg">icons/flags/gb.svg</file>
+    <file alias="jp.svg">icons/flags/jp.svg</file>
+    <file alias="ru.svg">icons/flags/ru.svg</file>
+    <file alias="ua.svg">icons/flags/ua.svg</file>
   </qresource>
 </RCC>
