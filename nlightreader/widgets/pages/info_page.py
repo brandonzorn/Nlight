@@ -167,12 +167,12 @@ class InfoPage(QWidget):
             return None
         return selected_item.chapter
 
-    def get_selected_related_title(self):
+    def get_selected_related_title(self) -> Manga:
         return self.__catalog.get_manga(
             self.__related_mangas[self.ui.related_list.currentIndex().row()],
         )
 
-    def setup(self, manga) -> None:
+    def setup(self, manga: Manga) -> None:
         def info_setup() -> None:
             try:
                 self.__catalog = get_catalog_by_id(manga.catalog_id)

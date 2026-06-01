@@ -1,5 +1,5 @@
-import validators
 from bs4 import BeautifulSoup, element
+import validators
 
 from nlightreader.exceptions import parser_content_exc
 from nlightreader.models import Chapter, Image, Manga
@@ -15,8 +15,9 @@ class NHentai(AbstractHentaiMangaCatalog):
     def search_manga(self, form):
         url = f"{self._URL}/search"
         if not form.search:
+            msg = "Search field is empty"
             raise parser_content_exc.RequestsParamsError(
-                "Search field is empty",
+                msg,
             )
         params = {
             "page": form.page,

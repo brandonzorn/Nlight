@@ -225,7 +225,7 @@ class MangaDex(AbstractMangaCatalog):
 
 
 class MangaDexLib(MangaDex, LibParser):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.fields = 2
         self.session = Auth()
@@ -269,7 +269,7 @@ class MangaDexLib(MangaDex, LibParser):
 class Auth:
     _URL_TOKEN = "https://auth.mangadex.org/realms/mangadex/protocol/openid-connect/token"
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.tokens = TokenManager.load_token(MangaDex.CATALOG_NAME)
 
         self.client_headers = {
@@ -289,7 +289,7 @@ class Auth:
             return True
         return False
 
-    def update_token(self, token: dict):
+    def update_token(self, token: dict) -> None:
         if token and "access_token" in token and "refresh_token" in token:
             token = {
                 "access_token": token["access_token"],
@@ -298,7 +298,7 @@ class Auth:
             TokenManager.save_token(token, catalog_name=MangaDex.CATALOG_NAME)
             self.tokens = token
 
-    def refresh_token(self):
+    def refresh_token(self) -> None:
         request_data = self._refresh_headers
         response = make_request(
             self._URL_TOKEN,
@@ -312,7 +312,7 @@ class Auth:
         else:
             self.is_authorized = False
 
-    def auth_login(self, params):
+    def auth_login(self, params) -> None:
         request_data = self._auth_headers | params
         response = make_request(
             self._URL_TOKEN,

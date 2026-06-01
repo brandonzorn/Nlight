@@ -81,7 +81,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
                     Nl.Language.ru,
                 )
                 chapter.translator = (
-                    f"{translator.translator} " f"({translator.tr_type})"
+                    f"{translator.translator} ({translator.tr_type})"
                 )
                 chapter.__setattr__(
                     "url",

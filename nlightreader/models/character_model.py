@@ -16,7 +16,7 @@ class Character(NamedBaseModel):
         self.__role = role
 
     @property
-    def description(self):
+    def description(self) -> str:
         return self.__description
 
     @description.setter
@@ -27,7 +27,7 @@ class Character(NamedBaseModel):
         self.__description = description
 
     @property
-    def role(self):
+    def role(self) -> str:
         return self.__role
 
     @role.setter

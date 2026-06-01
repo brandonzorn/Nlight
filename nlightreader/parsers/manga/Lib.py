@@ -16,7 +16,7 @@ class LibBase(AbstractMangaCatalog):
             content_type="content",
         )
 
-    def get_manga_url(self, manga: Manga):
+    def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/{manga.content_id}"
 
 

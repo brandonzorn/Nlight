@@ -142,13 +142,17 @@ class FileManager:
         )
 
     @classmethod
-    def remove_manga_files(cls, manga: Manga, catalog: AbstractCatalog) -> None:
+    def remove_manga_files(
+        cls, manga: Manga, catalog: AbstractCatalog,
+    ) -> None:
         remove_file(
             cls.__get_manga_folder(manga, catalog),
         )
 
     @classmethod
-    def open_dir_in_explorer(cls, manga: Manga, catalog: AbstractCatalog) -> None:
+    def open_dir_in_explorer(
+        cls, manga: Manga, catalog: AbstractCatalog,
+    ) -> None:
         os.startfile(
             get_full_dir_path(
                 cls.__get_manga_folder(manga, catalog),

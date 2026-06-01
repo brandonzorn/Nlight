@@ -20,11 +20,11 @@ class BaseModel:
         return self.__id
 
     @property
-    def content_id(self):
+    def content_id(self) -> str:
         return self.__content_id
 
     @property
-    def catalog_id(self):
+    def catalog_id(self) -> int:
         return self.__catalog_id
 
     def to_dict(self) -> dict:

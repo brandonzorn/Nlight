@@ -1,7 +1,7 @@
 import base64
 
-import bs4.element
 from bs4 import BeautifulSoup
+import bs4.element
 
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RanobehubItems
@@ -95,7 +95,7 @@ class Ranobehub(AbstractRanobeCatalog):
         return [Image("", 1, url)]
 
     def get_image(self, image: Image):
-        def get_chapter_content_image(media_id: str):
+        def get_chapter_content_image(media_id: str) -> str:
             url = f"{self._URL_API}/media/{media_id}"
             chapter_image = get_html(url, headers=self._HEADERS).content
             str_equivalent_image = base64.b64encode(chapter_image).decode()

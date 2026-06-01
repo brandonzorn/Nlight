@@ -4,7 +4,9 @@ import validators
 
 
 class Image:
-    def __init__(self, image_id: str, page_number: int, url: str | None) -> None:
+    def __init__(
+        self, image_id: str, page_number: int, url: str | None,
+    ) -> None:
         self.id = image_id
         self.page_number = page_number
         self.__url = None
