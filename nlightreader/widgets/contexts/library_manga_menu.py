@@ -1,7 +1,18 @@
-from qfluentwidgets import Action, FluentIcon, RoundMenu
+from enum import IntEnum, unique
+
+from qfluentwidgets import Action, FluentIcon
+
+from nlightreader.widgets.contexts.context_menu_base import AbstractContextMenu
 
 
-class LibraryMangaMenu(RoundMenu):
+@unique
+class LibraryMenuMode(IntEnum):
+    NOT_IN_LIBRARY = 0
+    IN_LIBRARY = 1
+    LOCAL_ONLY = 2
+
+
+class LibraryMangaMenu(AbstractContextMenu):
     def __init__(self) -> None:
         super().__init__()
         self.add_to_lib = Action(
@@ -25,42 +36,31 @@ class LibraryMangaMenu(RoundMenu):
             self.tr("Open local files"),
         )
 
-    def set_mode(self, mode: int) -> None:
-        """
-        Sets the mode of this object and
-        adds the appropriate actions based on the mode.
-
-        Args:
-            mode: The mode to set. Valid values are 0, 1, 2.
-
-        Raises:
-            ValueError: If an invalid mode is provided.
-        """
-        actions = {
-            0: [
+        self._actions_map = {
+            LibraryMenuMode.NOT_IN_LIBRARY: [
                 self.open_in_browser,
                 self.add_to_lib,
                 self.open_local_files,
                 self.remove_files,
             ],
-            1: [
+            LibraryMenuMode.IN_LIBRARY: [
                 self.open_in_browser,
                 self.remove_from_lib,
                 self.open_local_files,
                 self.remove_files,
             ],
-            2: [
+            LibraryMenuMode.LOCAL_ONLY: [
                 self.open_in_browser,
                 self.open_local_files,
                 self.remove_files,
             ],
         }
-        if mode not in actions:
-            msg = "Invalid mode: must be 0, 1 or 2"
-            raise ValueError(msg)
-        self.addActions(actions.get(mode, []))
+
+    def set_mode(self, mode: LibraryMenuMode) -> None:
+        return super().set_mode(mode)
 
 
 __all__ = [
     "LibraryMangaMenu",
+    "LibraryMenuMode",
 ]

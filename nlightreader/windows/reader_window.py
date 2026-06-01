@@ -1,6 +1,7 @@
 import time
 
 from PySide6.QtCore import Qt, Slot
+from PySide6.QtGui import QCloseEvent, QKeyEvent, QPixmap
 from PySide6.QtWidgets import QListWidgetItem, QMainWindow
 from qfluentwidgets import FluentIcon
 
@@ -31,11 +32,7 @@ class ReaderWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_ReaderWindow()
         self.ui.setupUi(self)
-        self.setStyleSheet(
-            """
-            QScrollArea {border: none;}
-            """,
-        )
+        self.setStyleSheet("QScrollArea {border: none;}")
         self.ui.fullscreen_btn.setIcon(FluentIcon.FULL_SCREEN)
         self.ui.ch_list_btn.setIcon(FluentIcon.TILES)
         self.ui.next_page_btn.setIcon(FluentIcon.RIGHT_ARROW)
@@ -71,7 +68,12 @@ class ReaderWindow(QMainWindow):
         self.__max_page = 1
         self.__catalog = None
 
-    def setup(self, manga: Manga, chapters: list[Chapter], cur_chapter=1) -> None:
+    def setup(
+        self,
+        manga: Manga,
+        chapters: list[Chapter],
+        cur_chapter: int = 1,
+    ) -> None:
         self.ui.chapters_frame.hide()
         self.__manga = manga
         self.setWindowTitle(self.__manga.name)
@@ -89,13 +91,14 @@ class ReaderWindow(QMainWindow):
         self.update_chapters_list()
         self.update_chapter()
 
-    def keyPressEvent(self, event) -> None:
+    def keyPressEvent(self, event: QKeyEvent) -> None:
         if event.key() == Qt.Key.Key_Escape:
             self.close()
-        event.accept()
+        super().keyPressEvent(event)
 
-    def closeEvent(self, event) -> None:
+    def closeEvent(self, event: QCloseEvent) -> None:
         self.deleteLater()
+        super().closeEvent(event)
 
     @Slot()
     def change_fullscreen(self) -> None:
@@ -219,7 +222,7 @@ class ReaderWindow(QMainWindow):
                 ContentContainerState.NO_CONTENT,
             )
 
-    def get_content(self):
+    def get_content(self) -> str | QPixmap | None:
         page = self.__cur_page
         chapter = self.__cur_chapter
 
@@ -247,7 +250,7 @@ class ReaderWindow(QMainWindow):
             self.__catalog,
         )
 
-    def update_image(self, content) -> None:
+    def update_image(self, content: str | QPixmap) -> None:
         self.__content_container.set_state(ContentContainerState.SHOW_CONTENT)
         self.__content_container.set_content(content)
 

@@ -13,14 +13,16 @@ from nlightreader.utils.database import Database
 from nlightreader.utils.file_manager import FileManager
 from nlightreader.utils.threads import Worker
 from nlightreader.utils.translator import translate
-from nlightreader.widgets.contexts import LibraryMangaMenu
+from nlightreader.widgets.contexts import LibraryMangaMenu, LibraryMenuMode
 
 
 class MangaItem(QWidget):
     manga_clicked = Signal(Manga)
     manga_changed = Signal()
 
-    def __init__(self, manga: Manga, *, is_added_to_lib=True, pool=None) -> None:
+    def __init__(
+        self, manga: Manga, *, is_added_to_lib: bool = True, pool=None,
+    ) -> None:
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
@@ -100,11 +102,11 @@ class MangaItem(QWidget):
         menu = LibraryMangaMenu()
         if self.__is_added_to_lib and not self.__catalog.is_primary:
             if self.__db.check_manga_library(self.__manga):
-                menu.set_mode(1)
+                menu.set_mode(LibraryMenuMode.IN_LIBRARY)
             else:
-                menu.set_mode(0)
+                menu.set_mode(LibraryMenuMode.NOT_IN_LIBRARY)
         else:
-            menu.set_mode(2)
+            menu.set_mode(LibraryMenuMode.LOCAL_ONLY)
         menu.add_to_lib.triggered.connect(add_to_lib)
         menu.remove_from_lib.triggered.connect(remove_from_lib)
         menu.open_in_browser.triggered.connect(open_in_browser)

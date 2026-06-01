@@ -1,6 +1,7 @@
 from typing import override
 
 from PySide6.QtCore import Slot
+from PySide6.QtWidgets import QWidget
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.facial import Ui_Form
@@ -14,7 +15,7 @@ from nlightreader.widgets.pages.base_page import BasePage
 
 
 class MainPage(BasePage):
-    def __init__(self, parent=None) -> None:
+    def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent=parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
@@ -64,7 +65,7 @@ class MainPage(BasePage):
             self.get_content()
 
     @override
-    def _setup_manga_item(self, manga: Manga):
+    def _setup_manga_item(self, manga: Manga) -> MangaItem:
         item = MangaItem(manga, pool=self.manga_area.manga_thread_pool)
         item.manga_clicked.connect(self.manga_open.emit)
         return item

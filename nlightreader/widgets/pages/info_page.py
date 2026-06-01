@@ -1,7 +1,7 @@
 import logging
 
-from PySide6.QtCore import QSize, Qt, QThreadPool, Signal, Slot
-from PySide6.QtGui import QIcon
+from PySide6.QtCore import QPoint, QSize, Qt, QThreadPool, Signal, Slot
+from PySide6.QtGui import QIcon, QResizeEvent
 from PySide6.QtWidgets import QListWidgetItem, QTreeWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
@@ -81,7 +81,7 @@ class InfoPage(QWidget):
         self.__manga_pixmap = None
         self.__reader_window = None
 
-    def on_context_menu(self, pos) -> None:
+    def on_context_menu(self, position: QPoint) -> None:
         context_target = self.ui.items_tree
 
         def set_as_read_all() -> None:
@@ -121,7 +121,7 @@ class InfoPage(QWidget):
             selected_item.setIcon(0, QIcon())
 
         menu = ReadMarkMenu()
-        selected_item = context_target.itemAt(pos)
+        selected_item = context_target.itemAt(position)
         if not selected_item or not isinstance(selected_item, ChapterTreeItem):
             return
         selected_chapter = selected_item.chapter
@@ -134,15 +134,15 @@ class InfoPage(QWidget):
         menu.set_as_read.triggered.connect(set_as_read)
         menu.set_as_read_all.triggered.connect(set_as_read_all)
         menu.remove_read_state.triggered.connect(remove_read_state)
-        menu.exec(context_target.mapToGlobal(pos))
+        menu.exec(context_target.mapToGlobal(position))
 
-    def resizeEvent(self, event) -> None:
+    def resizeEvent(self, event: QResizeEvent) -> None:
         if not self.__catalog or not self.__manga or not self.__manga_pixmap:
             return
         self.update_manga_preview()
         super().resizeEvent(event)
 
-    def scroll_area_resize_event(self, event) -> None:
+    def scroll_area_resize_event(self, event: QResizeEvent) -> None:
         self.ui.scrollAreaWidgetContents.setFixedWidth(
             event.size().width(),
         )
