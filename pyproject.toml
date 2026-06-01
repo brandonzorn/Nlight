@@ -1,15 +1,3 @@
-[tool.black]
-line-length = 79
-exclude = """
-/(
-  build/
-  | build_nuitka/
-  | data/
-  | dist/
-  | venv/
-)
-"""
-
 [tool.flake8]
 max-line-length = 79
 inline-quotes = "double"
