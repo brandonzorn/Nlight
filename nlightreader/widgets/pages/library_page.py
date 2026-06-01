@@ -1,5 +1,7 @@
 from typing import override
 
+from PySide6.QtWidgets import QWidget
+
 from data.ui.widgets.library import Ui_Form
 from nlightreader.consts.enums import Nl
 from nlightreader.models import Manga
@@ -9,7 +11,7 @@ from nlightreader.widgets.pages.base_page import BasePage
 
 
 class LibraryPage(BasePage):
-    def __init__(self, parent=None) -> None:
+    def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent=parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)

@@ -1,6 +1,8 @@
 from enum import IntEnum, unique
 
-from qfluentwidgets import Action, FluentIcon, RoundMenu
+from qfluentwidgets import Action, FluentIcon
+
+from nlightreader.widgets.contexts.context_menu_base import AbstractContextMenu
 
 
 @unique
@@ -10,7 +12,7 @@ class ReadMarkMode(IntEnum):
     ALL = 2
 
 
-class ReadMarkMenu(RoundMenu):
+class ReadMarkMenu(AbstractContextMenu):
     def __init__(self) -> None:
         super().__init__()
         self.set_as_read = Action(
@@ -26,18 +28,7 @@ class ReadMarkMenu(RoundMenu):
             self.tr("Remove read mark"),
         )
 
-    def set_mode(self, mode: ReadMarkMode) -> None:
-        """
-        Sets the mode of this object and
-        adds the appropriate actions based on the mode.
-
-        Args:
-            mode (ReadMarkMode): The mode to set.
-
-        Raises:
-            ValueError: If an invalid mode is provided.
-        """
-        actions = {
+        self._actions_map = {
             ReadMarkMode.SET_AS_READ: [
                 self.set_as_read,
                 self.set_as_read_all,
@@ -52,10 +43,9 @@ class ReadMarkMenu(RoundMenu):
                 self.set_as_read_all,
             ],
         }
-        if mode not in actions:
-            msg = "Invalid mode: must be a ReadMarkMode"
-            raise ValueError(msg)
-        self.addActions(actions.get(mode, []))
+
+    def set_mode(self, mode: ReadMarkMode) -> None:
+        return super().set_mode(mode)
 
 
 __all__ = [

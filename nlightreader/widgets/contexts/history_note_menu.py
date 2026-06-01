@@ -1,7 +1,17 @@
-from qfluentwidgets import Action, FluentIcon, RoundMenu
+from enum import IntEnum, unique
+
+from qfluentwidgets import Action, FluentIcon
+
+from nlightreader.widgets.contexts.context_menu_base import AbstractContextMenu
 
 
-class HistoryNoteMenu(RoundMenu):
+@unique
+class HistoryMenuMode(IntEnum):
+    UNREAD = 0
+    READ = 1
+
+
+class HistoryNoteMenu(AbstractContextMenu):
     def __init__(self) -> None:
         super().__init__()
         self.set_as_read = Action(
@@ -13,27 +23,16 @@ class HistoryNoteMenu(RoundMenu):
             self.tr("Remove all"),
         )
 
-    def set_mode(self, mode: int) -> None:
-        """
-        Sets the mode of this object and
-        adds the appropriate actions based on the mode.
-
-        Args:
-            mode (int): The mode to set. Valid values are 0, 1.
-
-        Raises:
-            ValueError: If an invalid mode is provided.
-        """
-        actions = {
-            0: [self.remove_all, self.set_as_read],
-            1: [self.remove_all],
+        self._actions_map = {
+            HistoryMenuMode.UNREAD: [self.remove_all, self.set_as_read],
+            HistoryMenuMode.READ: [self.remove_all],
         }
-        if mode not in actions:
-            msg = "Invalid mode: must be 0 or 1"
-            raise ValueError(msg)
-        self.addActions(actions[mode])
+
+    def set_mode(self, mode: HistoryMenuMode) -> None:
+        return super().set_mode(mode)
 
 
 __all__ = [
     "HistoryNoteMenu",
+    "HistoryMenuMode",
 ]

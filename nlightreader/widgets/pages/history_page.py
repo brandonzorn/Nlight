@@ -7,7 +7,7 @@ from nlightreader.consts.colors import ItemsIcons
 from nlightreader.items import HistoryNote
 from nlightreader.models import Manga
 from nlightreader.utils.database import Database
-from nlightreader.widgets.contexts import HistoryNoteMenu
+from nlightreader.widgets.contexts import HistoryMenuMode, HistoryNoteMenu
 
 
 class HistoryPage(QWidget):
@@ -57,9 +57,9 @@ class HistoryPage(QWidget):
         if selected_item.parent() and not self.db.get_complete_status(
             selected_note.chapter,
         ):
-            menu.set_mode(0)
+            menu.set_mode(HistoryMenuMode.UNREAD)
         else:
-            menu.set_mode(1)
+            menu.set_mode(HistoryMenuMode.READ)
 
         menu.set_as_read.triggered.connect(set_as_read)
         menu.remove_all.triggered.connect(remove_all)

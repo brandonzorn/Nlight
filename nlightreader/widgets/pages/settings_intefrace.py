@@ -22,7 +22,7 @@ class SettingsPage(ScrollArea):
     check_for_updates_signal = Signal()
     theme_changed = Signal()
 
-    def __init__(self, parent=None) -> None:
+    def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent=parent)
         self.setObjectName("SettingsInterface")
         self.scrollWidget = QWidget()
