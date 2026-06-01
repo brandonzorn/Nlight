@@ -142,10 +142,10 @@ def get_language_icon(language: Nl.Language) -> str:
         msg = "Language must be Nl.Language"
         raise TypeError(msg)
     lang_icons = {
-        Nl.Language.ru: LangIcons.Ru,
-        Nl.Language.en: LangIcons.Gb,
-        Nl.Language.jp: LangIcons.Jp,
-        Nl.Language.uk: LangIcons.Ua,
+        Nl.Language.ru: LangIcons.RU,
+        Nl.Language.en: LangIcons.GB,
+        Nl.Language.jp: LangIcons.JP,
+        Nl.Language.uk: LangIcons.UA,
         Nl.Language.undefined: "",
     }
     return lang_icons.get(language)
