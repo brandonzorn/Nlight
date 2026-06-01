@@ -11,7 +11,7 @@ class NlightTranslator(QTranslator):
         super().load(f":/i18n/{locale.language().name}.qm")
 
 
-def translate(context, string):
+def translate(context: str, string: str) -> str:
     return QApplication.translate(context, string, None)
 
 

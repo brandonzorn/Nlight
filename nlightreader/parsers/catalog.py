@@ -39,13 +39,13 @@ class AbstractCatalog:
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         return []
 
-    def get_image(self, image: Image):
+    def get_image(self, image: Image) -> None:
         return
 
-    def get_preview(self, manga: Manga):
+    def get_preview(self, manga: Manga) -> None:
         return
 
-    def get_character_preview(self, character: Character):
+    def get_character_preview(self, character: Character) -> None:
         return
 
     def get_genres(self):
@@ -104,13 +104,13 @@ class LibParser:
     def check_user_rate(self, manga: Manga) -> None:
         pass
 
-    def delete_user_rate(self, user_rate: UserRate):
+    def delete_user_rate(self, user_rate: UserRate) -> None:
         pass
 
     def get_user_rate(self, manga: Manga) -> UserRate:
         pass
 
-    def update_user_rate(self, user_rate: UserRate):
+    def update_user_rate(self, user_rate: UserRate) -> None:
         pass
 
 

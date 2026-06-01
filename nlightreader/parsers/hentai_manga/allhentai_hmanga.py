@@ -15,8 +15,9 @@ class AllHentai(AbstractHentaiMangaCatalog):
     def search_manga(self, form):
         url = f"{self._URL}/search"
         if not form.search:
+            msg = "Search field is empty"
             raise parser_content_exc.RequestsParamsError(
-                "Search field is empty",
+                msg,
             )
         params = {
             "q": form.search,
@@ -81,7 +82,7 @@ class AllHentai(AbstractHentaiMangaCatalog):
     def get_images(self, manga: Manga, chapter: Chapter):
         return []
 
-    def get_image(self, image: Image):
+    def get_image(self, image: Image) -> None:
         return
 
     def get_preview(self, manga: Manga):

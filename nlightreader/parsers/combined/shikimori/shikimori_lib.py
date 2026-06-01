@@ -1,7 +1,7 @@
 import logging
 
-import requests
 from PySide6.QtWidgets import QApplication
+import requests
 from requests_oauthlib import OAuth2Session
 
 from nlightreader.consts.enums import Nl
@@ -21,14 +21,14 @@ from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
 
 try:
-    from keys import SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID
+    from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
 except (ModuleNotFoundError, ImportError):
     logging.info("Shikimori API keys not found")
     SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID = "", ""
 
 
 class ShikimoriLib(ShikimoriBase, LibParser):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.fields = 1
         self.session: Auth = Auth()
@@ -65,7 +65,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
             )
         return self.session.user
 
-    def create_user_rate(self, manga: Manga):
+    def create_user_rate(self, manga: Manga) -> None:
         url = f"{self._URL_API}/v2/user_rates"
         data = {
             "user_rate": {
@@ -76,7 +76,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         }
         self.session.request("POST", url, json=data)
 
-    def check_user_rate(self, manga: Manga):
+    def check_user_rate(self, manga: Manga) -> bool:
         url = f"{self._URL_API}/v2/user_rates"
         params = {
             "target_type": "Manga",
@@ -90,7 +90,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                     return True
         return False
 
-    def delete_user_rate(self, user_rate: UserRate):
+    def delete_user_rate(self, user_rate: UserRate) -> None:
         url = f"{self._URL_API}/v2/user_rates/{user_rate.id}"
         self.session.request("DELETE", url)
 
@@ -114,7 +114,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                 )
         return None
 
-    def update_user_rate(self, user_rate: UserRate):
+    def update_user_rate(self, user_rate: UserRate) -> None:
         url = f"{self._URL_API}/v2/user_rates/{user_rate.id}"
         status = user_rate.status.to_str()
         if user_rate.status == Nl.LibList.reading:
@@ -135,7 +135,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
 
 @singleton
 class Auth:
-    def __init__(self):
+    def __init__(self) -> None:
         self.client_id = SHIKIMORI_CLIENT_ID
         self.client_secret = SHIKIMORI_CLIENT_SECRET
         self.redirect_uri = "urn:ietf:wg:oauth:2.0:oob"
@@ -154,7 +154,7 @@ class Auth:
         if self.token:
             self.check_auth()
 
-    def auth_login(self, params):
+    def auth_login(self, params) -> None:
         self.fetch_token(params["token"])
         self.check_auth()
 
@@ -187,7 +187,7 @@ class Auth:
         TokenManager.save_token(self.token, ShikimoriLib.CATALOG_NAME)
         return self.token
 
-    def update_token(self, token):
+    def update_token(self, token) -> None:
         if token and "access_token" in token and "refresh_token" in token:
             token = {
                 "access_token": token["access_token"],

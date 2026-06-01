@@ -5,7 +5,7 @@ from nlightreader.consts.items.preset_items import (
     PresetKinds as Pk,
 )
 from nlightreader.consts.items.preset_items import (
-     PresetOrders as Po,
+    PresetOrders as Po,
 )
 
 

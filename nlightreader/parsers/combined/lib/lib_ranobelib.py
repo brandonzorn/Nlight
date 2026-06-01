@@ -31,7 +31,7 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
         return [Image("", 1, url)]
 
     def get_image(self, image: Image):
-        def get_chapter_content_image(media_id: str):
+        def get_chapter_content_image(media_id: str) -> str:
             url = (
                 media_id
                 if media_id.startswith(

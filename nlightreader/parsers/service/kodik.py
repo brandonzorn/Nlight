@@ -10,7 +10,7 @@ class KodikTranslator:
         episodes,
         translator: str,
         tr_type: str,
-    ):
+    ) -> None:
         self.content_id = content_id
         self.kodik_url = kodik_url
         self.episodes = int(episodes)

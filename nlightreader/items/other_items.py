@@ -3,7 +3,9 @@ from nlightreader.models import Chapter, Manga
 
 
 class HistoryNote:
-    def __init__(self, chapter: Chapter, manga: Manga, is_completed: bool) -> None:
+    def __init__(
+        self, chapter: Chapter, manga: Manga, is_completed: bool,
+    ) -> None:
         self.chapter = chapter
         self.manga = manga
         self.is_completed = is_completed

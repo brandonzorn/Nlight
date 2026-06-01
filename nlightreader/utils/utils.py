@@ -135,7 +135,7 @@ def get_language_icon(language: Nl.Language) -> str:
     :param language: Nl.Language.
     :return:
         The file path to the icon associated
-        with the language as a string, or an
+        with the language as a string or an
         empty string if no icon is found.
     """
     if not isinstance(language, Nl.Language):
