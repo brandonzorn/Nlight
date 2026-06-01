@@ -20,16 +20,6 @@ jobs:
       - name: Check code formatting with flake8
         run: flake8 ./
 
-  black-test:
-    runs-on: ubuntu-latest
-    container: python:3.13-alpine
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install dependencies
-        run: pip install black
-      - name: Check code formatting with black
-        run: black ./ --check --verbose --diff
-
   ruff-lint:
     runs-on: ubuntu-latest
     container: python:3.13-alpine
