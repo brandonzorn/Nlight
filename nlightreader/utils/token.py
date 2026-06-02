@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from typing import Any
 
 from nlightreader.consts.paths import TOKEN_PATH
 
@@ -16,11 +17,11 @@ class TokenManager:
             for which the token is being saved.
         """
         path = Path(TOKEN_PATH, catalog_name)
+        path.mkdir(parents=True, exist_ok=True)
+
         token_file_path = path / "token.json"
-        if not path.exists():
-            path.mkdir(parents=True, exist_ok=True)
-        with token_file_path.open("w") as f:
-            f.write(json.dumps(token))
+        with token_file_path.open("w", encoding="utf-8") as f:
+            json.dump(token, f, ensure_ascii=False, indent=4)
 
     @staticmethod
     def load_token(catalog_name: str) -> dict[str, Any]:
@@ -36,13 +37,11 @@ class TokenManager:
         path = Path(TOKEN_PATH, catalog_name)
         token_file_path = path / "token.json"
         if token_file_path.exists():
-            with token_file_path.open() as f:
+            with token_file_path.open("r", encoding="utf-8") as f:
                 data = json.load(f)
                 if data:
                     return data
         return {}
 
 
-__all__ = [
-    "TokenManager",
-]
+__all__ = ["TokenManager"]
