@@ -48,7 +48,7 @@ class AbstractCatalog:
     def get_character_preview(self, character: Character) -> None:
         return
 
-    def get_genres(self):
+    def get_genres(self) -> list[Genre]:
         return [
             Genre(
                 i["value"],

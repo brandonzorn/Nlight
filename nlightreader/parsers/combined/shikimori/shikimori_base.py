@@ -66,7 +66,7 @@ class ShikimoriBase(AbstractCatalog):
             content_type="content",
         )
 
-    def get_genres(self):
+    def get_genres(self) -> list[Genre]:
         url = f"{self._URL_API}/genres"
         response = get_html(url, headers=self._HEADERS, content_type="json")
         if not response:

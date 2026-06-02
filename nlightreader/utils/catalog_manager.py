@@ -61,7 +61,7 @@ LIB_CATALOGS = {ShikimoriBase: ShikimoriLib, MangaDex: MangaDexLib}
 _initialized_catalogs = {}
 
 
-def get_catalog_by_id(catalog_id):
+def get_catalog_by_id(catalog_id: int):
     if catalog_id in _initialized_catalogs:
         return _initialized_catalogs[catalog_id]
     if catalog_id in CATALOG_CLASSES:

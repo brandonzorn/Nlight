@@ -90,9 +90,10 @@ class ParentWindow(FluentWindow):
         )
 
     def delete_info_interface(self) -> None:
-        self.stackedWidget.view.removeWidget(self.info_interface)
-        self.info_interface.deleteLater()
-        self.info_interface = None
+        if self.info_interface is not None:
+            self.stackedWidget.view.removeWidget(self.info_interface)
+            self.info_interface.deleteLater()
+            self.info_interface = None
 
     @Slot(Manga)
     def open_info(self, manga: Manga) -> None:

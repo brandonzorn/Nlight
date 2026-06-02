@@ -1,8 +1,16 @@
+from typing import override
 import webbrowser
 
 from PySide6 import QtGui
-from PySide6.QtCore import QRect, QSize, Qt, Signal
-from PySide6.QtGui import QColor, QImage, QPainter, QPixmap
+from PySide6.QtCore import QEvent, QRect, QSize, Qt, QThreadPool, Signal
+from PySide6.QtGui import (
+    QColor,
+    QEnterEvent,
+    QImage,
+    QMouseEvent,
+    QPainter,
+    QPixmap,
+)
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import InfoBar
 
@@ -21,7 +29,11 @@ class MangaItem(QWidget):
     manga_changed = Signal()
 
     def __init__(
-        self, manga: Manga, *, is_added_to_lib: bool = True, pool=None,
+        self,
+        manga: Manga,
+        *,
+        is_added_to_lib: bool = True,
+        pool: QThreadPool | None = None,
     ) -> None:
         super().__init__()
         self.ui = Ui_Form()
@@ -35,16 +47,19 @@ class MangaItem(QWidget):
         self.customContextMenuRequested.connect(self.on_context_menu)
         self.ui.name_lbl.setText(self.__manga.get_name())
 
-    def enterEvent(self, event) -> None:
+    @override
+    def enterEvent(self, event: QEnterEvent) -> None:
         super().enterEvent(event)
         if self.isEnabled():
             self.set_image(0.3)
 
-    def leaveEvent(self, event) -> None:
+    @override
+    def leaveEvent(self, event: QEvent, /) -> None:
         super().leaveEvent(event)
         self.set_image(1.0)
 
-    def mouseReleaseEvent(self, event) -> None:
+    @override
+    def mouseReleaseEvent(self, event: QMouseEvent) -> None:
         super().mouseReleaseEvent(event)
         if event.button() == Qt.MouseButton.LeftButton:
             if self.rect().contains(event.pos()):

@@ -7,7 +7,7 @@ class KodikTranslator:
         self,
         content_id: str,
         kodik_url: str,
-        episodes,
+        episodes: int,
         translator: str,
         tr_type: str,
     ) -> None:
@@ -22,7 +22,7 @@ class Kodik:
     URL_API = "https://kodikapi.com"
 
     @classmethod
-    def search(cls, shikimori_id) -> list[KodikTranslator]:
+    def search(cls, shikimori_id: str) -> list[KodikTranslator]:
         translators: list[KodikTranslator] = []
         url = f"{cls.URL_API}/search"
         params = {
@@ -30,13 +30,13 @@ class Kodik:
             "shikimori_id": shikimori_id,
         }
         response = get_html(url, params=params, content_type="json")
-        if response and (results := response.get("results")):
-            for data in results:
+        if response:
+            for data in response.get("results", []):
                 translators.append(
                     KodikTranslator(
                         data["id"],
                         data["link"],
-                        data["last_episode"] if "last_episode" in data else 1,
+                        int(data.get("last_episode", 1)),
                         data["translation"]["title"],
                         data["translation"]["type"],
                     ),

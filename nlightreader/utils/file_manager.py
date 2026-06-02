@@ -80,7 +80,7 @@ class FileManager:
         chapter: Chapter,
         image: Image,
         catalog: AbstractCatalog,
-    ):
+    ) -> QPixmap:
         path = cls.__get_chapter_folder(manga, chapter, catalog)
         file_name = f"{image.page_number}.jpg"
         if not check_file_exists(path, file_name):
@@ -109,7 +109,11 @@ class FileManager:
             return ""
 
     @classmethod
-    def get_manga_preview(cls, manga: Manga, catalog: AbstractCatalog):
+    def get_manga_preview(
+        cls,
+        manga: Manga,
+        catalog: AbstractCatalog,
+    ) -> QPixmap:
         path = cls.__get_manga_folder(manga, catalog)
         if not check_file_exists(path, cls.__PREVIEW_FILE):
             save_file(path, cls.__PREVIEW_FILE, catalog.get_preview(manga))
@@ -143,7 +147,9 @@ class FileManager:
 
     @classmethod
     def remove_manga_files(
-        cls, manga: Manga, catalog: AbstractCatalog,
+        cls,
+        manga: Manga,
+        catalog: AbstractCatalog,
     ) -> None:
         remove_file(
             cls.__get_manga_folder(manga, catalog),
@@ -151,7 +157,9 @@ class FileManager:
 
     @classmethod
     def open_dir_in_explorer(
-        cls, manga: Manga, catalog: AbstractCatalog,
+        cls,
+        manga: Manga,
+        catalog: AbstractCatalog,
     ) -> None:
         os.startfile(
             get_full_dir_path(
@@ -173,7 +181,11 @@ def check_file_exists(path: Path, file_name: str | Path) -> bool:
     return get_full_file_path(path, file_name).exists()
 
 
-def save_file(path: Path, file_name: str | Path, file_content) -> None:
+def save_file(
+    path: Path,
+    file_name: str | Path,
+    file_content: str | bytes,
+) -> None:
     full_path = get_full_dir_path(path)
     full_file_path = Path(full_path, file_name)
     if not full_file_path.exists():

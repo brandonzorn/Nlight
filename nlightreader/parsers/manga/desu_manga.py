@@ -14,7 +14,7 @@ class Desu(AbstractMangaCatalog):
     _URL_API = f"{_URL}/manga/api"
     _HEADERS = {"User-Agent": "Nlight"}
 
-    def get_manga(self, manga: Manga):
+    def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/{manga.content_id}"
         response = get_html(url, headers=self._HEADERS, content_type="json")
         if response:
@@ -31,7 +31,7 @@ class Desu(AbstractMangaCatalog):
             )
         return manga
 
-    def search_manga(self, form: RequestForm):
+    def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}"
         params = {
             "limit": form.limit,
@@ -63,7 +63,7 @@ class Desu(AbstractMangaCatalog):
             )
         return mangas
 
-    def get_chapters(self, manga: Manga):
+    def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self._URL_API}/{manga.content_id}"
         response = get_html(url, headers=self._HEADERS, content_type="json")
         chapters = []
@@ -84,7 +84,7 @@ class Desu(AbstractMangaCatalog):
                 chapters.append(chapter)
         return chapters
 
-    def get_images(self, manga: Manga, chapter: Chapter):
+    def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = (
             f"{self._URL_API}/{manga.content_id}/chapter/{chapter.content_id}"
         )
@@ -114,6 +114,4 @@ class Desu(AbstractMangaCatalog):
         return f"{self._URL}/manga/{manga.content_id}"
 
 
-__all__ = [
-    "Desu",
-]
+__all__ = ["Desu"]

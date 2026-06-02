@@ -1,10 +1,14 @@
+from typing import override
+
 from PySide6.QtCore import Qt, Slot
+from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QSizePolicy,
     QSpacerItem,
     QVBoxLayout,
+    QWidget,
 )
 from qfluentwidgets import (
     BodyLabel,
@@ -22,7 +26,7 @@ from nlightreader.utils.threads import Worker
 
 
 class CharacterInfoDialog(MessageBoxBase):
-    def __init__(self, character: Character, parent) -> None:
+    def __init__(self, character: Character, parent: QWidget | None) -> None:
         super().__init__(parent)
         self.__character = character
         self.__catalog = get_catalog_by_id(character.catalog_id)
@@ -74,7 +78,8 @@ class CharacterInfoDialog(MessageBoxBase):
         self.update_description()
         Worker(self.setup_image).start()
 
-    def closeEvent(self, arg__1) -> None:
+    @override
+    def closeEvent(self, arg__1: QCloseEvent, /) -> None:
         self.deleteLater()
 
     @Slot()

@@ -1,5 +1,8 @@
+from typing import override
+
 from PySide6.QtCore import Qt, Slot
-from PySide6.QtWidgets import QHBoxLayout
+from PySide6.QtGui import QCloseEvent
+from PySide6.QtWidgets import QHBoxLayout, QWidget
 from qfluentwidgets import (
     BodyLabel,
     CardWidget,
@@ -12,6 +15,7 @@ from qfluentwidgets import (
 )
 
 from nlightreader.consts.enums import LIB_LISTS, Nl
+from nlightreader.items import UserRate
 from nlightreader.models import Manga
 from nlightreader.utils.catalog_manager import (
     get_catalog_by_id,
@@ -21,7 +25,7 @@ from nlightreader.utils.translator import translate
 
 
 class RateDialog(MessageBoxBase):
-    def __init__(self, manga: Manga, parent) -> None:
+    def __init__(self, manga: Manga, parent: QWidget) -> None:
         super().__init__(parent)
         self.__manga = manga
         self.__catalog = get_lib_catalog(
@@ -97,10 +101,11 @@ class RateDialog(MessageBoxBase):
 
         self._display_user_rate()
 
-    def closeEvent(self, arg__1) -> None:
+    @override
+    def closeEvent(self, event: QCloseEvent) -> None:
         self.deleteLater()
 
-    def _fetch_user_rate(self):
+    def _fetch_user_rate(self) -> UserRate:
         if not self.__catalog.check_user_rate(self.__manga):
             self.__catalog.create_user_rate(self.__manga)
         return self.__catalog.get_user_rate(self.__manga)

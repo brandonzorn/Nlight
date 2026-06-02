@@ -30,7 +30,7 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
         )
         return [Image("", 1, url)]
 
-    def get_image(self, image: Image):
+    def get_image(self, image: Image) -> str | None:
         def get_chapter_content_image(media_id: str) -> str:
             url = (
                 media_id
@@ -46,7 +46,7 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/png;base64,{str_equivalent_image}"
 
-        def replace_images(text: str):
+        def replace_images(text: str) -> str:
             pattern = r'src="([^"]+)"'
             return re.sub(
                 pattern,

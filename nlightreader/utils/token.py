@@ -6,7 +6,7 @@ from nlightreader.consts.paths import TOKEN_PATH
 
 class TokenManager:
     @staticmethod
-    def save_token(token: dict, catalog_name: str) -> None:
+    def save_token(token: dict[str, Any], catalog_name: str) -> None:
         """
         Saves a token dictionary to disk.
 
@@ -23,15 +23,15 @@ class TokenManager:
             f.write(json.dumps(token))
 
     @staticmethod
-    def load_token(catalog_name):
+    def load_token(catalog_name: str) -> dict[str, Any]:
         """
-        Loads a token dictionary from disk.
+        Loads a token dictionary from a disk.
 
-        :param catalog_name:
-            The name of the parser for which the token is being loaded.
-        :return:
-            A dictionary containing authentication token data,
-            or an empty dictionary if no token is found.
+        :param catalog_name: The name of the parser for which
+            the token is being loaded.
+        :return: A dictionary containing authentication token data,
+            or an empty dictionary if no token is found
+            or if the file is corrupted.
         """
         path = Path(TOKEN_PATH, catalog_name)
         token_file_path = path / "token.json"

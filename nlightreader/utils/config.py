@@ -22,10 +22,10 @@ class Language(Enum):
 
 
 class LanguageSerializer(ConfigSerializer):
-    def serialize(self, language):
+    def serialize(self, language: Language) -> str:
         return language.value.name() if language != Language.AUTO else "Auto"
 
-    def deserialize(self, value: str):
+    def deserialize(self, value: str) -> Language:
         return Language(QLocale(value)) if value != "Auto" else Language.AUTO
 
 
@@ -85,6 +85,4 @@ cfg = Config()
 qconfig.load(APP_DATA_PATH / "config.json", cfg)
 
 
-__all__ = [
-    "cfg",
-]
+__all__ = ["cfg"]

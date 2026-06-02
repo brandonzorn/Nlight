@@ -32,7 +32,7 @@ class Remanga(AbstractMangaCatalog):
             )
         return manga
 
-    def search_manga(self, form: RequestForm):
+    def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/search/catalog"
         if form.search:
             url = f"{self._URL_API}/search"
@@ -97,7 +97,7 @@ class Remanga(AbstractMangaCatalog):
                         chapters.append(chapter)
         return chapters
 
-    def get_images(self, manga: Manga, chapter: Chapter):
+    def get_images(self, _: Manga, chapter: Chapter) -> list[Image]:
         url = f"{self._URL_API}/titles/chapters/{chapter.content_id}/"
         response = get_html(url, headers=self._HEADERS, content_type="json")
         images = []
@@ -138,6 +138,4 @@ class Remanga(AbstractMangaCatalog):
         return f"{self._URL}/manga/{manga.content_id}"
 
 
-__all__ = [
-    "Remanga",
-]
+__all__ = ["Remanga"]

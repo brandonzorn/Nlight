@@ -38,7 +38,7 @@ class Rulate(AbstractRanobeCatalog):
             manga.kind = Nl.MangaKind.ranobe
         return manga
 
-    def search_manga(self, form: RequestForm):
+    def search_manga(self, form: RequestForm) -> list[Manga]:
         params = {
             "t": form.search,
             "cat": 12,
@@ -52,7 +52,7 @@ class Rulate(AbstractRanobeCatalog):
             content_type="text",
         )
 
-        ranobe = []
+        ranobe: list[Manga] = []
         if not response:
             return ranobe
 
@@ -81,7 +81,7 @@ class Rulate(AbstractRanobeCatalog):
             )
         return ranobe
 
-    def get_chapters(self, manga: Manga):
+    def get_chapters(self, manga: Manga) -> list[Chapter]:
         chapters = []
         response = get_html(
             f"{self._URL}/book/{manga.content_id}",
@@ -113,7 +113,7 @@ class Rulate(AbstractRanobeCatalog):
             chapters.reverse()
         return chapters
 
-    def get_images(self, manga: Manga, chapter: Chapter):
+    def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = (
             f"{self._URL}/book/"
             f"{manga.content_id}/{chapter.content_id}/ready_new"
@@ -179,8 +179,8 @@ class Erolate(Rulate):
         "mature": "7da3ee594b38fc5355692d978fe8f5adbeb3d17di%3A1%3B",
     }
 
-    def search_manga(self, form: RequestForm):
-        ranobe = []
+    def search_manga(self, form: RequestForm) -> list[Manga]:
+        ranobe: list[Manga] = []
         params = {
             "t": form.search,
             "cat": 2,
@@ -213,7 +213,4 @@ class Erolate(Rulate):
         return ranobe
 
 
-__all__ = [
-    "Rulate",
-    "Erolate",
-]
+__all__ = ["Rulate", "Erolate"]
