@@ -114,6 +114,10 @@ class Database:
                 "manga_id",
                 sqlalchemy.Text,
             ),
+            sqlalchemy.Column(
+                "translator",
+                sqlalchemy.Text,
+            ),
         )
 
         self._library = sqlalchemy.Table(
@@ -158,6 +162,7 @@ class Database:
         migrate1 = ("preview_url", "manga", "TEXT")
         migrate2 = ("translator", "chapters", "TEXT")
         self.add_column_migration(*migrate1)
+        self.add_column_migration(*migrate2)
 
     def add_column_migration(
         self,
@@ -293,6 +298,7 @@ class Database:
             ch,
             title,
             language,
+            translator,
         )
 
     def get_chapter(self, chapter_id: str) -> Chapter:
