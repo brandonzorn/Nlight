@@ -9,14 +9,16 @@ class BaseModel:
         self.__content_id = content_id
         self.__catalog_id = catalog_id
 
-    def __eq__(self, other):
-        return other.id == self.id
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, BaseModel):
+            return False
+        return self.__id == other.id
 
-    def __hash__(self):
-        return hash(self.id)
+    def __hash__(self) -> int:
+        return hash(self.__id)
 
     @property
-    def id(self):
+    def id(self) -> str:
         return self.__id
 
     @property
@@ -28,7 +30,11 @@ class BaseModel:
         return self.__catalog_id
 
     def to_dict(self) -> dict:
-        raise NotImplementedError
+        return {
+            "content_id": self.__content_id,
+            "catalog_id": self.__catalog_id,
+            "id": self.__id,
+        }
 
 
 class NamedBaseModel(BaseModel):
@@ -44,11 +50,11 @@ class NamedBaseModel(BaseModel):
         self.__russian = russian
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.__name
 
     @property
-    def russian(self):
+    def russian(self) -> str:
         return self.__russian
 
     def get_name(self) -> str:
@@ -63,6 +69,16 @@ class NamedBaseModel(BaseModel):
         ):
             return self.__russian
         return self.__name
+
+    def to_dict(self) -> dict:
+        data = super().to_dict()
+        data.update(
+            {
+                "name": self.__name,
+                "russian": self.__russian,
+            },
+        )
+        return data
 
 
 __all__ = [

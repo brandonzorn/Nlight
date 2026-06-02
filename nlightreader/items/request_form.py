@@ -13,7 +13,7 @@ class RequestForm:
         self.lib_list = Nl.LibList.planned
 
     @property
-    def offset(self):
+    def offset(self) -> int:
         return (self.page - 1) * 50
 
     def set_order(self, order: Order) -> None:

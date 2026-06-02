@@ -24,25 +24,23 @@ class Manga(NamedBaseModel):
         self.__status: Nl.MangaStatus = Nl.MangaStatus.undefined
         self.__score: int | float = 0
         self.__preview_url: str | None = None
-
-        self.__volumes = 0
-        self.__chapters = 0
-
+        self.__volumes: int = 0
+        self.__chapters: int = 0
         self.__descriptions: dict[Nl.Language, str] = {}
 
     @property
-    def kind(self):
+    def kind(self) -> Nl.MangaKind:
         return self.__kind
 
     @kind.setter
-    def kind(self, kind) -> None:
+    def kind(self, kind: Nl.MangaKind) -> None:
         if not isinstance(kind, Nl.MangaKind):
             msg = f"Kind must be Nl.MangaKind got {type(kind)}"
             raise TypeError(msg)
         self.__kind = kind
 
     @property
-    def status(self):
+    def status(self) -> Nl.MangaStatus:
         return self.__status
 
     @status.setter
@@ -53,7 +51,7 @@ class Manga(NamedBaseModel):
         self.__status = status
 
     @property
-    def score(self):
+    def score(self) -> int | float:
         return self.__score
 
     @score.setter
@@ -67,13 +65,13 @@ class Manga(NamedBaseModel):
         self.__score = score
 
     @property
-    def preview_url(self):
+    def preview_url(self) -> str | None:
         return self.__preview_url
 
     @preview_url.setter
     def preview_url(self, url: str | None) -> None:
         if not isinstance(url, (str, NoneType)):
-            msg = f"Preview url must be str or None got {type(url)}"
+            msg = f"Preview url must be str or None, got{type(url)}"
             raise TypeError(msg)
         if url is not None and not validators.url(url):
             msg = f"Url {url} is not valid"
@@ -81,7 +79,7 @@ class Manga(NamedBaseModel):
         self.__preview_url = url
 
     @property
-    def volumes(self):
+    def volumes(self) -> int:
         return self.__volumes
 
     @volumes.setter
@@ -92,7 +90,7 @@ class Manga(NamedBaseModel):
         self.__volumes = volumes
 
     @property
-    def chapters(self):
+    def chapters(self) -> int:
         return self.__chapters
 
     @chapters.setter
@@ -111,7 +109,7 @@ class Manga(NamedBaseModel):
             raise TypeError(msg)
         self.__descriptions.update({language: description})
 
-    def get_description(self) -> str:
+    def get_description(self) -> str | None:
         if self.__descriptions.get(Nl.Language.undefined):
             return self.__descriptions.get(Nl.Language.undefined)
 
@@ -133,32 +131,29 @@ class Manga(NamedBaseModel):
         return desc_str
 
     def set_description_from_str(self, desc: str) -> None:
-        for lang, text in re.findall(
+        for lang_str, text in re.findall(
             r"<lang=(\w+)>(.+?)<end>",
             desc,
             re.DOTALL,
         ):
-            self.add_description(
-                Nl.Language.from_str(lang),
-                text,
-            )
+            lang_enum = Nl.Language.from_str(lang_str)
+            self.add_description(lang_enum, text)
 
     @override
     def to_dict(self) -> dict:
-        return {
-            "id": self.id,
-            "content_id": self.content_id,
-            "catalog_id": self.catalog_id,
-            "name": self.name,
-            "russian": self.russian,
-            "kind": self.kind.name,
-            "description": self.descriptions_to_str(),
-            "score": self.score,
-            "status": self.__status.name,
-            "volumes": self.__volumes,
-            "chapters": self.__chapters,
-            "preview_url": self.__preview_url,
-        }
+        data = super().to_dict()
+        data.update(
+            {
+                "kind": self.__kind.name,
+                "description": self.descriptions_to_str(),
+                "score": self.__score,
+                "status": self.__status.name,
+                "volumes": self.__volumes,
+                "chapters": self.__chapters,
+                "preview_url": self.__preview_url,
+            },
+        )
+        return data
 
 
 __all__ = [
