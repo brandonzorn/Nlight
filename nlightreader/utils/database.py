@@ -157,7 +157,12 @@ class Database:
         migrate1 = ("preview_url", "manga", "TEXT")
         self.add_column_migration(*migrate1)
 
-    def add_column_migration(self, column, table, params) -> None:
+    def add_column_migration(
+        self,
+        column: str,
+        table: str,
+        params: str,
+    ) -> None:
         inspector = sqlalchemy.inspect(self.__engine)
         columns = inspector.get_columns(table)
         columns_names = [column["name"] for column in columns]
@@ -229,7 +234,7 @@ class Database:
         manga.preview_url = manga_data[11]
         return manga
 
-    def get_manga(self, manga_id: str):
+    def get_manga(self, manga_id: str) -> Manga:
         select_manga = sqlalchemy.select(
             self._manga,
         ).where(
@@ -381,7 +386,7 @@ class Database:
             conn.execute(delete_manga_library)
             conn.commit()
 
-    def check_complete_chapter(self, chapter: Chapter):
+    def check_complete_chapter(self, chapter: Chapter) -> bool:
         select_chapter_history = sqlalchemy.select(
             self._chapter_history.c.is_completed,
         ).filter_by(
@@ -392,7 +397,7 @@ class Database:
         a = select_chapter_result.fetchall()
         return bool(a)
 
-    def get_complete_status(self, chapter: Chapter):
+    def get_complete_status(self, chapter: Chapter) -> bool:
         select_chapter_history = sqlalchemy.select(
             self._chapter_history.c.is_completed,
         ).filter_by(

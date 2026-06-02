@@ -5,7 +5,10 @@ import validators
 
 class Image:
     def __init__(
-        self, image_id: str, page_number: int, url: str | None,
+        self,
+        image_id: str,
+        page_number: int,
+        url: str | None,
     ) -> None:
         self.id = image_id
         self.page_number = page_number
@@ -14,7 +17,7 @@ class Image:
         self.url = url
 
     @property
-    def url(self):
+    def url(self) -> str | None:
         return self.__url
 
     @url.setter
@@ -28,6 +31,4 @@ class Image:
         self.__url = url
 
 
-__all__ = [
-    "Image",
-]
+__all__ = ["Image"]

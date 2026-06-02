@@ -1,2 +1,4 @@
 from .other_items import HistoryNote, User, UserRate
-from .RequestForm import RequestForm
+from .request_form import RequestForm
+
+__all__ = ["HistoryNote", "RequestForm", "User", "UserRate"]
