@@ -1,4 +1,5 @@
 import logging
+from typing import Any
 
 import sqlalchemy
 from sqlalchemy.dialects.sqlite import insert
@@ -155,6 +156,7 @@ class Database:
         self._metadata.create_all(self.__engine)
 
         migrate1 = ("preview_url", "manga", "TEXT")
+        migrate2 = ("translator", "chapters", "TEXT")
         self.add_column_migration(*migrate1)
 
     def add_column_migration(
@@ -214,24 +216,24 @@ class Database:
             conn.commit()
 
     @staticmethod
-    def _make_manga(manga_data) -> Manga:
-        content_id = str(manga_data[1])
-        catalog_id = manga_data[2]
-        name = manga_data[3]
-        russian = manga_data[4]
+    def _make_manga(manga_data: dict[str, Any]) -> Manga:
+        content_id = str(manga_data["content_id"])
+        catalog_id = manga_data["catalog_id"]
+        name = manga_data["name"]
+        russian = manga_data["russian"]
         manga = Manga(content_id, catalog_id, name, russian)
-        manga.kind = Nl.MangaKind.from_str(manga_data[5])
-        manga.set_description_from_str(manga_data[6])
-        manga.score = manga_data[7]
-        manga.status = Nl.MangaStatus.from_str(manga_data[8])
-        manga.volumes = manga_data[9]
+        manga.kind = Nl.MangaKind.from_str(manga_data["kind"])
+        manga.set_description_from_str(manga_data["description"])
+        manga.score = manga_data["score"]
+        manga.status = Nl.MangaStatus.from_str(manga_data["status"])
+        manga.volumes = manga_data["volumes"]
 
-        chapters = manga_data[10]
+        chapters = manga_data["chapters"]
         if not isinstance(chapters, int):
             logging.warning(f"Chapters must be int got {type(chapters)}")
             chapters = 0
         manga.chapters = chapters
-        manga.preview_url = manga_data[11]
+        manga.preview_url = manga_data["preview_url"]
         return manga
 
     def get_manga(self, manga_id: str) -> Manga:
@@ -242,8 +244,8 @@ class Database:
         )
         with self.__engine.connect() as conn:
             select_manga_result = conn.execute(select_manga)
-        x = select_manga_result.fetchone()
-        return self._make_manga(x)
+        x = select_manga_result.first()
+        return self._make_manga(x._asdict())
 
     def add_chapters(self, chapters: list[Chapter], manga: Manga) -> None:
         if not chapters or not manga:
@@ -269,18 +271,20 @@ class Database:
             conn.commit()
 
     @staticmethod
-    def __make_chapter(chapter_data) -> Chapter:
-        content_id = str(chapter_data[1])
-        catalog_id = chapter_data[2]
+    def __make_chapter(chapter_data: dict[str, Any]) -> Chapter:
+        content_id = str(chapter_data["content_id"])
+        catalog_id = chapter_data["catalog_id"]
 
-        vol_raw = chapter_data[3]
+        vol_raw = chapter_data["vol"]
         vol = str(vol_raw) if vol_raw is not None else vol_raw
 
-        ch_raw = chapter_data[4]
+        ch_raw = chapter_data["ch"]
         ch = str(ch_raw) if ch_raw is not None else ch_raw
 
-        title = chapter_data[5]
-        language = Nl.Language.from_str(chapter_data[6])
+        title = chapter_data["title"]
+        language = Nl.Language.from_str(chapter_data["language"])
+
+        translator = str(chapter_data["translator"])
 
         return Chapter(
             content_id,
@@ -291,7 +295,7 @@ class Database:
             language,
         )
 
-    def get_chapter(self, chapter_id: str):
+    def get_chapter(self, chapter_id: str) -> Chapter:
         select_chapter = sqlalchemy.select(
             self._chapters,
         ).where(
@@ -299,8 +303,8 @@ class Database:
         )
         with self.__engine.connect() as conn:
             select_chapter_result = conn.execute(select_chapter)
-        a = select_chapter_result.fetchone()
-        return self.__make_chapter(a)
+        a = select_chapter_result.first()
+        return self.__make_chapter(a._asdict())
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         select_chapters = sqlalchemy.select(self._chapters).filter_by(
@@ -308,11 +312,11 @@ class Database:
         )
         with self.__engine.connect() as conn:
             select_chapters_result = conn.execute(select_chapters)
-        a = select_chapters_result.fetchall()
+        a = select_chapters_result.all()
         chapters = []
         for i in a[::-1]:
             chapters.append(
-                self.__make_chapter(i),
+                self.__make_chapter(i._asdict()),
             )
         return chapters
 
@@ -353,8 +357,8 @@ class Database:
         )
         with self.__engine.connect() as conn:
             select_chapter_result = conn.execute(select_manga_library)
-        a = select_chapter_result.fetchall()
-        return [self._make_manga(data) for data in a[::-1]]
+        a = select_chapter_result.all()
+        return [self._make_manga(data._asdict()) for data in a[::-1]]
 
     def get_manga_library_list(self, manga: Manga) -> Nl.LibList:
         select_manga_library = sqlalchemy.select(
@@ -364,7 +368,7 @@ class Database:
         )
         with self.__engine.connect() as conn:
             select_chapter_result = conn.execute(select_manga_library)
-        a = select_chapter_result.fetchone()
+        a = select_chapter_result.first()
         return Nl.LibList(a[0])
 
     def check_manga_library(self, manga: Manga) -> bool:
@@ -375,7 +379,7 @@ class Database:
         )
         with self.__engine.connect() as conn:
             select_chapter_result = conn.execute(select_manga_library)
-        a = select_chapter_result.fetchone()
+        a = select_chapter_result.first()
         return bool(a)
 
     def rem_manga_library(self, manga: Manga) -> None:
@@ -394,7 +398,7 @@ class Database:
         )
         with self.__engine.connect() as conn:
             select_chapter_result = conn.execute(select_chapter_history)
-        a = select_chapter_result.fetchall()
+        a = select_chapter_result.all()
         return bool(a)
 
     def get_complete_status(self, chapter: Chapter) -> bool:
@@ -405,7 +409,7 @@ class Database:
         )
         with self.__engine.connect() as conn:
             select_chapter_result = conn.execute(select_chapter_history)
-        a = select_chapter_result.fetchall()
+        a = select_chapter_result.all()
         return bool(a[0][0])
 
     def add_history_note(self, note: HistoryNote) -> None:
@@ -451,7 +455,7 @@ class Database:
         select_chapter_history = sqlalchemy.select(self._chapter_history)
         with self.__engine.connect() as conn:
             select_chapter_result = conn.execute(select_chapter_history)
-        a = select_chapter_result.fetchall()
+        a = select_chapter_result.all()
         notes = []
         for i in a:
             manga = self.get_manga(i[0])
@@ -481,6 +485,4 @@ class Database:
             conn.commit()
 
 
-__all__ = [
-    "Database",
-]
+__all__ = ["Database"]

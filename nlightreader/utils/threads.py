@@ -23,8 +23,8 @@ class NlThread:
         args=(),
         kwargs=None,
         *,
-        callback=None,
-        error_callback=None,
+        callback: Callable | None = None,
+        error_callback: Callable | None = None,
     ) -> None:
         super().__init__()
         if kwargs is None:
@@ -75,8 +75,8 @@ class Worker(NlThread, QRunnable):
         args=(),
         kwargs=None,
         *,
-        callback=None,
-        error_callback=None,
+        callback: Callable | None = None,
+        error_callback: Callable | None = None,
     ) -> None:
         super().__init__(
             target,
@@ -86,7 +86,7 @@ class Worker(NlThread, QRunnable):
             error_callback=error_callback,
         )
 
-    def start(self, pool=None) -> None:
+    def start(self, pool: QThreadPool | None = None) -> None:
         if pool is None:
             pool = QThreadPool.globalInstance()
         if pool.activeThreadCount() == pool.maxThreadCount():
@@ -120,8 +120,8 @@ class Thread(NlThread, QThread):
         args=(),
         kwargs=None,
         *,
-        callback=None,
-        error_callback=None,
+        callback: Callable | None = None,
+        error_callback: Callable | None = None,
     ) -> None:
         super().__init__(
             target,

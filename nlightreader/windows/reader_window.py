@@ -1,4 +1,5 @@
 import time
+from typing import override
 
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QCloseEvent, QKeyEvent, QPixmap
@@ -91,11 +92,13 @@ class ReaderWindow(QMainWindow):
         self.update_chapters_list()
         self.update_chapter()
 
+    @override
     def keyPressEvent(self, event: QKeyEvent) -> None:
         if event.key() == Qt.Key.Key_Escape:
             self.close()
         super().keyPressEvent(event)
 
+    @override
     def closeEvent(self, event: QCloseEvent) -> None:
         self.deleteLater()
         super().closeEvent(event)

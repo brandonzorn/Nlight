@@ -1,4 +1,5 @@
 import logging
+from typing import override
 
 from PySide6.QtCore import QPoint, QSize, Qt, QThreadPool, Signal, Slot
 from PySide6.QtGui import QIcon, QResizeEvent
@@ -136,6 +137,7 @@ class InfoPage(QWidget):
         menu.remove_read_state.triggered.connect(remove_read_state)
         menu.exec(context_target.mapToGlobal(position))
 
+    @override
     def resizeEvent(self, event: QResizeEvent) -> None:
         if not self.__catalog or not self.__manga or not self.__manga_pixmap:
             return

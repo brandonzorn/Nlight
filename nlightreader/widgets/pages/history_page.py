@@ -13,7 +13,7 @@ from nlightreader.widgets.contexts import HistoryMenuMode, HistoryNoteMenu
 class HistoryPage(QWidget):
     manga_open = Signal(Manga)
 
-    def __init__(self, parent=None) -> None:
+    def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent=parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
@@ -29,7 +29,7 @@ class HistoryPage(QWidget):
         self.ui.delete_btn.clicked.connect(self.delete_note)
         self.ui.items_tree.doubleClicked.connect(self.open_info)
         self.notes: list[HistoryNote] = []
-        self.sorted_notes = {}
+        self.sorted_notes: dict[Manga, list[HistoryNote]] = {}
 
     def on_context_menu(self, pos) -> None:
         def set_as_read() -> None:

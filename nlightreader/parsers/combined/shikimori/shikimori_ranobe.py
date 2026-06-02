@@ -1,4 +1,5 @@
 from nlightreader.items import RequestForm
+from nlightreader.models import Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.parsers.combined.shikimori.shikimori_base import (
     ShikimoriBase,
@@ -9,7 +10,7 @@ from nlightreader.utils.utils import get_html
 class ShikimoriRanobe(ShikimoriBase, AbstractRanobeCatalog):
     CATALOG_NAME = "Shikimori(Ranobe)"
 
-    def search_manga(self, form: RequestForm):
+    def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/ranobe"
         params = {
             "limit": form.limit,

@@ -1,9 +1,13 @@
-from PySide6.QtCore import QLocale, QTranslator
+from PySide6.QtCore import QLocale, QObject, QTranslator
 from PySide6.QtWidgets import QApplication
 
 
 class NlightTranslator(QTranslator):
-    def __init__(self, locale: QLocale = None, parent=None) -> None:
+    def __init__(
+        self,
+        locale: QLocale | None = None,
+        parent: QObject | None = None,
+    ) -> None:
         super().__init__(parent=parent)
         self.load(locale or QLocale())
 

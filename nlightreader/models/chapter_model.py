@@ -21,7 +21,7 @@ class Chapter(BaseModel):
         self.__chapter_number = chapter_number
         self.__title = title
         self.__language = language
-        self.__translator: str | None = None
+        self.__translator = translator
 
     @property
     def volume_number(self) -> str | None:

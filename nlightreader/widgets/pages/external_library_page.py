@@ -1,6 +1,7 @@
 from typing import override
 
 from PySide6.QtCore import Slot
+from PySide6.QtWidgets import QWidget
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.shikimori import Ui_Form
@@ -19,7 +20,7 @@ from nlightreader.widgets.pages.base_page import BasePage
 
 
 class ExternalLibraryPage(BasePage):
-    def __init__(self, parent=None) -> None:
+    def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent=parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
@@ -57,7 +58,7 @@ class ExternalLibraryPage(BasePage):
         Worker(target=self.get_user_info, callback=self.set_user_info).start()
 
     @override
-    def _setup_manga_item(self, manga: Manga):
+    def _setup_manga_item(self, manga: Manga) -> MangaItem:
         item = MangaItem(
             manga,
             is_added_to_lib=False,
@@ -66,7 +67,7 @@ class ExternalLibraryPage(BasePage):
         item.manga_clicked.connect(self.manga_open.emit)
         return item
 
-    def get_user_info(self):
+    def get_user_info(self) -> User:
         self.ui.auth_btn.setEnabled(False)
         return self.catalog.get_user()
 

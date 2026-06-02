@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 
 from nlightreader.consts.enums import Nl
 from nlightreader.exceptions import parser_content_exc
+from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
 from nlightreader.utils.utils import get_html, make_request
@@ -12,7 +13,7 @@ class AllHentai(AbstractHentaiMangaCatalog):
     CATALOG_NAME = "AllHentai"
     _URL = "https://20.allhen.online"
 
-    def search_manga(self, form):
+    def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL}/search"
         if not form.search:
             msg = "Search field is empty"
@@ -46,7 +47,7 @@ class AllHentai(AbstractHentaiMangaCatalog):
                     )
         return mangas
 
-    def get_chapters(self, manga: Manga):
+    def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self._URL}/{manga.content_id}"
         response = get_html(url, headers=self._HEADERS, content_type="text")
 
@@ -79,11 +80,11 @@ class AllHentai(AbstractHentaiMangaCatalog):
             chapters.append(chapter)
         return chapters
 
-    def get_images(self, manga: Manga, chapter: Chapter):
-        return []
+    def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
+        return super().get_images(manga, chapter)
 
     def get_image(self, image: Image) -> None:
-        return
+        return super().get_image(image)
 
     def get_preview(self, manga: Manga):
         url = f"{self._URL}/{manga.content_id}"

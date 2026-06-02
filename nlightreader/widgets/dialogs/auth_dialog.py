@@ -1,6 +1,7 @@
 from typing import Never
 import webbrowser
 
+from PySide6.QtWidgets import QWidget
 from qfluentwidgets import (
     LineEdit,
     MessageBoxBase,
@@ -11,7 +12,7 @@ from qfluentwidgets import (
 
 
 class AbstractAuthDialog(MessageBoxBase):
-    def __init__(self, catalog, parent) -> None:
+    def __init__(self, catalog, parent: QWidget) -> None:
         super().__init__(parent)
         self.session = catalog.session
         self.widget.setMinimumWidth(350)
@@ -33,7 +34,7 @@ class AbstractAuthDialog(MessageBoxBase):
 
 
 class TokenAuthMessageBox(AbstractAuthDialog):
-    def __init__(self, catalog, parent) -> None:
+    def __init__(self, catalog, parent: QWidget) -> None:
         super().__init__(catalog, parent)
         self.getCodeButton = PushButton(self.tr("Get code"))
         self.getCodeButton.clicked.connect(self.__open_login_page)
@@ -49,7 +50,7 @@ class TokenAuthMessageBox(AbstractAuthDialog):
     def verify_user_data(self) -> None:
         self.yesButton.setEnabled(bool(self.tokenLineEdit.text()))
 
-    def get_user_data(self):
+    def get_user_data(self) -> dict[str, str]:
         return {
             "token": self.tokenLineEdit.text(),
         }
@@ -59,7 +60,7 @@ class TokenAuthMessageBox(AbstractAuthDialog):
 
 
 class UserDataAuthMessageBox(AbstractAuthDialog):
-    def __init__(self, catalog, parent) -> None:
+    def __init__(self, catalog, parent: QWidget) -> None:
         super().__init__(catalog, parent)
         self.loginLineEdit = LineEdit(self)
         self.loginLineEdit.setPlaceholderText(self.tr("Login"))
@@ -84,7 +85,7 @@ class UserDataAuthMessageBox(AbstractAuthDialog):
             ),
         )
 
-    def get_user_data(self):
+    def get_user_data(self) -> dict[str, str]:
         return {
             "username": self.loginLineEdit.text(),
             "password": self.passwordLineEdit.text(),

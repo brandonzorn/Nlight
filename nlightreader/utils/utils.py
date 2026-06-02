@@ -10,16 +10,16 @@ from nlightreader.consts.urls import DEFAULT_HEADERS
 
 
 def make_request(
-    url: str,
+    url: str | bytes,
     method: str,
     *,
-    headers=None,
-    params=None,
-    json=None,
-    data=None,
-    cookies=None,
-    content_type=None,
-):
+    headers: dict[str, str] | None = None,
+    params: dict[str, Any] | None = None,
+    json: dict[str, Any] | None = None,
+    data: dict[str, str] | None = None,
+    cookies: dict[str, str] | None = None,
+    content_type: str | None = None,
+) -> None | bytes | str | dict | requests.Response:
     """
     Sends an HTTP GET request to the specified URL with the given
     headers, query parameters, and cookies.
@@ -33,7 +33,7 @@ def make_request(
     :param params:
         Optional dictionary of query parameters.
     :param json:
-        Optional dictionary of json to include in the request.
+        Optional dictionary of JSON to include in the request.
     :param data:
         Optional dictionary of data to include in the request.
     :param cookies:
@@ -82,15 +82,15 @@ def make_request(
 
 
 def get_html(
-    url: str,
+    url: str | bytes,
     *,
-    headers=None,
-    params=None,
-    json=None,
-    data=None,
-    cookies=None,
-    content_type=None,
-):
+    headers: dict[str, str] | None = None,
+    params: dict[str, Any] | None = None,
+    json: dict[str, Any] | None = None,
+    data: dict[str, str] | None = None,
+    cookies: dict[str, str] | None = None,
+    content_type: str | None = None,
+) -> None | bytes | str | dict | requests.Response:
     """
     Sends an HTTP GET request to the specified
     URL with the given headers, query parameters, and cookies.
@@ -148,10 +148,10 @@ def get_language_icon(language: Nl.Language) -> str:
         Nl.Language.uk: LangIcons.UA,
         Nl.Language.undefined: "",
     }
-    return lang_icons.get(language)
+    return lang_icons[language]
 
 
-def get_data(data: dict, path: list, default_val=None) -> Any:
+def get_data(data: dict, path: list, default_val: Any = None) -> Any:
     """
     Retrieves a value from a dictionary using a list of nested keys.
 

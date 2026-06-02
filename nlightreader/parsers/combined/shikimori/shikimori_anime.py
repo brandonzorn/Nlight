@@ -44,7 +44,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
                 )
         return manga
 
-    def search_manga(self, form: RequestForm):
+    def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/animes"
         params = {
             "limit": form.limit,
@@ -111,7 +111,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             content_type="content",
         )
 
-    def get_genres(self):
+    def get_genres(self) -> list[Genre]:
         url = f"{self._URL_API}/genres"
         response = get_html(url, headers=self._HEADERS, content_type="json")
         if response:

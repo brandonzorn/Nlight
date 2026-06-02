@@ -36,7 +36,7 @@ class Ranobehub(AbstractRanobeCatalog):
             )
         return manga
 
-    def search_manga(self, form: RequestForm):
+    def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/search"
         params = {
             "title-contains": form.search,
@@ -51,7 +51,7 @@ class Ranobehub(AbstractRanobeCatalog):
             content_type="json",
         )
 
-        mangas = []
+        mangas: list[Manga] = []
         if not response:
             return mangas
 
@@ -94,7 +94,7 @@ class Ranobehub(AbstractRanobeCatalog):
         )
         return [Image("", 1, url)]
 
-    def get_image(self, image: Image):
+    def get_image(self, image: Image) -> str | None:
         def get_chapter_content_image(media_id: str) -> str:
             url = f"{self._URL_API}/media/{media_id}"
             chapter_image = get_html(url, headers=self._HEADERS).content

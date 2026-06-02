@@ -1,4 +1,7 @@
 import logging
+from typing import Any
+
+import requests
 
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import MangaDexItems
@@ -54,7 +57,7 @@ class MangaDex(AbstractMangaCatalog):
             )
         return manga
 
-    def setup_manga(self, data: dict):
+    def setup_manga(self, data: dict) -> Manga:
         manga_id = str(data.get("id"))
         name = get_data(data, ["attributes", "title", "en"])
         russian = None
@@ -66,7 +69,7 @@ class MangaDex(AbstractMangaCatalog):
                 name = j.get("en")
         return Manga(manga_id, self.CATALOG_ID, name, russian)
 
-    def search_manga(self, form: RequestForm):
+    def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/manga"
         params = {
             "limit": 50,
@@ -96,7 +99,7 @@ class MangaDex(AbstractMangaCatalog):
             mangas.append(self.setup_manga(i))
         return mangas
 
-    def get_chapters(self, manga: Manga):
+    def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self._URL_API}/chapter"
         params = {
             "manga": manga.content_id,
@@ -138,7 +141,7 @@ class MangaDex(AbstractMangaCatalog):
             chapters.reverse()
         return chapters
 
-    def get_images(self, manga: Manga, chapter: Chapter):
+    def get_images(self, _: Manga, chapter: Chapter) -> list[Image]:
         url = f"{self._URL_API}/at-home/server/{chapter.content_id}"
         response = get_html(url, headers=self._HEADERS, content_type="json")
         images = []
@@ -198,7 +201,7 @@ class MangaDex(AbstractMangaCatalog):
             )
         ]
 
-    def get_genres(self):
+    def get_genres(self) -> list[Genre]:
         return [
             Genre(
                 tag_data.get("id"),
@@ -209,7 +212,7 @@ class MangaDex(AbstractMangaCatalog):
             for tag_data in self._get_tags_data_by_group(["genre", "theme"])
         ]
 
-    def get_kinds(self):
+    def get_kinds(self) -> list[Kind]:
         return [
             Kind(
                 tag_data.get("id"),
@@ -230,7 +233,7 @@ class MangaDexLib(MangaDex, LibParser):
         self.fields = 2
         self.session = Auth()
 
-    def search_manga(self, form: RequestForm):
+    def search_manga(self, form: RequestForm) -> list[Manga]:
         mangas = []
         lib_list = form.lib_list.name
         if form.lib_list == Nl.LibList.planned:
@@ -253,7 +256,7 @@ class MangaDexLib(MangaDex, LibParser):
                     mangas.append(manga)
         return mangas
 
-    def get_user(self):
+    def get_user(self) -> User:
         response = self.session.get(f"{self._URL_API}/user/me")
         if response and (resp_json := response.json()):
             data = resp_json.get("data")
@@ -267,7 +270,10 @@ class MangaDexLib(MangaDex, LibParser):
 
 @singleton
 class Auth:
-    _URL_TOKEN = "https://auth.mangadex.org/realms/mangadex/protocol/openid-connect/token"
+    _URL_TOKEN = (
+        "https://auth.mangadex.org/"
+        "realms/mangadex/protocol/openid-connect/token"
+    )
 
     def __init__(self) -> None:
         self.tokens = TokenManager.load_token(MangaDex.CATALOG_NAME)
@@ -312,7 +318,7 @@ class Auth:
         else:
             self.is_authorized = False
 
-    def auth_login(self, params) -> None:
+    def auth_login(self, params: dict[str, Any] | None) -> None:
         request_data = self._auth_headers | params
         response = make_request(
             self._URL_TOKEN,
@@ -326,24 +332,28 @@ class Auth:
         else:
             self.refresh_token()
 
-    def get(self, url, params=None):
+    def get(
+        self,
+        url: str,
+        params: dict[str, Any] | None = None,
+    ) -> None | bytes | str | dict | requests.Response:
         if not self.is_authorized:
             return None
         return get_html(url, params=params, headers=self.headers)
 
     @property
-    def headers(self):
+    def headers(self) -> dict[str, str]:
         return {"Authorization": f"Bearer {self.tokens.get('access_token')}"}
 
     @property
-    def _refresh_headers(self):
+    def _refresh_headers(self) -> dict[str, str]:
         return {
             "grant_type": "refresh_token",
             "refresh_token": self.tokens["refresh_token"],
         } | self.client_headers
 
     @property
-    def _auth_headers(self):
+    def _auth_headers(self) -> dict[str, str]:
         return {"grant_type": "password"} | self.client_headers
 
 

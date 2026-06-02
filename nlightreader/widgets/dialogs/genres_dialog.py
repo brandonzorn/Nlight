@@ -1,11 +1,15 @@
-from PySide6.QtWidgets import QGridLayout
+from PySide6.QtWidgets import QGridLayout, QWidget
 from qfluentwidgets import CheckBox, MessageBoxBase, SubtitleLabel
 
 from nlightreader.models import Genre
 
 
 class GenresDialogUi(MessageBoxBase):
-    def __init__(self, genres: dict[Genre, bool], parent=None) -> None:
+    def __init__(
+        self,
+        genres: dict[Genre, bool],
+        parent: QWidget | None = None,
+    ) -> None:
         super().__init__(parent)
         self.genres_items = {}
         self.max_genres_per_row = 5
@@ -17,7 +21,7 @@ class GenresDialogUi(MessageBoxBase):
         self.viewLayout.addWidget(self.title_label)
         self.viewLayout.addLayout(self.genres_layout)
 
-    def get_selected_genres(self):
+    def get_selected_genres(self) -> list[Genre]:
         return [
             genre
             for checkbox, genre in self.genres_items.items()
@@ -34,7 +38,7 @@ class GenresDialogUi(MessageBoxBase):
 
 
 class GenresDialog:
-    def __init__(self, parent) -> None:
+    def __init__(self, parent: QWidget) -> None:
         self.parent = parent
         self.genres: dict[Genre, bool] = {}
 
@@ -42,7 +46,7 @@ class GenresDialog:
         self.genres = {genre: False for genre in genres}
 
     @property
-    def selected_genres(self):
+    def selected_genres(self) -> list[Genre]:
         return [genre for genre, selected in self.genres.items() if selected]
 
     def show(self) -> None:

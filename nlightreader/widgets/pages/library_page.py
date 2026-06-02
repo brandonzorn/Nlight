@@ -41,7 +41,7 @@ class LibraryPage(BasePage):
         self.catalog = LocalLibrary()
 
     @override
-    def _setup_manga_item(self, manga: Manga):
+    def _setup_manga_item(self, manga: Manga) -> MangaItem:
         item = MangaItem(manga, pool=self.manga_area.manga_thread_pool)
         item.manga_clicked.connect(self.manga_open.emit)
         item.manga_changed.connect(self.get_content)
