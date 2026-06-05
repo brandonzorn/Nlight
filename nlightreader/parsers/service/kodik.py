@@ -19,7 +19,7 @@ class KodikTranslator:
 
 
 class Kodik:
-    URL_API = "https://kodikapi.com"
+    URL_API = "https://kodik-api.com"
 
     @classmethod
     def search(cls, shikimori_id: str) -> list[KodikTranslator]:
