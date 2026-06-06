@@ -72,10 +72,10 @@ class Config(QConfig):
         True,
         BoolValidator(),
     )
-    enable_kodik_server = ConfigItem(
+    enable_kodik_metrics = ConfigItem(
         "Utils",
-        "EnableKodikServer",
-        True,
+        "EnableKodikMetrics",
+        False,
         BoolValidator(),
         restart=True,
     )

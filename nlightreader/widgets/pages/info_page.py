@@ -16,7 +16,7 @@ from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils.catalog_manager import get_catalog_by_id
 from nlightreader.utils.database import Database
 from nlightreader.utils.file_manager import FileManager
-from nlightreader.utils.html_video import start_html_video
+from nlightreader.utils.kodik_server import start_html_video
 from nlightreader.utils.text_formatter import description_to_html
 from nlightreader.utils.threads import Worker
 from nlightreader.utils.translator import translate
