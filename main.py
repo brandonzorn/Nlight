@@ -1,7 +1,5 @@
-from http.server import HTTPServer
 import os
 import sys
-from threading import Thread as PyThread
 import time
 from typing import override
 
@@ -17,8 +15,8 @@ from nlightreader.consts.app import APP_BRANCH, APP_NAME, APP_VERSION
 from nlightreader.consts.files import Icons
 from nlightreader.consts.paths import APP_DATA_PATH
 from nlightreader.consts.urls import GITHUB_REPO_API
+from nlightreader.utils import kodik_server
 from nlightreader.utils.config import cfg
-from nlightreader.utils.kodik_server import KodikHTTPRequestHandler
 from nlightreader.utils.threads import Thread
 from nlightreader.utils.translator import NlightTranslator, translate
 from nlightreader.utils.utils import get_html
@@ -166,9 +164,11 @@ if __name__ == "__main__":
 
     APP_DATA_PATH.mkdir(parents=True, exist_ok=True)
 
-    if cfg.get(cfg.enable_kodik_server):
-        httpd = HTTPServer(("localhost", 8000), KodikHTTPRequestHandler)
-        PyThread(target=httpd.serve_forever, daemon=True).start()
+    kodik_server = kodik_server.get_local_server(
+        server_port=8000,
+        track_progress=cfg.get(cfg.enable_kodik_metrics),
+    )
+    kodik_server.start()
 
     window = MainWindow()
     window.show()
