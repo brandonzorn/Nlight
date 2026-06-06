@@ -30,19 +30,12 @@ test = [
     "flake8-comments>=0.1.2",
     "flake8-dunder-all>=0.4.1",
     "flake8-encodings>=0.5.1",
-    "flake8-import-order>=0.18.2",
     "flake8-pyproject>=1.2.3",
 ]
 
 [tool.flake8]
 max-line-length = 79
 inline-quotes = "double"
-import-order-style = "pep8"
-application-import-names = [
-    "data",
-    "nlightreader",
-    "keys",
-]
 ignore = [
     "F401",
     "N802",
@@ -59,7 +52,7 @@ exclude = [
 
 [tool.ruff]
 line-length = 79
-target-version = "py311"
+target-version = "py312"
 extend-exclude = ["data"]
 
 [tool.ruff.format]
