@@ -3,10 +3,11 @@ import os
 import sys
 from threading import Thread as PyThread
 import time
+from typing import override
 
 import darkdetect
 from PySide6.QtCore import QThreadPool
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QCloseEvent, QIcon
 from PySide6.QtWidgets import QApplication
 from qfluentwidgets import InfoBar, setTheme, Theme
 
@@ -77,7 +78,8 @@ class MainWindow(ParentWindow):
         if cfg.get(cfg.check_updates_at_startup):
             self.start_check_for_updates_thread()
 
-    def closeEvent(self, event, /) -> None:
+    @override
+    def closeEvent(self, event: QCloseEvent, /) -> None:
         self._theme_updater.terminate()
         self._theme_updater.deleteLater()
         app.closeAllWindows()
@@ -103,7 +105,7 @@ class MainWindow(ParentWindow):
                 latest_version = version
         return latest_version
 
-    def show_update_info(self, result) -> None:
+    def show_update_info(self, result: str | None) -> None:
         info_bar_title = translate(
             "Message",
             "Check for updates.",

@@ -1,7 +1,10 @@
+import logging
 import os
 from pathlib import Path
+import platform
 import re
 import shutil
+import subprocess
 
 from PySide6.QtGui import QPixmap
 
@@ -10,11 +13,15 @@ from nlightreader.consts.paths import APP_DATA_PATH
 from nlightreader.models import Chapter, Character, Image, Manga
 from nlightreader.parsers.catalog import AbstractCatalog
 
+logger = logging.getLogger(__name__)
+
 
 class FileManager:
     __IMAGES_FOLDER = Path("images")
     __MANGA_FOLDER = Path("manga")
+    __ANIME_FOLDER = Path("anime")
     __CHARACTERS_FOLDER = Path("characters")
+    __EPISODES_FOLDER = Path("episodes")
     __PREVIEW_FILE = Path("preview.jpg")
 
     @classmethod
@@ -27,7 +34,7 @@ class FileManager:
             cls.__IMAGES_FOLDER,
             catalog.CATALOG_NAME,
             cls.__MANGA_FOLDER,
-            fix_folder_name(str(manga.content_id)),
+            sanitize_name(manga.content_id),
         )
 
     @classmethod
@@ -40,9 +47,7 @@ class FileManager:
         return cls.__get_manga_folder(
             manga,
             catalog,
-        ) / fix_folder_name(
-            str(chapter.content_id),
-        )
+        ) / sanitize_name(chapter.content_id)
 
     @classmethod
     def __get_character_folder(
@@ -54,7 +59,7 @@ class FileManager:
             cls.__IMAGES_FOLDER,
             catalog.CATALOG_NAME,
             cls.__CHARACTERS_FOLDER,
-            fix_folder_name(str(character.content_id)),
+            sanitize_name(character.content_id),
         )
 
     @classmethod
@@ -65,11 +70,17 @@ class FileManager:
         image: Image,
         catalog: AbstractCatalog,
     ) -> bool:
-        file_name = f"{image.page_number}.jpg"
-        if manga.kind == Nl.MangaKind.ranobe:
-            file_name = f"{image.page_number}.txt"
+        file_name = (
+            f"{image.page_number}.txt"
+            if manga.kind == Nl.MangaKind.ranobe
+            else f"{image.page_number}.jpg"
+        )
         return check_file_exists(
-            cls.__get_chapter_folder(manga, chapter, catalog),
+            cls.__get_chapter_folder(
+                manga,
+                chapter,
+                catalog,
+            ),
             file_name,
         )
 
@@ -83,9 +94,18 @@ class FileManager:
     ) -> QPixmap:
         path = cls.__get_chapter_folder(manga, chapter, catalog)
         file_name = f"{image.page_number}.jpg"
+
         if not check_file_exists(path, file_name):
-            save_file(path, file_name, catalog.get_image(image))
-        return QPixmap(get_full_file_path(path, file_name))
+            img_data = catalog.get_image(image)
+            if not img_data:
+                logger.error(
+                    "Failed to download image for page %s",
+                    image.page_number,
+                )
+                return QPixmap()
+            save_file(path, file_name, img_data)
+
+        return QPixmap(str(get_full_file_path(path, file_name)))
 
     @classmethod
     def get_chapter_text_file(
@@ -97,15 +117,20 @@ class FileManager:
     ) -> str:
         path = cls.__get_chapter_folder(manga, chapter, catalog)
         file_name = f"{image.page_number}.txt"
+
         if not check_file_exists(path, file_name):
-            save_file(path, file_name, catalog.get_image(image))
+            text_data = catalog.get_image(image)
+            if not text_data:
+                return ""
+            save_file(path, file_name, text_data)
+
         try:
-            with Path(
-                get_full_file_path(path, file_name),
-            ).open(encoding="utf8") as f:
-                text = f.read()
-                return text.replace("\n", "<br>")
-        except FileNotFoundError:
+            with get_full_file_path(path, file_name).open(
+                encoding="utf-8",
+            ) as f:
+                return f.read().replace("\n", "<br>")
+        except OSError as e:
+            logger.error("Failed to read text chapter: %s", e)
             return ""
 
     @classmethod
@@ -116,8 +141,11 @@ class FileManager:
     ) -> QPixmap:
         path = cls.__get_manga_folder(manga, catalog)
         if not check_file_exists(path, cls.__PREVIEW_FILE):
-            save_file(path, cls.__PREVIEW_FILE, catalog.get_preview(manga))
-        return QPixmap(get_full_file_path(path, cls.__PREVIEW_FILE))
+            preview_data = catalog.get_preview(manga)
+            if not preview_data:
+                return QPixmap()
+            save_file(path, cls.__PREVIEW_FILE, preview_data)
+        return QPixmap(str(get_full_file_path(path, cls.__PREVIEW_FILE)))
 
     @classmethod
     def get_character_preview(
@@ -127,12 +155,11 @@ class FileManager:
     ) -> QPixmap:
         path = cls.__get_character_folder(character, catalog)
         if not check_file_exists(path, cls.__PREVIEW_FILE):
-            save_file(
-                path,
-                cls.__PREVIEW_FILE,
-                catalog.get_character_preview(character),
-            )
-        return QPixmap(get_full_file_path(path, cls.__PREVIEW_FILE))
+            preview_data = catalog.get_character_preview(character)
+            if not preview_data:
+                return QPixmap()
+            save_file(path, cls.__PREVIEW_FILE, preview_data)
+        return QPixmap(str(get_full_file_path(path, cls.__PREVIEW_FILE)))
 
     @classmethod
     def remove_chapter_files(
@@ -141,9 +168,7 @@ class FileManager:
         chapter: Chapter,
         catalog: AbstractCatalog,
     ) -> None:
-        remove_file(
-            cls.__get_chapter_folder(manga, chapter, catalog),
-        )
+        remove_dir(cls.__get_chapter_folder(manga, chapter, catalog))
 
     @classmethod
     def remove_manga_files(
@@ -151,9 +176,7 @@ class FileManager:
         manga: Manga,
         catalog: AbstractCatalog,
     ) -> None:
-        remove_file(
-            cls.__get_manga_folder(manga, catalog),
-        )
+        remove_dir(cls.__get_manga_folder(manga, catalog))
 
     @classmethod
     def open_dir_in_explorer(
@@ -161,16 +184,21 @@ class FileManager:
         manga: Manga,
         catalog: AbstractCatalog,
     ) -> None:
-        os.startfile(
-            get_full_dir_path(
-                cls.__get_manga_folder(manga, catalog),
-            ),
-        )
+        full_path = get_full_dir_path(cls.__get_manga_folder(manga, catalog))
+        if not full_path.exists():
+            full_path.mkdir(parents=True, exist_ok=True)
+
+        match platform.system():
+            case "Windows":
+                os.startfile(full_path)
+            case "Darwin":
+                subprocess.Popen(["open", str(full_path)])
+            case "Linux" | _:
+                subprocess.Popen(["xdg-open", str(full_path)])
 
 
 def get_full_dir_path(path: Path) -> Path:
-    path = fix_path(path)
-    return APP_DATA_PATH / path
+    return APP_DATA_PATH / sanitize_path(path)
 
 
 def get_full_file_path(path: Path, file_name: str | Path) -> Path:
@@ -186,32 +214,40 @@ def save_file(
     file_name: str | Path,
     file_content: str | bytes,
 ) -> None:
+    if not file_content:
+        return
+
     full_path = get_full_dir_path(path)
-    full_file_path = Path(full_path, file_name)
+    full_file_path = full_path / file_name
+
     if not full_file_path.exists():
         full_path.mkdir(parents=True, exist_ok=True)
-        if file_content:
-            if isinstance(file_content, str):
-                file_content = bytes(file_content, encoding="utf8")
+        try:
+            data_to_write = (
+                file_content.encode("utf-8")
+                if isinstance(file_content, str)
+                else file_content
+            )
             with full_file_path.open("wb") as f:
-                f.write(file_content)
+                f.write(data_to_write)
+        except OSError as e:
+            logger.error("Failed to save file %s: %s", full_file_path, e)
 
 
-def remove_file(path: Path) -> None:
+def remove_dir(path: Path) -> None:
     full_path = get_full_dir_path(path)
     if full_path.exists():
         shutil.rmtree(full_path, ignore_errors=True)
 
 
-def fix_folder_name(name: str) -> str:
-    invalid_chars_pattern = r'[<>:"|?*\\/]'
-    return re.sub(invalid_chars_pattern, "", name)
+def sanitize_name(name: str) -> str:
+    return re.sub(r'[<>:"|?*\\/]', "", name)
 
 
-def fix_path(path: Path) -> Path:
+def sanitize_path(path: Path) -> Path:
     new_path = Path()
     for p_dir in path.parts:
-        new_path /= fix_folder_name(p_dir)
+        new_path /= sanitize_name(p_dir)
     return new_path
 
 

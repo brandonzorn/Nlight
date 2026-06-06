@@ -10,3 +10,4 @@
 *.pyc
 *.log
 .dmypy.json
+.env*
