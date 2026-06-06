@@ -3,5 +3,4 @@ flake8-all-not-strings>=0.0.2
 flake8-comments>=0.1.2
 flake8-dunder-all>=0.4.1
 flake8-encodings>=0.5.1
-flake8-import-order>=0.18.2
 Flake8-pyproject>=1.2.3
