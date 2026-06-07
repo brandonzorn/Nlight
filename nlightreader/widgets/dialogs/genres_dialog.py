@@ -52,8 +52,9 @@ class GenresDialog:
     def show(self) -> None:
         w = GenresDialogUi(self.genres, parent=self.parent)
         if w.exec():
-            for genre in w.get_selected_genres():
-                self.genres[genre] = True
+            selected_genres = w.get_selected_genres()
+            for genre in self.genres:
+                self.genres[genre] = genre in selected_genres
 
     def reset_items(self) -> None:
         for genre in self.genres:
