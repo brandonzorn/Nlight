@@ -286,19 +286,6 @@ wheels = [
 ]
 
 [[package]]
-name = "flake8-import-order"
-version = "0.19.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "pycodestyle" },
-    { name = "setuptools" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/d6/2f/5d2095e2f63b5fabe2d4a7e97c28bfcf901dcd9335650d9e582283bb02b5/flake8_import_order-0.19.2.tar.gz", hash = "sha256:133b3c55497631e4235074fc98a95078bba817832379f22a31f0ad2455bcb0b2", size = 31867, upload-time = "2025-06-24T12:47:39.458Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/18/d4/3d067f1c4a429e82ec9ae54a346ef50e4d317c6cdfba6bd1443c162ff39f/flake8_import_order-0.19.2-py3-none-any.whl", hash = "sha256:2dfe60175e7195cf36d4c573861fd2e3258cd6650cbd7616da3c6b8193b29b7c", size = 16323, upload-time = "2025-06-24T12:47:38.259Z" },
-]
-
-[[package]]
 name = "flake8-pyproject"
 version = "1.2.4"
 source = { registry = "https://pypi.org/simple" }
@@ -505,7 +492,6 @@ test = [
     { name = "flake8-comments" },
     { name = "flake8-dunder-all" },
     { name = "flake8-encodings" },
-    { name = "flake8-import-order" },
     { name = "flake8-pyproject" },
 ]
 
@@ -536,7 +522,6 @@ test = [
     { name = "flake8-comments", specifier = ">=0.1.2" },
     { name = "flake8-dunder-all", specifier = ">=0.4.1" },
     { name = "flake8-encodings", specifier = ">=0.5.1" },
-    { name = "flake8-import-order", specifier = ">=0.18.2" },
     { name = "flake8-pyproject", specifier = ">=1.2.3" },
 ]
 
@@ -3691,15 +3676,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/74/0d/f2cd247ad32633a5c36e97141a2c21b11c6279f7957bc2ff360b1e08fddd/ruff-0.15.16-py3-none-win32.whl", hash = "sha256:580378f7bd4aa25f72e74aa54948a9622f142b1e509521dd10902e886681cc1e", size = 10735541, upload-time = "2026-06-04T16:32:30.145Z" },
     { url = "https://files.pythonhosted.org/packages/8b/9e/02e845ef151b1dee585e55c4739f8e1734ae1d9f1221dff65761c162208b/ruff-0.15.16-py3-none-win_amd64.whl", hash = "sha256:408256017284eddf98fff77b29aa4fb30f586042d535b2d9befc6512f400aaec", size = 11843403, upload-time = "2026-06-04T16:32:39.76Z" },
     { url = "https://files.pythonhosted.org/packages/15/19/016553f86f207450aebebc2b2b5088d086b901cc8186c02ac4284db3bd88/ruff-0.15.16-py3-none-win_arm64.whl", hash = "sha256:8cd61783afb39638a7133ef0d2dfb1e91277593962f81b5a8423eb0b888a6121", size = 11134555, upload-time = "2026-06-04T16:33:00.136Z" },
-]
-
-[[package]]
-name = "setuptools"
-version = "82.0.1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/4f/db/cfac1baf10650ab4d1c111714410d2fbb77ac5a616db26775db562c8fab2/setuptools-82.0.1.tar.gz", hash = "sha256:7d872682c5d01cfde07da7bccc7b65469d3dca203318515ada1de5eda35efbf9", size = 1152316, upload-time = "2026-03-09T12:47:17.221Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/9d/76/f789f7a86709c6b087c5a2f52f911838cad707cc613162401badc665acfe/setuptools-82.0.1-py3-none-any.whl", hash = "sha256:a59e362652f08dcd477c78bb6e7bd9d80a7995bc73ce773050228a348ce2e5bb", size = 1006223, upload-time = "2026-03-09T12:47:15.026Z" },
 ]
 
 [[package]]
