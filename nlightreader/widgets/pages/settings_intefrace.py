@@ -93,7 +93,7 @@ class SettingsPage(ScrollArea):
             self.tr(
                 "Automatically mark episodes as watched",
             ),
-            configItem=cfg.enable_kodik_server,
+            configItem=cfg.enable_kodik_metrics,
             parent=self.utilsSoftwareGroup,
         )
 
