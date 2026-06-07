@@ -39,7 +39,7 @@ class AbstractCatalog:
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         return []
 
-    def get_image(self, image: Image) -> None:
+    def get_image(self, image: Image) -> bytes | None:
         return
 
     def get_preview(self, manga: Manga) -> None:

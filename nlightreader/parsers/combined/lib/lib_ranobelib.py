@@ -1,5 +1,6 @@
 import base64
 import re
+from typing import override
 
 from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RanobeLibItems
@@ -18,10 +19,12 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
     _CONTENT_NAME = "manga"
     _SITE_ID = 3
 
+    @override
     def get_manga(self, manga: Manga) -> Manga:
         manga.kind = Nl.MangaKind.ranobe
         return super().get_manga(manga)
 
+    @override
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = (
             f"{self._URL_API}/{self._CONTENT_NAME}/{manga.content_id}/chapter"
@@ -30,6 +33,7 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
         )
         return [Image("", 1, url)]
 
+    @override
     def get_image(self, image: Image) -> str | None:
         def get_chapter_content_image(media_id: str) -> str:
             url = (
@@ -47,7 +51,7 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
             return f"data:image/png;base64,{str_equivalent_image}"
 
         def replace_images(text: str) -> str:
-            pattern = r'src="([^"]+)"'
+            pattern = r'src=["\']([^"\']+)["\']'
             return re.sub(
                 pattern,
                 lambda x: f'src="{get_chapter_content_image(x.group(1))}"',
@@ -55,15 +59,16 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
             )
 
         response = get_html(image.url, content_type="json")
-        if response:
-            data = response["data"]
-            content = data["content"]
-            if isinstance(content, str):
-                content = content.replace("\n", "")
-                content = content.replace("\r", "")
-            return replace_images(content)
-        return None
+        if not isinstance(response, dict):
+            return None
+        content_data = response.get("data", {}).get("content")
 
+        if not isinstance(content_data, str):
+            return None
+        content_data = content_data.replace("\n", " ").replace("\r", " ")
+        return replace_images(content_data)
+
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/ru/book/{manga.content_id}"
 
