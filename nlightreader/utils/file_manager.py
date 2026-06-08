@@ -8,7 +8,7 @@ import subprocess
 
 from PySide6.QtGui import QPixmap
 
-from nlightreader.consts.enums import Nl
+from nlightreader.core.enums import MangaKind
 from nlightreader.consts.paths import APP_DATA_PATH
 from nlightreader.models import Chapter, Character, Image, Manga
 from nlightreader.parsers.catalog import AbstractCatalog
@@ -72,7 +72,7 @@ class FileManager:
     ) -> bool:
         file_name = (
             f"{image.page_number}.txt"
-            if manga.kind == Nl.MangaKind.ranobe
+            if manga.kind == MangaKind.ranobe
             else f"{image.page_number}.jpg"
         )
         return check_file_exists(

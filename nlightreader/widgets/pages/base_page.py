@@ -3,7 +3,7 @@ import time
 from PySide6.QtCore import Signal, Slot
 from PySide6.QtWidgets import QWidget
 
-from nlightreader.consts.enums import Nl
+from nlightreader.core.enums import LibList
 from nlightreader.exceptions.parser_content_exc import (
     FetchContentError,
     NoContentError,
@@ -95,8 +95,8 @@ class BasePage(QWidget):
     def update_page(self) -> None:
         pass
 
-    @Slot(Nl.LibList)
-    def change_list(self, lst: Nl.LibList) -> None:
+    @Slot(LibList)
+    def change_list(self, lst: LibList) -> None:
         self.request_params.lib_list = lst
         self.get_content()
 

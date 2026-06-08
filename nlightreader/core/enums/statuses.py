@@ -2,56 +2,7 @@ from enum import IntEnum, unique
 import logging
 from typing import Self
 
-LIB_LISTS = (
-    "planned",
-    "completed",
-    "reading",
-    "re-reading",
-    "on hold",
-    "dropped",
-)
-
-
-@unique
-class Language(IntEnum):
-    undefined = 0
-    en = 1
-    ru = 2
-    uk = 3
-    jp = 4
-
-    @classmethod
-    def from_str(cls, string: str) -> Self:
-        if string in ("en", "eng"):
-            return cls.en
-        if string in ("ru", "rus"):
-            return cls.ru
-        if string in ("uk", "ukr"):
-            return cls.uk
-        if string in ("jp", "jap"):
-            return cls.jp
-        if string in ("undefined",):
-            return cls.undefined
-        logging.warning(f"Unknown language {string}")
-        return cls.undefined
-
-    def to_str(self) -> str:
-        names = [
-            "Undefined",
-            "English",
-            "Russian",
-            "Ukrainian",
-            "Japanese",
-        ]
-        return names[self.value]
-
-
-@unique
-class CatalogType(IntEnum):
-    manga = 0
-    hentai_manga = 1
-    ranobe = 2
-    anime = 3
+logger = logging.getLogger(__name__)
 
 
 @unique
@@ -105,37 +56,6 @@ class MangaKind(IntEnum):
 
 
 @unique
-class LibList(IntEnum):
-    planned = 0
-    completed = 1
-    reading = 2
-    re_reading = 3
-    on_hold = 4
-    dropped = 5
-
-    @classmethod
-    def from_str(cls, string: str) -> Self:
-        string = string.lower()
-        if string in ("planned",):
-            return cls.planned
-        if string in ("completed",):
-            return cls.completed
-        if string in ("reading", "watching"):
-            return cls.reading
-        if string in ("re-reading", "rewatching"):
-            return cls.re_reading
-        if string in ("on hold", "on_hold"):
-            return cls.on_hold
-        if string in ("dropped",):
-            return cls.dropped
-        msg = f"Unknown lib_list: {string}"
-        raise ValueError(msg)
-
-    def to_str(self) -> str:
-        return LIB_LISTS[self.value]
-
-
-@unique
 class MangaStatus(IntEnum):
     undefined = 0
     ongoing = 1
@@ -154,7 +74,7 @@ class MangaStatus(IntEnum):
             return cls.released
         if string in ("frozen", "заморожено"):
             return cls.frozen
-        logging.warning(f"Unknown manga status: {string}")
+        logger.warning(f"Unknown manga status: {string}")
         return cls.undefined
 
     def to_str(self) -> str:
@@ -167,15 +87,4 @@ class MangaStatus(IntEnum):
         return names[self.value]
 
 
-class Nl:
-    CatalogType = CatalogType
-    Language = Language
-    LibList = LibList
-    MangaKind = MangaKind
-    MangaStatus = MangaStatus
-
-
-__all__ = [
-    "LIB_LISTS",
-    "Nl",
-]
+__all__ = ["MangaKind", "MangaStatus"]

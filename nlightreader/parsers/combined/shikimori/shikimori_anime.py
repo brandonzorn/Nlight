@@ -1,10 +1,10 @@
-from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import ShikimoriAnimeItems
 from nlightreader.consts.urls import (
     SHIKIMORI_HEADERS,
     URL_SHIKIMORI,
     URL_SHIKIMORI_API,
 )
+from nlightreader.core.enums import Language, MangaStatus
 from nlightreader.items import (
     RequestForm,
 )
@@ -35,11 +35,11 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         if response:
             data = response
             manga.score = float(data.get("score"))
-            manga.status = Nl.MangaStatus.from_str(data.get("status"))
+            manga.status = MangaStatus.from_str(data.get("status"))
 
             if description := data.get("description"):
                 manga.add_description(
-                    Nl.Language.undefined,
+                    Language.undefined,
                     description,
                 )
         return manga
@@ -78,7 +78,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
                     None,
                     "",
                     f"Episode {episode_num}",
-                    Nl.Language.ru,
+                    Language.ru,
                 )
                 chapter.translator = (
                     f"{translator.translator} ({translator.tr_type})"

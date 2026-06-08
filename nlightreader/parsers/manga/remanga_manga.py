@@ -1,5 +1,5 @@
-from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RemangaItems
+from nlightreader.core.enums import Language, MangaKind, MangaStatus
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
@@ -20,14 +20,14 @@ class Remanga(AbstractMangaCatalog):
             data = response.get("content")
 
             if kind_name := data.get("type").get("name"):
-                manga.kind = Nl.MangaKind.from_str(kind_name)
+                manga.kind = MangaKind.from_str(kind_name)
 
             manga.score = float(data.get("avg_rating"))
             if (img := data.get("img").get("high")) and (img != "/media/None"):
                 manga.preview_url = f"{self._URL}{img}"
 
             manga.add_description(
-                Nl.Language.undefined,
+                Language.undefined,
                 data.get("description"),
             )
         return manga
@@ -59,7 +59,7 @@ class Remanga(AbstractMangaCatalog):
             name = data.get("en_name")
             russian = data.get("rus_name")
             manga = Manga(manga_id, self.CATALOG_ID, name, russian)
-            manga.kind = Nl.MangaKind.from_str(data.get("type"))
+            manga.kind = MangaKind.from_str(data.get("type"))
             manga.score = float(data.get("avg_rating"))
 
             if (img := data.get("img").get("high")) and (img != "/media/None"):
@@ -92,7 +92,7 @@ class Remanga(AbstractMangaCatalog):
                             str(ch.get("tome")),
                             ch.get("chapter"),
                             ch.get("name"),
-                            Nl.Language.ru,
+                            Language.ru,
                         )
                         chapters.append(chapter)
         return chapters

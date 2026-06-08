@@ -1,6 +1,6 @@
 from typing import override
 
-from nlightreader.consts.enums import Nl
+from nlightreader.core.enums import Language
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Manga
 from nlightreader.parsers.catalog import AbstractCatalog
@@ -40,7 +40,7 @@ class LibBase(AbstractCatalog):
         manga.preview_url = data.get("cover", {}).get("md")
         manga.score = float(data.get("rating", {}).get("average", 0))
         if isinstance(description := data.get("summary"), str):
-            manga.add_description(Nl.Language.ru, description)
+            manga.add_description(Language.ru, description)
         return manga
 
     @override
@@ -109,7 +109,7 @@ class LibBase(AbstractCatalog):
                 i["volume"],
                 i["number"],
                 i["name"],
-                Nl.Language.ru,
+                Language.ru,
             )
             if branches_data := i.get("branches"):
                 chapter.translator = branches.get(

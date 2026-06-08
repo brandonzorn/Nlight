@@ -5,7 +5,7 @@ from typing import override
 from PySide6.QtCore import QLocale
 import validators
 
-from nlightreader.consts.enums import Nl
+from nlightreader.core.enums import Language, MangaKind, MangaStatus
 from nlightreader.models.base_model import NamedBaseModel
 from nlightreader.utils.config import cfg
 
@@ -20,33 +20,33 @@ class Manga(NamedBaseModel):
     ) -> None:
         super().__init__(content_id, catalog_id, name, russian)
 
-        self.__kind: Nl.MangaKind = Nl.MangaKind.undefined
-        self.__status: Nl.MangaStatus = Nl.MangaStatus.undefined
+        self.__kind: MangaKind = MangaKind.undefined
+        self.__status: MangaStatus = MangaStatus.undefined
         self.__score: int | float = 0
         self.__preview_url: str | None = None
         self.__volumes: int = 0
         self.__chapters: int = 0
-        self.__descriptions: dict[Nl.Language, str] = {}
+        self.__descriptions: dict[Language, str] = {}
 
     @property
-    def kind(self) -> Nl.MangaKind:
+    def kind(self) -> MangaKind:
         return self.__kind
 
     @kind.setter
-    def kind(self, kind: Nl.MangaKind) -> None:
-        if not isinstance(kind, Nl.MangaKind):
-            msg = f"Kind must be Nl.MangaKind got {type(kind)}"
+    def kind(self, kind: MangaKind) -> None:
+        if not isinstance(kind, MangaKind):
+            msg = f"Kind must be MangaKind got {type(kind)}"
             raise TypeError(msg)
         self.__kind = kind
 
     @property
-    def status(self) -> Nl.MangaStatus:
+    def status(self) -> MangaStatus:
         return self.__status
 
     @status.setter
-    def status(self, status: Nl.MangaStatus) -> None:
-        if not isinstance(status, Nl.MangaStatus):
-            msg = f"Status must be Nl.MangaStatus got {type(status)}"
+    def status(self, status: MangaStatus) -> None:
+        if not isinstance(status, MangaStatus):
+            msg = f"Status must be MangaStatus got {type(status)}"
             raise TypeError(msg)
         self.__status = status
 
@@ -100,9 +100,9 @@ class Manga(NamedBaseModel):
             raise TypeError(msg)
         self.__chapters = chapters
 
-    def add_description(self, language: Nl.Language, description: str) -> None:
-        if not isinstance(language, Nl.Language):
-            msg = f"Language must be Nl.Language got {type(language)}"
+    def add_description(self, language: Language, description: str) -> None:
+        if not isinstance(language, Language):
+            msg = f"Language must be Language got {type(language)}"
             raise TypeError(msg)
         if not isinstance(description, str):
             msg = f"Description must be str got {type(description)}"
@@ -110,16 +110,16 @@ class Manga(NamedBaseModel):
         self.__descriptions.update({language: description})
 
     def get_description(self) -> str | None:
-        if self.__descriptions.get(Nl.Language.undefined):
-            return self.__descriptions.get(Nl.Language.undefined)
+        if self.__descriptions.get(Language.undefined):
+            return self.__descriptions.get(Language.undefined)
 
         locale = cfg.get(cfg.language).value.language()
         if locale in (
             QLocale.Language.Russian,
             QLocale.Language.Ukrainian,
-        ) and self.__descriptions.get(Nl.Language.ru):
-            return self.__descriptions.get(Nl.Language.ru)
-        return self.__descriptions.get(Nl.Language.en)
+        ) and self.__descriptions.get(Language.ru):
+            return self.__descriptions.get(Language.ru)
+        return self.__descriptions.get(Language.en)
 
     def descriptions_to_str(self) -> str:
         desc_str = ""
@@ -136,7 +136,7 @@ class Manga(NamedBaseModel):
             desc,
             re.DOTALL,
         ):
-            lang_enum = Nl.Language.from_str(lang_str)
+            lang_enum = Language.from_str(lang_str)
             self.add_description(lang_enum, text)
 
     @override

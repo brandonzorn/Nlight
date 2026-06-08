@@ -1,4 +1,4 @@
-from nlightreader.consts.enums import Nl
+from nlightreader.core.enums import LibList
 from nlightreader.models.sort_models import Genre, Kind, Order
 
 
@@ -10,7 +10,7 @@ class RequestForm:
         self.__genres: list[Genre] = []
         self.__order: Order | None = None
         self.__kinds: list[Kind] = []
-        self.lib_list = Nl.LibList.planned
+        self.lib_list = LibList.planned
 
     @property
     def offset(self) -> int:
@@ -41,7 +41,7 @@ class RequestForm:
         self.__genres = []
         self.__order = None
         self.__kinds = []
-        self.lib_list = Nl.LibList.planned
+        self.lib_list = LibList.planned
 
 
 __all__ = [

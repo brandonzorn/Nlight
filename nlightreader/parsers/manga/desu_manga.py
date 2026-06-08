@@ -1,5 +1,5 @@
-from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import DesuItems
+from nlightreader.core.enums import Language, MangaKind, MangaStatus
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
@@ -20,13 +20,13 @@ class Desu(AbstractMangaCatalog):
         if response:
             data = get_data(response, ["response"], {})
             manga.score = data.get("score")
-            manga.kind = Nl.MangaKind.from_str(data.get("kind"))
+            manga.kind = MangaKind.from_str(data.get("kind"))
             manga.volumes = int(data["chapters"].get("last").get("vol"))
             manga.chapters = int(data["chapters"]["count"])
-            manga.status = Nl.MangaStatus.from_str(data.get("status"))
+            manga.status = MangaStatus.from_str(data.get("status"))
 
             manga.add_description(
-                Nl.Language.undefined,
+                Language.undefined,
                 data.get("description"),
             )
         return manga
@@ -79,7 +79,7 @@ class Desu(AbstractMangaCatalog):
                     vol,
                     ch,
                     i.get("title"),
-                    Nl.Language.ru,
+                    Language.ru,
                 )
                 chapters.append(chapter)
         return chapters

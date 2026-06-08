@@ -3,12 +3,9 @@ from typing import Any
 
 import requests
 
-from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import MangaDexItems
-from nlightreader.items import (
-    RequestForm,
-    User,
-)
+from nlightreader.core.enums import Language, LibList, MangaKind, MangaStatus
+from nlightreader.items import RequestForm, User
 from nlightreader.models import Chapter, Genre, Image, Kind, Manga
 from nlightreader.parsers.catalog import LibParser
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
@@ -36,23 +33,23 @@ class MangaDex(AbstractMangaCatalog):
         response = get_html(url, headers=self._HEADERS, content_type="json")
         if response:
             data = get_data(response, ["data"])
-            manga.kind = Nl.MangaKind.from_str(data.get("type"))
+            manga.kind = MangaKind.from_str(data.get("type"))
             if description := get_data(data, ["attributes", "description"]):
                 if description.get("en"):
                     manga.add_description(
-                        Nl.Language.en,
+                        Language.en,
                         description.get("en"),
                     )
                 if description.get("ru"):
                     manga.add_description(
-                        Nl.Language.ru,
+                        Language.ru,
                         description.get("ru"),
                     )
             if volumes := get_data(data, ["attributes", "lastVolume"]):
                 manga.volumes = int(volumes)
             if chapters := get_data(data, ["attributes", "lastChapter"]):
                 manga.chapters = int(chapters)
-            manga.status = Nl.MangaStatus.from_str(
+            manga.status = MangaStatus.from_str(
                 get_data(data, ["attributes", "status"]),
             )
         return manga
@@ -133,7 +130,7 @@ class MangaDex(AbstractMangaCatalog):
                         attr.get("volume"),
                         attr.get("chapter"),
                         attr.get("title"),
-                        Nl.Language.from_str(
+                        Language.from_str(
                             attr.get("translatedLanguage"),
                         ),
                     )
@@ -236,7 +233,7 @@ class MangaDexLib(MangaDex, LibParser):
     def search_manga(self, form: RequestForm) -> list[Manga]:
         mangas = []
         lib_list = form.lib_list.name
-        if form.lib_list == Nl.LibList.planned:
+        if form.lib_list == LibList.planned:
             lib_list = "plan_to_read"
         response_statuses = self.session.get(
             f"{self._URL_API}/manga/status",

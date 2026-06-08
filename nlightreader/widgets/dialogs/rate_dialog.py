@@ -14,7 +14,7 @@ from qfluentwidgets import (
     SubtitleLabel,
 )
 
-from nlightreader.consts.enums import LIB_LISTS, Nl
+from nlightreader.core.enums import LIB_LISTS, LibList
 from nlightreader.items import UserRate
 from nlightreader.models import Manga
 from nlightreader.utils.catalog_manager import (
@@ -121,7 +121,7 @@ class RateDialog(MessageBoxBase):
     def _send_user_rate(self) -> None:
         self.__user_rate.score = self.score_spin.value()
         self.__user_rate.chapters = self.chapters_count_spin.value()
-        self.__user_rate.status = Nl.LibList(
+        self.__user_rate.status = LibList(
             self.lib_list_combo.currentIndex(),
         )
         self.__catalog.update_user_rate(self.__user_rate)

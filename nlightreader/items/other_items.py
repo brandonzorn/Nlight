@@ -1,4 +1,4 @@
-from nlightreader.consts.enums import Nl
+from nlightreader.core.enums import LibList
 from nlightreader.models import Chapter, Manga
 
 
@@ -31,7 +31,7 @@ class UserRate:
         user_id: str,
         target_id: str,
         score: int,
-        status: Nl.LibList,
+        status: LibList,
         chapters,
     ) -> None:
         self.id = rate_id

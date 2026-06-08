@@ -5,13 +5,13 @@ from PySide6.QtWidgets import QApplication
 import requests
 from requests_oauthlib import OAuth2Session
 
-from nlightreader.consts.enums import Nl
 from nlightreader.consts.urls import (
     SHIKIMORI_HEADERS,
     URL_SHIKIMORI,
     URL_SHIKIMORI_API,
     URL_SHIKIMORI_TOKEN,
 )
+from nlightreader.core.enums import LibList
 from nlightreader.items import RequestForm, User, UserRate
 from nlightreader.models import Manga
 from nlightreader.parsers.catalog import LibParser
@@ -39,9 +39,9 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         params = {"limit": 50, "page": form.page}
         response = self.session.request("GET", url, params=params)
         lib_list = form.lib_list
-        if lib_list == Nl.LibList.reading:
+        if lib_list == LibList.reading:
             lib_list = "watching"
-        elif lib_list == Nl.LibList.re_reading:
+        elif lib_list == LibList.re_reading:
             lib_list = "rewatching"
         else:
             lib_list = form.lib_list.name
@@ -110,7 +110,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                     i.get("user_id"),
                     i.get("target_id"),
                     i.get("score"),
-                    Nl.LibList.from_str(i.get("status")),
+                    LibList.from_str(i.get("status")),
                     i.get("chapters"),
                 )
         return None
@@ -118,11 +118,11 @@ class ShikimoriLib(ShikimoriBase, LibParser):
     def update_user_rate(self, user_rate: UserRate) -> None:
         url = f"{self._URL_API}/v2/user_rates/{user_rate.id}"
         status = user_rate.status.to_str()
-        if user_rate.status == Nl.LibList.reading:
+        if user_rate.status == LibList.reading:
             status = "watching"
-        elif user_rate.status == Nl.LibList.re_reading:
+        elif user_rate.status == LibList.re_reading:
             status = "rewatching"
-        elif user_rate.status == Nl.LibList.on_hold:
+        elif user_rate.status == LibList.on_hold:
             status = "on_hold"
         data = {
             "user_rate": {

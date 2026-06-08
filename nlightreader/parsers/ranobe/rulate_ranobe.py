@@ -2,8 +2,8 @@ import base64
 
 from bs4 import BeautifulSoup
 
-from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RulateItems
+from nlightreader.core.enums import Language, MangaKind
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
@@ -32,10 +32,10 @@ class Rulate(AbstractRanobeCatalog):
                 description_text = hranobe.text
                 if description_text:
                     manga.add_description(
-                        Nl.Language.undefined,
+                        Language.undefined,
                         str(description_text),
                     )
-            manga.kind = Nl.MangaKind.ranobe
+            manga.kind = MangaKind.ranobe
         return manga
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
@@ -107,7 +107,7 @@ class Rulate(AbstractRanobeCatalog):
                     None,
                     "",
                     name,
-                    Nl.Language.ru,
+                    Language.ru,
                 )
                 chapters.append(chapter)
             chapters.reverse()

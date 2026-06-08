@@ -1,7 +1,7 @@
 from typing import override
 
-from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import AniLibItems
+from nlightreader.core.enums import Language
 from nlightreader.models import Chapter, Manga
 from nlightreader.parsers.catalogs_base import AbstractAnimeCatalog
 from nlightreader.parsers.combined.lib.lib_base import LibBase
@@ -46,7 +46,7 @@ class LibAnilib(LibBase, AbstractAnimeCatalog):
                 None,
                 "",
                 f"Episode {ep_number}",
-                Nl.Language.ru,
+                Language.ru,
             )
             episodes.append(episode)
         return episodes

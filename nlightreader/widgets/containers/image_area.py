@@ -1,5 +1,7 @@
+from typing import override
+
 from PySide6.QtCore import QSize, Qt
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QPixmap, QResizeEvent
 from PySide6.QtWidgets import QWidget
 
 from data.ui.containers.image_area import Ui_Form
@@ -22,7 +24,8 @@ class ImageArea(QWidget, AbstractContentContainer):
         self._content_widget = self.ui.img_lbl
         self.__image_pixmap = None
 
-    def resizeEvent(self, event) -> None:
+    @override
+    def resizeEvent(self, event: QResizeEvent, /) -> None:
         super().resizeEvent(event)
         if (self.__image_pixmap is None) or (event.oldSize() == event.size()):
             return
@@ -79,7 +82,7 @@ class ImageArea(QWidget, AbstractContentContainer):
         self._reset_area()
         self.__update_image()
 
-    def get_content_widget(self):
+    def get_content_widget(self) -> QWidget:
         return self.ui.img_lbl.parent()
 
 

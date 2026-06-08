@@ -1,4 +1,7 @@
+from typing import override
+
 from PySide6.QtCore import Qt, QThreadPool
+from PySide6.QtGui import QResizeEvent
 from PySide6.QtWidgets import QGridLayout, QHBoxLayout, QWidget
 from qfluentwidgets import (
     ScrollArea,
@@ -48,7 +51,8 @@ class MangaArea(ScrollArea, AbstractContentContainer):
         self.manga_thread_pool.setMaxThreadCount(self._column_count)
         self._set_images_thread = Thread(target=self.partial_image_addition)
 
-    def resizeEvent(self, arg__1) -> None:
+    @override
+    def resizeEvent(self, arg__1: QResizeEvent, /) -> None:
         super().resizeEvent(arg__1)
         if arg__1.oldSize().width() != arg__1.size().width():
             self._scrollAreaWidgetContents.setFixedWidth(arg__1.size().width())
@@ -101,7 +105,7 @@ class MangaArea(ScrollArea, AbstractContentContainer):
         ) // self._column_count
         [item.set_size(size) for item in self._manga_items]
 
-    def get_content_widget(self):
+    def get_content_widget(self) -> QWidget:
         return self._scrollAreaWidgetContents
 
 

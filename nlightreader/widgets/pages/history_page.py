@@ -1,4 +1,4 @@
-from PySide6.QtCore import Signal, Slot
+from PySide6.QtCore import QPoint, Signal, Slot
 from PySide6.QtWidgets import QTreeWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
@@ -31,7 +31,7 @@ class HistoryPage(QWidget):
         self.notes: list[HistoryNote] = []
         self.sorted_notes: dict[Manga, list[HistoryNote]] = {}
 
-    def on_context_menu(self, pos) -> None:
+    def on_context_menu(self, pos: QPoint) -> None:
         def set_as_read() -> None:
             self.db.add_history_note(
                 HistoryNote(
