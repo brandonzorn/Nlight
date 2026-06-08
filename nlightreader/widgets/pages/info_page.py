@@ -8,8 +8,8 @@ from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.info import Ui_Form
 from nlightreader.consts.colors import ItemsIcons
-from nlightreader.consts.enums import LIB_LISTS, Nl
 from nlightreader.consts.files import NlFluentIcons
+from nlightreader.core.enums import LIB_LISTS, LibList
 from nlightreader.items import HistoryNote
 from nlightreader.models import Chapter, Character, Manga
 from nlightreader.parsers.catalog import AbstractCatalog
@@ -283,14 +283,14 @@ class InfoPage(QWidget):
         if self.__db.check_manga_library(self.__manga):
             self.__db.rem_manga_library(self.__manga)
         else:
-            lib_list = Nl.LibList(self.ui.lib_list_box.currentIndex())
+            lib_list = LibList(self.ui.lib_list_box.currentIndex())
             self.__db.add_manga_library(self.__manga, lib_list)
         self.update_add_button_icon()
 
     @Slot()
     def change_lib_list(self) -> None:
         if self.__db.check_manga_library(self.__manga):
-            lib_list = Nl.LibList(self.ui.lib_list_box.currentIndex())
+            lib_list = LibList(self.ui.lib_list_box.currentIndex())
             self.__db.add_manga_library(self.__manga, lib_list)
 
     def get_chapters(self) -> None:

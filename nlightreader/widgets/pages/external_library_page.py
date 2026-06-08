@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QWidget
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.shikimori import Ui_Form
-from nlightreader.consts.enums import Nl
+from nlightreader.core.enums import LibList
 from nlightreader.items import User
 from nlightreader.models import Manga
 from nlightreader.parsers import ShikimoriLib
@@ -33,22 +33,22 @@ class ExternalLibraryPage(BasePage):
         self.manga_area.install(self.ui.items_layout)
 
         self.ui.planned_btn.clicked.connect(
-            lambda: self.change_list(Nl.LibList.planned),
+            lambda: self.change_list(LibList.planned),
         )
         self.ui.reading_btn.clicked.connect(
-            lambda: self.change_list(Nl.LibList.reading),
+            lambda: self.change_list(LibList.reading),
         )
         self.ui.on_hold_btn.clicked.connect(
-            lambda: self.change_list(Nl.LibList.on_hold),
+            lambda: self.change_list(LibList.on_hold),
         )
         self.ui.completed_btn.clicked.connect(
-            lambda: self.change_list(Nl.LibList.completed),
+            lambda: self.change_list(LibList.completed),
         )
         self.ui.dropped_btn.clicked.connect(
-            lambda: self.change_list(Nl.LibList.dropped),
+            lambda: self.change_list(LibList.dropped),
         )
         self.ui.re_reading_btn.clicked.connect(
-            lambda: self.change_list(Nl.LibList.re_reading),
+            lambda: self.change_list(LibList.re_reading),
         )
         self.ui.next_btn.clicked.connect(self.turn_page_next)
         self.ui.prev_btn.clicked.connect(self.turn_page_prev)

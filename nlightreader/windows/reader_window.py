@@ -8,7 +8,7 @@ from qfluentwidgets import FluentIcon
 
 from data.ui.windows.reader import Ui_ReaderWindow
 from nlightreader.consts.colors import ItemsIcons
-from nlightreader.consts.enums import Nl
+from nlightreader.core.enums import MangaKind
 from nlightreader.exceptions.parser_content_exc import (
     FetchContentError,
     NoContentError,
@@ -80,7 +80,7 @@ class ReaderWindow(QMainWindow):
         self.setWindowTitle(self.__manga.name)
         self.__content_container = (
             TextArea()
-            if (self.__manga.kind == Nl.MangaKind.ranobe)
+            if (self.__manga.kind == MangaKind.ranobe)
             else ImageArea()
         )
         self.__content_container.install(self.ui.reader_layout)
@@ -239,7 +239,7 @@ class ReaderWindow(QMainWindow):
             if page != self.__cur_page or chapter != self.__cur_chapter:
                 return None
 
-        if self.__manga.kind == Nl.MangaKind.ranobe:
+        if self.__manga.kind == MangaKind.ranobe:
             return FileManager.get_chapter_text_file(
                 self.__manga,
                 self.__chapters[chapter - 1],

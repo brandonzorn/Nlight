@@ -3,8 +3,8 @@ import base64
 from bs4 import BeautifulSoup
 import bs4.element
 
-from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RanobehubItems
+from nlightreader.core.enums import Language, MangaKind, MangaStatus
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
@@ -25,13 +25,13 @@ class Ranobehub(AbstractRanobeCatalog):
             data = response.get("data")
 
             manga.score = data.get("rating")
-            manga.kind = Nl.MangaKind.ranobe
+            manga.kind = MangaKind.ranobe
 
             if status_name := data.get("status").get("title"):
-                manga.status = Nl.MangaStatus.from_str(status_name)
+                manga.status = MangaStatus.from_str(status_name)
 
             manga.add_description(
-                Nl.Language.undefined,
+                Language.undefined,
                 data.get("description"),
             )
         return manga
@@ -61,7 +61,7 @@ class Ranobehub(AbstractRanobeCatalog):
             russian = i.get("names").get("rus")
 
             manga = Manga(manga_id, self.CATALOG_ID, name, russian)
-            manga.status = Nl.MangaStatus.from_str(i.get("status"))
+            manga.status = MangaStatus.from_str(i.get("status"))
             manga.preview_url = i.get("poster").get("medium")
 
             mangas.append(manga)
@@ -81,7 +81,7 @@ class Ranobehub(AbstractRanobeCatalog):
                         volume_num,
                         chapter_data.get("num"),
                         chapter_data.get("name"),
-                        Nl.Language.ru,
+                        Language.ru,
                     )
                     chapters.append(chapter)
             chapters.reverse()

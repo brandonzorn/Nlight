@@ -1,7 +1,7 @@
 from types import NoneType
 from typing import override
 
-from nlightreader.consts.enums import Nl
+from nlightreader.core.enums import Language
 from nlightreader.models.base_model import BaseModel
 
 
@@ -13,7 +13,7 @@ class Chapter(BaseModel):
         volume_number: str | None,
         chapter_number: str | None,
         title: str,
-        language: Nl.Language = Nl.Language.undefined,
+        language: Language = Language.undefined,
         translator: str | None = None,
     ) -> None:
         super().__init__(content_id, catalog_id)
@@ -32,7 +32,7 @@ class Chapter(BaseModel):
         return self.__chapter_number
 
     @property
-    def language(self) -> Nl.Language:
+    def language(self) -> Language:
         return self.__language
 
     @property

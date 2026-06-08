@@ -1,10 +1,10 @@
-from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import ShikimoriItems
 from nlightreader.consts.urls import (
     SHIKIMORI_HEADERS,
     URL_SHIKIMORI,
     URL_SHIKIMORI_API,
 )
+from nlightreader.core.enums import Language, MangaKind, MangaStatus
 from nlightreader.models import Character, Genre, Manga, Order
 from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils.utils import get_html
@@ -31,9 +31,9 @@ class ShikimoriBase(AbstractCatalog):
         response = get_html(url, headers=self._HEADERS, content_type="json")
         if response:
             data = response
-            manga.kind = Nl.MangaKind.from_str(data.get("kind"))
+            manga.kind = MangaKind.from_str(data.get("kind"))
             manga.score = float(data.get("score"))
-            manga.status = Nl.MangaStatus.from_str(data.get("status"))
+            manga.status = MangaStatus.from_str(data.get("status"))
             if data.get("volumes"):
                 manga.volumes = int(data.get("volumes"))
             if data.get("chapters"):
@@ -41,7 +41,7 @@ class ShikimoriBase(AbstractCatalog):
 
             if description := data.get("description"):
                 manga.add_description(
-                    Nl.Language.undefined,
+                    Language.undefined,
                     description,
                 )
         return manga

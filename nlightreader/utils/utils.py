@@ -4,9 +4,9 @@ from typing import Any
 from PySide6.QtWidgets import QApplication
 import requests
 
-from nlightreader.consts.enums import Nl
 from nlightreader.consts.files import LangIcons
 from nlightreader.consts.urls import DEFAULT_HEADERS
+from nlightreader.core.enums import Language
 
 
 def make_request(
@@ -128,25 +128,25 @@ def get_html(
     )
 
 
-def get_language_icon(language: Nl.Language) -> str:
+def get_language_icon(language: Language) -> str:
     """
     Returns the file path to the icon for the specified language.
 
-    :param language: Nl.Language.
+    :param language: Language.
     :return:
         The file path to the icon associated
         with the language as a string or an
         empty string if no icon is found.
     """
-    if not isinstance(language, Nl.Language):
-        msg = "Language must be Nl.Language"
+    if not isinstance(language, Language):
+        msg = "Language must be Language"
         raise TypeError(msg)
     lang_icons = {
-        Nl.Language.ru: LangIcons.RU,
-        Nl.Language.en: LangIcons.GB,
-        Nl.Language.jp: LangIcons.JP,
-        Nl.Language.uk: LangIcons.UA,
-        Nl.Language.undefined: "",
+        Language.ru: LangIcons.RU,
+        Language.en: LangIcons.GB,
+        Language.jp: LangIcons.JP,
+        Language.uk: LangIcons.UA,
+        Language.undefined: "",
     }
     return lang_icons[language]
 

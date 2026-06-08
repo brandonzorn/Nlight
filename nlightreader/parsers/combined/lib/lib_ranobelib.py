@@ -2,8 +2,8 @@ import base64
 import re
 from typing import override
 
-from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RanobeLibItems
+from nlightreader.core.enums import MangaKind
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.parsers.combined.lib.lib_base import LibBase
@@ -21,7 +21,7 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
 
     @override
     def get_manga(self, manga: Manga) -> Manga:
-        manga.kind = Nl.MangaKind.ranobe
+        manga.kind = MangaKind.ranobe
         return super().get_manga(manga)
 
     @override

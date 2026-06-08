@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 
-from nlightreader.consts.enums import Nl
+from nlightreader.core.enums import Language
 from nlightreader.exceptions import parser_content_exc
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
@@ -32,32 +32,33 @@ class AllHentai(AbstractHentaiMangaCatalog):
             data=params,
             content_type="text",
         )
-        mangas = []
-        if response:
-            soup = BeautifulSoup(response, "html.parser")
-            html_items = soup.findAll("div", class_="tile")
-            for i in html_items:
-                manga_desc = i.find("div", class_="desc")
-                base_info = manga_desc.find("a")
-                manga_id = base_info.get("href")
-                name = base_info.get("title")
-                if manga_id and name:
-                    mangas.append(
-                        Manga(manga_id, self.CATALOG_ID, name, ""),
-                    )
+        mangas: list[Manga] = []
+        if not isinstance(response, str):
+            return mangas
+        soup = BeautifulSoup(response, "html.parser")
+        html_items = soup.find_all("div", class_="tile")
+        for i in html_items:
+            manga_desc = i.find("div", class_="desc")
+            base_info = manga_desc.find("a")
+            manga_id = base_info.get("href")
+            name = base_info.get("title")
+            if manga_id and name:
+                mangas.append(
+                    Manga(manga_id, self.CATALOG_ID, name, ""),
+                )
         return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self._URL}/{manga.content_id}"
         response = get_html(url, headers=self._HEADERS, content_type="text")
 
-        chapters = []
-        if not response:
+        chapters: list[Chapter] = []
+        if not isinstance(response, str):
             return chapters
 
         soup = BeautifulSoup(response, "html.parser")
         chapters_list_item = soup.find("div", id="chapters-list")
-        for chapter_item in chapters_list_item.findAll(
+        for chapter_item in chapters_list_item.find_all(
             "tr",
             class_="item-row",
         ):
@@ -75,7 +76,7 @@ class AllHentai(AbstractHentaiMangaCatalog):
                 volume,
                 chapter_num,
                 "",
-                Nl.Language.ru,
+                Language.ru,
             )
             chapters.append(chapter)
         return chapters
@@ -83,13 +84,13 @@ class AllHentai(AbstractHentaiMangaCatalog):
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         return super().get_images(manga, chapter)
 
-    def get_image(self, image: Image) -> None:
+    def get_image(self, image: Image) -> bytes | None:
         return super().get_image(image)
 
-    def get_preview(self, manga: Manga):
+    def get_preview(self, manga: Manga)-> bytes | None:
         url = f"{self._URL}/{manga.content_id}"
         response = get_html(url, headers=self._HEADERS, content_type="text")
-        if not response:
+        if not isinstance(response, str):
             return None
         soup = BeautifulSoup(response, "html.parser")
         html_item = soup.find("img", class_="")
