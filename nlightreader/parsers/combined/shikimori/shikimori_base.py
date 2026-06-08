@@ -32,14 +32,13 @@ class ShikimoriBase(AbstractCatalog):
         if response:
             data = response
             manga.kind = MangaKind.from_str(data.get("kind"))
-            manga.score = float(data.get("score"))
+            manga.score = float(data.get("score", 0))
             manga.status = MangaStatus.from_str(data.get("status"))
-            if data.get("volumes"):
-                manga.volumes = int(data.get("volumes"))
-            if data.get("chapters"):
-                manga.chapters = int(data.get("chapters"))
+            manga.volumes = int(data.get("volumes", 0))
+            manga.chapters = int(data.get("chapters", 0))
 
-            if description := data.get("description"):
+            description = data.get("description")
+            if isinstance(description, str):
                 manga.add_description(
                     Language.undefined,
                     description,
@@ -53,35 +52,43 @@ class ShikimoriBase(AbstractCatalog):
             character.description = description
         return character
 
-    def get_preview(self, manga: Manga):
-        return get_html(
+    def get_preview(self, manga: Manga) -> bytes | None:
+        image_response = get_html(
             f"{self._URL}/system/mangas/original/{manga.content_id}.jpg",
             content_type="content",
         )
+        if not isinstance(image_response, bytes):
+            return None
+        return image_response
 
-    def get_character_preview(self, character: Character):
-        return get_html(
+    def get_character_preview(self, character: Character) -> bytes | None:
+        image_response = get_html(
             f"{self._URL}/system/characters/"
             f"original/{character.content_id}.jpg",
             content_type="content",
         )
+        if not isinstance(image_response, bytes):
+            return None
+        return image_response
 
     def get_genres(self) -> list[Genre]:
         url = f"{self._URL_API}/genres"
         response = get_html(url, headers=self._HEADERS, content_type="json")
-        if not response:
-            return []
-
-        return [
-            Genre(
-                str(i["id"]),
-                self.CATALOG_ID,
-                i["name"],
-                i["russian"],
+        genres: list[Genre] = []
+        if not isinstance(response, dict):
+            return genres
+        for data in response:
+            if data["entry_type"] != "Manga":
+                continue
+            genres.append(
+                Genre(
+                    str(data["id"]),
+                    self.CATALOG_ID,
+                    data["name"],
+                    data["russian"],
+                ),
             )
-            for i in response
-            if i["entry_type"] == "Manga"
-        ]
+        return genres
 
     def get_orders(self) -> list[Order]:
         return [

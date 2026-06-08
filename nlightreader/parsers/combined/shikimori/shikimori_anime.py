@@ -32,16 +32,17 @@ class ShikimoriAnime(AbstractAnimeCatalog):
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/animes/{manga.content_id}"
         response = get_html(url, headers=self._HEADERS, content_type="json")
-        if response:
-            data = response
-            manga.score = float(data.get("score"))
-            manga.status = MangaStatus.from_str(data.get("status"))
+        if not isinstance(response, dict):
+            return manga
+        manga.score = float(response.get("score", 0))
+        manga.status = MangaStatus.from_str(response.get("status"))
 
-            if description := data.get("description"):
-                manga.add_description(
-                    Language.undefined,
-                    description,
-                )
+        description = response.get("description")
+        if isinstance(description, str):
+            manga.add_description(
+                Language.undefined,
+                description,
+            )
         return manga
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
@@ -61,10 +62,11 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             content_type="json",
         )
 
-        mangas = []
-        if response:
-            for i in response:
-                mangas.append(self._setup_manga(i))
+        mangas: list[Manga] = []
+        if not isinstance(response, dict):
+            return mangas
+        for data in response:
+            mangas.append(self._setup_manga(data))
         return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
@@ -93,39 +95,50 @@ class ShikimoriAnime(AbstractAnimeCatalog):
     def get_character(self, character: Character) -> Character:
         url = f"{self._URL_API}/characters/{character.content_id}"
         response = get_html(url, headers=self._HEADERS, content_type="json")
-        if response:
-            if description := response.get("description"):
-                character.description = description
+        if not isinstance(response, dict):
+            return character
+        description = response.get("description")
+        if isinstance(description, str):
+            character.description = description
         return character
 
-    def get_preview(self, manga: Manga):
-        return get_html(
+    def get_preview(self, manga: Manga) -> bytes | None:
+        image_response = get_html(
             f"{self._URL}/system/animes/original/{manga.content_id}.jpg",
             content_type="content",
         )
+        if not isinstance(image_response, bytes):
+            return None
+        return image_response
 
-    def get_character_preview(self, character: Character):
-        return get_html(
+    def get_character_preview(self, character: Character) -> bytes | None:
+        image_response = get_html(
             f"{self._URL}/system/characters/"
             f"original/{character.content_id}.jpg",
             content_type="content",
         )
+        if not isinstance(image_response, bytes):
+            return None
+        return image_response
 
     def get_genres(self) -> list[Genre]:
         url = f"{self._URL_API}/genres"
         response = get_html(url, headers=self._HEADERS, content_type="json")
-        if response:
-            return [
+        genres: list[Genre] = []
+        if not isinstance(response, dict):
+            return genres
+        for data in response:
+            if data["entry_type"] != "Anime":
+                continue
+            genres.append(
                 Genre(
-                    str(i["id"]),
+                    str(data["id"]),
                     self.CATALOG_ID,
-                    i["name"],
-                    i["russian"],
-                )
-                for i in response
-                if i["entry_type"] == "Anime"
-            ]
-        return []
+                    data["name"],
+                    data["russian"],
+                ),
+            )
+        return genres
 
     def get_orders(self) -> list[Order]:
         return [
@@ -139,27 +152,32 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         ]
 
     def get_characters(self, manga: Manga) -> list[Character]:
-        characters = []
         url = f"{self._URL_API}/animes/{manga.content_id}/roles"
         response = get_html(url, headers=self._HEADERS, content_type="json")
-        if response:
-            for i in response:
-                if i.get("roles"):
-                    role = i.get("roles")[0]
-                    if role in ["Supporting", "Main"]:
-                        data = i.get("character")
-                        if data:
-                            characters.append(
-                                Character(
-                                    str(data.get("id")),
-                                    self.CATALOG_ID,
-                                    data.get("name"),
-                                    data.get("russian"),
-                                    "",
-                                    role,
-                                ),
-                            )
-            characters.sort(key=lambda x: x.role)
+        characters: list[Character] = []
+        if not isinstance(response, dict):
+            return characters
+        for data in response:
+            roles = data.get("roles")
+            if not isinstance(roles, list) or len(roles) == 0:
+                continue
+            role = data.get("roles")[0]
+            if role not in ["Supporting", "Main"]:
+                continue
+            character_data = data.get("character")
+            if not isinstance(character_data, dict):
+                continue
+            characters.append(
+                Character(
+                    str(character_data.get("id")),
+                    self.CATALOG_ID,
+                    character_data.get("name"),
+                    character_data.get("russian"),
+                    "",
+                    role,
+                ),
+            )
+        characters.sort(key=lambda x: x.role)
         return characters
 
     def get_manga_url(self, manga: Manga) -> str:

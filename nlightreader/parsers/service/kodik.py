@@ -30,20 +30,19 @@ class Kodik:
             "shikimori_id": shikimori_id,
         }
         response = get_html(url, params=params, content_type="json")
-        if response:
-            for data in response.get("results", []):
-                translators.append(
-                    KodikTranslator(
-                        data["id"],
-                        data["link"],
-                        int(data.get("last_episode", 1)),
-                        data["translation"]["title"],
-                        data["translation"]["type"],
-                    ),
-                )
+        if not isinstance(response, dict):
+            return translators
+        for data in response.get("results", []):
+            translators.append(
+                KodikTranslator(
+                    data["id"],
+                    data["link"],
+                    int(data.get("last_episode", 1)),
+                    data["translation"]["title"],
+                    data["translation"]["type"],
+                ),
+            )
         return translators
 
 
-__all__ = [
-    "Kodik",
-]
+__all__ = ["Kodik"]

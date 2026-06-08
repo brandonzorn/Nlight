@@ -27,10 +27,11 @@ class ShikimoriRanobe(ShikimoriBase, AbstractRanobeCatalog):
             content_type="json",
         )
 
-        mangas = []
-        if response:
-            for i in response:
-                mangas.append(self._setup_manga(i))
+        mangas: list[Manga] = []
+        if not isinstance(response, dict):
+            return mangas
+        for data in response:
+            mangas.append(self._setup_manga(data))
         return mangas
 
 

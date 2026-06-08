@@ -42,10 +42,16 @@ class AllHentai(AbstractHentaiMangaCatalog):
             base_info = manga_desc.find("a")
             manga_id = base_info.get("href")
             name = base_info.get("title")
-            if manga_id and name:
-                mangas.append(
-                    Manga(manga_id, self.CATALOG_ID, name, ""),
-                )
+            if not isinstance(manga_id, str) or not isinstance(name, str):
+                continue
+            mangas.append(
+                Manga(
+                    manga_id,
+                    self.CATALOG_ID,
+                    name,
+                    "",
+                ),
+            )
         return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
@@ -87,20 +93,24 @@ class AllHentai(AbstractHentaiMangaCatalog):
     def get_image(self, image: Image) -> bytes | None:
         return super().get_image(image)
 
-    def get_preview(self, manga: Manga)-> bytes | None:
+    def get_preview(self, manga: Manga) -> bytes | None:
         url = f"{self._URL}/{manga.content_id}"
         response = get_html(url, headers=self._HEADERS, content_type="text")
         if not isinstance(response, str):
             return None
         soup = BeautifulSoup(response, "html.parser")
         html_item = soup.find("img", class_="")
-        if not (html_item and (img_src := html_item.get("src"))):
+        img_src = html_item.get("src")
+        if not isinstance(img_src, str):
             return None
-        return get_html(
+        image_response = get_html(
             img_src,
             content_type="content",
             headers=self._HEADERS,
         )
+        if not isinstance(image_response, bytes):
+            return None
+        return image_response
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/{manga.content_id}"

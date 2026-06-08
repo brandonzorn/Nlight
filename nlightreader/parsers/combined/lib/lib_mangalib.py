@@ -47,11 +47,14 @@ class LibMangalib(LibBase, AbstractMangaCatalog):
 
     @override
     def get_image(self, image: Image) -> bytes | None:
-        return get_html(
+        image_response = get_html(
             image.url,
             headers=self._headers,
             content_type="content",
         )
+        if not isinstance(image_response, bytes):
+            return None
+        return image_response
 
     @override
     def get_manga_url(self, manga: Manga) -> str:
