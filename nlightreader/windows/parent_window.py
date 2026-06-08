@@ -64,7 +64,7 @@ class ParentWindow(FluentWindow):
         )
 
     @Slot(int)
-    def on_widget_change(self, value) -> None:
+    def on_widget_change(self, value: int) -> None:
         if value in range(4):
             if any(
                 i.objectName() == "FormInfo"

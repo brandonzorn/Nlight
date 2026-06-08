@@ -102,7 +102,7 @@ class LibBase(AbstractCatalog):
         chapters_response = get_html(chapters_url, content_type="json")
         if not isinstance(chapters_response, dict):
             return chapters
-        for i in reversed(chapters_response.get("data", {})):
+        for i in reversed(chapters_response.get("data", [])):
             chapter = Chapter(
                 str(i["id"]),
                 self.CATALOG_ID,
@@ -120,11 +120,14 @@ class LibBase(AbstractCatalog):
 
     @override
     def get_preview(self, manga: Manga) -> bytes | None:
-        return get_html(
+        image_response = get_html(
             manga.preview_url,
-            content_type="content",
             headers=self._headers,
+            content_type="content",
         )
+        if not isinstance(image_response, bytes):
+            return None
+        return image_response
 
 
 __all__ = ["LibBase"]

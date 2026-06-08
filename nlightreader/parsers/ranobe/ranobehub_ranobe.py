@@ -110,43 +110,46 @@ class Ranobehub(AbstractRanobeCatalog):
             return None
 
         response = get_html(image.url, content_type="text")
-        if response:
-            soup = BeautifulSoup(response, "html.parser")
-            text_container = find_text_container(
-                soup.findAll("div", {"class": "ui text container"}),
-            )
-            if not text_container:
-                return None
-
-            content = ""
-
-            header = soup.find("div", class_="title-wrapper")
-            if header is not None:
-                header_text = header.find("h1", class_="ui header")
-                if header_text is not None:
-                    content += f"<h1>{header_text.text}</h1>"
-
-            for p in text_container.findAll("p"):
-                if p.find("img"):
-                    media: str = p.find("img")["data-media-id"]
-                    content += (
-                        f"<p>"
-                        f'<img src="{get_chapter_content_image(media)}">'
-                        f"</p>"
-                    )
-                else:
-                    content += str(p)
-            return content
-        return None
-
-    def get_preview(self, manga: Manga):
-        if not manga.preview_url:
+        if not isinstance(response, str):
             return None
-        return get_html(
+        soup = BeautifulSoup(response, "html.parser")
+        text_container = find_text_container(
+            soup.findAll("div", {"class": "ui text container"}),
+        )
+        if not text_container:
+            return None
+
+        content = ""
+
+        header = soup.find("div", class_="title-wrapper")
+        if header is not None:
+            header_text = header.find("h1", class_="ui header")
+            if header_text is not None:
+                content += f"<h1>{header_text.text}</h1>"
+
+        for p in text_container.findAll("p"):
+            if p.find("img"):
+                media: str = p.find("img")["data-media-id"]
+                content += (
+                    f"<p>"
+                    f'<img src="{get_chapter_content_image(media)}">'
+                    f"</p>"
+                )
+            else:
+                content += str(p)
+        return content
+
+    def get_preview(self, manga: Manga) -> bytes | None:
+        if not isinstance(manga.preview_url, str):
+            return None
+        image_response = get_html(
             manga.preview_url,
             headers=self._HEADERS,
             content_type="content",
         )
+        if not isinstance(image_response, bytes):
+            return None
+        return image_response
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/ranobe/{manga.content_id}"

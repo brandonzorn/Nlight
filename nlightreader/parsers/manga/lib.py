@@ -8,13 +8,9 @@ class LibBase(AbstractMangaCatalog):
     _FILTERS = MangaLibItems
     _URL = None
 
-    def get_preview(self, manga: Manga):
+    def get_preview(self, manga: Manga) -> bytes | None:
         headers = self._HEADERS | {"Referer": f"{self._URL}/"}
-        return get_html(
-            manga.preview_url,
-            headers=headers,
-            content_type="content",
-        )
+        return get_html(manga.preview_url, headers=headers, content_type="content")
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/{manga.content_id}"
