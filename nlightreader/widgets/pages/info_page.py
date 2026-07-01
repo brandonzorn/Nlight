@@ -321,7 +321,7 @@ class InfoPage(QWidget):
                         if self.__db.get_complete_status(chapter):
                             ch_item.setIcon(0, ItemsIcons.READ.qicon())
                         else:
-                            ch_item.setIcon(0, ItemsIcons.UNREAD)
+                            ch_item.setIcon(0, ItemsIcons.UNREAD.qicon())
                     translator_item.addChild(ch_item)
 
             if len(self.__sorted_chapters) == 1:

@@ -94,7 +94,7 @@ class HistoryPage(QWidget):
                 if note.is_completed:
                     ch_item.setIcon(0, ItemsIcons.READ.qicon())
                 else:
-                    ch_item.setIcon(0, ItemsIcons.UNREAD)
+                    ch_item.setIcon(0, ItemsIcons.UNREAD.qicon())
                 top_item.addChild(ch_item)
 
     def _get_selected_note(self) -> HistoryNote | None:

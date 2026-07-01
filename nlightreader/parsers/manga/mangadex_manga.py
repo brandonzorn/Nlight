@@ -343,7 +343,7 @@ class Auth:
     ) -> None | bytes | str | dict | requests.Response:
         if not self.is_authorized:
             return None
-        return get_html(url, params=params, headers=self.headers)
+        return make_request(url, "GET", params=params, headers=self.headers)
 
     @property
     def headers(self) -> dict[str, str]:

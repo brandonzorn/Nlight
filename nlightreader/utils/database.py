@@ -226,7 +226,12 @@ class Database:
         catalog_id = manga_data["catalog_id"]
         name = manga_data["name"]
         russian = manga_data["russian"]
-        manga = Manga(content_id, catalog_id, name, russian)
+        manga = Manga(
+            content_id=content_id,
+            catalog_id=catalog_id,
+            name=name,
+            russian=russian,
+        )
         manga.kind = MangaKind.from_str(manga_data["kind"])
         manga.set_description_from_str(manga_data["description"])
         manga.score = manga_data["score"]
@@ -292,13 +297,13 @@ class Database:
         translator = str(chapter_data["translator"])
 
         return Chapter(
-            content_id,
-            catalog_id,
-            vol,
-            ch,
-            title,
-            language,
-            translator,
+            content_id=content_id,
+            catalog_id=catalog_id,
+            volume_number=vol,
+            chapter_number=ch,
+            title=title,
+            language=language,
+            translator=translator,
         )
 
     def get_chapter(self, chapter_id: str) -> Chapter:

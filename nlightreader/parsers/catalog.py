@@ -62,10 +62,10 @@ class AbstractCatalog:
     def get_kinds(self) -> list[Kind]:
         return [
             Kind(
-                i["value"],
-                self.CATALOG_ID,
-                i["name"],
-                i["russian"],
+                content_id=i["value"],
+                catalog_id=self.CATALOG_ID,
+                name=i["name"],
+                russian=i["russian"],
             )
             for i in self._FILTERS.KINDS
         ]
@@ -73,10 +73,10 @@ class AbstractCatalog:
     def get_orders(self) -> list[Order]:
         return [
             Order(
-                i["value"],
-                self.CATALOG_ID,
-                i["name"],
-                i["russian"],
+                content_id=i["value"],
+                catalog_id=self.CATALOG_ID,
+                name=i["name"],
+                russian=i["russian"],
             )
             for i in self._FILTERS.ORDERS
         ]

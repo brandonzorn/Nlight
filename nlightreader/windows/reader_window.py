@@ -129,7 +129,7 @@ class ReaderWindow(QMainWindow):
                 if self.__db.get_complete_status(chapter):
                     ch_item.setIcon(ItemsIcons.READ.qicon())
                 else:
-                    ch_item.setIcon(ItemsIcons.UNREAD)
+                    ch_item.setIcon(ItemsIcons.UNREAD.qicon())
             self.ui.items_list.addItem(ch_item)
 
     @Slot()

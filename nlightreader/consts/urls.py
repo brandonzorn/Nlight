@@ -1,4 +1,4 @@
-URL_SHIKIMORI = "https://shikimori.one"
+URL_SHIKIMORI = "https://shikimori.io"
 URL_SHIKIMORI_API = f"{URL_SHIKIMORI}/api"
 URL_SHIKIMORI_TOKEN = f"{URL_SHIKIMORI}/oauth/token"
 

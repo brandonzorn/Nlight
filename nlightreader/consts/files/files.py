@@ -1,20 +1,20 @@
-from enum import Enum
+from enum import StrEnum
 
 from qfluentwidgets import FluentIconBase, getIconColor, Theme
 
 
-class LangIcons:
+class LangIcons(StrEnum):
     GB = ":/icons/flags/gb.svg"
     RU = ":/icons/flags/ru.svg"
     JP = ":/icons/flags/jp.svg"
     UA = ":/icons/flags/ua.svg"
 
 
-class Icons:
+class Icons(StrEnum):
     APP = ":/icons/common/app-icon.png"
 
 
-class NlFluentIcons(FluentIconBase, Enum):
+class NlFluentIcons(FluentIconBase, StrEnum):
     SHIKIMORI = "shikimori"
 
     def path(self, theme: Theme = Theme.AUTO) -> str:

@@ -1,5 +1,5 @@
 from keys import KODIK_TOKEN
-from nlightreader.utils.utils import get_html
+from nlightreader.utils.utils import make_request
 
 
 class KodikTranslator:
@@ -29,7 +29,7 @@ class Kodik:
             "token": KODIK_TOKEN,
             "shikimori_id": shikimori_id,
         }
-        response = get_html(url, params=params, content_type="json")
+        response = make_request(url, "GET", params=params, content_type="json")
         if not isinstance(response, dict):
             return translators
         for data in response.get("results", []):
