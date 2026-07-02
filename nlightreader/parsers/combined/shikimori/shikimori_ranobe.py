@@ -4,7 +4,6 @@ from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.parsers.combined.shikimori.shikimori_base import (
     ShikimoriBase,
 )
-from nlightreader.utils.utils import get_html
 
 
 class ShikimoriRanobe(ShikimoriBase, AbstractRanobeCatalog):
@@ -20,21 +19,14 @@ class ShikimoriRanobe(ShikimoriBase, AbstractRanobeCatalog):
             "genre": ",".join(form.get_genre_ids()),
             "kind": ",".join(form.get_kind_ids()),
         }
-        response = get_html(
-            url,
-            headers=self._HEADERS,
-            params=params,
-            content_type="json",
-        )
+        response = self._client.get_json(url, params=params)
 
         mangas: list[Manga] = []
-        if not isinstance(response, dict):
+        if not isinstance(response, list):
             return mangas
         for data in response:
             mangas.append(self._setup_manga(data))
         return mangas
 
 
-__all__ = [
-    "ShikimoriRanobe",
-]
+__all__ = ["ShikimoriRanobe"]

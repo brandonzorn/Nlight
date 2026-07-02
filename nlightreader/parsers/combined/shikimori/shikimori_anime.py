@@ -11,7 +11,7 @@ from nlightreader.items import (
 from nlightreader.models import Chapter, Character, Genre, Manga, Order
 from nlightreader.parsers.catalogs_base import AbstractAnimeCatalog
 from nlightreader.parsers.service.kodik import Kodik
-from nlightreader.utils.utils import get_html
+from nlightreader.utils.network import NetworkClient
 
 
 class ShikimoriAnime(AbstractAnimeCatalog):
@@ -21,17 +21,20 @@ class ShikimoriAnime(AbstractAnimeCatalog):
     _URL_API = URL_SHIKIMORI_API
     _HEADERS = SHIKIMORI_HEADERS
 
+    def __init__(self) -> None:
+        self._client = NetworkClient(headers=self._HEADERS)
+
     def _setup_manga(self, data: dict) -> Manga:
         return Manga(
-            str(data.get("id")),
-            self.CATALOG_ID,
-            data.get("name"),
-            data.get("russian"),
+            content_id=str(data.get("id", "")),
+            catalog_id=self.CATALOG_ID,
+            name=data.get("name", ""),
+            russian=data.get("russian", ""),
         )
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/animes/{manga.content_id}"
-        response = get_html(url, headers=self._HEADERS, content_type="json")
+        response = self._client.get_json(url)
         if not isinstance(response, dict):
             return manga
         manga.score = float(response.get("score", 0))
@@ -55,17 +58,17 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             "genre": ",".join(form.get_genre_ids()),
             "kind": ",".join(form.get_kind_ids()),
         }
-        response = get_html(
+        response = self._client.get_json(
             url,
-            headers=self._HEADERS,
             params=params,
-            content_type="json",
         )
 
         mangas: list[Manga] = []
-        if not isinstance(response, dict):
+        if response is None:
             return mangas
         for data in response:
+            if not isinstance(data, dict):
+                continue
             mangas.append(self._setup_manga(data))
         return mangas
 
@@ -75,12 +78,12 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         for translator in translators:
             for episode_num in range(translator.episodes, 0, -1):
                 chapter = Chapter(
-                    f"{translator.content_id}{episode_num}",
-                    self.CATALOG_ID,
-                    None,
-                    "",
-                    f"Episode {episode_num}",
-                    Language.ru,
+                    content_id=f"{translator.content_id}{episode_num}",
+                    catalog_id=self.CATALOG_ID,
+                    volume_number=None,
+                    chapter_number="",
+                    title=f"Episode {episode_num}",
+                    language=Language.ru,
                 )
                 chapter.translator = (
                     f"{translator.translator} ({translator.tr_type})"
@@ -94,7 +97,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
 
     def get_character(self, character: Character) -> Character:
         url = f"{self._URL_API}/characters/{character.content_id}"
-        response = get_html(url, headers=self._HEADERS, content_type="json")
+        response = self._client.get_json(url)
         if not isinstance(response, dict):
             return character
         description = response.get("description")
@@ -103,39 +106,37 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         return character
 
     def get_preview(self, manga: Manga) -> bytes | None:
-        image_response = get_html(
-            f"{self._URL}/system/animes/original/{manga.content_id}.jpg",
-            content_type="content",
-        )
-        if not isinstance(image_response, bytes):
+        url = f"{self._URL}/system/animes/original/{manga.content_id}.jpg"
+        response = self._client.get_bytes(url)
+        if not isinstance(response, bytes):
             return None
-        return image_response
+        return response
 
     def get_character_preview(self, character: Character) -> bytes | None:
-        image_response = get_html(
+        url = (
             f"{self._URL}/system/characters/"
-            f"original/{character.content_id}.jpg",
-            content_type="content",
+            f"original/{character.content_id}.jpg"
         )
+        image_response = self._client.get_bytes(url)
         if not isinstance(image_response, bytes):
             return None
         return image_response
 
     def get_genres(self) -> list[Genre]:
         url = f"{self._URL_API}/genres"
-        response = get_html(url, headers=self._HEADERS, content_type="json")
+        response = self._client.get_json(url)
         genres: list[Genre] = []
         if not isinstance(response, dict):
             return genres
         for data in response:
-            if data["entry_type"] != "Anime":
+            if not isinstance(data, dict) or data.get("entry_type") != "Anime":
                 continue
             genres.append(
                 Genre(
-                    str(data["id"]),
-                    self.CATALOG_ID,
-                    data["name"],
-                    data["russian"],
+                    content_id=str(data.get("id", "")),
+                    catalog_id=self.CATALOG_ID,
+                    name=data.get("name", ""),
+                    russian=data.get("russian", ""),
                 ),
             )
         return genres
@@ -143,17 +144,17 @@ class ShikimoriAnime(AbstractAnimeCatalog):
     def get_orders(self) -> list[Order]:
         return [
             Order(
-                i["value"],
-                self.CATALOG_ID,
-                i["name"],
-                i["russian"],
+                content_id=i["value"],
+                catalog_id=self.CATALOG_ID,
+                name=i["name"],
+                russian=i["russian"],
             )
             for i in ShikimoriAnimeItems.ORDERS
         ]
 
     def get_characters(self, manga: Manga) -> list[Character]:
         url = f"{self._URL_API}/animes/{manga.content_id}/roles"
-        response = get_html(url, headers=self._HEADERS, content_type="json")
+        response = self._client.get_json(url)
         characters: list[Character] = []
         if not isinstance(response, dict):
             return characters
@@ -169,12 +170,12 @@ class ShikimoriAnime(AbstractAnimeCatalog):
                 continue
             characters.append(
                 Character(
-                    str(character_data.get("id")),
-                    self.CATALOG_ID,
-                    character_data.get("name"),
-                    character_data.get("russian"),
-                    "",
-                    role,
+                    content_id=str(character_data.get("id")),
+                    catalog_id=self.CATALOG_ID,
+                    name=character_data.get("name", ""),
+                    russian=character_data.get("russian", ""),
+                    description="",
+                    role=role,
                 ),
             )
         characters.sort(key=lambda x: x.role)
@@ -184,6 +185,4 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         return f"{self._URL}/animes/{manga.content_id}"
 
 
-__all__ = [
-    "ShikimoriAnime",
-]
+__all__ = ["ShikimoriAnime"]
