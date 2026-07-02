@@ -5,7 +5,6 @@ from nlightreader.core.enums import Language
 from nlightreader.models import Chapter, Manga
 from nlightreader.parsers.catalogs_base import AbstractAnimeCatalog
 from nlightreader.parsers.combined.lib.lib_base import LibBase
-from nlightreader.utils.utils import get_html
 
 
 class LibAnilib(LibBase, AbstractAnimeCatalog):
@@ -22,11 +21,7 @@ class LibAnilib(LibBase, AbstractAnimeCatalog):
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self._URL_API}/episodes?anime_id={manga.content_id}"
         episodes: list[Chapter] = []
-        episodes_response = get_html(
-            url,
-            headers=self._headers,
-            content_type="json",
-        )
+        episodes_response = self._client.get_json(url)
         if not isinstance(episodes_response, dict):
             return episodes
 
@@ -41,12 +36,12 @@ class LibAnilib(LibBase, AbstractAnimeCatalog):
                 continue
 
             episode = Chapter(
-                ep_id,
-                self.CATALOG_ID,
-                None,
-                "",
-                f"Episode {ep_number}",
-                Language.ru,
+                content_id=ep_id,
+                catalog_id=self.CATALOG_ID,
+                volume_number=None,
+                chapter_number="",
+                title=f"Episode {ep_number}",
+                language=Language.ru,
             )
             episodes.append(episode)
         return episodes

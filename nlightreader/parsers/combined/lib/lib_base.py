@@ -4,7 +4,8 @@ from nlightreader.core.enums import Language
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Manga
 from nlightreader.parsers.catalog import AbstractCatalog
-from nlightreader.utils.utils import get_html
+from nlightreader.utils.network import NetworkClient
+from nlightreader.utils.utils import dd_get
 
 
 class LibBase(AbstractCatalog):
@@ -14,19 +15,21 @@ class LibBase(AbstractCatalog):
     _CONTENT_NAME = None
     _SITE_ID = None
 
-    @property
-    def _headers(self) -> dict[str, str]:
-        return {"Referer": f"{self._URL}/"}
+    def __init__(self) -> None:
+        self._client = NetworkClient(
+            headers={
+                "Site-Id": str(self._SITE_ID),
+                "Referer": f"{self._URL}/",
+            },
+        )
 
     @override
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/{self._CONTENT_NAME}/{manga.content_id}"
         params = {"fields[]": ["summary", "rate_avg"]}
-        response = get_html(
+        response = self._client.get_json(
             url,
             params=params,
-            headers=self._headers,
-            content_type="json",
         )
 
         if not isinstance(response, dict):
@@ -39,8 +42,15 @@ class LibBase(AbstractCatalog):
 
         manga.preview_url = data.get("cover", {}).get("md")
         manga.score = float(data.get("rating", {}).get("average", 0))
-        if isinstance(description := data.get("summary"), str):
-            manga.add_description(Language.ru, description)
+
+        summary = data.get("summary", {})
+
+        if isinstance(summary, str) and summary:
+            manga.add_description(Language.ru, summary)
+        elif isinstance(summary, dict):
+            text = dd_get(summary, "content.0.content.0.text")
+            if text:
+                manga.add_description(Language.ru, text)
         return manga
 
     @override
@@ -54,12 +64,10 @@ class LibBase(AbstractCatalog):
             "q": form.search,
         }
         cookies = {"adult_caution": '{"media":true,"content":true}'}
-        response = get_html(
+        response = self._client.get_json(
             url,
             params=params,
-            cookies=cookies,
-            headers=self._headers,
-            content_type="json",
+            extra_cookies=cookies,
         )
 
         mangas: list[Manga] = []
@@ -69,10 +77,10 @@ class LibBase(AbstractCatalog):
             if not isinstance(i, dict):
                 continue
             manga = Manga(
-                i["slug_url"],
-                self.CATALOG_ID,
-                i["name"],
-                i.get("rus_name", ""),
+                content_id=i["slug_url"],
+                catalog_id=self.CATALOG_ID,
+                name=i["name"],
+                russian=i.get("rus_name", ""),
             )
             manga.preview_url = i.get("cover", {}).get("md")
             manga.score = float(i.get("rating", {}).get("average", 0))
@@ -89,7 +97,7 @@ class LibBase(AbstractCatalog):
         )
 
         branches = {}
-        branches_response = get_html(branches_url, content_type="json")
+        branches_response = self._client.get_json(branches_url)
         if isinstance(branches_response, dict):
             for branch in branches_response.get("data", {}):
                 branches.update({branch["id"]: branch["teams"][0]["name"]})
@@ -99,17 +107,17 @@ class LibBase(AbstractCatalog):
         )
 
         chapters: list[Chapter] = []
-        chapters_response = get_html(chapters_url, content_type="json")
+        chapters_response = self._client.get_json(chapters_url)
         if not isinstance(chapters_response, dict):
             return chapters
         for i in reversed(chapters_response.get("data", [])):
             chapter = Chapter(
-                str(i["id"]),
-                self.CATALOG_ID,
-                i["volume"],
-                i["number"],
-                i["name"],
-                Language.ru,
+                content_id=str(i["id"]),
+                catalog_id=self.CATALOG_ID,
+                volume_number=i["volume"],
+                chapter_number=i["number"],
+                title=i["name"],
+                language=Language.ru,
             )
             if branches_data := i.get("branches"):
                 chapter.translator = branches.get(
@@ -120,11 +128,7 @@ class LibBase(AbstractCatalog):
 
     @override
     def get_preview(self, manga: Manga) -> bytes | None:
-        image_response = get_html(
-            manga.preview_url,
-            headers=self._headers,
-            content_type="content",
-        )
+        image_response = self._client.get_bytes(manga.preview_url)
         if not isinstance(image_response, bytes):
             return None
         return image_response

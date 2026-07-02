@@ -1,16 +1,24 @@
 from nlightreader.consts.items import MangaLibItems
 from nlightreader.models import Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
-from nlightreader.utils.utils import get_html
+from nlightreader.utils.network import NetworkClient
 
 
 class LibBase(AbstractMangaCatalog):
     _FILTERS = MangaLibItems
     _URL = None
 
+    def __init__(self) -> None:
+        self._client = NetworkClient(headers=self._HEADERS)
+
     def get_preview(self, manga: Manga) -> bytes | None:
-        headers = self._HEADERS | {"Referer": f"{self._URL}/"}
-        return get_html(manga.preview_url, headers=headers, content_type="content")
+        url = manga.preview_url
+        if url is None:
+            return None
+        return self._client.get_bytes(
+            url,
+            extra_headers={"Referer": f"{self._URL}/"},
+        )
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/{manga.content_id}"

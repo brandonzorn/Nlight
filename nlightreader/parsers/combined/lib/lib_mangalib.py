@@ -4,7 +4,6 @@ from nlightreader.consts.items import MangaLibItems
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.parsers.combined.lib.lib_base import LibBase
-from nlightreader.utils.utils import get_html
 
 
 class LibMangalib(LibBase, AbstractMangaCatalog):
@@ -27,7 +26,7 @@ class LibMangalib(LibBase, AbstractMangaCatalog):
             "volume": chapter.volume_number,
         }
 
-        response = get_html(url, params=params, content_type="json")
+        response = self._client.get_json(url, params=params)
         images: list[Image] = []
 
         if not isinstance(response, dict):
@@ -47,11 +46,7 @@ class LibMangalib(LibBase, AbstractMangaCatalog):
 
     @override
     def get_image(self, image: Image) -> bytes | None:
-        image_response = get_html(
-            image.url,
-            headers=self._headers,
-            content_type="content",
-        )
+        image_response = self._client.get_bytes(image.url)
         if not isinstance(image_response, bytes):
             return None
         return image_response

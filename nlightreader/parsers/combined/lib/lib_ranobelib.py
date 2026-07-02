@@ -7,7 +7,6 @@ from nlightreader.core.enums import MangaKind
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.parsers.combined.lib.lib_base import LibBase
-from nlightreader.utils.utils import get_html
 
 
 class LibRanobelib(LibBase, AbstractRanobeCatalog):
@@ -43,10 +42,10 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
                 )
                 else f"{self._URL}{media_id}"
             )
-            chapter_image = get_html(
+            chapter_image = self._client.get_bytes(
                 url,
-                headers=self._HEADERS,
-            ).content
+                extra_headers=self._HEADERS,
+            )
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/png;base64,{str_equivalent_image}"
 
@@ -58,7 +57,7 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
                 text,
             )
 
-        response = get_html(image.url, content_type="json")
+        response = self._client.get_json(image.url)
         if not isinstance(response, dict):
             return None
         content_data = response.get("data", {}).get("content")
