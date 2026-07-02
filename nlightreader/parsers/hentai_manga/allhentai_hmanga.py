@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
 from nlightreader.core.enums import Language
-from nlightreader.exceptions import parser_content_exc
+from nlightreader.core.exceptions import parser_content_exc
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog

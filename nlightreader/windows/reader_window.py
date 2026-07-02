@@ -9,7 +9,7 @@ from qfluentwidgets import FluentIcon
 from data.ui.windows.reader import Ui_ReaderWindow
 from nlightreader.consts.colors import ItemsIcons
 from nlightreader.core.enums import MangaKind
-from nlightreader.exceptions.parser_content_exc import (
+from nlightreader.core.exceptions.parser_content_exc import (
     FetchContentError,
     NoContentError,
 )

@@ -4,7 +4,7 @@ from PySide6.QtCore import Signal, Slot
 from PySide6.QtWidgets import QWidget
 
 from nlightreader.core.enums import LibList
-from nlightreader.exceptions.parser_content_exc import (
+from nlightreader.core.exceptions.parser_content_exc import (
     FetchContentError,
     NoContentError,
     RequestsParamsError,
