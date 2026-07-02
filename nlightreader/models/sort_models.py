@@ -4,6 +4,7 @@ from nlightreader.models.base_model import NamedBaseModel
 class Kind(NamedBaseModel):
     def __init__(
         self,
+        *,
         content_id: str,
         catalog_id: int,
         name: str,
@@ -15,6 +16,7 @@ class Kind(NamedBaseModel):
 class Order(NamedBaseModel):
     def __init__(
         self,
+        *,
         content_id: str,
         catalog_id: int,
         name: str,

@@ -87,9 +87,9 @@ class NHentai(AbstractHentaiMangaCatalog):
                 continue
             images.append(
                 Image(
-                    "",
-                    html_items.index(i) + 1,
-                    img_url,
+                    content_id="",
+                    page_number=html_items.index(i) + 1,
+                    url=img_url,
                 ),
             )
         return images

@@ -100,7 +100,7 @@ class Ranobehub(AbstractRanobeCatalog):
             f"{self._URL}/ranobe/{manga.content_id}/"
             f"{chapter.volume_number}/{chapter.chapter_number}"
         )
-        return [Image("", 1, url)]
+        return [Image(content_id="", page_number=1, url=url)]
 
     def get_image(self, image: Image) -> str | None:
         def get_chapter_content_image(media_id: str) -> str:

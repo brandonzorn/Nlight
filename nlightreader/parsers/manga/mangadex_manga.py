@@ -161,7 +161,13 @@ class MangaDex(AbstractMangaCatalog):
         for img_index, img_data in enumerate(images_data):
             img_url = f"{img_host}/data/{img_hash}/{img_data}"
             page = img_index + 1
-            images.append(Image("", page, img_url))
+            images.append(
+                Image(
+                    content_id="",
+                    page_number=page,
+                    url=img_url,
+                ),
+            )
         return images
 
     def get_image(self, image: Image) -> bytes | None:

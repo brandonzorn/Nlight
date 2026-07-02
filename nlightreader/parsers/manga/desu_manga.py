@@ -97,13 +97,18 @@ class Desu(AbstractMangaCatalog):
         images: list[Image] = []
         if not isinstance(response, dict):
             return images
-        for data in get_data(response, ["response", "pages", "list"]):
-            image_id = str(data.get("id"))
-            page = data.get("page")
-            img: str = data.get("img")
-            if "?" in img:
-                img = img.split("?")[0]
-            images.append(Image(image_id, page, img))
+        for img_data in dd_get(response, "response.pages.list"):
+            page = img_data.get("page")
+            img_url: str = img_data.get("img", "")
+            if "?" in img_url:
+                img_url = img_url.split("?")[0]
+            images.append(
+                Image(
+                    content_id=str(hash(img_url)),
+                    page_number=page,
+                    url=img_url,
+                ),
+            )
         return images
 
     def get_image(self, image: Image) -> bytes | None:

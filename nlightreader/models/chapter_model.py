@@ -8,6 +8,7 @@ from nlightreader.models.base_model import BaseModel
 class Chapter(BaseModel):
     def __init__(
         self,
+        *,
         content_id: str,
         catalog_id: int,
         volume_number: str | None,

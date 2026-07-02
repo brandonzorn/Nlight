@@ -41,7 +41,13 @@ class LibMangalib(LibBase, AbstractMangaCatalog):
                 continue
 
             full_url = f"{self._DEFAULT_IMG_HOST}{page_url}"
-            images.append(Image(page_data["id"], i + 1, full_url))
+            images.append(
+                Image(
+                    content_id=page_data["id"],
+                    page_number=i + 1,
+                    url=full_url,
+                ),
+            )
         return images
 
     @override

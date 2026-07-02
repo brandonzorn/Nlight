@@ -30,7 +30,13 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
             f"?number={chapter.chapter_number}"
             f"&volume={chapter.volume_number}"
         )
-        return [Image("", 1, url)]
+        return [
+            Image(
+                content_id="",
+                page_number=1,
+                url=url,
+            ),
+        ]
 
     @override
     def get_image(self, image: Image) -> str | None:

@@ -13,6 +13,7 @@ from nlightreader.utils.config import cfg
 class Manga(NamedBaseModel):
     def __init__(
         self,
+        *,
         content_id: str,
         catalog_id: int,
         name: str,

@@ -119,7 +119,13 @@ class Remanga(AbstractMangaCatalog):
             pg_id = page_data.get("id")
             page = i + 1
             pg_link = page_data.get("link")
-            images.append(Image(pg_id, page, pg_link))
+            images.append(
+                Image(
+                    content_id=pg_id,
+                    page_number=page,
+                    url=pg_link,
+                ),
+            )
         return images
 
     def get_image(self, image: Image) -> bytes | None:

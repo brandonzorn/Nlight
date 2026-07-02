@@ -118,7 +118,7 @@ class Rulate(AbstractRanobeCatalog):
             f"{self._URL}/book/"
             f"{manga.content_id}/{chapter.content_id}/ready_new"
         )
-        return [Image("", 1, url)]
+        return [Image(content_id="", page_number=1, url=url)]
 
     def get_image(self, image: Image) -> str | None:
         def get_chapter_content_image(media_id: str) -> str:
