@@ -21,39 +21,39 @@ class Manga(NamedBaseModel):
     ) -> None:
         super().__init__(content_id, catalog_id, name, russian)
 
-        self.__kind: MangaKind = MangaKind.undefined
-        self.__status: MangaStatus = MangaStatus.undefined
-        self.__score: int | float = 0
-        self.__preview_url: str | None = None
-        self.__volumes: int = 0
-        self.__chapters: int = 0
-        self.__descriptions: dict[Language, str] = {}
+        self._kind: MangaKind = MangaKind.undefined
+        self._status: MangaStatus = MangaStatus.undefined
+        self._score: int | float = 0
+        self._preview_url: str | None = None
+        self._volumes: int = 0
+        self._chapters: int = 0
+        self._descriptions: dict[Language, str] = {}
 
     @property
     def kind(self) -> MangaKind:
-        return self.__kind
+        return self._kind
 
     @kind.setter
     def kind(self, kind: MangaKind) -> None:
         if not isinstance(kind, MangaKind):
             msg = f"Kind must be MangaKind got {type(kind)}"
             raise TypeError(msg)
-        self.__kind = kind
+        self._kind = kind
 
     @property
     def status(self) -> MangaStatus:
-        return self.__status
+        return self._status
 
     @status.setter
     def status(self, status: MangaStatus) -> None:
         if not isinstance(status, MangaStatus):
             msg = f"Status must be MangaStatus got {type(status)}"
             raise TypeError(msg)
-        self.__status = status
+        self._status = status
 
     @property
     def score(self) -> int | float:
-        return self.__score
+        return self._score
 
     @score.setter
     def score(self, score: int | float) -> None:
@@ -63,43 +63,45 @@ class Manga(NamedBaseModel):
 
         if isinstance(score, float) and score.is_integer():
             score = int(score)
-        self.__score = score
+        self._score = score
 
     @property
     def preview_url(self) -> str | None:
-        return self.__preview_url
+        return self._preview_url
 
     @preview_url.setter
     def preview_url(self, url: str | None) -> None:
         if not isinstance(url, (str, NoneType)):
             msg = f"Preview url must be str or None, got{type(url)}"
             raise TypeError(msg)
-        if url is not None and not validators.url(url):
+        if url and not validators.url(url):
             msg = f"Url {url} is not valid"
             raise ValueError(msg)
-        self.__preview_url = url
+        if isinstance(url, str) and not url:
+            url = None
+        self._preview_url = url
 
     @property
     def volumes(self) -> int:
-        return self.__volumes
+        return self._volumes
 
     @volumes.setter
     def volumes(self, volumes: int) -> None:
         if not isinstance(volumes, int):
             msg = f"Volumes must be int got {type(volumes)}"
             raise TypeError(msg)
-        self.__volumes = volumes
+        self._volumes = volumes
 
     @property
     def chapters(self) -> int:
-        return self.__chapters
+        return self._chapters
 
     @chapters.setter
     def chapters(self, chapters: int) -> None:
         if not isinstance(chapters, int):
             msg = f"Chapters must be int got {type(chapters)}"
             raise TypeError(msg)
-        self.__chapters = chapters
+        self._chapters = chapters
 
     def add_description(self, language: Language, description: str) -> None:
         if not isinstance(language, Language):
@@ -108,26 +110,26 @@ class Manga(NamedBaseModel):
         if not isinstance(description, str):
             msg = f"Description must be str got {type(description)}"
             raise TypeError(msg)
-        self.__descriptions.update({language: description})
+        self._descriptions.update({language: description})
 
     def get_description(self) -> str | None:
-        if self.__descriptions.get(Language.undefined):
-            return self.__descriptions.get(Language.undefined)
+        if self._descriptions.get(Language.undefined):
+            return self._descriptions.get(Language.undefined)
 
         locale = cfg.get(cfg.language).value.language()
         if locale in (
             QLocale.Language.Russian,
             QLocale.Language.Ukrainian,
-        ) and self.__descriptions.get(Language.ru):
-            return self.__descriptions.get(Language.ru)
-        return self.__descriptions.get(Language.en)
+        ) and self._descriptions.get(Language.ru):
+            return self._descriptions.get(Language.ru)
+        return self._descriptions.get(Language.en)
 
     def descriptions_to_str(self) -> str:
         desc_str = ""
-        for key in self.__descriptions:
-            if self.__descriptions.get(key):
+        for key in self._descriptions:
+            if self._descriptions.get(key):
                 desc_str += (
-                    f"<lang={key.name}>{self.__descriptions.get(key)}<end>"
+                    f"<lang={key.name}>{self._descriptions.get(key)}<end>"
                 )
         return desc_str
 
@@ -145,18 +147,16 @@ class Manga(NamedBaseModel):
         data = super().to_dict()
         data.update(
             {
-                "kind": self.__kind.name,
+                "kind": self._kind.name,
                 "description": self.descriptions_to_str(),
-                "score": self.__score,
-                "status": self.__status.name,
-                "volumes": self.__volumes,
-                "chapters": self.__chapters,
-                "preview_url": self.__preview_url,
+                "score": self._score,
+                "status": self._status.name,
+                "volumes": self._volumes,
+                "chapters": self._chapters,
+                "preview_url": self._preview_url,
             },
         )
         return data
 
 
-__all__ = [
-    "Manga",
-]
+__all__ = ["Manga"]

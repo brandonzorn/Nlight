@@ -20,8 +20,8 @@ class NlThread:
     def __init__(
         self,
         target: Callable,
-        args=(),
-        kwargs=None,
+        args: tuple = (),
+        kwargs: dict | None = None,
         *,
         callback: Callable | None = None,
         error_callback: Callable | None = None,
@@ -72,8 +72,8 @@ class Worker(NlThread, QRunnable):
     def __init__(
         self,
         target: Callable,
-        args=(),
-        kwargs=None,
+        args: tuple = (),
+        kwargs: dict | None = None,
         *,
         callback: Callable | None = None,
         error_callback: Callable | None = None,
@@ -117,8 +117,8 @@ class Thread(NlThread, QThread):
     def __init__(
         self,
         target: Callable,
-        args=(),
-        kwargs=None,
+        args: tuple = (),
+        kwargs: dict | None = None,
         *,
         callback: Callable | None = None,
         error_callback: Callable | None = None,

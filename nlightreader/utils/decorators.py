@@ -22,6 +22,4 @@ def singleton(cls):
     return wrapper
 
 
-__all__ = [
-    "singleton",
-]
+__all__ = ["singleton"]

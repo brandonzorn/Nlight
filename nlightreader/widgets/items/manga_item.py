@@ -2,7 +2,15 @@ from typing import override
 import webbrowser
 
 from PySide6 import QtGui
-from PySide6.QtCore import QEvent, QRect, QSize, Qt, QThreadPool, Signal
+from PySide6.QtCore import (
+    QEvent,
+    QPoint,
+    QRect,
+    QSize,
+    Qt,
+    QThreadPool,
+    Signal,
+)
 from PySide6.QtGui import (
     QColor,
     QEnterEvent,
@@ -65,7 +73,7 @@ class MangaItem(QWidget):
             if self.rect().contains(event.pos()):
                 self.manga_clicked.emit(self.__manga)
 
-    def on_context_menu(self, pos) -> None:
+    def on_context_menu(self, pos: QPoint) -> None:
         manga_title = self.__manga.get_name()
         info_bar_parent = self.parentWidget().parentWidget()
         info_bar_duration = 2000

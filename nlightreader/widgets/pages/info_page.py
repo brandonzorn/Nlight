@@ -170,9 +170,8 @@ class InfoPage(QWidget):
         return selected_item.chapter
 
     def get_selected_related_title(self) -> Manga:
-        return self.__catalog.get_manga(
-            self.__related_mangas[self.ui.related_list.currentIndex().row()],
-        )
+        current_index = self.ui.related_list.currentIndex().row()
+        return self.__catalog.get_manga(self.__related_mangas[current_index])
 
     def setup(self, manga: Manga) -> None:
         def info_setup() -> None:
@@ -231,10 +230,9 @@ class InfoPage(QWidget):
 
     @Slot()
     def open_character_dialog(self) -> None:
+        current_index = self.ui.characters_list.currentIndex().row()
         character = self.__catalog.get_character(
-            self.__related_characters[
-                self.ui.characters_list.currentIndex().row()
-            ],
+            self.__related_characters[current_index],
         )
         CharacterInfoDialog(character, parent=self).exec()
 
@@ -372,6 +370,4 @@ class InfoPage(QWidget):
         self.opened_related_manga.emit(self.get_selected_related_title())
 
 
-__all__ = [
-    "InfoPage",
-]
+__all__ = ["InfoPage"]

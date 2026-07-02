@@ -128,10 +128,10 @@ class LibBase(AbstractCatalog):
 
     @override
     def get_preview(self, manga: Manga) -> bytes | None:
-        image_response = self._client.get_bytes(manga.preview_url)
-        if not isinstance(image_response, bytes):
+        url = manga.preview_url
+        if url is None:
             return None
-        return image_response
+        return self._client.get_bytes(url)
 
 
 __all__ = ["LibBase"]

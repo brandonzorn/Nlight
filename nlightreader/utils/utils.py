@@ -19,7 +19,7 @@ def dd_get(dictionary: dict, path: str, default: Any = None) -> Any:
         msg = "path must be a string"
         raise TypeError(msg)
 
-    current = dictionary
+    current: Any = dictionary
     for key in path.split("."):
         if isinstance(current, dict) and key in current:
             current = current[key]

@@ -67,7 +67,7 @@ class NHentai(AbstractHentaiMangaCatalog):
                 content_id=manga.content_id,
                 catalog_id=self.CATALOG_ID,
                 volume_number="1",
-                chapter_number= "1",
+                chapter_number="1",
                 title="",
             ),
         ]
@@ -95,20 +95,17 @@ class NHentai(AbstractHentaiMangaCatalog):
         return images
 
     def get_image(self, image: Image) -> bytes | None:
-        img_request_headers = {"Referer": self._URL}
-        image_response = self._client.get_bytes(
-            image.url,
-            extra_headers=img_request_headers,
-        )
-        if not isinstance(image_response, bytes):
+        get_img_headers = {"Referer": self._URL}
+        url = image.url
+        if url is None:
             return None
-        return image_response
+        return self._client.get_bytes(url, extra_headers=get_img_headers)
 
     def get_preview(self, manga: Manga) -> bytes | None:
-        image_response = self._client.get_bytes(manga.preview_url)
-        if not isinstance(image_response, bytes):
+        url = manga.preview_url
+        if url is None:
             return None
-        return image_response
+        return self._client.get_bytes(url)
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/g/{manga.content_id}"
