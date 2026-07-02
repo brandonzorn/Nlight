@@ -2,12 +2,11 @@ from typing import override
 
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QCloseEvent
-from PySide6.QtWidgets import QHBoxLayout, QWidget
+from PySide6.QtWidgets import QFormLayout, QWidget
 from qfluentwidgets import (
     BodyLabel,
     CardWidget,
     ComboBox,
-    HorizontalSeparator,
     MessageBoxBase,
     PushButton,
     SpinBox,
@@ -35,56 +34,45 @@ class RateDialog(MessageBoxBase):
         )
         self.__user_rate = self._fetch_user_rate()
 
+        self._init_ui()
+        self._display_user_rate()
+
+    def _init_ui(self) -> None:
         self.title_label = SubtitleLabel(self.tr("Change rating"), parent=self)
 
-        self.chapters_frame = CardWidget()
-        self.chapters_frame_layout = QHBoxLayout(self.chapters_frame)
-        self.chapters_frame_label = BodyLabel(
+        self.form_frame = CardWidget()
+        self.form_layout = QFormLayout(self.form_frame)
+        self.form_layout.setSpacing(12)
+
+        self.chapters_label = BodyLabel(
             self.tr("Chapters read"),
-            parent=self.chapters_frame,
+            parent=self.form_frame,
         )
-        self.chapters_frame_separator = HorizontalSeparator(
-            self.chapters_frame,
-        )
-        self.chapters_count_spin = SpinBox(parent=self.chapters_frame)
+        self.chapters_count_spin = SpinBox(parent=self.form_frame)
         self.chapters_count_spin.setMaximum(999)
-        self.chapters_frame_layout.addWidget(self.chapters_frame_label)
-        self.chapters_frame_layout.addWidget(self.chapters_frame_separator)
-        self.chapters_frame_layout.addWidget(self.chapters_count_spin)
+        self.form_layout.addRow(self.chapters_label, self.chapters_count_spin)
 
-        self.score_frame = CardWidget()
-        self.score_frame_layout = QHBoxLayout(self.score_frame)
-        self.score_frame_label = BodyLabel(
+        self.score_label = BodyLabel(
             self.tr("Rating"),
-            parent=self.score_frame,
+            parent=self.form_frame,
         )
-        self.score_frame_separator = HorizontalSeparator(self.score_frame)
-        self.score_spin = SpinBox()
+        self.score_spin = SpinBox(parent=self.form_frame)
         self.score_spin.setMaximum(10)
-        self.score_frame_layout.addWidget(self.score_frame_label)
-        self.score_frame_layout.addWidget(self.score_frame_separator)
-        self.score_frame_layout.addWidget(self.score_spin)
+        self.form_layout.addRow(self.score_label, self.score_spin)
 
-        self.lib_list_frame = CardWidget()
-        self.lib_list_frame_layout = QHBoxLayout(self.lib_list_frame)
-        self.lib_list_frame_label = BodyLabel(
+        self.lib_list_label = BodyLabel(
             self.tr("List"),
-            parent=self.lib_list_frame,
+            parent=self.form_frame,
         )
-        self.lib_list_frame_separator = HorizontalSeparator(
-            self.lib_list_frame,
-        )
-        self.lib_list_combo = ComboBox()
+        self.lib_list_combo = ComboBox(parent=self.form_frame)
         self.lib_list_combo.addItems(
             [translate("Form", i.capitalize()) for i in LIB_LISTS],
         )
-        self.lib_list_frame_layout.addWidget(self.lib_list_frame_label)
-        self.lib_list_frame_layout.addWidget(self.lib_list_frame_separator)
-        self.lib_list_frame_layout.addWidget(self.lib_list_combo)
+        self.form_layout.addRow(self.lib_list_label, self.lib_list_combo)
 
         self.delete_rate_button = PushButton()
-        self.delete_rate_button.clicked.connect(self._delete_user_rate)
         self.delete_rate_button.setText(self.tr("Delete"))
+        self.delete_rate_button.clicked.connect(self._delete_user_rate)
         self.buttonLayout.addWidget(
             self.delete_rate_button,
             1,
@@ -92,14 +80,10 @@ class RateDialog(MessageBoxBase):
         )
 
         self.viewLayout.addWidget(self.title_label)
-        self.viewLayout.addWidget(self.chapters_frame)
-        self.viewLayout.addWidget(self.score_frame)
-        self.viewLayout.addWidget(self.lib_list_frame)
+        self.viewLayout.addWidget(self.form_frame)
 
         self.accepted.connect(self._send_user_rate)
         self.rejected.connect(self.close)
-
-        self._display_user_rate()
 
     @override
     def closeEvent(self, event: QCloseEvent) -> None:
@@ -133,6 +117,4 @@ class RateDialog(MessageBoxBase):
         self.close()
 
 
-__all__ = [
-    "RateDialog",
-]
+__all__ = ["RateDialog"]
