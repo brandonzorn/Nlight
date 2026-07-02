@@ -5,7 +5,7 @@ from nlightreader.exceptions import parser_content_exc
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
-from nlightreader.utils.utils import get_html
+from nlightreader.utils.network import NetworkClient
 
 
 class NHentai(AbstractHentaiMangaCatalog):
@@ -13,23 +13,19 @@ class NHentai(AbstractHentaiMangaCatalog):
     CATALOG_NAME = "NHentai"
     _URL = "https://nhentai.net"
 
+    def __init__(self) -> None:
+        self._client = NetworkClient(headers=self._HEADERS)
+
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL}/search"
         if not form.search:
             msg = "Search field is empty"
-            raise parser_content_exc.RequestsParamsError(
-                msg,
-            )
+            raise parser_content_exc.RequestsParamsError(msg)
         params = {
             "page": form.page,
             "q": form.search,
         }
-        response = get_html(
-            url,
-            headers=self._HEADERS,
-            params=params,
-            content_type="text",
-        )
+        response = self._client.get_text(url, params=params)
 
         mangas: list[Manga] = []
         if not isinstance(response, str):
@@ -50,10 +46,10 @@ class NHentai(AbstractHentaiMangaCatalog):
                 continue
 
             manga = Manga(
-                manga_id,
-                self.CATALOG_ID,
-                name,
-                "",
+                content_id=manga_id,
+                catalog_id=self.CATALOG_ID,
+                name=name,
+                russian="",
             )
 
             if (noscript_img_tag := cover_tag.find("noscript")) and (
@@ -68,18 +64,18 @@ class NHentai(AbstractHentaiMangaCatalog):
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         return [
             Chapter(
-                manga.content_id,
-                self.CATALOG_ID,
-                "1",
-                "1",
-                "",
+                content_id=manga.content_id,
+                catalog_id=self.CATALOG_ID,
+                volume_number="1",
+                chapter_number= "1",
+                title="",
             ),
         ]
 
     def get_images(self, manga: Manga, _) -> list[Image]:
         url = f"{self._URL}/g/{manga.content_id}"
         images: list[Image] = []
-        response = get_html(url, headers=self._HEADERS, content_type="text")
+        response = self._client.get_text(url)
         if not isinstance(response, str):
             return images
         soup = BeautifulSoup(response, "html.parser")
@@ -99,24 +95,17 @@ class NHentai(AbstractHentaiMangaCatalog):
         return images
 
     def get_image(self, image: Image) -> bytes | None:
-        img_request_headers = self._HEADERS | {
-            "Referer": self._URL,
-        }
-        image_response = get_html(
+        img_request_headers = {"Referer": self._URL}
+        image_response = self._client.get_bytes(
             image.url,
-            headers=img_request_headers,
-            content_type="content",
+            extra_headers=img_request_headers,
         )
         if not isinstance(image_response, bytes):
             return None
         return image_response
 
     def get_preview(self, manga: Manga) -> bytes | None:
-        image_response = get_html(
-            manga.preview_url,
-            headers=self._HEADERS,
-            content_type="content",
-        )
+        image_response = self._client.get_bytes(manga.preview_url)
         if not isinstance(image_response, bytes):
             return None
         return image_response

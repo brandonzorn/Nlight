@@ -3,7 +3,8 @@ from nlightreader.core.enums import Language, MangaKind
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
-from nlightreader.utils.utils import get_html
+from nlightreader.utils.network import NetworkClient
+from nlightreader.utils.utils import dd_get
 
 
 class Remanga(AbstractMangaCatalog):
@@ -13,23 +14,29 @@ class Remanga(AbstractMangaCatalog):
     _URL = "https://remanga.org"
     _URL_API = f"{_URL}/api"
 
+    def __init__(self) -> None:
+        self._client = NetworkClient(headers=self._HEADERS)
+
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/titles/{manga.content_id}/"
-        response = get_html(url, headers=self._HEADERS, content_type="json")
-        if response:
-            data = response.get("content")
+        response_data = self._client.get_json(url).get("content", {})
 
-            if kind_name := data.get("type").get("name"):
-                manga.kind = MangaKind.from_str(kind_name)
+        if not response_data:
+            return manga
 
-            manga.score = float(data.get("avg_rating"))
-            if (img := data.get("img").get("high")) and (img != "/media/None"):
-                manga.preview_url = f"{self._URL}{img}"
+        kind_name = dd_get(response_data, "type.name")
+        manga.kind = MangaKind.from_str(kind_name)
 
-            manga.add_description(
-                Language.undefined,
-                data.get("description"),
-            )
+        manga.score = float(response_data.get("avg_rating", 0))
+
+        img = dd_get(response_data, "img.high")
+        if img and img != "/media/None":
+            manga.preview_url = f"{self._URL}{img}"
+
+        manga.add_description(
+            Language.undefined,
+            response_data.get("description"),
+        )
         return manga
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
@@ -43,11 +50,9 @@ class Remanga(AbstractMangaCatalog):
             "ordering": form.get_order_id(),
             "types": form.get_kind_ids(),
         }
-        response = get_html(
+        response = self._client.get_json(
             url,
-            headers=self._HEADERS,
             params=params,
-            content_type="json",
         )
 
         mangas: list[Manga] = []
@@ -58,7 +63,12 @@ class Remanga(AbstractMangaCatalog):
             manga_id = data.get("dir")
             name = data.get("en_name")
             russian = data.get("rus_name")
-            manga = Manga(manga_id, self.CATALOG_ID, name, russian)
+            manga = Manga(
+                content_id=manga_id,
+                catalog_id=self.CATALOG_ID,
+                name=name,
+                russian=russian,
+            )
             manga.kind = MangaKind.from_str(data.get("type"))
             manga.score = float(data.get("avg_rating"))
 
@@ -71,17 +81,15 @@ class Remanga(AbstractMangaCatalog):
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self._URL_API}/titles/{manga.content_id}/"
-        response = get_html(url, headers=self._HEADERS, content_type="json")
+        response = self._client.get_json(url)
         chapters: list[Chapter] = []
         if not isinstance(response, dict):
             return chapters
         data = response.get("content")
         branch_id = data.get("branches")[0].get("id")
-        chapters_data = get_html(
+        chapters_data = self._client.get_json(
             f"{self._URL_API}/titles/chapters"
             f"?branch_id={branch_id}&user_data=0",
-            headers=self._HEADERS,
-            content_type="json",
         )
         if not isinstance(chapters_data, dict):
             return chapters
@@ -90,25 +98,23 @@ class Remanga(AbstractMangaCatalog):
             if ch.get("is_paid"):
                 continue
             chapter = Chapter(
-                ch.get("id"),
-                self.CATALOG_ID,
-                str(ch.get("tome")),
-                ch.get("chapter"),
-                ch.get("name"),
-                Language.ru,
+                content_id=ch.get("id"),
+                catalog_id=self.CATALOG_ID,
+                volume_number=str(ch.get("tome")),
+                chapter_number=ch.get("chapter"),
+                title=ch.get("name"),
+                language=Language.ru,
             )
             chapters.append(chapter)
         return chapters
 
     def get_images(self, _: Manga, chapter: Chapter) -> list[Image]:
         url = f"{self._URL_API}/titles/chapters/{chapter.content_id}/"
-        response = get_html(url, headers=self._HEADERS, content_type="json")
+        response = self._client.get_json(url)
         images: list[Image] = []
         if not isinstance(response, dict):
             return images
-        for i, page_data in enumerate(
-            response.get("content", {}).get("pages", []),
-        ):
+        for i, page_data in enumerate(dd_get(response, "content.pages")):
             page_data = page_data[0]
             pg_id = page_data.get("id")
             page = i + 1
@@ -121,21 +127,16 @@ class Remanga(AbstractMangaCatalog):
             "User-Agent": "Nlight",
             "Referer": f"{self._URL}/",
         }
-        image_response = get_html(
+        image_response = self._client.get_bytes(
             f"{image.url}",
-            headers=headers,
-            content_type="content",
+            extra_headers=headers,
         )
         if not isinstance(image_response, bytes):
             return None
         return image_response
 
     def get_preview(self, manga: Manga) -> bytes | None:
-        image_response = get_html(
-            manga.preview_url,
-            headers=self._HEADERS,
-            content_type="content",
-        )
+        image_response = self._client.get_bytes(manga.preview_url)
         if not isinstance(image_response, bytes):
             return None
         return image_response

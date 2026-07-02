@@ -5,13 +5,16 @@ from nlightreader.exceptions import parser_content_exc
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
-from nlightreader.utils.utils import get_html, make_request
+from nlightreader.utils.network import NetworkClient
 
 
 class AllHentai(AbstractHentaiMangaCatalog):
     CATALOG_ID = 8
     CATALOG_NAME = "AllHentai"
     _URL = "https://20.allhen.online"
+
+    def __init__(self) -> None:
+        self._client = NetworkClient(headers=self._HEADERS)
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL}/search"
@@ -46,17 +49,17 @@ class AllHentai(AbstractHentaiMangaCatalog):
                 continue
             mangas.append(
                 Manga(
-                    manga_id,
-                    self.CATALOG_ID,
-                    name,
-                    "",
+                    content_id=manga_id,
+                    catalog_id=self.CATALOG_ID,
+                    name=name,
+                    russian="",
                 ),
             )
         return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self._URL}/{manga.content_id}"
-        response = get_html(url, headers=self._HEADERS, content_type="text")
+        response = self._client.get_text(url)
 
         chapters: list[Chapter] = []
         if not isinstance(response, str):
@@ -77,12 +80,12 @@ class AllHentai(AbstractHentaiMangaCatalog):
                 chapter_num = str(chapter_as_num)
 
             chapter = Chapter(
-                manga.content_id,
-                self.CATALOG_ID,
-                volume,
-                chapter_num,
-                "",
-                Language.ru,
+                content_id=manga.content_id,
+                catalog_id=self.CATALOG_ID,
+                volume_number=volume,
+                chapter_number=chapter_num,
+                title="",
+                language=Language.ru,
             )
             chapters.append(chapter)
         return chapters
@@ -95,7 +98,7 @@ class AllHentai(AbstractHentaiMangaCatalog):
 
     def get_preview(self, manga: Manga) -> bytes | None:
         url = f"{self._URL}/{manga.content_id}"
-        response = get_html(url, headers=self._HEADERS, content_type="text")
+        response = self._client.get_text(url)
         if not isinstance(response, str):
             return None
         soup = BeautifulSoup(response, "html.parser")
@@ -103,11 +106,7 @@ class AllHentai(AbstractHentaiMangaCatalog):
         img_src = html_item.get("src")
         if not isinstance(img_src, str):
             return None
-        image_response = get_html(
-            img_src,
-            content_type="content",
-            headers=self._HEADERS,
-        )
+        image_response = self._client.get_bytes(img_src)
         if not isinstance(image_response, bytes):
             return None
         return image_response

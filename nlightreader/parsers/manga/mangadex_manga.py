@@ -10,8 +10,9 @@ from nlightreader.models import Chapter, Genre, Image, Kind, Manga
 from nlightreader.parsers.catalog import LibParser
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.decorators import singleton
+from nlightreader.utils.network import NetworkClient
 from nlightreader.utils.token import TokenManager
-from nlightreader.utils.utils import get_data, get_html, make_request
+from nlightreader.utils.utils import dd_get, make_request
 
 try:
     from keys import MANGADEX_CLIENT_ID, MANGADEX_CLIENT_SECRET
@@ -28,14 +29,17 @@ class MangaDex(AbstractMangaCatalog):
     _URL_API = "https://api.mangadex.org"
     _HEADERS = {"User-Agent": "Nlight"}
 
+    def __init__(self) -> None:
+        self._client = NetworkClient(headers=self._HEADERS)
+
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/manga/{manga.content_id}"
-        response = get_html(url, headers=self._HEADERS, content_type="json")
+        response = self._client.get_json(url)
         if not isinstance(response, dict):
             return manga
         data = response.get("data", {})
         manga.kind = MangaKind.from_str(data.get("type"))
-        if description := get_data(data, ["attributes", "description"]):
+        if description := dd_get(data, "attributes.description"):
             if description.get("en"):
                 manga.add_description(
                     Language.en,
@@ -46,26 +50,31 @@ class MangaDex(AbstractMangaCatalog):
                     Language.ru,
                     description.get("ru"),
                 )
-        if volumes := get_data(data, ["attributes", "lastVolume"]):
+        if volumes := dd_get(data, "attributes.lastVolume"):
             manga.volumes = int(volumes)
-        if chapters := get_data(data, ["attributes", "lastChapter"]):
+        if chapters := dd_get(data, "attributes.lastChapter"):
             manga.chapters = int(chapters)
         manga.status = MangaStatus.from_str(
-            get_data(data, ["attributes", "status"]),
+            dd_get(data, "attributes.status"),
         )
         return manga
 
     def setup_manga(self, data: dict) -> Manga:
         manga_id = str(data.get("id"))
-        name = get_data(data, ["attributes", "title", "en"])
-        russian = None
-        alt_titles = get_data(data, ["attributes", "altTitles"])
+        name = dd_get(data, "attributes.title.en", "")
+        russian = ""
+        alt_titles = dd_get(data, "attributes.altTitles")
         for j in alt_titles:
             if "ru" in j.keys():
-                russian = j.get("ru")
+                russian = j.get("ru", "")
             if not name and "en" in j.keys():
-                name = j.get("en")
-        return Manga(manga_id, self.CATALOG_ID, name, russian)
+                name = j.get("en", "")
+        return Manga(
+            content_id=manga_id,
+            catalog_id=self.CATALOG_ID,
+            name=name,
+            russian=russian,
+        )
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/manga"
@@ -82,11 +91,9 @@ class MangaDex(AbstractMangaCatalog):
                 "pornographic",
             ],
         }
-        response = get_html(
+        response = self._client.get_json(
             url,
-            headers=self._HEADERS,
             params=params,
-            content_type="json",
         )
 
         mangas: list[Manga] = []
@@ -111,11 +118,9 @@ class MangaDex(AbstractMangaCatalog):
                 "pornographic",
             ],
         }
-        response = get_html(
+        response = self._client.get_json(
             url,
-            headers=self._HEADERS,
             params=params,
-            content_type="json",
         )
         chapters: list[Chapter] = []
         if not isinstance(response, dict):
@@ -123,23 +128,21 @@ class MangaDex(AbstractMangaCatalog):
         params.update({"limit": 100})
         for j in range(response.get("total") // 100 + 1):
             params.update({"offset": j * 100})
-            html = get_html(
+            html = self._client.get_json(
                 url,
-                headers=self._HEADERS,
                 params=params,
-                content_type="json",
             )
             if not isinstance(html, dict):
                 continue
             for data in reversed(html.get("data", {})):
                 attr = data.get("attributes")
                 chapter = Chapter(
-                    data.get("id"),
-                    self.CATALOG_ID,
-                    attr.get("volume"),
-                    attr.get("chapter"),
-                    attr.get("title"),
-                    Language.from_str(
+                    content_id=data.get("id"),
+                    catalog_id=self.CATALOG_ID,
+                    volume_number=attr.get("volume"),
+                    chapter_number=attr.get("chapter"),
+                    title=attr.get("title"),
+                    language=Language.from_str(
                         attr.get("translatedLanguage"),
                     ),
                 )
@@ -148,13 +151,13 @@ class MangaDex(AbstractMangaCatalog):
 
     def get_images(self, _: Manga, chapter: Chapter) -> list[Image]:
         url = f"{self._URL_API}/at-home/server/{chapter.content_id}"
-        response = get_html(url, headers=self._HEADERS, content_type="json")
+        response = self._client.get_json(url)
         images: list[Image] = []
         if not isinstance(response, dict):
             return images
         img_host = response["baseUrl"]
         img_hash = response["chapter"]["hash"]
-        images_data = get_data(response, ["chapter", "data"])
+        images_data = dd_get(response, "chapter.data")
         for img_index, img_data in enumerate(images_data):
             img_url = f"{img_host}/data/{img_hash}/{img_data}"
             page = img_index + 1
@@ -162,37 +165,26 @@ class MangaDex(AbstractMangaCatalog):
         return images
 
     def get_image(self, image: Image) -> bytes | None:
-        return get_html(
-            image.url,
-            headers=self._HEADERS,
-            content_type="content",
-        )
+        return self._client.get_bytes(image.url)
 
     def get_preview(self, manga: Manga) -> bytes | None:
         url = f"{self._URL_API}/cover"
         params = {"manga[]": manga.content_id}
-        covers_list_response = get_html(
+        covers_list_response = self._client.get_json(
             url,
             params=params,
-            headers=self._HEADERS,
-            content_type="json",
         )
         if not isinstance(covers_list_response, dict):
             return None
         filename = covers_list_response["data"][0]["attributes"]["fileName"]
-        return get_html(
+        return self._client.get_bytes(
             f"https://uploads.mangadex.org/"
             f"covers/{manga.content_id}/{filename}.256.jpg",
-            content_type="content",
         )
 
     def _get_tags_data_by_group(self, groups: list[str]) -> list[dict]:
         url = f"{self._URL_API}/manga/tag"
-        response = get_html(
-            url,
-            headers=self._HEADERS,
-            content_type="json",
-        )
+        response = self._client.get_json(url)
         if not isinstance(response, dict):
             return []
         return [
@@ -208,10 +200,10 @@ class MangaDex(AbstractMangaCatalog):
     def get_genres(self) -> list[Genre]:
         return [
             Genre(
-                tag_data.get("id"),
-                self.CATALOG_ID,
-                get_data(tag_data, ["attributes", "name", "en"]),
-                "",
+                content_id=tag_data.get("id"),
+                catalog_id=self.CATALOG_ID,
+                name=dd_get(tag_data, "attributes.name.en"),
+                russian="",
             )
             for tag_data in self._get_tags_data_by_group(["genre", "theme"])
         ]
@@ -219,10 +211,10 @@ class MangaDex(AbstractMangaCatalog):
     def get_kinds(self) -> list[Kind]:
         return [
             Kind(
-                tag_data.get("id"),
-                self.CATALOG_ID,
-                get_data(tag_data, ["attributes", "name", "en"]),
-                "",
+                content_id=tag_data.get("id"),
+                catalog_id=self.CATALOG_ID,
+                name=dd_get(tag_data, "attributes.name.en"),
+                russian="",
             )
             for tag_data in self._get_tags_data_by_group(["format"])
         ]

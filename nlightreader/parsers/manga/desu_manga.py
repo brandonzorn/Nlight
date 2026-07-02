@@ -3,7 +3,8 @@ from nlightreader.core.enums import Language, MangaKind, MangaStatus
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
-from nlightreader.utils.utils import get_data, get_html
+from nlightreader.utils.network import NetworkClient
+from nlightreader.utils.utils import dd_get
 
 
 class Desu(AbstractMangaCatalog):
@@ -12,28 +13,34 @@ class Desu(AbstractMangaCatalog):
     _FILTERS = DesuItems
     _URL = "https://desu.uno"
     _URL_API = f"{_URL}/manga/api"
-    _HEADERS = {"User-Agent": "Nlight"}
+    _HEADERS = {"User-Agent": "Nlight", "Referer": f"{_URL}/"}
+
+    def __init__(self) -> None:
+        self._client = NetworkClient(headers=self._HEADERS)
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/{manga.content_id}"
-        response = get_html(url, headers=self._HEADERS, content_type="json")
-        if not isinstance(response, dict):
+        manga_data = self._client.get_json(url).get("response", {})
+
+        if not isinstance(manga_data, dict):
             return manga
-        data = response.get("response", {})
-        manga.score = data.get("score", 0)
-        manga.kind = MangaKind.from_str(data.get("kind"))
-        manga.volumes = int(data["chapters"].get("last").get("vol"))
-        manga.chapters = int(data["chapters"]["count"])
-        manga.status = MangaStatus.from_str(data.get("status"))
+
+        manga.score = manga_data.get("score", 0)
+        manga.kind = MangaKind.from_str(manga_data.get("kind"))
+        manga.status = MangaStatus.from_str(manga_data.get("status"))
+
+        chapters_data = manga_data.get("chapters", {})
+
+        manga.volumes = int(chapters_data.get("last", {}).get("vol", 0))
+        manga.chapters = int(chapters_data.get("count", 0))
 
         manga.add_description(
             Language.undefined,
-            data.get("description"),
+            manga_data.get("description", ""),
         )
         return manga
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
-        url = f"{self._URL_API}"
         params = {
             "limit": form.limit,
             "search": form.search,
@@ -42,46 +49,42 @@ class Desu(AbstractMangaCatalog):
             "order": form.get_order_id(),
             "kinds": ",".join(form.get_kind_ids()),
         }
-        response = get_html(
-            url,
-            headers=self._HEADERS,
+        manga_response = self._client.get_json(
+            self._URL_API,
             params=params,
-            content_type="json",
-        )
+        ).get("response", [])
 
         mangas: list[Manga] = []
-        if not isinstance(response, dict):
+        if not isinstance(manga_response, list):
             return mangas
 
-        for data in response.get("response", {}):
+        for manga_data in manga_response:
+            manga_id = manga_data.get("id")
+            if manga_id is None:
+                continue
             mangas.append(
                 Manga(
-                    str(data.get("id")),
-                    self.CATALOG_ID,
-                    data.get("name"),
-                    data.get("russian"),
+                    content_id=str(manga_id),
+                    catalog_id=self.CATALOG_ID,
+                    name=manga_data.get("name"),
+                    russian=manga_data.get("russian"),
                 ),
             )
         return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self._URL_API}/{manga.content_id}"
-        response = get_html(url, headers=self._HEADERS, content_type="json")
+        data = self._client.get_json(url)
         chapters: list[Chapter] = []
-        if not isinstance(response, dict):
-            return chapters
-        for data in get_data(response, ["response", "chapters", "list"]):
-            vol = data.get("vol")
-            ch = data.get("ch")
-            vol = str(vol) if vol is not None else vol
-            ch = str(ch) if ch is not None else ch
+
+        for chapter_data in dd_get(data, "response.chapters.list"):
             chapter = Chapter(
-                str(data.get("id")),
-                self.CATALOG_ID,
-                vol,
-                ch,
-                data.get("title"),
-                Language.ru,
+                content_id=str(chapter_data.get("id")),
+                catalog_id=self.CATALOG_ID,
+                volume_number=str(chapter_data.get("vol", "")),
+                chapter_number=str(chapter_data.get("ch", "")),
+                title=chapter_data.get("title"),
+                language=Language.ru,
             )
             chapters.append(chapter)
         return chapters
@@ -90,7 +93,7 @@ class Desu(AbstractMangaCatalog):
         url = (
             f"{self._URL_API}/{manga.content_id}/chapter/{chapter.content_id}"
         )
-        response = get_html(url, headers=self._HEADERS, content_type="json")
+        response = self._client.get_json(url)
         images: list[Image] = []
         if not isinstance(response, dict):
             return images
@@ -104,13 +107,13 @@ class Desu(AbstractMangaCatalog):
         return images
 
     def get_image(self, image: Image) -> bytes | None:
-        headers = self._HEADERS | {"Referer": f"{self._URL}/"}
-        return get_html(image.url, headers=headers, content_type="content")
+        if image.url is None:
+            return None
+        return self._client.get_bytes(image.url)
 
     def get_preview(self, manga: Manga) -> bytes | None:
-        return get_html(
+        return self._client.get_bytes(
             f"{self._URL}/data/manga/covers/preview/{manga.content_id}.jpg",
-            content_type="content",
         )
 
     def get_manga_url(self, manga: Manga) -> str:
