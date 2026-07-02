@@ -8,7 +8,8 @@ from nlightreader.core.enums import Language, MangaKind, MangaStatus
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
-from nlightreader.utils.utils import get_data, get_html
+from nlightreader.utils.network import NetworkClient
+from nlightreader.utils.utils import dd_get
 
 
 class Ranobehub(AbstractRanobeCatalog):
@@ -18,22 +19,25 @@ class Ranobehub(AbstractRanobeCatalog):
     _URL = "https://ranobehub.org"
     _URL_API = f"{_URL}/api"
 
+    def __init__(self) -> None:
+        self._client = NetworkClient(headers=self._HEADERS)
+
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/ranobe/{manga.content_id}"
-        response = get_html(url, headers=self._HEADERS, content_type="json")
-        if response:
-            data = response.get("data")
+        response_data = self._client.get_json(url).get("data", {})
+        if not response_data:
+            return manga
 
-            manga.score = data.get("rating")
-            manga.kind = MangaKind.ranobe
+        manga.score = response_data.get("rating", 0)
+        manga.kind = MangaKind.ranobe
 
-            if status_name := data.get("status").get("title"):
-                manga.status = MangaStatus.from_str(status_name)
+        if status_name := dd_get(response_data, "status.title"):
+            manga.status = MangaStatus.from_str(status_name)
 
-            manga.add_description(
-                Language.undefined,
-                data.get("description"),
-            )
+        manga.add_description(
+            Language.undefined,
+            response_data.get("description"),
+        )
         return manga
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
@@ -44,47 +48,51 @@ class Ranobehub(AbstractRanobeCatalog):
             "sort": form.get_order_id(),
             "tags:positive[]": [int(i) for i in form.get_genre_ids()],
         }
-        response = get_html(
-            url,
-            headers=self._HEADERS,
-            params=params,
-            content_type="json",
+        response = self._client.get_json(url, params=params).get(
+            "resource",
+            {},
         )
 
         mangas: list[Manga] = []
-        if not response:
+        if not isinstance(response, dict):
             return mangas
 
-        for i in get_data(response, ["resource"], default_val=[]):
+        for i in response:
             manga_id = str(i.get("id"))
-            name = i.get("names").get("eng")
-            russian = i.get("names").get("rus")
+            name = dd_get(i, "names.eng", "")
+            russian = dd_get(i, "names.rus", "")
 
-            manga = Manga(manga_id, self.CATALOG_ID, name, russian)
+            manga = Manga(
+                content_id=manga_id,
+                catalog_id=self.CATALOG_ID,
+                name=name,
+                russian=russian,
+            )
             manga.status = MangaStatus.from_str(i.get("status"))
-            manga.preview_url = i.get("poster").get("medium")
+            manga.preview_url = dd_get(i, "poster.medium", None)
 
             mangas.append(manga)
         return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self._URL_API}/ranobe/{manga.content_id}/contents"
-        response = get_html(url, headers=self._HEADERS, content_type="json")
-        chapters = []
-        if response:
-            for i in get_data(response, ["volumes"], default_val=[]):
-                volume_num = i.get("num")
-                for chapter_data in get_data(i, ["chapters"], []):
-                    chapter = Chapter(
-                        str(chapter_data.get("id")),
-                        self.CATALOG_ID,
-                        volume_num,
-                        chapter_data.get("num"),
-                        chapter_data.get("name"),
-                        Language.ru,
-                    )
-                    chapters.append(chapter)
-            chapters.reverse()
+        response = self._client.get_json(url)
+        chapters: list[Chapter] = []
+        if not isinstance(response, dict):
+            return chapters
+        for i in response.get("volumes", []):
+            volume_num = i.get("num")
+            for chapter_data in i.get("chapters", []):
+                chapter = Chapter(
+                    content_id=str(chapter_data.get("id")),
+                    catalog_id=self.CATALOG_ID,
+                    volume_number=volume_num,
+                    chapter_number=chapter_data.get("num"),
+                    title=chapter_data.get("name"),
+                    language=Language.ru,
+                )
+                chapters.append(chapter)
+        chapters.reverse()
         return chapters
 
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
@@ -97,7 +105,9 @@ class Ranobehub(AbstractRanobeCatalog):
     def get_image(self, image: Image) -> str | None:
         def get_chapter_content_image(media_id: str) -> str:
             url = f"{self._URL_API}/media/{media_id}"
-            chapter_image = get_html(url, headers=self._HEADERS).content
+            chapter_image = self._client.get_bytes(url)
+            if not chapter_image:
+                return ""
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/png;base64,{str_equivalent_image}"
 
@@ -109,7 +119,7 @@ class Ranobehub(AbstractRanobeCatalog):
                     return container
             return None
 
-        response = get_html(image.url, content_type="text")
+        response = self._client.get_text(image.url)
         if not isinstance(response, str):
             return None
         soup = BeautifulSoup(response, "html.parser")
@@ -131,9 +141,7 @@ class Ranobehub(AbstractRanobeCatalog):
             if p.find("img"):
                 media: str = p.find("img")["data-media-id"]
                 content += (
-                    f"<p>"
-                    f'<img src="{get_chapter_content_image(media)}">'
-                    f"</p>"
+                    f'<p><img src="{get_chapter_content_image(media)}"></p>'
                 )
             else:
                 content += str(p)
@@ -142,11 +150,7 @@ class Ranobehub(AbstractRanobeCatalog):
     def get_preview(self, manga: Manga) -> bytes | None:
         if not isinstance(manga.preview_url, str):
             return None
-        image_response = get_html(
-            manga.preview_url,
-            headers=self._HEADERS,
-            content_type="content",
-        )
+        image_response = self._client.get_bytes(manga.preview_url)
         if not isinstance(image_response, bytes):
             return None
         return image_response
@@ -155,6 +159,4 @@ class Ranobehub(AbstractRanobeCatalog):
         return f"{self._URL}/ranobe/{manga.content_id}"
 
 
-__all__ = [
-    "Ranobehub",
-]
+__all__ = ["Ranobehub"]

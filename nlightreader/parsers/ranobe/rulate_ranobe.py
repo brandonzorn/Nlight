@@ -7,7 +7,7 @@ from nlightreader.core.enums import Language, MangaKind
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
-from nlightreader.utils.utils import get_html
+from nlightreader.utils.network import NetworkClient
 
 
 class Rulate(AbstractRanobeCatalog):
@@ -19,11 +19,15 @@ class Rulate(AbstractRanobeCatalog):
         "mature": "c3a2ed4b199a1a15f5a5483504c7a75a7030dc4bi%3A1%3B",
     }
 
-    def get_manga(self, manga: Manga) -> Manga:
-        response = get_html(
-            f"{self._URL}/book/{manga.content_id}",
+    def __init__(self) -> None:
+        self._client = NetworkClient(
+            headers=self._HEADERS,
             cookies=self._COOKIES,
-            content_type="text",
+        )
+
+    def get_manga(self, manga: Manga) -> Manga:
+        response = self._client.get_text(
+            f"{self._URL}/book/{manga.content_id}",
         )
         if not isinstance(response, str):
             return manga
@@ -48,11 +52,7 @@ class Rulate(AbstractRanobeCatalog):
             "sort": form.get_order_id(),
             "adult": 0,
         }
-        response = get_html(
-            f"{self._URL}/search",
-            params=params,
-            content_type="text",
-        )
+        response = self._client.get_text(f"{self._URL}/search", params=params)
 
         ranobe: list[Manga] = []
         if not isinstance(response, str):
@@ -75,20 +75,18 @@ class Rulate(AbstractRanobeCatalog):
             )
             ranobe.append(
                 Manga(
-                    ranobe_id,
-                    self.CATALOG_ID,
-                    name,
-                    russian,
+                    content_id=ranobe_id,
+                    catalog_id=self.CATALOG_ID,
+                    name=name,
+                    russian=russian,
                 ),
             )
         return ranobe
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         chapters = []
-        response = get_html(
+        response = self._client.get_text(
             f"{self._URL}/book/{manga.content_id}",
-            cookies=self._COOKIES,
-            content_type="text",
         )
         if not isinstance(response, str):
             return chapters
@@ -105,12 +103,12 @@ class Rulate(AbstractRanobeCatalog):
             chapter_id = chapter_data.unwrap()["data-id"]
 
             chapter = Chapter(
-                chapter_id,
-                self.CATALOG_ID,
-                None,
-                "",
-                name,
-                Language.ru,
+                content_id=chapter_id,
+                catalog_id=self.CATALOG_ID,
+                volume_number=None,
+                chapter_number="",
+                title=name,
+                language=Language.ru,
             )
             chapters.append(chapter)
         return chapters
@@ -127,21 +125,13 @@ class Rulate(AbstractRanobeCatalog):
             url = f"{self._URL}/{media_id}"
             if media_id.startswith("http"):
                 url = media_id
-            chapter_image = get_html(
-                url,
-                headers=self._HEADERS,
-                content_type="content",
-            )
+            chapter_image = self._client.get_bytes(url)
             if not isinstance(chapter_image, bytes):
                 return ""
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/jpg;base64,{str_equivalent_image}"
 
-        response = get_html(
-            image.url,
-            cookies=self._COOKIES,
-            content_type="text",
-        )
+        response = self._client.get_text(image.url)
         if not isinstance(response, str):
             return None
         soup = BeautifulSoup(response, "html.parser")
@@ -159,10 +149,8 @@ class Rulate(AbstractRanobeCatalog):
         return content
 
     def get_preview(self, manga: Manga) -> bytes | None:
-        response = get_html(
+        response = self._client.get_text(
             f"{self._URL}/book/{manga.content_id}",
-            cookies=self._COOKIES,
-            content_type="text",
         )
         if not isinstance(response, str):
             return None
@@ -170,10 +158,7 @@ class Rulate(AbstractRanobeCatalog):
         himage = soup.find("meta", property="og:image")
         if not himage:
             return None
-        image_response = get_html(
-            str(himage["content"]),
-            content_type="content",
-        )
+        image_response = self._client.get_bytes(str(himage["content"]))
         if not isinstance(image_response, bytes):
             return None
         return image_response
@@ -199,10 +184,9 @@ class Erolate(Rulate):
             "sort": form.get_order_id(),
             "adult": 0,
         }
-        response = get_html(
+        response = self._client.get_text(
             f"{self._URL}/search",
             params=params,
-            content_type="text",
         )
         if not isinstance(response, str):
             return ranobe
@@ -221,10 +205,10 @@ class Erolate(Rulate):
             )[-1]
             ranobe.append(
                 Manga(
-                    ranobe_id,
-                    self.CATALOG_ID,
-                    name,
-                    russian,
+                    content_id=ranobe_id,
+                    catalog_id=self.CATALOG_ID,
+                    name=name,
+                    russian=russian,
                 ),
             )
         return ranobe
