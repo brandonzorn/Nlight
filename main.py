@@ -19,7 +19,7 @@ from nlightreader.utils import kodik_server
 from nlightreader.utils.config import cfg
 from nlightreader.utils.threads import Thread
 from nlightreader.utils.translator import NlightTranslator, translate
-from nlightreader.utils.utils import get_html
+from nlightreader.utils.utils import make_request
 
 __all__ = []
 
@@ -89,8 +89,9 @@ class MainWindow(ParentWindow):
         self._update_checker.start()
 
     def check_for_updates(self) -> str | None:
-        response = get_html(
+        response = make_request(
             f"{GITHUB_REPO_API}/releases",
+            "GET",
             params={"per_page": 2},
             content_type="json",
         )
