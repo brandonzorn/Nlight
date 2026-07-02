@@ -9,6 +9,34 @@ from nlightreader.consts.urls import DEFAULT_HEADERS
 from nlightreader.core.enums import Language
 
 
+def dd_get(dictionary: dict, path: str, default: Any = None) -> Any:
+    """dict_deep_get"""
+    if not isinstance(dictionary, dict):
+        msg = f"Expected a dictionary, got {type(dictionary)}"
+        raise TypeError(msg)
+
+    if not isinstance(path, str):
+        msg = "path must be a string"
+        raise TypeError(msg)
+
+    current = dictionary
+    for key in path.split("."):
+        if isinstance(current, dict) and key in current:
+            current = current[key]
+        elif isinstance(current, list) and key.isdigit():
+            index = int(key)
+            if 0 <= index < len(current):
+                current = current[index]
+            else:
+                return default
+        else:
+            if default is None:
+                default = {}
+            return default
+
+    return current
+
+
 def make_request(
     url: str | bytes,
     method: str,
@@ -184,6 +212,7 @@ def get_data(data: dict, path: list, default_val: Any = None) -> Any:
 
 
 __all__ = [
+    "dd_get",
     "make_request",
     "get_html",
     "get_language_icon",
