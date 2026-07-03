@@ -49,7 +49,8 @@ class NetworkClient:
                 f"Network error occurred.\n"
                 f"URL: {url} [{method}]\n"
                 f"Reason: {e}\n"
-                f"Context data: "
+                f"Context data:\n"
+                f"\t{self._session.headers=}\n"
                 f"\t{extra_headers=}\n"
                 f"\t{params=}\n"
                 f"\t{json=}",

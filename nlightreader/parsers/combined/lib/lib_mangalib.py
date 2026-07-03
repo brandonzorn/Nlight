@@ -11,7 +11,7 @@ class LibMangalib(LibBase, AbstractMangaCatalog):
     CATALOG_ID = 10
     _FILTERS = MangaLibItems
     _URL = "https://mangalib.me"
-    _DEFAULT_IMG_HOST = "https://img2.imglib.info"
+    _DEFAULT_IMG_HOST = "https://img3.cdnlibs.org"
 
     _CONTENT_NAME = "manga"
     _SITE_ID = 1
@@ -52,10 +52,10 @@ class LibMangalib(LibBase, AbstractMangaCatalog):
 
     @override
     def get_image(self, image: Image) -> bytes | None:
-        image_response = self._client.get_bytes(image.url)
-        if not isinstance(image_response, bytes):
+        url = image.url
+        if url is None:
             return None
-        return image_response
+        return self._client.get_bytes(url)
 
     @override
     def get_manga_url(self, manga: Manga) -> str:

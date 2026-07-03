@@ -126,10 +126,10 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         url = f"{self._URL_API}/genres"
         response = self._client.get_json(url)
         genres: list[Genre] = []
-        if not isinstance(response, dict):
+        if not isinstance(response, list):
             return genres
         for data in response:
-            if not isinstance(data, dict) or data.get("entry_type") != "Anime":
+            if data.get("entry_type") != "Anime":
                 continue
             genres.append(
                 Genre(

@@ -21,10 +21,12 @@ from nlightreader.parsers.combined.shikimori.shikimori_base import (
 from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
 
+logger = logging.getLogger(__name__)
+
 try:
     from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
 except (ModuleNotFoundError, ImportError):
-    logging.info("Shikimori API keys not found")
+    logger.warning("Shikimori API keys not found")
     SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID = "", ""
 
 
@@ -257,8 +259,8 @@ class Auth:
             )
             response.raise_for_status()
             return response
-        except requests.exceptions.RequestException as e:
-            logging.error(
+        except requests.exceptions.HTTPError as e:
+            logger.error(
                 f"\n\tError fetching URL: {url}\n"
                 f"\t\tReason: {e}\n"
                 f"\t\tHeaders: {self.client.headers}\n"

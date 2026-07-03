@@ -57,6 +57,7 @@ class LibBase(AbstractCatalog):
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/{self._CONTENT_NAME}"
         params = {
+            "page": form.page,
             "site_id[]": self._SITE_ID,
             "sort_by": form.get_order_id(),
             "types[]": form.get_kind_ids(),

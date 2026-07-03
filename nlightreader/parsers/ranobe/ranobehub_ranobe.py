@@ -50,11 +50,10 @@ class Ranobehub(AbstractRanobeCatalog):
         }
         response = self._client.get_json(url, params=params).get(
             "resource",
-            {},
+            [],
         )
-
         mangas: list[Manga] = []
-        if not isinstance(response, dict):
+        if not isinstance(response, list):
             return mangas
 
         for i in response:
@@ -148,12 +147,10 @@ class Ranobehub(AbstractRanobeCatalog):
         return content
 
     def get_preview(self, manga: Manga) -> bytes | None:
-        if not isinstance(manga.preview_url, str):
+        url = manga.preview_url
+        if url is None:
             return None
-        image_response = self._client.get_bytes(manga.preview_url)
-        if not isinstance(image_response, bytes):
-            return None
-        return image_response
+        return self._client.get_bytes(url)
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/ranobe/{manga.content_id}"

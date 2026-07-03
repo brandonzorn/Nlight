@@ -76,7 +76,7 @@ class ShikimoriBase(AbstractCatalog):
         url = f"{self._URL_API}/genres"
         response = self._client.get_json(url)
         genres: list[Genre] = []
-        if not isinstance(response, dict):
+        if not isinstance(response, list):
             return genres
         for data in response:
             if data.get("entry_type") != "Manga":
