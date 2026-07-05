@@ -4,7 +4,7 @@ from PySide6.QtCore import QSize, Qt
 from PySide6.QtGui import QPixmap, QResizeEvent
 from PySide6.QtWidgets import QWidget
 
-from data.ui.containers.image_area import Ui_Form
+from data.ui.containers.image_area import Ui_ImageArea
 from nlightreader.widgets.containers.content_container import (
     AbstractContentContainer,
 )
@@ -13,7 +13,7 @@ from nlightreader.widgets.containers.content_container import (
 class ImageArea(QWidget, AbstractContentContainer):
     def __init__(self) -> None:
         super().__init__()
-        self.ui = Ui_Form()
+        self.ui = Ui_ImageArea()
         self.ui.setupUi(self)
         self.setStyleSheet(
             """
@@ -21,7 +21,7 @@ class ImageArea(QWidget, AbstractContentContainer):
             QScrollArea {border: none;}
             """,
         )
-        self._content_widget = self.ui.img_lbl
+        self._content_widget = self.ui.imageLabel
         self.__image_pixmap = None
 
     @override
@@ -30,7 +30,7 @@ class ImageArea(QWidget, AbstractContentContainer):
         if (self.__image_pixmap is None) or (event.oldSize() == event.size()):
             return
         view_w = self.ui.scrollArea.viewport().width()
-        self.ui.img_lbl.setFixedWidth(view_w)
+        self.ui.imageLabel.setFixedWidth(view_w)
         self.ui.scrollAreaWidgetContents.setFixedWidth(view_w)
         self.ui.scrollAreaWidgetContents.resize(
             self.ui.scrollArea.viewport().size(),
@@ -38,11 +38,11 @@ class ImageArea(QWidget, AbstractContentContainer):
         self.__update_image()
 
     def _reset_area(self) -> None:
-        self.ui.img_lbl.clear()
+        self.ui.imageLabel.clear()
         self.ui.scrollArea.verticalScrollBar().setValue(0)
         self.ui.scrollArea.horizontalScrollBar().setValue(0)
         view_w = self.ui.scrollArea.viewport().width()
-        self.ui.img_lbl.setFixedWidth(view_w)
+        self.ui.imageLabel.setFixedWidth(view_w)
         self.ui.scrollAreaWidgetContents.setFixedWidth(view_w)
         self.ui.scrollAreaWidgetContents.resize(
             self.ui.scrollArea.viewport().size(),
@@ -75,7 +75,7 @@ class ImageArea(QWidget, AbstractContentContainer):
 
     def __update_image(self) -> None:
         pixmap = self._resize_pixmap(self.__image_pixmap)
-        self.ui.img_lbl.setPixmap(pixmap)
+        self.ui.imageLabel.setPixmap(pixmap)
 
     def set_content(self, img_pixmap: QPixmap) -> None:
         self.__image_pixmap = img_pixmap
@@ -83,9 +83,7 @@ class ImageArea(QWidget, AbstractContentContainer):
         self.__update_image()
 
     def get_content_widget(self) -> QWidget:
-        return self.ui.img_lbl.parent()
+        return self.ui.imageLabel.parent()
 
 
-__all__ = [
-    "ImageArea",
-]
+__all__ = ["ImageArea"]

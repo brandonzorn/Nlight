@@ -1,7 +1,7 @@
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget
 
-from data.ui.containers.text_area import Ui_Form
+from data.ui.containers.text_area import Ui_TextArea
 from nlightreader.widgets.containers.content_container import (
     AbstractContentContainer,
 )
@@ -10,28 +10,26 @@ from nlightreader.widgets.containers.content_container import (
 class TextArea(QWidget, AbstractContentContainer):
     def __init__(self) -> None:
         super().__init__()
-        self.ui = Ui_Form()
+        self.ui = Ui_TextArea()
         self.ui.setupUi(self)
-        self.ui.size_slider.valueChanged.connect(self.__update_text_size)
-        self._content_widget = self.ui.text_browser
+        self.ui.fontSizeSlider.valueChanged.connect(self.__update_text_size)
+        self._content_widget = self.ui.textContent
 
     @Slot()
     def __update_text_size(self) -> None:
-        font = self.ui.text_browser.font()
-        font.setPointSize(self.ui.size_slider.value())
-        self.ui.text_browser.setFont(font)
+        font = self.ui.textContent.font()
+        font.setPointSize(self.ui.fontSizeSlider.value())
+        self.ui.textContent.setFont(font)
 
     def _reset_area(self) -> None:
-        self.ui.text_browser.clear()
+        self.ui.textContent.clear()
 
     def set_content(self, content: str) -> None:
         self._reset_area()
-        self.ui.text_browser.setHtml(content)
+        self.ui.textContent.setHtml(content)
 
     def get_content_widget(self) -> QWidget:
-        return self.ui.text_browser.parent()
+        return self.ui.textContent.parent()
 
 
-__all__ = [
-    "TextArea",
-]
+__all__ = ["TextArea"]
