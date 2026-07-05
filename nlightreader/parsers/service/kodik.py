@@ -17,6 +17,10 @@ class KodikTranslator:
         self.translator = translator
         self.tr_type = tr_type
 
+    @property
+    def translator_text(self) -> str:
+        return f"{self.translator} ({self.tr_type})"
+
 
 class Kodik:
     URL_API = "https://kodik-api.com"

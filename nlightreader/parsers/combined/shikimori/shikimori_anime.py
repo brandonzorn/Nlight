@@ -84,9 +84,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
                     chapter_number="",
                     title=f"Episode {episode_num}",
                     language=Language.ru,
-                )
-                chapter.translator = (
-                    f"{translator.translator} ({translator.tr_type})"
+                    translator=translator.translator_text,
                 )
                 chapter.__setattr__(
                     "url",

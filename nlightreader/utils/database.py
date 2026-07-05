@@ -294,7 +294,7 @@ class Database:
         title = chapter_data["title"]
         language = Language.from_str(chapter_data["language"])
 
-        translator = str(chapter_data["translator"])
+        translator = chapter_data["translator"]
 
         return Chapter(
             content_id=content_id,

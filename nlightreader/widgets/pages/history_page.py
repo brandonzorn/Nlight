@@ -90,7 +90,8 @@ class HistoryPage(QWidget):
             top_item = QTreeWidgetItem([manga.get_name()])
             self.ui.items_tree.addTopLevelItem(top_item)
             for note in self.sorted_notes[manga]:
-                ch_item = QTreeWidgetItem([note.chapter.get_name()])
+                tr = note.chapter.translator or ""
+                ch_item = QTreeWidgetItem([f"{note.chapter.get_name()} {tr}"])
                 if note.is_completed:
                     ch_item.setIcon(0, ItemsIcons.READ.qicon())
                 else:
