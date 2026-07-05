@@ -22,7 +22,7 @@ from PySide6.QtGui import (
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import InfoBar
 
-from data.ui.manga_item import Ui_Form
+from data.ui.manga_item import Ui_MangaItem
 from nlightreader.models import Manga
 from nlightreader.utils.catalog_manager import get_catalog_by_id
 from nlightreader.utils.database import Database
@@ -44,7 +44,7 @@ class MangaItem(QWidget):
         pool: QThreadPool | None = None,
     ) -> None:
         super().__init__()
-        self.ui = Ui_Form()
+        self.ui = Ui_MangaItem()
         self.ui.setupUi(self)
         self.__manga = manga
         self.__catalog = get_catalog_by_id(self.__manga.catalog_id)
@@ -53,7 +53,7 @@ class MangaItem(QWidget):
         self.__db: Database = Database()
         self.__pool = pool
         self.customContextMenuRequested.connect(self.on_context_menu)
-        self.ui.name_lbl.setText(self.__manga.get_name())
+        self.ui.nameLabel.setText(self.__manga.get_name())
 
     @override
     def enterEvent(self, event: QEnterEvent) -> None:
@@ -142,8 +142,8 @@ class MangaItem(QWidget):
         max_size = QSize(size, int(size * 1.5))
         if current_size != max_size:
             self.setFixedWidth(max_size.width())
-            self.ui.image_card.setFixedSize(max_size)
-            self.ui.image.setMaximumSize(max_size)
+            self.ui.imageCardWidget.setFixedSize(max_size)
+            self.ui.imageLabel.setMaximumSize(max_size)
         if self.__manga_pixmap:
             self.set_image()
 
@@ -157,7 +157,9 @@ class MangaItem(QWidget):
         if not self.__manga_pixmap:
             return
         device_pixel_ratio = self.devicePixelRatio()
-        image_maximum_size = self.ui.image.maximumSize() * device_pixel_ratio
+        image_maximum_size = (
+                self.ui.imageLabel.maximumSize() * device_pixel_ratio
+        )
 
         image = QImage(
             image_maximum_size,
@@ -197,7 +199,7 @@ class MangaItem(QWidget):
 
         result_pixmap = QPixmap.fromImage(image)
         result_pixmap.setDevicePixelRatio(device_pixel_ratio)
-        self.ui.image.setPixmap(result_pixmap)
+        self.ui.imageLabel.setPixmap(result_pixmap)
 
     def update_image(self) -> None:
         Worker(
@@ -206,6 +208,4 @@ class MangaItem(QWidget):
         ).start(self.__pool)
 
 
-__all__ = [
-    "MangaItem",
-]
+__all__ = ["MangaItem"]
