@@ -21,7 +21,6 @@ class ParentWindow(FluentWindow):
         self.main_interface = MainPage()
         self.external_library_interface = ExternalLibraryPage()
         self.history_interface = HistoryPage()
-
         self.settings_interface = SettingsPage()
 
         self.info_interface: InfoPage | None = None

@@ -32,7 +32,7 @@ class UserRate:
         target_id: str,
         score: int,
         status: LibList,
-        chapters,
+        chapters: int,
     ) -> None:
         self.id = rate_id
         self.user_id = user_id

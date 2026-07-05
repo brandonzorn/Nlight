@@ -1,13 +1,15 @@
 import os
 import sys
-import time
 from typing import override
 
-import darkdetect
-from PySide6.QtCore import QThreadPool
+from PySide6.QtCore import QThreadPool, QTimer
 from PySide6.QtGui import QCloseEvent, QIcon
 from PySide6.QtWidgets import QApplication
-from qfluentwidgets import InfoBar, setTheme, Theme
+from qfluentwidgets import (
+    FluentTranslator,
+    isDarkTheme,
+    SystemThemeListener,
+)
 
 from data import resource
 from nlightreader import ParentWindow
@@ -18,47 +20,36 @@ from nlightreader.consts.urls import GITHUB_REPO_API
 from nlightreader.utils import kodik_server
 from nlightreader.utils.config import cfg
 from nlightreader.utils.threads import Thread
-from nlightreader.utils.translator import NlightTranslator, translate
+from nlightreader.utils.translator import AppTranslator
 from nlightreader.utils.utils import make_request
 
 __all__ = []
 
 
 class App(QApplication):
-    def __init__(self, argv) -> None:
+    def __init__(self, argv: list[str]) -> None:
         super().__init__(argv)
         self.setApplicationDisplayName(APP_NAME)
         self.setApplicationVersion(APP_VERSION)
         self.setWindowIcon(QIcon(Icons.APP))
 
-        self.translator = NlightTranslator()
-
-        self.load_translator()
-        self.update_theme_mode()
-
-    def load_translator(self) -> None:
         locale = cfg.get(cfg.language).value
-        self.translator.load(locale)
+
+        self.translator = FluentTranslator(locale)
         self.installTranslator(self.translator)
 
-    @staticmethod
-    def update_theme_mode() -> None:
-        if (theme_mode := cfg.get(cfg.theme_mode)) == "Auto":
-            setTheme(Theme.DARK if darkdetect.isDark() else Theme.LIGHT)
-        else:
-            setTheme(Theme.DARK if theme_mode == "Dark" else Theme.LIGHT)
+        self.app_translator = AppTranslator(locale)
+        self.installTranslator(self.app_translator)
 
 
 class MainWindow(ParentWindow):
     def __init__(self) -> None:
         super().__init__()
-        self.set_min_size_by_screen()
+        self.setMinimumSize(self.screen().size() / 2)
+        self.themeListener = SystemThemeListener(self)
+
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QIcon(Icons.APP))
-        self._theme_updater = Thread(
-            target=self.theme_listener,
-            callback=self.update_style,
-        )
         self._update_checker = Thread(
             target=self.check_for_updates,
             callback=self.show_update_info,
@@ -71,17 +62,28 @@ class MainWindow(ParentWindow):
         self.settings_interface.theme_changed.connect(
             app.update_theme_mode,
         )
-
-        self._theme_updater.start()
+        self.themeListener.start()
         if cfg.get(cfg.check_updates_at_startup):
             self.start_check_for_updates_thread()
 
     @override
     def closeEvent(self, event: QCloseEvent, /) -> None:
-        self._theme_updater.terminate()
-        self._theme_updater.deleteLater()
+        self.themeListener.terminate()
+        self.themeListener.deleteLater()
         app.closeAllWindows()
         super().closeEvent(event)
+
+    @override
+    def _onThemeChangedFinished(self) -> None:
+        super()._onThemeChangedFinished()
+        if self.isMicaEffectEnabled():
+            QTimer.singleShot(
+                100,
+                lambda: self.windowEffect.setMicaEffect(
+                    self.winId(),
+                    isDarkTheme(),
+                ),
+            )
 
     def start_check_for_updates_thread(self) -> None:
         self._update_checker.terminate()

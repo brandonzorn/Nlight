@@ -9,6 +9,7 @@ from qfluentwidgets import (
     OptionsSettingCard,
     PrimaryPushSettingCard,
     ScrollArea,
+    setTheme,
     SettingCardGroup,
     SwitchSettingCard,
 )
@@ -20,7 +21,6 @@ from nlightreader.utils.config import cfg
 
 class SettingsPage(ScrollArea):
     check_for_updates_signal = Signal()
-    theme_changed = Signal()
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent=parent)
@@ -44,7 +44,7 @@ class SettingsPage(ScrollArea):
             self.scrollWidget,
         )
         self.themeCard = OptionsSettingCard(
-            cfg.theme_mode,
+            cfg.themeMode,
             FluentIcon.BRUSH,
             self.tr("Application theme"),
             self.tr("Change the appearance of application"),
@@ -184,10 +184,8 @@ class SettingsPage(ScrollArea):
 
     def __connect_signals(self) -> None:
         cfg.appRestartSig.connect(self.__show_restart_tooltip)
+        cfg.themeChanged.connect(setTheme)
         self.aboutCard.clicked.connect(self.check_for_updates_signal)
-        self.themeCard.optionChanged.connect(self.theme_changed)
 
 
-__all__ = [
-    "SettingsPage",
-]
+__all__ = ["SettingsPage"]

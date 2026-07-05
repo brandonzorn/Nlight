@@ -1,4 +1,5 @@
 from enum import Enum
+import sys
 
 from PySide6.QtCore import QLocale
 from qfluentwidgets import (
@@ -9,9 +10,14 @@ from qfluentwidgets import (
     OptionsValidator,
     QConfig,
     qconfig,
+    Theme,
 )
 
 from nlightreader.consts.paths.paths import APP_DATA_PATH
+
+
+def is_win11() -> bool:
+    return sys.platform == "win32" and sys.getwindowsversion().build >= 22000
 
 
 class Language(Enum):
@@ -30,18 +36,6 @@ class LanguageSerializer(ConfigSerializer):
 
 
 class Config(QConfig):
-    theme_mode = OptionsConfigItem(
-        "MainWindow",
-        "ThemeMode",
-        "Auto",
-        OptionsValidator(
-            [
-                "Light",
-                "Dark",
-                "Auto",
-            ],
-        ),
-    )
     dpi_scale = OptionsConfigItem(
         "MainWindow",
         "DpiScale",
@@ -82,6 +76,7 @@ class Config(QConfig):
 
 
 cfg = Config()
+cfg.themeMode.value = Theme.AUTO
 qconfig.load(APP_DATA_PATH / "config.json", cfg)
 
 
