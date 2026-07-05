@@ -20,9 +20,11 @@ from nlightreader.parsers import (
     ShikimoriRanobe,
     SlashLib,
 )
-from nlightreader.parsers.catalog import AbstractCatalog
+from nlightreader.parsers.catalog import AbstractCatalog, LibParser
 
-CATALOG_CLASSES = {
+logger = logging.getLogger(__name__)
+
+CATALOG_CLASSES: dict[int, type[AbstractCatalog]] = {
     0: Desu,
     1: ShikimoriBase,
     2: MangaDex,
@@ -39,7 +41,7 @@ CATALOG_CLASSES = {
     13: LibRanobelib,
     14: LibAnilib,
 }
-USER_CATALOGS = [
+USER_CATALOGS: list[type[AbstractCatalog]] = [
     Desu,
     MangaDex,
     Remanga,
@@ -55,24 +57,27 @@ USER_CATALOGS = [
     NHentai,
     AllHentai,
 ]
-LIB_CATALOGS = {ShikimoriBase: ShikimoriLib, MangaDex: MangaDexLib}
+LIB_CATALOGS: dict[type[AbstractCatalog], type[LibParser]] = {
+    ShikimoriBase: ShikimoriLib,
+    MangaDex: MangaDexLib,
+}
 
 
-_initialized_catalogs = {}
+_initialized_catalogs: dict[int, AbstractCatalog] = {}
 
 
-def get_catalog_by_id(catalog_id: int):
+def get_catalog_by_id(catalog_id: int) -> AbstractCatalog:
     if catalog_id in _initialized_catalogs:
         return _initialized_catalogs[catalog_id]
     if catalog_id in CATALOG_CLASSES:
         instance = CATALOG_CLASSES[catalog_id]()
         _initialized_catalogs[catalog_id] = instance
         return instance
-    logging.warning(f"Catalog with id {catalog_id} not found.")
+    logger.warning(f"Catalog with id {catalog_id} not found.")
     return AbstractCatalog()
 
 
-def get_lib_catalog(base_catalog):
+def get_lib_catalog(base_catalog: type[AbstractCatalog]) -> LibParser:
     return LIB_CATALOGS.get(base_catalog)()
 
 

@@ -10,9 +10,11 @@ from qfluentwidgets import (
     SubtitleLabel,
 )
 
+from nlightreader.parsers.catalog import LibParser
+
 
 class AbstractAuthDialog(MessageBoxBase):
-    def __init__(self, catalog, parent: QWidget) -> None:
+    def __init__(self, catalog: LibParser, parent: QWidget) -> None:
         super().__init__(parent)
         self.session = catalog.session
         self.widget.setMinimumWidth(350)
@@ -34,7 +36,7 @@ class AbstractAuthDialog(MessageBoxBase):
 
 
 class TokenAuthMessageBox(AbstractAuthDialog):
-    def __init__(self, catalog, parent: QWidget) -> None:
+    def __init__(self, catalog: LibParser, parent: QWidget) -> None:
         super().__init__(catalog, parent)
         self.getCodeButton = PushButton(self.tr("Get code"))
         self.getCodeButton.clicked.connect(self.__open_login_page)
@@ -60,7 +62,7 @@ class TokenAuthMessageBox(AbstractAuthDialog):
 
 
 class UserDataAuthMessageBox(AbstractAuthDialog):
-    def __init__(self, catalog, parent: QWidget) -> None:
+    def __init__(self, catalog: LibParser, parent: QWidget) -> None:
         super().__init__(catalog, parent)
         self.loginLineEdit = LineEdit(self)
         self.loginLineEdit.setPlaceholderText(self.tr("Login"))

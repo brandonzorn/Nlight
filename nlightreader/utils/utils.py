@@ -8,18 +8,26 @@ from nlightreader.consts.files import LangIcons
 from nlightreader.consts.urls import DEFAULT_HEADERS
 from nlightreader.core.enums import Language
 
+type JSONValue = str | int | float | bool | None | JSONArray | JSONObject
+type JSONObject = dict[str, JSONValue]
+type JSONArray = list[JSONValue]
 
-def dd_get(dictionary: dict, path: str, default: Any = None) -> Any:
+
+def dd_get(
+    structure: JSONObject | JSONArray,
+    path: str,
+    default: JSONValue = None,
+) -> JSONValue:
     """dict_deep_get"""
-    if not isinstance(dictionary, dict):
-        msg = f"Expected a dictionary, got {type(dictionary)}"
+    if not isinstance(structure, (dict, list)):
+        msg = f"Expected a dictionary, got {type(structure)}"
         raise TypeError(msg)
 
     if not isinstance(path, str):
         msg = "path must be a string"
         raise TypeError(msg)
 
-    current: Any = dictionary
+    current: JSONValue = structure
     for key in path.split("."):
         if isinstance(current, dict) and key in current:
             current = current[key]

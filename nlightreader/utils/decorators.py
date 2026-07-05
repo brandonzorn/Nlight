@@ -1,25 +1,17 @@
 from functools import wraps
+from typing import cast
 
 
-def singleton(cls):
-    """
-    A decorator that transforms a class into a singleton.
-
-    Parameters:
-        cls (type): The class to be transformed.
-
-    Returns:
-        callable: Wrapped class as a singleton.
-    """
-    instance = [None]
+def singleton[T: type](cls: T) -> T:
+    instance: list[object | None] = [None]
 
     @wraps(cls)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: object, **kwargs: object) -> object:
         if instance[0] is None:
             instance[0] = cls(*args, **kwargs)
         return instance[0]
 
-    return wrapper
+    return cast(T, wrapper)
 
 
 __all__ = ["singleton"]

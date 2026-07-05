@@ -31,7 +31,8 @@ class Ranobehub(AbstractRanobeCatalog):
         manga.score = response_data.get("rating", 0)
         manga.kind = MangaKind.ranobe
 
-        if status_name := dd_get(response_data, "status.title"):
+        status_name = dd_get(response_data, "status.title")
+        if isinstance(status_name, str):
             manga.status = MangaStatus.from_str(status_name)
 
         manga.add_description(

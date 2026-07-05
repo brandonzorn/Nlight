@@ -12,6 +12,8 @@ class LibBase(AbstractCatalog):
     _URL = None
     _URL_API = "https://api.cdnlibs.org/api"
 
+    _COOKIES = {"adult_caution": '{"media":true,"content":true}'}
+
     _CONTENT_NAME = None
     _SITE_ID = None
 
@@ -21,6 +23,7 @@ class LibBase(AbstractCatalog):
                 "Site-Id": str(self._SITE_ID),
                 "Referer": f"{self._URL}/",
             },
+            cookies=self._COOKIES,
         )
 
     @override
@@ -43,13 +46,15 @@ class LibBase(AbstractCatalog):
         manga.preview_url = data.get("cover", {}).get("md")
         manga.score = float(data.get("rating", {}).get("average", 0))
 
-        summary = data.get("summary", {})
+        summary = data.get("summary")
+        if not summary:
+            return manga
 
-        if isinstance(summary, str) and summary:
+        if isinstance(summary, str):
             manga.add_description(Language.ru, summary)
-        elif isinstance(summary, dict):
+        if isinstance(summary, dict):
             text = dd_get(summary, "content.0.content.0.text")
-            if text:
+            if isinstance(text, str):
                 manga.add_description(Language.ru, text)
         return manga
 
@@ -64,12 +69,7 @@ class LibBase(AbstractCatalog):
             "genres[]": form.get_genre_ids(),
             "q": form.search,
         }
-        cookies = {"adult_caution": '{"media":true,"content":true}'}
-        response = self._client.get_json(
-            url,
-            params=params,
-            extra_cookies=cookies,
-        )
+        response = self._client.get_json(url, params=params)
 
         mangas: list[Manga] = []
         if not isinstance(response, dict):

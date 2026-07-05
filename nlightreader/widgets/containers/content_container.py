@@ -94,7 +94,7 @@ class AbstractContentContainer:
             if obj is not None
         ]
 
-    def set_content(self, content) -> None:
+    def set_content(self, content: object) -> None:
         raise NotImplementedError
 
     def get_content_widget(self) -> QWidget:
