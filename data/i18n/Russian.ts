@@ -301,22 +301,6 @@
       <translation>Файлы {} удалены.</translation>
     </message>
     <message>
-      <source>Check for updates.</source>
-      <translation>Проверка обновлений.</translation>
-    </message>
-    <message>
-      <source>Error checking for updates.</source>
-      <translation>Ошибка проверки обновлений.</translation>
-    </message>
-    <message>
-      <source>No updates available. You are using the latest version.</source>
-      <translation>Нет доступных обновлений. Вы используете последнюю версию.</translation>
-    </message>
-    <message>
-      <source>New version {result} is available! You are currently on version {APP_VERSION}.</source>
-      <translation>Новая версия {result} доступна! Вы используете версию {APP_VERSION}.</translation>
-    </message>
-    <message>
       <source>No connection</source>
       <translation>Нет соединения</translation>
     </message>
@@ -362,6 +346,22 @@
     <message>
       <source>Changes will take effect after restarting the application</source>
       <translation>Изменения вступят в силу после перезапуска приложения</translation>
+    </message>
+        <message>
+      <source>Checking for updates.</source>
+      <translation>Проверка обновлений.</translation>
+    </message>
+    <message>
+      <source>Error checking for updates.</source>
+      <translation>Ошибка проверки обновлений.</translation>
+    </message>
+    <message>
+      <source>No updates available. You are using the latest version.</source>
+      <translation>Нет доступных обновлений. Вы используете последнюю версию.</translation>
+    </message>
+    <message>
+      <source>New version {result} is available! You are currently on version {APP_VERSION}.</source>
+      <translation>Новая версия {result} доступна! Вы используете версию {APP_VERSION}.</translation>
     </message>
     <message>
       <source>Check for updates</source>

@@ -21,10 +21,11 @@ from nlightreader.utils.config import cfg
 
 class SettingsPage(ScrollArea):
     check_for_updates_signal = Signal()
+    mica_enable_changed = Signal(bool)
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent=parent)
-        self.setObjectName("SettingsInterface")
+        self.setObjectName("SettingsPage")
         self.scrollWidget = QWidget()
         self.expandLayout = ExpandLayout(self.scrollWidget)
         self.setStyleSheet(
@@ -42,6 +43,13 @@ class SettingsPage(ScrollArea):
         self.personalGroup = SettingCardGroup(
             self.tr("Personalization"),
             self.scrollWidget,
+        )
+        self.micaCard = SwitchSettingCard(
+            FluentIcon.TRANSPARENT,
+            self.tr("Mica effect"),
+            self.tr("Apply semi transparent to windows and surfaces"),
+            cfg.mica_enabled,
+            self.personalGroup,
         )
         self.themeCard = OptionsSettingCard(
             cfg.themeMode,
@@ -156,6 +164,7 @@ class SettingsPage(ScrollArea):
         self.settingLabel.move(60, 63)
 
         self.personalGroup.addSettingCard(self.themeCard)
+        self.personalGroup.addSettingCard(self.micaCard)
         self.personalGroup.addSettingCard(self.zoomCard)
         self.personalGroup.addSettingCard(self.languageCard)
 
@@ -182,9 +191,41 @@ class SettingsPage(ScrollArea):
             parent=self.window(),
         )
 
+    def show_no_updates_tooltip(self) -> None:
+        InfoBar.success(
+            title=self.tr("Checking for updates."),
+            content=self.tr(
+                "No updates available. You are using the latest version.",
+            ),
+            duration=3500,
+            parent=self,
+        )
+
+    def show_has_updates_tooltip(self, result: str) -> None:
+        InfoBar.info(
+            title=self.tr("Checking for updates."),
+            content=self.tr(
+                "New version {result} is available! "
+                "You are currently on version {APP_VERSION}.",
+            ).format(result=result, APP_VERSION=APP_VERSION),
+            duration=3500,
+            parent=self,
+        )
+
+    def show_err_updates_tooltip(self) -> None:
+        InfoBar.error(
+            title=self.tr("Checking for updates."),
+            content=self.tr(
+                "Error checking for updates.",
+            ),
+            duration=3500,
+            parent=self,
+        )
+
     def __connect_signals(self) -> None:
         cfg.appRestartSig.connect(self.__show_restart_tooltip)
         cfg.themeChanged.connect(setTheme)
+        self.micaCard.checkedChanged.connect(self.mica_enable_changed)
         self.aboutCard.clicked.connect(self.check_for_updates_signal)
 
 

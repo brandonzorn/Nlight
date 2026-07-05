@@ -59,8 +59,8 @@ class MainWindow(ParentWindow):
         self.settings_interface.check_for_updates_signal.connect(
             self.start_check_for_updates_thread,
         )
-        self.settings_interface.theme_changed.connect(
-            app.update_theme_mode,
+        self.settings_interface.mica_enable_changed.connect(
+            self.setMicaEffectEnabled,
         )
         self.themeListener.start()
         if cfg.get(cfg.check_updates_at_startup):
@@ -107,53 +107,12 @@ class MainWindow(ParentWindow):
         return latest_version
 
     def show_update_info(self, result: str | None) -> None:
-        info_bar_title = translate(
-            "Message",
-            "Check for updates.",
-        )
-        info_bar_duration = 3500
         if result is None:
-            InfoBar.error(
-                title=info_bar_title,
-                content=translate(
-                    "Message",
-                    "Error checking for updates.",
-                ),
-                duration=info_bar_duration,
-                parent=self,
-            )
-
+            self.settings_interface.show_err_updates_tooltip()
         elif result != APP_VERSION:
-            InfoBar.info(
-                title=info_bar_title,
-                content=translate(
-                    "Message",
-                    "New version {result} is available! "
-                    "You are currently on version {APP_VERSION}.",
-                ).format(result=result, APP_VERSION=APP_VERSION),
-                duration=info_bar_duration,
-                parent=self,
-            )
+            self.settings_interface.show_has_updates_tooltip(result)
         else:
-            InfoBar.success(
-                title=info_bar_title,
-                content=translate(
-                    "Message",
-                    "No updates available. You are using the latest version.",
-                ),
-                duration=info_bar_duration,
-                parent=self,
-            )
-
-    @staticmethod
-    def theme_listener() -> None:
-        theme = darkdetect.theme()
-        while darkdetect.theme() == theme or cfg.get(cfg.theme_mode) != "Auto":
-            time.sleep(1)
-
-    def update_style(self) -> None:
-        app.update_theme_mode()
-        self._theme_updater.start()
+            self.settings_interface.show_no_updates_tooltip()
 
 
 if __name__ == "__main__":

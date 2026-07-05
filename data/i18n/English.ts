@@ -301,22 +301,6 @@
       <translation>Files {} have been removed.</translation>
     </message>
     <message>
-      <source>Check for updates.</source>
-      <translation>Check for updates.</translation>
-    </message>
-    <message>
-      <source>Error checking for updates.</source>
-      <translation>Error checking for updates.</translation>
-    </message>
-    <message>
-      <source>No updates available. You are using the latest version.</source>
-      <translation>No updates available. You are using the latest version.</translation>
-    </message>
-    <message>
-      <source>New version {result} is available! You are currently on version {APP_VERSION}.</source>
-      <translation>New version {result} is available! You are currently on version {APP_VERSION}.</translation>
-    </message>
-    <message>
       <source>No connection</source>
       <translation>No connection</translation>
     </message>
@@ -362,6 +346,22 @@
     <message>
       <source>Changes will take effect after restarting the application</source>
       <translation>Changes will take effect after restarting the application</translation>
+    </message>
+    <message>
+      <source>Checking for updates.</source>
+      <translation>Checking for updates.</translation>
+    </message>
+    <message>
+      <source>Error checking for updates.</source>
+      <translation>Error checking for updates.</translation>
+    </message>
+    <message>
+      <source>No updates available. You are using the latest version.</source>
+      <translation>No updates available. You are using the latest version.</translation>
+    </message>
+    <message>
+      <source>New version {result} is available! You are currently on version {APP_VERSION}.</source>
+      <translation>New version {result} is available! You are currently on version {APP_VERSION}.</translation>
     </message>
     <message>
       <source>Check for updates</source>

@@ -60,6 +60,12 @@ class Config(QConfig):
         LanguageSerializer(),
         restart=True,
     )
+    mica_enabled = ConfigItem(
+        "MainWindow",
+        "MicaEnabled",
+        is_win11(),
+        BoolValidator(),
+    )
     check_updates_at_startup = ConfigItem(
         "Update",
         "CheckUpdateAtStartUp",
