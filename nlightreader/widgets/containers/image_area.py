@@ -22,12 +22,12 @@ class ImageArea(QWidget, AbstractContentContainer):
             """,
         )
         self._content_widget = self.ui.imageLabel
-        self.__image_pixmap = None
+        self._image_pixmap = None
 
     @override
     def resizeEvent(self, event: QResizeEvent, /) -> None:
         super().resizeEvent(event)
-        if (self.__image_pixmap is None) or (event.oldSize() == event.size()):
+        if (self._image_pixmap is None) or (event.oldSize() == event.size()):
             return
         view_w = self.ui.scrollArea.viewport().width()
         self.ui.imageLabel.setFixedWidth(view_w)
@@ -35,7 +35,7 @@ class ImageArea(QWidget, AbstractContentContainer):
         self.ui.scrollAreaWidgetContents.resize(
             self.ui.scrollArea.viewport().size(),
         )
-        self.__update_image()
+        self._update_image()
 
     def _reset_area(self) -> None:
         self.ui.imageLabel.clear()
@@ -73,15 +73,17 @@ class ImageArea(QWidget, AbstractContentContainer):
         scaled_pixmap.setDevicePixelRatio(device_pixel_ratio)
         return scaled_pixmap
 
-    def __update_image(self) -> None:
-        pixmap = self._resize_pixmap(self.__image_pixmap)
+    def _update_image(self) -> None:
+        pixmap = self._resize_pixmap(self._image_pixmap)
         self.ui.imageLabel.setPixmap(pixmap)
 
+    @override
     def set_content(self, img_pixmap: QPixmap) -> None:
-        self.__image_pixmap = img_pixmap
+        self._image_pixmap = img_pixmap
         self._reset_area()
-        self.__update_image()
+        self._update_image()
 
+    @override
     def get_content_widget(self) -> QWidget:
         return self.ui.imageLabel.parent()
 

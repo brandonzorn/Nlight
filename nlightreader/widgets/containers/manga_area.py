@@ -30,9 +30,6 @@ class MangaArea(ScrollArea, AbstractContentContainer):
         self._manga_items: list[MangaItem] = []
 
         self._scrollAreaWidgetContents = QWidget()
-        self._scrollAreaWidgetContents.setObjectName(
-            "scrollAreaWidgetContents",
-        )
 
         self._scroll_layout = QHBoxLayout(self._scrollAreaWidgetContents)
         self._scroll_layout.setSpacing(0)
@@ -105,6 +102,7 @@ class MangaArea(ScrollArea, AbstractContentContainer):
         ) // self._column_count
         [item.set_size(size) for item in self._manga_items]
 
+    @override
     def get_content_widget(self) -> QWidget:
         return self._scrollAreaWidgetContents
 

@@ -1,7 +1,6 @@
 from typing import override
 import webbrowser
 
-from PySide6 import QtGui
 from PySide6.QtCore import (
     QEvent,
     QPoint,
@@ -17,6 +16,7 @@ from PySide6.QtGui import (
     QImage,
     QMouseEvent,
     QPainter,
+    QPainterPath,
     QPixmap,
 )
 from PySide6.QtWidgets import QWidget
@@ -138,9 +138,8 @@ class MangaItem(QWidget):
         menu.exec(self.mapToGlobal(pos))
 
     def set_size(self, size: int) -> None:
-        current_size = self.size()
         max_size = QSize(size, int(size * 1.5))
-        if current_size != max_size:
+        if self.size() != max_size:
             self.setFixedWidth(max_size.width())
             self.ui.imageCardWidget.setFixedSize(max_size)
             self.ui.imageLabel.setMaximumSize(max_size)
@@ -177,7 +176,7 @@ class MangaItem(QWidget):
             True,
         )
 
-        path = QtGui.QPainterPath()
+        path = QPainterPath()
         path.addRoundedRect(
             QRect(
                 0,
