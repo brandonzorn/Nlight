@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>InfoPage</class>
+ <widget class="QWidget" name="InfoPage">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,28 +14,8 @@
    <locale language="English" country="UnitedStates"/>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
-   <property name="spacing">
-    <number>0</number>
-   </property>
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
    <item>
     <widget class="ScrollArea" name="scrollArea">
-     <property name="styleSheet">
-      <string notr="true">QWidget {background: transparent;}
-QScrollArea {border: none;}
-</string>
-     </property>
      <property name="horizontalScrollBarPolicy">
       <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
      </property>
@@ -47,8 +27,8 @@ QScrollArea {border: none;}
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>459</width>
-        <height>990</height>
+        <width>440</width>
+        <height>982</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -58,32 +38,35 @@ QScrollArea {border: none;}
        <property name="topMargin">
         <number>0</number>
        </property>
+       <property name="rightMargin">
+        <number>18</number>
+       </property>
        <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
-        <widget class="SimpleCardWidget" name="header_frame">
+        <widget class="SimpleCardWidget" name="headerWidget">
          <property name="frameShape">
           <enum>QFrame::Shape::StyledPanel</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Shadow::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <layout class="QHBoxLayout" name="headerHLayout">
           <property name="leftMargin">
-           <number>9</number>
+           <number>0</number>
           </property>
           <property name="topMargin">
-           <number>9</number>
+           <number>0</number>
           </property>
           <property name="rightMargin">
-           <number>9</number>
+           <number>0</number>
           </property>
           <property name="bottomMargin">
-           <number>9</number>
+           <number>0</number>
           </property>
           <item>
-           <spacer name="horizontalSpacer_2">
+           <spacer name="headerHSpacer">
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
             </property>
@@ -96,9 +79,9 @@ QScrollArea {border: none;}
            </spacer>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_7">
+           <layout class="QVBoxLayout" name="headerContentVLayout">
             <item>
-             <widget class="SimpleCardWidget" name="lib_frame">
+             <widget class="SimpleCardWidget" name="libraryWidget">
               <property name="frameShape">
                <enum>QFrame::Shape::StyledPanel</enum>
               </property>
@@ -119,10 +102,10 @@ QScrollArea {border: none;}
                 <number>0</number>
                </property>
                <item>
-                <widget class="ComboBox" name="lib_list_box"/>
+                <widget class="ComboBox" name="libraryListComboBox"/>
                </item>
                <item>
-                <widget class="ToolButton" name="add_btn">
+                <widget class="ToolButton" name="addButton">
                  <property name="checkable">
                   <bool>true</bool>
                  </property>
@@ -132,7 +115,7 @@ QScrollArea {border: none;}
              </widget>
             </item>
             <item>
-             <widget class="SimpleCardWidget" name="shikimori_frame">
+             <widget class="SimpleCardWidget" name="shikimoriWidget">
               <property name="frameShape">
                <enum>QFrame::Shape::StyledPanel</enum>
               </property>
@@ -153,7 +136,7 @@ QScrollArea {border: none;}
                 <number>0</number>
                </property>
                <item>
-                <widget class="ToolButton" name="shikimori_btn"/>
+                <widget class="ToolButton" name="shikimoriButton"/>
                </item>
               </layout>
              </widget>
@@ -164,25 +147,25 @@ QScrollArea {border: none;}
         </widget>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="manga_layout">
+        <layout class="QVBoxLayout" name="mangaVLayout">
          <item>
-          <layout class="QHBoxLayout" name="info_layout">
+          <layout class="QHBoxLayout" name="infoHLayout">
            <item>
-            <widget class="SimpleCardWidget" name="image_frame">
+            <widget class="SimpleCardWidget" name="previewWidget">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_6">
+             <layout class="QVBoxLayout" name="previewLayout">
               <item>
-               <widget class="QLabel" name="image">
-                <property name="text">
-                 <string/>
-                </property>
+               <widget class="ImageLabel" name="imageLabel">
                 <property name="scaledContents">
                  <bool>true</bool>
+                </property>
+                <property name="textInteractionFlags">
+                 <set>Qt::TextInteractionFlag::NoTextInteraction</set>
                 </property>
                </widget>
               </item>
@@ -264,12 +247,12 @@ QScrollArea {border: none;}
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_9">
            <item>
-            <widget class="TextEdit" name="description_text">
+            <widget class="TextEdit" name="descriptionTextEdit">
              <property name="focusPolicy">
               <enum>Qt::FocusPolicy::NoFocus</enum>
              </property>
-             <property name="verticalScrollBarPolicy">
-              <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
+             <property name="horizontalScrollBarPolicy">
+              <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
              </property>
              <property name="undoRedoEnabled">
               <bool>false</bool>
@@ -278,22 +261,22 @@ QScrollArea {border: none;}
               <bool>true</bool>
              </property>
              <property name="textInteractionFlags">
-              <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+              <set>Qt::TextInteractionFlag::TextSelectableByMouse</set>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="ElevatedCardWidget" name="characters_frame">
+            <widget class="CardWidget" name="charactersWidget">
              <layout class="QVBoxLayout" name="verticalLayout_2">
               <item>
-               <widget class="BodyLabel" name="label_2">
+               <widget class="BodyLabel" name="charactersLabel">
                 <property name="text">
                  <string>Characters</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="ListWidget" name="characters_list">
+               <widget class="ListWidget" name="charactersList">
                 <property name="horizontalScrollBarPolicy">
                  <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
                 </property>
@@ -306,17 +289,17 @@ QScrollArea {border: none;}
             </widget>
            </item>
            <item>
-            <widget class="ElevatedCardWidget" name="related_frame">
+            <widget class="CardWidget" name="relatedWidget">
              <layout class="QVBoxLayout" name="verticalLayout_4">
               <item>
-               <widget class="BodyLabel" name="label">
+               <widget class="BodyLabel" name="relatedLabel">
                 <property name="text">
                  <string>Related</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="ListWidget" name="related_list">
+               <widget class="ListWidget" name="relatedList">
                 <property name="horizontalScrollBarPolicy">
                  <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
                 </property>
@@ -337,13 +320,25 @@ QScrollArea {border: none;}
     </widget>
    </item>
    <item>
-    <widget class="ElevatedCardWidget" name="items_frame">
-     <layout class="QVBoxLayout" name="verticalLayout_5">
+    <widget class="SimpleCardWidget" name="itemsWidget">
+     <layout class="QVBoxLayout" name="itemsVLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="leftMargin">
        <number>0</number>
       </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
-       <widget class="TreeWidget" name="items_tree">
+       <widget class="TreeWidget" name="itemsTree">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
           <horstretch>0</horstretch>
@@ -352,6 +347,12 @@ QScrollArea {border: none;}
         </property>
         <property name="contextMenuPolicy">
          <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
         <attribute name="headerVisible">
          <bool>false</bool>
@@ -418,10 +419,9 @@ QScrollArea {border: none;}
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>ElevatedCardWidget</class>
-   <extends>SimpleCardWidget</extends>
+   <class>ImageLabel</class>
+   <extends>QLabel</extends>
    <header>qfluentwidgets</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
