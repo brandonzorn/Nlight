@@ -4,7 +4,7 @@ from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import FluentIcon
 
-from data.ui.widgets.shikimori import Ui_Form
+from data.ui.widgets.shikimori import Ui_ExternalLibraryPage
 from nlightreader.core.enums import LibList
 from nlightreader.items import User
 from nlightreader.models import Manga
@@ -22,38 +22,36 @@ from nlightreader.widgets.pages.base_page import BasePage
 class ExternalLibraryPage(BasePage):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent=parent)
-        self.ui = Ui_Form()
+        self.ui = Ui_ExternalLibraryPage()
         self.ui.setupUi(self)
 
-        self.ui.next_btn.setIcon(FluentIcon.RIGHT_ARROW)
-        self.ui.prev_btn.setIcon(FluentIcon.LEFT_ARROW)
+        self.ui.nextButton.setIcon(FluentIcon.RIGHT_ARROW)
+        self.ui.previousButton.setIcon(FluentIcon.LEFT_ARROW)
 
-        self.setObjectName("FormShikimori")
+        self.manga_area.install(self.ui.itemsLayout)
 
-        self.manga_area.install(self.ui.items_layout)
-
-        self.ui.planned_btn.clicked.connect(
+        self.ui.plannedButton.clicked.connect(
             lambda: self.change_list(LibList.planned),
         )
-        self.ui.reading_btn.clicked.connect(
+        self.ui.readingButton.clicked.connect(
             lambda: self.change_list(LibList.reading),
         )
-        self.ui.on_hold_btn.clicked.connect(
+        self.ui.onHoldButton.clicked.connect(
             lambda: self.change_list(LibList.on_hold),
         )
-        self.ui.completed_btn.clicked.connect(
+        self.ui.completedButton.clicked.connect(
             lambda: self.change_list(LibList.completed),
         )
-        self.ui.dropped_btn.clicked.connect(
+        self.ui.droppedButton.clicked.connect(
             lambda: self.change_list(LibList.dropped),
         )
-        self.ui.re_reading_btn.clicked.connect(
+        self.ui.reReadingButton.clicked.connect(
             lambda: self.change_list(LibList.re_reading),
         )
-        self.ui.next_btn.clicked.connect(self.turn_page_next)
-        self.ui.prev_btn.clicked.connect(self.turn_page_prev)
-        self.ui.title_line.searchSignal.connect(self.search)
-        self.ui.auth_btn.clicked.connect(self.authorize)
+        self.ui.nextButton.clicked.connect(self.turn_page_next)
+        self.ui.previousButton.clicked.connect(self.turn_page_prev)
+        self.ui.searchLineEdit.searchSignal.connect(self.search)
+        self.ui.signInButton.clicked.connect(self.authorize)
         self.catalog = ShikimoriLib()
         Worker(target=self.get_user_info, callback=self.set_user_info).start()
 
@@ -68,21 +66,21 @@ class ExternalLibraryPage(BasePage):
         return item
 
     def get_user_info(self) -> User:
-        self.ui.auth_btn.setEnabled(False)
+        self.ui.signInButton.setEnabled(False)
         return self.catalog.get_user()
 
     def set_user_info(self, user: User) -> None:
         if user.nickname:
-            self.ui.auth_btn.setText(user.nickname)
+            self.ui.signInButton.setText(user.nickname)
         else:
-            self.ui.auth_btn.setText(
+            self.ui.signInButton.setText(
                 translate("Other", "Sign in"),
             )
-        self.ui.auth_btn.setEnabled(True)
+        self.ui.signInButton.setEnabled(True)
 
     @override
     def update_page(self) -> None:
-        self.ui.page_label.setText(
+        self.ui.pageLabel.setText(
             f"{translate('Other', 'Page')} {self.request_params.page}",
         )
 
@@ -106,7 +104,7 @@ class ExternalLibraryPage(BasePage):
     @Slot()
     def search(self) -> None:
         self.request_params.page = 1
-        self.request_params.search = self.ui.title_line.text()
+        self.request_params.search = self.ui.searchLineEdit.text()
         self.get_content()
 
 
