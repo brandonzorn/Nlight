@@ -24,6 +24,12 @@ class BasePage(QWidget):
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent=parent)
+        self.setStyleSheet(
+            """
+            QWidget {background: transparent;}
+            QScrollArea {border: none;}
+            """,
+        )
         self.manga_area = MangaArea()
         self.mangas: list[Manga] = []
 
@@ -101,6 +107,4 @@ class BasePage(QWidget):
         self.get_content()
 
 
-__all__ = [
-    "BasePage",
-]
+__all__ = ["BasePage"]

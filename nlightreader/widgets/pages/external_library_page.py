@@ -11,7 +11,6 @@ from nlightreader.models import Manga
 from nlightreader.parsers import ShikimoriLib
 from nlightreader.parsers.catalog import CatalogAuthType, LibParser
 from nlightreader.utils.threads import Worker
-from nlightreader.utils.translator import translate
 from nlightreader.widgets.dialogs import (
     TokenAuthMessageBox,
     UserDataAuthMessageBox,
@@ -80,7 +79,7 @@ class ExternalLibraryPage(BasePage):
     @override
     def update_page(self) -> None:
         self.ui.pageLabel.setText(
-            f"{translate('Other', 'Page')} {self.request_params.page}",
+            f"{self.tr('Page')} {self.request_params.page}",
         )
 
     def auth_success_callback(self, user: User) -> None:
@@ -111,6 +110,4 @@ class ExternalLibraryPage(BasePage):
         self.get_content()
 
 
-__all__ = [
-    "ExternalLibraryPage",
-]
+__all__ = ["ExternalLibraryPage"]

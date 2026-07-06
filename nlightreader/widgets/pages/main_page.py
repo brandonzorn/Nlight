@@ -8,7 +8,6 @@ from data.ui.widgets.facial import Ui_Form
 from nlightreader.controlers import FiltersController
 from nlightreader.models import Manga
 from nlightreader.utils.catalog_manager import USER_CATALOGS
-from nlightreader.utils.translator import translate
 from nlightreader.widgets.dialogs import GenresDialog
 from nlightreader.widgets.items.manga_item import MangaItem
 from nlightreader.widgets.pages.base_page import BasePage
@@ -79,7 +78,7 @@ class MainPage(BasePage):
     @override
     def update_page(self) -> None:
         self.ui.page_label.setText(
-            f"{translate('Other', 'Page')} {self.request_params.page}",
+            f"{self.tr('Page')} {self.request_params.page}",
         )
 
     @Slot()

@@ -7,8 +7,6 @@ from qfluentwidgets import (
     TransparentPushButton,
 )
 
-from nlightreader.utils.translator import translate
-
 
 @unique
 class ContentContainerState(Enum):
@@ -26,14 +24,14 @@ class AbstractContentContainer:
 
         self._fetch_error_widget = TransparentPushButton(
             FluentIcon.CLOUD,
-            translate("Message", "No connection"),
+            self.tr("No connection"),
         )
         self._fetch_error_widget.setEnabled(False)
         self._fetch_error_widget.setVisible(False)
 
         self._no_content_error_widget = TransparentPushButton(
             FluentIcon.CLOUD,
-            translate("Message", "Nothing found"),
+            self.tr("Nothing found"),
         )
         self._no_content_error_widget.setEnabled(False)
         self._no_content_error_widget.setVisible(False)

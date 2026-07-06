@@ -15,12 +15,7 @@ class ImageArea(QWidget, AbstractContentContainer):
         super().__init__()
         self.ui = Ui_ImageArea()
         self.ui.setupUi(self)
-        self.setStyleSheet(
-            """
-            QWidget {background: transparent;}
-            QScrollArea {border: none;}
-            """,
-        )
+
         self._content_widget = self.ui.imageLabel
         self._image_pixmap = None
 

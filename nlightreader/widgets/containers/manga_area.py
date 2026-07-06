@@ -17,12 +17,7 @@ class MangaArea(ScrollArea, AbstractContentContainer):
     def __init__(self) -> None:
         super().__init__()
         self.setWidgetResizable(True)
-        self.setStyleSheet(
-            """
-            QWidget {background: transparent;}
-            QScrollArea {border: none;}
-            """,
-        )
+
         self._column_count = 5
         self._spacing = 12
         self._manga_items: list[MangaItem] = []
@@ -105,6 +100,4 @@ class MangaArea(ScrollArea, AbstractContentContainer):
         return self._scrollAreaWidgetContents
 
 
-__all__ = [
-    "MangaArea",
-]
+__all__ = ["MangaArea"]

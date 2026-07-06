@@ -49,10 +49,10 @@ class MangaDex(AbstractMangaCatalog):
             if isinstance(ru_d, str):
                 manga.add_description(Language.ru, ru_d)
         volumes = dd_get(data, "attributes.lastVolume")
-        if isinstance(volumes, (int, str)):
+        if volumes and isinstance(volumes, (int, str)):
             manga.volumes = int(volumes)
         chapters = dd_get(data, "attributes.lastChapter")
-        if isinstance(chapters, (int, str)):
+        if chapters and isinstance(chapters, (int, str)):
             manga.chapters = int(chapters)
         manga.status = MangaStatus.from_str(
             dd_get(data, "attributes.status"),
@@ -171,7 +171,10 @@ class MangaDex(AbstractMangaCatalog):
         return images
 
     def get_image(self, image: Image) -> bytes | None:
-        return self._client.get_bytes(image.url)
+        url = image.url
+        if url is None:
+            return None
+        return self._client.get_bytes(url)
 
     def get_preview(self, manga: Manga) -> bytes | None:
         url = f"{self._URL_API}/cover"

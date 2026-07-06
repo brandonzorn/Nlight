@@ -257,20 +257,19 @@ class InfoPage(QWidget):
         self.ui.russian_label.setText(self._manga.russian)
         self.ui.status_label.setVisible(bool(self._manga.status))
         self.ui.status_label.setText(
-            f"{translate('Other', 'Status')}: "
-            f"{translate('Status', self._manga.status.to_str())}",
+            f"{self.tr('Status')}: {self.tr(self._manga.status.to_str())}",
         )
         self.ui.volumes_label.setVisible(bool(self._manga.volumes))
         self.ui.chapters_label.setVisible(bool(self._manga.chapters))
         self.ui.volumes_label.setText(
-            f"{translate('Other', 'Volumes')}: {self._manga.volumes}",
+            f"{self.tr('Volumes')}: {self._manga.volumes}",
         )
         self.ui.chapters_label.setText(
-            f"{translate('Other', 'Chapters')}: {self._manga.chapters}",
+            f"{self.tr('Chapters')}: {self._manga.chapters}",
         )
         self.ui.catalog_score_label.setVisible(bool(self._manga.score))
         self.ui.catalog_score_label.setText(
-            f"{translate('Other', 'Rating')}: {self._manga.score}",
+            f"{self.tr('Rating')}: {self._manga.score}",
         )
         self.ui.descriptionTextEdit.setHtml(
             description_to_html(self._manga.get_description() or ""),
