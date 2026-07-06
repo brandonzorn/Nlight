@@ -1,45 +1,44 @@
 from enum import IntEnum, unique
 import logging
-from typing import Self
 
 logger = logging.getLogger(__name__)
 
 
 @unique
 class MangaKind(IntEnum):
-    undefined = 0
-    manga = 1
-    manhwa = 2
-    manhua = 3
-    one_shot = 4
-    doujin = 5
-    ranobe = 6
-    comics = 7
+    UNDEFINED = 0
+    MANGA = 1
+    MANHWA = 2
+    MANHUA = 3
+    ONE_SHOT = 4
+    DOUJIN = 5
+    RANOBE = 6
+    COMICS = 7
 
     @classmethod
-    def from_str(cls, string: str | None) -> Self:
+    def from_str(cls, string: str | None) -> IntEnum:
         def matching_the_pattern(text: str, pattern: tuple) -> bool:
             text = text.lower()
             return any([i in text for i in pattern])
 
         if string is None or string in ("undefined", "Другое"):
-            return cls.undefined
+            return cls.UNDEFINED
         if matching_the_pattern(string, ("manga", "манга")):
-            return cls.manga
+            return cls.MANGA
         if matching_the_pattern(string, ("manhwa", "манхва")):
-            return cls.manhwa
+            return cls.MANHWA
         if matching_the_pattern(string, ("manhua", "маньхуа")):
-            return cls.manhua
+            return cls.MANHUA
         if matching_the_pattern(string, ("one_shot",)):
-            return cls.one_shot
+            return cls.ONE_SHOT
         if matching_the_pattern(string, ("doujin",)):
-            return cls.doujin
+            return cls.DOUJIN
         if matching_the_pattern(string, ("ranobe", "novel")):
-            return cls.ranobe
+            return cls.RANOBE
         if matching_the_pattern(string, ("комикс", "comic")):
-            return cls.comics
+            return cls.COMICS
         logging.warning(f"Unknown manga kind: {string}")
-        return cls.undefined
+        return cls.UNDEFINED
 
     def to_str(self) -> str:
         names = [
@@ -57,25 +56,25 @@ class MangaKind(IntEnum):
 
 @unique
 class MangaStatus(IntEnum):
-    undefined = 0
-    ongoing = 1
-    released = 2
-    frozen = 3
+    UNDEFINED = 0
+    ONGOING = 1
+    RELEASED = 2
+    FROZEN = 3
 
     @classmethod
-    def from_str(cls, string: str | None) -> Self:
+    def from_str(cls, string: str | None) -> IntEnum:
         if string is None or string.lower() in ("undefined", "неизвестно"):
-            return cls.undefined
+            return cls.UNDEFINED
 
         string = string.lower()
         if string in ("ongoing", "в процессе"):
-            return cls.ongoing
+            return cls.ONGOING
         if string in ("released", "completed", "завершено"):
-            return cls.released
+            return cls.RELEASED
         if string in ("frozen", "заморожено"):
-            return cls.frozen
+            return cls.FROZEN
         logger.warning(f"Unknown manga status: {string}")
-        return cls.undefined
+        return cls.UNDEFINED
 
     def to_str(self) -> str:
         names = [

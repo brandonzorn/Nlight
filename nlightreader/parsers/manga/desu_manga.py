@@ -35,7 +35,7 @@ class Desu(AbstractMangaCatalog):
         manga.chapters = int(chapters_data.get("count", 0))
 
         manga.add_description(
-            Language.undefined,
+            Language.UNDEFINED,
             manga_data.get("description", ""),
         )
         return manga
@@ -84,7 +84,7 @@ class Desu(AbstractMangaCatalog):
                 volume_number=str(chapter_data.get("vol", "")),
                 chapter_number=str(chapter_data.get("ch", "")),
                 title=chapter_data.get("title"),
-                language=Language.ru,
+                language=Language.RUSSIAN,
             )
             chapters.append(chapter)
         return chapters

@@ -41,7 +41,7 @@ class LibAnilib(LibBase, AbstractAnimeCatalog):
                 volume_number=None,
                 chapter_number="",
                 title=f"Episode {ep_number}",
-                language=Language.ru,
+                language=Language.RUSSIAN,
             )
             episodes.append(episode)
         return episodes

@@ -45,9 +45,9 @@ class MangaDex(AbstractMangaCatalog):
             en_d = descriptions.get("en")
             ru_d = descriptions.get("ru")
             if isinstance(en_d, str):
-                manga.add_description(Language.en, en_d)
+                manga.add_description(Language.ENGLISH, en_d)
             if isinstance(ru_d, str):
-                manga.add_description(Language.ru, ru_d)
+                manga.add_description(Language.RUSSIAN, ru_d)
         volumes = dd_get(data, "attributes.lastVolume")
         if volumes and isinstance(volumes, (int, str)):
             manga.volumes = int(volumes)

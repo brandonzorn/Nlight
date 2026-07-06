@@ -72,7 +72,7 @@ class FileManager:
     ) -> bool:
         file_name = (
             f"{image.page_number}.txt"
-            if manga.kind == MangaKind.ranobe
+            if manga.kind == MangaKind.RANOBE
             else f"{image.page_number}.jpg"
         )
         return check_file_exists(

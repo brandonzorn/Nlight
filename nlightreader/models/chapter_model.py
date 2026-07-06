@@ -14,7 +14,7 @@ class Chapter(BaseModel):
         volume_number: str | None,
         chapter_number: str | None,
         title: str,
-        language: Language = Language.undefined,
+        language: Language = Language.UNDEFINED,
         translator: str | None = None,
     ) -> None:
         super().__init__(content_id, catalog_id)

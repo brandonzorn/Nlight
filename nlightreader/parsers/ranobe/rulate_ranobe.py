@@ -38,10 +38,10 @@ class Rulate(AbstractRanobeCatalog):
         description_text = hranobe.text
         if description_text:
             manga.add_description(
-                Language.undefined,
+                Language.UNDEFINED,
                 str(description_text),
             )
-        manga.kind = MangaKind.ranobe
+        manga.kind = MangaKind.RANOBE
         return manga
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
@@ -108,7 +108,7 @@ class Rulate(AbstractRanobeCatalog):
                 volume_number=None,
                 chapter_number="",
                 title=name,
-                language=Language.ru,
+                language=Language.RUSSIAN,
             )
             chapters.append(chapter)
         return chapters

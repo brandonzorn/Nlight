@@ -34,7 +34,7 @@ class Remanga(AbstractMangaCatalog):
             manga.preview_url = f"{self._URL}{img}"
 
         manga.add_description(
-            Language.undefined,
+            Language.UNDEFINED,
             response_data.get("description"),
         )
         return manga
@@ -103,7 +103,7 @@ class Remanga(AbstractMangaCatalog):
                 volume_number=str(ch.get("tome")),
                 chapter_number=ch.get("chapter"),
                 title=ch.get("name"),
-                language=Language.ru,
+                language=Language.RUSSIAN,
             )
             chapters.append(chapter)
         return chapters

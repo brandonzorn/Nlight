@@ -51,11 +51,11 @@ class LibBase(AbstractCatalog):
             return manga
 
         if isinstance(summary, str):
-            manga.add_description(Language.ru, summary)
+            manga.add_description(Language.RUSSIAN, summary)
         if isinstance(summary, dict):
             text = dd_get(summary, "content.0.content.0.text")
             if isinstance(text, str):
-                manga.add_description(Language.ru, text)
+                manga.add_description(Language.RUSSIAN, text)
         return manga
 
     @override
@@ -118,7 +118,7 @@ class LibBase(AbstractCatalog):
                 volume_number=i["volume"],
                 chapter_number=i["number"],
                 title=i["name"],
-                language=Language.ru,
+                language=Language.RUSSIAN,
             )
             if branches_data := i.get("branches"):
                 chapter.translator = branches.get(

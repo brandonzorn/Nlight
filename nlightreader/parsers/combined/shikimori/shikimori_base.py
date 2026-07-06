@@ -43,7 +43,7 @@ class ShikimoriBase(AbstractCatalog):
             description = data.get("description")
             if isinstance(description, str):
                 manga.add_description(
-                    Language.undefined,
+                    Language.UNDEFINED,
                     description,
                 )
         return manga

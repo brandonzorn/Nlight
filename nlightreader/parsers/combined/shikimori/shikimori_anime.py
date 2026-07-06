@@ -43,7 +43,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         description = response.get("description")
         if isinstance(description, str):
             manga.add_description(
-                Language.undefined,
+                Language.UNDEFINED,
                 description,
             )
         return manga
@@ -83,7 +83,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
                     volume_number=None,
                     chapter_number="",
                     title=f"Episode {episode_num}",
-                    language=Language.ru,
+                    language=Language.RUSSIAN,
                     translator=translator.translator_text,
                 )
                 chapter.__setattr__(

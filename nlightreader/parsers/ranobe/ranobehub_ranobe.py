@@ -29,14 +29,14 @@ class Ranobehub(AbstractRanobeCatalog):
             return manga
 
         manga.score = response_data.get("rating", 0)
-        manga.kind = MangaKind.ranobe
+        manga.kind = MangaKind.RANOBE
 
         status_name = dd_get(response_data, "status.title")
         if isinstance(status_name, str):
             manga.status = MangaStatus.from_str(status_name)
 
         manga.add_description(
-            Language.undefined,
+            Language.UNDEFINED,
             response_data.get("description"),
         )
         return manga
@@ -89,7 +89,7 @@ class Ranobehub(AbstractRanobeCatalog):
                     volume_number=volume_num,
                     chapter_number=chapter_data.get("num"),
                     title=chapter_data.get("name"),
-                    language=Language.ru,
+                    language=Language.RUSSIAN,
                 )
                 chapters.append(chapter)
         chapters.reverse()

@@ -85,7 +85,7 @@ class AllHentai(AbstractHentaiMangaCatalog):
                 volume_number=volume,
                 chapter_number=chapter_num,
                 title="",
-                language=Language.ru,
+                language=Language.RUSSIAN,
             )
             chapters.append(chapter)
         return chapters

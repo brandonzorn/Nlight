@@ -20,7 +20,7 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
 
     @override
     def get_manga(self, manga: Manga) -> Manga:
-        manga.kind = MangaKind.ranobe
+        manga.kind = MangaKind.RANOBE
         return super().get_manga(manga)
 
     @override

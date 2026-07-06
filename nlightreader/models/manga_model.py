@@ -21,8 +21,8 @@ class Manga(NamedBaseModel):
     ) -> None:
         super().__init__(content_id, catalog_id, name, russian)
 
-        self._kind: MangaKind = MangaKind.undefined
-        self._status: MangaStatus = MangaStatus.undefined
+        self._kind: MangaKind = MangaKind.UNDEFINED
+        self._status: MangaStatus = MangaStatus.UNDEFINED
         self._score: int | float = 0
         self._preview_url: str | None = None
         self._volumes: int = 0
@@ -113,16 +113,16 @@ class Manga(NamedBaseModel):
         self._descriptions.update({language: description})
 
     def get_description(self) -> str | None:
-        if self._descriptions.get(Language.undefined):
-            return self._descriptions.get(Language.undefined)
+        if self._descriptions.get(Language.UNDEFINED):
+            return self._descriptions.get(Language.UNDEFINED)
 
         locale = cfg.get(cfg.language).value.language()
         if locale in (
             QLocale.Language.Russian,
             QLocale.Language.Ukrainian,
-        ) and self._descriptions.get(Language.ru):
-            return self._descriptions.get(Language.ru)
-        return self._descriptions.get(Language.en)
+        ) and self._descriptions.get(Language.RUSSIAN):
+            return self._descriptions.get(Language.RUSSIAN)
+        return self._descriptions.get(Language.ENGLISH)
 
     def descriptions_to_str(self) -> str:
         desc_str = ""
