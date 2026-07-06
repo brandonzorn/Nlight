@@ -7,7 +7,7 @@ from nlightreader.consts.items import MangaDexItems
 from nlightreader.core.enums import Language, LibList, MangaKind, MangaStatus
 from nlightreader.items import RequestForm, User
 from nlightreader.models import Chapter, Genre, Image, Kind, Manga
-from nlightreader.parsers.catalog import LibParser
+from nlightreader.parsers.catalog import CatalogAuthType, LibParser
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.decorators import singleton
 from nlightreader.utils.network import NetworkClient
@@ -22,6 +22,7 @@ except (ModuleNotFoundError, ImportError):
 
 
 class MangaDex(AbstractMangaCatalog):
+    AUTH_TYPE = CatalogAuthType.CREDENTIALS
     CATALOG_ID = 2
     CATALOG_NAME = "MangaDex"
     _FILTERS = MangaDexItems
@@ -39,20 +40,19 @@ class MangaDex(AbstractMangaCatalog):
             return manga
         data = response.get("data", {})
         manga.kind = MangaKind.from_str(data.get("type"))
-        if description := dd_get(data, "attributes.description"):
-            if description.get("en"):
-                manga.add_description(
-                    Language.en,
-                    description.get("en"),
-                )
-            if description.get("ru"):
-                manga.add_description(
-                    Language.ru,
-                    description.get("ru"),
-                )
-        if volumes := dd_get(data, "attributes.lastVolume"):
+        descriptions = dd_get(data, "attributes.description")
+        if isinstance(descriptions, dict):
+            en_d = descriptions.get("en")
+            ru_d = descriptions.get("ru")
+            if isinstance(en_d, str):
+                manga.add_description(Language.en, en_d)
+            if isinstance(ru_d, str):
+                manga.add_description(Language.ru, ru_d)
+        volumes = dd_get(data, "attributes.lastVolume")
+        if isinstance(volumes, (int, str)):
             manga.volumes = int(volumes)
-        if chapters := dd_get(data, "attributes.lastChapter"):
+        chapters = dd_get(data, "attributes.lastChapter")
+        if isinstance(chapters, (int, str)):
             manga.chapters = int(chapters)
         manga.status = MangaStatus.from_str(
             dd_get(data, "attributes.status"),

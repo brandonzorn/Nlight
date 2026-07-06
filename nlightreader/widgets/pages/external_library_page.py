@@ -9,6 +9,7 @@ from nlightreader.core.enums import LibList
 from nlightreader.items import User
 from nlightreader.models import Manga
 from nlightreader.parsers import ShikimoriLib
+from nlightreader.parsers.catalog import CatalogAuthType, LibParser
 from nlightreader.utils.threads import Worker
 from nlightreader.utils.translator import translate
 from nlightreader.widgets.dialogs import (
@@ -52,7 +53,7 @@ class ExternalLibraryPage(BasePage):
         self.ui.previousButton.clicked.connect(self.turn_page_prev)
         self.ui.searchLineEdit.searchSignal.connect(self.search)
         self.ui.signInButton.clicked.connect(self.authorize)
-        self.catalog = ShikimoriLib()
+        self.catalog: LibParser = ShikimoriLib()
         Worker(target=self.get_user_info, callback=self.set_user_info).start()
 
     @override
@@ -73,9 +74,7 @@ class ExternalLibraryPage(BasePage):
         if user.nickname:
             self.ui.signInButton.setText(user.nickname)
         else:
-            self.ui.signInButton.setText(
-                translate("Other", "Sign in"),
-            )
+            self.ui.signInButton.setText(self.tr("Sign in"))
         self.ui.signInButton.setEnabled(True)
 
     @override
@@ -90,10 +89,14 @@ class ExternalLibraryPage(BasePage):
 
     @Slot()
     def authorize(self) -> None:
-        if self.catalog.fields == 1:
-            w = TokenAuthMessageBox(self.catalog, parent=self)
-        else:
-            w = UserDataAuthMessageBox(self.catalog, parent=self)
+        match self.catalog.AUTH_TYPE:
+            case CatalogAuthType.TOKEN:
+                w = TokenAuthMessageBox(self.catalog, parent=self)
+            case CatalogAuthType.CREDENTIALS:
+                w = UserDataAuthMessageBox(self.catalog, parent=self)
+            case _:
+                return
+
         if w.exec():
             self.catalog.session.auth_login(w.get_user_data())
             Worker(

@@ -1,3 +1,5 @@
+from enum import IntEnum
+
 from nlightreader.consts.items.parser_items import ParserItems
 from nlightreader.consts.urls import DEFAULT_HEADERS
 from nlightreader.items import (
@@ -16,7 +18,14 @@ from nlightreader.models import (
 )
 
 
+class CatalogAuthType(IntEnum):
+    NO_AUTH = 0
+    TOKEN = 1
+    CREDENTIALS = 2
+
+
 class AbstractCatalog:
+    AUTH_TYPE: CatalogAuthType = CatalogAuthType.NO_AUTH
     CATALOG_NAME = "CATALOG"
     CATALOG_ID = -1
     is_primary = False
@@ -92,6 +101,8 @@ class AbstractCatalog:
 
 
 class LibParser:
+    AUTH_TYPE: CatalogAuthType = CatalogAuthType.NO_AUTH
+
     def search_manga(self, form: RequestForm) -> list[Manga]:
         return []
 
@@ -116,5 +127,6 @@ class LibParser:
 
 __all__ = [
     "AbstractCatalog",
+    "CatalogAuthType",
     "LibParser",
 ]

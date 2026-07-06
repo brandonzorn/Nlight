@@ -28,7 +28,6 @@ from nlightreader.utils.catalog_manager import get_catalog_by_id
 from nlightreader.utils.database import Database
 from nlightreader.utils.file_manager import FileManager
 from nlightreader.utils.threads import Worker
-from nlightreader.utils.translator import translate
 from nlightreader.widgets.contexts import LibraryMangaMenu, LibraryMenuMode
 
 
@@ -94,8 +93,7 @@ class MangaItem(QWidget):
             self._db.add_manga_library(self._manga)
             InfoBar.success(
                 title=manga_title,
-                content=translate(
-                    "Message",
+                content=self.tr(
                     "Manga {} has been added.",
                 ).format(self._manga.get_name()),
                 duration=info_bar_duration,
@@ -106,8 +104,7 @@ class MangaItem(QWidget):
             self._db.rem_manga_library(self._manga)
             InfoBar.success(
                 title=manga_title,
-                content=translate(
-                    "Message",
+                content=self.tr(
                     "Manga {} has been deleted.",
                 ).format(self._manga.get_name()),
                 duration=info_bar_duration,
@@ -122,8 +119,7 @@ class MangaItem(QWidget):
             FileManager.remove_manga_files(self._manga, self._catalog)
             InfoBar.success(
                 title=manga_title,
-                content=translate(
-                    "Message",
+                content=self.tr(
                     "Files {} have been removed.",
                 ).format(self._manga.get_name()),
                 duration=info_bar_duration,

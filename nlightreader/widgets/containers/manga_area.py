@@ -3,9 +3,7 @@ from typing import override
 from PySide6.QtCore import Qt, QThreadPool
 from PySide6.QtGui import QResizeEvent
 from PySide6.QtWidgets import QGridLayout, QHBoxLayout, QWidget
-from qfluentwidgets import (
-    ScrollArea,
-)
+from qfluentwidgets import ScrollArea
 
 from nlightreader.utils.threads import Thread
 from nlightreader.widgets.containers.content_container import (

@@ -14,7 +14,7 @@ from nlightreader.consts.urls import (
 from nlightreader.core.enums import LibList
 from nlightreader.items import RequestForm, User, UserRate
 from nlightreader.models import Manga
-from nlightreader.parsers.catalog import LibParser
+from nlightreader.parsers.catalog import CatalogAuthType, LibParser
 from nlightreader.parsers.combined.shikimori.shikimori_base import (
     ShikimoriBase,
 )
@@ -31,6 +31,8 @@ except (ModuleNotFoundError, ImportError):
 
 
 class ShikimoriLib(ShikimoriBase, LibParser):
+    AUTH_TYPE = CatalogAuthType.TOKEN
+
     def __init__(self) -> None:
         super().__init__()
         self.fields = 1
