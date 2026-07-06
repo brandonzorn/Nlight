@@ -2,7 +2,7 @@ from PySide6.QtCore import QPoint, Signal, Slot
 from PySide6.QtWidgets import QTreeWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
-from data.ui.widgets.history import Ui_Form
+from data.ui.widgets.history import Ui_HistoryPage
 from nlightreader.consts.colors import ItemsIcons
 from nlightreader.items import HistoryNote
 from nlightreader.models import Manga
@@ -15,12 +15,10 @@ class HistoryPage(QWidget):
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent=parent)
-        self.ui = Ui_Form()
+        self.ui = Ui_HistoryPage()
         self.ui.setupUi(self)
 
         self.ui.delete_btn.setIcon(FluentIcon.DELETE)
-
-        self.setObjectName("FormHistory")
 
         self.ui.items_tree.customContextMenuRequested.connect(
             self.on_context_menu,
@@ -132,6 +130,4 @@ class HistoryPage(QWidget):
         self.update_content()
 
 
-__all__ = [
-    "HistoryPage",
-]
+__all__ = ["HistoryPage"]
