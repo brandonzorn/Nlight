@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'library.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -18,96 +18,98 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QHBoxLayout, QSizePolicy, QSpacerItem,
     QVBoxLayout, QWidget)
 
-from qfluentwidgets import (CardWidget, PushButton, SimpleCardWidget)
+from qfluentwidgets import PushButton
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        if not Form.objectName():
-            Form.setObjectName(u"Form")
-        Form.resize(562, 350)
-        Form.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
-        self.horizontalLayout = QHBoxLayout(Form)
+class Ui_LibraryPage(object):
+    def setupUi(self, LibraryPage):
+        if not LibraryPage.objectName():
+            LibraryPage.setObjectName(u"LibraryPage")
+        LibraryPage.resize(640, 480)
+        LibraryPage.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
+        self.horizontalLayout = QHBoxLayout(LibraryPage)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.items_frame = SimpleCardWidget(Form)
-        self.items_frame.setObjectName(u"items_frame")
+        self.itemsWidget = QWidget(LibraryPage)
+        self.itemsWidget.setObjectName(u"itemsWidget")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.items_frame.sizePolicy().hasHeightForWidth())
-        self.items_frame.setSizePolicy(sizePolicy)
-        self.items_layout = QVBoxLayout(self.items_frame)
+        sizePolicy.setHeightForWidth(self.itemsWidget.sizePolicy().hasHeightForWidth())
+        self.itemsWidget.setSizePolicy(sizePolicy)
+        self.items_layout = QVBoxLayout(self.itemsWidget)
+        self.items_layout.setSpacing(0)
         self.items_layout.setObjectName(u"items_layout")
+        self.items_layout.setContentsMargins(0, 0, 0, 0)
 
-        self.horizontalLayout.addWidget(self.items_frame)
+        self.horizontalLayout.addWidget(self.itemsWidget)
 
-        self.lists_frame = SimpleCardWidget(Form)
-        self.lists_frame.setObjectName(u"lists_frame")
-        self.verticalLayout_2 = QVBoxLayout(self.lists_frame)
+        self.libraryListsWidget = QWidget(LibraryPage)
+        self.libraryListsWidget.setObjectName(u"libraryListsWidget")
+        self.verticalLayout_2 = QVBoxLayout(self.libraryListsWidget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.planned_btn = PushButton(self.lists_frame)
-        self.planned_btn.setObjectName(u"planned_btn")
-        self.planned_btn.setCheckable(True)
-        self.planned_btn.setChecked(True)
-        self.planned_btn.setAutoExclusive(True)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.plannedButton = PushButton(self.libraryListsWidget)
+        self.plannedButton.setObjectName(u"plannedButton")
+        self.plannedButton.setCheckable(True)
+        self.plannedButton.setChecked(True)
+        self.plannedButton.setAutoExclusive(True)
 
-        self.verticalLayout_2.addWidget(self.planned_btn)
+        self.verticalLayout_2.addWidget(self.plannedButton)
 
-        self.completed_btn = PushButton(self.lists_frame)
-        self.completed_btn.setObjectName(u"completed_btn")
-        self.completed_btn.setCheckable(True)
-        self.completed_btn.setAutoExclusive(True)
+        self.completedButton = PushButton(self.libraryListsWidget)
+        self.completedButton.setObjectName(u"completedButton")
+        self.completedButton.setCheckable(True)
+        self.completedButton.setAutoExclusive(True)
 
-        self.verticalLayout_2.addWidget(self.completed_btn)
+        self.verticalLayout_2.addWidget(self.completedButton)
 
-        self.reading_btn = PushButton(self.lists_frame)
-        self.reading_btn.setObjectName(u"reading_btn")
-        self.reading_btn.setCheckable(True)
-        self.reading_btn.setAutoExclusive(True)
+        self.readingButton = PushButton(self.libraryListsWidget)
+        self.readingButton.setObjectName(u"readingButton")
+        self.readingButton.setCheckable(True)
+        self.readingButton.setAutoExclusive(True)
 
-        self.verticalLayout_2.addWidget(self.reading_btn)
+        self.verticalLayout_2.addWidget(self.readingButton)
 
-        self.re_reading_btn = PushButton(self.lists_frame)
-        self.re_reading_btn.setObjectName(u"re_reading_btn")
-        self.re_reading_btn.setCheckable(True)
-        self.re_reading_btn.setAutoExclusive(True)
+        self.reReadingButton = PushButton(self.libraryListsWidget)
+        self.reReadingButton.setObjectName(u"reReadingButton")
+        self.reReadingButton.setCheckable(True)
+        self.reReadingButton.setAutoExclusive(True)
 
-        self.verticalLayout_2.addWidget(self.re_reading_btn)
+        self.verticalLayout_2.addWidget(self.reReadingButton)
 
-        self.on_hold_btn = PushButton(self.lists_frame)
-        self.on_hold_btn.setObjectName(u"on_hold_btn")
-        self.on_hold_btn.setCheckable(True)
-        self.on_hold_btn.setAutoExclusive(True)
+        self.onHoldButton = PushButton(self.libraryListsWidget)
+        self.onHoldButton.setObjectName(u"onHoldButton")
+        self.onHoldButton.setCheckable(True)
+        self.onHoldButton.setAutoExclusive(True)
 
-        self.verticalLayout_2.addWidget(self.on_hold_btn)
+        self.verticalLayout_2.addWidget(self.onHoldButton)
 
-        self.dropped_btn = PushButton(self.lists_frame)
-        self.dropped_btn.setObjectName(u"dropped_btn")
-        self.dropped_btn.setCheckable(True)
-        self.dropped_btn.setAutoExclusive(True)
+        self.droppedButton = PushButton(self.libraryListsWidget)
+        self.droppedButton.setObjectName(u"droppedButton")
+        self.droppedButton.setCheckable(True)
+        self.droppedButton.setAutoExclusive(True)
 
-        self.verticalLayout_2.addWidget(self.dropped_btn)
+        self.verticalLayout_2.addWidget(self.droppedButton)
 
         self.verticalSpacer = QSpacerItem(20, 91, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_2.addItem(self.verticalSpacer)
 
 
-        self.horizontalLayout.addWidget(self.lists_frame)
+        self.horizontalLayout.addWidget(self.libraryListsWidget)
 
 
-        self.retranslateUi(Form)
+        self.retranslateUi(LibraryPage)
 
-        QMetaObject.connectSlotsByName(Form)
+        QMetaObject.connectSlotsByName(LibraryPage)
     # setupUi
 
-    def retranslateUi(self, Form):
-        self.planned_btn.setText(QCoreApplication.translate("Form", u"Planned", None))
-        self.completed_btn.setText(QCoreApplication.translate("Form", u"Completed", None))
-        self.reading_btn.setText(QCoreApplication.translate("Form", u"Reading", None))
-        self.re_reading_btn.setText(QCoreApplication.translate("Form", u"Re-reading", None))
-        self.on_hold_btn.setText(QCoreApplication.translate("Form", u"On hold", None))
-        self.dropped_btn.setText(QCoreApplication.translate("Form", u"Dropped", None))
+    def retranslateUi(self, LibraryPage):
+        self.plannedButton.setText(QCoreApplication.translate("LibraryPage", u"Planned", None))
+        self.completedButton.setText(QCoreApplication.translate("LibraryPage", u"Completed", None))
+        self.readingButton.setText(QCoreApplication.translate("LibraryPage", u"Reading", None))
+        self.reReadingButton.setText(QCoreApplication.translate("LibraryPage", u"Re-reading", None))
+        self.onHoldButton.setText(QCoreApplication.translate("LibraryPage", u"On hold", None))
+        self.droppedButton.setText(QCoreApplication.translate("LibraryPage", u"Dropped", None))
         pass
     # retranslateUi
 
