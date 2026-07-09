@@ -14,13 +14,14 @@ class Language(IntEnum):
 
     @classmethod
     def from_str(cls, string: str) -> IntEnum:
-        if string in ("en", "eng"):
+        string = string.lower()
+        if string in ("en", "english"):
             return cls.ENGLISH
-        if string in ("ru", "rus"):
+        if string in ("ru", "russian"):
             return cls.RUSSIAN
-        if string in ("uk", "ukr"):
+        if string in ("uk", "ukrainian"):
             return cls.UKRAINIAN
-        if string in ("jp", "jap"):
+        if string in ("jp", "japanese"):
             return cls.JAPANESE
         if string in ("undefined",):
             return cls.UNDEFINED

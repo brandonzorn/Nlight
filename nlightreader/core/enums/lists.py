@@ -1,5 +1,4 @@
 from enum import IntEnum, unique
-from typing import Self
 
 LIB_LISTS = (
     "planned",
@@ -21,7 +20,7 @@ class LibList(IntEnum):
     dropped = 5
 
     @classmethod
-    def from_str(cls, string: str) -> Self:
+    def from_str(cls, string: str) -> IntEnum:
         string = string.lower()
         if string in ("planned",):
             return cls.planned

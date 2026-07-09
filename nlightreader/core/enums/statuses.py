@@ -15,27 +15,31 @@ class MangaKind(IntEnum):
     RANOBE = 6
     COMICS = 7
 
+    @staticmethod
+    def _matching_the_pattern(text: str, pattern: tuple) -> bool:
+        text = text.lower()
+        return any([i in text for i in pattern])
+
     @classmethod
     def from_str(cls, string: str | None) -> IntEnum:
-        def matching_the_pattern(text: str, pattern: tuple) -> bool:
-            text = text.lower()
-            return any([i in text for i in pattern])
-
-        if string is None or string in ("undefined", "Другое"):
+        if string is None or cls._matching_the_pattern(
+            string,
+            ("undefined", "Другое"),
+        ):
             return cls.UNDEFINED
-        if matching_the_pattern(string, ("manga", "манга")):
+        if cls._matching_the_pattern(string, ("manga", "манга")):
             return cls.MANGA
-        if matching_the_pattern(string, ("manhwa", "манхва")):
+        if cls._matching_the_pattern(string, ("manhwa", "манхва")):
             return cls.MANHWA
-        if matching_the_pattern(string, ("manhua", "маньхуа")):
+        if cls._matching_the_pattern(string, ("manhua", "маньхуа")):
             return cls.MANHUA
-        if matching_the_pattern(string, ("one_shot",)):
+        if cls._matching_the_pattern(string, ("one_shot",)):
             return cls.ONE_SHOT
-        if matching_the_pattern(string, ("doujin",)):
+        if cls._matching_the_pattern(string, ("doujin",)):
             return cls.DOUJIN
-        if matching_the_pattern(string, ("ranobe", "novel")):
+        if cls._matching_the_pattern(string, ("ranobe", "novel")):
             return cls.RANOBE
-        if matching_the_pattern(string, ("комикс", "comic")):
+        if cls._matching_the_pattern(string, ("комикс", "comic")):
             return cls.COMICS
         logging.warning(f"Unknown manga kind: {string}")
         return cls.UNDEFINED
@@ -63,10 +67,12 @@ class MangaStatus(IntEnum):
 
     @classmethod
     def from_str(cls, string: str | None) -> IntEnum:
-        if string is None or string.lower() in ("undefined", "неизвестно"):
+        if string is None:
             return cls.UNDEFINED
 
         string = string.lower()
+        if string in ("undefined", "неизвестно"):
+            return cls.UNDEFINED
         if string in ("ongoing", "в процессе"):
             return cls.ONGOING
         if string in ("released", "completed", "завершено"):
