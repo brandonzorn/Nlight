@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>MainPage</class>
+ <widget class="QWidget" name="MainPage">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>860</width>
-    <height>508</height>
+    <width>737</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="locale">
@@ -15,33 +15,40 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_5">
    <property name="leftMargin">
-    <number>0</number>
+    <number>9</number>
    </property>
    <property name="topMargin">
-    <number>0</number>
+    <number>9</number>
    </property>
    <property name="rightMargin">
-    <number>0</number>
+    <number>9</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>9</number>
    </property>
    <item>
     <layout class="QVBoxLayout" name="search">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
      <item>
-      <widget class="SimpleCardWidget" name="items_frame">
+      <widget class="QWidget" name="itemsWidget" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <layout class="QVBoxLayout" name="items_layout"/>
-      </widget>
-     </item>
-     <item>
-      <widget class="QWidget" name="search_frame">
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <layout class="QVBoxLayout" name="itemsLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -54,60 +61,100 @@
         <property name="bottomMargin">
          <number>0</number>
         </property>
-        <item>
-         <widget class="SimpleCardWidget" name="text_frame">
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <widget class="SearchLineEdit" name="title_line">
-             <property name="placeholderText">
-              <string>Search</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="PushButton" name="filter_btn">
-             <property name="text">
-              <string>Filters</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="SimpleCardWidget" name="page_frame">
-          <layout class="QHBoxLayout" name="horizontalLayout_9">
-           <item>
-            <widget class="ToolButton" name="prev_btn">
-             <property name="popupMode">
-              <enum>QToolButton::DelayedPopup</enum>
-             </property>
-             <property name="arrowType">
-              <enum>Qt::NoArrow</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="BodyLabel" name="page_label">
-             <property name="text">
-              <string>Page 1</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="ToolButton" name="next_btn"/>
-           </item>
-          </layout>
-         </widget>
-        </item>
        </layout>
       </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="text_frame">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="SearchLineEdit" name="title_line">
+            <property name="placeholderText">
+             <string>Search</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="PushButton" name="filter_btn">
+            <property name="text">
+             <string>Filters</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="page_frame">
+         <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="ToolButton" name="prev_btn">
+            <property name="popupMode">
+             <enum>QToolButton::ToolButtonPopupMode::DelayedPopup</enum>
+            </property>
+            <property name="arrowType">
+             <enum>Qt::ArrowType::NoArrow</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="BodyLabel" name="page_label">
+            <property name="text">
+             <string>Page</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ToolButton" name="next_btn"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -133,8 +180,23 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="ElevatedCardWidget" name="catalogs_frame">
+       <widget class="CardWidget" name="catalogs_frame">
         <layout class="QVBoxLayout" name="verticalLayout_4">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="ListWidget" name="catalogs_list">
            <property name="sizePolicy">
@@ -164,7 +226,7 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="SimpleCardWidget" name="orders_frame">
+          <widget class="CardWidget" name="orders_frame">
            <layout class="QVBoxLayout" name="verticalLayout">
             <item>
              <widget class="BodyLabel" name="label">
@@ -180,7 +242,7 @@
           </widget>
          </item>
          <item>
-          <widget class="SimpleCardWidget" name="kinds_frame">
+          <widget class="CardWidget" name="kinds_frame">
            <layout class="QVBoxLayout" name="verticalLayout_5">
             <item>
              <widget class="BodyLabel" name="label_2">
@@ -196,12 +258,31 @@
           </widget>
          </item>
          <item>
-          <widget class="SimpleCardWidget" name="genres_frame">
-           <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <widget class="QFrame" name="moreFiltersWidget">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="PushButton" name="catalogs_btn">
+              <property name="text">
+               <string>Catalogs</string>
+              </property>
+             </widget>
+            </item>
             <item>
              <widget class="PushButton" name="genres_btn">
               <property name="contextMenuPolicy">
-               <enum>Qt::CustomContextMenu</enum>
+               <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
               </property>
               <property name="text">
                <string>Genres list</string>
@@ -212,22 +293,9 @@
           </widget>
          </item>
          <item>
-          <widget class="SimpleCardWidget" name="filter_catalog_frame">
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
-             <widget class="PushButton" name="catalogs_btn">
-              <property name="text">
-               <string>Catalogs</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
           <spacer name="verticalSpacer">
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Orientation::Vertical</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -238,8 +306,20 @@
           </spacer>
          </item>
          <item>
-          <widget class="SimpleCardWidget" name="filter_actions_frame">
+          <widget class="QFrame" name="filter_actions_frame">
            <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
             <item>
              <widget class="PushButton" name="reset_btn">
               <property name="text">
@@ -267,6 +347,12 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>CardWidget</class>
+   <extends>QFrame</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>PushButton</class>
    <extends>QPushButton</extends>
    <header>qfluentwidgets</header>
@@ -275,24 +361,6 @@
    <class>ToolButton</class>
    <extends>QToolButton</extends>
    <header>qfluentwidgets</header>
-  </customwidget>
-  <customwidget>
-   <class>CardWidget</class>
-   <extends>QFrame</extends>
-   <header>qfluentwidgets</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>ElevatedCardWidget</class>
-   <extends>SimpleCardWidget</extends>
-   <header>qfluentwidgets</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>SimpleCardWidget</class>
-   <extends>CardWidget</extends>
-   <header>qfluentwidgets</header>
-   <container>1</container>
   </customwidget>
   <customwidget>
    <class>BodyLabel</class>

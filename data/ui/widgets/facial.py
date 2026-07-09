@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'facial.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -15,46 +15,47 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QListWidgetItem,
-    QSizePolicy, QSpacerItem, QToolButton, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
+    QListWidgetItem, QSizePolicy, QSpacerItem, QToolButton,
+    QVBoxLayout, QWidget)
 
-from qfluentwidgets import (BodyLabel, CardWidget, ElevatedCardWidget, LineEdit,
-    ListWidget, PushButton, SearchLineEdit, SimpleCardWidget,
-    ToolButton)
+from qfluentwidgets import (BodyLabel, CardWidget, LineEdit, ListWidget,
+    PushButton, SearchLineEdit, ToolButton)
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        if not Form.objectName():
-            Form.setObjectName(u"Form")
-        Form.resize(860, 508)
-        Form.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
-        self.horizontalLayout_5 = QHBoxLayout(Form)
+class Ui_MainPage(object):
+    def setupUi(self, MainPage):
+        if not MainPage.objectName():
+            MainPage.setObjectName(u"MainPage")
+        MainPage.resize(737, 480)
+        MainPage.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
+        self.horizontalLayout_5 = QHBoxLayout(MainPage)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_5.setContentsMargins(9, 9, 9, 9)
         self.search = QVBoxLayout()
         self.search.setObjectName(u"search")
-        self.items_frame = SimpleCardWidget(Form)
-        self.items_frame.setObjectName(u"items_frame")
+        self.search.setContentsMargins(0, 0, -1, 0)
+        self.itemsWidget = QWidget(MainPage)
+        self.itemsWidget.setObjectName(u"itemsWidget")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.items_frame.sizePolicy().hasHeightForWidth())
-        self.items_frame.setSizePolicy(sizePolicy)
-        self.items_layout = QVBoxLayout(self.items_frame)
-        self.items_layout.setObjectName(u"items_layout")
+        sizePolicy.setHeightForWidth(self.itemsWidget.sizePolicy().hasHeightForWidth())
+        self.itemsWidget.setSizePolicy(sizePolicy)
+        self.itemsLayout = QVBoxLayout(self.itemsWidget)
+        self.itemsLayout.setSpacing(0)
+        self.itemsLayout.setObjectName(u"itemsLayout")
+        self.itemsLayout.setContentsMargins(0, 0, 0, 0)
 
-        self.search.addWidget(self.items_frame)
+        self.search.addWidget(self.itemsWidget)
 
-        self.search_frame = QWidget(Form)
-        self.search_frame.setObjectName(u"search_frame")
-        self.horizontalLayout_3 = QHBoxLayout(self.search_frame)
+        self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.text_frame = SimpleCardWidget(self.search_frame)
+        self.text_frame = QFrame(MainPage)
         self.text_frame.setObjectName(u"text_frame")
         self.horizontalLayout = QHBoxLayout(self.text_frame)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.title_line = SearchLineEdit(self.text_frame)
         self.title_line.setObjectName(u"title_line")
 
@@ -70,14 +71,15 @@ class Ui_Form(object):
 
         self.horizontalLayout_3.addWidget(self.text_frame)
 
-        self.page_frame = SimpleCardWidget(self.search_frame)
+        self.page_frame = QFrame(MainPage)
         self.page_frame.setObjectName(u"page_frame")
         self.horizontalLayout_9 = QHBoxLayout(self.page_frame)
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
         self.prev_btn = ToolButton(self.page_frame)
         self.prev_btn.setObjectName(u"prev_btn")
-        self.prev_btn.setPopupMode(QToolButton.DelayedPopup)
-        self.prev_btn.setArrowType(Qt.NoArrow)
+        self.prev_btn.setPopupMode(QToolButton.ToolButtonPopupMode.DelayedPopup)
+        self.prev_btn.setArrowType(Qt.ArrowType.NoArrow)
 
         self.horizontalLayout_9.addWidget(self.prev_btn)
 
@@ -95,12 +97,12 @@ class Ui_Form(object):
         self.horizontalLayout_3.addWidget(self.page_frame)
 
 
-        self.search.addWidget(self.search_frame)
+        self.search.addLayout(self.horizontalLayout_3)
 
 
         self.horizontalLayout_5.addLayout(self.search)
 
-        self.all_filters = QWidget(Form)
+        self.all_filters = QWidget(MainPage)
         self.all_filters.setObjectName(u"all_filters")
         sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
@@ -110,10 +112,12 @@ class Ui_Form(object):
         self.horizontalLayout_6 = QHBoxLayout(self.all_filters)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
-        self.catalogs_frame = ElevatedCardWidget(self.all_filters)
+        self.catalogs_frame = CardWidget(self.all_filters)
         self.catalogs_frame.setObjectName(u"catalogs_frame")
         self.verticalLayout_4 = QVBoxLayout(self.catalogs_frame)
+        self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.catalogs_list = ListWidget(self.catalogs_frame)
         self.catalogs_list.setObjectName(u"catalogs_list")
         sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
@@ -132,7 +136,7 @@ class Ui_Form(object):
         self.verticalLayout_2 = QVBoxLayout(self.filters_widget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.orders_frame = SimpleCardWidget(self.filters_widget)
+        self.orders_frame = CardWidget(self.filters_widget)
         self.orders_frame.setObjectName(u"orders_frame")
         self.verticalLayout = QVBoxLayout(self.orders_frame)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -149,7 +153,7 @@ class Ui_Form(object):
 
         self.verticalLayout_2.addWidget(self.orders_frame)
 
-        self.kinds_frame = SimpleCardWidget(self.filters_widget)
+        self.kinds_frame = CardWidget(self.filters_widget)
         self.kinds_frame.setObjectName(u"kinds_frame")
         self.verticalLayout_5 = QVBoxLayout(self.kinds_frame)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
@@ -166,39 +170,34 @@ class Ui_Form(object):
 
         self.verticalLayout_2.addWidget(self.kinds_frame)
 
-        self.genres_frame = SimpleCardWidget(self.filters_widget)
-        self.genres_frame.setObjectName(u"genres_frame")
-        self.horizontalLayout_8 = QHBoxLayout(self.genres_frame)
-        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
-        self.genres_btn = PushButton(self.genres_frame)
-        self.genres_btn.setObjectName(u"genres_btn")
-        self.genres_btn.setContextMenuPolicy(Qt.CustomContextMenu)
-
-        self.horizontalLayout_8.addWidget(self.genres_btn)
-
-
-        self.verticalLayout_2.addWidget(self.genres_frame)
-
-        self.filter_catalog_frame = SimpleCardWidget(self.filters_widget)
-        self.filter_catalog_frame.setObjectName(u"filter_catalog_frame")
-        self.horizontalLayout_4 = QHBoxLayout(self.filter_catalog_frame)
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.catalogs_btn = PushButton(self.filter_catalog_frame)
+        self.moreFiltersWidget = QFrame(self.filters_widget)
+        self.moreFiltersWidget.setObjectName(u"moreFiltersWidget")
+        self.horizontalLayout_2 = QHBoxLayout(self.moreFiltersWidget)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.catalogs_btn = PushButton(self.moreFiltersWidget)
         self.catalogs_btn.setObjectName(u"catalogs_btn")
 
-        self.horizontalLayout_4.addWidget(self.catalogs_btn)
+        self.horizontalLayout_2.addWidget(self.catalogs_btn)
+
+        self.genres_btn = PushButton(self.moreFiltersWidget)
+        self.genres_btn.setObjectName(u"genres_btn")
+        self.genres_btn.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+
+        self.horizontalLayout_2.addWidget(self.genres_btn)
 
 
-        self.verticalLayout_2.addWidget(self.filter_catalog_frame)
+        self.verticalLayout_2.addWidget(self.moreFiltersWidget)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_2.addItem(self.verticalSpacer)
 
-        self.filter_actions_frame = SimpleCardWidget(self.filters_widget)
+        self.filter_actions_frame = QFrame(self.filters_widget)
         self.filter_actions_frame.setObjectName(u"filter_actions_frame")
         self.horizontalLayout_7 = QHBoxLayout(self.filter_actions_frame)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.reset_btn = PushButton(self.filter_actions_frame)
         self.reset_btn.setObjectName(u"reset_btn")
 
@@ -219,21 +218,21 @@ class Ui_Form(object):
         self.horizontalLayout_5.addWidget(self.all_filters)
 
 
-        self.retranslateUi(Form)
+        self.retranslateUi(MainPage)
 
-        QMetaObject.connectSlotsByName(Form)
+        QMetaObject.connectSlotsByName(MainPage)
     # setupUi
 
-    def retranslateUi(self, Form):
-        self.title_line.setPlaceholderText(QCoreApplication.translate("Form", u"Search", None))
-        self.filter_btn.setText(QCoreApplication.translate("Form", u"Filters", None))
-        self.page_label.setText(QCoreApplication.translate("Form", u"Page 1", None))
-        self.label.setText(QCoreApplication.translate("Form", u"Order", None))
-        self.label_2.setText(QCoreApplication.translate("Form", u"Kind", None))
-        self.genres_btn.setText(QCoreApplication.translate("Form", u"Genres list", None))
-        self.catalogs_btn.setText(QCoreApplication.translate("Form", u"Catalogs", None))
-        self.reset_btn.setText(QCoreApplication.translate("Form", u"Reset", None))
-        self.apply_btn.setText(QCoreApplication.translate("Form", u"Apply", None))
+    def retranslateUi(self, MainPage):
+        self.title_line.setPlaceholderText(QCoreApplication.translate("MainPage", u"Search", None))
+        self.filter_btn.setText(QCoreApplication.translate("MainPage", u"Filters", None))
+        self.page_label.setText(QCoreApplication.translate("MainPage", u"Page", None))
+        self.label.setText(QCoreApplication.translate("MainPage", u"Order", None))
+        self.label_2.setText(QCoreApplication.translate("MainPage", u"Kind", None))
+        self.catalogs_btn.setText(QCoreApplication.translate("MainPage", u"Catalogs", None))
+        self.genres_btn.setText(QCoreApplication.translate("MainPage", u"Genres list", None))
+        self.reset_btn.setText(QCoreApplication.translate("MainPage", u"Reset", None))
+        self.apply_btn.setText(QCoreApplication.translate("MainPage", u"Apply", None))
         pass
     # retranslateUi
 

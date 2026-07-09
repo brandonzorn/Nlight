@@ -4,7 +4,7 @@ from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import FluentIcon
 
-from data.ui.widgets.facial import Ui_Form
+from data.ui.widgets.facial import Ui_MainPage
 from nlightreader.controlers import FiltersController
 from nlightreader.models import Manga
 from nlightreader.utils.catalog_manager import USER_CATALOGS
@@ -16,16 +16,14 @@ from nlightreader.widgets.pages.base_page import BasePage
 class MainPage(BasePage):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent=parent)
-        self.ui = Ui_Form()
+        self.ui = Ui_MainPage()
         self.ui.setupUi(self)
 
         self.ui.next_btn.setIcon(FluentIcon.RIGHT_ARROW)
         self.ui.prev_btn.setIcon(FluentIcon.LEFT_ARROW)
         self.ui.filter_btn.setIcon(FluentIcon.FILTER)
 
-        self.setObjectName("FormFacial")
-
-        self.manga_area.install(self.ui.items_layout)
+        self.manga_area.install(self.ui.itemsLayout)
 
         self.ui.next_btn.clicked.connect(self.turn_page_next)
         self.ui.prev_btn.clicked.connect(self.turn_page_prev)
@@ -119,7 +117,7 @@ class MainPage(BasePage):
         genres = self.catalog.get_genres()
         self.ui.kinds_frame.setVisible(bool(kinds))
         self.ui.orders_frame.setVisible(bool(orders))
-        self.ui.genres_frame.setVisible(bool(genres))
+        self.ui.genres_btn.setVisible(bool(genres))
         self.__filters_controller.add_orders(orders)
         self.__filters_controller.add_kinds(kinds)
         self.__filters_controller.add_genres(genres)
