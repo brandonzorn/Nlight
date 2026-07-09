@@ -133,7 +133,7 @@ class ReaderWindow(SimpleCardWidget):
                 if self._db.get_complete_status(chapter):
                     ch_item.setIcon(ItemsIcons.READ.qicon())
                 else:
-                    ch_item.setIcon(ItemsIcons.UNREAD.qicon())
+                    ch_item.setIcon(ItemsIcons.UNREAD)
             self.ui.chaptersList.addItem(ch_item)
 
     @Slot()
