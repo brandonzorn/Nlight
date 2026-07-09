@@ -27,20 +27,20 @@ class Ui_InfoPage(object):
     def setupUi(self, InfoPage):
         if not InfoPage.objectName():
             InfoPage.setObjectName(u"InfoPage")
-        InfoPage.resize(736, 531)
+        InfoPage.resize(756, 531)
         InfoPage.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
-        self.horizontalLayout_4 = QHBoxLayout(InfoPage)
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.pageLayout = QHBoxLayout(InfoPage)
+        self.pageLayout.setObjectName(u"pageLayout")
         self.scrollArea = ScrollArea(InfoPage)
         self.scrollArea.setObjectName(u"scrollArea")
         self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 440, 982))
-        self.verticalLayout = QVBoxLayout(self.scrollAreaWidgetContents)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(0, 0, 18, 0)
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, -123, 460, 960))
+        self.scrollAreaVLayout = QVBoxLayout(self.scrollAreaWidgetContents)
+        self.scrollAreaVLayout.setObjectName(u"scrollAreaVLayout")
+        self.scrollAreaVLayout.setContentsMargins(0, 0, 15, 0)
         self.headerWidget = SimpleCardWidget(self.scrollAreaWidgetContents)
         self.headerWidget.setObjectName(u"headerWidget")
         self.headerWidget.setFrameShape(QFrame.Shape.StyledPanel)
@@ -94,57 +94,63 @@ class Ui_InfoPage(object):
         self.headerHLayout.addLayout(self.headerContentVLayout)
 
 
-        self.verticalLayout.addWidget(self.headerWidget)
+        self.scrollAreaVLayout.addWidget(self.headerWidget)
 
-        self.mangaVLayout = QVBoxLayout()
-        self.mangaVLayout.setObjectName(u"mangaVLayout")
-        self.infoHLayout = QHBoxLayout()
+        self.infoWidget = QWidget(self.scrollAreaWidgetContents)
+        self.infoWidget.setObjectName(u"infoWidget")
+        self.infoHLayout = QHBoxLayout(self.infoWidget)
         self.infoHLayout.setObjectName(u"infoHLayout")
-        self.previewWidget = SimpleCardWidget(self.scrollAreaWidgetContents)
+        self.infoHLayout.setContentsMargins(0, 0, 0, 0)
+        self.previewWidget = SimpleCardWidget(self.infoWidget)
         self.previewWidget.setObjectName(u"previewWidget")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.previewWidget.sizePolicy().hasHeightForWidth())
         self.previewWidget.setSizePolicy(sizePolicy)
         self.previewLayout = QVBoxLayout(self.previewWidget)
+        self.previewLayout.setSpacing(0)
         self.previewLayout.setObjectName(u"previewLayout")
+        self.previewLayout.setContentsMargins(3, 3, 3, 3)
         self.imageLabel = ImageLabel(self.previewWidget)
         self.imageLabel.setObjectName(u"imageLabel")
-        self.imageLabel.setScaledContents(True)
-        self.imageLabel.setTextInteractionFlags(Qt.TextInteractionFlag.NoTextInteraction)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.imageLabel.sizePolicy().hasHeightForWidth())
+        self.imageLabel.setSizePolicy(sizePolicy1)
 
         self.previewLayout.addWidget(self.imageLabel)
 
 
         self.infoHLayout.addWidget(self.previewWidget)
 
-        self.title_frame = SimpleCardWidget(self.scrollAreaWidgetContents)
-        self.title_frame.setObjectName(u"title_frame")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.title_frame.sizePolicy().hasHeightForWidth())
-        self.title_frame.setSizePolicy(sizePolicy1)
-        self.verticalLayout_8 = QVBoxLayout(self.title_frame)
+        self.titleWidget = SimpleCardWidget(self.infoWidget)
+        self.titleWidget.setObjectName(u"titleWidget")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.titleWidget.sizePolicy().hasHeightForWidth())
+        self.titleWidget.setSizePolicy(sizePolicy2)
+        self.verticalLayout_8 = QVBoxLayout(self.titleWidget)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.name_label = BodyLabel(self.title_frame)
+        self.name_label = BodyLabel(self.titleWidget)
         self.name_label.setObjectName(u"name_label")
         self.name_label.setWordWrap(True)
 
         self.verticalLayout_8.addWidget(self.name_label)
 
-        self.russian_label = BodyLabel(self.title_frame)
+        self.russian_label = BodyLabel(self.titleWidget)
         self.russian_label.setObjectName(u"russian_label")
 
         self.verticalLayout_8.addWidget(self.russian_label)
 
-        self.status_label = BodyLabel(self.title_frame)
+        self.status_label = BodyLabel(self.titleWidget)
         self.status_label.setObjectName(u"status_label")
 
         self.verticalLayout_8.addWidget(self.status_label)
 
-        self.catalog_score_label = BodyLabel(self.title_frame)
+        self.catalog_score_label = BodyLabel(self.titleWidget)
         self.catalog_score_label.setObjectName(u"catalog_score_label")
 
         self.verticalLayout_8.addWidget(self.catalog_score_label)
@@ -153,81 +159,86 @@ class Ui_InfoPage(object):
 
         self.verticalLayout_8.addItem(self.verticalSpacer)
 
-        self.volumes_label = BodyLabel(self.title_frame)
+        self.volumes_label = BodyLabel(self.titleWidget)
         self.volumes_label.setObjectName(u"volumes_label")
 
         self.verticalLayout_8.addWidget(self.volumes_label)
 
-        self.chapters_label = BodyLabel(self.title_frame)
+        self.chapters_label = BodyLabel(self.titleWidget)
         self.chapters_label.setObjectName(u"chapters_label")
 
         self.verticalLayout_8.addWidget(self.chapters_label)
 
 
-        self.infoHLayout.addWidget(self.title_frame)
+        self.infoHLayout.addWidget(self.titleWidget)
 
 
-        self.mangaVLayout.addLayout(self.infoHLayout)
+        self.scrollAreaVLayout.addWidget(self.infoWidget)
 
         self.verticalLayout_9 = QVBoxLayout()
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
-        self.descriptionTextEdit = TextEdit(self.scrollAreaWidgetContents)
+        self.descriptionWidget = QWidget(self.scrollAreaWidgetContents)
+        self.descriptionWidget.setObjectName(u"descriptionWidget")
+        self.descriptionVLayout = QVBoxLayout(self.descriptionWidget)
+        self.descriptionVLayout.setObjectName(u"descriptionVLayout")
+        self.descriptionVLayout.setContentsMargins(0, 0, 0, 0)
+        self.descriptionTextEdit = TextEdit(self.descriptionWidget)
         self.descriptionTextEdit.setObjectName(u"descriptionTextEdit")
-        self.descriptionTextEdit.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.descriptionTextEdit.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.descriptionTextEdit.setUndoRedoEnabled(False)
-        self.descriptionTextEdit.setReadOnly(True)
-        self.descriptionTextEdit.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.descriptionTextEdit.setReadOnly(False)
 
-        self.verticalLayout_9.addWidget(self.descriptionTextEdit)
+        self.descriptionVLayout.addWidget(self.descriptionTextEdit)
+
+
+        self.verticalLayout_9.addWidget(self.descriptionWidget)
 
         self.charactersWidget = CardWidget(self.scrollAreaWidgetContents)
         self.charactersWidget.setObjectName(u"charactersWidget")
-        self.verticalLayout_2 = QVBoxLayout(self.charactersWidget)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.charactersVLayout = QVBoxLayout(self.charactersWidget)
+        self.charactersVLayout.setObjectName(u"charactersVLayout")
+        self.charactersVLayout.setContentsMargins(-1, 9, -1, 0)
         self.charactersLabel = BodyLabel(self.charactersWidget)
         self.charactersLabel.setObjectName(u"charactersLabel")
 
-        self.verticalLayout_2.addWidget(self.charactersLabel)
+        self.charactersVLayout.addWidget(self.charactersLabel)
 
         self.charactersList = ListWidget(self.charactersWidget)
         self.charactersList.setObjectName(u"charactersList")
         self.charactersList.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.charactersList.setWordWrap(True)
 
-        self.verticalLayout_2.addWidget(self.charactersList)
+        self.charactersVLayout.addWidget(self.charactersList)
 
 
         self.verticalLayout_9.addWidget(self.charactersWidget)
 
         self.relatedWidget = CardWidget(self.scrollAreaWidgetContents)
         self.relatedWidget.setObjectName(u"relatedWidget")
-        self.verticalLayout_4 = QVBoxLayout(self.relatedWidget)
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.relatedVLayout = QVBoxLayout(self.relatedWidget)
+        self.relatedVLayout.setObjectName(u"relatedVLayout")
+        self.relatedVLayout.setContentsMargins(-1, 9, -1, 0)
         self.relatedLabel = BodyLabel(self.relatedWidget)
         self.relatedLabel.setObjectName(u"relatedLabel")
 
-        self.verticalLayout_4.addWidget(self.relatedLabel)
+        self.relatedVLayout.addWidget(self.relatedLabel)
 
         self.relatedList = ListWidget(self.relatedWidget)
         self.relatedList.setObjectName(u"relatedList")
         self.relatedList.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.relatedList.setWordWrap(True)
 
-        self.verticalLayout_4.addWidget(self.relatedList)
+        self.relatedVLayout.addWidget(self.relatedList)
 
 
         self.verticalLayout_9.addWidget(self.relatedWidget)
 
 
-        self.mangaVLayout.addLayout(self.verticalLayout_9)
-
-
-        self.verticalLayout.addLayout(self.mangaVLayout)
+        self.scrollAreaVLayout.addLayout(self.verticalLayout_9)
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
-        self.horizontalLayout_4.addWidget(self.scrollArea)
+        self.pageLayout.addWidget(self.scrollArea)
 
         self.itemsWidget = SimpleCardWidget(InfoPage)
         self.itemsWidget.setObjectName(u"itemsWidget")
@@ -240,11 +251,11 @@ class Ui_InfoPage(object):
         __qtreewidgetitem.setText(0, u"1")
         self.itemsTree.setHeaderItem(__qtreewidgetitem)
         self.itemsTree.setObjectName(u"itemsTree")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.itemsTree.sizePolicy().hasHeightForWidth())
-        self.itemsTree.setSizePolicy(sizePolicy2)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.itemsTree.sizePolicy().hasHeightForWidth())
+        self.itemsTree.setSizePolicy(sizePolicy3)
         self.itemsTree.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.itemsTree.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.itemsTree.setWordWrap(True)
@@ -253,7 +264,7 @@ class Ui_InfoPage(object):
         self.itemsVLayout.addWidget(self.itemsTree)
 
 
-        self.horizontalLayout_4.addWidget(self.itemsWidget)
+        self.pageLayout.addWidget(self.itemsWidget)
 
 
         self.retranslateUi(InfoPage)
