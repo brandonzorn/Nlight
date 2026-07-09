@@ -15,10 +15,12 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QHeaderView, QSizePolicy,
-    QSpacerItem, QTreeWidgetItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHBoxLayout, QHeaderView,
+    QSizePolicy, QSpacerItem, QTreeWidgetItem, QVBoxLayout,
+    QWidget)
 
-from qfluentwidgets import (CardWidget, ToolButton, TreeWidget)
+from qfluentwidgets import (BodyLabel, CardWidget, SimpleCardWidget, ToolButton,
+    TreeWidget)
 
 class Ui_HistoryPage(object):
     def setupUi(self, HistoryPage):
@@ -26,45 +28,62 @@ class Ui_HistoryPage(object):
             HistoryPage.setObjectName(u"HistoryPage")
         HistoryPage.resize(640, 480)
         HistoryPage.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
-        self.horizontalLayout = QHBoxLayout(HistoryPage)
+        self.verticalLayout_2 = QVBoxLayout(HistoryPage)
+        self.verticalLayout_2.setSpacing(28)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(60, 60, 60, 10)
+        self.titleLabel = BodyLabel(HistoryPage)
+        self.titleLabel.setObjectName(u"titleLabel")
+        self.titleLabel.setStyleSheet(u"font: 33px 'Microsoft YaHei Light';")
+
+        self.verticalLayout_2.addWidget(self.titleLabel)
+
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setSpacing(6)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(0, 0, -1, 0)
         self.itemsWidget = CardWidget(HistoryPage)
         self.itemsWidget.setObjectName(u"itemsWidget")
-        self.verticalLayout_2 = QVBoxLayout(self.itemsWidget)
-        self.verticalLayout_2.setSpacing(0)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.items_tree = TreeWidget(self.itemsWidget)
+        self.horizontalLayout_2 = QHBoxLayout(self.itemsWidget)
+        self.horizontalLayout_2.setSpacing(0)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.itemsTree = TreeWidget(self.itemsWidget)
         __qtreewidgetitem = QTreeWidgetItem()
         __qtreewidgetitem.setText(0, u"1")
-        self.items_tree.setHeaderItem(__qtreewidgetitem)
-        self.items_tree.setObjectName(u"items_tree")
-        self.items_tree.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-        self.items_tree.header().setVisible(False)
+        self.itemsTree.setHeaderItem(__qtreewidgetitem)
+        self.itemsTree.setObjectName(u"itemsTree")
+        self.itemsTree.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.itemsTree.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.itemsTree.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectItems)
+        self.itemsTree.setWordWrap(True)
+        self.itemsTree.header().setVisible(False)
 
-        self.verticalLayout_2.addWidget(self.items_tree)
+        self.horizontalLayout_2.addWidget(self.itemsTree)
 
 
         self.horizontalLayout.addWidget(self.itemsWidget)
 
-        self.actionsWidget = QWidget(HistoryPage)
-        self.actionsWidget.setObjectName(u"actionsWidget")
-        self.verticalLayout = QVBoxLayout(self.actionsWidget)
-        self.verticalLayout.setSpacing(0)
+        self.actionsFrame = SimpleCardWidget(HistoryPage)
+        self.actionsFrame.setObjectName(u"actionsFrame")
+        self.actionsFrame.setEnabled(True)
+        self.verticalLayout = QVBoxLayout(self.actionsFrame)
+        self.verticalLayout.setSpacing(6)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.delete_btn = ToolButton(self.actionsWidget)
+        self.verticalLayout.setContentsMargins(3, 3, 3, 3)
+        self.delete_btn = ToolButton(self.actionsFrame)
         self.delete_btn.setObjectName(u"delete_btn")
 
         self.verticalLayout.addWidget(self.delete_btn)
 
-        self.verticalSpacer = QSpacerItem(20, 231, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.verticalLayout.addItem(self.verticalSpacer)
+        self.verticalLayout.addItem(self.verticalSpacer_2)
 
 
-        self.horizontalLayout.addWidget(self.actionsWidget)
+        self.horizontalLayout.addWidget(self.actionsFrame)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout)
 
 
         self.retranslateUi(HistoryPage)
@@ -73,6 +92,7 @@ class Ui_HistoryPage(object):
     # setupUi
 
     def retranslateUi(self, HistoryPage):
+        self.titleLabel.setText(QCoreApplication.translate("HistoryPage", u"History", None))
         pass
     # retranslateUi
 
