@@ -8,6 +8,7 @@ from nlightreader.items import HistoryNote
 from nlightreader.models import Manga
 from nlightreader.utils.database import Database
 from nlightreader.widgets.contexts import HistoryMenuMode, HistoryNoteMenu
+from nlightreader.widgets.items import GroupTreeItem
 
 
 class HistoryPage(QWidget):
@@ -20,12 +21,12 @@ class HistoryPage(QWidget):
 
         self.ui.delete_btn.setIcon(FluentIcon.DELETE)
 
-        self.ui.items_tree.customContextMenuRequested.connect(
+        self.ui.itemsTree.customContextMenuRequested.connect(
             self.on_context_menu,
         )
         self.db: Database = Database()
         self.ui.delete_btn.clicked.connect(self.delete_note)
-        self.ui.items_tree.doubleClicked.connect(self.open_info)
+        self.ui.itemsTree.doubleClicked.connect(self.open_info)
         self.notes: list[HistoryNote] = []
         self.sorted_notes: dict[Manga, list[HistoryNote]] = {}
 
@@ -45,7 +46,7 @@ class HistoryPage(QWidget):
             self.get_content()
 
         menu = HistoryNoteMenu()
-        selected_item = self.ui.items_tree.itemAt(pos)
+        selected_item = self.ui.itemsTree.itemAt(pos)
         if not selected_item:
             return
 
@@ -61,14 +62,15 @@ class HistoryPage(QWidget):
 
         menu.set_as_read.triggered.connect(set_as_read)
         menu.remove_all.triggered.connect(remove_all)
-        menu.exec(self.ui.items_tree.mapToGlobal(pos))
+        menu.exec(self.ui.itemsTree.mapToGlobal(pos))
 
     def setup(self) -> None:
+        self.ui.itemsTree.verticalScrollBar().setValue(0)
         self.get_content()
 
     @Slot()
     def open_info(self) -> None:
-        selected_item = self.ui.items_tree.currentItem()
+        selected_item = self.ui.itemsTree.currentItem()
         if selected_item.parent():
             self.manga_open.emit(self._get_selected_manga())
 
@@ -81,12 +83,12 @@ class HistoryPage(QWidget):
                 self.sorted_notes.update({note.manga: [note]})
 
     def update_content(self) -> None:
-        self.ui.items_tree.clear()
+        self.ui.itemsTree.clear()
         self.notes: list[HistoryNote] = self.db.get_history_notes()
         self.sort_notes()
         for manga in self.sorted_notes:
-            top_item = QTreeWidgetItem([manga.get_name()])
-            self.ui.items_tree.addTopLevelItem(top_item)
+            top_item = GroupTreeItem(manga.get_name())
+            self.ui.itemsTree.addTopLevelItem(top_item)
             for note in self.sorted_notes[manga]:
                 tr = note.chapter.translator or ""
                 ch_item = QTreeWidgetItem([f"{note.chapter.get_name()} {tr}"])
@@ -97,13 +99,13 @@ class HistoryPage(QWidget):
                 top_item.addChild(ch_item)
 
     def _get_selected_note(self) -> HistoryNote | None:
-        selected_item = self.ui.items_tree.currentItem()
-        if not selected_item.parent():
+        selected_item = self.ui.itemsTree.currentItem()
+        if isinstance(selected_item, GroupTreeItem):
             return None
-        parent_index = self.ui.items_tree.indexFromItem(
+        parent_index: int = self.ui.itemsTree.indexFromItem(
             selected_item.parent(),
         ).row()
-        note_index = self.ui.items_tree.indexFromItem(
+        note_index: int = self.ui.itemsTree.indexFromItem(
             selected_item,
         ).row()
         return self.sorted_notes[list(self.sorted_notes.keys())[parent_index]][
@@ -111,15 +113,15 @@ class HistoryPage(QWidget):
         ]
 
     def _get_selected_manga(self) -> Manga:
-        selected_item = self.ui.items_tree.currentItem()
+        selected_item = self.ui.itemsTree.currentItem()
         if not selected_item.parent():
-            index = self.ui.items_tree.indexFromItem(selected_item).row()
+            index: int = self.ui.itemsTree.indexFromItem(selected_item).row()
             return list(self.sorted_notes.keys())[index]
         return self._get_selected_note().manga
 
     @Slot()
     def delete_note(self) -> None:
-        selected_item = self.ui.items_tree.currentItem()
+        selected_item = self.ui.itemsTree.currentItem()
         if not selected_item or not selected_item.parent():
             return
         self.db.del_history_note(self._get_selected_note().chapter)

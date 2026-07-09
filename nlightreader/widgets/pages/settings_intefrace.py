@@ -143,13 +143,12 @@ class SettingsPage(ScrollArea):
             self.aboutGroup,
         )
 
-        self.__init_widget()
+        self._init_widget()
 
     def setup(self) -> None:
         pass
 
-    def __init_widget(self) -> None:
-        self.resize(1000, 800)
+    def _init_widget(self) -> None:
         self.setHorizontalScrollBarPolicy(
             Qt.ScrollBarPolicy.ScrollBarAlwaysOff,
         )
@@ -157,10 +156,10 @@ class SettingsPage(ScrollArea):
         self.setWidget(self.scrollWidget)
         self.setWidgetResizable(True)
 
-        self.__init_layout()
-        self.__connect_signals()
+        self._init_layout()
+        self._connect_signals()
 
-    def __init_layout(self) -> None:
+    def _init_layout(self) -> None:
         self.settingLabel.move(60, 63)
 
         self.personalGroup.addSettingCard(self.themeCard)
@@ -182,7 +181,7 @@ class SettingsPage(ScrollArea):
         self.expandLayout.addWidget(self.updateSoftwareGroup)
         self.expandLayout.addWidget(self.aboutGroup)
 
-    def __show_restart_tooltip(self) -> None:
+    def _show_restart_tooltip(self) -> None:
         InfoBar.warning(
             "",
             self.tr(
@@ -222,8 +221,8 @@ class SettingsPage(ScrollArea):
             parent=self,
         )
 
-    def __connect_signals(self) -> None:
-        cfg.appRestartSig.connect(self.__show_restart_tooltip)
+    def _connect_signals(self) -> None:
+        cfg.appRestartSig.connect(self._show_restart_tooltip)
         cfg.themeChanged.connect(setTheme)
         self.micaCard.checkedChanged.connect(self.mica_enable_changed)
         self.aboutCard.clicked.connect(self.check_for_updates_signal)

@@ -1,5 +1,11 @@
-from PySide6.QtCore import QSize, Slot
-from qfluentwidgets import FluentIcon, FluentWindow, NavigationItemPosition
+from PySide6.QtCore import Slot
+from PySide6.QtWidgets import QWidget
+from qfluentwidgets import (
+    FluentIcon,
+    FluentWindow,
+    NavigationItemPosition,
+    Router,
+)
 
 from nlightreader.consts.files.files import NlFluentIcons
 from nlightreader.models import Manga
@@ -16,6 +22,7 @@ from nlightreader.widgets.pages import (
 class ParentWindow(FluentWindow):
     def __init__(self) -> None:
         super().__init__()
+        self.setMinimumSize(self.screen().size() / 2)
 
         self.library_interface = LibraryPage()
         self.main_interface = MainPage()
@@ -29,6 +36,10 @@ class ParentWindow(FluentWindow):
         self.main_interface.manga_open.connect(self.open_info)
         self.external_library_interface.manga_open.connect(self.open_info)
         self.history_interface.manga_open.connect(self.open_info)
+
+        self.settings_interface.mica_enable_changed.connect(
+            self.setMicaEffectEnabled,
+        )
 
         self.stackedWidget.currentChanged.connect(self.on_widget_change)
 
@@ -61,6 +72,14 @@ class ParentWindow(FluentWindow):
             self.tr("Settings"),
             position=NavigationItemPosition.BOTTOM,
         )
+
+    def _switch_to_last(self) -> None:
+        last = self._history.history[-1].routeKey
+        self.switchTo(self.stackedWidget.findChild(QWidget, name=last))
+
+    @property
+    def _history(self) -> Router:
+        return self.navigationInterface.panel.history
 
     @Slot(int)
     def on_widget_change(self, value: int) -> None:

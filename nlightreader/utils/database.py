@@ -6,9 +6,9 @@ from sqlalchemy.dialects.sqlite import insert
 
 from nlightreader.consts.paths import APP_DATA_PATH
 from nlightreader.core.enums import Language, LibList, MangaKind, MangaStatus
+from nlightreader.core.utils.decorators import singleton
 from nlightreader.items import HistoryNote
 from nlightreader.models import Chapter, Manga
-from nlightreader.utils.decorators import singleton
 
 
 @singleton

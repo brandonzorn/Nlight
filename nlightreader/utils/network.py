@@ -6,7 +6,7 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-IS_TEST_ENV = os.getenv("TEST", "False") == "True"
+IS_TEST_ENV = os.getenv("TEST") == "1"
 
 
 class NetworkClient:

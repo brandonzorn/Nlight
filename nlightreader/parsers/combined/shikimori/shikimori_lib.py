@@ -1,4 +1,5 @@
 import logging
+import os
 from typing import Any
 
 from PySide6.QtWidgets import QApplication
@@ -12,16 +13,18 @@ from nlightreader.consts.urls import (
     URL_SHIKIMORI_TOKEN,
 )
 from nlightreader.core.enums import LibList
+from nlightreader.core.utils.decorators import singleton
 from nlightreader.items import RequestForm, User, UserRate
 from nlightreader.models import Manga
 from nlightreader.parsers.catalog import CatalogAuthType, LibParser
 from nlightreader.parsers.combined.shikimori.shikimori_base import (
     ShikimoriBase,
 )
-from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
 
 logger = logging.getLogger(__name__)
+
+IS_TEST_ENV = os.getenv("TEST") == "1"
 
 try:
     from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
@@ -35,8 +38,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
 
     def __init__(self) -> None:
         super().__init__()
-        self.fields = 1
-        self.session: Auth = Auth()
+        self._session = Auth()
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/users/{self.session.user.id}/manga_rates"

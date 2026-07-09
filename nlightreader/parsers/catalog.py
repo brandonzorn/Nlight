@@ -103,6 +103,16 @@ class AbstractCatalog:
 class LibParser:
     AUTH_TYPE: CatalogAuthType = CatalogAuthType.NO_AUTH
 
+    def __init__(self) -> None:
+        self._session = None
+
+    @property
+    def session(self) -> object:
+        if self._session is None:
+            msg = "session is not implemented"
+            raise NotImplementedError(msg)
+        return self._session
+
     def search_manga(self, form: RequestForm) -> list[Manga]:
         return []
 

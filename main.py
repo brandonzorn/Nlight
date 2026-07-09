@@ -27,8 +27,8 @@ __all__ = []
 
 
 class App(QApplication):
-    def __init__(self, argv: list[str]) -> None:
-        super().__init__(argv)
+    def __init__(self) -> None:
+        super().__init__()
         self.setApplicationDisplayName(APP_NAME)
         self.setApplicationVersion(APP_VERSION)
         self.setWindowIcon(QIcon(Icons.APP))
@@ -45,7 +45,7 @@ class App(QApplication):
 class MainWindow(ParentWindow):
     def __init__(self) -> None:
         super().__init__()
-        self.setMinimumSize(self.screen().size() / 2)
+        self.setMicaEffectEnabled(cfg.get(cfg.mica_enabled))
         self.themeListener = SystemThemeListener(self)
 
         self.setWindowTitle(APP_NAME)
@@ -53,18 +53,16 @@ class MainWindow(ParentWindow):
         self._update_checker = Thread(
             target=self.check_for_updates,
             callback=self.show_update_info,
-            error_callback=lambda: self.show_update_info(None),
+            error_callback=self.show_update_info,
         )
 
         self.settings_interface.check_for_updates_signal.connect(
-            self.start_check_for_updates_thread,
+            self._start_check_for_updates,
         )
-        self.settings_interface.mica_enable_changed.connect(
-            self.setMicaEffectEnabled,
-        )
+
         self.themeListener.start()
         if cfg.get(cfg.check_updates_at_startup):
-            self.start_check_for_updates_thread()
+            self._start_check_for_updates()
 
     @override
     def closeEvent(self, event: QCloseEvent, /) -> None:
@@ -85,19 +83,20 @@ class MainWindow(ParentWindow):
                 ),
             )
 
-    def start_check_for_updates_thread(self) -> None:
+    def _start_check_for_updates(self) -> None:
         self._update_checker.terminate()
         self._update_checker.wait()
         self._update_checker.start()
 
-    def check_for_updates(self) -> str | None:
+    @staticmethod
+    def check_for_updates() -> str | None:
         response = make_request(
             f"{GITHUB_REPO_API}/releases",
             "GET",
             params={"per_page": 2},
             content_type="json",
         )
-        if not response:
+        if not isinstance(response, list):
             return None
         latest_version = None
         for release in reversed(response):
@@ -106,7 +105,7 @@ class MainWindow(ParentWindow):
                 latest_version = version
         return latest_version
 
-    def show_update_info(self, result: str | None) -> None:
+    def show_update_info(self, result: str | None = None) -> None:
         if result is None:
             self.settings_interface.show_err_updates_tooltip()
         elif result != APP_VERSION:
@@ -116,15 +115,12 @@ class MainWindow(ParentWindow):
 
 
 if __name__ == "__main__":
+    APP_DATA_PATH.mkdir(parents=True, exist_ok=True)
     QThreadPool.globalInstance().setMaxThreadCount(32)
 
     if cfg.get(cfg.dpi_scale) != "Auto":
         os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
         os.environ["QT_SCALE_FACTOR"] = str(cfg.get(cfg.dpi_scale))
-
-    app = App(sys.argv)
-
-    APP_DATA_PATH.mkdir(parents=True, exist_ok=True)
 
     kodik_server = kodik_server.get_local_server(
         server_port=8000,
@@ -132,6 +128,7 @@ if __name__ == "__main__":
     )
     kodik_server.start()
 
+    app = App()
     window = MainWindow()
     window.show()
     sys.exit(app.exec())

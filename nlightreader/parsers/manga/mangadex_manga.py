@@ -5,11 +5,11 @@ import requests
 
 from nlightreader.consts.items import MangaDexItems
 from nlightreader.core.enums import Language, LibList, MangaKind, MangaStatus
+from nlightreader.core.utils.decorators import singleton
 from nlightreader.items import RequestForm, User
 from nlightreader.models import Chapter, Genre, Image, Kind, Manga
 from nlightreader.parsers.catalog import CatalogAuthType, LibParser
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
-from nlightreader.utils.decorators import singleton
 from nlightreader.utils.network import NetworkClient
 from nlightreader.utils.token import TokenManager
 from nlightreader.utils.utils import dd_get, make_request
@@ -236,19 +236,19 @@ class MangaDexLib(MangaDex, LibParser):
     def __init__(self) -> None:
         super().__init__()
         self.fields = 2
-        self.session = Auth()
+        self._session = Auth()
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
         mangas = []
         lib_list = form.lib_list.name
         if form.lib_list == LibList.planned:
             lib_list = "plan_to_read"
-        response_statuses = self.session.get(
+        response_statuses = self._session.get(
             f"{self._URL_API}/manga/status",
             params={"status": lib_list},
         )
         params = {"limit": form.limit, "offset": form.offset}
-        response = self.session.get(
+        response = self._session.get(
             f"{self._URL_API}/user/follows/manga",
             params=params,
         )
@@ -262,7 +262,7 @@ class MangaDexLib(MangaDex, LibParser):
         return mangas
 
     def get_user(self) -> User:
-        response = self.session.get(f"{self._URL_API}/user/me")
+        response = self._session.get(f"{self._URL_API}/user/me")
         if response and (resp_json := response.json()):
             data = resp_json.get("data")
             return User(
