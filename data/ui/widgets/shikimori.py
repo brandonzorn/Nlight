@@ -161,7 +161,7 @@ class Ui_ExternalLibraryPage(object):
 
     def retranslateUi(self, ExternalLibraryPage):
         self.searchLineEdit.setPlaceholderText(QCoreApplication.translate("ExternalLibraryPage", u"Search", None))
-        self.pageLabel.setText(QCoreApplication.translate("ExternalLibraryPage", u"Page 1", None))
+        self.pageLabel.setText(QCoreApplication.translate("ExternalLibraryPage", u"Page", None))
         self.plannedButton.setText(QCoreApplication.translate("ExternalLibraryPage", u"Planned", None))
         self.completedButton.setText(QCoreApplication.translate("ExternalLibraryPage", u"Completed", None))
         self.readingButton.setText(QCoreApplication.translate("ExternalLibraryPage", u"Reading", None))
