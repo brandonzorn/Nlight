@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
-    QListWidgetItem, QSizePolicy, QSpacerItem, QToolButton,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QListWidgetItem,
+    QSizePolicy, QSpacerItem, QToolButton, QVBoxLayout,
+    QWidget)
 
 from qfluentwidgets import (BodyLabel, CardWidget, LineEdit, ListWidget,
     PushButton, SearchLineEdit, ToolButton)
@@ -136,55 +136,55 @@ class Ui_MainPage(object):
         self.verticalLayout_2 = QVBoxLayout(self.filters_widget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.orders_frame = CardWidget(self.filters_widget)
-        self.orders_frame.setObjectName(u"orders_frame")
-        self.verticalLayout = QVBoxLayout(self.orders_frame)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.label = BodyLabel(self.orders_frame)
-        self.label.setObjectName(u"label")
+        self.ordersCard = CardWidget(self.filters_widget)
+        self.ordersCard.setObjectName(u"ordersCard")
+        self.ordersCardVLayout = QVBoxLayout(self.ordersCard)
+        self.ordersCardVLayout.setObjectName(u"ordersCardVLayout")
+        self.ordersLabel = BodyLabel(self.ordersCard)
+        self.ordersLabel.setObjectName(u"ordersLabel")
 
-        self.verticalLayout.addWidget(self.label)
+        self.ordersCardVLayout.addWidget(self.ordersLabel)
 
-        self.orders_grid = QGridLayout()
-        self.orders_grid.setObjectName(u"orders_grid")
+        self.ordersVLayout = QVBoxLayout()
+        self.ordersVLayout.setObjectName(u"ordersVLayout")
 
-        self.verticalLayout.addLayout(self.orders_grid)
-
-
-        self.verticalLayout_2.addWidget(self.orders_frame)
-
-        self.kinds_frame = CardWidget(self.filters_widget)
-        self.kinds_frame.setObjectName(u"kinds_frame")
-        self.verticalLayout_5 = QVBoxLayout(self.kinds_frame)
-        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.label_2 = BodyLabel(self.kinds_frame)
-        self.label_2.setObjectName(u"label_2")
-
-        self.verticalLayout_5.addWidget(self.label_2)
-
-        self.kinds_grid = QGridLayout()
-        self.kinds_grid.setObjectName(u"kinds_grid")
-
-        self.verticalLayout_5.addLayout(self.kinds_grid)
+        self.ordersCardVLayout.addLayout(self.ordersVLayout)
 
 
-        self.verticalLayout_2.addWidget(self.kinds_frame)
+        self.verticalLayout_2.addWidget(self.ordersCard)
 
-        self.moreFiltersWidget = QFrame(self.filters_widget)
+        self.kindsCard = CardWidget(self.filters_widget)
+        self.kindsCard.setObjectName(u"kindsCard")
+        self.kindsCardVLayout = QVBoxLayout(self.kindsCard)
+        self.kindsCardVLayout.setObjectName(u"kindsCardVLayout")
+        self.kindsLabel = BodyLabel(self.kindsCard)
+        self.kindsLabel.setObjectName(u"kindsLabel")
+
+        self.kindsCardVLayout.addWidget(self.kindsLabel)
+
+        self.kindsVLayout = QVBoxLayout()
+        self.kindsVLayout.setObjectName(u"kindsVLayout")
+
+        self.kindsCardVLayout.addLayout(self.kindsVLayout)
+
+
+        self.verticalLayout_2.addWidget(self.kindsCard)
+
+        self.moreFiltersWidget = QWidget(self.filters_widget)
         self.moreFiltersWidget.setObjectName(u"moreFiltersWidget")
-        self.horizontalLayout_2 = QHBoxLayout(self.moreFiltersWidget)
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.catalogs_btn = PushButton(self.moreFiltersWidget)
-        self.catalogs_btn.setObjectName(u"catalogs_btn")
+        self.verticalLayout_3 = QVBoxLayout(self.moreFiltersWidget)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.genresButton = PushButton(self.moreFiltersWidget)
+        self.genresButton.setObjectName(u"genresButton")
+        self.genresButton.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 
-        self.horizontalLayout_2.addWidget(self.catalogs_btn)
+        self.verticalLayout_3.addWidget(self.genresButton)
 
-        self.genres_btn = PushButton(self.moreFiltersWidget)
-        self.genres_btn.setObjectName(u"genres_btn")
-        self.genres_btn.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.catalogsButton = PushButton(self.moreFiltersWidget)
+        self.catalogsButton.setObjectName(u"catalogsButton")
 
-        self.horizontalLayout_2.addWidget(self.genres_btn)
+        self.verticalLayout_3.addWidget(self.catalogsButton)
 
 
         self.verticalLayout_2.addWidget(self.moreFiltersWidget)
@@ -193,23 +193,23 @@ class Ui_MainPage(object):
 
         self.verticalLayout_2.addItem(self.verticalSpacer)
 
-        self.filter_actions_frame = QFrame(self.filters_widget)
-        self.filter_actions_frame.setObjectName(u"filter_actions_frame")
-        self.horizontalLayout_7 = QHBoxLayout(self.filter_actions_frame)
+        self.filter_actions_widget = QWidget(self.filters_widget)
+        self.filter_actions_widget.setObjectName(u"filter_actions_widget")
+        self.horizontalLayout_7 = QHBoxLayout(self.filter_actions_widget)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.reset_btn = PushButton(self.filter_actions_frame)
+        self.reset_btn = PushButton(self.filter_actions_widget)
         self.reset_btn.setObjectName(u"reset_btn")
 
         self.horizontalLayout_7.addWidget(self.reset_btn)
 
-        self.apply_btn = PushButton(self.filter_actions_frame)
+        self.apply_btn = PushButton(self.filter_actions_widget)
         self.apply_btn.setObjectName(u"apply_btn")
 
         self.horizontalLayout_7.addWidget(self.apply_btn)
 
 
-        self.verticalLayout_2.addWidget(self.filter_actions_frame)
+        self.verticalLayout_2.addWidget(self.filter_actions_widget)
 
 
         self.horizontalLayout_6.addWidget(self.filters_widget)
@@ -227,10 +227,10 @@ class Ui_MainPage(object):
         self.title_line.setPlaceholderText(QCoreApplication.translate("MainPage", u"Search", None))
         self.filter_btn.setText(QCoreApplication.translate("MainPage", u"Filters", None))
         self.page_label.setText(QCoreApplication.translate("MainPage", u"Page", None))
-        self.label.setText(QCoreApplication.translate("MainPage", u"Order", None))
-        self.label_2.setText(QCoreApplication.translate("MainPage", u"Kind", None))
-        self.catalogs_btn.setText(QCoreApplication.translate("MainPage", u"Catalogs", None))
-        self.genres_btn.setText(QCoreApplication.translate("MainPage", u"Genres list", None))
+        self.ordersLabel.setText(QCoreApplication.translate("MainPage", u"Order", None))
+        self.kindsLabel.setText(QCoreApplication.translate("MainPage", u"Kind", None))
+        self.genresButton.setText(QCoreApplication.translate("MainPage", u"Genres list", None))
+        self.catalogsButton.setText(QCoreApplication.translate("MainPage", u"Catalogs", None))
         self.reset_btn.setText(QCoreApplication.translate("MainPage", u"Reset", None))
         self.apply_btn.setText(QCoreApplication.translate("MainPage", u"Apply", None))
         pass
