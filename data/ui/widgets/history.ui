@@ -30,10 +30,7 @@
     <number>10</number>
    </property>
    <item>
-    <widget class="BodyLabel" name="titleLabel">
-     <property name="styleSheet">
-      <string notr="true">font: 33px 'Microsoft YaHei Light';</string>
-     </property>
+    <widget class="TitleLabel" name="titleLabel">
      <property name="text">
       <string>History</string>
      </property>
@@ -151,15 +148,15 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>BodyLabel</class>
-   <extends>QLabel</extends>
-   <header>qfluentwidgets</header>
-  </customwidget>
-  <customwidget>
    <class>SimpleCardWidget</class>
    <extends>QFrame</extends>
    <header>qfluentwidgets</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TitleLabel</class>
+   <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
  <resources/>

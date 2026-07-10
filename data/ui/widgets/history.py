@@ -19,7 +19,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHBoxLayout, QHe
     QSizePolicy, QSpacerItem, QTreeWidgetItem, QVBoxLayout,
     QWidget)
 
-from qfluentwidgets import (BodyLabel, CardWidget, SimpleCardWidget, ToolButton,
+from qfluentwidgets import (CardWidget, SimpleCardWidget, TitleLabel, ToolButton,
     TreeWidget)
 
 class Ui_HistoryPage(object):
@@ -32,9 +32,8 @@ class Ui_HistoryPage(object):
         self.verticalLayout_2.setSpacing(28)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(60, 60, 60, 10)
-        self.titleLabel = BodyLabel(HistoryPage)
+        self.titleLabel = TitleLabel(HistoryPage)
         self.titleLabel.setObjectName(u"titleLabel")
-        self.titleLabel.setStyleSheet(u"font: 33px 'Microsoft YaHei Light';")
 
         self.verticalLayout_2.addWidget(self.titleLabel)
 
