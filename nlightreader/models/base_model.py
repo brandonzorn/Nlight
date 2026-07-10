@@ -1,61 +1,55 @@
+from typing import override
+
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    field_validator,
+    model_validator,
+)
 from PySide6.QtCore import QLocale
 
 from nlightreader.utils.config import cfg
 
 
-class BaseModel:
-    def __init__(self, content_id: str, catalog_id: int) -> None:
-        self.__id = f"|{catalog_id}|_|{content_id}|"
-        self.__content_id = content_id
-        self.__catalog_id = catalog_id
+class ContentModel(BaseModel):
+    model_config = ConfigDict(
+        coerce_numbers_to_str=True,
+        validate_assignment=True,
+    )
 
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, BaseModel):
+    id: str = Field(default="", init=False)
+    content_id: str = Field(frozen=True, min_length=1)
+    catalog_id: int = Field(frozen=True, ge=0)
+
+    @model_validator(mode="after")
+    def generate_id(self) -> "ContentModel":
+        if not self.id:
+            self.id = f"|{self.catalog_id}|_|{self.content_id}|"
+        return self
+
+    def __eq__(self, other: "ContentModel") -> bool:
+        if not isinstance(other, ContentModel):
             return False
-        return self.__id == other.id
+        return self.id == other.id
 
     def __hash__(self) -> int:
-        return hash(self.__id)
-
-    @property
-    def id(self) -> str:
-        return self.__id
-
-    @property
-    def content_id(self) -> str:
-        return self.__content_id
-
-    @property
-    def catalog_id(self) -> int:
-        return self.__catalog_id
+        return hash(self.id)
 
     def to_dict(self) -> dict:
-        return {
-            "content_id": self.__content_id,
-            "catalog_id": self.__catalog_id,
-            "id": self.__id,
-        }
+        return self.model_dump()
 
 
-class NamedBaseModel(BaseModel):
-    def __init__(
-        self,
-        content_id: str,
-        catalog_id: int,
-        name: str,
-        russian: str,
-    ) -> None:
-        super().__init__(content_id, catalog_id)
-        self.__name = name
-        self.__russian = russian
+class NamedContentModel(ContentModel):
+    name: str
+    russian: str | None
 
-    @property
-    def name(self) -> str:
-        return self.__name
-
-    @property
-    def russian(self) -> str:
-        return self.__russian
+    @field_validator("russian", mode="before")
+    @classmethod
+    def blank_to_none(cls, value: str | None) -> str | None:
+        if isinstance(value, str) and not value.strip():
+            return None
+        return value
 
     def get_name(self) -> str:
         locale = cfg.get(cfg.language).value.language()
@@ -65,23 +59,17 @@ class NamedBaseModel(BaseModel):
                 QLocale.Language.Russian,
                 QLocale.Language.Ukrainian,
             )
-            and self.__russian
+            and self.russian
         ):
-            return self.__russian
-        return self.__name
+            return self.russian
+        return self.name
 
+    @override
     def to_dict(self) -> dict:
-        data = super().to_dict()
-        data.update(
-            {
-                "name": self.__name,
-                "russian": self.__russian,
-            },
-        )
-        return data
+        return self.model_dump()
 
 
 __all__ = [
-    "BaseModel",
-    "NamedBaseModel",
+    "ContentModel",
+    "NamedContentModel",
 ]

@@ -21,7 +21,7 @@ class MangaKind(IntEnum):
         return any([i in text for i in pattern])
 
     @classmethod
-    def from_str(cls, string: str | None) -> IntEnum:
+    def from_str(cls, string: str | None) -> "MangaKind":
         if string is None or cls._matching_the_pattern(
             string,
             ("undefined", "Другое"),
@@ -41,7 +41,7 @@ class MangaKind(IntEnum):
             return cls.RANOBE
         if cls._matching_the_pattern(string, ("комикс", "comic")):
             return cls.COMICS
-        logging.warning(f"Unknown manga kind: {string}")
+        logger.warning(f"Unknown manga kind: {string}")
         return cls.UNDEFINED
 
     def to_str(self) -> str:
@@ -66,7 +66,7 @@ class MangaStatus(IntEnum):
     FROZEN = 3
 
     @classmethod
-    def from_str(cls, string: str | None) -> IntEnum:
+    def from_str(cls, string: str | None) -> "MangaStatus":
         if string is None:
             return cls.UNDEFINED
 

@@ -1,3 +1,5 @@
+from typing import override
+
 from nlightreader.consts.items import DesuItems
 from nlightreader.core.enums import Language, MangaKind, MangaStatus
 from nlightreader.items import RequestForm
@@ -18,6 +20,7 @@ class Desu(AbstractMangaCatalog):
     def __init__(self) -> None:
         self._client = NetworkClient(headers=self._HEADERS)
 
+    @override
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/{manga.content_id}"
         manga_data = self._client.get_json(url).get("response", {})
@@ -31,8 +34,8 @@ class Desu(AbstractMangaCatalog):
 
         chapters_data = manga_data.get("chapters", {})
 
-        manga.volumes = int(chapters_data.get("last", {}).get("vol", 0))
-        manga.chapters = int(chapters_data.get("count", 0))
+        manga.volumes_number = int(chapters_data.get("last", {}).get("vol", 0))
+        manga.chapters_number = int(chapters_data.get("count", 0))
 
         manga.add_description(
             Language.UNDEFINED,
@@ -40,6 +43,7 @@ class Desu(AbstractMangaCatalog):
         )
         return manga
 
+    @override
     def search_manga(self, form: RequestForm) -> list[Manga]:
         params = {
             "limit": form.limit,
@@ -72,23 +76,25 @@ class Desu(AbstractMangaCatalog):
             )
         return mangas
 
+    @override
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self._URL_API}/{manga.content_id}"
         data = self._client.get_json(url)
         chapters: list[Chapter] = []
 
-        for chapter_data in dd_get(data, "response.chapters.list"):
+        for chapter_data in dd_get(data, "response.chapters.list", []):
             chapter = Chapter(
-                content_id=str(chapter_data.get("id")),
+                content_id=chapter_data.get("id"),
                 catalog_id=self.CATALOG_ID,
-                volume_number=str(chapter_data.get("vol", "")),
-                chapter_number=str(chapter_data.get("ch", "")),
+                volume_number=chapter_data.get("vol", ""),
+                chapter_number=chapter_data.get("ch", ""),
                 title=chapter_data.get("title"),
                 language=Language.RUSSIAN,
             )
             chapters.append(chapter)
         return chapters
 
+    @override
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = (
             f"{self._URL_API}/{manga.content_id}/chapter/{chapter.content_id}"
@@ -97,7 +103,7 @@ class Desu(AbstractMangaCatalog):
         images: list[Image] = []
         if not isinstance(response, dict):
             return images
-        for img_data in dd_get(response, "response.pages.list"):
+        for img_data in dd_get(response, "response.pages.list", []):
             page = img_data.get("page")
             img_url: str = img_data.get("img", "")
             if "?" in img_url:
@@ -111,16 +117,20 @@ class Desu(AbstractMangaCatalog):
             )
         return images
 
+    @override
     def get_image(self, image: Image) -> bytes | None:
-        if image.url is None:
+        url = image.url
+        if url is None:
             return None
-        return self._client.get_bytes(image.url)
+        return self._client.get_bytes(url)
 
+    @override
     def get_preview(self, manga: Manga) -> bytes | None:
         return self._client.get_bytes(
             f"{self._URL}/data/manga/covers/preview/{manga.content_id}.jpg",
         )
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/manga/{manga.content_id}"
 

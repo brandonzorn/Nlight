@@ -20,7 +20,7 @@ class LibList(IntEnum):
     dropped = 5
 
     @classmethod
-    def from_str(cls, string: str) -> IntEnum:
+    def from_str(cls, string: str) -> "LibList":
         string = string.lower()
         if string in ("planned",):
             return cls.planned

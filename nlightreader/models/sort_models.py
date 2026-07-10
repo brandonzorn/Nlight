@@ -1,50 +1,20 @@
-from nlightreader.models.base_model import NamedBaseModel
+from nlightreader.models.base_model import NamedContentModel
 
 
-class Kind(NamedBaseModel):
-    def __init__(
-        self,
-        *,
-        content_id: str,
-        catalog_id: int,
-        name: str,
-        russian: str,
-    ) -> None:
-        super().__init__(content_id, catalog_id, name, russian)
+class Kind(NamedContentModel):
+    pass
 
 
-class Order(NamedBaseModel):
-    def __init__(
-        self,
-        *,
-        content_id: str,
-        catalog_id: int,
-        name: str,
-        russian: str,
-    ) -> None:
-        super().__init__(content_id, catalog_id, name, russian)
+class Order(NamedContentModel):
+    pass
 
 
-class Genre(NamedBaseModel):
-    def __init__(
-        self,
-        content_id: str,
-        catalog_id: int,
-        name: str,
-        russian: str,
-    ) -> None:
-        super().__init__(content_id, catalog_id, name, russian)
+class Genre(NamedContentModel):
+    pass
 
 
-class Status(NamedBaseModel):
-    def __init__(
-        self,
-        content_id: str,
-        catalog_id: int,
-        name: str,
-        russian: str,
-    ) -> None:
-        super().__init__(content_id, catalog_id, name, russian)
+class Status(NamedContentModel):
+    pass
 
 
 __all__ = [

@@ -32,6 +32,7 @@ class NetworkClient:
         extra_cookies: dict[str, str] | None = None,
     ) -> requests.Response | None:
         if IS_TEST_ENV:
+            logger.debug(f"Request to {url} blocked: Test state.")
             return None
         try:
             response = self._session.request(

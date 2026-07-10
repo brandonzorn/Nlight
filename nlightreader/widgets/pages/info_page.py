@@ -42,29 +42,20 @@ class InfoPage(QWidget):
         super().__init__()
         self.ui = Ui_InfoPage()
         self.ui.setupUi(self)
+        self.ui.scrollArea.enableTransparentBackground()
 
-        self.ui.shikimoriButton.setIcon(
-            NlFluentIcons.SHIKIMORI.qicon(),
-        )
+        self.ui.itemsWidget.hide()
+        self.ui.imageLabel.setBorderRadius(8, 8, 8, 8)
 
-        self.ui.libraryListComboBox.addItems(
-            [translate("Form", i.capitalize()) for i in LIB_LISTS],
-        )
-        self.ui.itemsTree.doubleClicked.connect(
-            self.open_reader,
-        )
+        self.ui.shikimoriButton.setIcon(NlFluentIcons.SHIKIMORI.qicon())
+
+        self.ui.itemsTree.doubleClicked.connect(self.open_reader)
         self.ui.charactersList.doubleClicked.connect(
             self.open_character_dialog,
         )
-        self.ui.relatedList.doubleClicked.connect(
-            self._open_related_manga,
-        )
-        self.ui.shikimoriButton.clicked.connect(
-            self.open_rate_dialog,
-        )
-        self.ui.addButton.clicked.connect(
-            self.add_to_favorites,
-        )
+        self.ui.relatedList.doubleClicked.connect(self._open_related_manga)
+        self.ui.shikimoriButton.clicked.connect(self.open_rate_dialog)
+        self.ui.addButton.clicked.connect(self.add_to_favorites)
         self.ui.libraryListComboBox.currentIndexChanged.connect(
             self.change_lib_list,
         )
@@ -100,20 +91,12 @@ class InfoPage(QWidget):
             ][selected_chapter.translator]
             for i, chapter in enumerate(
                 chapters_by_lang[
-                    : chapters_by_lang.index(
-                        selected_chapter,
-                    )
-                    + 1
+                    : chapters_by_lang.index(selected_chapter) + 1
                 ],
             ):
-                history_notes.append(
-                    HistoryNote(chapter, self._manga, True),
-                )
+                history_notes.append(HistoryNote(chapter, self._manga, True))
                 item = selected_item.parent().child(i)
-                item.setIcon(
-                    0,
-                    FluentIcon.ACCEPT_MEDIUM.qicon(),
-                )
+                item.setIcon(0, FluentIcon.ACCEPT_MEDIUM.qicon())
             self.__db.add_history_notes(history_notes)
 
         def set_as_read() -> None:
@@ -153,9 +136,8 @@ class InfoPage(QWidget):
     @override
     def resizeEvent(self, event: QResizeEvent) -> None:
         super().resizeEvent(event)
-        if event.oldSize().width() == event.size().width():
-            return
-        self._update_manga_preview_size()
+        if event.oldSize().width() != event.size().width():
+            self._update_manga_preview_size()
 
     def sort_chapters(self) -> None:
         self.__sorted_chapters.clear()
@@ -271,13 +253,13 @@ class InfoPage(QWidget):
         self.ui.status_label.setText(
             f"{self.tr('Status')}: {self.tr(self._manga.status.to_str())}",
         )
-        self.ui.volumes_label.setVisible(bool(self._manga.volumes))
-        self.ui.chapters_label.setVisible(bool(self._manga.chapters))
+        self.ui.volumes_label.setVisible(bool(self._manga.volumes_number))
+        self.ui.chapters_label.setVisible(bool(self._manga.chapters_number))
         self.ui.volumes_label.setText(
-            f"{self.tr('Volumes')}: {self._manga.volumes}",
+            f"{self.tr('Volumes')}: {self._manga.volumes_number}",
         )
         self.ui.chapters_label.setText(
-            f"{self.tr('Chapters')}: {self._manga.chapters}",
+            f"{self.tr('Chapters')}: {self._manga.chapters_number}",
         )
         self.ui.catalog_score_label.setVisible(bool(self._manga.score))
         self.ui.catalog_score_label.setText(
@@ -305,7 +287,8 @@ class InfoPage(QWidget):
     def get_chapters(self) -> None:
         try:
             self._chapters = self._catalog.get_chapters(self._manga)
-        except NotImplementedError:
+        except NotImplementedError as e:
+            logger.exception(e)
             self._chapters.clear()
             return
         self._chapters.reverse()

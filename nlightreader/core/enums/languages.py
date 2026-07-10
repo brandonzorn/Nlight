@@ -13,7 +13,7 @@ class Language(IntEnum):
     JAPANESE = 4
 
     @classmethod
-    def from_str(cls, string: str) -> IntEnum:
+    def from_str(cls, string: str) -> "Language":
         string = string.lower()
         if string in ("en", "english"):
             return cls.ENGLISH

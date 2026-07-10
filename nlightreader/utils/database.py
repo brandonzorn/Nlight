@@ -1,4 +1,3 @@
-import logging
 from typing import Any
 
 import sqlalchemy
@@ -14,7 +13,7 @@ from nlightreader.models import Chapter, Manga
 @singleton
 class Database:
     def __init__(self) -> None:
-        db_file_path = APP_DATA_PATH / "data.db"
+        db_file_path = APP_DATA_PATH / "data_v2.db"
         self.__engine = sqlalchemy.create_engine(f"sqlite:///{db_file_path}")
         self._metadata = sqlalchemy.MetaData()
 
@@ -46,28 +45,31 @@ class Database:
                 sqlalchemy.Text,
             ),
             sqlalchemy.Column(
-                "kind",
-                sqlalchemy.Text,
-            ),
-            sqlalchemy.Column(
-                "description",
+                "descriptions",
                 sqlalchemy.Text,
             ),
             sqlalchemy.Column(
                 "score",
                 sqlalchemy.Float,
+                nullable=False,
             ),
             sqlalchemy.Column(
                 "status",
-                sqlalchemy.Text,
-            ),
-            sqlalchemy.Column(
-                "volumes",
                 sqlalchemy.Integer,
             ),
             sqlalchemy.Column(
-                "chapters",
+                "kind",
                 sqlalchemy.Integer,
+            ),
+            sqlalchemy.Column(
+                "volumes_number",
+                sqlalchemy.Integer,
+                nullable=False,
+            ),
+            sqlalchemy.Column(
+                "chapters_number",
+                sqlalchemy.Integer,
+                nullable=False,
             ),
             sqlalchemy.Column(
                 "preview_url",
@@ -95,11 +97,11 @@ class Database:
                 nullable=False,
             ),
             sqlalchemy.Column(
-                "vol",
+                "volume_number",
                 sqlalchemy.Text,
             ),
             sqlalchemy.Column(
-                "ch",
+                "chapter_number",
                 sqlalchemy.Text,
             ),
             sqlalchemy.Column(
@@ -108,7 +110,7 @@ class Database:
             ),
             sqlalchemy.Column(
                 "language",
-                sqlalchemy.Text,
+                sqlalchemy.Integer,
             ),
             sqlalchemy.Column(
                 "manga_id",
@@ -130,7 +132,7 @@ class Database:
                 nullable=False,
             ),
             sqlalchemy.Column(
-                "list",
+                "list_id",
                 sqlalchemy.Integer,
                 nullable=False,
             ),
@@ -153,16 +155,10 @@ class Database:
             sqlalchemy.Column(
                 "is_completed",
                 sqlalchemy.Boolean,
-                nullable=True,
             ),
         )
 
         self._metadata.create_all(self.__engine)
-
-        migrate1 = ("preview_url", "manga", "TEXT")
-        migrate2 = ("translator", "chapters", "TEXT")
-        self.add_column_migration(*migrate1)
-        self.add_column_migration(*migrate2)
 
     def add_column_migration(
         self,
@@ -222,27 +218,18 @@ class Database:
 
     @staticmethod
     def _make_manga(manga_data: dict[str, Any]) -> Manga:
-        content_id = str(manga_data["content_id"])
-        catalog_id = manga_data["catalog_id"]
-        name = manga_data["name"]
-        russian = manga_data["russian"]
         manga = Manga(
-            content_id=content_id,
-            catalog_id=catalog_id,
-            name=name,
-            russian=russian,
+            content_id=manga_data["content_id"],
+            catalog_id=manga_data["catalog_id"],
+            name=manga_data["name"],
+            russian=manga_data["russian"],
         )
-        manga.kind = MangaKind.from_str(manga_data["kind"])
-        manga.set_description_from_str(manga_data["description"])
+        manga.kind = MangaKind(manga_data["kind"])
+        manga.set_description_from_str(manga_data["descriptions"])
         manga.score = manga_data["score"]
-        manga.status = MangaStatus.from_str(manga_data["status"])
-        manga.volumes = manga_data["volumes"]
-
-        chapters = manga_data["chapters"]
-        if not isinstance(chapters, int):
-            logging.warning(f"Chapters must be int got {type(chapters)}")
-            chapters = 0
-        manga.chapters = chapters
+        manga.status = MangaStatus(manga_data["status"])
+        manga.volumes_number = manga_data["volumes_number"]
+        manga.chapters_number = manga_data["chapters_number"]
         manga.preview_url = manga_data["preview_url"]
         return manga
 
@@ -282,25 +269,22 @@ class Database:
 
     @staticmethod
     def __make_chapter(chapter_data: dict[str, Any]) -> Chapter:
-        content_id = str(chapter_data["content_id"])
+        content_id = chapter_data["content_id"]
         catalog_id = chapter_data["catalog_id"]
 
-        vol_raw = chapter_data["vol"]
-        vol = str(vol_raw) if vol_raw is not None else vol_raw
-
-        ch_raw = chapter_data["ch"]
-        ch = str(ch_raw) if ch_raw is not None else ch_raw
-
+        vol_raw = chapter_data["volume_number"]
+        ch_raw = chapter_data["chapter_number"]
         title = chapter_data["title"]
-        language = Language.from_str(chapter_data["language"])
+
+        language = Language(chapter_data["language"])
 
         translator = chapter_data["translator"]
 
         return Chapter(
             content_id=content_id,
             catalog_id=catalog_id,
-            volume_number=vol,
-            chapter_number=ch,
+            volume_number=vol_raw,
+            chapter_number=ch_raw,
             title=title,
             language=language,
             translator=translator,
@@ -334,9 +318,9 @@ class Database:
     def add_manga_library(
         self,
         manga: Manga,
-        lib_list: LibList = LibList.planned,
+        library_list: LibList = LibList.planned,
     ) -> None:
-        lib_manga_data = {"manga_id": manga.id, "list": lib_list.value}
+        lib_manga_data = {"manga_id": manga.id, "list_id": library_list.value}
         manga_library_insert = (
             insert(
                 self._library,
@@ -363,7 +347,7 @@ class Database:
                 self._manga.c.id == self._library.c.manga_id,
             )
             .filter_by(
-                list=lib_list.value,
+                list_id=lib_list.value,
             )
         )
         with self.__engine.connect() as conn:
@@ -373,18 +357,18 @@ class Database:
 
     def get_manga_library_list(self, manga: Manga) -> LibList:
         select_manga_library = sqlalchemy.select(
-            self._library.c.list,
+            self._library.c.list_id,
         ).filter_by(
             manga_id=manga.id,
         )
         with self.__engine.connect() as conn:
             select_chapter_result = conn.execute(select_manga_library)
-        a = select_chapter_result.first()
-        return LibList(a[0])
+        a = select_chapter_result.first()._asdict()
+        return LibList(a["list_id"])
 
     def check_manga_library(self, manga: Manga) -> bool:
         select_manga_library = sqlalchemy.select(
-            self._library.c.list,
+            self._library.c.list_id,
         ).filter_by(
             manga_id=manga.id,
         )

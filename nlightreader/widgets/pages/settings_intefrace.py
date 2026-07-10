@@ -1,17 +1,17 @@
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import (
-    BodyLabel,
     ExpandLayout,
     FluentIcon,
     HyperlinkCard,
     InfoBar,
     OptionsSettingCard,
     PrimaryPushSettingCard,
-    ScrollArea,
     setTheme,
     SettingCardGroup,
+    SingleDirectionScrollArea,
     SwitchSettingCard,
+    TitleLabel,
 )
 
 from nlightreader.consts.app import APP_VERSION
@@ -19,7 +19,7 @@ from nlightreader.consts.urls import GITHUB_REPO
 from nlightreader.utils.config import cfg
 
 
-class SettingsPage(ScrollArea):
+class SettingsPage(SingleDirectionScrollArea):
     check_for_updates_signal = Signal()
     mica_enable_changed = Signal(bool)
 
@@ -28,17 +28,7 @@ class SettingsPage(ScrollArea):
         self.setObjectName("SettingsPage")
         self.scrollWidget = QWidget()
         self.expandLayout = ExpandLayout(self.scrollWidget)
-        self.setStyleSheet(
-            """
-            QWidget {background: transparent;}
-            QScrollArea {border: none;}
-            BodyLabel {font: 33px 'Microsoft YaHei Light';}
-            """,
-        )
-        self.settingLabel = BodyLabel(
-            self.tr("Settings"),
-            self,
-        )
+        self.settingLabel = TitleLabel(self.tr("Settings"), self)
 
         self.personalGroup = SettingCardGroup(
             self.tr("Personalization"),
@@ -144,6 +134,7 @@ class SettingsPage(ScrollArea):
         )
 
         self._init_widget()
+        self.enableTransparentBackground()
 
     def setup(self) -> None:
         pass

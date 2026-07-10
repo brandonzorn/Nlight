@@ -138,6 +138,4 @@ class MainPage(BasePage):
         self.__genres_dialog.show()
 
 
-__all__ = [
-    "MainPage",
-]
+__all__ = ["MainPage"]

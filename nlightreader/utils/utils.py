@@ -1,5 +1,5 @@
 import logging
-from typing import Any
+from typing import Any, TypeVar
 
 from PySide6.QtWidgets import QApplication
 import requests
@@ -12,13 +12,13 @@ type JSONValue = str | int | float | bool | None | JSONArray | JSONObject
 type JSONObject = dict[str, JSONValue]
 type JSONArray = list[JSONValue]
 
+T = TypeVar("T", bound=JSONValue)
 
-def dd_get(
+def dd_get[T: JSONValue](
     structure: JSONObject | JSONArray,
     path: str,
-    default: JSONValue = None,
-) -> JSONValue:
-    """dict_deep_get"""
+    default: T = None,
+) -> T:
     if not isinstance(structure, (dict, list)):
         msg = f"Expected a dictionary, got {type(structure)}"
         raise TypeError(msg)
@@ -42,7 +42,9 @@ def dd_get(
                 default = {}
             return default
 
-    return current
+    if type(default) is type(current):
+        return current
+    return default
 
 
 def make_request(

@@ -132,7 +132,4 @@ class Thread(NlThread, QThread):
         )
 
 
-__all__ = [
-    "Worker",
-    "Thread",
-]
+__all__ = ["Thread", "Worker"]
