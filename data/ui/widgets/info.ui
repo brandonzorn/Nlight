@@ -43,6 +43,12 @@
         <height>970</height>
        </rect>
       </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <layout class="QVBoxLayout" name="scrollAreaVLayout">
        <property name="leftMargin">
         <number>9</number>

@@ -81,6 +81,22 @@ class InfoPage(QWidget):
         self._manga_pixmap = QPixmap()
         self._reader_window = None
 
+    def setup(self) -> None:
+        worker = Worker(
+            target=self._fetch_manga,
+            callback=self.update_additional_info,
+        )
+        self._workers.append(worker)
+        worker.start(pool=self._thread_pool)
+
+    def _fetch_manga(self)-> None:
+        try:
+            self._manga = self._catalog.get_manga(self._manga)
+            self._fetch_manga_preview()
+        except Exception as e:
+            logger.exception(e)
+            self.setup_error.emit()
+
     def on_context_menu(self, position: QPoint) -> None:
         context_target = self.ui.itemsTree
 
@@ -159,25 +175,6 @@ class InfoPage(QWidget):
             return None
         return selected_item.model
 
-    def setup(self) -> None:
-        def info_setup() -> None:
-            try:
-                self._manga = self._catalog.get_manga(self._manga)
-                self._fetch_manga_preview()
-            except Exception as e:
-                logger.error(e)
-                self.setup_error.emit()
-            finally:
-                if self._manga is not None:
-                    self.__db.add_manga(self._manga)
-
-        worker = Worker(
-            target=info_setup,
-            callback=self.update_additional_info,
-        )
-        self._workers.append(worker)
-        worker.start(pool=self._thread_pool)
-
     def update_add_button_icon(self) -> None:
         if self.ui.addButton.isChecked():
             self.ui.addButton.setIcon(FluentIcon.REMOVE_FROM)
@@ -185,6 +182,10 @@ class InfoPage(QWidget):
             self.ui.addButton.setIcon(FluentIcon.ADD_TO)
 
     def update_additional_info(self) -> None:
+        self.__db.add_manga(self._manga)
+        self.ui.libraryListComboBox.addItems(
+            [translate("Form", i.capitalize()) for i in LIB_LISTS],
+        )
         self.ui.libraryWidget.setVisible(not self._catalog.is_primary)
         self.ui.shikimoriWidget.setVisible(self._catalog.is_primary)
         self.set_info()

@@ -16,7 +16,7 @@ class Signals(QObject):
     finished = Signal(object)
 
 
-class NlThread:
+class BaseThread:
     def __init__(
         self,
         target: Callable,
@@ -49,7 +49,7 @@ class NlThread:
             self.signals.finished.emit(result)
 
 
-class Worker(NlThread, QRunnable):
+class Worker(BaseThread, QRunnable):
     """
     Initializes a new `Runnable` instance.
 
@@ -94,7 +94,7 @@ class Worker(NlThread, QRunnable):
         pool.start(self)
 
 
-class Thread(NlThread, QThread):
+class Thread(BaseThread, QThread):
     """
     Initializes a new `Thread` instance.
 
