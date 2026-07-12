@@ -3,12 +3,12 @@ from typing import TypeVar
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QListWidgetItem, QTreeWidgetItem
 
-from nlightreader.models.base_model import NamedContentModel
+from nlightreader.models.base_model import NamedBaseModel
 
-T = TypeVar("T", bound=NamedContentModel)
+T = TypeVar("T", bound=NamedBaseModel)
 
 
-class ModelListItem[T: NamedContentModel](QListWidgetItem):
+class ModelListItem[T: NamedBaseModel](QListWidgetItem):
     def __init__(self, model: T, icon: QIcon | None = None) -> None:
         super().__init__(model.get_name())
         if icon is not None:
@@ -16,7 +16,7 @@ class ModelListItem[T: NamedContentModel](QListWidgetItem):
         self.model: T = model
 
 
-class ModelTreeItem[T: NamedContentModel](QTreeWidgetItem):
+class ModelTreeItem[T: NamedBaseModel](QTreeWidgetItem):
     def __init__(self, model: T, icon: QIcon | None = None) -> None:
         super().__init__([model.get_name()])
         if icon is not None:

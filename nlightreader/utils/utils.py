@@ -1,5 +1,4 @@
 import logging
-from typing import Any, TypeVar
 
 from PySide6.QtWidgets import QApplication
 import requests
@@ -12,13 +11,12 @@ type JSONValue = str | int | float | bool | None | JSONArray | JSONObject
 type JSONObject = dict[str, JSONValue]
 type JSONArray = list[JSONValue]
 
-T = TypeVar("T", bound=JSONValue)
 
-def dd_get[T: JSONValue](
+def dd_get(
     structure: JSONObject | JSONArray,
     path: str,
-    default: T = None,
-) -> T:
+    default: JSONValue = None,
+) -> JSONValue:
     if not isinstance(structure, (dict, list)):
         msg = f"Expected a dictionary, got {type(structure)}"
         raise TypeError(msg)
@@ -42,9 +40,7 @@ def dd_get[T: JSONValue](
                 default = {}
             return default
 
-    if type(default) is type(current):
-        return current
-    return default
+    return current
 
 
 def make_request(
@@ -52,8 +48,8 @@ def make_request(
     method: str,
     *,
     headers: dict[str, str] | None = None,
-    params: dict[str, Any] | None = None,
-    json: dict[str, Any] | None = None,
+    params: JSONObject | None = None,
+    json: JSONObject | None = None,
     data: dict[str, str] | None = None,
     cookies: dict[str, str] | None = None,
     content_type: str | None = None,

@@ -130,7 +130,7 @@ class FileManager:
             ) as f:
                 return f.read().replace("\n", "<br>")
         except OSError as e:
-            logger.error("Failed to read text chapter: %s", e)
+            logger.exception(e)
             return ""
 
     @classmethod
