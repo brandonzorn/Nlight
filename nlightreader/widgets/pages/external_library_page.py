@@ -97,7 +97,7 @@ class ExternalLibraryPage(BasePage):
                 return
 
         if w.exec():
-            self.catalog.session.auth_login(w.get_user_data())
+            self.catalog.session.authorize(w.auth_data)
             Worker(
                 target=self.get_user_info,
                 callback=self.auth_success_callback,

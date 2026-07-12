@@ -60,10 +60,10 @@ class AbstractCatalog:
     def get_genres(self) -> list[Genre]:
         return [
             Genre(
-                i["value"],
-                self.CATALOG_ID,
-                i["name"],
-                i["russian"],
+                content_id=i["value"],
+                catalog_id=self.CATALOG_ID,
+                name=i["name"],
+                russian=i["russian"],
             )
             for i in self._FILTERS.GENRES
         ]
@@ -104,14 +104,14 @@ class LibParser:
     AUTH_TYPE: CatalogAuthType = CatalogAuthType.NO_AUTH
 
     def __init__(self) -> None:
-        self._session = None
+        self._client = None
 
     @property
     def session(self) -> object:
-        if self._session is None:
+        if self._client is None:
             msg = "session is not implemented"
             raise NotImplementedError(msg)
-        return self._session
+        return self._client
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
         return []

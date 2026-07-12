@@ -1,4 +1,4 @@
-from typing import Never
+from typing import Never, override
 import webbrowser
 
 from PySide6.QtWidgets import QWidget
@@ -28,10 +28,11 @@ class AbstractAuthDialog(MessageBoxBase):
 
         self.viewLayout.addWidget(self.titleLabel)
 
-    def verify_user_data(self) -> Never:
+    @property
+    def auth_data(self) -> Never:
         raise NotImplementedError
 
-    def get_user_data(self) -> Never:
+    def _verify_user_data(self) -> Never:
         raise NotImplementedError
 
 
@@ -39,26 +40,27 @@ class TokenAuthMessageBox(AbstractAuthDialog):
     def __init__(self, catalog: LibParser, parent: QWidget) -> None:
         super().__init__(catalog, parent)
         self.getCodeButton = PushButton(self.tr("Get code"))
-        self.getCodeButton.clicked.connect(self.__open_login_page)
+        self.getCodeButton.clicked.connect(self._open_login_page)
 
         self.tokenLineEdit = LineEdit(self)
         self.tokenLineEdit.setPlaceholderText(self.tr("Authorization code"))
         self.tokenLineEdit.setClearButtonEnabled(True)
-        self.tokenLineEdit.textChanged.connect(self.verify_user_data)
+        self.tokenLineEdit.textChanged.connect(self._verify_user_data)
 
         self.viewLayout.addWidget(self.tokenLineEdit)
         self.viewLayout.addWidget(self.getCodeButton)
 
-    def verify_user_data(self) -> None:
+    @override
+    @property
+    def auth_data(self) -> dict[str, str]:
+        return {"token": self.tokenLineEdit.text()}
+
+    @override
+    def _verify_user_data(self) -> None:
         self.yesButton.setEnabled(bool(self.tokenLineEdit.text()))
 
-    def get_user_data(self) -> dict[str, str]:
-        return {
-            "token": self.tokenLineEdit.text(),
-        }
-
-    def __open_login_page(self) -> None:
-        webbrowser.open_new_tab(self.session.get_auth_url())
+    def _open_login_page(self) -> None:
+        webbrowser.open_new_tab(self.session.get_authorization_url())
 
 
 class UserDataAuthMessageBox(AbstractAuthDialog):
@@ -67,17 +69,26 @@ class UserDataAuthMessageBox(AbstractAuthDialog):
         self.loginLineEdit = LineEdit(self)
         self.loginLineEdit.setPlaceholderText(self.tr("Login"))
         self.loginLineEdit.setClearButtonEnabled(True)
-        self.loginLineEdit.textChanged.connect(self.verify_user_data)
+        self.loginLineEdit.textChanged.connect(self._verify_user_data)
 
         self.passwordLineEdit = PasswordLineEdit(self)
         self.passwordLineEdit.setPlaceholderText(self.tr("Password"))
         self.passwordLineEdit.setClearButtonEnabled(True)
-        self.passwordLineEdit.textChanged.connect(self.verify_user_data)
+        self.passwordLineEdit.textChanged.connect(self._verify_user_data)
 
         self.viewLayout.addWidget(self.loginLineEdit)
         self.viewLayout.addWidget(self.passwordLineEdit)
 
-    def verify_user_data(self) -> None:
+    @override
+    @property
+    def auth_data(self) -> dict[str, str]:
+        return {
+            "login": self.loginLineEdit.text(),
+            "password": self.passwordLineEdit.text(),
+        }
+
+    @override
+    def _verify_user_data(self) -> None:
         self.yesButton.setEnabled(
             bool(
                 self.loginLineEdit.text(),
@@ -86,12 +97,6 @@ class UserDataAuthMessageBox(AbstractAuthDialog):
                 self.passwordLineEdit.text(),
             ),
         )
-
-    def get_user_data(self) -> dict[str, str]:
-        return {
-            "username": self.loginLineEdit.text(),
-            "password": self.passwordLineEdit.text(),
-        }
 
 
 __all__ = [
