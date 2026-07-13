@@ -1,7 +1,7 @@
 from typing import override
 
 from PySide6.QtCore import Slot
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QListWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.facial import Ui_MainPage
@@ -19,29 +19,8 @@ class MainPage(BasePage):
         self.ui = Ui_MainPage()
         self.ui.setupUi(self)
 
-        self.ui.next_btn.setIcon(FluentIcon.RIGHT_ARROW)
-        self.ui.prev_btn.setIcon(FluentIcon.LEFT_ARROW)
-        self.ui.filter_btn.setIcon(FluentIcon.FILTER)
-
-        self.manga_area.install(self.ui.itemsLayout)
-
-        self.ui.next_btn.clicked.connect(self.turn_page_next)
-        self.ui.prev_btn.clicked.connect(self.turn_page_prev)
-        self.ui.title_line.searchSignal.connect(self.search)
-        self.ui.apply_btn.clicked.connect(self.apply_filter)
-        self.ui.reset_btn.clicked.connect(self.reset_filter)
-        self.ui.filter_btn.clicked.connect(self.change_filters_visible)
-        self.ui.genresButton.clicked.connect(self.open_genres_dialog)
-        self.ui.catalogsButton.clicked.connect(
-            lambda: self.ui.catalogs_frame.setVisible(
-                not self.ui.catalogs_list.isVisible(),
-            ),
-        )
-        self.ui.catalogs_list.itemClicked.connect(
-            lambda: self.change_catalog(
-                self.ui.catalogs_list.currentIndex().row(),
-            ),
-        )
+        self._setup_ui()
+        self._setup_connections()
 
         self._genres_dialog = GenresDialog(self)
         self._filters_controller = FiltersController()
@@ -49,14 +28,32 @@ class MainPage(BasePage):
         self._filters_controller.set_orders_container(self.ui.ordersVLayout)
         self._filters_controller.set_genres_container(self._genres_dialog)
 
+    def _setup_ui(self) -> None:
+        self.ui.next_btn.setIcon(FluentIcon.RIGHT_ARROW)
+        self.ui.prev_btn.setIcon(FluentIcon.LEFT_ARROW)
+        self.ui.filter_btn.setIcon(FluentIcon.FILTER)
+
+        self.ui.catalogs_list.addItems(
+            [i.CATALOG_NAME for i in USER_CATALOGS],
+        )
+
+        self.manga_area.install(self.ui.itemsLayout)
+
+    def _setup_connections(self) -> None:
+        self.ui.next_btn.clicked.connect(self.turn_page_next)
+        self.ui.prev_btn.clicked.connect(self.turn_page_prev)
+        self.ui.title_line.searchSignal.connect(self.search)
+        self.ui.apply_btn.clicked.connect(self.apply_filter)
+        self.ui.reset_btn.clicked.connect(self.reset_filter)
+        self.ui.filter_btn.clicked.connect(self.change_filters_visible)
+        self.ui.genresButton.clicked.connect(self.open_genres_dialog)
+        self.ui.catalogsButton.clicked.connect(self._toggle_catalogs_list)
+        self.ui.catalogs_list.itemClicked.connect(self._catalog_selected)
+
     @override
     def setup(self) -> None:
         if not self.catalog:
             self.ui.catalogs_frame.hide()
-            self.ui.catalogs_list.clear()
-            self.ui.catalogs_list.addItems(
-                [i.CATALOG_NAME for i in USER_CATALOGS],
-            )
             self.change_catalog(0)
         else:
             self.get_content()
@@ -87,7 +84,19 @@ class MainPage(BasePage):
 
     @Slot()
     def apply_filter(self) -> None:
+        self._update_request_filters()
+        self.get_content()
+
+    @Slot()
+    def reset_filter(self) -> None:
+        self._filters_controller.reset_items()
+        self.ui.title_line.clear()
+
+        self.apply_filter()
+
+    def _update_request_filters(self) -> None:
         self.request_params.clear()
+        self.request_params.search = self.ui.title_line.text()
         self.request_params.set_order(
             self._filters_controller.get_active_order(),
         )
@@ -97,21 +106,9 @@ class MainPage(BasePage):
         self.request_params.set_genres(
             self._filters_controller.get_active_genres(),
         )
-        self.request_params.search = self.ui.title_line.text()
-        self.get_content()
-
-    @Slot()
-    def reset_filter(self) -> None:
-        self._filters_controller.reset_items()
-        self.request_params.clear()
-        self.request_params.set_order(
-            self._filters_controller.get_active_order(),
-        )
-        self.ui.title_line.clear()
-        self.get_content()
 
     def setup_filters(self) -> None:
-        self.clear_filters_items()
+        self._filters_controller.clear()
         orders = self.catalog.get_orders()
         kinds = self.catalog.get_kinds()
         genres = self.catalog.get_genres()
@@ -121,9 +118,6 @@ class MainPage(BasePage):
         self._filters_controller.add_orders(orders)
         self._filters_controller.add_kinds(kinds)
         self._filters_controller.add_genres(genres)
-
-    def clear_filters_items(self) -> None:
-        self._filters_controller.clear()
 
     @Slot()
     def change_filters_visible(self) -> None:
@@ -135,7 +129,17 @@ class MainPage(BasePage):
 
     @Slot()
     def open_genres_dialog(self) -> None:
-        self._genres_dialog.show()
+        self._genres_dialog.exec()
+
+    @Slot(QListWidgetItem)
+    def _catalog_selected(self, item: QListWidgetItem) -> None:
+        self.change_catalog(self.ui.catalogs_list.row(item))
+
+    @Slot()
+    def _toggle_catalogs_list(self) -> None:
+        self.ui.catalogs_frame.setVisible(
+            not self.ui.catalogs_list.isVisible(),
+        )
 
 
 __all__ = ["MainPage"]

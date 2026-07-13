@@ -75,8 +75,8 @@ class HistoryPage(QWidget):
         self._db.del_history_notes(selected_item.note.manga)
         selected_item.delete_parent()
 
-    def _on_context_menu(self, pos: QPoint) -> None:
-        selected_item = self.ui.itemsTree.itemAt(pos)
+    def _on_context_menu(self, position: QPoint) -> None:
+        selected_item = self.ui.itemsTree.itemAt(position)
         if not isinstance(selected_item, HistoryTreeItem):
             return
 
@@ -93,7 +93,7 @@ class HistoryPage(QWidget):
         else:
             menu.set_mode(HistoryMenuMode.READ)
 
-        menu.exec(self.ui.itemsTree.mapToGlobal(pos))
+        menu.exec(self.ui.itemsTree.mapToGlobal(position))
 
 
 __all__ = ["HistoryPage"]

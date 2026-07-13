@@ -30,7 +30,7 @@ class BasePage(QWidget):
         self._get_content_thread = Thread(
             target=self._get_content_thread_func,
             callback=self.update_content,
-            error_callback=self.__process_errors,
+            error_callback=self._process_errors,
         )
 
         self.catalog = None
@@ -46,13 +46,13 @@ class BasePage(QWidget):
         self.manga_area.add_items(items)
         self.manga_area.update_items()
 
-    def __process_errors(self, exception: Exception) -> None:
-        try:
-            raise exception
-        except FetchContentError:
-            self.manga_area.set_state(ContentContainerState.FETCH_ERROR)
-        except (NoContentError, RequestsParamsError):
-            self.manga_area.set_state(ContentContainerState.NO_CONTENT)
+    def update_page(self) -> None:
+        pass
+
+    @Slot(LibList)
+    def change_list(self, lst: LibList) -> None:
+        self.request_params.lib_list = lst
+        self.get_content()
 
     @Slot()
     def turn_page_next(self) -> None:
@@ -92,13 +92,13 @@ class BasePage(QWidget):
     def _setup_manga_item(self, manga: Manga) -> MangaItem:
         raise NotImplementedError
 
-    def update_page(self) -> None:
-        pass
-
-    @Slot(LibList)
-    def change_list(self, lst: LibList) -> None:
-        self.request_params.lib_list = lst
-        self.get_content()
+    def _process_errors(self, exception: Exception) -> None:
+        try:
+            raise exception
+        except FetchContentError:
+            self.manga_area.set_state(ContentContainerState.FETCH_ERROR)
+        except (NoContentError, RequestsParamsError):
+            self.manga_area.set_state(ContentContainerState.NO_CONTENT)
 
 
 __all__ = ["BasePage"]

@@ -41,15 +41,10 @@ class AbstractContentContainer:
         self._state = ContentContainerState.EMPTY
 
     def install(self, parent: QLayout) -> None:
-        self.get_content_widget().layout().addWidget(
-            self._no_content_error_widget,
-        )
-        self.get_content_widget().layout().addWidget(
-            self._fetch_error_widget,
-        )
-        self.get_content_widget().layout().addWidget(
-            self._progress_ring,
-        )
+        content_layout = self.get_content_widget().layout()
+        content_layout.addWidget(self._no_content_error_widget)
+        content_layout.addWidget(self._fetch_error_widget)
+        content_layout.addWidget(self._progress_ring)
         parent.addWidget(self)
 
     def _reset_area(self) -> None:
