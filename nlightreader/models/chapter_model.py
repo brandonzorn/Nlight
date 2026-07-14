@@ -33,6 +33,10 @@ class Chapter(BaseModel):
         return self._chapter_number
 
     @property
+    def title(self) -> str:
+        return self._title
+
+    @property
     def language(self) -> Language:
         return self._language
 

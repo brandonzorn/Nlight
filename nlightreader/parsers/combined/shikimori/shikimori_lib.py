@@ -58,7 +58,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         mangas = []
         if response and (resp_json := response.json()):
             for i in resp_json:
-                if not i.get("status") == lib_list:
+                if i.get("status") != lib_list:
                     continue
                 i = i.get("manga")
                 mangas.append(self._setup_manga(i))

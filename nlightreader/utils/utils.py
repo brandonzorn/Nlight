@@ -7,6 +7,8 @@ from nlightreader.consts.files import LangIcons
 from nlightreader.consts.urls import DEFAULT_HEADERS
 from nlightreader.core.enums import Language
 
+logger = logging.getLogger(__name__)
+
 type JSONValue = str | int | float | bool | None | JSONArray | JSONObject
 type JSONObject = dict[str, JSONValue]
 type JSONArray = list[JSONValue]
@@ -104,7 +106,7 @@ def make_request(
             return response.text
         return response
     except requests.exceptions.RequestException as e:
-        logging.error(
+        logger.exception(
             f"\n\tError fetching URL: {url}\n"
             f"\t\tReason: {e}\n"
             f"\t\tHeaders: {headers}\n"

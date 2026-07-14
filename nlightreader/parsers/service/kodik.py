@@ -36,16 +36,16 @@ class Kodik:
         response = make_request(url, "GET", params=params, content_type="json")
         if not isinstance(response, dict):
             return translators
-        for data in response.get("results", []):
-            translators.append(
-                KodikTranslator(
-                    data["id"],
-                    data["link"],
-                    int(data.get("last_episode", 1)),
-                    data["translation"]["title"],
-                    data["translation"]["type"],
-                ),
+        translators.extend(
+            KodikTranslator(
+                data["id"],
+                data["link"],
+                int(data.get("last_episode", 1)),
+                data["translation"]["title"],
+                data["translation"]["type"],
             )
+            for data in response.get("results", [])
+        )
         return translators
 
 

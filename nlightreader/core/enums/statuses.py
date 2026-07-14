@@ -18,7 +18,7 @@ class MangaKind(IntEnum):
     @staticmethod
     def _matching_the_pattern(text: str, pattern: tuple) -> bool:
         text = text.lower()
-        return any([i in text for i in pattern])
+        return any(i in text for i in pattern)
 
     @classmethod
     def from_str(cls, string: str | None) -> "MangaKind":

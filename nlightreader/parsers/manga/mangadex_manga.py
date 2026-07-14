@@ -111,9 +111,9 @@ class MangaDex(AbstractMangaCatalog):
         mangas: list[Manga] = []
         if not isinstance(response, dict):
             return mangas
-
-        for data in response.get("data", {}):
-            mangas.append(self.setup_manga(data))
+        mangas.extend(
+            self.setup_manga(data) for data in response.get("data", {})
+        )
         return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
@@ -209,15 +209,12 @@ class MangaDex(AbstractMangaCatalog):
         if not isinstance(response, dict):
             return []
         data = response.get("data", {})
-        return [
-            tag_data
-            for tag_data in list(
-                filter(
-                    lambda x: dd_get(x, "attributes.group") in groups,
-                    data,
-                ),
-            )
-        ]
+        return list(
+            filter(
+                lambda x: dd_get(x, "attributes.group") in groups,
+                data,
+            ),
+        )
 
     def get_genres(self) -> list[Genre]:
         return [

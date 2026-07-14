@@ -59,7 +59,7 @@ class GenresDialog:
         return {genre for genre, selected in self._genres.items() if selected}
 
     def set_genres(self, genres: list[Genre]) -> None:
-        self._genres = {genre: False for genre in genres}
+        self._genres = dict.fromkeys(genres, False)
 
     def reset_items(self) -> None:
         self._genres = dict.fromkeys(self._genres, False)
