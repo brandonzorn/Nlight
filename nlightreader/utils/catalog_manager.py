@@ -18,7 +18,7 @@ from nlightreader.parsers import (
     ShikimoriLib,
     ShikimoriManga,
     ShikimoriRanobe,
-    SlashLib,
+    SlashLibLegacy,
 )
 from nlightreader.parsers.catalog import AbstractCatalog, LibParser
 
@@ -34,7 +34,7 @@ CATALOG_CLASSES: dict[int, type[AbstractCatalog]] = {
     6: Remanga,
     7: NHentai,
     8: AllHentai,
-    9: SlashLib,
+    9: SlashLibLegacy,
     10: LibMangalib,
     11: ShikimoriAnime,
     # 12:

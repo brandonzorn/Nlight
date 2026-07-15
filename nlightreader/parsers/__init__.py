@@ -11,9 +11,9 @@ from .combined.shikimori import (
     ShikimoriManga,
     ShikimoriRanobe,
 )
-from .hentai_manga import AllHentai, NHentai
+from .hentai_manga import AllHentai, NHentai, SlashLibLegacy
 from .local_library import LocalLibrary
-from .manga import Desu, MangaDex, MangaDexLib, Remanga, SlashLib
+from .manga import Desu, MangaDex, MangaDexLib, Remanga
 from .ranobe import Erolate, Ranobehub, Rulate
 
 __all__ = [
@@ -32,7 +32,7 @@ __all__ = [
     "MangaDex",
     "MangaDexLib",
     "Remanga",
-    "SlashLib",
+    "SlashLibLegacy",
     "Erolate",
     "Ranobehub",
     "Rulate",
