@@ -13,9 +13,12 @@ class NetworkClient:
     def __init__(
         self,
         *,
+        catalog_name: str,
         headers: dict[str, Any],
         cookies: dict[str, Any] | None = None,
     ) -> None:
+        self._catalog_name = catalog_name
+
         self._session = requests.Session()
         self._session.headers.clear()
         self._session.headers.update(headers)
@@ -32,7 +35,10 @@ class NetworkClient:
         extra_cookies: dict[str, str] | None = None,
     ) -> requests.Response | None:
         if IS_TEST_ENV:
-            logger.debug(f"Request to {url} blocked: Test state.")
+            logger.warning(
+                f"{self._catalog_name}: request to {url} blocked. "
+                f"Reason: test state.",
+            )
             return None
         try:
             response = self._session.request(
@@ -47,14 +53,12 @@ class NetworkClient:
             return response
         except requests.exceptions.RequestException as e:
             logger.error(
-                f"Network error occurred.\n"
-                f"URL: {url} [{method}]\n"
-                f"Reason: {e}\n"
-                f"Context data:\n"
-                f"\t{self._session.headers=}\n"
-                f"\t{extra_headers=}\n"
-                f"\t{params=}\n"
-                f"\t{json=}",
+                f"\nError fetching: {url} [{method}]\n"
+                f"\tReason: {e}\n"
+                f"\tCookies: {extra_headers}\n"
+                f"\tHeaders: {extra_headers}\n"
+                f"\tJson: {json}\n"
+                f"\tParams: {params}",
             )
             return None
 

@@ -1,5 +1,5 @@
 from collections.abc import Callable
-import traceback
+import logging
 
 from PySide6.QtCore import (
     QObject,
@@ -9,6 +9,8 @@ from PySide6.QtCore import (
     Signal,
     Slot,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class Signals(QObject):
@@ -43,7 +45,7 @@ class BaseThread:
         try:
             result = self._target(*self._args, **self._kwargs)
         except Exception as e:
-            traceback.print_exc()
+            logger.exception(e)
             self.signals.error.emit(e)
         else:
             self.signals.finished.emit(result)
@@ -89,8 +91,6 @@ class Worker(BaseThread, QRunnable):
     def start(self, pool: QThreadPool | None = None) -> None:
         if pool is None:
             pool = QThreadPool.globalInstance()
-        if pool.activeThreadCount() == pool.maxThreadCount():
-            return
         pool.start(self)
 
 

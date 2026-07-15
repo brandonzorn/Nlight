@@ -1,6 +1,6 @@
 import logging
+import os
 
-from PySide6.QtWidgets import QApplication
 import requests
 
 from nlightreader.consts.files import LangIcons
@@ -8,6 +8,8 @@ from nlightreader.consts.urls import DEFAULT_HEADERS
 from nlightreader.core.enums import Language
 
 logger = logging.getLogger(__name__)
+
+IS_TEST_ENV = os.getenv("TEST") == "1"
 
 type JSONValue = str | int | float | bool | None | JSONArray | JSONObject
 type JSONObject = dict[str, JSONValue]
@@ -83,7 +85,10 @@ def make_request(
         Otherwise, returns the full requests.Response object.
         Returns None if there was an error.
     """
-    if "test" in QApplication.arguments():
+    if IS_TEST_ENV:
+        logger.warning(
+            f"make_request: request to {url} blocked. Reason: test state.",
+        )
         return None
     if headers is None:
         headers = DEFAULT_HEADERS
@@ -106,14 +111,14 @@ def make_request(
             return response.text
         return response
     except requests.exceptions.RequestException as e:
-        logger.exception(
-            f"\n\tError fetching URL: {url}\n"
-            f"\t\tReason: {e}\n"
-            f"\t\tHeaders: {headers}\n"
-            f"\t\tParams: {params}\n"
-            f"\t\tCookies: {cookies}\n"
-            f"\t\tJson: {json}\n"
-            f"\t\tData: {data}",
+        logger.error(
+            f"\nError fetching: {url}\n"
+            f"\tReason: {e}\n"
+            f"\tCookies: {cookies}\n"
+            f"\tData: {data}"
+            f"\tHeaders: {headers}\n"
+            f"\tJson: {json}\n"
+            f"\tParams: {params}\n",
         )
 
 

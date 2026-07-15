@@ -33,7 +33,7 @@ class MangaKind(IntEnum):
             return cls.MANHWA
         if cls._matching_the_pattern(string, ("manhua", "маньхуа")):
             return cls.MANHUA
-        if cls._matching_the_pattern(string, ("one_shot",)):
+        if cls._matching_the_pattern(string, ("one_shot", "oneshot")):
             return cls.ONE_SHOT
         if cls._matching_the_pattern(string, ("doujin",)):
             return cls.DOUJIN
