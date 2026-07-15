@@ -14,7 +14,10 @@ class NHentai(AbstractHentaiMangaCatalog):
     _URL = "https://nhentai.net"
 
     def __init__(self) -> None:
-        self._client = NetworkClient(headers=self._HEADERS)
+        self._client = NetworkClient(
+            catalog_name=self.CATALOG_NAME,
+            headers=self._HEADERS,
+        )
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL}/search"

@@ -19,6 +19,7 @@ class LibBase(AbstractCatalog):
 
     def __init__(self) -> None:
         self._client = NetworkClient(
+            catalog_name=self.CATALOG_NAME,
             headers={
                 "Site-Id": str(self._SITE_ID),
                 "Referer": f"{self._URL}/",

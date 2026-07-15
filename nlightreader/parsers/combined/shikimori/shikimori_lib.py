@@ -1,10 +1,5 @@
 import logging
-import os
-from typing import Any
-
-from authlib.integrations.requests_client import OAuth2Session
-from authlib.oauth2.rfc6749 import OAuth2Token
-import requests
+from typing import override
 
 from nlightreader.consts.urls import (
     URL_SHIKIMORI,
@@ -19,11 +14,9 @@ from nlightreader.parsers.catalog import CatalogAuthType, LibParser
 from nlightreader.parsers.combined.shikimori.shikimori_base import (
     ShikimoriBase,
 )
-from nlightreader.utils.token import TokenManager
+from nlightreader.utils.oauth_client import OAuthClient
 
 logger = logging.getLogger(__name__)
-
-IS_TEST_ENV = os.getenv("TEST") == "1"
 
 try:
     from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
@@ -32,6 +25,7 @@ except (ModuleNotFoundError, ImportError):
     SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID = "", ""
 
 
+@singleton
 class ShikimoriLib(ShikimoriBase, LibParser):
     AUTH_TYPE = CatalogAuthType.TOKEN
 
@@ -39,6 +33,8 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         super().__init__()
         self.user: User = User(None, None, None)
         self._client = ShikimoriClient(
+            url=URL_SHIKIMORI,
+            url_api=URL_SHIKIMORI_API,
             catalog_name=self.CATALOG_NAME,
             headers=self._HEADERS,
         )
@@ -148,51 +144,20 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         self._client.request("PATCH", url, json=data)
 
 
-@singleton
-class ShikimoriClient:
-    def __init__(self, catalog_name: str, headers: dict[str, str]) -> None:
-        self._is_authorized = False
-        initial_token = OAuth2Token.from_dict(
-            TokenManager.load_token(catalog_name),
-        )
+class ShikimoriClient(OAuthClient):
+    _token_url = URL_SHIKIMORI_TOKEN
+    _redirect_uri = "urn:ietf:wg:oauth:2.0:oob"
+    _scope = "user_rates"
+    _client_id = SHIKIMORI_CLIENT_ID
+    _client_secret = SHIKIMORI_CLIENT_SECRET
 
-        self._session = OAuth2Session(
-            client_id=SHIKIMORI_CLIENT_ID,
-            client_secret=SHIKIMORI_CLIENT_SECRET,
-            token=initial_token,
-            token_endpoint=URL_SHIKIMORI_TOKEN,
-            redirect_uri="urn:ietf:wg:oauth:2.0:oob",
-            scope="user_rates",
-            update_token=self._token_saver,
-        )
-        self._session.session.headers.clear()
-        self._session.session.headers.update(headers)
-        if initial_token:
-            self._update_actual_auth_status()
-
-    @staticmethod
-    def _token_saver(token: OAuth2Token, **_) -> None:
-        if not token or "access_token" not in token:
-            return
-        TokenManager.save_token(
-            token,
-            catalog_name=ShikimoriLib.CATALOG_NAME,
-        )
-        logger.info("OAuth token saved.")
-
-    @property
-    def authorized(self) -> bool:
-        return self._is_authorized
-
-    @property
-    def token(self) -> OAuth2Token | None:
-        return self._session.token
-
+    @override
     def get_authorization_url(self) -> str:
-        authorization_url = f"{URL_SHIKIMORI}/oauth/authorize"
+        authorization_url = f"{self._url}/oauth/authorize"
         url, _ = self._session.create_authorization_url(authorization_url)
         return url
 
+    @override
     def authorize(self, params: dict[str, str]) -> None:
         token = params.get("token")
         if not token:
@@ -204,6 +169,7 @@ class ShikimoriClient:
         self._token_saver(token)
         self._update_actual_auth_status()
 
+    @override
     def _update_actual_auth_status(self) -> None:
         self._is_authorized = False
         url = f"{URL_SHIKIMORI_API}/users/whoami"
@@ -212,39 +178,6 @@ class ShikimoriClient:
             return
         data = response.json()
         self._is_authorized = bool(data)
-
-    def request(
-        self,
-        method: str,
-        url: str,
-        *,
-        params: dict[str, Any] | None = None,
-        json: dict[str, Any] | None = None,
-        ignore_authorize: bool = False,
-    ) -> requests.Response | None:
-        if (not ignore_authorize and not self._is_authorized) or IS_TEST_ENV:
-            logger.warning(f"Request to {url} blocked: Unauthorized state.")
-            return None
-        try:
-            response = self._session.request(
-                method,
-                url,
-                params=params,
-                json=json,
-            )
-            response.raise_for_status()
-            return response
-        except requests.exceptions.RequestException as e:
-            logger.error(
-                f"\n\tError fetching URL: {url}\n"
-                f"\t\tReason: {e}\n"
-                f"\t\tHeaders: {self._session.session.headers}\n"
-                f"\t\tParams: {params}\n"
-                f"\t\tCookies: {self._session.session.cookies}\n"
-                f"\t\tJson: {json}\n",
-            )
-            if e.response is not None and e.response.status_code == 401:
-                self._is_authorized = False
 
 
 __all__ = ["ShikimoriLib"]

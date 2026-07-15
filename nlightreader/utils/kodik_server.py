@@ -127,6 +127,7 @@ class KodikPlayerHttpRequestHandler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         if not self._track_progress:
             self.send_error_response(403, "Metrics is disabled")
+            return
         try:
             content_length = int(self.headers.get("Content-Length", 0))
             if content_length == 0:

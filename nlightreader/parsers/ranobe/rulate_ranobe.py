@@ -21,6 +21,7 @@ class Rulate(AbstractRanobeCatalog):
 
     def __init__(self) -> None:
         self._client = NetworkClient(
+            catalog_name=self.CATALOG_NAME,
             headers=self._HEADERS,
             cookies=self._COOKIES,
         )

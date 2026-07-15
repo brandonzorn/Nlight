@@ -15,7 +15,10 @@ class Remanga(AbstractMangaCatalog):
     _URL_API = f"{_URL}/api"
 
     def __init__(self) -> None:
-        self._client = NetworkClient(headers=self._HEADERS)
+        self._client = NetworkClient(
+            catalog_name=self.CATALOG_NAME,
+            headers=self._HEADERS,
+        )
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/titles/{manga.content_id}/"

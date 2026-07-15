@@ -13,7 +13,10 @@ class SlashLibLegacy(AbstractHentaiMangaCatalog):
     CATALOG_ID = 9
 
     def __init__(self) -> None:
-        self._client = NetworkClient(headers=self._HEADERS)
+        self._client = NetworkClient(
+            catalog_name=self.CATALOG_NAME,
+            headers=self._HEADERS,
+        )
 
     def get_preview(self, manga: Manga) -> bytes | None:
         url = manga.preview_url

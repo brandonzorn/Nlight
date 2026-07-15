@@ -1,3 +1,4 @@
+import logging
 import time
 from typing import override
 
@@ -28,6 +29,8 @@ from nlightreader.widgets.containers.content_container import (
     ContentContainerState,
 )
 from nlightreader.widgets.containers.image_area import ImageArea
+
+logger = logging.getLogger(__name__)
 
 
 class ReaderWindow(SimpleCardWidget):
@@ -220,10 +223,12 @@ class ReaderWindow(SimpleCardWidget):
         try:
             raise exception
         except FetchContentError:
+            logger.exception(exception)
             self._content_container.set_state(
                 ContentContainerState.FETCH_ERROR,
             )
         except NoContentError:
+            logger.error(exception)
             self._content_container.set_state(
                 ContentContainerState.NO_CONTENT,
             )

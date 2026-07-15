@@ -1,10 +1,5 @@
 import logging
-import os
-from typing import Any
-
-from authlib.integrations.requests_client import OAuth2Session
-from authlib.oauth2.rfc6749 import OAuth2Token
-import requests
+from typing import override
 
 from nlightreader.consts.items import MangaDexItems
 from nlightreader.consts.urls import URL_MANGADEX_TOKEN
@@ -15,12 +10,10 @@ from nlightreader.models import Chapter, Genre, Image, Kind, Manga
 from nlightreader.parsers.catalog import CatalogAuthType, LibParser
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.utils.network import NetworkClient
-from nlightreader.utils.token import TokenManager
+from nlightreader.utils.oauth_client import OAuthClient
 from nlightreader.utils.utils import dd_get
 
 logger = logging.getLogger(__name__)
-
-IS_TEST_ENV = os.getenv("TEST") == "1"
 
 try:
     from keys import MANGADEX_CLIENT_ID, MANGADEX_CLIENT_SECRET
@@ -39,7 +32,10 @@ class MangaDex(AbstractMangaCatalog):
     _HEADERS = {"User-Agent": "Nlight"}
 
     def __init__(self) -> None:
-        self._client = NetworkClient(headers=self._HEADERS)
+        self._client = NetworkClient(
+            catalog_name=self.CATALOG_NAME,
+            headers=self._HEADERS,
+        )
 
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/manga/{manga.content_id}"
@@ -67,27 +63,6 @@ class MangaDex(AbstractMangaCatalog):
             manga.status = MangaStatus.from_str(status)
         return manga
 
-    def setup_manga(self, data: dict) -> Manga:
-        manga_id = dd_get(data, "id", "")
-        name = dd_get(data, "attributes.title.en", "")
-        russian = ""
-        alt_titles: list[dict[str, str]] = dd_get(
-            data,
-            "attributes.altTitles",
-            [],
-        )
-        for j in alt_titles:
-            if "ru" in j:
-                russian = j.get("ru", "")
-            if not name and "en" in j:
-                name = j.get("en", "")
-        return Manga(
-            content_id=manga_id,
-            catalog_id=self.CATALOG_ID,
-            name=name,
-            russian=russian,
-        )
-
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/manga"
         params = {
@@ -103,17 +78,17 @@ class MangaDex(AbstractMangaCatalog):
                 "pornographic",
             ],
         }
-        response = self._client.get_json(
-            url,
-            params=params,
-        )
-
         mangas: list[Manga] = []
+
+        response = self._client.get_json(url, params=params)
         if not isinstance(response, dict):
             return mangas
-        mangas.extend(
-            self.setup_manga(data) for data in response.get("data", {})
-        )
+
+        manga_data = response.get("data")
+        if not isinstance(manga_data, list):
+            return mangas
+
+        mangas.extend(self._parse_manga_data(data) for data in manga_data)
         return mangas
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
@@ -121,9 +96,9 @@ class MangaDex(AbstractMangaCatalog):
         url = f"{self._URL_API}/chapter"
         params = {
             "manga": manga.content_id,
-            "limit": 1,
+            "limit": items_per_page,
             "translatedLanguage[]": ["ru", "en", "uk"],
-            "order[chapter]": "asc",
+            "order[chapter]": "desc",
             "contentRating[]": [
                 "safe",
                 "suggestive",
@@ -131,34 +106,27 @@ class MangaDex(AbstractMangaCatalog):
                 "pornographic",
             ],
         }
-        response = self._client.get_json(url, params=params)
         chapters: list[Chapter] = []
+
+        response = self._client.get_json(url, params=params)
         if not isinstance(response, dict):
             return chapters
-        total = dd_get(response, "total", -1)
+        chunk_data = response.get("data", {})
+        chapters.extend(self._parse_chapters_data(chunk_data))
+
+        total = dd_get(response, "total")
+        if not isinstance(total, int):
+            return chapters
 
         params.update({"limit": items_per_page})
-        for j in range(total // items_per_page + 1):
-            params.update({"offset": j * items_per_page})
-            chunk_response = self._client.get_json(
-                url,
-                params=params,
-            )
+        for page in range(1, total // items_per_page + 1):
+            params.update({"offset": page * items_per_page})
+            chunk_response = self._client.get_json(url, params=params)
             if not isinstance(chunk_response, dict):
                 continue
-            for data in reversed(chunk_response.get("data", {})):
-                attr = data.get("attributes")
-                chapter = Chapter(
-                    content_id=data.get("id"),
-                    catalog_id=self.CATALOG_ID,
-                    volume_number=attr.get("volume"),
-                    chapter_number=attr.get("chapter"),
-                    title=attr.get("title"),
-                    language=Language.from_str(
-                        attr.get("translatedLanguage"),
-                    ),
-                )
-                chapters.append(chapter)
+
+            chunk_data = chunk_response.get("data", {})
+            chapters.extend(self._parse_chapters_data(chunk_data))
         return chapters
 
     def get_images(self, _: Manga, chapter: Chapter) -> list[Image]:
@@ -203,43 +171,80 @@ class MangaDex(AbstractMangaCatalog):
             f"covers/{manga.content_id}/{filename}.256.jpg",
         )
 
-    def _get_tags_data_by_group(self, groups: list[str]) -> list[dict]:
-        url = f"{self._URL_API}/manga/tag"
-        response = self._client.get_json(url)
-        if not isinstance(response, dict):
-            return []
-        data = response.get("data", {})
-        return list(
-            filter(
-                lambda x: dd_get(x, "attributes.group") in groups,
-                data,
-            ),
-        )
-
     def get_genres(self) -> list[Genre]:
         return [
-            Genre(
-                content_id=dd_get(tag_data, "id", ""),
-                catalog_id=self.CATALOG_ID,
-                name=dd_get(tag_data, "attributes.name.en"),
-                russian="",
-            )
-            for tag_data in self._get_tags_data_by_group(["genre", "theme"])
+            Genre(**tag_data)
+            for tag_data in self._get_tags_by_group("genre", "theme")
         ]
 
     def get_kinds(self) -> list[Kind]:
         return [
-            Kind(
-                content_id=dd_get(tag_data, "id", ""),
-                catalog_id=self.CATALOG_ID,
-                name=dd_get(tag_data, "attributes.name.en"),
-                russian="",
-            )
-            for tag_data in self._get_tags_data_by_group(["format"])
+            Kind(**tag_data) for tag_data in self._get_tags_by_group("format")
         ]
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/title/{manga.content_id}"
+
+    def _get_tags_by_group(self, *args: str) -> list[dict]:
+        url = f"{self._URL_API}/manga/tag"
+        response = self._client.get_json(url)
+        tags: list[dict] = []
+        if not isinstance(response, dict):
+            return tags
+        tags_data = response.get("data", {})
+        for tag_data in tags_data:
+            group_name = dd_get(tag_data, "attributes.group")
+            if group_name not in args:
+                continue
+            content_id = dd_get(tag_data, "id")
+            name = dd_get(tag_data, "attributes.name.en")
+            if not isinstance(name, str):
+                continue
+            tags.append(
+                {
+                    "content_id": content_id,
+                    "catalog_id": self.CATALOG_ID,
+                    "name": name,
+                    "russian": "",
+                },
+            )
+        return tags
+
+    def _parse_manga_data(self, data: dict) -> Manga:
+        manga_id = dd_get(data, "id", "")
+        name = dd_get(data, "attributes.title.en", "")
+        russian = ""
+        alt_titles: list[dict] = dd_get(data, "attributes.altTitles", [])
+        for j in alt_titles:
+            if "ru" in j:
+                russian = j.get("ru", "")
+            if not name and "en" in j:
+                name = j.get("en", "")
+        return Manga(
+            content_id=manga_id,
+            catalog_id=self.CATALOG_ID,
+            name=name,
+            russian=russian,
+        )
+
+    def _parse_chapters_data(self, data: list[dict]) -> list[Chapter]:
+        chapters = []
+        for chapter_data in reversed(data):
+            attr = chapter_data.get("attributes")
+            chapters.append(
+                Chapter(
+                    content_id=chapter_data.get("id"),
+                    catalog_id=self.CATALOG_ID,
+                    volume_number=attr.get("volume"),
+                    chapter_number=attr.get("chapter"),
+                    title=attr.get("title"),
+                    language=Language.from_str(
+                        attr.get("translatedLanguage"),
+                    ),
+                ),
+            )
+        chapters.reverse()
+        return chapters
 
 
 class MangaDexLib(MangaDex, LibParser):
@@ -247,7 +252,12 @@ class MangaDexLib(MangaDex, LibParser):
 
     def __init__(self) -> None:
         super().__init__()
-        self._client = MangaDexClient(self.CATALOG_NAME, self._HEADERS)
+        self._client = MangaDexClient(
+            url=self._URL,
+            url_api=self._URL_API,
+            catalog_name=self.CATALOG_NAME,
+            headers=self._HEADERS,
+        )
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
         mangas = []
@@ -266,8 +276,8 @@ class MangaDexLib(MangaDex, LibParser):
             params=params,
         )
         if response and (resp_json := response.json()):
-            for i in resp_json.get("data"):
-                manga = self.setup_manga(i)
+            for manga_data in resp_json.get("data"):
+                manga = self._parse_manga_data(manga_data)
                 if manga.content_id in response_statuses.json().get(
                     "statuses",
                 ):
@@ -287,48 +297,13 @@ class MangaDexLib(MangaDex, LibParser):
 
 
 @singleton
-class MangaDexClient:
-    def __init__(self, catalog_name: str, headers: dict[str, str]) -> None:
-        self._is_authorized = False
-        initial_token = OAuth2Token.from_dict(
-            TokenManager.load_token(catalog_name),
-        )
+class MangaDexClient(OAuthClient):
+    _auth_method = "client_secret_post"
+    _token_url = URL_MANGADEX_TOKEN
+    _client_id = MANGADEX_CLIENT_ID
+    _client_secret = MANGADEX_CLIENT_SECRET
 
-        self._session = OAuth2Session(
-            client_id=MANGADEX_CLIENT_ID,
-            client_secret=MANGADEX_CLIENT_SECRET,
-            token=initial_token,
-            token_endpoint=URL_MANGADEX_TOKEN,
-            token_endpoint_auth_method="client_secret_post",
-            update_token=self._token_saver,
-        )
-        self._session.session.headers.clear()
-        self._session.session.headers.update(headers)
-        if initial_token:
-            self._update_actual_auth_status()
-
-    @staticmethod
-    def _token_saver(token: OAuth2Token, **_) -> None:
-        if not token or "access_token" not in token:
-            return
-        TokenManager.save_token(
-            token,
-            catalog_name=MangaDexLib.CATALOG_NAME,
-        )
-        logger.info("OAuth token saved.")
-
-    @property
-    def authorized(self) -> bool:
-        return self._is_authorized
-
-    @property
-    def token(self) -> OAuth2Token | None:
-        return self._session.token
-
-    @staticmethod
-    def get_authorization_url() -> str:
-        return ""
-
+    @override
     def authorize(self, params: dict[str, str]) -> None:
         login, password = params.get("login"), params.get("password")
         if not login or not password:
@@ -341,47 +316,15 @@ class MangaDexClient:
         self._token_saver(token)
         self._update_actual_auth_status()
 
+    @override
     def _update_actual_auth_status(self) -> None:
         self._is_authorized = False
-        url = f"{MangaDexLib._URL_API}/user/me"
+        url = f"{self._url_api}/user/me"
         response = self.request("GET", url, ignore_authorize=True)
         if response is None:
             return
         data = response.json()
         self._is_authorized = bool(data)
-
-    def request(
-        self,
-        method: str,
-        url: str,
-        *,
-        params: dict[str, Any] | None = None,
-        json: dict[str, Any] | None = None,
-        ignore_authorize: bool = False,
-    ) -> requests.Response | None:
-        if (not ignore_authorize and not self._is_authorized) or IS_TEST_ENV:
-            logger.warning(f"Request to {url} blocked: Unauthorized state.")
-            return None
-        try:
-            response = self._session.request(
-                method,
-                url,
-                params=params,
-                json=json,
-            )
-            response.raise_for_status()
-            return response
-        except requests.exceptions.RequestException as e:
-            logger.error(
-                f"\n\tError fetching URL: {url}\n"
-                f"\t\tReason: {e}\n"
-                f"\t\tHeaders: {self._session.session.headers}\n"
-                f"\t\tParams: {params}\n"
-                f"\t\tCookies: {self._session.session.cookies}\n"
-                f"\t\tJson: {json}\n",
-            )
-            if e.response is not None and e.response.status_code == 401:
-                self._is_authorized = False
 
 
 __all__ = [

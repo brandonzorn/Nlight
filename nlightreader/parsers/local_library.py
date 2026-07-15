@@ -13,6 +13,4 @@ class LocalLibrary:
         return self.db.get_manga_library(params.lib_list)
 
 
-__all__ = [
-    "LocalLibrary",
-]
+__all__ = ["LocalLibrary"]

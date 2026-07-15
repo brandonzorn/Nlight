@@ -19,7 +19,10 @@ class ShikimoriBase(AbstractCatalog):
     _HEADERS = SHIKIMORI_HEADERS
 
     def __init__(self) -> None:
-        self._client = NetworkClient(headers=self._HEADERS)
+        self._client = NetworkClient(
+            catalog_name=self.CATALOG_NAME,
+            headers=self._HEADERS,
+        )
 
     def _setup_manga(self, data: dict) -> Manga:
         return Manga(

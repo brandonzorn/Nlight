@@ -18,13 +18,19 @@ class Desu(AbstractMangaCatalog):
     _HEADERS = {"User-Agent": "Nlight", "Referer": f"{_URL}/"}
 
     def __init__(self) -> None:
-        self._client = NetworkClient(headers=self._HEADERS)
+        self._client = NetworkClient(
+            catalog_name=self.CATALOG_NAME,
+            headers=self._HEADERS,
+        )
 
     @override
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/{manga.content_id}"
-        manga_data = self._client.get_json(url).get("response", {})
+        response = self._client.get_json(url)
+        if not isinstance(response, dict):
+            return manga
 
+        manga_data = response.get("response", {})
         if not isinstance(manga_data, dict):
             return manga
 
@@ -79,15 +85,25 @@ class Desu(AbstractMangaCatalog):
     @override
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self._URL_API}/{manga.content_id}"
-        data = self._client.get_json(url)
         chapters: list[Chapter] = []
 
-        for chapter_data in dd_get(data, "response.chapters.list", []):
+        response = self._client.get_json(url)
+        if not isinstance(response, dict):
+            return chapters
+
+        chapters_data = dd_get(response, "response.chapters.list", [])
+        if not isinstance(chapters_data, list):
+            return chapters
+
+        for chapter_data in chapters_data:
+            content_id = chapter_data.get("id")
+            if not content_id:
+                continue
             chapter = Chapter(
-                content_id=chapter_data.get("id"),
+                content_id=str(content_id),
                 catalog_id=self.CATALOG_ID,
-                volume_number=chapter_data.get("vol", ""),
-                chapter_number=chapter_data.get("ch", ""),
+                volume_number=str(chapter_data.get("vol", "")),
+                chapter_number=str(chapter_data.get("ch", "")),
                 title=chapter_data.get("title"),
                 language=Language.RUSSIAN,
             )
@@ -99,11 +115,17 @@ class Desu(AbstractMangaCatalog):
         url = (
             f"{self._URL_API}/{manga.content_id}/chapter/{chapter.content_id}"
         )
-        response = self._client.get_json(url)
         images: list[Image] = []
+
+        response = self._client.get_json(url)
         if not isinstance(response, dict):
             return images
-        for img_data in dd_get(response, "response.pages.list", []):
+
+        images_data = dd_get(response, "response.pages.list", [])
+        if not isinstance(images_data, list):
+            return images
+
+        for img_data in images_data:
             page = img_data.get("page")
             img_url: str = img_data.get("img", "")
             if "?" in img_url:

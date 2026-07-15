@@ -2,7 +2,7 @@ import os
 import sys
 from typing import override
 
-from PySide6.QtCore import QThreadPool, QTimer
+from PySide6.QtCore import QThreadPool, QTimer, Slot
 from PySide6.QtGui import QCloseEvent, QIcon
 from PySide6.QtWidgets import QApplication
 from qfluentwidgets import (
@@ -83,6 +83,7 @@ class MainWindow(ParentWindow):
                 ),
             )
 
+    @Slot()
     def _start_check_for_updates(self) -> None:
         self._update_checker.terminate()
         self._update_checker.wait()
@@ -105,6 +106,7 @@ class MainWindow(ParentWindow):
                 latest_version = version
         return latest_version
 
+    @Slot()
     def show_update_info(self, result: str | None = None) -> None:
         if result is None:
             self.settings_interface.show_err_updates_tooltip()

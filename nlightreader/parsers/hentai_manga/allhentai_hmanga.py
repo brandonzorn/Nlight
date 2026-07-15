@@ -6,6 +6,7 @@ from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
 from nlightreader.utils.network import NetworkClient
+from nlightreader.utils.utils import make_request
 
 
 class AllHentai(AbstractHentaiMangaCatalog):
@@ -14,7 +15,10 @@ class AllHentai(AbstractHentaiMangaCatalog):
     _URL = "https://20.allhen.online"
 
     def __init__(self) -> None:
-        self._client = NetworkClient(headers=self._HEADERS)
+        self._client = NetworkClient(
+            catalog_name=self.CATALOG_NAME,
+            headers=self._HEADERS,
+        )
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL}/search"
