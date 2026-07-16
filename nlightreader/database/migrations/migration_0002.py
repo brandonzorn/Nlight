@@ -22,14 +22,10 @@ class TimestampMigration(Migration):
 
         for table in self.TABLES:
             columns = {
-                column["name"]
-                for column in inspector.get_columns(table)
+                column["name"] for column in inspector.get_columns(table)
             }
 
-            if (
-                "created_at" not in columns
-                and "updated_at" not in columns
-            ):
+            if "created_at" not in columns and "updated_at" not in columns:
                 return True
 
         return False

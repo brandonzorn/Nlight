@@ -1,12 +1,12 @@
 from collections import defaultdict
+from typing import override
 
-from PySide6.QtCore import QPoint, Signal, Slot
+from PySide6.QtCore import QPoint, Slot
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.history import Ui_HistoryPage
-from nlightreader.models import Manga
-from nlightreader.utils.database import Database
+from nlightreader.database import Database
 from nlightreader.widgets.contexts import HistoryMenuMode, HistoryNoteMenu
 from nlightreader.widgets.items import HistoryTreeItem, MangaTreeItem
 
@@ -27,8 +27,9 @@ class HistoryPage(QWidget):
             self._on_context_menu,
         )
 
-        self._db: Database = Database()
+        self._db = Database()
 
+    @override
     def setup(self) -> None:
         self.ui.itemsTree.verticalScrollBar().setValue(0)
         self.get_content()
@@ -48,13 +49,13 @@ class HistoryPage(QWidget):
         selected_item = self.ui.itemsTree.currentItem()
         if not isinstance(selected_item, HistoryTreeItem):
             return
-        self._db.del_history_note(selected_item.note.chapter)
+        self._db.history.delete(selected_item.note.chapter.id)
         selected_item.parent().removeChild(selected_item)
         self.update_content()
 
     def update_content(self) -> None:
         self.ui.itemsTree.clear()
-        notes = self._db.get_history_notes()
+        notes = self._db.history.get_all()
         grouped_notes = defaultdict(list)
         for note in notes:
             grouped_notes[note.manga].append(note)
@@ -68,11 +69,11 @@ class HistoryPage(QWidget):
 
     def _mark_chapter_as_read(self, selected_item: HistoryTreeItem) -> None:
         selected_item.note.is_completed = True
-        self._db.add_history_note(selected_item.note)
+        self._db.history.save(selected_item.note)
         selected_item.update_icon()
 
     def _remove_manga_history(self, selected_item: HistoryTreeItem) -> None:
-        self._db.del_history_notes(selected_item.note.manga)
+        self._db.history.delete_by_manga(selected_item.note.manga.id)
         selected_item.delete_parent()
 
     def _on_context_menu(self, position: QPoint) -> None:
@@ -88,7 +89,9 @@ class HistoryPage(QWidget):
             lambda: self._remove_manga_history(selected_item),
         )
 
-        if not self._db.get_complete_status(selected_item.note.chapter):
+        if self._db.history.is_completed(selected_item.note.chapter.id):
+            menu.set_mode(HistoryMenuMode.READ)
+        else:
             menu.set_mode(HistoryMenuMode.UNREAD)
         else:
             menu.set_mode(HistoryMenuMode.READ)

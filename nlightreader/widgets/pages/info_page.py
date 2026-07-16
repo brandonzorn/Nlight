@@ -1,3 +1,4 @@
+from collections import defaultdict
 import logging
 from typing import override
 
@@ -10,11 +11,10 @@ from data.ui.widgets.info import Ui_InfoPage
 from nlightreader.consts.colors import ItemsIcons
 from nlightreader.consts.files import NlFluentIcons
 from nlightreader.core.enums import LIB_LISTS, LibList
+from nlightreader.database import Database
 from nlightreader.items import HistoryNote
 from nlightreader.models import Chapter, Character, Manga
-from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils.catalog_manager import get_catalog_by_id
-from nlightreader.utils.database import Database
 from nlightreader.utils.file_manager import FileManager
 from nlightreader.utils.kodik_server import start_html_video
 from nlightreader.utils.text_formatter import description_to_html
@@ -42,44 +42,54 @@ class InfoPage(QWidget):
         super().__init__()
         self.ui = Ui_InfoPage()
         self.ui.setupUi(self)
+
+        self._setup_ui()
+        self._setup_connections()
+
+        self._db = Database()
+
+        self._thread_pool = QThreadPool()
+        self._thread_pool.setMaxThreadCount(3)
+        self._workers: list[Worker] = []
+
+        self._manga: Manga = manga
+        self._catalog = get_catalog_by_id(self._manga.catalog_id)
+
+        self._related_mangas: list[Manga] = []
+        self._related_characters: list[Character] = []
+        self._chapters: list[Chapter] = []
+
+        self._grouped_chapters = defaultdict(lambda: defaultdict(list))
+        self._manga_pixmap = QPixmap()
+        self._reader_window = None
+
+    def _setup_ui(self) -> None:
         self.ui.scrollArea.enableTransparentBackground()
+
+        self.ui.libraryListComboBox.addItems(
+            [translate("Form", i.capitalize()) for i in LIB_LISTS],
+        )
 
         self.ui.itemsWidget.hide()
         self.ui.imageLabel.setBorderRadius(8, 8, 8, 8)
 
         self.ui.shikimoriButton.setIcon(NlFluentIcons.SHIKIMORI.qicon())
 
+    def _setup_connections(self) -> None:
         self.ui.itemsTree.doubleClicked.connect(self.open_reader)
         self.ui.charactersList.doubleClicked.connect(
             self.open_character_dialog,
         )
         self.ui.relatedList.doubleClicked.connect(self._open_related_manga)
+
         self.ui.shikimoriButton.clicked.connect(self.open_rate_dialog)
         self.ui.addButton.clicked.connect(self.add_to_favorites)
         self.ui.libraryListComboBox.currentIndexChanged.connect(
             self.change_lib_list,
         )
         self.ui.itemsTree.customContextMenuRequested.connect(
-            self.on_context_menu,
+            self._on_context_menu,
         )
-
-        self.__db: Database = Database()
-        self._thread_pool = QThreadPool()
-        self._thread_pool.setMaxThreadCount(3)
-        self._workers: list[Worker] = []
-
-        self._manga: Manga = manga
-        self._catalog: AbstractCatalog = get_catalog_by_id(
-            self._manga.catalog_id,
-        )
-
-        self._related_mangas: list[Manga] = []
-        self._related_characters: list[Character] = []
-        self._chapters: list[Chapter] = []
-
-        self.__sorted_chapters = {}
-        self._manga_pixmap = QPixmap()
-        self._reader_window = None
 
     def setup(self) -> None:
         worker = Worker(
@@ -89,60 +99,13 @@ class InfoPage(QWidget):
         self._workers.append(worker)
         worker.start(pool=self._thread_pool)
 
-    def _fetch_manga(self)-> None:
+    def _fetch_manga(self) -> None:
         try:
             self._manga = self._catalog.get_manga(self._manga)
             self._fetch_manga_preview()
         except Exception as e:
-            logger.exception(e)
+            logger.error(e)
             self.setup_error.emit()
-
-    def on_context_menu(self, position: QPoint) -> None:
-        context_target = self.ui.itemsTree
-
-        def set_as_read_all() -> None:
-            history_notes = []
-            chapters_by_lang: list[Chapter] = self.__sorted_chapters[
-                selected_chapter.language
-            ][selected_chapter.translator]
-            for i, chapter in enumerate(
-                chapters_by_lang[
-                    : chapters_by_lang.index(selected_chapter) + 1
-                ],
-            ):
-                history_notes.append(HistoryNote(chapter, self._manga, True))
-                item = selected_item.parent().child(i)
-                item.setIcon(0, FluentIcon.ACCEPT_MEDIUM.qicon())
-            self.__db.add_history_notes(history_notes)
-
-        def set_as_read() -> None:
-            self.__db.add_history_note(
-                HistoryNote(selected_chapter, self._manga, True),
-            )
-            selected_item.setIcon(
-                0,
-                FluentIcon.ACCEPT_MEDIUM.qicon(),
-            )
-
-        def remove_read_state() -> None:
-            self.__db.del_history_note(selected_chapter)
-            selected_item.setIcon(0, QIcon())
-
-        menu = ReadMarkMenu()
-        selected_item = context_target.itemAt(position)
-        if not selected_item or not isinstance(selected_item, ModelTreeItem):
-            return
-        selected_chapter = selected_item.model
-        if not self.__db.check_complete_chapter(selected_chapter):
-            menu.set_mode(ReadMarkMode.SET_AS_READ)
-        elif self.__db.get_complete_status(selected_chapter):
-            menu.set_mode(ReadMarkMode.REMOVE_ONLY)
-        else:
-            menu.set_mode(ReadMarkMode.ALL)
-        menu.set_as_read.triggered.connect(set_as_read)
-        menu.set_as_read_all.triggered.connect(set_as_read_all)
-        menu.remove_read_state.triggered.connect(remove_read_state)
-        menu.exec(context_target.mapToGlobal(position))
 
     @override
     def deleteLater(self, /) -> None:
@@ -155,19 +118,12 @@ class InfoPage(QWidget):
         if event.oldSize().width() != event.size().width():
             self._update_manga_preview_size()
 
-    def sort_chapters(self) -> None:
-        self.__sorted_chapters.clear()
+    def _group_chapters(self) -> None:
+        self._grouped_chapters.clear()
         for chapter in self._chapters:
-            ch_lang = chapter.language
-            if ch_lang not in self.__sorted_chapters:
-                self.__sorted_chapters[ch_lang] = {}
-            if chapter.translator not in self.__sorted_chapters[ch_lang]:
-                self.__sorted_chapters[ch_lang][chapter.translator] = []
-            (
-                self.__sorted_chapters[ch_lang][chapter.translator].append(
-                    chapter,
-                )
-            )
+            self._grouped_chapters[chapter.language][
+                chapter.translator
+            ].append(chapter)
 
     def _get_selected_chapter(self) -> Chapter | None:
         selected_item = self.ui.itemsTree.currentItem()
@@ -182,16 +138,14 @@ class InfoPage(QWidget):
             self.ui.addButton.setIcon(FluentIcon.ADD_TO)
 
     def update_additional_info(self) -> None:
-        self.__db.add_manga(self._manga)
-        self.ui.libraryListComboBox.addItems(
-            [translate("Form", i.capitalize()) for i in LIB_LISTS],
-        )
+        self._db.manga.save(self._manga)
+
         self.ui.libraryWidget.setVisible(not self._catalog.is_primary)
         self.ui.shikimoriWidget.setVisible(self._catalog.is_primary)
         self.set_info()
-        if self.__db.check_manga_library(self._manga):
+        if self._db.library.exists(self._manga.id):
             self.ui.libraryListComboBox.setCurrentIndex(
-                self.__db.get_manga_library_list(self._manga).value,
+                self._db.library.get(self._manga.id).value,
             )
             self.ui.addButton.setChecked(True)
         else:
@@ -200,7 +154,7 @@ class InfoPage(QWidget):
         self._set_image()
         chapters_worker = Worker(
             target=self.get_chapters,
-            callback=self.update_chapters,
+            callback=self._update_chapters_tree,
         )
         self._workers.append(chapters_worker)
         chapters_worker.start(pool=self._thread_pool)
@@ -272,34 +226,34 @@ class InfoPage(QWidget):
 
     @Slot()
     def add_to_favorites(self) -> None:
-        if self.__db.check_manga_library(self._manga):
-            self.__db.rem_manga_library(self._manga)
+        if self._db.library.exists(self._manga.id):
+            self._db.library.delete(self._manga.id)
         else:
             lib_list = LibList(self.ui.libraryListComboBox.currentIndex())
-            self.__db.add_manga_library(self._manga, lib_list)
+            self._db.library.save(self._manga.id, lib_list)
         self.update_add_button_icon()
 
     @Slot()
     def change_lib_list(self) -> None:
-        if self.__db.check_manga_library(self._manga):
+        if self._db.library.exists(self._manga.id):
             lib_list = LibList(self.ui.libraryListComboBox.currentIndex())
-            self.__db.add_manga_library(self._manga, lib_list)
+            self._db.library.save(self._manga.id, lib_list)
 
     def get_chapters(self) -> None:
         try:
             self._chapters = self._catalog.get_chapters(self._manga)
         except NotImplementedError as e:
-            logger.exception(e)
+            logger.warning(e)
             self._chapters.clear()
             return
         self._chapters.reverse()
-        self.sort_chapters()
-        self.__db.add_chapters(self._chapters, self._manga)
+        self._group_chapters()
+        self._db.chapters.save_many(self._chapters, self._manga.id)
 
-    def update_chapters(self) -> None:
+    def _update_chapters_tree(self) -> None:
         self.ui.itemsTree.clear()
         self.ui.itemsWidget.setVisible(bool(self._chapters))
-        for lang, translators in self.__sorted_chapters.items():
+        for lang, translators in self._grouped_chapters.items():
             lang_item = GroupTreeItem(
                 translate("NlLanguage", lang.to_str()),
                 icon=QIcon(get_language_icon(lang)),
@@ -314,14 +268,14 @@ class InfoPage(QWidget):
 
                 for chapter in chapters:
                     ch_item = ModelTreeItem(chapter)
-                    if self.__db.check_complete_chapter(chapter):
-                        if self.__db.get_complete_status(chapter):
+                    if self._db.history.exists(chapter.id):
+                        if self._db.history.is_completed(chapter.id):
                             ch_item.setIcon(0, ItemsIcons.READ.qicon())
                         else:
                             ch_item.setIcon(0, ItemsIcons.UNREAD)
                     translator_item.addChild(ch_item)
 
-            if len(self.__sorted_chapters) == 1:
+            if len(self._grouped_chapters) == 1:
                 lang_item.setExpanded(True)
 
     def get_relations(self) -> None:
@@ -329,7 +283,8 @@ class InfoPage(QWidget):
             self._related_mangas = self._catalog.get_relations(
                 self._manga,
             )
-        except NotImplementedError:
+        except NotImplementedError as e:
+            logger.warning(e)
             self._related_mangas.clear()
 
     def update_relations(self) -> None:
@@ -344,7 +299,8 @@ class InfoPage(QWidget):
             self._related_characters = self._catalog.get_characters(
                 self._manga,
             )
-        except NotImplementedError:
+        except NotImplementedError as e:
+            logger.warning(e)
             self._related_characters.clear()
 
     def update_characters(self) -> None:
@@ -381,6 +337,55 @@ class InfoPage(QWidget):
     @Slot()
     def _open_related_manga(self) -> None:
         self.opened_related_manga.emit(self.ui.relatedList.currentItem().model)
+
+    def _on_context_menu(self, position: QPoint) -> None:
+        selected_item = self.ui.itemsTree.itemAt(position)
+        if not isinstance(selected_item, ModelTreeItem):
+            return
+
+        menu = ReadMarkMenu()
+        menu.set_as_read.triggered.connect(
+            lambda: self._mark_chapter_as_read(selected_item),
+        )
+        menu.set_as_read_all.triggered.connect(
+            lambda: self._mark_all_chapters_as_read(selected_item),
+        )
+        menu.remove_read_state.triggered.connect(
+            lambda: self._remove_read_mark(selected_item),
+        )
+
+        selected_chapter: Chapter = selected_item.model
+        if not self._db.history.exists(selected_chapter.id):
+            menu.set_mode(ReadMarkMode.SET_AS_READ)
+        elif self._db.history.is_completed(selected_chapter.id):
+            menu.set_mode(ReadMarkMode.REMOVE_ONLY)
+        else:
+            menu.set_mode(ReadMarkMode.ALL)
+
+        menu.exec(self.ui.itemsTree.mapToGlobal(position))
+
+    def _mark_all_chapters_as_read(self, selected_item: ModelTreeItem) -> None:
+        selected_chapter = selected_item.model
+        history_notes = []
+        chapters_by_lang: list[Chapter] = self._grouped_chapters[
+            selected_chapter.language
+        ][selected_chapter.translator]
+        for i, chapter in enumerate(
+            chapters_by_lang[: chapters_by_lang.index(selected_chapter) + 1],
+        ):
+            history_notes.append(HistoryNote(chapter, self._manga, True))
+            item = selected_item.parent().child(i)
+            item.setIcon(0, FluentIcon.ACCEPT_MEDIUM.qicon())
+        self._db.history.save_many(history_notes)
+
+    def _mark_chapter_as_read(self, selected_item: ModelTreeItem) -> None:
+        note = HistoryNote(selected_item.model, self._manga, True)
+        self._db.history.save(note)
+        selected_item.setIcon(0, FluentIcon.ACCEPT_MEDIUM.qicon())
+
+    def _remove_read_mark(self, selected_item: ModelTreeItem) -> None:
+        self._db.history.delete(selected_item.model)
+        selected_item.setIcon(0, QIcon())
 
 
 __all__ = ["InfoPage"]

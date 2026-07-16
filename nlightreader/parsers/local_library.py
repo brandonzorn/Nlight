@@ -1,16 +1,16 @@
+from nlightreader.database import Database
 from nlightreader.items import RequestForm
 from nlightreader.models import Manga
-from nlightreader.utils.database import Database
 
 
 class LocalLibrary:
     CATALOG_NAME = "LocalLib"
 
     def __init__(self) -> None:
-        self.db: Database = Database()
+        self._db = Database()
 
     def search_manga(self, params: RequestForm) -> list[Manga]:
-        return self.db.get_manga_library(params.lib_list)
+        return self._db.library.get_by_library_list(params.lib_list)
 
 
 __all__ = ["LocalLibrary"]

@@ -6,9 +6,9 @@ import threading
 from threading import Thread
 import webbrowser
 
+from nlightreader.database.services.owm import Database
 from nlightreader.items import HistoryNote
 from nlightreader.models import Chapter, Manga
-from nlightreader.utils.database import Database
 
 logger = logging.getLogger(__name__)
 
@@ -147,11 +147,11 @@ class KodikPlayerHttpRequestHandler(BaseHTTPRequestHandler):
                 return
 
             db = Database()
-            manga = db.get_manga(anime_id)
-            chapter = db.get_chapter(episode_id)
+            manga = db.manga.get_by_id(anime_id)
+            chapter = db.chapters.get_by_id(episode_id)
 
             note = HistoryNote(chapter, manga, is_completed)
-            db.add_history_note(note)
+            db.history.save(note)
 
             logger.debug(
                 "Anime %s, Episode %s: progress %s sec",

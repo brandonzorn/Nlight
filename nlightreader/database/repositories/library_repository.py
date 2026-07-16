@@ -21,11 +21,10 @@ class LibraryRepository(BaseRepository[LibraryEntity]):
         self.add(entity)
 
     def delete(self, manga_id: str) -> None:
-        entity = LibraryMapper.to_entity(
-            manga_id=manga_id,
-            library_list=None,
-        )
-        super().remove(entity)
+        entity = self.get(manga_id)
+        if entity is None:
+            return
+        self.remove(entity)
 
     def get_by_manga(self, manga_id: str) -> LibList | None:
         entity = self.get(manga_id)

@@ -23,9 +23,9 @@ from PySide6.QtWidgets import QGraphicsOpacityEffect, QWidget
 from qfluentwidgets import InfoBar
 
 from data.ui.manga_item import Ui_MangaItem
+from nlightreader.database.services.owm import Database
 from nlightreader.models import Manga
 from nlightreader.utils.catalog_manager import get_catalog_by_id
-from nlightreader.utils.database import Database
 from nlightreader.utils.file_manager import FileManager
 from nlightreader.utils.threads import Worker
 from nlightreader.widgets.contexts import LibraryMangaMenu, LibraryMenuMode
@@ -59,7 +59,7 @@ class MangaItem(QWidget):
         self._catalog = get_catalog_by_id(self._manga.catalog_id)
         self._manga_pixmap: QPixmap | None = None
         self._is_added_to_lib = is_added_to_lib
-        self._db: Database = Database()
+        self._db = Database()
         self._pool = pool
 
         self.ui.imageLabel.setGraphicsEffect(self._opacity_effect)
@@ -79,9 +79,10 @@ class MangaItem(QWidget):
     @override
     def mouseReleaseEvent(self, event: QMouseEvent) -> None:
         super().mouseReleaseEvent(event)
-        if event.button() == Qt.MouseButton.LeftButton:
-            if self.rect().contains(event.pos()):
-                self.manga_clicked.emit(self._manga)
+        if event.button() != Qt.MouseButton.LeftButton:
+            return
+        if self.rect().contains(event.pos()):
+            self.manga_clicked.emit(self._manga)
 
     def on_context_menu(self, pos: QPoint) -> None:
         manga_title = self._manga.get_name()
@@ -89,8 +90,8 @@ class MangaItem(QWidget):
         info_bar_duration = 2000
 
         def add_to_lib() -> None:
-            self._db.add_manga(self._manga)
-            self._db.add_manga_library(self._manga)
+            self._db.manga.save(self._manga)
+            self._db.library.save(self._manga.id)
             InfoBar.success(
                 title=manga_title,
                 content=self.tr(
@@ -101,7 +102,7 @@ class MangaItem(QWidget):
             )
 
         def remove_from_lib() -> None:
-            self._db.rem_manga_library(self._manga)
+            self._db.library.remove(self._manga.id)
             InfoBar.success(
                 title=manga_title,
                 content=self.tr(
@@ -131,7 +132,7 @@ class MangaItem(QWidget):
 
         menu = LibraryMangaMenu()
         if self._is_added_to_lib and not self._catalog.is_primary:
-            if self._db.check_manga_library(self._manga):
+            if self._db.library.exists(self._manga.id):
                 menu.set_mode(LibraryMenuMode.IN_LIBRARY)
             else:
                 menu.set_mode(LibraryMenuMode.NOT_IN_LIBRARY)
