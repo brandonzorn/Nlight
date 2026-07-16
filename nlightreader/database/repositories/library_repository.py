@@ -39,5 +39,5 @@ class LibraryRepository(BaseRepository[LibraryEntity]):
         ]
 
     @override
-    def exists(self, manga_id: str) -> bool:
-        return super().exists(manga_id)
+    def exists(self, pk: int | str) -> bool:
+        return super().exists(pk)

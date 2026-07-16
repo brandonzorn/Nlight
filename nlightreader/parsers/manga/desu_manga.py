@@ -2,10 +2,10 @@ from typing import override
 
 from nlightreader.consts.items import DesuItems
 from nlightreader.core.enums import Language, MangaKind, MangaStatus
+from nlightreader.core.network import NetworkClient
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
-from nlightreader.utils.network import NetworkClient
 from nlightreader.utils.utils import dd_get
 
 
@@ -129,7 +129,7 @@ class Desu(AbstractMangaCatalog):
             page = img_data.get("page")
             img_url: str = img_data.get("img", "")
             if "?" in img_url:
-                img_url = img_url.split("?")[0]
+                img_url = img_url.split("?", maxsplit=1)[0]
             images.append(
                 Image(
                     content_id=str(hash(img_url)),

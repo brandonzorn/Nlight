@@ -5,13 +5,13 @@ from nlightreader.consts.urls import (
     URL_SHIKIMORI_API,
 )
 from nlightreader.core.enums import Language, MangaStatus
+from nlightreader.core.network import NetworkClient
 from nlightreader.items import (
     RequestForm,
 )
 from nlightreader.models import Chapter, Character, Genre, Manga, Order
 from nlightreader.parsers.catalogs_base import AbstractAnimeCatalog
 from nlightreader.parsers.service.kodik import Kodik
-from nlightreader.utils.network import NetworkClient
 
 
 class ShikimoriAnime(AbstractAnimeCatalog):

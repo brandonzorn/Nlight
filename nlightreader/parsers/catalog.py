@@ -2,6 +2,7 @@ from enum import IntEnum
 
 from nlightreader.consts.items.parser_items import ParserItems
 from nlightreader.consts.urls import DEFAULT_HEADERS
+from nlightreader.core.network import OAuthClient
 from nlightreader.items import (
     RequestForm,
     User,
@@ -107,7 +108,7 @@ class LibParser:
         self._client = None
 
     @property
-    def session(self) -> object:
+    def session(self) -> OAuthClient:
         if self._client is None:
             msg = "session is not implemented"
             raise NotImplementedError(msg)

@@ -7,11 +7,7 @@ from nlightreader.models import Genre
 class GenresDialogUi(MessageBoxBase):
     MAX_GENRES_PER_ROW = 5
 
-    def __init__(
-        self,
-        genres: dict[Genre, bool],
-        parent: QWidget,
-    ) -> None:
+    def __init__(self, genres: dict[Genre, bool], parent: QWidget) -> None:
         super().__init__(parent)
         self._setup_ui()
 

@@ -5,7 +5,6 @@ from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QFormLayout, QWidget
 from qfluentwidgets import (
     BodyLabel,
-    CardWidget,
     ComboBox,
     MessageBoxBase,
     PushButton,
@@ -26,13 +25,13 @@ from nlightreader.utils.translator import translate
 class RateDialog(MessageBoxBase):
     def __init__(self, manga: Manga, parent: QWidget) -> None:
         super().__init__(parent)
-        self.__manga = manga
-        self.__catalog = get_lib_catalog(
-            get_catalog_by_id(
-                self.__manga.catalog_id,
-            ).__class__,
+        self._parent = parent
+
+        self._manga = manga
+        self._catalog = get_lib_catalog(
+            type(get_catalog_by_id(self._manga.catalog_id)),
         )
-        self.__user_rate = self._fetch_user_rate()
+        self._user_rate = self._fetch_user_rate()
 
         self._init_ui()
         self._display_user_rate()
@@ -40,8 +39,9 @@ class RateDialog(MessageBoxBase):
     def _init_ui(self) -> None:
         self.title_label = SubtitleLabel(self.tr("Change rating"), parent=self)
 
-        self.form_frame = CardWidget()
+        self.form_frame = QWidget()
         self.form_layout = QFormLayout(self.form_frame)
+        self.form_layout.setContentsMargins(0, 0, 0, 0)
         self.form_layout.setSpacing(12)
 
         self.chapters_label = BodyLabel(
@@ -87,33 +87,34 @@ class RateDialog(MessageBoxBase):
 
     @override
     def closeEvent(self, event: QCloseEvent) -> None:
+        super().closeEvent(event)
         self.deleteLater()
 
     def _fetch_user_rate(self) -> UserRate:
-        if not self.__catalog.check_user_rate(self.__manga):
-            self.__catalog.create_user_rate(self.__manga)
-        return self.__catalog.get_user_rate(self.__manga)
+        if not self._catalog.check_user_rate(self._manga):
+            self._catalog.create_user_rate(self._manga)
+        return self._catalog.get_user_rate(self._manga)
 
     def _display_user_rate(self) -> None:
-        self.score_spin.setValue(self.__user_rate.score)
-        self.chapters_count_spin.setValue(self.__user_rate.chapters)
-        if self.__manga.chapters:
-            self.chapters_count_spin.setMaximum(self.__manga.chapters)
-        self.lib_list_combo.setCurrentIndex(self.__user_rate.status.value)
+        self.score_spin.setValue(self._user_rate.score)
+        self.chapters_count_spin.setValue(self._user_rate.chapters)
+        if self._manga.chapters_number:
+            self.chapters_count_spin.setMaximum(self._manga.chapters_number)
+        self.lib_list_combo.setCurrentIndex(self._user_rate.status.value)
 
     @Slot()
     def _send_user_rate(self) -> None:
-        self.__user_rate.score = self.score_spin.value()
-        self.__user_rate.chapters = self.chapters_count_spin.value()
-        self.__user_rate.status = LibList(
+        self._user_rate.score = self.score_spin.value()
+        self._user_rate.chapters = self.chapters_count_spin.value()
+        self._user_rate.status = LibList(
             self.lib_list_combo.currentIndex(),
         )
-        self.__catalog.update_user_rate(self.__user_rate)
+        self._catalog.update_user_rate(self._user_rate)
         self.close()
 
     @Slot()
     def _delete_user_rate(self) -> None:
-        self.__catalog.delete_user_rate(self.__user_rate)
+        self._catalog.delete_user_rate(self._user_rate)
         self.close()
 
 

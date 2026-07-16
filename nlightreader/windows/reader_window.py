@@ -17,10 +17,10 @@ from nlightreader.core.exceptions.parser_content_exc import (
     FetchContentError,
     NoContentError,
 )
+from nlightreader.database import Database
 from nlightreader.items import HistoryNote
 from nlightreader.models import Chapter, Image, ImageStub, Manga
 from nlightreader.utils.catalog_manager import get_catalog_by_id
-from nlightreader.utils.database import Database
 from nlightreader.utils.file_manager import FileManager
 from nlightreader.utils.threads import Thread
 from nlightreader.widgets.containers import TextArea
@@ -53,7 +53,7 @@ class ReaderWindow(SimpleCardWidget):
 
         self._content_container: AbstractContentContainer | None = None
 
-        self._db: Database = Database()
+        self._db = Database()
 
         self._manga = manga
         self._chapters: list[Chapter] = chapters
@@ -132,8 +132,8 @@ class ReaderWindow(SimpleCardWidget):
         self.ui.chaptersList.clear()
         for chapter in self._chapters:
             ch_item = QListWidgetItem(chapter.get_name())
-            if self._db.check_complete_chapter(chapter):
-                if self._db.get_complete_status(chapter):
+            if self._db.history.exists(chapter.id):
+                if self._db.history.is_completed(chapter.id):
                     ch_item.setIcon(ItemsIcons.READ.qicon())
                 else:
                     ch_item.setIcon(ItemsIcons.UNREAD)
@@ -141,7 +141,7 @@ class ReaderWindow(SimpleCardWidget):
 
     @Slot()
     def turn_page_next(self) -> None:
-        self._db.add_history_note(
+        self._db.history.save(
             HistoryNote(
                 self._current_chapter,
                 self._manga,
@@ -149,7 +149,7 @@ class ReaderWindow(SimpleCardWidget):
             ),
         )
         if self._cur_page == self._max_page:
-            self._db.add_history_note(
+            self._db.history.save(
                 HistoryNote(
                     self._current_chapter,
                     self._manga,
@@ -163,7 +163,7 @@ class ReaderWindow(SimpleCardWidget):
 
     @Slot()
     def turn_page_prev(self) -> None:
-        self._db.add_history_note(
+        self._db.history.save(
             HistoryNote(
                 self._current_chapter,
                 self._manga,
@@ -171,7 +171,7 @@ class ReaderWindow(SimpleCardWidget):
             ),
         )
         if self._cur_page == 1:
-            self._db.del_history_note(self._current_chapter)
+            self._db.history.delete(self._current_chapter.id)
             self.turn_chapter_prev()
         else:
             self._cur_page -= 1
@@ -185,7 +185,7 @@ class ReaderWindow(SimpleCardWidget):
 
     @Slot()
     def turn_chapter_next(self) -> None:
-        self._db.add_history_note(
+        self._db.history.save(
             HistoryNote(
                 self._current_chapter,
                 self._manga,

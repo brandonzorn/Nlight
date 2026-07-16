@@ -1,7 +1,7 @@
 [project]
 name = "nlight"
 version = "1.10.6"
-description = "Add your description here"
+description = "Application for watching anime, reading manga/light novels."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -42,7 +42,7 @@ exclude = [
     "build_nuitka",
     "data",
     "dist",
-    "venv",
+    ".venv",
 ]
 
 
@@ -59,6 +59,7 @@ select = [
     "A",
     "ANN",
     "ARG",
+    "C4",
     "COM",
     "E",
     "EM",
@@ -66,12 +67,17 @@ select = [
     "F",
     "FIX",
     "I",
+    "ICN",
     "ISC",
+    "LOG",
     "N",
+    "PERF",
+    "PIE",
     "PTH",
+    "Q",
     "RET",
     "RSE",
-    "Q",
+    "SIM",
     "T20",
     "UP",
     "W",

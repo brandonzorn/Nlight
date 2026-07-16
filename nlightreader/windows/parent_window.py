@@ -24,11 +24,11 @@ class ParentWindow(FluentWindow):
         super().__init__()
         self.setMinimumSize(self.screen().size() / 2)
 
-        self.library_interface = LibraryPage()
-        self.main_interface = MainPage()
-        self.external_library_interface = ExternalLibraryPage()
-        self.history_interface = HistoryPage()
-        self.settings_interface = SettingsPage()
+        self.library_interface = LibraryPage(self)
+        self.main_interface = MainPage(self)
+        self.external_library_interface = ExternalLibraryPage(self)
+        self.history_interface = HistoryPage(self)
+        self.settings_interface = SettingsPage(self)
 
         self.info_interface: InfoPage | None = None
 
@@ -82,63 +82,56 @@ class ParentWindow(FluentWindow):
         return self.navigationInterface.panel.history
 
     @Slot(int)
-    def on_widget_change(self, value: int) -> None:
-        if value in range(4):
-            if any(
-                i.objectName() == "FormInfo"
-                for i in self.stackedWidget.view.children()
-            ):
-                self.delete_info_interface()
-        self.navigationInterface.setReturnButtonVisible(
-            self.stackedWidget.count() > 5,
-        )
-        if self.stackedWidget.currentWidget().objectName() in (
-            "FormInfo",
-            "ReaderWidget",
-        ):
+    def on_widget_change(self, _: int) -> None:
+        current_widget = self.stackedWidget.currentWidget()
+        if isinstance(current_widget, InfoPage):
+            self.navigationInterface.setReturnButtonVisible(True)
             return
-        self.stackedWidget.currentWidget().setup()
-
-    def set_min_size_by_screen(self) -> None:
-        self.setMinimumSize(
-            QSize(
-                self.screen().size().width() // 2,
-                self.screen().size().height() // 2,
-            ),
-        )
-
-    def delete_info_interface(self) -> None:
+        self.navigationInterface.setReturnButtonVisible(False)
         if self.info_interface is not None:
-            self.stackedWidget.view.removeWidget(self.info_interface)
+            self._history.push(self.stackedWidget, current_widget.objectName())
+            self._history.remove(self.info_interface.objectName())
+            self.stackedWidget.removeWidget(self.info_interface)
             self.info_interface.deleteLater()
             self.info_interface = None
+        current_widget.setup()
 
     @Slot(Manga)
     def open_info(self, manga: Manga) -> None:
-        stack = self.stackedWidget.view
         self.stackedWidget.setEnabled(False)
+        current_widget = self.stackedWidget.currentWidget()
 
-        @Slot()
-        def set_info_widget() -> None:
-            stack.addWidget(self.info_interface)
+        if isinstance(current_widget, InfoPage):
+            msg = "Previous info is not closed"
+            raise RuntimeError(msg)
+
+        self.info_interface = InfoPage(self, manga)
+        self.info_interface.opened_related_manga.connect(self._reopen_info)
+        self.info_interface.setup_done.connect(self._on_info_setup_done)
+        self.info_interface.setup_error.connect(self._on_info_setup_error)
+        self.info_interface.setup()
+
+    @Slot(Manga)
+    def _reopen_info(self, manga: Manga) -> None:
+        current_widget = self.stackedWidget.currentWidget()
+        self._history.pop()
+        self.stackedWidget.removeWidget(current_widget)
+        current_widget.deleteLater()
+        self.open_info(manga)
+
+    @Slot()
+    def _on_info_setup_done(self) -> None:
+        if self.info_interface is not None:
+            self.stackedWidget.addWidget(self.info_interface)
             self.switchTo(self.info_interface)
-            self.stackedWidget.setEnabled(True)
+        self.stackedWidget.setEnabled(True)
 
-        @Slot()
-        def delete_info_widget() -> None:
-            self.info_interface.close()
-            self.stackedWidget.setEnabled(True)
-
-        if self.stackedWidget.currentWidget().objectName() == "FormInfo":
-            self.stackedWidget.view.removeWidget(self.info_interface)
-
-        self.info_interface = InfoPage()
-        self.info_interface.opened_related_manga.connect(self.open_info)
-        self.info_interface.setup_done.connect(set_info_widget)
-        self.info_interface.setup_error.connect(delete_info_widget)
-        self.info_interface.setup(manga)
+    @Slot()
+    def _on_info_setup_error(self) -> None:
+        if self.info_interface is not None:
+            self.info_interface.deleteLater()
+            self.info_interface = None
+        self.stackedWidget.setEnabled(True)
 
 
-__all__ = [
-    "ParentWindow",
-]
+__all__ = ["ParentWindow"]

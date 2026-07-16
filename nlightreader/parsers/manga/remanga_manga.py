@@ -1,9 +1,9 @@
 from nlightreader.consts.items import RemangaItems
 from nlightreader.core.enums import Language, MangaKind
+from nlightreader.core.network import NetworkClient
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
-from nlightreader.utils.network import NetworkClient
 from nlightreader.utils.utils import dd_get
 
 

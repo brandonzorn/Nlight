@@ -26,10 +26,10 @@ from nlightreader.utils.threads import Worker
 
 
 class CharacterInfoDialog(MessageBoxBase):
-    def __init__(self, character: Character, parent: QWidget | None) -> None:
+    def __init__(self, character: Character, parent: QWidget) -> None:
         super().__init__(parent)
-        self.__character = character
-        self.__catalog = get_catalog_by_id(character.catalog_id)
+        self._character = character
+        self._catalog = get_catalog_by_id(character.catalog_id)
 
         self.image_frame = SimpleCardWidget()
         self.image_frame_layout = QVBoxLayout(self.image_frame)
@@ -38,8 +38,8 @@ class CharacterInfoDialog(MessageBoxBase):
 
         self.title_frame = SimpleCardWidget()
         self.title_frame_layout = QVBoxLayout(self.title_frame)
-        self.name_label = BodyLabel(self.__character.name)
-        self.russian_label = BodyLabel(self.__character.russian)
+        self.name_label = BodyLabel(self._character.name)
+        self.russian_label = BodyLabel(self._character.russian)
         self.title_frame_spacer = QSpacerItem(
             20,
             40,
@@ -80,13 +80,14 @@ class CharacterInfoDialog(MessageBoxBase):
 
     @override
     def closeEvent(self, arg__1: QCloseEvent, /) -> None:
+        super().closeEvent(arg__1)
         self.deleteLater()
 
     @Slot()
     def update_description(self) -> None:
         self.description_text.setHtml(
             description_to_html(
-                self.__character.description,
+                self._character.description,
                 self.show_spoilers_switch.isChecked(),
             ),
         )
@@ -94,8 +95,8 @@ class CharacterInfoDialog(MessageBoxBase):
     def setup_image(self) -> None:
         self.image_label.setPixmap(
             FileManager.get_character_preview(
-                self.__character,
-                self.__catalog,
+                self._character,
+                self._catalog,
             ),
         )
 

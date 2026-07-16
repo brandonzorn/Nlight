@@ -10,11 +10,11 @@ from nlightreader.models import Manga
 from nlightreader.utils.catalog_manager import USER_CATALOGS
 from nlightreader.widgets.dialogs import GenresDialog
 from nlightreader.widgets.items.manga_item import MangaItem
-from nlightreader.widgets.pages.base_page import BasePage
+from nlightreader.widgets.pages.base_page import BaseMangaPage
 
 
-class MainPage(BasePage):
-    def __init__(self, parent: QWidget | None = None) -> None:
+class MainPage(BaseMangaPage):
+    def __init__(self, parent: QWidget) -> None:
         super().__init__(parent=parent)
         self.ui = Ui_MainPage()
         self.ui.setupUi(self)
@@ -22,7 +22,7 @@ class MainPage(BasePage):
         self._setup_ui()
         self._setup_connections()
 
-        self._genres_dialog = GenresDialog(self)
+        self._genres_dialog = GenresDialog(parent)
         self._filters_controller = FiltersController()
         self._filters_controller.set_kinds_container(self.ui.kindsVLayout)
         self._filters_controller.set_orders_container(self.ui.ordersVLayout)
@@ -56,7 +56,7 @@ class MainPage(BasePage):
             self.ui.catalogs_frame.hide()
             self.change_catalog(0)
         else:
-            self.get_content()
+            self._get_content()
 
     @override
     def _setup_manga_item(self, manga: Manga) -> MangaItem:
@@ -71,7 +71,7 @@ class MainPage(BasePage):
         self.apply_filter()
 
     @override
-    def update_page(self) -> None:
+    def _update_page(self) -> None:
         self.ui.page_label.setText(
             f"{self.tr('Page')} {self.request_params.page}",
         )
@@ -80,12 +80,12 @@ class MainPage(BasePage):
     def search(self) -> None:
         self.request_params.page = 1
         self.request_params.search = self.ui.title_line.text()
-        self.get_content()
+        self._get_content()
 
     @Slot()
     def apply_filter(self) -> None:
         self._update_request_filters()
-        self.get_content()
+        self._get_content()
 
     @Slot()
     def reset_filter(self) -> None:

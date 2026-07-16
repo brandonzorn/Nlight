@@ -17,12 +17,12 @@ class ImageArea(QWidget, AbstractContentContainer):
         self.ui.setupUi(self)
 
         self._content_widget = self.ui.imageLabel
-        self._image_pixmap = None
+        self._image_pixmap = QPixmap()
 
     @override
     def resizeEvent(self, event: QResizeEvent, /) -> None:
         super().resizeEvent(event)
-        if (self._image_pixmap is None) or (event.oldSize() == event.size()):
+        if (self._image_pixmap.isNull()) or (event.oldSize() == event.size()):
             return
         view_w = self.ui.scrollArea.viewport().width()
         self.ui.imageLabel.setFixedWidth(view_w)
@@ -44,8 +44,8 @@ class ImageArea(QWidget, AbstractContentContainer):
         )
 
     def _resize_pixmap(self, pixmap: QPixmap) -> QPixmap:
-        if pixmap is None or pixmap.isNull():
-            return QPixmap()
+        if pixmap.isNull():
+            return pixmap
         if 0.5 < pixmap.width() / pixmap.height() < 2:
             viewport_size = self.ui.scrollArea.viewport().size()
             self.ui.scrollArea.setVerticalScrollBarPolicy(

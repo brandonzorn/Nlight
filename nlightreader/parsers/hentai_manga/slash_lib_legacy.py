@@ -1,9 +1,9 @@
 from nlightreader.consts.items import MangaLibItems
+from nlightreader.core.network import NetworkClient
 from nlightreader.models import Manga
 from nlightreader.parsers.catalogs_base import (
     AbstractHentaiMangaCatalog,
 )
-from nlightreader.utils.network import NetworkClient
 
 
 class SlashLibLegacy(AbstractHentaiMangaCatalog):

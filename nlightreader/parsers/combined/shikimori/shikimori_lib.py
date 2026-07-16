@@ -7,6 +7,7 @@ from nlightreader.consts.urls import (
     URL_SHIKIMORI_TOKEN,
 )
 from nlightreader.core.enums import LibList
+from nlightreader.core.network.oauth_client import OAuthClient
 from nlightreader.core.utils.decorators import singleton
 from nlightreader.items import RequestForm, User, UserRate
 from nlightreader.models import Manga
@@ -14,7 +15,6 @@ from nlightreader.parsers.catalog import CatalogAuthType, LibParser
 from nlightreader.parsers.combined.shikimori.shikimori_base import (
     ShikimoriBase,
 )
-from nlightreader.utils.oauth_client import OAuthClient
 
 logger = logging.getLogger(__name__)
 
@@ -56,8 +56,8 @@ class ShikimoriLib(ShikimoriBase, LibParser):
             for i in resp_json:
                 if i.get("status") != lib_list:
                     continue
-                i = i.get("manga")
-                mangas.append(self._setup_manga(i))
+                manga_data = i.get("manga")
+                mangas.append(self._setup_manga(manga_data))
         return mangas
 
     def get_user(self) -> User:

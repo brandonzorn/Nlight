@@ -23,7 +23,7 @@ class SettingsPage(SingleDirectionScrollArea):
     check_for_updates_signal = Signal()
     mica_enable_changed = Signal(bool)
 
-    def __init__(self, parent: QWidget | None = None) -> None:
+    def __init__(self, parent: QWidget) -> None:
         super().__init__(parent=parent)
         self.setObjectName("SettingsPage")
         self.scrollWidget = QWidget()

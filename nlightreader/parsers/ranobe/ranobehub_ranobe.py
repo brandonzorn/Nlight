@@ -5,10 +5,10 @@ import bs4.element
 
 from nlightreader.consts.items import RanobehubItems
 from nlightreader.core.enums import Language, MangaKind, MangaStatus
+from nlightreader.core.network import NetworkClient
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
-from nlightreader.utils.network import NetworkClient
 from nlightreader.utils.utils import dd_get
 
 

@@ -9,12 +9,11 @@ from data.ui.widgets.history import Ui_HistoryPage
 from nlightreader.database import Database
 from nlightreader.widgets.contexts import HistoryMenuMode, HistoryNoteMenu
 from nlightreader.widgets.items import HistoryTreeItem, MangaTreeItem
+from nlightreader.widgets.pages.base_page import BasePage
 
 
-class HistoryPage(QWidget):
-    manga_open = Signal(Manga)
-
-    def __init__(self, parent: QWidget | None = None) -> None:
+class HistoryPage(BasePage):
+    def __init__(self, parent: QWidget) -> None:
         super().__init__(parent=parent)
         self.ui = Ui_HistoryPage()
         self.ui.setupUi(self)
@@ -32,10 +31,11 @@ class HistoryPage(QWidget):
     @override
     def setup(self) -> None:
         self.ui.itemsTree.verticalScrollBar().setValue(0)
-        self.get_content()
+        super().setup()
 
-    def get_content(self) -> None:
-        self.update_content()
+    @override
+    def _get_content(self) -> None:
+        self._update_content()
 
     @Slot()
     def open_info(self) -> None:
@@ -49,11 +49,12 @@ class HistoryPage(QWidget):
         selected_item = self.ui.itemsTree.currentItem()
         if not isinstance(selected_item, HistoryTreeItem):
             return
-        self._db.history.delete(selected_item.note.chapter.id)
+        self._db.history.delete_by_chapter(selected_item.note.chapter.id)
         selected_item.parent().removeChild(selected_item)
-        self.update_content()
+        self._update_content()
 
-    def update_content(self) -> None:
+    @override
+    def _update_content(self) -> None:
         self.ui.itemsTree.clear()
         notes = self._db.history.get_all()
         grouped_notes = defaultdict(list)
@@ -93,8 +94,6 @@ class HistoryPage(QWidget):
             menu.set_mode(HistoryMenuMode.READ)
         else:
             menu.set_mode(HistoryMenuMode.UNREAD)
-        else:
-            menu.set_mode(HistoryMenuMode.READ)
 
         menu.exec(self.ui.itemsTree.mapToGlobal(position))
 

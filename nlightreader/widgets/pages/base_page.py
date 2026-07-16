@@ -1,4 +1,6 @@
+import logging
 import time
+from typing import override
 
 from PySide6.QtCore import Signal, Slot
 from PySide6.QtWidgets import QWidget
@@ -11,6 +13,7 @@ from nlightreader.core.exceptions.parser_content_exc import (
 )
 from nlightreader.items import RequestForm
 from nlightreader.models import Manga
+from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils.threads import Thread
 from nlightreader.widgets.containers.content_container import (
     ContentContainerState,
@@ -18,63 +21,80 @@ from nlightreader.widgets.containers.content_container import (
 from nlightreader.widgets.containers.manga_area import MangaArea
 from nlightreader.widgets.items.manga_item import MangaItem
 
+logger = logging.getLogger(__name__)
+
 
 class BasePage(QWidget):
     manga_open = Signal(Manga)
 
-    def __init__(self, parent: QWidget | None = None) -> None:
+    def __init__(self, parent: QWidget) -> None:
         super().__init__(parent=parent)
-        self.manga_area = MangaArea()
-        self.mangas: list[Manga] = []
+        self._parent: QWidget = parent
 
-        self._get_content_thread = Thread(
-            target=self._get_content_thread_func,
-            callback=self.update_content,
-            error_callback=self._process_errors,
-        )
-
-        self.catalog = None
+        self.catalog = AbstractCatalog()
         self.request_params = RequestForm()
 
     def setup(self) -> None:
-        self.get_content()
+        self._get_content()
 
-    def update_content(self) -> None:
+    def _update_content(self) -> None:
+        pass
+
+    def _get_content(self) -> None:
+        self._update_content()
+
+    def _setup_manga_item(self, manga: Manga) -> MangaItem:
+        raise NotImplementedError
+
+    def _process_errors(self, exception: Exception) -> None:
+        raise exception
+
+
+class BaseMangaPage(BasePage):
+    def __init__(self, parent: QWidget) -> None:
+        super().__init__(parent=parent)
+        self._get_content_thread = Thread(
+            target=self._get_content_thread_func,
+            callback=self._update_content,
+            error_callback=self._process_errors,
+        )
+
+        self.manga_area = MangaArea()
+        self.mangas: list[Manga] = []
+
+    @override
+    def _get_content(self) -> None:
+        self._update_page()
+        self._get_content_thread.terminate()
+        self._get_content_thread.wait()
+        self.manga_area.delete_items()
+        self.manga_area.set_state(ContentContainerState.FETCH_CONTENT)
+        self._get_content_thread.start()
+
+    @override
+    def _update_content(self) -> None:
         self.manga_area.delete_items()
         items = [self._setup_manga_item(manga) for manga in self.mangas]
         self.manga_area.set_state(ContentContainerState.SHOW_CONTENT)
         self.manga_area.add_items(items)
         self.manga_area.update_items()
 
-    def update_page(self) -> None:
+    def _update_page(self) -> None:
         pass
-
-    @Slot(LibList)
-    def change_list(self, lst: LibList) -> None:
-        self.request_params.lib_list = lst
-        self.get_content()
 
     @Slot()
     def turn_page_next(self) -> None:
         if self.request_params.page == 999:
             return
         self.request_params.page += 1
-        self.get_content()
+        self._get_content()
 
     @Slot()
     def turn_page_prev(self) -> None:
         if self.request_params.page == 1:
             return
         self.request_params.page -= 1
-        self.get_content()
-
-    def get_content(self) -> None:
-        self.update_page()
-        self._get_content_thread.terminate()
-        self._get_content_thread.wait()
-        self.manga_area.delete_items()
-        self.manga_area.set_state(ContentContainerState.FETCH_CONTENT)
-        self._get_content_thread.start()
+        self._get_content()
 
     def _get_content_thread_func(self) -> None:
         page = self.request_params.page
@@ -89,16 +109,23 @@ class BasePage(QWidget):
         if not self.mangas:
             raise NoContentError
 
-    def _setup_manga_item(self, manga: Manga) -> MangaItem:
-        raise NotImplementedError
-
+    @override
     def _process_errors(self, exception: Exception) -> None:
         try:
             raise exception
         except FetchContentError:
+            logger.exception(exception)
             self.manga_area.set_state(ContentContainerState.FETCH_ERROR)
         except (NoContentError, RequestsParamsError):
+            logger.error(exception)
             self.manga_area.set_state(ContentContainerState.NO_CONTENT)
 
 
-__all__ = ["BasePage"]
+class BaseMangaLibraryPage(BaseMangaPage):
+    @Slot(LibList)
+    def _change_list(self, lst: LibList) -> None:
+        self.request_params.lib_list = lst
+        self._get_content()
+
+
+__all__ = ["BasePage", "BaseMangaPage", "BaseMangaLibraryPage"]

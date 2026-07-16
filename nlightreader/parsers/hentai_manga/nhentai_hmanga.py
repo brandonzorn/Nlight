@@ -2,10 +2,10 @@ from bs4 import BeautifulSoup, element
 import validators
 
 from nlightreader.core.exceptions import parser_content_exc
+from nlightreader.core.network import NetworkClient
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
-from nlightreader.utils.network import NetworkClient
 
 
 class NHentai(AbstractHentaiMangaCatalog):

@@ -7,9 +7,9 @@ class RequestForm:
         self.limit = 50
         self.search = ""
         self.page = 1
-        self.__genres: list[Genre] = []
-        self.__order: Order | None = None
-        self.__kinds: list[Kind] = []
+        self._genres: list[Genre] = []
+        self._order: Order | None = None
+        self._kinds: list[Kind] = []
         self.lib_list = LibList.planned
 
     @property
@@ -17,33 +17,31 @@ class RequestForm:
         return (self.page - 1) * 50
 
     def set_order(self, order: Order) -> None:
-        self.__order = order
+        self._order = order
 
     def set_kinds(self, kinds: list[Kind]) -> None:
-        self.__kinds = kinds
+        self._kinds = kinds
 
     def set_genres(self, genres: list[Genre]) -> None:
-        self.__genres = genres
+        self._genres = genres
 
     def get_order_id(self) -> str:
-        return self.__order.content_id
+        return self._order.content_id
 
     def get_kind_ids(self) -> list[str]:
-        return [kind.content_id for kind in self.__kinds]
+        return [kind.content_id for kind in self._kinds]
 
     def get_genre_ids(self) -> list[str]:
-        return [genre.content_id for genre in self.__genres]
+        return [genre.content_id for genre in self._genres]
 
     def clear(self) -> None:
         self.limit = 50
         self.search = ""
         self.page = 1
-        self.__genres = []
-        self.__order = None
-        self.__kinds = []
+        self._genres = []
+        self._order = None
+        self._kinds = []
         self.lib_list = LibList.planned
 
 
-__all__ = [
-    "RequestForm",
-]
+__all__ = ["RequestForm"]

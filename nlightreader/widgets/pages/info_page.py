@@ -38,8 +38,10 @@ class InfoPage(QWidget):
     setup_done = Signal()
     setup_error = Signal()
 
-    def __init__(self, manga: Manga) -> None:
-        super().__init__()
+    def __init__(self, parent: QWidget, manga: Manga) -> None:
+        super().__init__(parent)
+        self._parent = parent
+
         self.ui = Ui_InfoPage()
         self.ui.setupUi(self)
 
@@ -67,7 +69,7 @@ class InfoPage(QWidget):
         self.ui.scrollArea.enableTransparentBackground()
 
         self.ui.libraryListComboBox.addItems(
-            [translate("Form", i.capitalize()) for i in LIB_LISTS],
+            [i.capitalize() for i in LIB_LISTS],
         )
 
         self.ui.itemsWidget.hide()
@@ -143,10 +145,10 @@ class InfoPage(QWidget):
         self.ui.libraryWidget.setVisible(not self._catalog.is_primary)
         self.ui.shikimoriWidget.setVisible(self._catalog.is_primary)
         self.set_info()
-        if self._db.library.exists(self._manga.id):
-            self.ui.libraryListComboBox.setCurrentIndex(
-                self._db.library.get(self._manga.id).value,
-            )
+
+        current_record = self._db.library.get(self._manga.id)
+        if current_record is not None:
+            self.ui.libraryListComboBox.setCurrentIndex(current_record.value)
             self.ui.addButton.setChecked(True)
         else:
             self.ui.addButton.setChecked(False)
@@ -177,13 +179,13 @@ class InfoPage(QWidget):
 
     @Slot()
     def open_rate_dialog(self) -> None:
-        RateDialog(self._manga, parent=self).exec()
+        RateDialog(self._manga, parent=self._parent).exec()
 
     @Slot()
     def open_character_dialog(self) -> None:
         current_item = self.ui.charactersList.currentItem()
         character = self._catalog.get_character(current_item.model)
-        CharacterInfoDialog(character, parent=self).exec()
+        CharacterInfoDialog(character, parent=self._parent).exec()
 
     def _fetch_manga_preview(self) -> None:
         self._manga_pixmap = FileManager.get_manga_preview(
@@ -227,7 +229,7 @@ class InfoPage(QWidget):
     @Slot()
     def add_to_favorites(self) -> None:
         if self._db.library.exists(self._manga.id):
-            self._db.library.delete(self._manga.id)
+            self._db.library.remove(self._manga.id)
         else:
             lib_list = LibList(self.ui.libraryListComboBox.currentIndex())
             self._db.library.save(self._manga.id, lib_list)
@@ -384,7 +386,7 @@ class InfoPage(QWidget):
         selected_item.setIcon(0, FluentIcon.ACCEPT_MEDIUM.qicon())
 
     def _remove_read_mark(self, selected_item: ModelTreeItem) -> None:
-        self._db.history.delete(selected_item.model)
+        self._db.history.delete_by_chapter(selected_item.model.id)
         selected_item.setIcon(0, QIcon())
 
 
