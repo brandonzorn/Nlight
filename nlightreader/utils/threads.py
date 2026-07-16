@@ -14,8 +14,8 @@ logger = logging.getLogger(__name__)
 
 
 class Signals(QObject):
-    error = Signal(Exception)
-    finished = Signal(object)
+    on_error = Signal(object)
+    on_finished = Signal(object)
 
 
 class BaseThread:
@@ -36,19 +36,18 @@ class BaseThread:
         self._kwargs = kwargs
         self.signals = Signals()
         if callback:
-            self.signals.finished.connect(callback)
+            self.signals.on_finished.connect(callback)
         if error_callback:
-            self.signals.error.connect(error_callback)
+            self.signals.on_error.connect(error_callback)
 
     @Slot()
     def run(self) -> None:
         try:
             result = self._target(*self._args, **self._kwargs)
         except Exception as e:
-            logger.exception(e)
-            self.signals.error.emit(e)
+            self.signals.on_error.emit(e)
         else:
-            self.signals.finished.emit(result)
+            self.signals.on_finished.emit(result)
 
 
 class Worker(BaseThread, QRunnable):
