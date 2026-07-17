@@ -23,6 +23,17 @@ class ExternalLibraryPage(BaseMangaLibraryPage):
     def __init__(self, parent: QWidget) -> None:
         super().__init__(parent=parent)
         self.ui = Ui_ExternalLibraryPage()
+        self._setup_ui()
+        self._setup_connections()
+
+        self.catalog: LibParser = ShikimoriLib()
+        Worker(
+            target=self._get_user_info,
+            callback=self._set_user_info,
+        ).start()
+
+    @override
+    def _setup_ui(self) -> None:
         self.ui.setupUi(self)
 
         self.ui.nextButton.setIcon(FluentIcon.RIGHT_ARROW)
@@ -30,6 +41,8 @@ class ExternalLibraryPage(BaseMangaLibraryPage):
 
         self.manga_area.install(self.ui.itemsLayout)
 
+    @override
+    def _setup_connections(self) -> None:
         self.ui.plannedButton.clicked.connect(
             lambda: self._change_list(LibList.planned),
         )
@@ -52,11 +65,6 @@ class ExternalLibraryPage(BaseMangaLibraryPage):
         self.ui.previousButton.clicked.connect(self.turn_page_prev)
         self.ui.searchLineEdit.searchSignal.connect(self.search)
         self.ui.signInButton.clicked.connect(self.authorize)
-        self.catalog: LibParser = ShikimoriLib()
-        Worker(
-            target=self._get_user_info,
-            callback=self._set_user_info,
-        ).start()
 
     @override
     def _setup_manga_item(self, manga: Manga) -> MangaItem:

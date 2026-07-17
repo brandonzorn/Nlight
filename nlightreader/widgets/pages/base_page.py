@@ -33,6 +33,12 @@ class BasePage(QWidget):
         self.catalog = None
         self.request_params = RequestForm()
 
+    def _setup_ui(self) -> None:
+        pass
+
+    def _setup_connections(self) -> None:
+        pass
+
     def setup(self) -> None:
         self._get_content()
 

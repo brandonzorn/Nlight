@@ -6,13 +6,19 @@ from nlightreader.widgets.dialogs import GenresDialog
 
 
 class FiltersController:
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        *,
+        orders_layout: QLayout,
+        kinds_layout: QLayout,
+        genres_dialog: GenresDialog,
+    ) -> None:
         self._order_items: dict[RadioButton, Order] = {}
         self._kind_items: dict[CheckBox, Kind] = {}
 
-        self._orders_container: QLayout | None = None
-        self._kinds_container: QLayout | None = None
-        self._genres_container: GenresDialog | None = None
+        self._orders_container = orders_layout
+        self._kinds_container = kinds_layout
+        self._genres_container = genres_dialog
 
     def get_active_order(self) -> Order | None:
         for item in self._order_items:
@@ -20,16 +26,16 @@ class FiltersController:
                 return self._order_items[item]
         return None
 
-    def get_active_kinds(self) -> list[Kind]:
-        return [
+    def get_active_kinds(self) -> set[Kind]:
+        return {
             item
             for widget, item in self._kind_items.items()
             if widget.isChecked()
-        ]
+        }
 
-    def get_active_genres(self) -> list[Genre]:
+    def get_active_genres(self) -> set[Genre]:
         if not self._genres_container:
-            return []
+            return set()
         return self._genres_container.selected_genres
 
     def add_orders(self, items: list[Order]) -> None:
