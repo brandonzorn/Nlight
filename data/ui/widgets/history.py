@@ -16,8 +16,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHBoxLayout, QHeaderView,
-    QSizePolicy, QSpacerItem, QTreeWidgetItem, QVBoxLayout,
-    QWidget)
+    QSizePolicy, QTreeWidgetItem, QVBoxLayout, QWidget)
 
 from qfluentwidgets import (CardWidget, SimpleCardWidget, TitleLabel, ToolButton,
     TreeWidget)
@@ -62,24 +61,29 @@ class Ui_HistoryPage(object):
 
         self.horizontalLayout.addWidget(self.itemsWidget)
 
-        self.actionsFrame = SimpleCardWidget(HistoryPage)
-        self.actionsFrame.setObjectName(u"actionsFrame")
-        self.actionsFrame.setEnabled(True)
-        self.verticalLayout = QVBoxLayout(self.actionsFrame)
-        self.verticalLayout.setSpacing(6)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(3, 3, 3, 3)
-        self.delete_btn = ToolButton(self.actionsFrame)
+        self.actionsWidget = QWidget(HistoryPage)
+        self.actionsWidget.setObjectName(u"actionsWidget")
+        self.verticalLayout_3 = QVBoxLayout(self.actionsWidget)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.delete_btn = ToolButton(self.actionsWidget)
         self.delete_btn.setObjectName(u"delete_btn")
 
-        self.verticalLayout.addWidget(self.delete_btn)
+        self.verticalLayout_3.addWidget(self.delete_btn)
 
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.actionsFrame = SimpleCardWidget(self.actionsWidget)
+        self.actionsFrame.setObjectName(u"actionsFrame")
+        self.actionsFrame.setEnabled(True)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.actionsFrame.sizePolicy().hasHeightForWidth())
+        self.actionsFrame.setSizePolicy(sizePolicy)
 
-        self.verticalLayout.addItem(self.verticalSpacer_2)
+        self.verticalLayout_3.addWidget(self.actionsFrame)
 
 
-        self.horizontalLayout.addWidget(self.actionsFrame)
+        self.horizontalLayout.addWidget(self.actionsWidget)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout)
