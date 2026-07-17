@@ -148,7 +148,9 @@ class InfoPage(QWidget):
 
         current_record = self._db.library.get(self._manga.id)
         if current_record is not None:
-            self.ui.libraryListComboBox.setCurrentIndex(current_record.value)
+            self.ui.libraryListComboBox.setCurrentIndex(
+                current_record.library_list.value,
+            )
             self.ui.addButton.setChecked(True)
         else:
             self.ui.addButton.setChecked(False)

@@ -7,6 +7,7 @@ from nlightreader.database.mappers.manga_mapper import MangaMapper
 from nlightreader.database.repositories.base_repository import (
     BaseRepository,
 )
+from nlightreader.items.other_items import LibraryRecord
 from nlightreader.models import Manga
 
 
@@ -26,11 +27,11 @@ class LibraryRepository(BaseRepository[LibraryEntity]):
             return
         self.remove(entity)
 
-    def get_by_manga(self, manga_id: str) -> LibList | None:
+    def get_by_manga(self, manga_id: str) -> LibraryRecord | None:
         entity = self.get(manga_id)
         if entity is None:
             return None
-        return LibList(entity.list)
+        return LibraryMapper.to_model(entity)
 
     def get_by_lib_list(self, lib_list: LibList) -> list[Manga]:
         return [

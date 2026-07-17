@@ -54,8 +54,15 @@ class User:
         self.avatar = avatar
 
 
+class LibraryRecord:
+    def __init__(self, manga_id: str, library_list: LibList) -> None:
+        self.manga_id = manga_id
+        self.library_list = library_list
+
+
 __all__ = [
     "HistoryNote",
+    "LibraryRecord",
     "UserRate",
     "User",
 ]

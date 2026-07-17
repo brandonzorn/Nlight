@@ -1,7 +1,6 @@
-from typing import Never
-
 from nlightreader.core.enums import LibList
 from nlightreader.database.entities import LibraryEntity
+from nlightreader.items.other_items import LibraryRecord
 
 
 class LibraryMapper:
@@ -13,5 +12,8 @@ class LibraryMapper:
         return LibraryEntity(manga_id=manga_id, list=library_list)
 
     @staticmethod
-    def to_model() -> Never:
-        raise NotImplementedError
+    def to_model(entity: LibraryEntity) -> LibraryRecord:
+        return LibraryRecord(
+            manga_id=entity.manga_id,
+            library_list=LibList(entity.list),
+        )
