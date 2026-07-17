@@ -11,7 +11,7 @@ from qfluentwidgets import (
     SystemThemeListener,
 )
 
-from data import resource
+from data import resource  # noqa:F401
 from nlightreader import ParentWindow
 from nlightreader.consts.app import APP_BRANCH, APP_NAME, APP_VERSION
 from nlightreader.consts.files import Icons
