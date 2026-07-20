@@ -11,7 +11,14 @@ logger = logging.getLogger(__name__)
 
 IS_TEST_ENV = os.getenv("TEST") == "1"
 
-type JSONValue = str | int | float | bool | None | JSONArray | JSONObject
+type _PrimitiveType = str | bytes | int | float | bool
+type _PrimitiveCollection = list[_PrimitiveType] | dict[str, _PrimitiveType]
+type RequestParams = dict[
+    _PrimitiveType,
+    _PrimitiveType | _PrimitiveCollection,
+]
+
+type JSONValue = str | int | float | bool | JSONArray | JSONObject | None
 type JSONObject = dict[str, JSONValue]
 type JSONArray = list[JSONValue]
 
@@ -23,10 +30,6 @@ def dd_get(
 ) -> JSONValue:
     if not isinstance(structure, (dict, list)):
         msg = f"Expected a dictionary, got {type(structure)}"
-        raise TypeError(msg)
-
-    if not isinstance(path, str):
-        msg = "path must be a string"
         raise TypeError(msg)
 
     current: JSONValue = structure
@@ -41,7 +44,7 @@ def dd_get(
                 return default
         else:
             if default is None:
-                default = {}
+                default: JSONValue = {}
             return default
 
     return current
@@ -52,7 +55,7 @@ def make_request(
     method: str,
     *,
     headers: dict[str, str] | None = None,
-    params: JSONObject | None = None,
+    params: RequestParams | None = None,
     json: JSONObject | None = None,
     data: dict[str, str] | None = None,
     cookies: dict[str, str] | None = None,
