@@ -1,30 +1,26 @@
-from enum import Enum
+from collections.abc import Sequence
+from enum import IntEnum
 
 from qfluentwidgets import Action, RoundMenu
 
 
-class AbstractContextMenu(RoundMenu):
+class AbstractContextMenu[TMode: IntEnum](RoundMenu):
     def __init__(self) -> None:
         super().__init__()
-        self._actions_map: dict[Enum, list[Action]] = {}
+        self._actions_map: dict[TMode, Sequence[Action]] = {}
 
-    def set_mode(self, mode: Enum) -> None:
-        if not issubclass(type(mode), Enum):
-            msg = f"'{mode}' is not a subclass of Enum"
-            raise TypeError(msg)
+    def set_mode(self, mode: TMode) -> None:
         self.clear()
 
         if mode not in self._actions_map:
             msg = (
-                f"Invalid mode: '{mode}'. "
-                f"Available modes are: {list(self._actions_map.keys())}"
+                f"Available values: "
+                f"{list(self._actions_map.keys())}, got {mode}"
             )
             raise ValueError(msg)
 
-        current_actions = self._actions_map.get(mode, [])
+        current_actions = self._actions_map[mode]
         self.addActions(current_actions)
 
 
-__all__ = [
-    "AbstractContextMenu",
-]
+__all__ = ["AbstractContextMenu"]
