@@ -14,6 +14,7 @@ from data.ui.widgets.reader import Ui_ReaderWidget
 from nlightreader.consts.colors import ItemsIcons
 from nlightreader.core.enums import MangaKind
 from nlightreader.core.exceptions.parser_content_exc import (
+    BaseContentError,
     FetchContentError,
     NoContentError,
 )
@@ -219,19 +220,19 @@ class ReaderWindow(SimpleCardWidget):
         self._content_container.set_state(ContentContainerState.FETCH_CONTENT)
         self._set_image_thread.start()
 
-    def _process_errors(self, exception: Exception) -> None:
-        try:
-            raise exception
-        except FetchContentError:
-            logger.exception(exception)
+    def _process_errors(self, e: BaseContentError) -> None:
+        if isinstance(e, FetchContentError):
+            logger.error(e)
             self._content_container.set_state(
                 ContentContainerState.FETCH_ERROR,
             )
-        except NoContentError:
-            logger.error(exception)
+        elif isinstance(e, NoContentError):
+            logger.warning(e)
             self._content_container.set_state(
                 ContentContainerState.NO_CONTENT,
             )
+        else:
+            logger.error("Unhandled error:", e)
 
     def get_content(self) -> str | QPixmap | None:
         page = self._cur_page

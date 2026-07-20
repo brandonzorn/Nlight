@@ -7,6 +7,7 @@ from PySide6.QtWidgets import QWidget
 
 from nlightreader.core.enums import LibList
 from nlightreader.core.exceptions.parser_content_exc import (
+    BaseContentError,
     FetchContentError,
     NoContentError,
     RequestsParamsError,
@@ -51,8 +52,8 @@ class BasePage(QWidget):
     def _setup_manga_item(self, manga: Manga) -> MangaItem:
         raise NotImplementedError
 
-    def _process_errors(self, exception: Exception) -> None:
-        raise exception
+    def _process_errors(self, e: BaseContentError) -> None:
+        logger.error("Unhandled error:", e)
 
 
 class BaseMangaPage(BasePage):
@@ -112,18 +113,19 @@ class BaseMangaPage(BasePage):
             return
         self.mangas = self.catalog.search_manga(self.request_params)
         if not self.mangas:
-            raise NoContentError
+            msg = f"{self.catalog.CATALOG_NAME}: search returned no results."
+            raise NoContentError(msg)
 
     @override
-    def _process_errors(self, exception: Exception) -> None:
-        try:
-            raise exception
-        except FetchContentError:
-            logger.exception(exception)
+    def _process_errors(self, e: BaseContentError) -> None:
+        if isinstance(e, FetchContentError):
+            logger.error(e)
             self.manga_area.set_state(ContentContainerState.FETCH_ERROR)
-        except (NoContentError, RequestsParamsError):
-            logger.error(exception)
+        elif isinstance(e, (NoContentError, RequestsParamsError)):
+            logger.warning(e)
             self.manga_area.set_state(ContentContainerState.NO_CONTENT)
+        else:
+            logger.error("Unhandled error: %s", e)
 
 
 class BaseMangaLibraryPage(BaseMangaPage):
