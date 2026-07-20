@@ -14,7 +14,7 @@ class HistoryNote:
         self.is_completed = is_completed
 
     def get_name(self) -> str:
-        return f"{self.manga.get_name()}: {self.chapter.get_name()}"
+        return f"{self.manga.get_name()[:25]}: {self.chapter.get_name()[:25]}"
 
     def to_dict(self) -> dict:
         return {
