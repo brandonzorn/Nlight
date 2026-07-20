@@ -45,25 +45,25 @@ class MangaItem(QWidget):
         pool: QThreadPool | None = None,
     ) -> None:
         super().__init__()
-        self.ui = Ui_MangaItem()
-        self.ui.setupUi(self)
+        self._ui = Ui_MangaItem()
+        self._ui.setupUi(self)
 
         self.customContextMenuRequested.connect(self.on_context_menu)
         self._opacity_effect = QGraphicsOpacityEffect(
-            self.ui.imageLabel,
+            self._ui.image_label,
             opacity=self._HOVERED_OPACITY,
         )
         self._opacity_effect.setEnabled(False)
 
         self._manga = manga
         self._catalog = get_catalog_by_id(self._manga.catalog_id)
-        self._manga_pixmap: QPixmap | None = None
+        self._manga_pixmap = QPixmap()
         self._is_added_to_lib = is_added_to_lib
         self._db = Database()
         self._pool = pool
 
-        self.ui.imageLabel.setGraphicsEffect(self._opacity_effect)
-        self.ui.nameLabel.setText(self._manga.get_name())
+        self._ui.image_label.setGraphicsEffect(self._opacity_effect)
+        self._ui.title_label.setText(self._manga.get_name())
 
     @override
     def enterEvent(self, event: QEnterEvent) -> None:
@@ -149,10 +149,9 @@ class MangaItem(QWidget):
         max_size = QSize(size, int(size * 1.5))
         if self.size() != max_size:
             self.setFixedWidth(max_size.width())
-            self.ui.imageCardWidget.setFixedSize(max_size)
-            self.ui.imageLabel.setMaximumSize(max_size)
-        if self._manga_pixmap:
-            self.set_image()
+            self._ui.image_card.setFixedSize(max_size)
+            self._ui.image_label.setMaximumSize(max_size)
+        self.set_image()
 
     def get_image(self) -> None:
         self._manga_pixmap = FileManager.get_manga_preview(
@@ -161,10 +160,10 @@ class MangaItem(QWidget):
         )
 
     def set_image(self) -> None:
-        if not self._manga_pixmap:
+        if self._manga_pixmap.isNull():
             return
         pixel_ratio = self.devicePixelRatio()
-        result_image_size = self.ui.imageLabel.maximumSize() * pixel_ratio
+        result_image_size = self._ui.image_label.maximumSize() * pixel_ratio
 
         result_image = QImage(result_image_size, QImage.Format.Format_ARGB32)
         result_image.fill(QColor(0, 0, 0, 0))
@@ -194,13 +193,12 @@ class MangaItem(QWidget):
 
         result_pixmap = QPixmap.fromImage(result_image)
         result_pixmap.setDevicePixelRatio(pixel_ratio)
-        self.ui.imageLabel.setPixmap(result_pixmap)
+        self._ui.image_label.setPixmap(result_pixmap)
 
     def update_image(self) -> None:
-        Worker(
+        NWorker(
             target=self.get_image,
             callback=self.set_image,
-        NWorker(
         ).start(self._pool)
 
 

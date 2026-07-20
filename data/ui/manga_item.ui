@@ -13,7 +13,7 @@
   <property name="contextMenuPolicy">
    <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
   </property>
-  <layout class="QVBoxLayout" name="mangaItemVLayout">
+  <layout class="QVBoxLayout" name="widget_layout">
    <property name="spacing">
     <number>3</number>
    </property>
@@ -30,14 +30,14 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="CardWidget" name="imageCardWidget" native="true">
+    <widget class="CardWidget" name="image_card" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <layout class="QVBoxLayout" name="imageVLayout">
+     <layout class="QVBoxLayout" name="card_layout">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -54,7 +54,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="imageLabel">
+       <widget class="QLabel" name="image_label">
         <property name="alignment">
          <set>Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop</set>
         </property>
@@ -64,7 +64,7 @@
     </widget>
    </item>
    <item>
-    <widget class="BodyLabel" name="nameLabel"/>
+    <widget class="BodyLabel" name="title_label"/>
    </item>
   </layout>
  </widget>
