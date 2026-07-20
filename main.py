@@ -1,5 +1,6 @@
 import os
 import sys
+from threading import Thread
 from typing import override
 
 from PySide6.QtCore import QThreadPool, QTimer, Slot
@@ -19,7 +20,7 @@ from nlightreader.consts.paths import APP_DATA_PATH
 from nlightreader.consts.urls import GITHUB_REPO_API
 from nlightreader.utils import kodik_server
 from nlightreader.utils.config import cfg
-from nlightreader.utils.threads import Thread
+from nlightreader.utils.threads import NThread
 from nlightreader.utils.translator import AppTranslator
 from nlightreader.utils.utils import make_request
 
@@ -50,7 +51,7 @@ class MainWindow(ParentWindow):
 
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QIcon(Icons.APP))
-        self._update_checker = Thread(
+        self._update_checker = NThread(
             target=self.check_for_updates,
             callback=self.show_update_info,
             error_callback=self.show_update_info,
@@ -101,7 +102,9 @@ class MainWindow(ParentWindow):
             return None
         latest_version = None
         for release in reversed(response):
-            version = release["tag_name"]
+            if not isinstance(release, dict):
+                continue
+            version = str(release.get("tag_name") or "")
             if APP_BRANCH in version:
                 latest_version = version
         return latest_version
@@ -124,7 +127,7 @@ if __name__ == "__main__":
         os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
         os.environ["QT_SCALE_FACTOR"] = str(cfg.get(cfg.dpi_scale))
 
-    kodik_server = kodik_server.get_local_server(
+    kodik_server: Thread = kodik_server.get_local_server(
         server_port=8000,
         track_progress=cfg.get(cfg.enable_kodik_metrics),
     )
