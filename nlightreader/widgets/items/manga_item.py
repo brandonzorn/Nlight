@@ -27,7 +27,7 @@ from nlightreader.database.services.owm import Database
 from nlightreader.models import Manga
 from nlightreader.utils.catalog_manager import get_catalog_by_id
 from nlightreader.utils.file_manager import FileManager
-from nlightreader.utils.threads import Worker
+from nlightreader.utils.threads import NWorker
 from nlightreader.widgets.contexts import LibraryMangaMenu, LibraryMenuMode
 
 
@@ -200,6 +200,7 @@ class MangaItem(QWidget):
         Worker(
             target=self.get_image,
             callback=self.set_image,
+        NWorker(
         ).start(self._pool)
 
 

@@ -22,7 +22,7 @@ from nlightreader.models import Character
 from nlightreader.utils.catalog_manager import get_catalog_by_id
 from nlightreader.utils.file_manager import FileManager
 from nlightreader.utils.text_formatter import description_to_html
-from nlightreader.utils.threads import Worker
+from nlightreader.utils.threads import NWorker
 
 
 class CharacterInfoDialog(MessageBoxBase):
@@ -76,7 +76,7 @@ class CharacterInfoDialog(MessageBoxBase):
         self.cancelButton.hide()
 
         self.update_description()
-        Worker(self.setup_image).start()
+        NWorker(self.setup_image).start()
 
     @override
     def closeEvent(self, arg__1: QCloseEvent, /) -> None:

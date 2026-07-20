@@ -5,7 +5,7 @@ from PySide6.QtGui import QResizeEvent
 from PySide6.QtWidgets import QGridLayout, QHBoxLayout, QWidget
 from qfluentwidgets import ScrollArea
 
-from nlightreader.utils.threads import Thread
+from nlightreader.utils.threads import NThread
 from nlightreader.widgets.containers.content_container import (
     AbstractContentContainer,
     ContentContainerState,
@@ -41,7 +41,7 @@ class MangaArea(ScrollArea, AbstractContentContainer):
 
         self.manga_thread_pool = QThreadPool()
         self.manga_thread_pool.setMaxThreadCount(self._column_count)
-        self._set_images_thread = Thread(target=self.partial_image_addition)
+        self._set_images_thread = NThread(target=self.partial_image_addition)
 
     @override
     def resizeEvent(self, arg__1: QResizeEvent, /) -> None:

@@ -2,7 +2,6 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import logging
 from string import Template
-import threading
 from threading import Thread
 import webbrowser
 
@@ -199,7 +198,7 @@ def get_local_server(
         ("localhost", server_port),
         KodikPlayerHttpRequestHandler,
     )
-    return threading.Thread(target=_server_instance.serve_forever, daemon=True)
+    return Thread(target=_server_instance.serve_forever, daemon=True)
 
 
 def start_html_video(anime: Manga, episode: Chapter) -> None:

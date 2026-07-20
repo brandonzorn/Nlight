@@ -14,7 +14,8 @@ from nlightreader.core.exceptions.parser_content_exc import (
 )
 from nlightreader.items import RequestForm
 from nlightreader.models import Manga
-from nlightreader.utils.threads import Thread
+from nlightreader.parsers.catalog import AbstractCatalog
+from nlightreader.utils.threads import NThread
 from nlightreader.widgets.containers.content_container import (
     ContentContainerState,
 )
@@ -31,7 +32,7 @@ class BasePage(QWidget):
         super().__init__(parent=parent)
         self._parent: QWidget = parent
 
-        self.catalog = None
+        self.catalog: AbstractCatalog | None = None
         self.request_params = RequestForm()
 
     def _setup_ui(self) -> None:
@@ -59,7 +60,7 @@ class BasePage(QWidget):
 class BaseMangaPage(BasePage):
     def __init__(self, parent: QWidget) -> None:
         super().__init__(parent=parent)
-        self._get_content_thread = Thread(
+        self._get_content_thread = NThread(
             target=self._get_content_thread_func,
             callback=self._update_content,
             error_callback=self._process_errors,

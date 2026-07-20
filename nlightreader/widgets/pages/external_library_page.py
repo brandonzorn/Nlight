@@ -10,7 +10,7 @@ from nlightreader.items import User
 from nlightreader.models import Manga
 from nlightreader.parsers import ShikimoriLib
 from nlightreader.parsers.catalog import CatalogAuthType, LibParser
-from nlightreader.utils.threads import Worker
+from nlightreader.utils.threads import NWorker
 from nlightreader.widgets.dialogs import (
     TokenAuthMessageBox,
     UserDataAuthMessageBox,
@@ -27,7 +27,7 @@ class ExternalLibraryPage(BaseMangaLibraryPage):
         self._setup_connections()
 
         self.catalog: LibParser = ShikimoriLib()
-        Worker(
+        NWorker(
             target=self._get_user_info,
             callback=self._set_user_info,
         ).start()
@@ -109,7 +109,7 @@ class ExternalLibraryPage(BaseMangaLibraryPage):
 
         if w.exec():
             self.catalog.session.authorize(w.auth_data)
-            Worker(
+            NWorker(
                 target=self._get_user_info,
                 callback=self.auth_success_callback,
             ).start()

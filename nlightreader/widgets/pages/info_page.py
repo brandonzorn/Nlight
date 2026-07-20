@@ -18,7 +18,7 @@ from nlightreader.utils.catalog_manager import get_catalog_by_id
 from nlightreader.utils.file_manager import FileManager
 from nlightreader.utils.kodik_server import start_html_video
 from nlightreader.utils.text_formatter import description_to_html
-from nlightreader.utils.threads import Worker
+from nlightreader.utils.threads import NWorker
 from nlightreader.utils.translator import translate
 from nlightreader.utils.utils import get_language_icon
 from nlightreader.widgets.contexts import ReadMarkMenu, ReadMarkMode
@@ -52,7 +52,7 @@ class InfoPage(QWidget):
 
         self._thread_pool = QThreadPool()
         self._thread_pool.setMaxThreadCount(3)
-        self._workers: list[Worker] = []
+        self._workers: list[NWorker] = []
 
         self._manga: Manga = manga
         self._catalog = get_catalog_by_id(self._manga.catalog_id)
@@ -94,7 +94,7 @@ class InfoPage(QWidget):
         )
 
     def setup(self) -> None:
-        worker = Worker(
+        worker = NWorker(
             target=self._fetch_manga,
             callback=self.update_additional_info,
         )
@@ -156,21 +156,21 @@ class InfoPage(QWidget):
             self.ui.addButton.setChecked(False)
         self.update_add_button_icon()
         self._set_image()
-        chapters_worker = Worker(
+        chapters_worker = NWorker(
             target=self.get_chapters,
             callback=self._update_chapters_tree,
         )
         self._workers.append(chapters_worker)
         chapters_worker.start(pool=self._thread_pool)
 
-        relations_worker = Worker(
+        relations_worker = NWorker(
             target=self.get_relations,
             callback=self.update_relations,
         )
         self._workers.append(relations_worker)
         relations_worker.start(pool=self._thread_pool)
 
-        characters_worker = Worker(
+        characters_worker = NWorker(
             target=self.get_characters,
             callback=self.update_characters,
         )

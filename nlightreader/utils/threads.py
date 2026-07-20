@@ -50,7 +50,7 @@ class BaseThread:
             self.signals.on_finished.emit(result)
 
 
-class Worker(BaseThread, QRunnable):
+class NWorker(BaseThread, QRunnable):
     """
     Initializes a new `Runnable` instance.
 
@@ -86,6 +86,7 @@ class Worker(BaseThread, QRunnable):
             callback=callback,
             error_callback=error_callback,
         )
+        self.setAutoDelete(True)
 
     def start(self, pool: QThreadPool | None = None) -> None:
         if pool is None:
@@ -93,7 +94,7 @@ class Worker(BaseThread, QRunnable):
         pool.start(self)
 
 
-class Thread(BaseThread, QThread):
+class NThread(BaseThread, QThread):
     """
     Initializes a new `Thread` instance.
 
@@ -131,4 +132,4 @@ class Thread(BaseThread, QThread):
         )
 
 
-__all__ = ["Thread", "Worker"]
+__all__ = ["NThread", "NWorker"]

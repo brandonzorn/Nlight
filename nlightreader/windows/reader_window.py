@@ -23,7 +23,7 @@ from nlightreader.items import HistoryNote
 from nlightreader.models import Chapter, Image, ImageStub, Manga
 from nlightreader.utils.catalog_manager import get_catalog_by_id
 from nlightreader.utils.file_manager import FileManager
-from nlightreader.utils.threads import Thread
+from nlightreader.utils.threads import NThread
 from nlightreader.widgets.containers import TextArea
 from nlightreader.widgets.containers.content_container import (
     AbstractContentContainer,
@@ -46,7 +46,7 @@ class ReaderWindow(SimpleCardWidget):
             QScrollArea {border: none;}
             """,
         )
-        self._set_image_thread = Thread(
+        self._set_image_thread = NThread(
             target=self.get_content,
             callback=self.update_image,
             error_callback=self._process_errors,
