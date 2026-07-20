@@ -1,12 +1,15 @@
 from collections import defaultdict
+from functools import partial
 from typing import override
 
 from PySide6.QtCore import QPoint, Slot
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QTreeWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.history import Ui_HistoryPage
 from nlightreader.database import Database
+from nlightreader.items import HistoryNote
+from nlightreader.models import Manga
 from nlightreader.widgets.contexts import HistoryMenuMode, HistoryNoteMenu
 from nlightreader.widgets.items import HistoryTreeItem, MangaTreeItem
 from nlightreader.widgets.pages.base_page import BasePage
@@ -20,64 +23,67 @@ class HistoryPage(BasePage):
         self._setup_connections()
 
         self._db = Database()
+        self._grouped_notes: dict[Manga, list[HistoryNote]] = defaultdict(list)
 
     @override
     def _setup_ui(self) -> None:
         self._ui.setupUi(self)
-        self._ui.delete_btn.setIcon(FluentIcon.DELETE)
+        self._ui.delete_button.setIcon(FluentIcon.DELETE)
 
     @override
     def _setup_connections(self) -> None:
-        self._ui.delete_btn.clicked.connect(self._delete_note)
+        self._ui.delete_button.clicked.connect(self._delete_note)
 
-        self._ui.itemsTree.doubleClicked.connect(self._open_info)
-        self._ui.itemsTree.customContextMenuRequested.connect(
+        self._ui.items_tree.itemDoubleClicked.connect(self._open_info)
+        self._ui.items_tree.customContextMenuRequested.connect(
             self._on_context_menu,
         )
 
     @override
     def setup(self) -> None:
-        self._ui.itemsTree.verticalScrollBar().setValue(0)
+        self._ui.items_tree.verticalScrollBar().setValue(0)
         super().setup()
 
     @override
     def _get_content(self) -> None:
+        self._grouped_notes.clear()
+        notes = self._db.history.get_all()
+        for note in notes:
+            self._grouped_notes[note.manga].append(note)
         self._update_content()
 
-    @Slot()
-    def _open_info(self) -> None:
-        selected_item = self._ui.itemsTree.currentItem()
-        if not isinstance(selected_item, HistoryTreeItem):
+    @Slot(QTreeWidgetItem, int)
+    def _open_info(self, item: QTreeWidgetItem, _: int) -> None:
+        if not isinstance(item, HistoryTreeItem):
             return
-        self.manga_open.emit(selected_item.note.manga)
+        self.manga_open.emit(item.note.manga)
 
     @Slot()
     def _delete_note(self) -> None:
-        selected_item = self._ui.itemsTree.currentItem()
+        selected_item = self._ui.items_tree.currentItem()
         if not isinstance(selected_item, HistoryTreeItem):
             return
         self._db.history.delete_by_chapter(selected_item.note.chapter.id)
-        selected_item.parent().removeChild(selected_item)
-        self._update_content()
+        parent = selected_item.parent()
+        parent.removeChild(selected_item)
+        if parent.childCount() == 0:
+            i = self._ui.items_tree.indexOfTopLevelItem(parent)
+            self._ui.items_tree.takeTopLevelItem(i)
 
     @override
     def _update_content(self) -> None:
-        self._ui.itemsTree.clear()
-        notes = self._db.history.get_all()
-        grouped_notes = defaultdict(list)
-        for note in notes:
-            grouped_notes[note.manga].append(note)
+        self._ui.items_tree.clear()
 
-        for manga, manga_notes in grouped_notes.items():
+        for manga, manga_notes in self._grouped_notes.items():
             manga_item = MangaTreeItem(manga)
-            self._ui.itemsTree.addTopLevelItem(manga_item)
-            for note in manga_notes:
-                chapter_item = HistoryTreeItem(note)
-                manga_item.addChild(chapter_item)
+            children = [HistoryTreeItem(note) for note in manga_notes]
+            manga_item.addChildren(children)
+            self._ui.items_tree.addTopLevelItem(manga_item)
 
     def _mark_chapter_as_read(self, selected_item: HistoryTreeItem) -> None:
-        selected_item.note.is_completed = True
-        self._db.history.save(selected_item.note)
+        if not selected_item.note.is_completed:
+            selected_item.note.is_completed = True
+            self._db.history.save(selected_item.note)
         selected_item.update_icon()
 
     def _remove_manga_history(self, selected_item: HistoryTreeItem) -> None:
@@ -85,24 +91,24 @@ class HistoryPage(BasePage):
         selected_item.delete_parent()
 
     def _on_context_menu(self, position: QPoint) -> None:
-        selected_item = self._ui.itemsTree.itemAt(position)
+        selected_item = self._ui.items_tree.itemAt(position)
         if not isinstance(selected_item, HistoryTreeItem):
             return
 
         menu = HistoryNoteMenu()
         menu.set_as_read.triggered.connect(
-            lambda: self._mark_chapter_as_read(selected_item),
+            partial(self._mark_chapter_as_read, selected_item),
         )
         menu.remove_all.triggered.connect(
-            lambda: self._remove_manga_history(selected_item),
+            partial(self._remove_manga_history, selected_item),
         )
 
-        if self._db.history.is_completed(selected_item.note.chapter.id):
+        if selected_item.note.is_completed:
             menu.set_mode(HistoryMenuMode.READ)
         else:
             menu.set_mode(HistoryMenuMode.UNREAD)
 
-        menu.exec(self._ui.itemsTree.mapToGlobal(position))
+        menu.exec(self._ui.items_tree.mapToGlobal(position))
 
 
 __all__ = ["HistoryPage"]

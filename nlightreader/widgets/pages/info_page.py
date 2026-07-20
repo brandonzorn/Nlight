@@ -186,6 +186,8 @@ class InfoPage(QWidget):
     @Slot()
     def open_character_dialog(self) -> None:
         current_item = self.ui.charactersList.currentItem()
+        if not isinstance(current_item, ModelListItem):
+            return
         character = self._catalog.get_character(current_item.model)
         CharacterInfoDialog(character, parent=self._parent).exec()
 

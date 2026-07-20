@@ -172,7 +172,7 @@ class ReaderWindow(SimpleCardWidget):
             ),
         )
         if self._cur_page == 1:
-            self._db.history.delete(self._current_chapter.id)
+            self._db.history.delete_by_chapter(self._current_chapter.id)
             self.turn_chapter_prev()
         else:
             self._cur_page -= 1
