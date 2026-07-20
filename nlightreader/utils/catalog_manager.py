@@ -78,7 +78,10 @@ def get_catalog_by_id(catalog_id: int) -> AbstractCatalog:
 
 
 def get_lib_catalog(base_catalog: type[AbstractCatalog]) -> LibParser:
-    return LIB_CATALOGS.get(base_catalog)()
+    if base_catalog in LIB_CATALOGS:
+        return LIB_CATALOGS[base_catalog]()
+    logger.warning(f"Catalog with id {base_catalog.CATALOG_ID} not found.")
+    return LibParser()
 
 
 __all__ = [
