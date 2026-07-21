@@ -103,6 +103,8 @@ def make_request(
             cookies=cookies,
         )
         response.raise_for_status()
+    except requests.exceptions.ConnectionError as e:
+        logger.warning("%s: Connection error. %s", "make_request", e)
     except requests.exceptions.RequestException:
         logger.exception(
             "\nError fetching: %s\n"

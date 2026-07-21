@@ -51,6 +51,8 @@ class NetworkClient:
                 json=json,
             )
             response.raise_for_status()
+        except requests.exceptions.ConnectionError as e:
+            logger.warning("%s: Connection error. %s", self._catalog_name, e)
         except requests.exceptions.RequestException as e:
             logger.warning(
                 "%s: %s [%s]\n"
