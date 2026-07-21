@@ -18,10 +18,10 @@ class MangaKind(IntEnum):
     @staticmethod
     def _matching_the_pattern(text: str, pattern: tuple) -> bool:
         text = text.lower()
-        return any([i in text for i in pattern])
+        return any(i in text for i in pattern)
 
     @classmethod
-    def from_str(cls, string: str | None) -> IntEnum:
+    def from_str(cls, string: str | None) -> "MangaKind":
         if string is None or cls._matching_the_pattern(
             string,
             ("undefined", "Другое"),
@@ -33,7 +33,7 @@ class MangaKind(IntEnum):
             return cls.MANHWA
         if cls._matching_the_pattern(string, ("manhua", "маньхуа")):
             return cls.MANHUA
-        if cls._matching_the_pattern(string, ("one_shot",)):
+        if cls._matching_the_pattern(string, ("one_shot", "oneshot")):
             return cls.ONE_SHOT
         if cls._matching_the_pattern(string, ("doujin",)):
             return cls.DOUJIN
@@ -41,7 +41,7 @@ class MangaKind(IntEnum):
             return cls.RANOBE
         if cls._matching_the_pattern(string, ("комикс", "comic")):
             return cls.COMICS
-        logging.warning(f"Unknown manga kind: {string}")
+        logger.warning("Unknown manga kind: %s", string)
         return cls.UNDEFINED
 
     def to_str(self) -> str:
@@ -66,7 +66,7 @@ class MangaStatus(IntEnum):
     FROZEN = 3
 
     @classmethod
-    def from_str(cls, string: str | None) -> IntEnum:
+    def from_str(cls, string: str | None) -> "MangaStatus":
         if string is None:
             return cls.UNDEFINED
 
@@ -79,7 +79,7 @@ class MangaStatus(IntEnum):
             return cls.RELEASED
         if string in ("frozen", "заморожено"):
             return cls.FROZEN
-        logger.warning(f"Unknown manga status: {string}")
+        logger.warning("Unknown manga status: %s", string)
         return cls.UNDEFINED
 
     def to_str(self) -> str:
