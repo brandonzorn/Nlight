@@ -33,10 +33,11 @@ class RateDialog(MessageBoxBase):
         )
         self._user_rate = self._fetch_user_rate()
 
-        self._init_ui()
+        self._setup_ui()
+        self._setup_connections()
         self._display_user_rate()
 
-    def _init_ui(self) -> None:
+    def _setup_ui(self) -> None:
         self.title_label = SubtitleLabel(self.tr("Change rating"), parent=self)
 
         self.form_frame = QWidget()
@@ -72,7 +73,6 @@ class RateDialog(MessageBoxBase):
 
         self.delete_rate_button = PushButton()
         self.delete_rate_button.setText(self.tr("Delete"))
-        self.delete_rate_button.clicked.connect(self._delete_user_rate)
         self.buttonLayout.addWidget(
             self.delete_rate_button,
             1,
@@ -82,6 +82,8 @@ class RateDialog(MessageBoxBase):
         self.viewLayout.addWidget(self.title_label)
         self.viewLayout.addWidget(self.form_frame)
 
+    def _setup_connections(self) -> None:
+        self.delete_rate_button.clicked.connect(self._delete_user_rate)
         self.accepted.connect(self._send_user_rate)
         self.rejected.connect(self.close)
 
@@ -90,12 +92,14 @@ class RateDialog(MessageBoxBase):
         super().closeEvent(event)
         self.deleteLater()
 
-    def _fetch_user_rate(self) -> UserRate:
+    def _fetch_user_rate(self) -> UserRate | None:
         if not self._catalog.check_user_rate(self._manga):
             self._catalog.create_user_rate(self._manga)
         return self._catalog.get_user_rate(self._manga)
 
     def _display_user_rate(self) -> None:
+        if self._user_rate is None:
+            return
         self.score_spin.setValue(self._user_rate.score)
         self.chapters_count_spin.setValue(self._user_rate.chapters)
         if self._manga.chapters_number:
@@ -104,6 +108,8 @@ class RateDialog(MessageBoxBase):
 
     @Slot()
     def _send_user_rate(self) -> None:
+        if self._user_rate is None:
+            return
         self._user_rate.score = self.score_spin.value()
         self._user_rate.chapters = self.chapters_count_spin.value()
         self._user_rate.status = LibList(
@@ -114,6 +120,8 @@ class RateDialog(MessageBoxBase):
 
     @Slot()
     def _delete_user_rate(self) -> None:
+        if self._user_rate is None:
+            return
         self._catalog.delete_user_rate(self._user_rate)
         self.close()
 
