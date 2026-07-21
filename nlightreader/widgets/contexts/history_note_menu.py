@@ -11,7 +11,7 @@ class HistoryMenuMode(IntEnum):
     READ = 1
 
 
-class HistoryNoteMenu(AbstractContextMenu):
+class HistoryNoteMenu(AbstractContextMenu[HistoryMenuMode]):
     def __init__(self) -> None:
         super().__init__()
         self.set_as_read = Action(
@@ -28,11 +28,8 @@ class HistoryNoteMenu(AbstractContextMenu):
             HistoryMenuMode.READ: [self.remove_all],
         }
 
-    def set_mode(self, mode: HistoryMenuMode) -> None:
-        return super().set_mode(mode)
-
 
 __all__ = [
-    "HistoryNoteMenu",
     "HistoryMenuMode",
+    "HistoryNoteMenu",
 ]

@@ -12,7 +12,7 @@ class LibraryMenuMode(IntEnum):
     LOCAL_ONLY = 2
 
 
-class LibraryMangaMenu(AbstractContextMenu):
+class LibraryMangaMenu(AbstractContextMenu[LibraryMenuMode]):
     def __init__(self) -> None:
         super().__init__()
         self.add_to_lib = Action(
@@ -55,9 +55,6 @@ class LibraryMangaMenu(AbstractContextMenu):
                 self.remove_files,
             ],
         }
-
-    def set_mode(self, mode: LibraryMenuMode) -> None:
-        return super().set_mode(mode)
 
 
 __all__ = [

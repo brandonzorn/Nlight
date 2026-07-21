@@ -12,7 +12,7 @@ class ReadMarkMode(IntEnum):
     ALL = 2
 
 
-class ReadMarkMenu(AbstractContextMenu):
+class ReadMarkMenu(AbstractContextMenu[ReadMarkMode]):
     def __init__(self) -> None:
         super().__init__()
         self.set_as_read = Action(
@@ -43,9 +43,6 @@ class ReadMarkMenu(AbstractContextMenu):
                 self.set_as_read_all,
             ],
         }
-
-    def set_mode(self, mode: ReadMarkMode) -> None:
-        return super().set_mode(mode)
 
 
 __all__ = [
