@@ -2,9 +2,9 @@ name: Python application
 
 on:
   push:
-    branches: [ "master", "1.10", "1.9", "dev_1.10", "dev_1.9"]
+    branches: [ "master", "1.10", "1.9", "dev_1.10", "dev_1.11" ]
   pull_request:
-    branches: [ "master", "1.10", "1.9", "dev_1.10", "dev_1.9"]
+    branches: [ "master", "1.10", "1.9", "dev_1.11" ]
 
 permissions:
   contents: read
@@ -12,7 +12,7 @@ permissions:
 jobs:
   flake8-test:
     runs-on: ubuntu-latest
-    container: python:3.13-alpine
+    container: python:3.12-alpine
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
@@ -22,7 +22,7 @@ jobs:
 
   ruff-lint:
     runs-on: ubuntu-latest
-    container: python:3.13-alpine
+    container: python:3.12-alpine
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies

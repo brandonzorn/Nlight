@@ -1,6 +1,6 @@
 [project]
 name = "nlight"
-version = "1.10.6"
+version = "1.11.0"
 description = "Application for watching anime, reading manga/light novels."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -22,10 +22,7 @@ dev = [
 ]
 test = [
     "flake8>=6.1.0",
-    "flake8-all-not-strings>=0.0.2",
-    "flake8-comments>=0.1.2",
     "flake8-dunder-all>=0.4.1",
-    "flake8-encodings>=0.5.1",
     "flake8-pyproject>=1.2.3",
 ]
 
