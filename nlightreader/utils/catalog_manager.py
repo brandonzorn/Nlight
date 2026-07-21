@@ -18,7 +18,7 @@ from nlightreader.parsers import (
     ShikimoriLib,
     ShikimoriManga,
     ShikimoriRanobe,
-    SlashLib,
+    SlashLibLegacy,
 )
 from nlightreader.parsers.catalog import AbstractCatalog, LibParser
 
@@ -34,7 +34,7 @@ CATALOG_CLASSES: dict[int, type[AbstractCatalog]] = {
     6: Remanga,
     7: NHentai,
     8: AllHentai,
-    9: SlashLib,
+    9: SlashLibLegacy,
     10: LibMangalib,
     11: ShikimoriAnime,
     # 12:
@@ -73,16 +73,19 @@ def get_catalog_by_id(catalog_id: int) -> AbstractCatalog:
         instance = CATALOG_CLASSES[catalog_id]()
         _initialized_catalogs[catalog_id] = instance
         return instance
-    logger.warning(f"Catalog with id {catalog_id} not found.")
+    logger.warning("Catalog with id %s not found.", catalog_id)
     return AbstractCatalog()
 
 
 def get_lib_catalog(base_catalog: type[AbstractCatalog]) -> LibParser:
-    return LIB_CATALOGS.get(base_catalog)()
+    if base_catalog in LIB_CATALOGS:
+        return LIB_CATALOGS[base_catalog]()
+    logger.warning("Catalog with id %s not found.", base_catalog.CATALOG_ID)
+    return LibParser()
 
 
 __all__ = [
+    "USER_CATALOGS",
     "get_catalog_by_id",
     "get_lib_catalog",
-    "USER_CATALOGS",
 ]

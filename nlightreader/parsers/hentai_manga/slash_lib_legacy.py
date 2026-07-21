@@ -1,12 +1,16 @@
 from nlightreader.consts.items import MangaLibItems
 from nlightreader.models import Manga
-from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
+from nlightreader.parsers.catalogs_base import (
+    AbstractHentaiMangaCatalog,
+)
 from nlightreader.utils.network import NetworkClient
 
 
-class LibBase(AbstractMangaCatalog):
+class SlashLibLegacy(AbstractHentaiMangaCatalog):
+    _URL = "https://v2.slashlib.me"
     _FILTERS = MangaLibItems
-    _URL = None
+    CATALOG_NAME = "SlashLib(Legacy)"
+    CATALOG_ID = 9
 
     def __init__(self) -> None:
         self._client = NetworkClient(headers=self._HEADERS)
@@ -24,13 +28,4 @@ class LibBase(AbstractMangaCatalog):
         return f"{self._URL}/{manga.content_id}"
 
 
-class SlashLib(LibBase):
-    CATALOG_NAME = "SlashLib(Legacy)"
-    CATALOG_ID = 9
-    _URL = "https://v2.slashlib.me"
-
-
-__all__ = [
-    "LibBase",
-    "SlashLib",
-]
+__all__ = ["SlashLibLegacy"]
