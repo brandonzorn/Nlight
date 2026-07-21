@@ -42,6 +42,7 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
     def get_image(self, image: Image) -> str | None:
         if image.url is None:
             return None
+
         def get_chapter_content_image(media_id: str) -> str:
             url = (
                 media_id

@@ -61,7 +61,7 @@ class Ranobehub(AbstractRanobeCatalog):
         if not isinstance(response, dict):
             return mangas
 
-        response_data = response.get("resource",[])
+        response_data = response.get("resource", [])
         for i in response_data:
             manga_id = str(i.get("id"))
             name = dd_get(i, "names.eng")
