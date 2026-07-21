@@ -15,38 +15,38 @@ class Character(NamedBaseModel):
         role: str,
     ) -> None:
         super().__init__(content_id, catalog_id, name, russian)
-        self.__description = description
-        self.__role = role
+        self._description = description
+        self._role = role
 
     @property
     def description(self) -> str:
-        return self.__description
+        return self._description
 
     @description.setter
     def description(self, description: str) -> None:
         if not isinstance(description, str):
             msg = f"Description must be a string, got {type(description)}"
             raise TypeError(msg)
-        self.__description = description
+        self._description = description
 
     @property
     def role(self) -> str:
-        return self.__role
+        return self._role
 
     @role.setter
     def role(self, role: str) -> None:
         if not isinstance(role, str):
             msg = f"Role must be a string, got {type(role)}"
             raise TypeError(msg)
-        self.__role = role
+        self._role = role
 
     @override
     def to_dict(self) -> dict:
         data = super().to_dict()
         data.update(
             {
-                "description": self.__description,
-                "role": self.__role,
+                "description": self._description,
+                "role": self._role,
             },
         )
         return data

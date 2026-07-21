@@ -7,11 +7,11 @@ from .sort_models import Genre, Kind, Order
 __all__ = [
     "Chapter",
     "Character",
+    "Genre",
     "Image",
     "ImageStub",
-    "Manga",
-    "Manga",
-    "Genre",
     "Kind",
+    "Manga",
+    "Manga",
     "Order",
 ]
