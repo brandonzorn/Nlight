@@ -1,4 +1,5 @@
 import base64
+from typing import ClassVar, override
 
 from bs4 import BeautifulSoup
 
@@ -15,7 +16,7 @@ class Rulate(AbstractRanobeCatalog):
     CATALOG_NAME = "Rulate"
     _FILTERS = RulateItems
     _URL = "https://tl.rulate.ru"
-    _COOKIES = {
+    _COOKIES: ClassVar = {
         "mature": "c3a2ed4b199a1a15f5a5483504c7a75a7030dc4bi%3A1%3B",
     }
 
@@ -26,6 +27,7 @@ class Rulate(AbstractRanobeCatalog):
             cookies=self._COOKIES,
         )
 
+    @override
     def get_manga(self, manga: Manga) -> Manga:
         response = self._client.get_text(
             f"{self._URL}/book/{manga.content_id}",
@@ -45,6 +47,7 @@ class Rulate(AbstractRanobeCatalog):
         manga.kind = MangaKind.RANOBE
         return manga
 
+    @override
     def search_manga(self, form: RequestForm) -> list[Manga]:
         params = {
             "t": form.search,
@@ -84,6 +87,7 @@ class Rulate(AbstractRanobeCatalog):
             )
         return ranobe
 
+    @override
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         chapters = []
         response = self._client.get_text(
@@ -114,6 +118,7 @@ class Rulate(AbstractRanobeCatalog):
             chapters.append(chapter)
         return chapters
 
+    @override
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = (
             f"{self._URL}/book/"
@@ -121,6 +126,7 @@ class Rulate(AbstractRanobeCatalog):
         )
         return [Image(content_id="", page_number=1, url=url)]
 
+    @override
     def get_image(self, image: Image) -> str | None:
         def get_chapter_content_image(media_id: str) -> str:
             url = f"{self._URL}/{media_id}"
@@ -149,6 +155,7 @@ class Rulate(AbstractRanobeCatalog):
                 content += f"<p>{p.text}</p>"
         return content
 
+    @override
     def get_preview(self, manga: Manga) -> bytes | None:
         response = self._client.get_text(
             f"{self._URL}/book/{manga.content_id}",
@@ -164,6 +171,7 @@ class Rulate(AbstractRanobeCatalog):
             return None
         return image_response
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/book/{manga.content_id}"
 

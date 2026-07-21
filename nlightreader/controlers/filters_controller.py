@@ -110,7 +110,7 @@ class FiltersController:
 
     def reset_items(self) -> None:
         if self._order_items:
-            list(self._order_items.keys())[0].setChecked(True)
+            next(iter(self._order_items.keys())).setChecked(True)
 
         for widget in self._kind_items:
             widget.setChecked(False)

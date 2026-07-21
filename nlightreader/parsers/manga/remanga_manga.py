@@ -1,3 +1,5 @@
+from typing import override
+
 from nlightreader.consts.items import RemangaItems
 from nlightreader.core.enums import Language, MangaKind
 from nlightreader.core.network import NetworkClient
@@ -20,6 +22,7 @@ class Remanga(AbstractMangaCatalog):
             headers=self._HEADERS,
         )
 
+    @override
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/titles/{manga.content_id}/"
         response_data = self._client.get_json(url).get("content", {})
@@ -42,6 +45,7 @@ class Remanga(AbstractMangaCatalog):
         )
         return manga
 
+    @override
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/search/catalog"
         if form.search:
@@ -82,13 +86,14 @@ class Remanga(AbstractMangaCatalog):
             mangas.append(manga)
         return mangas
 
+    @override
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self._URL_API}/titles/{manga.content_id}/"
         response = self._client.get_json(url)
         chapters: list[Chapter] = []
         if not isinstance(response, dict):
             return chapters
-        data = response.get("content")
+        data = response.get("content", {})
         branch_id = data.get("branches")[0].get("id")
         chapters_data = self._client.get_json(
             f"{self._URL_API}/titles/chapters"
@@ -111,7 +116,8 @@ class Remanga(AbstractMangaCatalog):
             chapters.append(chapter)
         return chapters
 
-    def get_images(self, _: Manga, chapter: Chapter) -> list[Image]:
+    @override
+    def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = f"{self._URL_API}/titles/chapters/{chapter.content_id}/"
         response = self._client.get_json(url)
         images: list[Image] = []
@@ -131,6 +137,7 @@ class Remanga(AbstractMangaCatalog):
             )
         return images
 
+    @override
     def get_image(self, image: Image) -> bytes | None:
         headers = {
             "User-Agent": "Nlight",
@@ -144,12 +151,14 @@ class Remanga(AbstractMangaCatalog):
             return None
         return image_response
 
+    @override
     def get_preview(self, manga: Manga) -> bytes | None:
-        image_response = self._client.get_bytes(manga.preview_url)
-        if not isinstance(image_response, bytes):
+        url = manga.preview_url
+        if not isinstance(url, str):
             return None
-        return image_response
+        return self._client.get_bytes(url)
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/manga/{manga.content_id}"
 

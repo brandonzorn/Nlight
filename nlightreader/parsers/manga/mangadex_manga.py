@@ -1,5 +1,5 @@
 import logging
-from typing import override
+from typing import ClassVar, override
 
 from nlightreader.consts.items import MangaDexItems
 from nlightreader.consts.urls import URL_MANGADEX_TOKEN
@@ -28,7 +28,7 @@ class MangaDex(AbstractMangaCatalog):
     _FILTERS = MangaDexItems
     _URL = "https://mangadex.org"
     _URL_API = "https://api.mangadex.org"
-    _HEADERS = {"User-Agent": "Nlight"}
+    _HEADERS: ClassVar = {"User-Agent": "Nlight"}
 
     def __init__(self) -> None:
         self._client = NetworkClient(
@@ -36,6 +36,7 @@ class MangaDex(AbstractMangaCatalog):
             headers=self._HEADERS,
         )
 
+    @override
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/manga/{manga.content_id}"
         response = self._client.get_json(url)
@@ -62,6 +63,7 @@ class MangaDex(AbstractMangaCatalog):
             manga.status = MangaStatus.from_str(status)
         return manga
 
+    @override
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/manga"
         params = {
@@ -90,6 +92,7 @@ class MangaDex(AbstractMangaCatalog):
         mangas.extend(self._parse_manga_data(data) for data in manga_data)
         return mangas
 
+    @override
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         items_per_page = 100
         url = f"{self._URL_API}/chapter"
@@ -128,7 +131,8 @@ class MangaDex(AbstractMangaCatalog):
             chapters.extend(self._parse_chapters_data(chunk_data))
         return chapters
 
-    def get_images(self, _: Manga, chapter: Chapter) -> list[Image]:
+    @override
+    def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = f"{self._URL_API}/at-home/server/{chapter.content_id}"
         response = self._client.get_json(url)
         images: list[Image] = []
@@ -149,12 +153,14 @@ class MangaDex(AbstractMangaCatalog):
             )
         return images
 
+    @override
     def get_image(self, image: Image) -> bytes | None:
         url = image.url
         if url is None:
             return None
         return self._client.get_bytes(url)
 
+    @override
     def get_preview(self, manga: Manga) -> bytes | None:
         url = f"{self._URL_API}/cover"
         params = {"manga[]": manga.content_id}
@@ -170,17 +176,20 @@ class MangaDex(AbstractMangaCatalog):
             f"covers/{manga.content_id}/{filename}.256.jpg",
         )
 
+    @override
     def get_genres(self) -> list[Genre]:
         return [
             Genre(**tag_data)
             for tag_data in self._get_tags_by_group("genre", "theme")
         ]
 
+    @override
     def get_kinds(self) -> list[Kind]:
         return [
             Kind(**tag_data) for tag_data in self._get_tags_by_group("format")
         ]
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/title/{manga.content_id}"
 
@@ -258,6 +267,7 @@ class MangaDexLib(MangaDex, LibParser):
             headers=self._HEADERS,
         )
 
+    @override
     def search_manga(self, form: RequestForm) -> list[Manga]:
         mangas = []
         lib_list = form.lib_list.name
@@ -283,6 +293,7 @@ class MangaDexLib(MangaDex, LibParser):
                     mangas.append(manga)
         return mangas
 
+    @override
     def get_user(self) -> User:
         response = self._client.request("GET", f"{self._URL_API}/user/me")
         if response and (resp_json := response.json()):

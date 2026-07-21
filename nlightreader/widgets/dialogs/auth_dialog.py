@@ -1,4 +1,4 @@
-from typing import Never, override
+from typing import override
 import webbrowser
 
 from PySide6.QtWidgets import QWidget
@@ -29,10 +29,10 @@ class AbstractAuthDialog(MessageBoxBase):
         self.viewLayout.addWidget(self.titleLabel)
 
     @property
-    def auth_data(self) -> Never:
+    def auth_data(self) -> dict[str, str]:
         raise NotImplementedError
 
-    def _verify_user_data(self) -> Never:
+    def _verify_user_data(self) -> None:
         raise NotImplementedError
 
 
