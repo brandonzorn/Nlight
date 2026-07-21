@@ -1,4 +1,6 @@
-from bs4 import BeautifulSoup, element
+from typing import override
+
+from bs4 import BeautifulSoup
 import validators
 
 from nlightreader.core.exceptions import parser_content_exc
@@ -19,6 +21,7 @@ class NHentai(AbstractHentaiMangaCatalog):
             headers=self._HEADERS,
         )
 
+    @override
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL}/search"
         if not form.search:
@@ -40,13 +43,17 @@ class NHentai(AbstractHentaiMangaCatalog):
             caption_tag = i.find("div", class_="caption")
             if caption_tag is None:
                 continue
-            name = i.find("div", class_="caption").text
-            cover_tag: element.Tag = i.find("a", {"class": "cover"})
+            name_tag = i.find("div", class_="caption")
+            if name_tag is None:
+                continue
+            name = name_tag.text
+            cover_tag = i.find("a", {"class": "cover"})
             if cover_tag is None:
                 continue
-            manga_id = cover_tag["href"].split("/")[-2]
-            if not manga_id:
+            manga_href = cover_tag["href"]
+            if not isinstance(manga_href, str):
                 continue
+            manga_id = manga_href.split("/")[-2]
 
             manga = Manga(
                 content_id=manga_id,
@@ -64,6 +71,7 @@ class NHentai(AbstractHentaiMangaCatalog):
             mangas.append(manga)
         return mangas
 
+    @override
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         return [
             Chapter(
@@ -75,7 +83,8 @@ class NHentai(AbstractHentaiMangaCatalog):
             ),
         ]
 
-    def get_images(self, manga: Manga, _) -> list[Image]:
+    @override
+    def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = f"{self._URL}/g/{manga.content_id}"
         images: list[Image] = []
         response = self._client.get_text(url)
@@ -85,6 +94,8 @@ class NHentai(AbstractHentaiMangaCatalog):
         html_items = soup.find_all("a", class_="gallerythumb")
         for i in html_items:
             img_tag = i.find("img")
+            if img_tag is None:
+                continue
             img_url = img_tag.get("data-src")
             if not isinstance(img_url, str) or not validators.url(img_url):
                 continue
@@ -97,6 +108,7 @@ class NHentai(AbstractHentaiMangaCatalog):
             )
         return images
 
+    @override
     def get_image(self, image: Image) -> bytes | None:
         get_img_headers = {"Referer": self._URL}
         url = image.url
@@ -104,16 +116,16 @@ class NHentai(AbstractHentaiMangaCatalog):
             return None
         return self._client.get_bytes(url, extra_headers=get_img_headers)
 
+    @override
     def get_preview(self, manga: Manga) -> bytes | None:
         url = manga.preview_url
         if url is None:
             return None
         return self._client.get_bytes(url)
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/g/{manga.content_id}"
 
 
-__all__ = [
-    "NHentai",
-]
+__all__ = ["NHentai"]

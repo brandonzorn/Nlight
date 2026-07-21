@@ -1,4 +1,5 @@
 import base64
+from typing import override
 
 from bs4 import BeautifulSoup
 import bs4.element
@@ -25,11 +26,13 @@ class Ranobehub(AbstractRanobeCatalog):
             headers=self._HEADERS,
         )
 
+    @override
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/ranobe/{manga.content_id}"
-        response_data = self._client.get_json(url).get("data", {})
-        if not response_data:
+        response = self._client.get_json(url)
+        if not isinstance(response, dict):
             return manga
+        response_data = response.get("data", {})
 
         manga.score = response_data.get("rating", 0)
         manga.kind = MangaKind.RANOBE
@@ -44,6 +47,7 @@ class Ranobehub(AbstractRanobeCatalog):
         )
         return manga
 
+    @override
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/search"
         params = {
@@ -52,18 +56,20 @@ class Ranobehub(AbstractRanobeCatalog):
             "sort": form.get_order_id(),
             "tags:positive[]": [int(i) for i in form.get_genre_ids()],
         }
-        response = self._client.get_json(url, params=params).get(
-            "resource",
-            [],
-        )
+        response = self._client.get_json(url, params=params)
         mangas: list[Manga] = []
-        if not isinstance(response, list):
+        if not isinstance(response, dict):
             return mangas
 
-        for i in response:
+        response_data = response.get("resource",[])
+        for i in response_data:
             manga_id = str(i.get("id"))
-            name = dd_get(i, "names.eng", "")
-            russian = dd_get(i, "names.rus", "")
+            name = dd_get(i, "names.eng")
+            if not isinstance(name, str):
+                continue
+            russian = dd_get(i, "names.rus")
+            if not isinstance(russian, str):
+                russian = ""
 
             manga = Manga(
                 content_id=manga_id,
@@ -77,6 +83,7 @@ class Ranobehub(AbstractRanobeCatalog):
             mangas.append(manga)
         return mangas
 
+    @override
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self._URL_API}/ranobe/{manga.content_id}/contents"
         response = self._client.get_json(url)
@@ -98,6 +105,7 @@ class Ranobehub(AbstractRanobeCatalog):
         chapters.reverse()
         return chapters
 
+    @override
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = (
             f"{self._URL}/ranobe/{manga.content_id}/"
@@ -105,6 +113,7 @@ class Ranobehub(AbstractRanobeCatalog):
         )
         return [Image(content_id="", page_number=1, url=url)]
 
+    @override
     def get_image(self, image: Image) -> str | None:
         def get_chapter_content_image(media_id: str) -> str:
             url = f"{self._URL_API}/media/{media_id}"
@@ -122,12 +131,15 @@ class Ranobehub(AbstractRanobeCatalog):
                     return container
             return None
 
-        response = self._client.get_text(image.url)
+        url = image.url
+        if url is None:
+            return None
+        response = self._client.get_text(url)
         if not isinstance(response, str):
             return None
         soup = BeautifulSoup(response, "html.parser")
         text_container = find_text_container(
-            soup.findAll("div", {"class": "ui text container"}),
+            soup.find_all("div", {"class": "ui text container"}),
         )
         if not text_container:
             return None
@@ -140,22 +152,27 @@ class Ranobehub(AbstractRanobeCatalog):
             if header_text is not None:
                 content += f"<h1>{header_text.text}</h1>"
 
-        for p in text_container.findAll("p"):
-            if p.find("img"):
-                media: str = p.find("img")["data-media-id"]
+        for p in text_container.find_all("p"):
+            img_tag = p.find("img")
+            if img_tag:
+                img_url = img_tag["data-media-id"]
+                if not isinstance(img_url, str):
+                    continue
                 content += (
-                    f'<p><img src="{get_chapter_content_image(media)}"></p>'
+                    f'<p><img src="{get_chapter_content_image(img_url)}"></p>'
                 )
             else:
                 content += str(p)
         return content
 
+    @override
     def get_preview(self, manga: Manga) -> bytes | None:
         url = manga.preview_url
         if url is None:
             return None
         return self._client.get_bytes(url)
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/ranobe/{manga.content_id}"
 

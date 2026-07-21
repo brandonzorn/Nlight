@@ -22,7 +22,6 @@ try:
     from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
 except (ModuleNotFoundError, ImportError):
     logger.warning("Shikimori API keys not found")
-    SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID = "", ""
 
 
 @singleton
@@ -32,13 +31,14 @@ class ShikimoriLib(ShikimoriBase, LibParser):
     def __init__(self) -> None:
         super().__init__()
         self.user: User = User(None, None, None)
-        self._client = ShikimoriClient(
+        self._client: OAuthClient = ShikimoriClient(
             url=URL_SHIKIMORI,
             url_api=URL_SHIKIMORI_API,
             catalog_name=self.CATALOG_NAME,
             headers=self._HEADERS,
         )
 
+    @override
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/users/{self.user.id}/manga_rates"
         params = {"limit": 50, "page": form.page}
@@ -60,6 +60,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                 mangas.append(self._setup_manga(manga_data))
         return mangas
 
+    @override
     def get_user(self) -> User:
         response = self._client.request(
             "GET",
@@ -74,6 +75,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
             )
         return self.user
 
+    @override
     def create_user_rate(self, manga: Manga) -> None:
         url = f"{self._URL_API}/v2/user_rates"
         data = {
@@ -85,6 +87,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         }
         self._client.request("POST", url, json=data)
 
+    @override
     def check_user_rate(self, manga: Manga) -> bool:
         url = f"{self._URL_API}/v2/user_rates"
         params = {
@@ -101,10 +104,12 @@ class ShikimoriLib(ShikimoriBase, LibParser):
             return True
         return False
 
+    @override
     def delete_user_rate(self, user_rate: UserRate) -> None:
         url = f"{self._URL_API}/v2/user_rates/{user_rate.id}"
         self._client.request("DELETE", url)
 
+    @override
     def get_user_rate(self, manga: Manga) -> UserRate | None:
         url = f"{self._URL_API}/v2/user_rates"
         params = {
@@ -125,6 +130,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                 )
         return None
 
+    @override
     def update_user_rate(self, user_rate: UserRate) -> None:
         url = f"{self._URL_API}/v2/user_rates/{user_rate.id}"
         status = user_rate.status.to_str()

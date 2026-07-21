@@ -18,7 +18,6 @@ try:
     from keys import MANGADEX_CLIENT_ID, MANGADEX_CLIENT_SECRET
 except (ModuleNotFoundError, ImportError):
     logger.warning("MangaDex API keys not found")
-    MANGADEX_CLIENT_ID, MANGADEX_CLIENT_SECRET = "", ""
 
 
 class MangaDex(AbstractMangaCatalog):
@@ -31,7 +30,7 @@ class MangaDex(AbstractMangaCatalog):
     _HEADERS: ClassVar = {"User-Agent": "Nlight"}
 
     def __init__(self) -> None:
-        self._client = NetworkClient(
+        self._client: NetworkClient = NetworkClient(
             catalog_name=self.CATALOG_NAME,
             headers=self._HEADERS,
         )
@@ -54,10 +53,10 @@ class MangaDex(AbstractMangaCatalog):
                 manga.add_description(Language.RUSSIAN, ru_d)
         volumes = dd_get(data, "attributes.lastVolume")
         if volumes and isinstance(volumes, (int, str)):
-            manga.volumes = int(volumes)
+            manga.volumes_number = int(volumes)
         chapters = dd_get(data, "attributes.lastChapter")
         if chapters and isinstance(chapters, (int, str)):
-            manga.chapters = int(chapters)
+            manga.chapters_number = int(chapters)
         status = dd_get(data, "attributes.status")
         if isinstance(status, str):
             manga.status = MangaStatus.from_str(status)
@@ -71,7 +70,7 @@ class MangaDex(AbstractMangaCatalog):
             f"order[{form.get_order_id()}]": "desc",
             "title": form.search,
             "offset": form.offset,
-            "includedTags[]": form.get_genre_ids() + form.get_kind_ids(),
+            "includedTags[]": form.get_genre_ids() | form.get_kind_ids(),
             "contentRating[]": [
                 "safe",
                 "suggestive",
@@ -138,7 +137,9 @@ class MangaDex(AbstractMangaCatalog):
         images: list[Image] = []
         if not isinstance(response, dict):
             return images
-        img_host = response["baseUrl"]
+        img_host = response.get("baseUrl")
+        if not isinstance(img_host, str):
+            return images
         img_hash = dd_get(response, "chapter.hash")
         img_data = dd_get(response, "chapter.data")
         if not img_hash or not isinstance(img_data, list):
@@ -220,14 +221,20 @@ class MangaDex(AbstractMangaCatalog):
 
     def _parse_manga_data(self, data: dict) -> Manga:
         manga_id = dd_get(data, "id", "")
-        name = dd_get(data, "attributes.title.en", "")
+        name = dd_get(data, "attributes.title.en")
         russian = ""
-        alt_titles: list[dict] = dd_get(data, "attributes.altTitles", [])
+        alt_titles = dd_get(data, "attributes.altTitles")
+        if not isinstance(alt_titles, list):
+            alt_titles = []
         for j in alt_titles:
+            if not isinstance(j, dict):
+                continue
             if "ru" in j:
-                russian = j.get("ru", "")
+                russian = str(j.get("ru") or "")
             if not name and "en" in j:
-                name = j.get("en", "")
+                name = j.get("en")
+        if not isinstance(name, str):
+            name = ""
         return Manga(
             content_id=manga_id,
             catalog_id=self.CATALOG_ID,
@@ -238,16 +245,20 @@ class MangaDex(AbstractMangaCatalog):
     def _parse_chapters_data(self, data: list[dict]) -> list[Chapter]:
         chapters = []
         for chapter_data in reversed(data):
-            attr = chapter_data.get("attributes")
+            attrs = chapter_data.get("attributes")
+            if not isinstance(attrs, dict):
+                continue
+            if "id" not in chapter_data:
+                continue
             chapters.append(
                 Chapter(
-                    content_id=chapter_data.get("id"),
+                    content_id=chapter_data["id"],
                     catalog_id=self.CATALOG_ID,
-                    volume_number=attr.get("volume"),
-                    chapter_number=attr.get("chapter"),
-                    title=attr.get("title"),
+                    volume_number=attrs.get("volume"),
+                    chapter_number=attrs.get("chapter"),
+                    title=attrs.get("title", ""),
                     language=Language.from_str(
-                        attr.get("translatedLanguage"),
+                        attrs.get("translatedLanguage"),
                     ),
                 ),
             )
@@ -260,7 +271,7 @@ class MangaDexLib(MangaDex, LibParser):
 
     def __init__(self) -> None:
         super().__init__()
-        self._client = MangaDexClient(
+        self._client: OAuthClient = MangaDexClient(
             url=self._URL,
             url_api=self._URL_API,
             catalog_name=self.CATALOG_NAME,
@@ -278,6 +289,9 @@ class MangaDexLib(MangaDex, LibParser):
             f"{self._URL_API}/manga/status",
             params={"status": lib_list},
         )
+        if response_statuses is None:
+            return mangas
+        statuses = response_statuses.json().get("statuses")
         params = {"limit": form.limit, "offset": form.offset}
         response = self._client.request(
             "GET",
@@ -287,9 +301,7 @@ class MangaDexLib(MangaDex, LibParser):
         if response and (resp_json := response.json()):
             for manga_data in resp_json.get("data"):
                 manga = self._parse_manga_data(manga_data)
-                if manga.content_id in response_statuses.json().get(
-                    "statuses",
-                ):
+                if manga.content_id in statuses:
                     mangas.append(manga)
         return mangas
 

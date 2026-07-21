@@ -1,4 +1,5 @@
 from enum import IntEnum
+from typing import ClassVar
 
 from nlightreader.consts.items.parser_items import ParserItems
 from nlightreader.consts.urls import DEFAULT_HEADERS
@@ -26,13 +27,13 @@ class CatalogAuthType(IntEnum):
 
 
 class AbstractCatalog:
-    AUTH_TYPE: CatalogAuthType = CatalogAuthType.NO_AUTH
+    AUTH_TYPE: ClassVar[CatalogAuthType] = CatalogAuthType.NO_AUTH
     CATALOG_NAME = "CATALOG"
     CATALOG_ID = -1
     is_primary = False
-    _HEADERS = DEFAULT_HEADERS
-    _COOKIES = None
-    _FILTERS = ParserItems
+    _HEADERS: ClassVar = DEFAULT_HEADERS
+    _COOKIES: ClassVar = None
+    _FILTERS: ClassVar = ParserItems
 
     def get_manga(self, manga: Manga) -> Manga:
         return manga
@@ -41,22 +42,22 @@ class AbstractCatalog:
         return character
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
-        return []
+        raise NotImplementedError
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
-        return []
+        raise NotImplementedError
 
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
-        return []
+        raise NotImplementedError
 
-    def get_image(self, image: Image) -> bytes | None:
-        return
+    def get_image(self, image: Image) -> bytes | str | None:
+        raise NotImplementedError
 
-    def get_preview(self, manga: Manga) -> None:
-        return
+    def get_preview(self, manga: Manga) -> bytes | None:
+        raise NotImplementedError
 
-    def get_character_preview(self, character: Character) -> None:
-        return
+    def get_character_preview(self, character: Character) -> bytes | None:
+        raise NotImplementedError
 
     def get_genres(self) -> list[Genre]:
         return [
@@ -92,13 +93,13 @@ class AbstractCatalog:
         ]
 
     def get_relations(self, manga: Manga) -> list[Manga]:
-        return []
+        raise NotImplementedError
 
     def get_characters(self, manga: Manga) -> list[Character]:
-        return []
+        raise NotImplementedError
 
     def get_manga_url(self, manga: Manga) -> str:
-        pass
+        raise NotImplementedError
 
 
 class LibParser:
@@ -115,25 +116,25 @@ class LibParser:
         return self._client
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
-        return []
+        raise NotImplementedError
 
     def get_user(self) -> User:
-        return User(None, None, None)
+        raise NotImplementedError
 
     def create_user_rate(self, manga: Manga) -> None:
-        pass
+        raise NotImplementedError
 
-    def check_user_rate(self, manga: Manga) -> None:
-        pass
+    def check_user_rate(self, manga: Manga) -> bool:
+        raise NotImplementedError
 
     def delete_user_rate(self, user_rate: UserRate) -> None:
-        pass
+        raise NotImplementedError
 
-    def get_user_rate(self, manga: Manga) -> UserRate:
-        pass
+    def get_user_rate(self, manga: Manga) -> UserRate | None:
+        raise NotImplementedError
 
     def update_user_rate(self, user_rate: UserRate) -> None:
-        pass
+        raise NotImplementedError
 
 
 __all__ = [

@@ -1,5 +1,9 @@
 from keys import KODIK_TOKEN
-from nlightreader.utils.utils import make_request
+from nlightreader.core.utils.types import RequestParams
+from nlightreader.utils.utils import (
+    dd_get,
+    make_request,
+)
 
 
 class KodikTranslator:
@@ -29,23 +33,48 @@ class Kodik:
     def search(cls, shikimori_id: str) -> list[KodikTranslator]:
         translators: list[KodikTranslator] = []
         url = f"{cls.URL_API}/search"
-        params = {
+        params: RequestParams = {
             "token": KODIK_TOKEN,
             "shikimori_id": shikimori_id,
         }
-        response = make_request(url, "GET", params=params, content_type="json")
+        response = make_request(
+            url,
+            "GET",
+            params=params,
+            content_type="json",
+        )
         if not isinstance(response, dict):
             return translators
-        translators.extend(
-            KodikTranslator(
-                data["id"],
-                data["link"],
-                int(data.get("last_episode", 1)),
-                data["translation"]["title"],
-                data["translation"]["type"],
+        translators_data = response.get("results")
+        if not isinstance(translators_data, list):
+            return translators
+        for data in translators_data:
+            if not isinstance(data, dict):
+                continue
+            content_id = data.get("id")
+            if not isinstance(content_id, str):
+                continue
+
+            url = data.get("link")
+            episodes = data.get("last_episode")
+            if not isinstance(episodes, int):
+                episodes = 1
+
+            translator = dd_get(data, "translation.title")
+            if not isinstance(translator, str):
+                translator = ""
+            tr_type = dd_get(data, "translation.type")
+            if not isinstance(tr_type, str):
+                tr_type = ""
+            translators.append(
+                KodikTranslator(
+                    content_id=content_id,
+                    kodik_url=url,
+                    episodes=episodes,
+                    translator=translator,
+                    tr_type=tr_type,
+                ),
             )
-            for data in response.get("results", [])
-        )
         return translators
 
 

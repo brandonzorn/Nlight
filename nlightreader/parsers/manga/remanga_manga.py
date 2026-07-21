@@ -25,23 +25,24 @@ class Remanga(AbstractMangaCatalog):
     @override
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/titles/{manga.content_id}/"
-        response_data = self._client.get_json(url).get("content", {})
-
-        if not response_data:
+        response = self._client.get_json(url)
+        if not response or not isinstance(response, dict):
             return manga
+        manga_data = response.get("content", {})
 
-        kind_name = dd_get(response_data, "type.name")
-        manga.kind = MangaKind.from_str(kind_name)
+        kind_name = dd_get(manga_data, "type.name")
+        if isinstance(kind_name, str):
+            manga.kind = MangaKind.from_str(kind_name)
 
-        manga.score = float(response_data.get("avg_rating", 0))
+        manga.score = float(manga_data.get("avg_rating", 0))
 
-        img = dd_get(response_data, "img.high")
+        img = dd_get(manga_data, "img.high")
         if img and img != "/media/None":
             manga.preview_url = f"{self._URL}{img}"
 
         manga.add_description(
             Language.UNDEFINED,
-            response_data.get("description"),
+            manga_data.get("description"),
         )
         return manga
 
@@ -123,11 +124,20 @@ class Remanga(AbstractMangaCatalog):
         images: list[Image] = []
         if not isinstance(response, dict):
             return images
-        for i, page_data in enumerate(dd_get(response, "content.pages")):
-            page_data = page_data[0]
-            pg_id = page_data.get("id")
+        pages_data = dd_get(response, "content.pages")
+        if not isinstance(pages_data, list):
+            return images
+        for i, page_data in enumerate(pages_data):
+            if not isinstance(page_data, list):
+                continue
+            data = page_data[0]
+            if not isinstance(data, dict):
+                continue
+            pg_id = str(data.get("id") or "")
             page = i + 1
-            pg_link = page_data.get("link")
+            pg_link = data.get("link")
+            if not isinstance(pg_link, str):
+                pg_link = None
             images.append(
                 Image(
                     content_id=pg_id,

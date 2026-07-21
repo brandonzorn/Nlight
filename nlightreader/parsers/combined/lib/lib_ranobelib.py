@@ -40,6 +40,8 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
 
     @override
     def get_image(self, image: Image) -> str | None:
+        if image.url is None:
+            return None
         def get_chapter_content_image(media_id: str) -> str:
             url = (
                 media_id
@@ -52,6 +54,8 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
                 url,
                 extra_headers=self._HEADERS,
             )
+            if chapter_image is None:
+                return ""
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/png;base64,{str_equivalent_image}"
 
@@ -78,6 +82,4 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
         return f"{self._URL}/ru/book/{manga.content_id}"
 
 
-__all__ = [
-    "LibRanobelib",
-]
+__all__ = ["LibRanobelib"]

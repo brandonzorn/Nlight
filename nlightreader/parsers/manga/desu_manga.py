@@ -59,12 +59,15 @@ class Desu(AbstractMangaCatalog):
             "order": form.get_order_id(),
             "kinds": ",".join(form.get_kind_ids()),
         }
-        manga_response = self._client.get_json(
+        mangas: list[Manga] = []
+        response = self._client.get_json(
             self._URL_API,
             params=params,
-        ).get("response", [])
+        )
+        if not isinstance(response, dict):
+            return mangas
 
-        mangas: list[Manga] = []
+        manga_response = response.get("response")
         if not isinstance(manga_response, list):
             return mangas
 
@@ -96,15 +99,17 @@ class Desu(AbstractMangaCatalog):
             return chapters
 
         for chapter_data in chapters_data:
+            if not isinstance(chapter_data, dict):
+                continue
             content_id = chapter_data.get("id")
             if not content_id:
                 continue
             chapter = Chapter(
                 content_id=str(content_id),
                 catalog_id=self.CATALOG_ID,
-                volume_number=str(chapter_data.get("vol", "")),
-                chapter_number=str(chapter_data.get("ch", "")),
-                title=chapter_data.get("title"),
+                volume_number=str(chapter_data.get("vol") or ""),
+                chapter_number=str(chapter_data.get("ch") or ""),
+                title=str(chapter_data.get("title") or ""),
                 language=Language.RUSSIAN,
             )
             chapters.append(chapter)
@@ -126,8 +131,12 @@ class Desu(AbstractMangaCatalog):
             return images
 
         for img_data in images_data:
+            if not isinstance(img_data, dict):
+                continue
             page = img_data.get("page")
-            img_url: str = img_data.get("img", "")
+            if not isinstance(page, int):
+                continue
+            img_url = str(img_data.get("img") or "")
             if "?" in img_url:
                 img_url = img_url.split("?", maxsplit=1)[0]
             images.append(
