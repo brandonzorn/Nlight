@@ -21,7 +21,7 @@ class MangaTreeItem(GroupTreeItem):
         self.manga = manga
 
 
-class HistoryNoteTreeItem(QTreeWidgetItem):
+class HistoryTreeItem(QTreeWidgetItem):
     def __init__(self, note: HistoryNote) -> None:
         tr = note.chapter.translator or ""
         super().__init__([f"{note.chapter.get_name()} {tr}"])
@@ -39,4 +39,4 @@ class HistoryNoteTreeItem(QTreeWidgetItem):
             self.setIcon(0, ItemsIcons.UNREAD)
 
 
-__all__ = ["GroupTreeItem", "HistoryNoteTreeItem", "MangaTreeItem"]
+__all__ = ["GroupTreeItem", "HistoryTreeItem", "MangaTreeItem"]

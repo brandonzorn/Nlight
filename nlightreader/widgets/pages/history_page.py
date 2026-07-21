@@ -10,7 +10,7 @@ from nlightreader.models import Manga
 from nlightreader.utils.database import Database
 from nlightreader.widgets.contexts import HistoryMenuMode, HistoryNoteMenu
 from nlightreader.widgets.items import (
-    HistoryNoteTreeItem,
+    HistoryTreeItem,
     MangaTreeItem,
 )
 
@@ -38,7 +38,7 @@ class HistoryPage(QWidget):
 
     def on_context_menu(self, pos: QPoint) -> None:
         selected_item = self.ui.itemsTree.itemAt(pos)
-        if not isinstance(selected_item, HistoryNoteTreeItem):
+        if not isinstance(selected_item, HistoryTreeItem):
             return
 
         menu = HistoryNoteMenu()
@@ -63,14 +63,14 @@ class HistoryPage(QWidget):
     @Slot()
     def open_info(self) -> None:
         selected_item = self.ui.itemsTree.currentItem()
-        if not isinstance(selected_item, HistoryNoteTreeItem):
+        if not isinstance(selected_item, HistoryTreeItem):
             return
         self.manga_open.emit(selected_item.note.manga)
 
     @Slot()
     def delete_note(self) -> None:
         selected_item = self.ui.itemsTree.currentItem()
-        if not isinstance(selected_item, HistoryNoteTreeItem):
+        if not isinstance(selected_item, HistoryTreeItem):
             return
         self._db.del_history_note(selected_item.note.chapter)
         selected_item.parent().removeChild(selected_item)
@@ -87,7 +87,7 @@ class HistoryPage(QWidget):
             manga_item = MangaTreeItem(manga)
             self.ui.itemsTree.addTopLevelItem(manga_item)
             for note in manga_notes:
-                chapter_item = HistoryNoteTreeItem(note)
+                chapter_item = HistoryTreeItem(note)
                 manga_item.addChild(chapter_item)
 
     def get_content(self) -> None:
@@ -95,7 +95,7 @@ class HistoryPage(QWidget):
 
     def _mark_chapter_as_read(
         self,
-        selected_item: HistoryNoteTreeItem,
+        selected_item: HistoryTreeItem,
     ) -> None:
         selected_item.note.is_completed = True
         self._db.add_history_note(selected_item.note)
@@ -103,7 +103,7 @@ class HistoryPage(QWidget):
 
     def _remove_manga_history(
         self,
-        selected_item: HistoryNoteTreeItem,
+        selected_item: HistoryTreeItem,
     ) -> None:
         self._db.del_history_notes(selected_item.note.manga)
         selected_item.delete_parent()
