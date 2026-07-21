@@ -2,7 +2,6 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import logging
 from string import Template
-import threading
 from threading import Thread
 import webbrowser
 
@@ -127,6 +126,7 @@ class KodikPlayerHttpRequestHandler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         if not self._track_progress:
             self.send_error_response(403, "Metrics is disabled")
+            return
         try:
             content_length = int(self.headers.get("Content-Length", 0))
             if content_length == 0:
@@ -148,6 +148,8 @@ class KodikPlayerHttpRequestHandler(BaseHTTPRequestHandler):
             db = Database()
             manga = db.get_manga(anime_id)
             chapter = db.get_chapter(episode_id)
+            if not manga or not chapter:
+                return
 
             note = HistoryNote(chapter, manga, is_completed)
             db.add_history_note(note)
@@ -165,9 +167,9 @@ class KodikPlayerHttpRequestHandler(BaseHTTPRequestHandler):
 
         except json.JSONDecodeError:
             self.send_error_response(400, "Invalid JSON format")
-        except Exception as e:
+        except Exception:
             logger.exception("Internal error in Player Server")
-            self.send_error_response(500, f"Internal Server Error: {str(e)}")
+            self.send_error_response(500, "Internal Server Error")
 
     def do_OPTIONS(self) -> None:
         self.set_cors_headers(200, 0)
@@ -198,7 +200,7 @@ def get_local_server(
         ("localhost", server_port),
         KodikPlayerHttpRequestHandler,
     )
-    return threading.Thread(target=_server_instance.serve_forever, daemon=True)
+    return Thread(target=_server_instance.serve_forever, daemon=True)
 
 
 def start_html_video(anime: Manga, episode: Chapter) -> None:

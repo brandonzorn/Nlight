@@ -37,6 +37,8 @@ class MangaArea(ScrollArea, AbstractContentContainer):
 
         self.setWidget(self._scrollAreaWidgetContents)
 
+        self.enableTransparentBackground()
+
         self.manga_thread_pool = QThreadPool()
         self.manga_thread_pool.setMaxThreadCount(self._column_count)
         self._set_images_thread = Thread(target=self.partial_image_addition)

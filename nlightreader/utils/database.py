@@ -233,7 +233,7 @@ class Database:
             russian=russian,
         )
         manga.kind = MangaKind.from_str(manga_data["kind"])
-        manga.set_description_from_str(manga_data["description"])
+        manga.set_description_from_str(manga_data["description"] or "")
         manga.score = manga_data["score"]
         manga.status = MangaStatus.from_str(manga_data["status"])
         manga.volumes = manga_data["volumes"]

@@ -17,7 +17,7 @@ class ContentContainerState(Enum):
     FETCH_ERROR = 4
 
 
-class AbstractContentContainer:
+class AbstractContentContainer[T]:
     def __init__(self) -> None:
         self._progress_ring = IndeterminateProgressRing()
         self._progress_ring.setVisible(False)
@@ -92,7 +92,7 @@ class AbstractContentContainer:
             if obj is not None
         ]
 
-    def set_content(self, content: object) -> None:
+    def set_content(self, content: T) -> None:
         raise NotImplementedError
 
     def get_content_widget(self) -> QWidget:
