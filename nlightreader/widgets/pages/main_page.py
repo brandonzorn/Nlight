@@ -45,10 +45,11 @@ class MainPage(BasePage):
         )
 
         self._genres_dialog = GenresDialog(self)
-        self.__filters_controller = FiltersController()
-        self.__filters_controller.set_kinds_container(self.ui.kinds_grid)
-        self.__filters_controller.set_orders_container(self.ui.orders_grid)
-        self.__filters_controller.set_genres_container(self.__genres_dialog)
+        self._filters_controller = FiltersController(
+            kinds_layout=self.ui.kinds_grid,
+            orders_layout=self.ui.orders_grid,
+            genres_dialog=self._genres_dialog,
+        )
 
     @override
     def setup(self) -> None:
@@ -87,43 +88,40 @@ class MainPage(BasePage):
 
     @Slot()
     def apply_filter(self) -> None:
-        self.request_params.clear()
-        self.request_params.set_order(
-            self.__filters_controller.get_active_order(),
-        )
-        self.request_params.set_kinds(
-            self.__filters_controller.get_active_kinds(),
-        )
-        self.request_params.set_genres(
-            self.__filters_controller.get_active_genres(),
-        )
-        self.request_params.search = self.ui.title_line.text()
+        self._update_request_filters()
         self.get_content()
 
     @Slot()
     def reset_filter(self) -> None:
-        self.__filters_controller.reset_items()
+        self._filters_controller.reset_items()
+        self._ui.title_line.clear()
+
+        self.apply_filter()
+
+    def _update_request_filters(self) -> None:
         self.request_params.clear()
+        self.request_params.search = self.ui.title_line.text()
         self.request_params.set_order(
-            self.__filters_controller.get_active_order(),
+            self._filters_controller.get_active_order(),
         )
-        self.ui.title_line.clear()
-        self.get_content()
+        self.request_params.set_kinds(
+            self._filters_controller.get_active_kinds(),
+        )
+        self.request_params.set_genres(
+            self._filters_controller.get_active_genres(),
+        )
 
     def setup_filters(self) -> None:
-        self.clear_filters_items()
+        self._filters_controller.clear()
         orders = self.catalog.get_orders()
         kinds = self.catalog.get_kinds()
         genres = self.catalog.get_genres()
         self.ui.kinds_frame.setVisible(bool(kinds))
         self.ui.orders_frame.setVisible(bool(orders))
         self.ui.genres_btn.setVisible(bool(genres))
-        self.__filters_controller.add_orders(orders)
-        self.__filters_controller.add_kinds(kinds)
-        self.__filters_controller.add_genres(genres)
-
-    def clear_filters_items(self) -> None:
-        self.__filters_controller.clear()
+        self._filters_controller.add_orders(orders)
+        self._filters_controller.add_kinds(kinds)
+        self._filters_controller.add_genres(genres)
 
     @Slot()
     def change_filters_visible(self) -> None:
