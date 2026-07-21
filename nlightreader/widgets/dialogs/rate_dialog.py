@@ -5,7 +5,6 @@ from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QFormLayout, QWidget
 from qfluentwidgets import (
     BodyLabel,
-    CardWidget,
     ComboBox,
     MessageBoxBase,
     PushButton,
@@ -34,14 +33,16 @@ class RateDialog(MessageBoxBase):
         )
         self.__user_rate = self._fetch_user_rate()
 
-        self._init_ui()
+        self._setup_ui()
+        self._setup_connections()
         self._display_user_rate()
 
-    def _init_ui(self) -> None:
+    def _setup_ui(self) -> None:
         self.title_label = SubtitleLabel(self.tr("Change rating"), parent=self)
 
-        self.form_frame = CardWidget()
+        self.form_frame = QWidget()
         self.form_layout = QFormLayout(self.form_frame)
+        self.form_layout.setContentsMargins(0, 0, 0, 0)
         self.form_layout.setSpacing(12)
 
         self.chapters_label = BodyLabel(
@@ -72,7 +73,6 @@ class RateDialog(MessageBoxBase):
 
         self.delete_rate_button = PushButton()
         self.delete_rate_button.setText(self.tr("Delete"))
-        self.delete_rate_button.clicked.connect(self._delete_user_rate)
         self.buttonLayout.addWidget(
             self.delete_rate_button,
             1,
@@ -82,11 +82,14 @@ class RateDialog(MessageBoxBase):
         self.viewLayout.addWidget(self.title_label)
         self.viewLayout.addWidget(self.form_frame)
 
+    def _setup_connections(self) -> None:
+        self.delete_rate_button.clicked.connect(self._delete_user_rate)
         self.accepted.connect(self._send_user_rate)
         self.rejected.connect(self.close)
 
     @override
     def closeEvent(self, event: QCloseEvent) -> None:
+        super().closeEvent(event)
         self.deleteLater()
 
     def _fetch_user_rate(self) -> UserRate:
