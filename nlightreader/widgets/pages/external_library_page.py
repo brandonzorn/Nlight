@@ -70,6 +70,7 @@ class ExternalLibraryPage(BaseMangaLibraryPage):
     def _setup_manga_item(self, manga: Manga) -> MangaItem:
         item = MangaItem(
             manga,
+            parent=self,
             is_added_to_lib=False,
             pool=self.manga_area.manga_thread_pool,
         )

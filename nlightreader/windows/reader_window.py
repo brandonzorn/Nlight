@@ -26,7 +26,6 @@ from nlightreader.utils.file_manager import FileManager
 from nlightreader.utils.threads import NThread
 from nlightreader.widgets.containers import TextArea
 from nlightreader.widgets.containers.content_container import (
-    AbstractContentContainer,
     ContentContainerState,
 )
 from nlightreader.widgets.containers.image_area import ImageArea
@@ -37,8 +36,8 @@ logger = logging.getLogger(__name__)
 class ReaderWindow(SimpleCardWidget):
     def __init__(self, manga: Manga, chapters: list[Chapter]) -> None:
         super().__init__()
-        self.ui = Ui_ReaderWidget()
-        self.ui.setupUi(self)
+        self._ui = Ui_ReaderWidget()
+        self._ui.setupUi(self)
 
         self.setStyleSheet(
             """
@@ -52,8 +51,6 @@ class ReaderWindow(SimpleCardWidget):
             error_callback=self._process_errors,
         )
 
-        self._content_container: AbstractContentContainer | None = None
-
         self._db = Database()
 
         self._manga = manga
@@ -66,41 +63,43 @@ class ReaderWindow(SimpleCardWidget):
         self._cur_page = 1
         self._max_page = 1
 
-    def _init_ui(self) -> None:
-        self.ui.chaptersCard.hide()
+        self._setup_ui()
+        self._setup_connections()
 
-        self.ui.fullscreenButton.setIcon(FluentIcon.FULL_SCREEN)
-        self.ui.chaptersListButton.setIcon(FluentIcon.TILES)
-        self.ui.next_page_btn.setIcon(FluentIcon.RIGHT_ARROW)
-        self.ui.prev_page_btn.setIcon(FluentIcon.LEFT_ARROW)
-        self.ui.next_chapter_btn.setIcon(FluentIcon.UP)
-        self.ui.prev_chapter_btn.setIcon(FluentIcon.DOWN)
+    def _setup_ui(self) -> None:
+        self.setWindowTitle(self._manga.name)
+        self._ui.chaptersCard.hide()
 
-        self.ui.next_page_btn.clicked.connect(self.turn_page_next)
-        self.ui.prev_page_btn.clicked.connect(self.turn_page_prev)
-
-        self.ui.next_chapter_btn.clicked.connect(self.turn_chapter_next)
-        self.ui.prev_chapter_btn.clicked.connect(self.turn_chapter_prev)
-
-        self.ui.fullscreenButton.clicked.connect(self.change_fullscreen)
-        self.ui.chaptersListButton.clicked.connect(
-            self.change_chapters_list_visible,
-        )
-
-        self.ui.chaptersList.doubleClicked.connect(self.change_chapter)
+        self._ui.fullscreenButton.setIcon(FluentIcon.FULL_SCREEN)
+        self._ui.chaptersListButton.setIcon(FluentIcon.TILES)
+        self._ui.next_page_btn.setIcon(FluentIcon.RIGHT_ARROW)
+        self._ui.prev_page_btn.setIcon(FluentIcon.LEFT_ARROW)
+        self._ui.next_chapter_btn.setIcon(FluentIcon.UP)
+        self._ui.prev_chapter_btn.setIcon(FluentIcon.DOWN)
 
         self._content_container = (
             TextArea()
             if (self._manga.kind == MangaKind.RANOBE)
             else ImageArea()
         )
-        self._content_container.install(self.ui.reader_layout)
+        self._content_container.install(self._ui.reader_layout)
 
-        self.setWindowTitle(self._manga.name)
+    def _setup_connections(self) -> None:
+        self._ui.next_page_btn.clicked.connect(self.turn_page_next)
+        self._ui.prev_page_btn.clicked.connect(self.turn_page_prev)
+
+        self._ui.next_chapter_btn.clicked.connect(self.turn_chapter_next)
+        self._ui.prev_chapter_btn.clicked.connect(self.turn_chapter_prev)
+
+        self._ui.fullscreenButton.clicked.connect(self.change_fullscreen)
+        self._ui.chaptersListButton.clicked.connect(
+            self.change_chapters_list_visible,
+        )
+
+        self._ui.chaptersList.doubleClicked.connect(self.change_chapter)
 
     def setup(self, cur_chapter: int = 1) -> None:
         self._cur_chapter = cur_chapter
-        self._init_ui()
         self.showMaximized()
         self.update_chapters_list()
         self.update_chapter()
@@ -120,17 +119,17 @@ class ReaderWindow(SimpleCardWidget):
 
     @Slot()
     def change_chapters_list_visible(self) -> None:
-        self.ui.chaptersCard.setVisible(
-            not self.ui.chaptersCard.isVisible(),
+        self._ui.chaptersCard.setVisible(
+            not self._ui.chaptersCard.isVisible(),
         )
 
     @Slot()
     def change_chapter(self) -> None:
-        self._cur_chapter = self.ui.chaptersList.currentIndex().row() + 1
+        self._cur_chapter = self._ui.chaptersList.currentIndex().row() + 1
         self.update_chapter()
 
     def update_chapters_list(self) -> None:
-        self.ui.chaptersList.clear()
+        self._ui.chaptersList.clear()
         for chapter in self._chapters:
             ch_item = QListWidgetItem(chapter.get_name())
             if self._db.history.exists(chapter.id):
@@ -138,7 +137,7 @@ class ReaderWindow(SimpleCardWidget):
                     ch_item.setIcon(ItemsIcons.READ.qicon())
                 else:
                     ch_item.setIcon(ItemsIcons.UNREAD)
-            self.ui.chaptersList.addItem(ch_item)
+            self._ui.chaptersList.addItem(ch_item)
 
     @Slot()
     def turn_page_next(self) -> None:
@@ -179,7 +178,7 @@ class ReaderWindow(SimpleCardWidget):
             self.update_page()
 
     def update_page(self) -> None:
-        self.ui.pageLabel.setText(
+        self._ui.pageLabel.setText(
             f"{self.tr('Page')} {self._cur_page} / {self._max_page}",
         )
         self.attach_image()
@@ -210,7 +209,7 @@ class ReaderWindow(SimpleCardWidget):
         self._cur_page = 1
         self.get_images()
         self.update_page()
-        self.ui.chapterLabel.setText(self._current_chapter.get_name())
+        self._ui.chapterLabel.setText(self._current_chapter.get_name())
 
     def attach_image(self) -> None:
         self._set_image_thread.terminate()
@@ -267,14 +266,13 @@ class ReaderWindow(SimpleCardWidget):
         self._content_container.set_content(content)
 
     def get_images(self) -> None:
-        chapter = self._current_chapter
-        self._images = self._catalog.get_images(self._manga, chapter)
+        self._images = self._catalog.get_images(
+            self._manga,
+            self._current_chapter,
+        )
         if not self._images:
             self._images = [ImageStub()]
-        self._max_page = self.get_chapter_pages()
-
-    def get_chapter_pages(self) -> int:
-        return self._images[-1].page_number
+        self._max_page = self._images[-1].page_number
 
     @property
     def _current_chapter(self) -> Chapter:

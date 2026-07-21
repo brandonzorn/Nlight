@@ -110,6 +110,7 @@ class BaseMangaPage(BasePage):
         if (
             page != self.request_params.page
             or lib_list != self.request_params.lib_list
+            or self.catalog is None
         ):
             return
         self.mangas = self.catalog.search_manga(self.request_params)

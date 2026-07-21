@@ -41,6 +41,7 @@ class MangaItem(QWidget):
         self,
         manga: Manga,
         *,
+        parent: QWidget,
         is_added_to_lib: bool = True,
         pool: QThreadPool | None = None,
     ) -> None:
@@ -48,22 +49,30 @@ class MangaItem(QWidget):
         self._ui = Ui_MangaItem()
         self._ui.setupUi(self)
 
-        self.customContextMenuRequested.connect(self.on_context_menu)
+        self._parent = parent
+        self._pool = pool
+        self._is_added_to_lib = is_added_to_lib
+
+        self._manga = manga
+        self._catalog = get_catalog_by_id(self._manga.catalog_id)
+        self._manga_pixmap = QPixmap()
+        self._db = Database()
+
+        self._setup_ui()
+        self._setup_connections()
+
+    def _setup_ui(self) -> None:
         self._opacity_effect = QGraphicsOpacityEffect(
             self._ui.image_label,
             opacity=self._HOVERED_OPACITY,
         )
         self._opacity_effect.setEnabled(False)
 
-        self._manga = manga
-        self._catalog = get_catalog_by_id(self._manga.catalog_id)
-        self._manga_pixmap = QPixmap()
-        self._is_added_to_lib = is_added_to_lib
-        self._db = Database()
-        self._pool = pool
-
         self._ui.image_label.setGraphicsEffect(self._opacity_effect)
         self._ui.title_label.setText(self._manga.get_name())
+
+    def _setup_connections(self) -> None:
+        self.customContextMenuRequested.connect(self.on_context_menu)
 
     @override
     def enterEvent(self, event: QEnterEvent) -> None:
@@ -85,51 +94,6 @@ class MangaItem(QWidget):
             self.manga_clicked.emit(self._manga)
 
     def on_context_menu(self, pos: QPoint) -> None:
-        manga_title = self._manga.get_name()
-        info_bar_parent = self.parentWidget().parentWidget()
-        info_bar_duration = 2000
-
-        def add_to_lib() -> None:
-            self._db.manga.save(self._manga)
-            self._db.library.save(self._manga.id)
-            InfoBar.success(
-                title=manga_title,
-                content=self.tr(
-                    "Manga {} has been added.",
-                ).format(self._manga.get_name()),
-                duration=info_bar_duration,
-                parent=info_bar_parent,
-            )
-
-        def remove_from_lib() -> None:
-            self._db.library.remove(self._manga.id)
-            InfoBar.success(
-                title=manga_title,
-                content=self.tr(
-                    "Manga {} has been deleted.",
-                ).format(self._manga.get_name()),
-                duration=info_bar_duration,
-                parent=info_bar_parent,
-            )
-            self.manga_changed.emit()
-
-        def open_in_browser() -> None:
-            webbrowser.open_new_tab(self._catalog.get_manga_url(self._manga))
-
-        def remove_files() -> None:
-            FileManager.remove_manga_files(self._manga, self._catalog)
-            InfoBar.success(
-                title=manga_title,
-                content=self.tr(
-                    "Files {} have been removed.",
-                ).format(self._manga.get_name()),
-                duration=info_bar_duration,
-                parent=info_bar_parent,
-            )
-
-        def open_local_files() -> None:
-            FileManager.open_dir_in_explorer(self._manga, self._catalog)
-
         menu = LibraryMangaMenu()
         if self._is_added_to_lib and not self._catalog.is_primary:
             if self._db.library.exists(self._manga.id):
@@ -138,11 +102,11 @@ class MangaItem(QWidget):
                 menu.set_mode(LibraryMenuMode.NOT_IN_LIBRARY)
         else:
             menu.set_mode(LibraryMenuMode.LOCAL_ONLY)
-        menu.add_to_lib.triggered.connect(add_to_lib)
-        menu.remove_from_lib.triggered.connect(remove_from_lib)
-        menu.open_in_browser.triggered.connect(open_in_browser)
-        menu.remove_files.triggered.connect(remove_files)
-        menu.open_local_files.triggered.connect(open_local_files)
+        menu.add_to_lib.triggered.connect(self._show_add_to_library)
+        menu.remove_from_lib.triggered.connect(self._show_remove_from_library)
+        menu.open_in_browser.triggered.connect(self._open_in_browser)
+        menu.remove_files.triggered.connect(self._show_clear_manga_cache)
+        menu.open_local_files.triggered.connect(self._open_local_files)
         menu.exec(self.mapToGlobal(pos))
 
     def set_size(self, size: int) -> None:
@@ -200,6 +164,47 @@ class MangaItem(QWidget):
             target=self.get_image,
             callback=self.set_image,
         ).start(self._pool)
+
+    def _open_in_browser(self) -> None:
+        webbrowser.open_new_tab(self._catalog.get_manga_url(self._manga))
+
+    def _open_local_files(self) -> None:
+        FileManager.open_dir_in_explorer(self._manga, self._catalog)
+
+    def _show_add_to_library(self) -> None:
+        self._db.manga.save(self._manga)
+        self._db.library.save(self._manga.id)
+        InfoBar.success(
+            title=self._manga.get_name(),
+            content=self.tr(
+                "Manga {} has been added.",
+            ).format(self._manga.get_name()),
+            duration=2000,
+            parent=self._parent,
+        )
+
+    def _show_remove_from_library(self) -> None:
+        self._db.library.remove(self._manga.id)
+        InfoBar.success(
+            title=self._manga.get_name(),
+            content=self.tr(
+                "Manga {} has been deleted.",
+            ).format(self._manga.get_name()),
+            duration=2000,
+            parent=self._parent,
+        )
+        self.manga_changed.emit()
+
+    def _show_clear_manga_cache(self) -> None:
+        FileManager.remove_manga_files(self._manga, self._catalog)
+        InfoBar.success(
+            title=self._manga.get_name(),
+            content=self.tr(
+                "Files {} have been removed.",
+            ).format(self._manga.get_name()),
+            duration=2000,
+            parent=self._parent,
+        )
 
 
 __all__ = ["MangaItem"]
