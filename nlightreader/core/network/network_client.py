@@ -36,7 +36,7 @@ class NetworkClient:
     ) -> requests.Response | None:
         if IS_TEST_ENV:
             logger.warning(
-                "%s: request to %s blocked. Reason: test state.",
+                "%s: request to %s blocked. Reason: testing.",
                 self._catalog_name,
                 url,
             )
@@ -51,16 +51,19 @@ class NetworkClient:
                 json=json,
             )
             response.raise_for_status()
-        except requests.exceptions.RequestException:
-            logger.exception(
-                "\nError fetching: %s [%s]\n"
+        except requests.exceptions.RequestException as e:
+            logger.warning(
+                "%s: %s [%s]\n"
                 "\tCookies: %s\n"
                 "\tHeaders: %s\n"
+                "\tExtra headers: %s\n"
                 "\tJson: %s\n"
                 "\tParams: %s",
-                url,
+                self._catalog_name,
+                e,
                 method,
                 extra_cookies,
+                self._session.headers,
                 extra_headers,
                 json,
                 params,

@@ -6,21 +6,16 @@ import requests
 from nlightreader.consts.files import LangIcons
 from nlightreader.consts.urls import DEFAULT_HEADERS
 from nlightreader.core.enums import Language
+from nlightreader.core.utils.types import (
+    JSONArray,
+    JSONObject,
+    JSONValue,
+    RequestParams,
+)
 
 logger = logging.getLogger(__name__)
 
 IS_TEST_ENV = os.getenv("TEST") == "1"
-
-type _PrimitiveType = str | bytes | int | float | bool
-type _PrimitiveCollection = list[_PrimitiveType] | dict[str, _PrimitiveType]
-type RequestParams = dict[
-    _PrimitiveType,
-    _PrimitiveType | _PrimitiveCollection,
-]
-
-type JSONValue = str | int | float | bool | JSONArray | JSONObject | None
-type JSONObject = dict[str, JSONValue]
-type JSONArray = list[JSONValue]
 
 
 def dd_get(
@@ -90,7 +85,8 @@ def make_request(
     """
     if IS_TEST_ENV:
         logger.warning(
-            "make_request: request to %s blocked. Reason: test state.",
+            "%s: request to %s blocked. Reason: testing.",
+            "make_request",
             url,
         )
         return None

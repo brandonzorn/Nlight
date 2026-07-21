@@ -99,14 +99,14 @@ class OAuthClient:
     ) -> requests.Response | None:
         if IS_TEST_ENV:
             logger.warning(
-                "%s: request to %s blocked. Reason: test state.",
+                "%s: request to %s blocked. Reason: testing.",
                 self._catalog_name,
                 url,
             )
             return None
         if not ignore_authorize and not self._is_authorized:
             logger.warning(
-                "%s: request to %s blocked. Reason: unauthorized state.",
+                "%s: request to %s blocked. Reason: unauthorized.",
                 self._catalog_name,
                 url,
             )
@@ -120,13 +120,15 @@ class OAuthClient:
             )
             response.raise_for_status()
         except requests.exceptions.RequestException as e:
-            logger.exception(
-                "\nError fetching: %s\n"
+            logger.warning(
+                "%s: %s [%s]\n"
                 "\tCookies: %s\n"
                 "\tHeaders: %s\n"
                 "\tJson: %s\n"
                 "\tParams: %s",
-                url,
+                self._catalog_name,
+                e,
+                method,
                 self._session.session.cookies,
                 self._session.session.headers,
                 json,
