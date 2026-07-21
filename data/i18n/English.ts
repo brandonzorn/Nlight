@@ -1,495 +1,494 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="en" sourcelanguage="en">
-  <context>
-    <name>Form</name>
-    <message>
-      <source>MainWindow</source>
-      <translation>Nlight</translation>
-    </message>
-    <message>
-      <source>Kind</source>
-      <translation>Kind</translation>
-    </message>
-    <message>
-      <source>Order</source>
-      <translation>Order</translation>
-    </message>
-    <message>
-      <source>Apply</source>
-      <translation>Apply</translation>
-    </message>
-    <message>
-      <source>Reset</source>
-      <translation>Reset</translation>
-    </message>
-    <message>
-      <source>Filters</source>
-      <translation>Filters</translation>
-    </message>
-    <message>
-      <source>Genres list</source>
-      <translation>Genres list</translation>
-    </message>
-    <message>
-      <source>Catalogs</source>
-      <translation>Catalogs</translation>
-    </message>
-    <message>
-      <source>Sign in</source>
-      <translation>Sign in</translation>
-    </message>
-    <message>
-      <source>Search</source>
-      <translation>Search</translation>
-    </message>
-    <message>
-      <source>Related</source>
-      <translation>Related</translation>
-    </message>
-    <message>
-      <source>Characters</source>
-      <translation>Characters</translation>
-    </message>
-    <message>
-      <source>Planned</source>
-      <translation>Planned</translation>
-    </message>
-    <message>
-      <source>Completed</source>
-      <translation>Completed</translation>
-    </message>
-    <message>
-      <source>Reading</source>
-      <translation>Reading</translation>
-    </message>
-    <message>
-      <source>Re-reading</source>
-      <translation>Re-reading</translation>
-    </message>
-    <message>
-      <source>On hold</source>
-      <translation>On hold</translation>
-    </message>
-    <message>
-      <source>Dropped</source>
-      <translation>Dropped</translation>
-    </message>
-  </context>
-  <context>
+<TS version="2.1" language="en_US" sourcelanguage="en_US">
+<context>
     <name>MainWindow</name>
     <message>
-      <source>MainWindow</source>
-      <translation>Nlight</translation>
+        <source>MainWindow</source>
+        <translation>Nlight</translation>
     </message>
     <message>
-      <source>Main</source>
-      <translation>Main</translation>
+        <source>Main</source>
+        <translation>Main</translation>
     </message>
     <message>
-      <source>Library</source>
-      <translation>Library</translation>
+        <source>Library</source>
+        <translation>Library</translation>
     </message>
     <message>
-      <source>History</source>
-      <translation>History</translation>
+        <source>History</source>
+        <translation>History</translation>
     </message>
     <message>
-      <source>Shikimori</source>
-      <translation>Shikimori</translation>
+        <source>ExternalLibrary</source>
+        <translation>Shikimori</translation>
     </message>
     <message>
-      <source>Settings</source>
-      <translation>Settings</translation>
+        <source>Settings</source>
+        <translation>Settings</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>ReaderWindow</name>
+    <message>
+        <source>Page</source>
+        <translation>Page</translation>
+    </message>
+</context>
+<context>
     <name>AbstractContextMenu</name>
     <message>
-      <source>Add to Library</source>
-      <translation>Add to Library</translation>
+        <source>Add to Library</source>
+        <translation>Add to Library</translation>
     </message>
     <message>
-      <source>Clear local files</source>
-      <translation>Clear local files</translation>
+        <source>Clear local files</source>
+        <translation>Clear local files</translation>
     </message>
     <message>
-      <source>Mark as read</source>
-      <translation>Mark as read</translation>
+        <source>Mark as read</source>
+        <translation>Mark as read</translation>
     </message>
     <message>
-      <source>Mark as read all previous</source>
-      <translation>Mark as read all previous</translation>
+        <source>Mark as read all previous</source>
+        <translation>Mark as read all previous</translation>
     </message>
     <message>
-      <source>Open in browser</source>
-      <translation>Open in browser</translation>
+        <source>Open in browser</source>
+        <translation>Open in browser</translation>
     </message>
     <message>
-      <source>Open local files</source>
-      <translation>Open local files</translation>
+        <source>Open local files</source>
+        <translation>Open local files</translation>
     </message>
     <message>
-      <source>Remove all</source>
-      <translation>Remove all</translation>
+        <source>Remove all</source>
+        <translation>Remove all</translation>
     </message>
     <message>
-      <source>Remove from library</source>
-      <translation>Remove from library</translation>
+        <source>Remove from library</source>
+        <translation>Remove from library</translation>
     </message>
     <message>
-      <source>Remove read mark</source>
-      <translation>Remove read mark</translation>
+        <source>Remove read mark</source>
+        <translation>Remove read mark</translation>
     </message>
-  </context>
-  <context>
-    <name>Other</name>
-    <message>
-      <source>Page</source>
-      <translation>Page</translation>
-    </message>
-    <message>
-      <source>Sign in</source>
-      <translation>Sign in</translation>
-    </message>
-    <message>
-      <source>Status</source>
-      <translation>Status</translation>
-    </message>
-    <message>
-      <source>Volumes</source>
-      <translation>Volumes</translation>
-    </message>
-    <message>
-      <source>Chapters</source>
-      <translation>Chapters</translation>
-    </message>
-    <message>
-      <source>Episodes</source>
-      <translation>Episodes</translation>
-    </message>
-    <message>
-      <source>Rating</source>
-      <translation>Rating</translation>
-    </message>
-    <message>
-      <source>Page is loading</source>
-      <translation>Page is loading</translation>
-    </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Status</name>
     <message>
-      <source>Ongoing</source>
-      <translation>Ongoing</translation>
+        <source>Ongoing</source>
+        <translation>Ongoing</translation>
     </message>
     <message>
-      <source>Released</source>
-      <translation>Released</translation>
+        <source>Released</source>
+        <translation>Released</translation>
     </message>
     <message>
-      <source>Frozen</source>
-      <translation>Frozen</translation>
+        <source>Frozen</source>
+        <translation>Frozen</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>NlLanguage</name>
     <message>
-      <source>Russian</source>
-      <translation>Russian</translation>
+        <source>Russian</source>
+        <translation>Русский</translation>
     </message>
     <message>
-      <source>Ukrainian</source>
-      <translation>Ukrainian</translation>
+        <source>Ukrainian</source>
+        <translation>Українська</translation>
     </message>
     <message>
-      <source>Japanese</source>
-      <translation>Japanese</translation>
+        <source>Japanese</source>
+        <translation>Japanese</translation>
     </message>
     <message>
-      <source>English</source>
-      <translation>English</translation>
+        <source>English</source>
+        <translation>English</translation>
     </message>
     <message>
-      <source>Undefined</source>
-      <translation>Undefined</translation>
+        <source>Undefined</source>
+        <translation>Undefined</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>NlKind</name>
     <message>
-      <source>Manga</source>
-      <translation>Manga</translation>
+        <source>Manga</source>
+        <translation>Manga</translation>
     </message>
     <message>
-      <source>Anime</source>
-      <translation>Anime</translation>
+        <source>Anime</source>
+        <translation>Anime</translation>
     </message>
     <message>
-      <source>OEL-manga</source>
-      <translation>OEL-manga</translation>
+        <source>OEL-manga</source>
+        <translation>OEL-manga</translation>
     </message>
     <message>
-      <source>Rumanga</source>
-      <translation>Rumanga</translation>
+        <source>Rumanga</source>
+        <translation>Rumanga</translation>
     </message>
     <message>
-      <source>Manhwa</source>
-      <translation>Manhwa</translation>
+        <source>Manhwa</source>
+        <translation>Manhwa</translation>
     </message>
     <message>
-      <source>Manhua</source>
-      <translation>Manhua</translation>
+        <source>Manhua</source>
+        <translation>Manhua</translation>
     </message>
     <message>
-      <source>Oneshot</source>
-      <translation>Oneshot</translation>
+        <source>Oneshot</source>
+        <translation>Oneshot</translation>
     </message>
     <message>
-      <source>Comic</source>
-      <translation>Comic</translation>
+        <source>Comic</source>
+        <translation>Comic</translation>
     </message>
     <message>
-      <source>Western comic</source>
-      <translation>Western comic</translation>
+        <source>Western comic</source>
+        <translation>Western comic</translation>
     </message>
     <message>
-      <source>Rucomic</source>
-      <translation>Rucomic</translation>
+        <source>Rucomic</source>
+        <translation>Rucomic</translation>
     </message>
     <message>
-      <source>Indonesian comic</source>
-      <translation>Indonesian comic</translation>
+        <source>Indonesian comic</source>
+        <translation>Indonesian comic</translation>
     </message>
     <message>
-      <source>Doujin</source>
-      <translation>Doujin</translation>
+        <source>Doujin</source>
+        <translation>Doujin</translation>
     </message>
     <message>
-      <source>Ranobe</source>
-      <translation>Ranobe</translation>
+        <source>Ranobe</source>
+        <translation>Ranobe</translation>
     </message>
     <message>
-      <source>Other</source>
-      <translation>Other</translation>
+        <source>Other</source>
+        <translation>Other</translation>
     </message>
     <message>
-      <source>Undefined</source>
-      <translation>Undefined</translation>
+        <source>Undefined</source>
+        <translation>Undefined</translation>
     </message>
-  </context>
-  <context>
-    <name>Message</name>
+</context>
+<context>
+    <name>MangaItem</name>
     <message>
-      <source>Manga {} has been added.</source>
-      <translation>Manga {} has been added.</translation>
-    </message>
-    <message>
-      <source>Anime {} has been added.</source>
-      <translation>Anime {} has been added.</translation>
+        <source>Manga {} has been added.</source>
+        <translation>Manga {} has been added.</translation>
     </message>
     <message>
-      <source>Manga {} has been deleted.</source>
-      <translation>Manga {} has been deleted.</translation>
+        <source>Anime {} has been added.</source>
+        <translation>Anime {} has been added.</translation>
     </message>
     <message>
-      <source>Anime {} has been deleted.</source>
-      <translation>Anime {} has been deleted.</translation>
+        <source>Manga {} has been deleted.</source>
+        <translation>Manga {} has been deleted.</translation>
     </message>
     <message>
-      <source>Files {} have been removed.</source>
-      <translation>Files {} have been removed.</translation>
+        <source>Anime {} has been deleted.</source>
+        <translation>Anime {} has been deleted.</translation>
     </message>
     <message>
-      <source>No connection</source>
-      <translation>No connection</translation>
+        <source>Files {} have been removed.</source>
+        <translation>Files {} have been removed.</translation>
+    </message>
+</context>
+<context>
+    <name>AbstractContentContainer</name>
+    <message>
+        <source>No connection</source>
+        <translation>No connection</translation>
     </message>
     <message>
-      <source>Nothing found</source>
-      <translation>Nothing found</translation>
+        <source>Nothing found</source>
+        <translation>Nothing found</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>BaseMangaPage</name>
+    <message>
+        <source>Page</source>
+        <translation>Page</translation>
+    </message>
+    <message>
+        <source>Planned</source>
+        <translation>Planned</translation>
+    </message>
+    <message>
+        <source>Completed</source>
+        <translation>Completed</translation>
+    </message>
+    <message>
+        <source>Reading</source>
+        <translation>Reading</translation>
+    </message>
+    <message>
+        <source>Re-reading</source>
+        <translation>Re-reading</translation>
+    </message>
+    <message>
+        <source>On hold</source>
+        <translation>On hold</translation>
+    </message>
+    <message>
+        <source>Dropped</source>
+        <translation>Dropped</translation>
+    </message>
+</context>
+<context>
+    <name>ExternalLibraryPage</name>
+    <message>
+        <source>Search</source>
+        <translation>Search</translation>
+    </message>
+    <message>
+        <source>Sign in</source>
+        <translation>Sign in</translation>
+    </message>
+</context>
+<context>
+    <name>HistoryPage</name>
+    <message>
+        <source>History</source>
+        <translation>History</translation>
+    </message>
+</context>
+<context>
+    <name>InfoPage</name>
+    <message>
+        <source>Chapters</source>
+        <translation>Chapters</translation>
+    </message>
+    <message>
+        <source>Characters</source>
+        <translation>Characters</translation>
+    </message>
+    <message>
+        <source>Related</source>
+        <translation>Related</translation>
+    </message>
+    <message>
+        <source>Rating</source>
+        <translation>Rating</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>Status</translation>
+    </message>
+    <message>
+        <source>Volumes</source>
+        <translation>Volumes</translation>
+    </message>
+</context>
+<context>
+    <name>MainPage</name>
+    <message>
+        <source>Kind</source>
+        <translation>Kind</translation>
+    </message>
+    <message>
+        <source>Order</source>
+        <translation>Order</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation>Apply</translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation>Reset</translation>
+    </message>
+    <message>
+        <source>Filters</source>
+        <translation>Filters</translation>
+    </message>
+    <message>
+        <source>Genres list</source>
+        <translation>Genres list</translation>
+    </message>
+    <message>
+        <source>Catalogs</source>
+        <translation>Catalogs</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation>Search</translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
-      <source>Use system setting</source>
-      <translation>Use system setting</translation>
+        <source>Settings</source>
+        <translation>Settings</translation>
     </message>
     <message>
-      <source>Interface zoom</source>
-      <translation>Interface zoom</translation>
+        <source>Use system setting</source>
+        <translation>Use system setting</translation>
     </message>
     <message>
-      <source>Change the size of widgets and fonts</source>
-      <translation>Change the size of widgets and fonts</translation>
+        <source>Interface zoom</source>
+        <translation>Interface zoom</translation>
     </message>
     <message>
-      <source>Language</source>
-      <translation>Language</translation>
+        <source>Change the size of widgets and fonts</source>
+        <translation>Change the size of widgets and fonts</translation>
     </message>
     <message>
-      <source>Set your preferred language for UI</source>
-      <translation>Set your preferred language for UI</translation>
+        <source>Mica effect</source>
+        <translation>Mica effect</translation>
     </message>
     <message>
-      <source>Software update</source>
-      <translation>Software update</translation>
+        <source>Apply semi transparent to windows and surfaces</source>
+        <translation>Apply semi transparent to windows and surfaces</translation>
     </message>
     <message>
-      <source>Check for updates when the application starts</source>
-      <translation>Check for updates when the application starts</translation>
+        <source>Language</source>
+        <translation>Language</translation>
     </message>
     <message>
-      <source>The new version will be more stable and have more features</source>
-      <translation>The new version will be more stable and have more features</translation>
+        <source>Set your preferred language for UI</source>
+        <translation>Set your preferred language for UI</translation>
     </message>
     <message>
-      <source>Changes will take effect after restarting the application</source>
-      <translation>Changes will take effect after restarting the application</translation>
+        <source>Software update</source>
+        <translation>Software update</translation>
     </message>
     <message>
-      <source>Checking for updates.</source>
-      <translation>Checking for updates.</translation>
+        <source>Check for updates when the application starts</source>
+        <translation>Check for updates when the application starts</translation>
     </message>
     <message>
-      <source>Error checking for updates.</source>
-      <translation>Error checking for updates.</translation>
+        <source>The new version will be more stable and have more features</source>
+        <translation>The new version will be more stable and have more features</translation>
     </message>
     <message>
-      <source>No updates available. You are using the latest version.</source>
-      <translation>No updates available. You are using the latest version.</translation>
+        <source>Changes will take effect after restarting the application</source>
+        <translation>Changes will take effect after restarting the application</translation>
     </message>
     <message>
-      <source>New version {result} is available! You are currently on version {APP_VERSION}.</source>
-      <translation>New version {result} is available! You are currently on version {APP_VERSION}.</translation>
+        <source>Checking for updates</source>
+        <translation>Checking for updates</translation>
     </message>
     <message>
-      <source>Check for updates</source>
-      <translation>Check for updates</translation>
+        <source>Error checking for updates</source>
+        <translation>Error checking for updates</translation>
     </message>
     <message>
-      <source>Settings</source>
-      <translation>Settings</translation>
+        <source>No updates available. You are using the latest version</source>
+        <translation>No updates available. You are using the latest version</translation>
     </message>
     <message>
-      <source>Application theme</source>
-      <translation>Application theme</translation>
+        <source>New version {result} is available! You are currently on version {APP_VERSION}</source>
+        <translation>New version {result} is available! You are currently on version {APP_VERSION}</translation>
     </message>
     <message>
-      <source>Change the appearance of application</source>
-      <translation>Change the appearance of application</translation>
+        <source>Check for updates</source>
+        <translation>Check for updates</translation>
     </message>
     <message>
-      <source>Dark</source>
-      <translation>Dark</translation>
+        <source>Application theme</source>
+        <translation>Application theme</translation>
     </message>
     <message>
-      <source>Light</source>
-      <translation>Light</translation>
+        <source>Change the appearance of application</source>
+        <translation>Change the appearance of application</translation>
     </message>
     <message>
-      <source>Personalization</source>
-      <translation>Personalization</translation>
+        <source>Dark</source>
+        <translation>Dark</translation>
     </message>
     <message>
-      <source>About</source>
-      <translation>About</translation>
+        <source>Light</source>
+        <translation>Light</translation>
     </message>
     <message>
-      <source>Project on GitHub</source>
-      <translation>Project on GitHub</translation>
+        <source>Personalization</source>
+        <translation>Personalization</translation>
     </message>
     <message>
-      <source>Episodes</source>
-      <translation>Episodes</translation>
+        <source>About</source>
+        <translation>About</translation>
     </message>
     <message>
-      <source>Automatically mark episodes as watched</source>
-      <translation>Automatically mark episodes as watched</translation>
-    </message>
-  </context>
-  <context>
-    <name>RateDialog</name>
-    <message>
-      <source>Change rating</source>
-      <translation>Change rating</translation>
+        <source>Project on GitHub</source>
+        <translation>Project on GitHub</translation>
     </message>
     <message>
-      <source>Chapters read</source>
-      <translation>Chapters read</translation>
+        <source>Episodes</source>
+        <translation>Episodes</translation>
     </message>
     <message>
-      <source>Episodes watched</source>
-      <translation>Episodes watched</translation>
+        <source>Automatically mark episodes as watched</source>
+        <translation>Automatically mark episodes as watched</translation>
     </message>
-    <message>
-      <source>Rating</source>
-      <translation>Rating</translation>
-    </message>
-    <message>
-      <source>List</source>
-      <translation>List</translation>
-    </message>
-    <message>
-      <source>Cancel</source>
-      <translation>Cancel</translation>
-    </message>
-    <message>
-      <source>Delete</source>
-      <translation>Delete</translation>
-    </message>
-    <message>
-      <source>Update</source>
-      <translation>Update</translation>
-    </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>AbstractAuthDialog</name>
     <message>
-      <source>Authentication</source>
-      <translation>Authentication</translation>
+        <source>Authentication</source>
+        <translation>Authentication</translation>
     </message>
     <message>
-      <source>Get code</source>
-      <translation>Get code</translation>
+        <source>Get code</source>
+        <translation>Get code</translation>
     </message>
     <message>
-      <source>Authorization code</source>
-      <translation>Authorization code</translation>
+        <source>Authorization code</source>
+        <translation>Authorization code</translation>
     </message>
     <message>
-      <source>Login</source>
-      <translation>Login</translation>
+        <source>Login</source>
+        <translation>Login</translation>
     </message>
     <message>
-      <source>Password</source>
-      <translation>Password</translation>
+        <source>Password</source>
+        <translation>Password</translation>
     </message>
     <message>
-      <source>Sign in</source>
-      <translation>Sign in</translation>
+        <source>Sign in</source>
+        <translation>Sign in</translation>
     </message>
-    <message>
-      <source>Cancel</source>
-      <translation>Cancel</translation>
-    </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>CharacterInfoDialog</name>
     <message>
-      <source>Show spoilers</source>
-      <translation>Show spoilers</translation>
+        <source>Show spoilers</source>
+        <translation>Show spoilers</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>GenresDialogUi</name>
     <message>
-      <source>Genres</source>
-      <translation>Genres</translation>
+        <source>Genres</source>
+        <translation>Genres</translation>
+    </message>
+</context>
+<context>
+    <name>RateDialog</name>
+    <message>
+        <source>Change rating</source>
+        <translation>Change rating</translation>
     </message>
     <message>
-      <source>Cancel</source>
-      <translation>Cancel</translation>
+        <source>Chapters read</source>
+        <translation>Chapters read</translation>
     </message>
-  </context>
+    <message>
+        <source>Rating</source>
+        <translation>Rating</translation>
+    </message>
+    <message>
+        <source>List</source>
+        <translation>List</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Delete</translation>
+    </message>
+</context>
 </TS>
