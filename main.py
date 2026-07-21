@@ -2,7 +2,7 @@ import os
 import sys
 from typing import override
 
-from PySide6.QtCore import QThreadPool, QTimer
+from PySide6.QtCore import QThreadPool, QTimer, Slot
 from PySide6.QtGui import QCloseEvent, QIcon
 from PySide6.QtWidgets import QApplication
 from qfluentwidgets import (
@@ -11,7 +11,7 @@ from qfluentwidgets import (
     SystemThemeListener,
 )
 
-from data import resource
+from data import resource  # noqa:F401
 from nlightreader import ParentWindow
 from nlightreader.consts.app import APP_BRANCH, APP_NAME, APP_VERSION
 from nlightreader.consts.files import Icons
@@ -83,6 +83,7 @@ class MainWindow(ParentWindow):
                 ),
             )
 
+    @Slot()
     def _start_check_for_updates(self) -> None:
         self._update_checker.terminate()
         self._update_checker.wait()
@@ -100,11 +101,14 @@ class MainWindow(ParentWindow):
             return None
         latest_version = None
         for release in reversed(response):
-            version = release["tag_name"]
+            if not isinstance(release, dict):
+                continue
+            version = str(release.get("tag_name") or "")
             if APP_BRANCH in version:
                 latest_version = version
         return latest_version
 
+    @Slot()
     def show_update_info(self, result: str | None = None) -> None:
         if result is None:
             self.settings_interface.show_err_updates_tooltip()
