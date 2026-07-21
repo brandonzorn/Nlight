@@ -3,9 +3,10 @@ from typing import override
 from nlightreader.database import Database
 from nlightreader.items import RequestForm
 from nlightreader.models import Manga
+from nlightreader.parsers.catalog import AbstractCatalog
 
 
-class LocalLibrary:
+class LocalLibrary(AbstractCatalog):
     CATALOG_NAME = "LocalLib"
 
     def __init__(self) -> None:
