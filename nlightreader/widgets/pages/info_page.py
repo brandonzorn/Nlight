@@ -43,6 +43,8 @@ class InfoPage(QWidget):
         self.ui = Ui_InfoPage()
         self.ui.setupUi(self)
 
+        self.ui.scrollArea.enableTransparentBackground()
+
         self.ui.shikimoriButton.setIcon(
             NlFluentIcons.SHIKIMORI.qicon(),
         )
@@ -153,9 +155,8 @@ class InfoPage(QWidget):
     @override
     def resizeEvent(self, event: QResizeEvent) -> None:
         super().resizeEvent(event)
-        if event.oldSize().width() == event.size().width():
-            return
-        self._update_manga_preview_size()
+        if event.oldSize().width() != event.size().width():
+            self._update_manga_preview_size()
 
     def sort_chapters(self) -> None:
         self.__sorted_chapters.clear()

@@ -1,4 +1,4 @@
-from PySide6.QtCore import Slot
+from PySide6.QtCore import QSize, Slot
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import (
     FluentIcon,
@@ -85,7 +85,7 @@ class ParentWindow(FluentWindow):
     def on_widget_change(self, value: int) -> None:
         if value in range(4):
             if any(
-                i.objectName() == "FormInfo"
+                i.objectName() == "InfoPage"
                 for i in self.stackedWidget.view.children()
             ):
                 self.delete_info_interface()
@@ -93,7 +93,7 @@ class ParentWindow(FluentWindow):
             self.stackedWidget.count() > 5,
         )
         if self.stackedWidget.currentWidget().objectName() in (
-            "FormInfo",
+            "InfoPage",
             "ReaderWidget",
         ):
             return
@@ -132,13 +132,11 @@ class ParentWindow(FluentWindow):
         if self.stackedWidget.currentWidget().objectName() == "FormInfo":
             self.stackedWidget.view.removeWidget(self.info_interface)
 
-        self.info_interface = InfoPage()
+        self.info_interface = InfoPage(manga)
         self.info_interface.opened_related_manga.connect(self.open_info)
         self.info_interface.setup_done.connect(set_info_widget)
         self.info_interface.setup_error.connect(delete_info_widget)
-        self.info_interface.setup(manga)
+        self.info_interface.setup()
 
 
-__all__ = [
-    "ParentWindow",
-]
+__all__ = ["ParentWindow"]
