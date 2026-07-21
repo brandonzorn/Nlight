@@ -41,6 +41,3 @@ class HistoryRepository(BaseRepository[HistoryNoteEntity]):
                 HistoryNoteEntity.manga_id == manga_id,
             ),
         )
-
-    def exists(self, chapter_id: str) -> bool:
-        return super().exists(chapter_id)

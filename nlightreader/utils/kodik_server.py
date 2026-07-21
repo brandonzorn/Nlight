@@ -148,6 +148,8 @@ class KodikPlayerHttpRequestHandler(BaseHTTPRequestHandler):
             db = Database()
             manga = db.manga.get_by_id(anime_id)
             chapter = db.chapters.get_by_id(episode_id)
+            if not manga or not chapter:
+                return
 
             note = HistoryNote(chapter, manga, is_completed)
             db.history.save(note)

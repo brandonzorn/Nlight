@@ -34,8 +34,8 @@ class MangaMapper:
         manga.status = MangaStatus.from_str(entity.status)
 
         manga.score = entity.score
-        manga.volumes = entity.volumes
-        manga.chapters = entity.chapters
+        manga.volumes_number = entity.volumes
+        manga.chapters_number = entity.chapters
         manga.preview_url = entity.preview_url
 
         manga.set_description_from_str(entity.description or "")

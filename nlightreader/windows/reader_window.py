@@ -29,6 +29,7 @@ from nlightreader.widgets.containers.content_container import (
     ContentContainerState,
 )
 from nlightreader.widgets.containers.image_area import ImageArea
+from nlightreader.widgets.items import ModelListItem
 
 logger = logging.getLogger(__name__)
 
@@ -96,7 +97,7 @@ class ReaderWindow(SimpleCardWidget):
             self.change_chapters_list_visible,
         )
 
-        self._ui.chaptersList.doubleClicked.connect(self.change_chapter)
+        self._ui.chaptersList.currentItemChanged.connect(self.change_chapter)
 
     def setup(self, cur_chapter: int = 1) -> None:
         self._cur_chapter = cur_chapter
@@ -124,14 +125,14 @@ class ReaderWindow(SimpleCardWidget):
         )
 
     @Slot()
-    def change_chapter(self) -> None:
-        self._cur_chapter = self._ui.chaptersList.currentIndex().row() + 1
+    def change_chapter(self, item: QListWidgetItem) -> None:
+        self._cur_chapter = self._chapters.index(item.model) + 1
         self.update_chapter()
 
     def update_chapters_list(self) -> None:
         self._ui.chaptersList.clear()
         for chapter in self._chapters:
-            ch_item = QListWidgetItem(chapter.get_name())
+            ch_item = ModelListItem(chapter)
             if self._db.history.exists(chapter.id):
                 if self._db.history.is_completed(chapter.id):
                     ch_item.setIcon(ItemsIcons.READ.qicon())
@@ -193,7 +194,7 @@ class ReaderWindow(SimpleCardWidget):
             ),
         )
         if self._cur_chapter == self._max_chapters:
-            self.deleteLater()
+            self.close()
         else:
             self._cur_chapter += 1
         self.update_chapter()

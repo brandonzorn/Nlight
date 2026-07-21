@@ -10,7 +10,7 @@ from nlightreader.widgets.containers.content_container import (
 )
 
 
-class ImageArea(QWidget, AbstractContentContainer):
+class ImageArea(QWidget, AbstractContentContainer[QPixmap]):
     def __init__(self) -> None:
         super().__init__()
         self.ui = Ui_ImageArea()
@@ -73,14 +73,14 @@ class ImageArea(QWidget, AbstractContentContainer):
         self.ui.imageLabel.setPixmap(pixmap)
 
     @override
-    def set_content(self, img_pixmap: QPixmap) -> None:
-        self._image_pixmap = img_pixmap
+    def set_content(self, content: QPixmap) -> None:
+        self._image_pixmap = content
         self._reset_area()
         self._update_image()
 
     @override
     def get_content_widget(self) -> QWidget:
-        return self.ui.imageLabel.parent()
+        return self.ui.scrollAreaWidgetContents
 
 
 __all__ = ["ImageArea"]

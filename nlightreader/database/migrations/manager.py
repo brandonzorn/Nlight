@@ -24,6 +24,8 @@ class MigrationManager:
 
         for migration in self._migrations:
             entity = session.get(SchemaVersionEntity, 1)
+            if not entity:
+                break
             if entity.version >= migration.version:
                 continue
             if migration.is_applicable(session):

@@ -10,7 +10,7 @@ from qfluentwidgets import FluentIcon
 from data.ui.widgets.info import Ui_InfoPage
 from nlightreader.consts.colors import ItemsIcons
 from nlightreader.consts.files import NlFluentIcons
-from nlightreader.core.enums import LIB_LISTS, LibList
+from nlightreader.core.enums import Language, LIB_LISTS, LibList
 from nlightreader.database import Database
 from nlightreader.items import HistoryNote
 from nlightreader.models import Chapter, Character, Manga
@@ -61,7 +61,9 @@ class InfoPage(QWidget):
         self._related_characters: list[Character] = []
         self._chapters: list[Chapter] = []
 
-        self._grouped_chapters = defaultdict(lambda: defaultdict(list))
+        self._grouped_chapters: dict[Language, dict[str | None, list]] = (
+            defaultdict(lambda: defaultdict(list))
+        )
         self._manga_pixmap = QPixmap()
         self._reader_window = None
 
@@ -343,7 +345,9 @@ class InfoPage(QWidget):
                     return
                 self._reader_window = ReaderWindow(
                     self._manga,
-                    self._chapters,
+                    self._grouped_chapters[selected_chapter.language][
+                        selected_chapter.translator
+                    ],
                 )
                 self._reader_window.setup(
                     self._chapters.index(selected_chapter) + 1,
@@ -351,7 +355,10 @@ class InfoPage(QWidget):
 
     @Slot()
     def _open_related_manga(self) -> None:
-        self.opened_related_manga.emit(self.ui.relatedList.currentItem().model)
+        item = self.ui.relatedList.currentItem()
+        if not isinstance(item, ModelTreeItem):
+            return
+        self.opened_related_manga.emit(item.model)
 
     def _on_context_menu(self, position: QPoint) -> None:
         selected_item = self.ui.itemsTree.itemAt(position)

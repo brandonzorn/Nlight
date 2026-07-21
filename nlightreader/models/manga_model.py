@@ -1,5 +1,4 @@
 import re
-from types import NoneType
 from typing import override
 
 from PySide6.QtCore import QLocale
@@ -17,8 +16,10 @@ class Manga(NamedBaseModel):
         content_id: str,
         catalog_id: int,
         name: str,
-        russian: str,
+        russian: str | None,
     ) -> None:
+        if russian is None:
+            russian = ""
         super().__init__(content_id, catalog_id, name, russian)
 
         self._kind: MangaKind = MangaKind.UNDEFINED
@@ -71,14 +72,12 @@ class Manga(NamedBaseModel):
 
     @preview_url.setter
     def preview_url(self, url: str | None) -> None:
-        if not isinstance(url, (str, NoneType)):
-            msg = f"Preview url must be str or None, got{type(url)}"
-            raise TypeError(msg)
-        if url and not validators.url(url):
+        if not isinstance(url, str):
+            self._preview_url = None
+            return
+        if not validators.url(url):
             msg = f"Url {url} is not valid"
             raise ValueError(msg)
-        if isinstance(url, str) and not url:
-            url = None
         self._preview_url = url
 
     @property

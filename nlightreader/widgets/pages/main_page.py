@@ -7,6 +7,7 @@ from qfluentwidgets import FluentIcon
 from data.ui.widgets.facial import Ui_MainPage
 from nlightreader.controlers import FiltersController
 from nlightreader.models import Manga
+from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils.catalog_manager import USER_CATALOGS
 from nlightreader.widgets.dialogs import GenresDialog
 from nlightreader.widgets.items.manga_item import MangaItem
@@ -72,7 +73,7 @@ class MainPage(BaseMangaPage):
         return item
 
     def change_catalog(self, index: int) -> None:
-        self.catalog = USER_CATALOGS[index]()
+        self.catalog: AbstractCatalog = USER_CATALOGS[index]()
         self.setup_filters()
         self.apply_filter()
 
