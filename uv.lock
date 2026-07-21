@@ -3,28 +3,6 @@ revision = 3
 requires-python = ">=3.12"
 
 [[package]]
-name = "astatine"
-version = "0.3.3"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "asttokens" },
-    { name = "domdf-python-tools" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/a4/8a/544e058e5ed049cffd67006944872216c48e86b9004ceeefbb33a9759d3d/astatine-0.3.3.tar.gz", hash = "sha256:0c58a7844b5890ff16da07dbfeb187341d8324cb4378940f89d795cbebebce08", size = 6687, upload-time = "2023-08-15T10:38:28.151Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/1e/72/58e5d9b9965f55a1b652c7ea73dceedf4f8cea08d1310aa2d4102202acb8/astatine-0.3.3-py3-none-any.whl", hash = "sha256:6d8c914f01fbea252cb8f31563f2e766a9ab03c02b9bcc37d18f7d9138828401", size = 17376, upload-time = "2023-08-15T10:38:26.735Z" },
-]
-
-[[package]]
-name = "asttokens"
-version = "3.0.2"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/25/1e/faf0f247f6f881b98fc4d6d07e14085cb89d13665084e6d6ac1dc2c03d0b/asttokens-3.0.2.tar.gz", hash = "sha256:3ecdbd8f2cc195f53ccada3a613538bb5f9ef6f6869129f13e03c30a677b8fe2", size = 63136, upload-time = "2026-07-12T03:31:49.084Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/d4/2b/04b8a15f3a1c77bc79ddf5c73875327f34b4fa75982df2b76e45e402d364/asttokens-3.0.2-py3-none-any.whl", hash = "sha256:9da13157f5b28becde0bd374fc677dcd3c290614264eff096f167c469cd9f933", size = 28702, upload-time = "2026-07-12T03:31:47.542Z" },
-]
-
-[[package]]
 name = "authlib"
 version = "1.7.2"
 source = { registry = "https://pypi.org/simple" }
@@ -206,43 +184,6 @@ wheels = [
 ]
 
 [[package]]
-name = "click"
-version = "8.4.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/76/d4/81420972a676e8ffea40450d8c8c92943e7218a78fe9b64359836cc9876b/click-8.4.2.tar.gz", hash = "sha256:9a6cea6e60b17ebe0a44c5cc636d94f09bd66142c1cd7d8b4cd731c4917a15f6", size = 338000, upload-time = "2026-06-24T17:45:15.148Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/fb/e2/79c688af8b210d232694e31e59da9f6ec747bae31c3f5946e4e9b98860d5/click-8.4.2-py3-none-any.whl", hash = "sha256:e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76", size = 119243, upload-time = "2026-06-24T17:45:13.73Z" },
-]
-
-[[package]]
-name = "colorama"
-version = "0.4.6"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44", size = 27697, upload-time = "2022-10-25T02:36:22.414Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6", size = 25335, upload-time = "2022-10-25T02:36:20.889Z" },
-]
-
-[[package]]
-name = "consolekit"
-version = "1.13.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "click" },
-    { name = "deprecation-alias" },
-    { name = "domdf-python-tools" },
-    { name = "mistletoe" },
-    { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/60/1f/b1745cfe7b1c32d0cfe76b09a184c0d9360851a92516da0ea3647e39c759/consolekit-1.13.0.tar.gz", hash = "sha256:6c28df284ec86fb395fbe39493ddf9f8dfc8b181a6156abfd50c3f2156ad2b20", size = 32316, upload-time = "2026-02-19T16:12:14.026Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a8/63/e08e7d4a2a89ab7769ca7e8066d04cbf6620ff4065ee0ea9a47b4cdabae6/consolekit-1.13.0-py3-none-any.whl", hash = "sha256:5b274587d32344dbb7a7aae29df6478e1bbbf6842494f74fe6126fada5ded3ea", size = 46437, upload-time = "2026-02-19T16:12:11.475Z" },
-]
-
-[[package]]
 name = "cryptography"
 version = "49.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -302,44 +243,6 @@ wheels = [
 ]
 
 [[package]]
-name = "deprecation"
-version = "2.1.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "packaging" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/5a/d3/8ae2869247df154b64c1884d7346d412fed0c49df84db635aab2d1c40e62/deprecation-2.1.0.tar.gz", hash = "sha256:72b3bde64e5d778694b0cf68178aed03d15e15477116add3fb773e581f9518ff", size = 173788, upload-time = "2020-04-20T14:23:38.738Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/02/c3/253a89ee03fc9b9682f1541728eb66db7db22148cd94f89ab22528cd1e1b/deprecation-2.1.0-py2.py3-none-any.whl", hash = "sha256:a10811591210e1fb0e768a8c25517cabeabcba6f0bf96564f8ff45189f90b14a", size = 11178, upload-time = "2020-04-20T14:23:36.581Z" },
-]
-
-[[package]]
-name = "deprecation-alias"
-version = "0.4.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "deprecation" },
-    { name = "packaging" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/33/e0/2484747bc4936baf2737bb539b9e5b7f6d3a4c47f22d8b137c0a1fde356b/deprecation_alias-0.4.0.tar.gz", hash = "sha256:a58d2e74491c7834e9d318788da60272fa2f81aeb814b4055a4ba90a0a41740f", size = 10898, upload-time = "2025-02-11T15:53:59.001Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a2/00/a0514192a926e2c077a170f9f58653a0b3dd2ff034fdee48da843ea01d6c/deprecation_alias-0.4.0-py3-none-any.whl", hash = "sha256:a2d3cb08705d81bcc845ebbeff8e981ca7e5ef6c51478f0c771c38a54d7d7811", size = 13768, upload-time = "2025-02-11T15:53:57.83Z" },
-]
-
-[[package]]
-name = "domdf-python-tools"
-version = "3.10.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "natsort" },
-    { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/36/8b/ab2d8a292bba8fe3135cacc8bfd3576710a14b8f2d0a8cde19130d5c9d21/domdf_python_tools-3.10.0.tar.gz", hash = "sha256:2ae308d2f4f1e9145f5f4ba57f840fbfd1c2983ee26e4824347789649d3ae298", size = 100458, upload-time = "2025-02-12T17:34:05.747Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/5b/11/208f72084084d3f6a2ed5ebfdfc846692c3f7ad6dce65e400194924f7eed/domdf_python_tools-3.10.0-py3-none-any.whl", hash = "sha256:5e71c1be71bbcc1f881d690c8984b60e64298ec256903b3147f068bc33090c36", size = 126860, upload-time = "2025-02-12T17:34:04.093Z" },
-]
-
-[[package]]
 name = "flake8"
 version = "7.3.0"
 source = { registry = "https://pypi.org/simple" }
@@ -351,74 +254,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/9b/af/fbfe3c4b5a657d79e5c47a2827a362f9e1b763336a52f926126aa6dc7123/flake8-7.3.0.tar.gz", hash = "sha256:fe044858146b9fc69b551a4b490d69cf960fcb78ad1edcb84e7fbb1b4a8e3872", size = 48326, upload-time = "2025-06-20T19:31:35.838Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9f/56/13ab06b4f93ca7cac71078fbe37fcea175d3216f31f85c3168a6bbd0bb9a/flake8-7.3.0-py2.py3-none-any.whl", hash = "sha256:b9696257b9ce8beb888cdbe31cf885c90d31928fe202be0889a7cdafad32f01e", size = 57922, upload-time = "2025-06-20T19:31:34.425Z" },
-]
-
-[[package]]
-name = "flake8-all-not-strings"
-version = "0.0.3"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "flake8" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/33/d8/48dce4a889315bcc9c0d8ec29f86d9b31802e4da8746a4f164fc7229a995/flake8_all_not_strings-0.0.3.tar.gz", hash = "sha256:9d0f5472dc135feec64339db1d23b051be4d3bbe7873f43838b862c7beb4d604", size = 4079, upload-time = "2025-06-19T21:27:52.083Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/28/de/e61706796651207e00cfc5e24dc4246a3e0d32e6571be4a9265f2e6688fd/flake8_all_not_strings-0.0.3-py2.py3-none-any.whl", hash = "sha256:debb85d45c779ea261915fc903ea6bc1763d3798c3199f2492d963548b32d2f5", size = 4195, upload-time = "2025-06-19T21:27:51.027Z" },
-]
-
-[[package]]
-name = "flake8-comments"
-version = "0.1.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "flake8" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/83/38/3d8706aea09d9bfb22ea3a7f9d04e11090aaa21711051d2f688695ef5892/flake8-comments-0.1.2.tar.gz", hash = "sha256:780b4fc2820ed4ff8a0a98f3fc993f776ede1aecbe0c6cec64d93814b21c9234", size = 5332, upload-time = "2021-06-08T12:47:34.265Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/9b/32/4e4ad1131cf7d2aff04f6dbce80c74a2a39ac290acf4870d343879e5b2bf/flake8_comments-0.1.2-py3-none-any.whl", hash = "sha256:42250cb4a51dc59e6db25f1291cfb16b78ea233f72dac32a5bc7b09c691235ea", size = 5198, upload-time = "2021-06-08T12:47:32.072Z" },
-]
-
-[[package]]
-name = "flake8-dunder-all"
-version = "0.6.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "astatine" },
-    { name = "click" },
-    { name = "consolekit" },
-    { name = "domdf-python-tools" },
-    { name = "flake8" },
-    { name = "natsort" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/cd/76/86a99b3d0e77fb139515fc6358e97f0092a3b8c7d5633cdea406af40fc97/flake8_dunder_all-0.6.0.tar.gz", hash = "sha256:7a06bc1877c0b8d7f47829196d7b84daea12799dbc86e5ce9cbed3a94e45c606", size = 9926, upload-time = "2026-07-10T08:13:46.323Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/26/2d/34becf73d0755a058c6c7aa1adde069fba9a3788b71f8ac40991d4b01308/flake8_dunder_all-0.6.0-py3-none-any.whl", hash = "sha256:975173fab13c88cef4a04a488116d938fd4bc7e27449bd4e592fc174b72b7344", size = 12470, upload-time = "2026-07-10T08:13:45.429Z" },
-]
-
-[[package]]
-name = "flake8-encodings"
-version = "0.5.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "astatine" },
-    { name = "domdf-python-tools" },
-    { name = "flake8" },
-    { name = "flake8-helper" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/21/e2/ed163bcf489b10ac406606074680bb25db748c4f6b97a86472f057235010/flake8_encodings-0.5.1.tar.gz", hash = "sha256:f42bb26d6b46f298affff247d57b0578812120c838b4f299fb07b41285c82b4e", size = 8290, upload-time = "2023-11-20T15:27:09.974Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/2a/e8/424b68e14d6d31b635c84ab829f1df998d45ea2f1bdee7404cd4726f7a13/flake8_encodings-0.5.1-py3-none-any.whl", hash = "sha256:78b0a65083511c177c910484477b692fc4c0b4ba100714cdaa88be1cf095f816", size = 25573, upload-time = "2023-11-20T15:27:08.332Z" },
-]
-
-[[package]]
-name = "flake8-helper"
-version = "0.2.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "flake8" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/fe/4f/027bbe420a1fdc79f9812113e72029aacd353974df2474b17a8a544409dd/flake8_helper-0.2.2.tar.gz", hash = "sha256:02e33eb8014c9accd802ef4a7a266e2ec8d7b9225ce94d19bd537d4631bb4f87", size = 5183, upload-time = "2023-11-22T11:32:24.302Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a1/fe/12de9bd1982a50a5cd83df74882ad5a9725a24759d70ff0caa0ea2ba187a/flake8_helper-0.2.2-py3-none-any.whl", hash = "sha256:75033d6704f7f5701b04085627b66da252ac82894d50bdf1127e7b11444f1025", size = 13278, upload-time = "2023-11-22T11:32:22.533Z" },
 ]
 
 [[package]]
@@ -593,26 +428,8 @@ wheels = [
 ]
 
 [[package]]
-name = "mistletoe"
-version = "1.6.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/17/ea/ee6e364d62197e427f1d260500eac659a8855df207a77f74451658d749f3/mistletoe-1.6.0.tar.gz", hash = "sha256:92f066c4720a25fa24bf260e6413702bbff3a5b8a93af314cb6cd8589726a8e1", size = 113730, upload-time = "2026-07-11T14:14:18.593Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/e0/5c/3681c676d79726e3b8b72bc78e83ac472b0c96e3c99b28d72b9470f12170/mistletoe-1.6.0-py3-none-any.whl", hash = "sha256:53f9dfb859e9b2d309915d0f06c3876253d1e24d568d0b728a32679eb4f0a187", size = 55931, upload-time = "2026-07-11T14:14:17.056Z" },
-]
-
-[[package]]
-name = "natsort"
-version = "8.4.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/e2/a9/a0c57aee75f77794adaf35322f8b6404cbd0f89ad45c87197a937764b7d0/natsort-8.4.0.tar.gz", hash = "sha256:45312c4a0e5507593da193dedd04abb1469253b601ecaf63445ad80f0a1ea581", size = 76575, upload-time = "2023-06-20T04:17:19.925Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/ef/82/7a9d0550484a62c6da82858ee9419f3dd1ccc9aa1c26a1e43da3ecd20b0d/natsort-8.4.0-py3-none-any.whl", hash = "sha256:4732914fb471f56b5cce04d7bae6f164a592c7712e1c85f9ef585e197299521c", size = 38268, upload-time = "2023-06-20T04:17:17.522Z" },
-]
-
-[[package]]
 name = "nlight"
-version = "1.10.6"
+version = "1.11.0"
 source = { virtual = "." }
 dependencies = [
     { name = "authlib" },
@@ -632,10 +449,6 @@ dev = [
 ]
 test = [
     { name = "flake8" },
-    { name = "flake8-all-not-strings" },
-    { name = "flake8-comments" },
-    { name = "flake8-dunder-all" },
-    { name = "flake8-encodings" },
     { name = "flake8-pyproject" },
 ]
 
@@ -658,10 +471,6 @@ dev = [
 ]
 test = [
     { name = "flake8", specifier = ">=6.1.0" },
-    { name = "flake8-all-not-strings", specifier = ">=0.0.2" },
-    { name = "flake8-comments", specifier = ">=0.1.2" },
-    { name = "flake8-dunder-all", specifier = ">=0.4.1" },
-    { name = "flake8-encodings", specifier = ">=0.5.1" },
     { name = "flake8-pyproject", specifier = ">=1.2.3" },
 ]
 
@@ -676,11 +485,11 @@ wheels = [
 
 [[package]]
 name = "platformdirs"
-version = "4.10.1"
+version = "4.11.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/52/cd/4f25b2f95b23f5d2c9c1fe43e49841bff5800562149b2666afc09309aa8f/platformdirs-4.10.1.tar.gz", hash = "sha256:ceab4084426fe6319ce18e86deada8ab1b7487c7aee7040c55e277c9ae793695", size = 31678, upload-time = "2026-07-18T03:53:43.808Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/78/9b/560e4be8e26f6fd133a03630a8df0c663b9e8d61b4ade152b72005aec83b/platformdirs-4.11.0.tar.gz", hash = "sha256:0555d18370482847566ffabcaa53ad7c6c1c29f195989ae1ed634a05f76ea1e0", size = 31953, upload-time = "2026-07-21T13:09:36.565Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ec/73/6fd0bb9ce84138c3857f12e9de63bc901852975a092d545f18087a204aa2/platformdirs-4.10.1-py3-none-any.whl", hash = "sha256:0e4eff26be2d75293977f7cddc153fd9b8eaa7fb0c7b64ffe4076cb443117443", size = 22906, upload-time = "2026-07-18T03:53:42.576Z" },
+    { url = "https://files.pythonhosted.org/packages/7d/68/d8d58938dfb1370b266a1a729e6d77a985be23689a0496498ee17b2cbf90/platformdirs-4.11.0-py3-none-any.whl", hash = "sha256:360ccded2b7fce0af0ff80cc8f5942a1c5d99b0e856033acb030bfc634709e74", size = 23247, upload-time = "2026-07-21T13:09:35.422Z" },
 ]
 
 [[package]]
@@ -3794,11 +3603,11 @@ wheels = [
 
 [[package]]
 name = "soupsieve"
-version = "2.9"
+version = "2.9.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/80/f1/93422647dd7e461f23d254e6b2bfa687a85b53aeb4903fcdbb74474d4584/soupsieve-2.9.tar.gz", hash = "sha256:acee8417325c5653e1377dc31eccad59eb82cbc65942afe6174c53b3aaad63fc", size = 122122, upload-time = "2026-07-19T01:35:18.425Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d9/38/e12680bbe6b4f8f3d17adcaf38d26850aa756c85cf4a80e79fc12a018fe8/soupsieve-2.9.1.tar.gz", hash = "sha256:c33e6605bbc71dd628b00c632d58ae607c22bade247e52553928f83bbb75b4ba", size = 122261, upload-time = "2026-07-21T16:57:17.452Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7b/d6/3185ab5ad1280319b31986898f3206dd7227cd75e293d4dba2a5e6bf27a0/soupsieve-2.9-py3-none-any.whl", hash = "sha256:a2b2c76d67df2382d245409fd71e321a571717e58463efa32ace87dcadac2c12", size = 37387, upload-time = "2026-07-19T01:35:17.106Z" },
+    { url = "https://files.pythonhosted.org/packages/0f/2c/437fe806897c2d6cfdc3ee43a18da8bf8e568530a4ae9bac781541ca9896/soupsieve-2.9.1-py3-none-any.whl", hash = "sha256:4f4477399246b7a0c720a88ca2454b11cd6bb9ae4c9d170140786e916776c14c", size = 37404, upload-time = "2026-07-21T16:57:16.421Z" },
 ]
 
 [[package]]

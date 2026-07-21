@@ -10,16 +10,6 @@ permissions:
   contents: read
 
 jobs:
-  flake8-test:
-    runs-on: ubuntu-latest
-    container: python:3.12-alpine
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install dependencies
-        run: pip install -r requirements/test.txt
-      - name: Check code formatting with flake8
-        run: flake8 ./
-
   ruff-lint:
     runs-on: ubuntu-latest
     container: python:3.12-alpine
