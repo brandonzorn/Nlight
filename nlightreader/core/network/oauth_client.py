@@ -99,14 +99,16 @@ class OAuthClient:
     ) -> requests.Response | None:
         if IS_TEST_ENV:
             logger.warning(
-                f"{self._catalog_name}: request to {url} blocked. "
-                f"Reason: test state.",
+                "%s: request to %s blocked. Reason: test state.",
+                self._catalog_name,
+                url,
             )
             return None
         if not ignore_authorize and not self._is_authorized:
             logger.warning(
-                f"{self._catalog_name}: request to {url} blocked. "
-                f"Reason: unauthorized state.",
+                "%s: request to %s blocked. Reason: unauthorized state.",
+                self._catalog_name,
+                url,
             )
             return None
         try:

@@ -129,8 +129,8 @@ class FileManager:
                 encoding="utf-8",
             ) as f:
                 return f.read().replace("\n", "<br>")
-        except OSError as e:
-            logger.exception(e)
+        except OSError:
+            logger.exception("Failed to get chapter text")
             return ""
 
     @classmethod
@@ -230,8 +230,8 @@ def save_file(
             )
             with full_file_path.open("wb") as f:
                 f.write(data_to_write)
-        except OSError as e:
-            logger.error("Failed to save file %s: %s", full_file_path, e)
+        except OSError:
+            logger.exception("Failed to save file %s", full_file_path)
 
 
 def _remove_dir(path: Path) -> None:

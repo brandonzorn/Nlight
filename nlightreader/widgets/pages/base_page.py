@@ -54,7 +54,7 @@ class BasePage(QWidget):
         raise NotImplementedError
 
     def _process_errors(self, e: BaseContentError) -> None:
-        logger.error("Unhandled error:", e)
+        logger.exception("Unhandled error %s", e)
 
 
 class BaseMangaPage(BasePage):

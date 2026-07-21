@@ -165,9 +165,9 @@ class KodikPlayerHttpRequestHandler(BaseHTTPRequestHandler):
 
         except json.JSONDecodeError:
             self.send_error_response(400, "Invalid JSON format")
-        except Exception as e:
+        except Exception:
             logger.exception("Internal error in Player Server")
-            self.send_error_response(500, f"Internal Server Error: {str(e)}")
+            self.send_error_response(500, "Internal Server Error")
 
     def do_OPTIONS(self) -> None:
         self.set_cors_headers(200, 0)

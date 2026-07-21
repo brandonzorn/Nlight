@@ -90,7 +90,8 @@ def make_request(
     """
     if IS_TEST_ENV:
         logger.warning(
-            f"make_request: request to {url} blocked. Reason: test state.",
+            "make_request: request to %s blocked. Reason: test state.",
+            url,
         )
         return None
     if headers is None:

@@ -41,7 +41,7 @@ class MangaKind(IntEnum):
             return cls.RANOBE
         if cls._matching_the_pattern(string, ("комикс", "comic")):
             return cls.COMICS
-        logger.warning(f"Unknown manga kind: {string}")
+        logger.warning("Unknown manga kind: %s", string)
         return cls.UNDEFINED
 
     def to_str(self) -> str:
@@ -79,7 +79,7 @@ class MangaStatus(IntEnum):
             return cls.RELEASED
         if string in ("frozen", "заморожено"):
             return cls.FROZEN
-        logger.warning(f"Unknown manga status: {string}")
+        logger.warning("Unknown manga status: %s", string)
         return cls.UNDEFINED
 
     def to_str(self) -> str:

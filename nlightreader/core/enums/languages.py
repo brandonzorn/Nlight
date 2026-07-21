@@ -23,9 +23,9 @@ class Language(IntEnum):
             return cls.UKRAINIAN
         if string in ("jp", "japanese"):
             return cls.JAPANESE
-        if string in ("undefined",):
+        if string == "undefined":
             return cls.UNDEFINED
-        logger.warning(f"Unknown language {string}")
+        logger.warning("Unknown language %s", string)
         return cls.UNDEFINED
 
     def to_str(self) -> str:

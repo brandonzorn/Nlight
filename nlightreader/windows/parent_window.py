@@ -103,7 +103,7 @@ class ParentWindow(FluentWindow):
 
         if isinstance(current_widget, InfoPage):
             msg = "Previous info is not closed"
-            raise RuntimeError(msg)
+            raise TypeError(msg)
 
         self.info_interface = InfoPage(self, manga)
         self.info_interface.opened_related_manga.connect(self._reopen_info)

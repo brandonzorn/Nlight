@@ -73,14 +73,14 @@ def get_catalog_by_id(catalog_id: int) -> AbstractCatalog:
         instance = CATALOG_CLASSES[catalog_id]()
         _initialized_catalogs[catalog_id] = instance
         return instance
-    logger.warning(f"Catalog with id {catalog_id} not found.")
+    logger.warning("Catalog with id %s not found.", catalog_id)
     return AbstractCatalog()
 
 
 def get_lib_catalog(base_catalog: type[AbstractCatalog]) -> LibParser:
     if base_catalog in LIB_CATALOGS:
         return LIB_CATALOGS[base_catalog]()
-    logger.warning(f"Catalog with id {base_catalog.CATALOG_ID} not found.")
+    logger.warning("Catalog with id %s not found.", base_catalog.CATALOG_ID)
     return LibParser()
 
 

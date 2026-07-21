@@ -22,9 +22,9 @@ class LibList(IntEnum):
     @classmethod
     def from_str(cls, string: str) -> "LibList":
         string = string.lower()
-        if string in ("planned",):
+        if string == "planned":
             return cls.planned
-        if string in ("completed",):
+        if string == "completed":
             return cls.completed
         if string in ("reading", "watching"):
             return cls.reading
@@ -32,7 +32,7 @@ class LibList(IntEnum):
             return cls.re_reading
         if string in ("on hold", "on_hold"):
             return cls.on_hold
-        if string in ("dropped",):
+        if string == "dropped":
             return cls.dropped
         msg = f"Unknown lib_list: {string}"
         raise ValueError(msg)

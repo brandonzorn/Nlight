@@ -105,8 +105,8 @@ class InfoPage(QWidget):
         try:
             self._manga = self._catalog.get_manga(self._manga)
             self._fetch_manga_preview()
-        except Exception as e:
-            logger.error(e)
+        except Exception:
+            logger.exception("Error fetching manga")
             self.setup_error.emit()
 
     @override
@@ -248,8 +248,11 @@ class InfoPage(QWidget):
     def get_chapters(self) -> None:
         try:
             self._chapters = self._catalog.get_chapters(self._manga)
-        except NotImplementedError as e:
-            logger.warning(e)
+        except NotImplementedError:
+            logger.warning(
+                "get_chapters is not implemented for %s",
+                self._catalog.CATALOG_NAME,
+            )
             self._chapters.clear()
             return
         self._chapters.reverse()
@@ -289,8 +292,11 @@ class InfoPage(QWidget):
             self._related_mangas = self._catalog.get_relations(
                 self._manga,
             )
-        except NotImplementedError as e:
-            logger.warning(e)
+        except NotImplementedError:
+            logger.warning(
+                "get_relations is not implemented for %s",
+                self._catalog.CATALOG_NAME,
+            )
             self._related_mangas.clear()
 
     def update_relations(self) -> None:
@@ -305,8 +311,11 @@ class InfoPage(QWidget):
             self._related_characters = self._catalog.get_characters(
                 self._manga,
             )
-        except NotImplementedError as e:
-            logger.warning(e)
+        except NotImplementedError:
+            logger.warning(
+                "get_characters is not implemented for %s",
+                self._catalog.CATALOG_NAME,
+            )
             self._related_characters.clear()
 
     def update_characters(self) -> None:

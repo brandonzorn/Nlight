@@ -36,8 +36,9 @@ class NetworkClient:
     ) -> requests.Response | None:
         if IS_TEST_ENV:
             logger.warning(
-                f"{self._catalog_name}: request to {url} blocked. "
-                f"Reason: test state.",
+                "%s: request to %s blocked. Reason: test state.",
+                self._catalog_name,
+                url,
             )
             return None
         try:
