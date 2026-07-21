@@ -2,11 +2,9 @@ from abc import ABC
 
 
 class ParserItems(ABC):
-    ORDERS: list[dict[str, str]] = []
-    KINDS: list[dict[str, str]] = []
-    GENRES: list[dict[str, str]] = []
+    ORDERS: tuple[dict[str, str], ...]
+    KINDS: tuple[dict[str, str], ...]
+    GENRES: tuple[dict[str, str], ...]
 
 
-__all__ = [
-    "ParserItems",
-]
+__all__ = ["ParserItems"]

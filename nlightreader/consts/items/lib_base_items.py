@@ -4,7 +4,7 @@ from nlightreader.consts.items.parser_items import (
 
 
 class LibBaseItems(ParserItems):
-    GENRES = [
+    GENRES = (
         {
             "value": 32,
             "name": "Арт",
@@ -280,7 +280,7 @@ class LibBaseItems(ParserItems):
             "name": "Яой",
             "russian": "Яой",
         },
-    ]
+    )
 
 
 __all__ = [

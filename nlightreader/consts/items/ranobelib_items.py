@@ -7,7 +7,7 @@ from nlightreader.consts.items.preset_items import (
 
 
 class RanobeLibItems(LibBaseItems):
-    ORDERS = [
+    ORDERS = (
         {"value": None} | Po.POPULARITY,
         {"value": "rate_avg"} | Po.RATING,
         {"value": "views"} | Po.VIEWS,
@@ -17,9 +17,9 @@ class RanobeLibItems(LibBaseItems):
         {"value": "created_at"} | Po.CREATED,
         {"value": "name"} | Po.NAME,
         {"value": "rus_name"} | Po.RUS_NAME,
-    ]
+    )
 
-    KINDS = [
+    KINDS = (
         {
             "value": 10,
             "name": "Japan",
@@ -50,7 +50,7 @@ class RanobeLibItems(LibBaseItems):
             "name": "Fanfiction",
             "russian": "Фанфик",
         },
-    ]
+    )
 
 
 __all__ = [
