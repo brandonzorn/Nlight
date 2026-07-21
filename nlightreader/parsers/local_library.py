@@ -9,10 +9,8 @@ class LocalLibrary:
     def __init__(self) -> None:
         self.db: Database = Database()
 
-    def search_manga(self, params: RequestForm) -> list[Manga]:
-        return self.db.get_manga_library(params.lib_list)
+    def search_manga(self, form: RequestForm) -> list[Manga]:
+        return self.db.get_manga_library(form.lib_list)
 
 
-__all__ = [
-    "LocalLibrary",
-]
+__all__ = ["LocalLibrary"]

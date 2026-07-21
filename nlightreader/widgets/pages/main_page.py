@@ -7,6 +7,7 @@ from qfluentwidgets import FluentIcon
 from data.ui.widgets.facial import Ui_MainPage
 from nlightreader.controlers import FiltersController
 from nlightreader.models import Manga
+from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils.catalog_manager import USER_CATALOGS
 from nlightreader.widgets.dialogs import GenresDialog
 from nlightreader.widgets.items.manga_item import MangaItem
@@ -43,7 +44,7 @@ class MainPage(BasePage):
             ),
         )
 
-        self.__genres_dialog = GenresDialog(self)
+        self._genres_dialog = GenresDialog(self)
         self.__filters_controller = FiltersController()
         self.__filters_controller.set_kinds_container(self.ui.kinds_grid)
         self.__filters_controller.set_orders_container(self.ui.orders_grid)
@@ -68,8 +69,7 @@ class MainPage(BasePage):
         return item
 
     def change_catalog(self, index: int) -> None:
-        catalog = USER_CATALOGS[index]
-        self.catalog = catalog()
+        self.catalog: AbstractCatalog = USER_CATALOGS[index]()
         self.setup_filters()
         self.apply_filter()
 
@@ -135,9 +135,7 @@ class MainPage(BasePage):
 
     @Slot()
     def open_genres_dialog(self) -> None:
-        self.__genres_dialog.show()
+        self._genres_dialog.exec()
 
 
-__all__ = [
-    "MainPage",
-]
+__all__ = ["MainPage"]

@@ -19,8 +19,8 @@ class AbstractAnimeCatalog(AbstractCatalog):
 
 
 __all__ = [
-    "AbstractMangaCatalog",
     "AbstractAnimeCatalog",
-    "AbstractRanobeCatalog",
     "AbstractHentaiMangaCatalog",
+    "AbstractMangaCatalog",
+    "AbstractRanobeCatalog",
 ]

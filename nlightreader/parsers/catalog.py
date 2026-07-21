@@ -1,4 +1,5 @@
 from enum import IntEnum
+from typing import ClassVar
 
 from nlightreader.consts.items.parser_items import ParserItems
 from nlightreader.consts.urls import DEFAULT_HEADERS
@@ -25,13 +26,13 @@ class CatalogAuthType(IntEnum):
 
 
 class AbstractCatalog:
-    AUTH_TYPE: CatalogAuthType = CatalogAuthType.NO_AUTH
+    AUTH_TYPE: ClassVar[CatalogAuthType] = CatalogAuthType.NO_AUTH
     CATALOG_NAME = "CATALOG"
     CATALOG_ID = -1
     is_primary = False
-    _HEADERS = DEFAULT_HEADERS
-    _COOKIES = None
-    _FILTERS = ParserItems
+    _HEADERS: ClassVar = DEFAULT_HEADERS
+    _COOKIES: ClassVar = None
+    _FILTERS: ClassVar = ParserItems
 
     def get_manga(self, manga: Manga) -> Manga:
         return manga
@@ -51,19 +52,19 @@ class AbstractCatalog:
     def get_image(self, image: Image) -> bytes | None:
         return
 
-    def get_preview(self, manga: Manga) -> None:
+    def get_preview(self, manga: Manga) -> bytes | None:
         return
 
-    def get_character_preview(self, character: Character) -> None:
+    def get_character_preview(self, character: Character) -> bytes | None:
         return
 
     def get_genres(self) -> list[Genre]:
         return [
             Genre(
-                i["value"],
-                self.CATALOG_ID,
-                i["name"],
-                i["russian"],
+                content_id=i["value"],
+                catalog_id=self.CATALOG_ID,
+                name=i["name"],
+                russian=i["russian"],
             )
             for i in self._FILTERS.GENRES
         ]

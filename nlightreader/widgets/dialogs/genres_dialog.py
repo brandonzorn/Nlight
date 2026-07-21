@@ -5,65 +5,63 @@ from nlightreader.models import Genre
 
 
 class GenresDialogUi(MessageBoxBase):
-    def __init__(
-        self,
-        genres: dict[Genre, bool],
-        parent: QWidget | None = None,
-    ) -> None:
-        super().__init__(parent)
-        self.genres_items = {}
-        self.max_genres_per_row = 5
+    MAX_GENRES_PER_ROW = 5
 
-        self.title_label = SubtitleLabel(self.tr("Genres"), parent=self)
-        self.genres_layout = QGridLayout()
+    def __init__(self, genres: dict[Genre, bool], parent: QWidget) -> None:
+        super().__init__(parent)
+        self._setup_ui()
+
+        self._checkboxes: dict[Genre, CheckBox] = {}
         self._populate_genres(genres)
 
-        self.viewLayout.addWidget(self.title_label)
-        self.viewLayout.addLayout(self.genres_layout)
+    def _setup_ui(self) -> None:
+        self._title_label = SubtitleLabel(self.tr("Genres"), self)
+        self.viewLayout.addWidget(self._title_label)
+        self._genres_layout = QGridLayout()
+        self.viewLayout.addLayout(self._genres_layout)
 
-    def get_selected_genres(self) -> list[Genre]:
-        return [
+    @property
+    def selected_genres(self) -> set[Genre]:
+        return {
             genre
-            for checkbox, genre in self.genres_items.items()
+            for genre, checkbox in self._checkboxes.items()
             if checkbox.isChecked()
-        ]
+        }
 
     def _populate_genres(self, genres: dict[Genre, bool]) -> None:
-        for index, (genre, selected) in enumerate(genres.items()):
-            checkbox = CheckBox(genre.get_name())
-            checkbox.setChecked(selected)
-            self.genres_items[checkbox] = genre
-            row, col = divmod(index, self.max_genres_per_row)
-            self.genres_layout.addWidget(checkbox, row, col)
+        for index, (genre, checked) in enumerate(genres.items()):
+            checkbox = CheckBox(genre.get_name(), self)
+            checkbox.setChecked(checked)
+            self._checkboxes[genre] = checkbox
+            row, column = divmod(index, self.MAX_GENRES_PER_ROW)
+            self._genres_layout.addWidget(checkbox, row, column)
 
 
 class GenresDialog:
     def __init__(self, parent: QWidget) -> None:
-        self.parent = parent
-        self.genres: dict[Genre, bool] = {}
+        self._parent = parent
+        self._genres: dict[Genre, bool] = {}
 
-    def set_genres(self, genres: list[Genre]) -> None:
-        self.genres = {genre: False for genre in genres}
+    def exec(self) -> bool:
+        w = GenresDialogUi(self._genres, parent=self._parent)
+        if not w.exec():
+            return False
+        for genre in self._genres:
+            self._genres[genre] = genre in w.selected_genres
+        return True
 
     @property
-    def selected_genres(self) -> list[Genre]:
-        return [genre for genre, selected in self.genres.items() if selected]
+    def selected_genres(self) -> set[Genre]:
+        return {genre for genre, selected in self._genres.items() if selected}
 
-    def show(self) -> None:
-        w = GenresDialogUi(self.genres, parent=self.parent)
-        if w.exec():
-            selected_genres = w.get_selected_genres()
-            for genre in self.genres:
-                self.genres[genre] = genre in selected_genres
+    def set_genres(self, genres: list[Genre]) -> None:
+        self._genres = dict.fromkeys(genres, False)
 
     def reset_items(self) -> None:
-        for genre in self.genres:
-            self.genres[genre] = False
+        self._genres = dict.fromkeys(self._genres, False)
 
     def clear(self) -> None:
-        self.genres.clear()
+        self._genres.clear()
 
 
-__all__ = [
-    "GenresDialog",
-]
+__all__ = ["GenresDialog"]

@@ -7,7 +7,7 @@ from nlightreader.consts.items.preset_items import (
 
 
 class RulateItems(ParserItems):
-    ORDERS = [
+    ORDERS = (
         {
             "value": "0",
             "name": "By degree of readiness",
@@ -74,9 +74,7 @@ class RulateItems(ParserItems):
             "name": "By number in favorites",
             "russian": "По кол-ву в избранном",
         },
-    ]
+    )
 
 
-__all__ = [
-    "RulateItems",
-]
+__all__ = ["RulateItems"]
