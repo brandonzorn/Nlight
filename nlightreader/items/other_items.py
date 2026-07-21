@@ -63,6 +63,6 @@ class LibraryRecord:
 __all__ = [
     "HistoryNote",
     "LibraryRecord",
-    "UserRate",
     "User",
+    "UserRate",
 ]

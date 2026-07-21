@@ -4,9 +4,9 @@ from .lists import LIB_LISTS, LibList
 from .statuses import MangaKind, MangaStatus
 
 __all__ = [
+    "LIB_LISTS",
     "CatalogType",
     "Language",
-    "LIB_LISTS",
     "LibList",
     "MangaKind",
     "MangaStatus",

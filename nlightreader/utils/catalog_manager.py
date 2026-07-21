@@ -85,7 +85,7 @@ def get_lib_catalog(base_catalog: type[AbstractCatalog]) -> LibParser:
 
 
 __all__ = [
+    "USER_CATALOGS",
     "get_catalog_by_id",
     "get_lib_catalog",
-    "USER_CATALOGS",
 ]

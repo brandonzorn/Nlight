@@ -251,6 +251,4 @@ def _sanitize_path(path: Path) -> Path:
     return new_path
 
 
-__all__ = [
-    "FileManager",
-]
+__all__ = ["FileManager"]

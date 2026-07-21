@@ -150,6 +150,6 @@ def get_language_icon(language: Language) -> str:
 
 __all__ = [
     "dd_get",
-    "make_request",
     "get_language_icon",
+    "make_request",
 ]

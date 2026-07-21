@@ -30,6 +30,6 @@ class HistoryNoteMenu(AbstractContextMenu[HistoryMenuMode]):
 
 
 __all__ = [
-    "HistoryNoteMenu",
     "HistoryMenuMode",
+    "HistoryNoteMenu",
 ]

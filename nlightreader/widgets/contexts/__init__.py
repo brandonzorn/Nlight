@@ -3,10 +3,10 @@ from .library_manga_menu import LibraryMangaMenu, LibraryMenuMode
 from .read_mark_menu import ReadMarkMenu, ReadMarkMode
 
 __all__ = [
-    "ReadMarkMenu",
-    "ReadMarkMode",
+    "HistoryMenuMode",
+    "HistoryNoteMenu",
     "LibraryMangaMenu",
     "LibraryMenuMode",
-    "HistoryNoteMenu",
-    "HistoryMenuMode",
+    "ReadMarkMenu",
+    "ReadMarkMode",
 ]

@@ -18,8 +18,8 @@ class Status(NamedBaseModel):
 
 
 __all__ = [
+    "Genre",
     "Kind",
     "Order",
-    "Genre",
     "Status",
 ]

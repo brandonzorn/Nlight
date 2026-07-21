@@ -4,9 +4,9 @@ from .genres_dialog import GenresDialog
 from .rate_dialog import RateDialog
 
 __all__ = [
-    "TokenAuthMessageBox",
-    "UserDataAuthMessageBox",
     "CharacterInfoDialog",
     "GenresDialog",
     "RateDialog",
+    "TokenAuthMessageBox",
+    "UserDataAuthMessageBox",
 ]

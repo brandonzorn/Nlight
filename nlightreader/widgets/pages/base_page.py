@@ -137,4 +137,8 @@ class BaseMangaLibraryPage(BaseMangaPage):
         self._get_content()
 
 
-__all__ = ["BasePage", "BaseMangaPage", "BaseMangaLibraryPage"]
+__all__ = [
+    "BaseMangaLibraryPage",
+    "BaseMangaPage",
+    "BasePage",
+]

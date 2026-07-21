@@ -119,6 +119,4 @@ class FiltersController:
             self._genres_container.reset_items()
 
 
-__all__ = [
-    "FiltersController",
-]
+__all__ = ["FiltersController"]

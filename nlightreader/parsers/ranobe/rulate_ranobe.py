@@ -215,4 +215,4 @@ class Erolate(Rulate):
         return ranobe
 
 
-__all__ = ["Rulate", "Erolate"]
+__all__ = ["Erolate", "Rulate"]
