@@ -119,10 +119,11 @@ class ShikimoriBase(AbstractCatalog):
         characters = []
         url = f"{self._URL_API}/mangas/{manga.content_id}/roles"
         response = self._client.get_json(url)
-        if not response:
+        if not isinstance(response, list):
             return characters
-
         for i in response:
+            if not isinstance(i, dict):
+                continue
             roles_data = i.get("roles")
             if not roles_data:
                 continue

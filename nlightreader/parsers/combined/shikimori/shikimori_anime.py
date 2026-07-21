@@ -154,13 +154,13 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         url = f"{self._URL_API}/animes/{manga.content_id}/roles"
         response = self._client.get_json(url)
         characters: list[Character] = []
-        if not isinstance(response, dict):
+        if not isinstance(response, list):
             return characters
         for data in response:
             roles = data.get("roles")
             if not isinstance(roles, list) or len(roles) == 0:
                 continue
-            role = data.get("roles")[0]
+            role = data.get("roles", [])[0]
             if role not in ["Supporting", "Main"]:
                 continue
             character_data = data.get("character")

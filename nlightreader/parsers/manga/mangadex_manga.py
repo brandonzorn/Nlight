@@ -1,5 +1,5 @@
 import logging
-from typing import Any
+from typing import Any, ClassVar
 
 import requests
 
@@ -14,11 +14,12 @@ from nlightreader.utils.network import NetworkClient
 from nlightreader.utils.token import TokenManager
 from nlightreader.utils.utils import dd_get, make_request
 
+logger = logging.getLogger(__name__)
+
 try:
     from keys import MANGADEX_CLIENT_ID, MANGADEX_CLIENT_SECRET
 except (ModuleNotFoundError, ImportError):
-    logging.info("MangaDex API keys not found")
-    MANGADEX_CLIENT_ID, MANGADEX_CLIENT_SECRET = "", ""
+    logger.warning("MangaDex API keys not found")
 
 
 class MangaDex(AbstractMangaCatalog):
@@ -28,7 +29,7 @@ class MangaDex(AbstractMangaCatalog):
     _FILTERS = MangaDexItems
     _URL = "https://mangadex.org"
     _URL_API = "https://api.mangadex.org"
-    _HEADERS = {"User-Agent": "Nlight"}
+    _HEADERS: ClassVar = {"User-Agent": "Nlight"}
 
     def __init__(self) -> None:
         self._client = NetworkClient(headers=self._HEADERS)
@@ -83,7 +84,7 @@ class MangaDex(AbstractMangaCatalog):
             f"order[{form.get_order_id()}]": "desc",
             "title": form.search,
             "offset": form.offset,
-            "includedTags[]": form.get_genre_ids() + form.get_kind_ids(),
+            "includedTags[]": form.get_genre_ids() | form.get_kind_ids(),
             "contentRating[]": [
                 "safe",
                 "suggestive",

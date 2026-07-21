@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from nlightreader.consts.items import DesuItems
 from nlightreader.core.enums import Language, MangaKind, MangaStatus
 from nlightreader.items import RequestForm
@@ -13,7 +15,7 @@ class Desu(AbstractMangaCatalog):
     _FILTERS = DesuItems
     _URL = "https://desu.uno"
     _URL_API = f"{_URL}/manga/api"
-    _HEADERS = {"User-Agent": "Nlight", "Referer": f"{_URL}/"}
+    _HEADERS: ClassVar = {"User-Agent": "Nlight", "Referer": f"{_URL}/"}
 
     def __init__(self) -> None:
         self._client = NetworkClient(headers=self._HEADERS)

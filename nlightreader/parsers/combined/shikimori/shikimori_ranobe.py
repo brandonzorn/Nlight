@@ -24,8 +24,7 @@ class ShikimoriRanobe(ShikimoriBase, AbstractRanobeCatalog):
         mangas: list[Manga] = []
         if not isinstance(response, list):
             return mangas
-        for data in response:
-            mangas.append(self._setup_manga(data))
+        mangas.extend(self._setup_manga(data) for data in response)
         return mangas
 
 

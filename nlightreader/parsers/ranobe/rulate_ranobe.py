@@ -1,4 +1,5 @@
 import base64
+from typing import ClassVar
 
 from bs4 import BeautifulSoup
 
@@ -15,7 +16,7 @@ class Rulate(AbstractRanobeCatalog):
     CATALOG_NAME = "Rulate"
     _FILTERS = RulateItems
     _URL = "https://tl.rulate.ru"
-    _COOKIES = {
+    _COOKIES: ClassVar = {
         "mature": "c3a2ed4b199a1a15f5a5483504c7a75a7030dc4bi%3A1%3B",
     }
 
