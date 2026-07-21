@@ -51,17 +51,23 @@ class NetworkClient:
                 json=json,
             )
             response.raise_for_status()
-            return response
-        except requests.exceptions.RequestException as e:
-            logger.error(
-                f"\nError fetching: {url} [{method}]\n"
-                f"\tReason: {e}\n"
-                f"\tCookies: {extra_headers}\n"
-                f"\tHeaders: {extra_headers}\n"
-                f"\tJson: {json}\n"
-                f"\tParams: {params}",
+        except requests.exceptions.RequestException:
+            logger.exception(
+                "\nError fetching: %s [%s]\n"
+                "\tCookies: %s\n"
+                "\tHeaders: %s\n"
+                "\tJson: %s\n"
+                "\tParams: %s",
+                url,
+                method,
+                extra_cookies,
+                extra_headers,
+                json,
+                params,
             )
             return None
+        else:
+            return response
 
     def get_json(
         self,

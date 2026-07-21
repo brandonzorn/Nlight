@@ -107,6 +107,20 @@ def make_request(
             cookies=cookies,
         )
         response.raise_for_status()
+    except requests.exceptions.RequestException:
+        logger.exception(
+            "\nError fetching: %s\n"
+            "\tCookies: %s\n"
+            "\tHeaders: %s\n"
+            "\tJson: %s\n"
+            "\tParams: %s",
+            url,
+            cookies,
+            headers,
+            json,
+            params,
+        )
+    else:
         if content_type == "content":
             return response.content
         if content_type == "json":
@@ -114,16 +128,6 @@ def make_request(
         if content_type == "text":
             return response.text
         return response
-    except requests.exceptions.RequestException as e:
-        logger.error(
-            f"\nError fetching: {url}\n"
-            f"\tReason: {e}\n"
-            f"\tCookies: {cookies}\n"
-            f"\tData: {data}"
-            f"\tHeaders: {headers}\n"
-            f"\tJson: {json}\n"
-            f"\tParams: {params}\n",
-        )
 
 
 def get_language_icon(language: Language) -> str:

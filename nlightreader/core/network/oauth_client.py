@@ -119,18 +119,23 @@ class OAuthClient:
                 json=json,
             )
             response.raise_for_status()
-            return response
         except requests.exceptions.RequestException as e:
-            logger.error(
-                f"\nError fetching: {url}\n"
-                f"\tReason: {e}\n"
-                f"\tCookies: {self._session.session.cookies}\n"
-                f"\tHeaders: {self._session.session.headers}\n"
-                f"\tJson: {json}\n"
-                f"\tParams: {params}",
+            logger.exception(
+                "\nError fetching: %s\n"
+                "\tCookies: %s\n"
+                "\tHeaders: %s\n"
+                "\tJson: %s\n"
+                "\tParams: %s",
+                url,
+                self._session.session.cookies,
+                self._session.session.headers,
+                json,
+                params,
             )
             if e.response is not None and e.response.status_code == 401:
                 self._is_authorized = False
+        else:
+            return response
 
 
 __all__ = ["OAuthClient"]
