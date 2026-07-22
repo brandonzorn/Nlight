@@ -1,3 +1,4 @@
+from collections import defaultdict
 import logging
 from typing import override
 
@@ -9,10 +10,9 @@ from qfluentwidgets import FluentIcon
 from data.ui.widgets.info import Ui_InfoPage
 from nlightreader.consts.colors import ItemsIcons
 from nlightreader.consts.files import NlFluentIcons
-from nlightreader.core.enums import LIB_LISTS, LibList
+from nlightreader.core.enums import Language, LIB_LISTS, LibList
 from nlightreader.items import HistoryNote
 from nlightreader.models import Chapter, Character, Manga
-from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils.catalog_manager import get_catalog_by_id
 from nlightreader.utils.database import Database
 from nlightreader.utils.file_manager import FileManager
@@ -80,15 +80,15 @@ class InfoPage(QWidget):
         self._workers: list[Worker] = []
 
         self._manga: Manga = manga
-        self._catalog: AbstractCatalog = get_catalog_by_id(
-            self._manga.catalog_id,
-        )
+        self._catalog = get_catalog_by_id(self._manga.catalog_id)
 
         self._related_mangas: list[Manga] = []
         self._related_characters: list[Character] = []
         self._chapters: list[Chapter] = []
 
-        self.__sorted_chapters = {}
+        self._grouped_chapters: dict[Language, dict[str | None, list]] = (
+            defaultdict(lambda: defaultdict(list))
+        )
         self._manga_pixmap = QPixmap()
         self._reader_window = None
 
@@ -97,7 +97,7 @@ class InfoPage(QWidget):
 
         def set_as_read_all() -> None:
             history_notes = []
-            chapters_by_lang: list[Chapter] = self.__sorted_chapters[
+            chapters_by_lang: list[Chapter] = self._grouped_chapters[
                 selected_chapter.language
             ][selected_chapter.translator]
             for i, chapter in enumerate(
@@ -132,10 +132,10 @@ class InfoPage(QWidget):
             selected_item.setIcon(0, QIcon())
 
         menu = ReadMarkMenu()
-        selected_item = context_target.itemAt(position)
-        if not selected_item or not isinstance(selected_item, ModelTreeItem):
+        selected_item: ModelTreeItem = context_target.itemAt(position)
+        if not isinstance(selected_item, ModelTreeItem):
             return
-        selected_chapter = selected_item.model
+        selected_chapter: Chapter = selected_item.model
         if not self.__db.check_complete_chapter(selected_chapter):
             menu.set_mode(ReadMarkMode.SET_AS_READ)
         elif self.__db.get_complete_status(selected_chapter):
@@ -158,22 +158,15 @@ class InfoPage(QWidget):
         if event.oldSize().width() != event.size().width():
             self._update_manga_preview_size()
 
-    def sort_chapters(self) -> None:
-        self.__sorted_chapters.clear()
+    def _group_chapters(self) -> None:
+        self._grouped_chapters.clear()
         for chapter in self._chapters:
-            ch_lang = chapter.language
-            if ch_lang not in self.__sorted_chapters:
-                self.__sorted_chapters[ch_lang] = {}
-            if chapter.translator not in self.__sorted_chapters[ch_lang]:
-                self.__sorted_chapters[ch_lang][chapter.translator] = []
-            (
-                self.__sorted_chapters[ch_lang][chapter.translator].append(
-                    chapter,
-                )
-            )
+            self._grouped_chapters[chapter.language][
+                chapter.translator
+            ].append(chapter)
 
     def _get_selected_chapter(self) -> Chapter | None:
-        selected_item = self.ui.itemsTree.currentItem()
+        selected_item: ModelTreeItem = self.ui.itemsTree.currentItem()
         if not isinstance(selected_item, ModelTreeItem):
             return None
         return selected_item.model
@@ -245,7 +238,9 @@ class InfoPage(QWidget):
 
     @Slot()
     def open_character_dialog(self) -> None:
-        current_item = self.ui.charactersList.currentItem()
+        current_item: ModelListItem = self.ui.charactersList.currentItem()
+        if not isinstance(current_item, ModelListItem):
+            return
         character = self._catalog.get_character(current_item.model)
         CharacterInfoDialog(character, parent=self).exec()
 
@@ -307,16 +302,20 @@ class InfoPage(QWidget):
         try:
             self._chapters = self._catalog.get_chapters(self._manga)
         except NotImplementedError:
+            logger.warning(
+                "get_chapters is not implemented for %s",
+                self._catalog.CATALOG_NAME,
+            )
             self._chapters.clear()
             return
         self._chapters.reverse()
-        self.sort_chapters()
+        self._group_chapters()
         self.__db.add_chapters(self._chapters, self._manga)
 
     def update_chapters(self) -> None:
         self.ui.itemsTree.clear()
         self.ui.itemsWidget.setVisible(bool(self._chapters))
-        for lang, translators in self.__sorted_chapters.items():
+        for lang, translators in self._grouped_chapters.items():
             lang_item = GroupTreeItem(
                 translate("NlLanguage", lang.to_str()),
                 icon=QIcon(get_language_icon(lang)),
@@ -338,7 +337,7 @@ class InfoPage(QWidget):
                             ch_item.setIcon(0, ItemsIcons.UNREAD)
                     translator_item.addChild(ch_item)
 
-            if len(self.__sorted_chapters) == 1:
+            if len(self._grouped_chapters) == 1:
                 lang_item.setExpanded(True)
 
     def get_relations(self) -> None:
@@ -347,6 +346,10 @@ class InfoPage(QWidget):
                 self._manga,
             )
         except NotImplementedError:
+            logger.warning(
+                "get_relations is not implemented for %s",
+                self._catalog.CATALOG_NAME,
+            )
             self._related_mangas.clear()
 
     def update_relations(self) -> None:
@@ -362,6 +365,10 @@ class InfoPage(QWidget):
                 self._manga,
             )
         except NotImplementedError:
+            logger.warning(
+                "get_characters is not implemented for %s",
+                self._catalog.CATALOG_NAME,
+            )
             self._related_characters.clear()
 
     def update_characters(self) -> None:
@@ -389,7 +396,9 @@ class InfoPage(QWidget):
                     return
                 self._reader_window = ReaderWindow(
                     self._manga,
-                    self._chapters,
+                    self._grouped_chapters[selected_chapter.language][
+                        selected_chapter.translator
+                    ],
                 )
                 self._reader_window.setup(
                     self._chapters.index(selected_chapter) + 1,
