@@ -1,4 +1,4 @@
-from PySide6.QtCore import QSize, Slot
+from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import (
     FluentIcon,
@@ -98,14 +98,6 @@ class ParentWindow(FluentWindow):
         ):
             return
         self.stackedWidget.currentWidget().setup()
-
-    def set_min_size_by_screen(self) -> None:
-        self.setMinimumSize(
-            QSize(
-                self.screen().size().width() // 2,
-                self.screen().size().height() // 2,
-            ),
-        )
 
     def delete_info_interface(self) -> None:
         if self.info_interface is not None:
