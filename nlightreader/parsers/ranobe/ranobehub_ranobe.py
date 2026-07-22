@@ -25,6 +25,7 @@ class Ranobehub(AbstractRanobeCatalog):
 
     @override
     def get_manga(self, manga: Manga) -> Manga:
+        manga.kind = MangaKind.RANOBE
         url = f"{self._URL_API}/ranobe/{manga.content_id}"
         response = self._client.get_json(url)
         if not isinstance(response, dict):
@@ -32,7 +33,6 @@ class Ranobehub(AbstractRanobeCatalog):
         response_data = response.get("data", {})
 
         manga.score = response_data.get("rating", 0)
-        manga.kind = MangaKind.RANOBE
 
         status_name = dd_get(response_data, "status.title")
         if isinstance(status_name, str):
