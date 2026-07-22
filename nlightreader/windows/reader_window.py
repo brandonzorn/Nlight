@@ -1,3 +1,4 @@
+import logging
 import time
 from typing import override
 
@@ -13,6 +14,7 @@ from data.ui.widgets.reader import Ui_ReaderWidget
 from nlightreader.consts.colors import ItemsIcons
 from nlightreader.core.enums import MangaKind
 from nlightreader.core.exceptions.parser_content_exc import (
+    BaseContentError,
     FetchContentError,
     NoContentError,
 )
@@ -29,6 +31,8 @@ from nlightreader.widgets.containers.content_container import (
 )
 from nlightreader.widgets.containers.image_area import ImageArea
 
+logger = logging.getLogger(__name__)
+
 
 class ReaderWindow(SimpleCardWidget):
     def __init__(self, manga: Manga, chapters: list[Chapter]) -> None:
@@ -36,19 +40,11 @@ class ReaderWindow(SimpleCardWidget):
         self.ui = Ui_ReaderWidget()
         self.ui.setupUi(self)
 
-        self.setStyleSheet(
-            """
-            QWidget {background: transparent;}
-            QScrollArea {border: none;}
-            """,
-        )
         self._set_image_thread = Thread(
             target=self.get_content,
             callback=self.update_image,
             error_callback=self._process_errors,
         )
-
-        self._content_container: AbstractContentContainer | None = None
 
         self._db: Database = Database()
 
@@ -62,7 +58,17 @@ class ReaderWindow(SimpleCardWidget):
         self._cur_page = 1
         self._max_page = 1
 
-    def _init_ui(self) -> None:
+        self._setup_ui()
+        self._setup_connections()
+
+    def _setup_ui(self) -> None:
+        self.setStyleSheet(
+            """
+            QWidget {background: transparent;}
+            QScrollArea {border: none;}
+            """,
+        )
+        self.setWindowTitle(self._manga.name)
         self.ui.chaptersCard.hide()
 
         self.ui.fullscreenButton.setIcon(FluentIcon.FULL_SCREEN)
@@ -72,6 +78,14 @@ class ReaderWindow(SimpleCardWidget):
         self.ui.next_chapter_btn.setIcon(FluentIcon.UP)
         self.ui.prev_chapter_btn.setIcon(FluentIcon.DOWN)
 
+        self._content_container: AbstractContentContainer = (
+            TextArea()
+            if (self._manga.kind == MangaKind.RANOBE)
+            else ImageArea()
+        )
+        self._content_container.install(self.ui.reader_layout)
+
+    def _setup_connections(self) -> None:
         self.ui.next_page_btn.clicked.connect(self.turn_page_next)
         self.ui.prev_page_btn.clicked.connect(self.turn_page_prev)
 
@@ -83,20 +97,10 @@ class ReaderWindow(SimpleCardWidget):
             self.change_chapters_list_visible,
         )
 
-        self.ui.chaptersList.doubleClicked.connect(self.change_chapter)
-
-        self._content_container = (
-            TextArea()
-            if (self._manga.kind == MangaKind.RANOBE)
-            else ImageArea()
-        )
-        self._content_container.install(self.ui.reader_layout)
-
-        self.setWindowTitle(self._manga.name)
+        self.ui.chaptersList.currentItemChanged.connect(self.change_chapter)
 
     def setup(self, cur_chapter: int = 1) -> None:
         self._cur_chapter = cur_chapter
-        self._init_ui()
         self.showMaximized()
         self.update_chapters_list()
         self.update_chapter()
@@ -121,8 +125,8 @@ class ReaderWindow(SimpleCardWidget):
         )
 
     @Slot()
-    def change_chapter(self) -> None:
-        self._cur_chapter = self.ui.chaptersList.currentIndex().row() + 1
+    def change_chapter(self, item: QListWidgetItem) -> None:
+        self._cur_chapter = self.ui.chaptersList.indexFromItem(item).row() + 1
         self.update_chapter()
 
     def update_chapters_list(self) -> None:
@@ -190,7 +194,7 @@ class ReaderWindow(SimpleCardWidget):
             ),
         )
         if self._cur_chapter == self._max_chapters:
-            self.deleteLater()
+            self.close()
         else:
             self._cur_chapter += 1
         self.update_chapter()
@@ -216,17 +220,19 @@ class ReaderWindow(SimpleCardWidget):
         self._content_container.set_state(ContentContainerState.FETCH_CONTENT)
         self._set_image_thread.start()
 
-    def _process_errors(self, exception: Exception) -> None:
-        try:
-            raise exception
-        except FetchContentError:
+    def _process_errors(self, e: BaseContentError) -> None:
+        if isinstance(e, FetchContentError):
+            logger.error(e)
             self._content_container.set_state(
                 ContentContainerState.FETCH_ERROR,
             )
-        except NoContentError:
+        elif isinstance(e, NoContentError):
+            logger.warning(e)
             self._content_container.set_state(
                 ContentContainerState.NO_CONTENT,
             )
+        else:
+            logger.exception("Unhandled error")
 
     def get_content(self) -> str | QPixmap | None:
         page = self._cur_page
@@ -261,14 +267,13 @@ class ReaderWindow(SimpleCardWidget):
         self._content_container.set_content(content)
 
     def get_images(self) -> None:
-        chapter = self._current_chapter
-        self._images = self._catalog.get_images(self._manga, chapter)
+        self._images = self._catalog.get_images(
+            self._manga,
+            self._current_chapter,
+        )
         if not self._images:
             self._images = [ImageStub()]
-        self._max_page = self.get_chapter_pages()
-
-    def get_chapter_pages(self) -> int:
-        return self._images[-1].page_number
+        self._max_page = self._images[-1].page_number
 
     @property
     def _current_chapter(self) -> Chapter:
