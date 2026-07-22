@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Any
+from typing import Any, override
 
 from PySide6.QtWidgets import QApplication
 import requests
@@ -30,7 +30,6 @@ try:
     from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
 except (ModuleNotFoundError, ImportError):
     logger.warning("Shikimori API keys not found")
-    SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID = "", ""
 
 
 class ShikimoriLib(ShikimoriBase, LibParser):
@@ -61,6 +60,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                 mangas.append(self._setup_manga(i))
         return mangas
 
+    @override
     def get_user(self) -> User:
         response = self.session.request("GET", f"{self._URL_API}/users/whoami")
         self.session.user = User(None, None, None)
@@ -72,6 +72,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
             )
         return self.session.user
 
+    @override
     def create_user_rate(self, manga: Manga) -> None:
         url = f"{self._URL_API}/v2/user_rates"
         data = {
@@ -83,6 +84,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         }
         self.session.request("POST", url, json=data)
 
+    @override
     def check_user_rate(self, manga: Manga) -> bool:
         url = f"{self._URL_API}/v2/user_rates"
         params = {
@@ -97,10 +99,12 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                     return True
         return False
 
+    @override
     def delete_user_rate(self, user_rate: UserRate) -> None:
         url = f"{self._URL_API}/v2/user_rates/{user_rate.id}"
         self.session.request("DELETE", url)
 
+    @override
     def get_user_rate(self, manga: Manga) -> UserRate | None:
         url = f"{self._URL_API}/v2/user_rates"
         params = {
@@ -121,6 +125,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                 )
         return None
 
+    @override
     def update_user_rate(self, user_rate: UserRate) -> None:
         url = f"{self._URL_API}/v2/user_rates/{user_rate.id}"
         status = user_rate.status.to_str()

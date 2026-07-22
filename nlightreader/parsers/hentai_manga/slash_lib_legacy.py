@@ -1,3 +1,5 @@
+from typing import override
+
 from nlightreader.consts.items import MangaLibItems
 from nlightreader.models import Manga
 from nlightreader.parsers.catalogs_base import (
@@ -15,6 +17,7 @@ class SlashLibLegacy(AbstractHentaiMangaCatalog):
     def __init__(self) -> None:
         self._client = NetworkClient(headers=self._HEADERS)
 
+    @override
     def get_preview(self, manga: Manga) -> bytes | None:
         url = manga.preview_url
         if url is None:
@@ -24,6 +27,7 @@ class SlashLibLegacy(AbstractHentaiMangaCatalog):
             extra_headers={"Referer": f"{self._URL}/"},
         )
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/{manga.content_id}"
 

@@ -1,4 +1,4 @@
-from typing import override
+from typing import ClassVar, override
 
 from nlightreader.core.enums import Language
 from nlightreader.items import RequestForm
@@ -12,7 +12,7 @@ class LibBase(AbstractCatalog):
     _URL = None
     _URL_API = "https://api.cdnlibs.org/api"
 
-    _COOKIES = {"adult_caution": '{"media":true,"content":true}'}
+    _COOKIES: ClassVar = {"adult_caution": '{"media":true,"content":true}'}
 
     _CONTENT_NAME = None
     _SITE_ID = None

@@ -49,7 +49,7 @@ class AbstractCatalog:
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         raise NotImplementedError
 
-    def get_image(self, image: Image) -> bytes | None:
+    def get_image(self, image: Image) -> bytes | str | None:
         raise NotImplementedError
 
     def get_preview(self, manga: Manga) -> bytes | None:

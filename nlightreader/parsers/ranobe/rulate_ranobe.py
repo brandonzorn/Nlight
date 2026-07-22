@@ -1,7 +1,7 @@
 import base64
-from typing import ClassVar
+from typing import ClassVar, override
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 
 from nlightreader.consts.items import RulateItems
 from nlightreader.core.enums import Language, MangaKind
@@ -26,6 +26,7 @@ class Rulate(AbstractRanobeCatalog):
             cookies=self._COOKIES,
         )
 
+    @override
     def get_manga(self, manga: Manga) -> Manga:
         response = self._client.get_text(
             f"{self._URL}/book/{manga.content_id}",
@@ -45,6 +46,7 @@ class Rulate(AbstractRanobeCatalog):
         manga.kind = MangaKind.RANOBE
         return manga
 
+    @override
     def search_manga(self, form: RequestForm) -> list[Manga]:
         params = {
             "t": form.search,
@@ -69,11 +71,10 @@ class Rulate(AbstractRanobeCatalog):
             if len(name_items) == 2:
                 name = name_items[0].strip()
                 russian = name_items[1].strip()
-            ranobe_id = str(
-                i.unwrap()["data-tooltip-content"].split(
-                    "#book-tooltip-",
-                )[-1],
-            )
+            id_attr = i.unwrap()["data-tooltip-content"]
+            if not isinstance(id_attr, str):
+                continue
+            ranobe_id = str(id_attr.split("#book-tooltip-")[-1])
             ranobe.append(
                 Manga(
                     content_id=ranobe_id,
@@ -84,6 +85,7 @@ class Rulate(AbstractRanobeCatalog):
             )
         return ranobe
 
+    @override
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         chapters = []
         response = self._client.get_text(
@@ -99,9 +101,13 @@ class Rulate(AbstractRanobeCatalog):
                 class_="disabled",
             ) or chapter_data.find("i", class_="ac_read g"):
                 continue
-            name: str = chapter_data.find("td", class_="t").text
-            name = name.strip()
+            name_tag = chapter_data.find("td", class_="t")
+            if name_tag is None:
+                continue
+            name: str = name_tag.text.strip()
             chapter_id = chapter_data.unwrap()["data-id"]
+            if not isinstance(chapter_id, str):
+                continue
 
             chapter = Chapter(
                 content_id=chapter_id,
@@ -114,6 +120,7 @@ class Rulate(AbstractRanobeCatalog):
             chapters.append(chapter)
         return chapters
 
+    @override
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = (
             f"{self._URL}/book/"
@@ -121,6 +128,7 @@ class Rulate(AbstractRanobeCatalog):
         )
         return [Image(content_id="", page_number=1, url=url)]
 
+    @override
     def get_image(self, image: Image) -> str | None:
         def get_chapter_content_image(media_id: str) -> str:
             url = f"{self._URL}/{media_id}"
@@ -132,7 +140,10 @@ class Rulate(AbstractRanobeCatalog):
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/jpg;base64,{str_equivalent_image}"
 
-        response = self._client.get_text(image.url)
+        url = image.url
+        if url is None:
+            return None
+        response = self._client.get_text(url)
         if not isinstance(response, str):
             return None
         soup = BeautifulSoup(response, "html.parser")
@@ -142,13 +153,19 @@ class Rulate(AbstractRanobeCatalog):
 
         content = ""
         for p in text_container:
-            if p.find("img") and not isinstance(p.find("img"), int):
-                img_src = get_chapter_content_image(p.find("img")["src"])
-                content += f'<p><img src="{img_src}"></p>'
-            else:
+            if not isinstance(p, Tag):
+                continue
+            img_tag = p.find("img")
+            if img_tag is None:
                 content += f"<p>{p.text}</p>"
+            else:
+                img_src = img_tag["src"]
+                if isinstance(img_src, str):
+                    img_content = get_chapter_content_image(img_src)
+                    content += f'<p><img src="{img_content}"></p>'
         return content
 
+    @override
     def get_preview(self, manga: Manga) -> bytes | None:
         response = self._client.get_text(
             f"{self._URL}/book/{manga.content_id}",
@@ -164,6 +181,7 @@ class Rulate(AbstractRanobeCatalog):
             return None
         return image_response
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/book/{manga.content_id}"
 
@@ -172,10 +190,11 @@ class Erolate(Rulate):
     CATALOG_ID = 5
     CATALOG_NAME = "Erolate"
     _URL = "https://erolate.com"
-    _COOKIES = {
+    _COOKIES: ClassVar = {
         "mature": "7da3ee594b38fc5355692d978fe8f5adbeb3d17di%3A1%3B",
     }
 
+    @override
     def search_manga(self, form: RequestForm) -> list[Manga]:
         ranobe: list[Manga] = []
         params = {
@@ -201,9 +220,10 @@ class Erolate(Rulate):
             if len(name_items) == 2:
                 name = name_items[0].strip()
                 russian = name_items[1].strip()
-            ranobe_id = i.unwrap()["data-tooltip-content"].split(
-                "#book-tooltip-",
-            )[-1]
+            id_tag = i.unwrap()["data-tooltip-content"]
+            if not isinstance(id_tag, str):
+                continue
+            ranobe_id = id_tag.split("#book-tooltip-")[-1]
             ranobe.append(
                 Manga(
                     content_id=ranobe_id,
@@ -215,4 +235,4 @@ class Erolate(Rulate):
         return ranobe
 
 
-__all__ = ["Rulate", "Erolate"]
+__all__ = ["Erolate", "Rulate"]

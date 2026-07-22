@@ -1,3 +1,5 @@
+from typing import override
+
 from nlightreader.consts.items import RemangaItems
 from nlightreader.core.enums import Language, MangaKind
 from nlightreader.items import RequestForm
@@ -17,28 +19,31 @@ class Remanga(AbstractMangaCatalog):
     def __init__(self) -> None:
         self._client = NetworkClient(headers=self._HEADERS)
 
+    @override
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/titles/{manga.content_id}/"
-        response_data = self._client.get_json(url).get("content", {})
-
-        if not response_data:
+        response = self._client.get_json(url)
+        if not response or not isinstance(response, dict):
             return manga
+        manga_data = response.get("content", {})
 
-        kind_name = dd_get(response_data, "type.name")
-        manga.kind = MangaKind.from_str(kind_name)
+        kind_name = dd_get(manga_data, "type.name")
+        if isinstance(kind_name, str):
+            manga.kind = MangaKind.from_str(kind_name)
 
-        manga.score = float(response_data.get("avg_rating", 0))
+        manga.score = float(manga_data.get("avg_rating", 0))
 
-        img = dd_get(response_data, "img.high")
+        img = dd_get(manga_data, "img.high")
         if img and img != "/media/None":
             manga.preview_url = f"{self._URL}{img}"
 
         manga.add_description(
             Language.UNDEFINED,
-            response_data.get("description"),
+            manga_data.get("description"),
         )
         return manga
 
+    @override
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/search/catalog"
         if form.search:
@@ -79,13 +84,14 @@ class Remanga(AbstractMangaCatalog):
             mangas.append(manga)
         return mangas
 
+    @override
     def get_chapters(self, manga: Manga) -> list[Chapter]:
         url = f"{self._URL_API}/titles/{manga.content_id}/"
         response = self._client.get_json(url)
         chapters: list[Chapter] = []
         if not isinstance(response, dict):
             return chapters
-        data = response.get("content")
+        data = response.get("content", {})
         branch_id = data.get("branches")[0].get("id")
         chapters_data = self._client.get_json(
             f"{self._URL_API}/titles/chapters"
@@ -108,17 +114,27 @@ class Remanga(AbstractMangaCatalog):
             chapters.append(chapter)
         return chapters
 
-    def get_images(self, _: Manga, chapter: Chapter) -> list[Image]:
+    @override
+    def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = f"{self._URL_API}/titles/chapters/{chapter.content_id}/"
         response = self._client.get_json(url)
         images: list[Image] = []
         if not isinstance(response, dict):
             return images
-        for i, page_data in enumerate(dd_get(response, "content.pages")):
-            page_data = page_data[0]
-            pg_id = page_data.get("id")
+        pages_data = dd_get(response, "content.pages")
+        if not isinstance(pages_data, list):
+            return images
+        for i, page_data in enumerate(pages_data):
+            if not isinstance(page_data, list):
+                continue
+            data = page_data[0]
+            if not isinstance(data, dict):
+                continue
+            pg_id = str(data.get("id") or "")
             page = i + 1
-            pg_link = page_data.get("link")
+            pg_link = data.get("link")
+            if not isinstance(pg_link, str):
+                pg_link = None
             images.append(
                 Image(
                     content_id=pg_id,
@@ -128,6 +144,7 @@ class Remanga(AbstractMangaCatalog):
             )
         return images
 
+    @override
     def get_image(self, image: Image) -> bytes | None:
         headers = {
             "User-Agent": "Nlight",
@@ -141,12 +158,14 @@ class Remanga(AbstractMangaCatalog):
             return None
         return image_response
 
+    @override
     def get_preview(self, manga: Manga) -> bytes | None:
         url = manga.preview_url
         if not isinstance(url, str):
             return None
         return self._client.get_bytes(url)
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/manga/{manga.content_id}"
 
