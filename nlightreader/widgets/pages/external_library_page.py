@@ -53,7 +53,10 @@ class ExternalLibraryPage(BasePage):
         self.ui.searchLineEdit.searchSignal.connect(self.search)
         self.ui.signInButton.clicked.connect(self.authorize)
         self.catalog: LibParser = ShikimoriLib()
-        Worker(target=self.get_user_info, callback=self.set_user_info).start()
+        Worker(
+            target=self._get_user_info,
+            callback=self._set_user_info,
+        ).start()
 
     @override
     def _setup_manga_item(self, manga: Manga) -> MangaItem:
@@ -65,11 +68,11 @@ class ExternalLibraryPage(BasePage):
         item.manga_clicked.connect(self.manga_open.emit)
         return item
 
-    def get_user_info(self) -> User:
+    def _get_user_info(self) -> User:
         self.ui.signInButton.setEnabled(False)
         return self.catalog.get_user()
 
-    def set_user_info(self, user: User) -> None:
+    def _set_user_info(self, user: User) -> None:
         if user.nickname:
             self.ui.signInButton.setText(user.nickname)
         else:
@@ -83,7 +86,7 @@ class ExternalLibraryPage(BasePage):
         )
 
     def auth_success_callback(self, user: User) -> None:
-        self.set_user_info(user)
+        self._set_user_info(user)
         self.get_content()
 
     @Slot()
@@ -99,7 +102,7 @@ class ExternalLibraryPage(BasePage):
         if w.exec():
             self.catalog.session.auth_login(w.get_user_data())
             Worker(
-                target=self.get_user_info,
+                target=self._get_user_info,
                 callback=self.auth_success_callback,
             ).start()
 

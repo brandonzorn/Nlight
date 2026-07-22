@@ -79,9 +79,10 @@ class MangaItem(QWidget):
     @override
     def mouseReleaseEvent(self, event: QMouseEvent) -> None:
         super().mouseReleaseEvent(event)
-        if event.button() == Qt.MouseButton.LeftButton:
-            if self.rect().contains(event.pos()):
-                self.manga_clicked.emit(self._manga)
+        if event.button() != Qt.MouseButton.LeftButton:
+            return
+        if self.rect().contains(event.pos()):
+            self.manga_clicked.emit(self._manga)
 
     def on_context_menu(self, pos: QPoint) -> None:
         manga_title = self._manga.get_name()

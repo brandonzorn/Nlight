@@ -142,10 +142,10 @@ class Remanga(AbstractMangaCatalog):
         return image_response
 
     def get_preview(self, manga: Manga) -> bytes | None:
-        image_response = self._client.get_bytes(manga.preview_url)
-        if not isinstance(image_response, bytes):
+        url = manga.preview_url
+        if not isinstance(url, str):
             return None
-        return image_response
+        return self._client.get_bytes(url)
 
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/manga/{manga.content_id}"
