@@ -24,11 +24,11 @@ class ParentWindow(FluentWindow):
         super().__init__()
         self.setMinimumSize(self.screen().size() / 2)
 
-        self.library_interface = LibraryPage()
-        self.main_interface = MainPage()
-        self.external_library_interface = ExternalLibraryPage()
-        self.history_interface = HistoryPage()
-        self.settings_interface = SettingsPage()
+        self.library_interface = LibraryPage(self)
+        self.main_interface = MainPage(self)
+        self.external_library_interface = ExternalLibraryPage(self)
+        self.history_interface = HistoryPage(self)
+        self.settings_interface = SettingsPage(self)
 
         self.info_interface: InfoPage | None = None
 

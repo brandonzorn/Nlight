@@ -86,7 +86,6 @@ class MangaItem(QWidget):
 
     def on_context_menu(self, pos: QPoint) -> None:
         manga_title = self._manga.get_name()
-        info_bar_parent = self.parentWidget().parentWidget()
         info_bar_duration = 2000
 
         def add_to_lib() -> None:
@@ -98,7 +97,7 @@ class MangaItem(QWidget):
                     "Manga {} has been added.",
                 ).format(self._manga.get_name()),
                 duration=info_bar_duration,
-                parent=info_bar_parent,
+                parent=self.window(),
             )
 
         def remove_from_lib() -> None:
@@ -109,7 +108,7 @@ class MangaItem(QWidget):
                     "Manga {} has been deleted.",
                 ).format(self._manga.get_name()),
                 duration=info_bar_duration,
-                parent=info_bar_parent,
+                parent=self.window(),
             )
             self.manga_changed.emit()
 
@@ -124,7 +123,7 @@ class MangaItem(QWidget):
                     "Files {} have been removed.",
                 ).format(self._manga.get_name()),
                 duration=info_bar_duration,
-                parent=info_bar_parent,
+                parent=self.window(),
             )
 
         def open_local_files() -> None:

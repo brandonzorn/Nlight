@@ -22,7 +22,7 @@ from nlightreader.widgets.items.manga_item import MangaItem
 class BasePage(QWidget):
     manga_open = Signal(Manga)
 
-    def __init__(self, parent: QWidget | None = None) -> None:
+    def __init__(self, parent: QWidget) -> None:
         super().__init__(parent=parent)
         self.setStyleSheet(
             """

@@ -8,9 +8,9 @@ from qfluentwidgets import (
     InfoBar,
     OptionsSettingCard,
     PrimaryPushSettingCard,
-    ScrollArea,
     setTheme,
     SettingCardGroup,
+    SingleDirectionScrollArea,
     SwitchSettingCard,
 )
 
@@ -19,11 +19,11 @@ from nlightreader.consts.urls import GITHUB_REPO
 from nlightreader.utils.config import cfg
 
 
-class SettingsPage(ScrollArea):
+class SettingsPage(SingleDirectionScrollArea):
     check_for_updates_signal = Signal()
     mica_enable_changed = Signal(bool)
 
-    def __init__(self, parent: QWidget | None = None) -> None:
+    def __init__(self, parent: QWidget) -> None:
         super().__init__(parent=parent)
         self.setObjectName("SettingsPage")
         self.scrollWidget = QWidget()
@@ -197,7 +197,7 @@ class SettingsPage(ScrollArea):
                 "No updates available. You are using the latest version.",
             ),
             duration=3500,
-            parent=self,
+            parent=self.window(),
         )
 
     def show_has_updates_tooltip(self, result: str) -> None:
@@ -208,7 +208,7 @@ class SettingsPage(ScrollArea):
                 "You are currently on version {APP_VERSION}.",
             ).format(result=result, APP_VERSION=APP_VERSION),
             duration=3500,
-            parent=self,
+            parent=self.window(),
         )
 
     def show_err_updates_tooltip(self) -> None:
@@ -218,7 +218,7 @@ class SettingsPage(ScrollArea):
                 "Error checking for updates.",
             ),
             duration=3500,
-            parent=self,
+            parent=self.window(),
         )
 
     def _connect_signals(self) -> None:
