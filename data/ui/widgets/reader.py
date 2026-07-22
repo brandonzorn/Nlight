@@ -9,8 +9,8 @@
 ################################################################################
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
+                            QMetaObject, QObject, QPoint, QRect,
+                            QSize, QTime, QUrl, Qt, qtTrId)
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
@@ -78,14 +78,12 @@ class Ui_ReaderWidget(object):
         self.chapterLabel = BodyLabel(self.readerActionsWidget)
         self.chapterLabel.setObjectName(u"chapterLabel")
         self.chapterLabel.setWordWrap(True)
-        self.chapterLabel.setTextInteractionFlags(Qt.TextInteractionFlag.NoTextInteraction)
 
         self.horizontalLayout.addWidget(self.chapterLabel)
 
         self.pageLabel = BodyLabel(self.readerActionsWidget)
         self.pageLabel.setObjectName(u"pageLabel")
         self.pageLabel.setWordWrap(True)
-        self.pageLabel.setTextInteractionFlags(Qt.TextInteractionFlag.NoTextInteraction)
 
         self.horizontalLayout.addWidget(self.pageLabel)
 
@@ -160,19 +158,21 @@ class Ui_ReaderWidget(object):
 
     def retranslateUi(self, ReaderWidget):
 #if QT_CONFIG(shortcut)
-        self.prev_chapter_btn.setShortcut(QCoreApplication.translate("ReaderWidget", u"Down", None))
+        self.prev_chapter_btn.setShortcut(qtTrId(u""))
 #endif // QT_CONFIG(shortcut)
 #if QT_CONFIG(shortcut)
-        self.prev_page_btn.setShortcut(QCoreApplication.translate("ReaderWidget", u"Left", None))
+        self.prev_page_btn.setShortcut(qtTrId(u""))
+#endif // QT_CONFIG(shortcut)
+        self.chapterLabel.setText(qtTrId(u"label.Chapter"))
+        self.pageLabel.setText(qtTrId(u"label.Page"))
+#if QT_CONFIG(shortcut)
+        self.next_page_btn.setShortcut(qtTrId(u""))
 #endif // QT_CONFIG(shortcut)
 #if QT_CONFIG(shortcut)
-        self.next_page_btn.setShortcut(QCoreApplication.translate("ReaderWidget", u"Right", None))
+        self.next_chapter_btn.setShortcut(qtTrId(u""))
 #endif // QT_CONFIG(shortcut)
 #if QT_CONFIG(shortcut)
-        self.next_chapter_btn.setShortcut(QCoreApplication.translate("ReaderWidget", u"Up", None))
-#endif // QT_CONFIG(shortcut)
-#if QT_CONFIG(shortcut)
-        self.fullscreenButton.setShortcut(QCoreApplication.translate("ReaderWidget", u"F11", None))
+        self.fullscreenButton.setShortcut(qtTrId(u""))
 #endif // QT_CONFIG(shortcut)
         pass
     # retranslateUi

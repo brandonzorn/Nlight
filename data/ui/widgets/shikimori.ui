@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
+<ui version="4.0" idbasedtr="true">
  <class>ExternalLibraryPage</class>
  <widget class="QWidget" name="ExternalLibraryPage">
   <property name="geometry">
@@ -79,7 +79,7 @@
            <item>
             <widget class="SearchLineEdit" name="searchLineEdit">
              <property name="placeholderText">
-              <string>Search</string>
+              <string id="label.Search">Search</string>
              </property>
             </widget>
            </item>
@@ -107,7 +107,7 @@
            <item>
             <widget class="BodyLabel" name="pageLabel">
              <property name="text">
-              <string>Page</string>
+              <string id="label.Page">Page</string>
              </property>
             </widget>
            </item>
@@ -140,7 +140,7 @@
       <item>
        <widget class="PushButton" name="plannedButton">
         <property name="text">
-         <string>Planned</string>
+         <string id="library-list.Planned">Planned</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -156,7 +156,7 @@
       <item>
        <widget class="PushButton" name="completedButton">
         <property name="text">
-         <string>Completed</string>
+         <string id="library-list.Completed">Completed</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -169,7 +169,7 @@
       <item>
        <widget class="PushButton" name="readingButton">
         <property name="text">
-         <string>Reading</string>
+         <string id="library-list.Reading">Reading</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -182,7 +182,7 @@
       <item>
        <widget class="PushButton" name="reReadingButton">
         <property name="text">
-         <string>Re-reading</string>
+         <string id="library-list.Re-reading">Re-reading</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -195,7 +195,7 @@
       <item>
        <widget class="PushButton" name="onHoldButton">
         <property name="text">
-         <string>On hold</string>
+         <string id="library-list.On hold">On hold</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -208,7 +208,7 @@
       <item>
        <widget class="PushButton" name="droppedButton">
         <property name="text">
-         <string>Dropped</string>
+         <string id="library-list.Dropped">Dropped</string>
         </property>
         <property name="checkable">
          <bool>true</bool>

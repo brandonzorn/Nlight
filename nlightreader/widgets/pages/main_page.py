@@ -1,6 +1,6 @@
 from typing import override
 
-from PySide6.QtCore import Slot
+from PySide6.QtCore import qtTrId, Slot
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import FluentIcon
 
@@ -15,7 +15,7 @@ from nlightreader.widgets.pages.base_page import BasePage
 
 
 class MainPage(BasePage):
-    def __init__(self, parent: QWidget | None = None) -> None:
+    def __init__(self, parent: QWidget) -> None:
         super().__init__(parent=parent)
         self.ui = Ui_MainPage()
         self.ui.setupUi(self)
@@ -77,7 +77,7 @@ class MainPage(BasePage):
     @override
     def update_page(self) -> None:
         self.ui.page_label.setText(
-            f"{self.tr('Page')} {self.request_params.page}",
+            f"{qtTrId('label.Page')} {self.request_params.page}",
         )
 
     @Slot()

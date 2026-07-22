@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
+<ui version="4.0" idbasedtr="true">
  <class>ReaderWidget</class>
  <widget class="QWidget" name="ReaderWidget">
   <property name="geometry">
@@ -111,21 +111,21 @@
            </item>
            <item>
             <widget class="BodyLabel" name="chapterLabel">
+             <property name="text">
+              <string id="label.Chapter">Chapter</string>
+             </property>
              <property name="wordWrap">
               <bool>true</bool>
-             </property>
-             <property name="textInteractionFlags">
-              <set>Qt::TextInteractionFlag::NoTextInteraction</set>
              </property>
             </widget>
            </item>
            <item>
             <widget class="BodyLabel" name="pageLabel">
+             <property name="text">
+              <string id="label.Page">Page</string>
+             </property>
              <property name="wordWrap">
               <bool>true</bool>
-             </property>
-             <property name="textInteractionFlags">
-              <set>Qt::TextInteractionFlag::NoTextInteraction</set>
              </property>
             </widget>
            </item>
