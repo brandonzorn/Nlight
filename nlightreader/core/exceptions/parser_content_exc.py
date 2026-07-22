@@ -1,16 +1,21 @@
-class NoContentError(Exception):
+class BaseContentError(Exception):
     pass
 
 
-class FetchContentError(Exception):
+class NoContentError(BaseContentError):
     pass
 
 
-class RequestsParamsError(Exception):
+class FetchContentError(BaseContentError):
+    pass
+
+
+class RequestsParamsError(BaseContentError):
     pass
 
 
 __all__ = [
+    "BaseContentError",
     "FetchContentError",
     "NoContentError",
     "RequestsParamsError",
