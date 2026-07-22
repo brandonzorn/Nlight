@@ -1,5 +1,6 @@
 import os
 import sys
+from threading import Thread as PyThread
 from typing import override
 
 from PySide6.QtCore import QThreadPool, QTimer, Slot
@@ -126,7 +127,7 @@ if __name__ == "__main__":
         os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
         os.environ["QT_SCALE_FACTOR"] = str(cfg.get(cfg.dpi_scale))
 
-    kodik_server = kodik_server.get_local_server(
+    kodik_server: PyThread = kodik_server.get_local_server(
         server_port=8000,
         track_progress=cfg.get(cfg.enable_kodik_metrics),
     )
