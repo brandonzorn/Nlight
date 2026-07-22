@@ -32,8 +32,8 @@ class MainPage(BasePage):
         self.ui.apply_btn.clicked.connect(self.apply_filter)
         self.ui.reset_btn.clicked.connect(self.reset_filter)
         self.ui.filter_btn.clicked.connect(self.change_filters_visible)
-        self.ui.genres_btn.clicked.connect(self.open_genres_dialog)
-        self.ui.catalogs_btn.clicked.connect(
+        self.ui.genresButton.clicked.connect(self.open_genres_dialog)
+        self.ui.catalogsButton.clicked.connect(
             lambda: self.ui.catalogs_frame.setVisible(
                 not self.ui.catalogs_list.isVisible(),
             ),
@@ -46,8 +46,8 @@ class MainPage(BasePage):
 
         self._genres_dialog = GenresDialog(self)
         self._filters_controller = FiltersController(
-            kinds_layout=self.ui.kinds_grid,
-            orders_layout=self.ui.orders_grid,
+            kinds_layout=self.ui.kindsVLayout,
+            orders_layout=self.ui.ordersVLayout,
             genres_dialog=self._genres_dialog,
         )
 
@@ -94,7 +94,7 @@ class MainPage(BasePage):
     @Slot()
     def reset_filter(self) -> None:
         self._filters_controller.reset_items()
-        self._ui.title_line.clear()
+        self.ui.title_line.clear()
 
         self.apply_filter()
 
@@ -116,9 +116,9 @@ class MainPage(BasePage):
         orders = self.catalog.get_orders()
         kinds = self.catalog.get_kinds()
         genres = self.catalog.get_genres()
-        self.ui.kinds_frame.setVisible(bool(kinds))
-        self.ui.orders_frame.setVisible(bool(orders))
-        self.ui.genres_btn.setVisible(bool(genres))
+        self.ui.kindsCard.setVisible(bool(kinds))
+        self.ui.ordersCard.setVisible(bool(orders))
+        self.ui.genresButton.setVisible(bool(genres))
         self._filters_controller.add_orders(orders)
         self._filters_controller.add_kinds(kinds)
         self._filters_controller.add_genres(genres)

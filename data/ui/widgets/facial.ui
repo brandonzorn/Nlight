@@ -226,40 +226,40 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="CardWidget" name="orders_frame">
-           <layout class="QVBoxLayout" name="verticalLayout">
+          <widget class="CardWidget" name="ordersCard">
+           <layout class="QVBoxLayout" name="ordersCardVLayout">
             <item>
-             <widget class="BodyLabel" name="label">
+             <widget class="BodyLabel" name="ordersLabel">
               <property name="text">
                <string>Order</string>
               </property>
              </widget>
             </item>
             <item>
-             <layout class="QGridLayout" name="orders_grid"/>
+             <layout class="QVBoxLayout" name="ordersVLayout"/>
             </item>
            </layout>
           </widget>
          </item>
          <item>
-          <widget class="CardWidget" name="kinds_frame">
-           <layout class="QVBoxLayout" name="verticalLayout_5">
+          <widget class="CardWidget" name="kindsCard">
+           <layout class="QVBoxLayout" name="kindsCardVLayout">
             <item>
-             <widget class="BodyLabel" name="label_2">
+             <widget class="BodyLabel" name="kindsLabel">
               <property name="text">
                <string>Kind</string>
               </property>
              </widget>
             </item>
             <item>
-             <layout class="QGridLayout" name="kinds_grid"/>
+             <layout class="QVBoxLayout" name="kindsVLayout"/>
             </item>
            </layout>
           </widget>
          </item>
          <item>
-          <widget class="QFrame" name="moreFiltersWidget">
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <widget class="QWidget" name="moreFiltersWidget" native="true">
+           <layout class="QVBoxLayout" name="verticalLayout_3">
             <property name="leftMargin">
              <number>0</number>
             </property>
@@ -273,19 +273,19 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="PushButton" name="catalogs_btn">
-              <property name="text">
-               <string>Catalogs</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="PushButton" name="genres_btn">
+             <widget class="PushButton" name="genresButton">
               <property name="contextMenuPolicy">
                <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
               </property>
               <property name="text">
                <string>Genres list</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PushButton" name="catalogsButton">
+              <property name="text">
+               <string>Catalogs</string>
               </property>
              </widget>
             </item>
@@ -306,7 +306,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QFrame" name="filter_actions_frame">
+          <widget class="QWidget" name="filter_actions_widget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_7">
             <property name="leftMargin">
              <number>0</number>
