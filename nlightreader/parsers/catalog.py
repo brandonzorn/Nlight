@@ -41,22 +41,22 @@ class AbstractCatalog:
         return character
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
-        return []
+        raise NotImplementedError
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
-        return []
+        raise NotImplementedError
 
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
-        return []
+        raise NotImplementedError
 
     def get_image(self, image: Image) -> bytes | None:
-        return
+        raise NotImplementedError
 
     def get_preview(self, manga: Manga) -> bytes | None:
-        return
+        raise NotImplementedError
 
     def get_character_preview(self, character: Character) -> bytes | None:
-        return
+        raise NotImplementedError
 
     def get_genres(self) -> list[Genre]:
         return [
@@ -92,13 +92,13 @@ class AbstractCatalog:
         ]
 
     def get_relations(self, manga: Manga) -> list[Manga]:
-        return []
+        raise NotImplementedError
 
     def get_characters(self, manga: Manga) -> list[Character]:
-        return []
+        raise NotImplementedError
 
     def get_manga_url(self, manga: Manga) -> str:
-        pass
+        raise NotImplementedError
 
 
 class LibParser:
@@ -115,25 +115,25 @@ class LibParser:
         return self._session
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
-        return []
+        raise NotImplementedError
 
     def get_user(self) -> User:
         return User(None, None, None)
 
     def create_user_rate(self, manga: Manga) -> None:
-        pass
+        raise NotImplementedError
 
     def check_user_rate(self, manga: Manga) -> None:
-        pass
+        raise NotImplementedError
 
     def delete_user_rate(self, user_rate: UserRate) -> None:
-        pass
+        raise NotImplementedError
 
     def get_user_rate(self, manga: Manga) -> UserRate:
-        pass
+        raise NotImplementedError
 
     def update_user_rate(self, user_rate: UserRate) -> None:
-        pass
+        raise NotImplementedError
 
 
 __all__ = [

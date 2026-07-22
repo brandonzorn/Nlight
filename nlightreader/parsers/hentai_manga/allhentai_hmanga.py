@@ -6,6 +6,7 @@ from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
 from nlightreader.utils.network import NetworkClient
+from nlightreader.utils.utils import make_request
 
 
 class AllHentai(AbstractHentaiMangaCatalog):

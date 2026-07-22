@@ -1,4 +1,3 @@
-from typing import Never
 import webbrowser
 
 from PySide6.QtWidgets import QWidget

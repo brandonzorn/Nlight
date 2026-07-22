@@ -21,7 +21,7 @@ class TextFormatter:
             Formats the text and returns it as HTML text.
     """
 
-    def __init__(self, text: str, show_spoilers=False) -> None:
+    def __init__(self, text: str, show_spoilers: bool = False) -> None:
         self._text = " ".join(text.splitlines())
         self._show_spoilers = show_spoilers
 
@@ -91,7 +91,7 @@ class TextFormatter:
         return self._text
 
 
-def description_to_html(text: str, show_spoilers=False) -> str:
+def description_to_html(text: str, show_spoilers: bool = False) -> str:
     if not text:
         return ""
     return TextFormatter(text, show_spoilers).to_html_text()
