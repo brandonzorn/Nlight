@@ -1,7 +1,6 @@
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import (
-    BodyLabel,
     ExpandLayout,
     FluentIcon,
     HyperlinkCard,
@@ -12,6 +11,7 @@ from qfluentwidgets import (
     SettingCardGroup,
     SingleDirectionScrollArea,
     SwitchSettingCard,
+    TitleLabel,
 )
 
 from nlightreader.consts.app import APP_VERSION
@@ -28,17 +28,7 @@ class SettingsPage(SingleDirectionScrollArea):
         self.setObjectName("SettingsPage")
         self.scrollWidget = QWidget()
         self.expandLayout = ExpandLayout(self.scrollWidget)
-        self.setStyleSheet(
-            """
-            QWidget {background: transparent;}
-            QScrollArea {border: none;}
-            BodyLabel {font: 33px 'Microsoft YaHei Light';}
-            """,
-        )
-        self.settingLabel = BodyLabel(
-            self.tr("Settings"),
-            self,
-        )
+        self.settingLabel = TitleLabel(self.tr("Settings"), self)
 
         self.personalGroup = SettingCardGroup(
             self.tr("Personalization"),
@@ -144,6 +134,7 @@ class SettingsPage(SingleDirectionScrollArea):
         )
 
         self._init_widget()
+        self.enableTransparentBackground()
 
     def setup(self) -> None:
         pass

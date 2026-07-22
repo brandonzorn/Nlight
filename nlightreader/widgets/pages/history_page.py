@@ -23,21 +23,27 @@ class HistoryPage(QWidget):
         self.ui = Ui_HistoryPage()
         self.ui.setupUi(self)
 
-        self.ui.delete_btn.setIcon(FluentIcon.DELETE)
-        self.ui.delete_btn.clicked.connect(self.delete_note)
-
-        self.ui.itemsTree.doubleClicked.connect(self.open_info)
-        self.ui.itemsTree.customContextMenuRequested.connect(
-            self.on_context_menu,
-        )
-
         self._db: Database = Database()
 
         self._notes: list[HistoryNote] = []
         self._sorted_notes: dict[Manga, list[HistoryNote]] = {}
 
+        self._setup_ui()
+        self._setup_connections()
+
+    def _setup_ui(self) -> None:
+        self.ui.delete_button.setIcon(FluentIcon.DELETE)
+
+    def _setup_connections(self) -> None:
+        self.ui.delete_button.clicked.connect(self.delete_note)
+
+        self.ui.items_tree.doubleClicked.connect(self.open_info)
+        self.ui.items_tree.customContextMenuRequested.connect(
+            self.on_context_menu,
+        )
+
     def on_context_menu(self, pos: QPoint) -> None:
-        selected_item = self.ui.itemsTree.itemAt(pos)
+        selected_item = self.ui.items_tree.itemAt(pos)
         if not isinstance(selected_item, HistoryTreeItem):
             return
 
@@ -54,22 +60,22 @@ class HistoryPage(QWidget):
         else:
             menu.set_mode(HistoryMenuMode.READ)
 
-        menu.exec(self.ui.itemsTree.mapToGlobal(pos))
+        menu.exec(self.ui.items_tree.mapToGlobal(pos))
 
     def setup(self) -> None:
-        self.ui.itemsTree.verticalScrollBar().setValue(0)
+        self.ui.items_tree.verticalScrollBar().setValue(0)
         self.get_content()
 
     @Slot()
     def open_info(self) -> None:
-        selected_item = self.ui.itemsTree.currentItem()
+        selected_item = self.ui.items_tree.currentItem()
         if not isinstance(selected_item, HistoryTreeItem):
             return
         self.manga_open.emit(selected_item.note.manga)
 
     @Slot()
     def delete_note(self) -> None:
-        selected_item = self.ui.itemsTree.currentItem()
+        selected_item = self.ui.items_tree.currentItem()
         if not isinstance(selected_item, HistoryTreeItem):
             return
         self._db.del_history_note(selected_item.note.chapter)
@@ -77,7 +83,7 @@ class HistoryPage(QWidget):
         self.update_content()
 
     def update_content(self) -> None:
-        self.ui.itemsTree.clear()
+        self.ui.items_tree.clear()
         notes = self._db.get_history_notes()
         grouped_notes = defaultdict(list)
         for note in notes:
@@ -85,7 +91,7 @@ class HistoryPage(QWidget):
 
         for manga, manga_notes in grouped_notes.items():
             manga_item = MangaTreeItem(manga)
-            self.ui.itemsTree.addTopLevelItem(manga_item)
+            self.ui.items_tree.addTopLevelItem(manga_item)
             for note in manga_notes:
                 chapter_item = HistoryTreeItem(note)
                 manga_item.addChild(chapter_item)
