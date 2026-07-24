@@ -1,6 +1,6 @@
 from enum import Enum, unique
 
-from PySide6.QtWidgets import QLayout, QWidget
+from PySide6.QtWidgets import QLayout
 from qfluentwidgets import (
     FluentIcon,
     IndeterminateProgressRing,
@@ -41,13 +41,13 @@ class AbstractContentContainer[T]:
         self._state = ContentContainerState.EMPTY
 
     def install(self, parent: QLayout) -> None:
-        self.get_content_widget().layout().addWidget(
+        self._content_layout.addWidget(
             self._no_content_error_widget,
         )
-        self.get_content_widget().layout().addWidget(
+        self._content_layout.addWidget(
             self._fetch_error_widget,
         )
-        self.get_content_widget().layout().addWidget(
+        self._content_layout.addWidget(
             self._progress_ring,
         )
         parent.addWidget(self)
@@ -95,7 +95,8 @@ class AbstractContentContainer[T]:
     def set_content(self, content: T) -> None:
         raise NotImplementedError
 
-    def get_content_widget(self) -> QWidget:
+    @property
+    def _content_layout(self) -> QLayout:
         raise NotImplementedError
 
 

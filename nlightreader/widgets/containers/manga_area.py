@@ -2,7 +2,7 @@ from typing import override
 
 from PySide6.QtCore import Qt, QThreadPool
 from PySide6.QtGui import QResizeEvent
-from PySide6.QtWidgets import QGridLayout, QHBoxLayout, QWidget
+from PySide6.QtWidgets import QGridLayout, QHBoxLayout, QLayout, QWidget
 from qfluentwidgets import ScrollArea
 
 from nlightreader.utils.threads import Thread
@@ -98,8 +98,9 @@ class MangaArea(ScrollArea, AbstractContentContainer):
         [item.set_size(size) for item in self._manga_items]
 
     @override
-    def get_content_widget(self) -> QWidget:
-        return self._scrollAreaWidgetContents
+    @property
+    def _content_layout(self) -> QLayout:
+        return self._scrollAreaWidgetContents.layout()
 
 
 __all__ = ["MangaArea"]
