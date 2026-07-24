@@ -105,7 +105,7 @@ class FileManager:
                 return QPixmap()
             save_file(path, file_name, img_data)
 
-        return QPixmap(str(get_full_file_path(path, file_name)))
+        return QPixmap(get_full_file_path(path, file_name))
 
     @classmethod
     def get_chapter_text_file(
