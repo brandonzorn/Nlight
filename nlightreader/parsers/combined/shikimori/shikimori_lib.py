@@ -1,46 +1,52 @@
 import logging
+import os
+from typing import Any, override
 
-import requests
 from PySide6.QtWidgets import QApplication
+import requests
 from requests_oauthlib import OAuth2Session
 
-from nlightreader.consts.enums import Nl
 from nlightreader.consts.urls import (
     SHIKIMORI_HEADERS,
     URL_SHIKIMORI,
     URL_SHIKIMORI_API,
     URL_SHIKIMORI_TOKEN,
 )
+from nlightreader.core.enums import LibList
+from nlightreader.core.utils.decorators import singleton
 from nlightreader.items import RequestForm, User, UserRate
 from nlightreader.models import Manga
-from nlightreader.parsers.catalog import LibParser
+from nlightreader.parsers.catalog import CatalogAuthType, LibParser
 from nlightreader.parsers.combined.shikimori.shikimori_base import (
     ShikimoriBase,
 )
-from nlightreader.utils.decorators import singleton
 from nlightreader.utils.token import TokenManager
 
+logger = logging.getLogger(__name__)
+
+IS_TEST_ENV = os.getenv("TEST") == "1"
+
 try:
-    from keys import SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID
+    from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
 except (ModuleNotFoundError, ImportError):
-    logging.info("Shikimori API keys not found")
-    SHIKIMORI_CLIENT_SECRET, SHIKIMORI_CLIENT_ID = "", ""
+    logger.warning("Shikimori API keys not found")
 
 
 class ShikimoriLib(ShikimoriBase, LibParser):
-    def __init__(self):
-        super().__init__()
-        self.fields = 1
-        self.session: Auth = Auth()
+    AUTH_TYPE = CatalogAuthType.TOKEN
 
-    def search_manga(self, form: RequestForm):
-        url = f"{self.url_api}/users/{self.session.user.id}/manga_rates"
+    def __init__(self) -> None:
+        super().__init__()
+        self._session = Auth()
+
+    def search_manga(self, form: RequestForm) -> list[Manga]:
+        url = f"{self._URL_API}/users/{self.session.user.id}/manga_rates"
         params = {"limit": 50, "page": form.page}
         response = self.session.request("GET", url, params=params)
         lib_list = form.lib_list
-        if lib_list == Nl.LibList.reading:
+        if lib_list == LibList.reading:
             lib_list = "watching"
-        elif lib_list == Nl.LibList.re_reading:
+        elif lib_list == LibList.re_reading:
             lib_list = "rewatching"
         else:
             lib_list = form.lib_list.name
@@ -51,22 +57,24 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                 if not i.get("status") == lib_list:
                     continue
                 i = i.get("manga")
-                mangas.append(self.setup_manga(i))
+                mangas.append(self._setup_manga(i))
         return mangas
 
-    def get_user(self):
-        response = self.session.request("GET", f"{self.url_api}/users/whoami")
+    @override
+    def get_user(self) -> User:
+        response = self.session.request("GET", f"{self._URL_API}/users/whoami")
         self.session.user = User(None, None, None)
         if response and (resp_json := response.json()):
             self.session.user = User(
-                resp_json.get("id"),
-                resp_json.get("nickname"),
-                resp_json.get("avatar"),
+                str(resp_json.get("id")),
+                str(resp_json.get("nickname")),
+                str(resp_json.get("avatar")),
             )
         return self.session.user
 
-    def create_user_rate(self, manga: Manga):
-        url = f"{self.url_api}/v2/user_rates"
+    @override
+    def create_user_rate(self, manga: Manga) -> None:
+        url = f"{self._URL_API}/v2/user_rates"
         data = {
             "user_rate": {
                 "target_type": "Manga",
@@ -76,8 +84,9 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         }
         self.session.request("POST", url, json=data)
 
-    def check_user_rate(self, manga: Manga):
-        url = f"{self.url_api}/v2/user_rates"
+    @override
+    def check_user_rate(self, manga: Manga) -> bool:
+        url = f"{self._URL_API}/v2/user_rates"
         params = {
             "target_type": "Manga",
             "user_id": self.session.user.id,
@@ -90,12 +99,14 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                     return True
         return False
 
-    def delete_user_rate(self, user_rate: UserRate):
-        url = f"{self.url_api}/v2/user_rates/{user_rate.id}"
+    @override
+    def delete_user_rate(self, user_rate: UserRate) -> None:
+        url = f"{self._URL_API}/v2/user_rates/{user_rate.id}"
         self.session.request("DELETE", url)
 
-    def get_user_rate(self, manga: Manga):
-        url = f"{self.url_api}/v2/user_rates"
+    @override
+    def get_user_rate(self, manga: Manga) -> UserRate | None:
+        url = f"{self._URL_API}/v2/user_rates"
         params = {
             "target_type": "Manga",
             "user_id": self.session.user.id,
@@ -109,19 +120,20 @@ class ShikimoriLib(ShikimoriBase, LibParser):
                     i.get("user_id"),
                     i.get("target_id"),
                     i.get("score"),
-                    Nl.LibList.from_str(i.get("status")),
+                    LibList.from_str(i.get("status")),
                     i.get("chapters"),
                 )
         return None
 
-    def update_user_rate(self, user_rate: UserRate):
-        url = f"{self.url_api}/v2/user_rates/{user_rate.id}"
+    @override
+    def update_user_rate(self, user_rate: UserRate) -> None:
+        url = f"{self._URL_API}/v2/user_rates/{user_rate.id}"
         status = user_rate.status.to_str()
-        if user_rate.status == Nl.LibList.reading:
+        if user_rate.status == LibList.reading:
             status = "watching"
-        elif user_rate.status == Nl.LibList.re_reading:
+        elif user_rate.status == LibList.re_reading:
             status = "rewatching"
-        elif user_rate.status == Nl.LibList.on_hold:
+        elif user_rate.status == LibList.on_hold:
             status = "on_hold"
         data = {
             "user_rate": {
@@ -135,11 +147,11 @@ class ShikimoriLib(ShikimoriBase, LibParser):
 
 @singleton
 class Auth:
-    def __init__(self):
+    def __init__(self) -> None:
         self.client_id = SHIKIMORI_CLIENT_ID
         self.client_secret = SHIKIMORI_CLIENT_SECRET
         self.redirect_uri = "urn:ietf:wg:oauth:2.0:oob"
-        self.extra = {
+        self.extra: dict[str, Any] | None = {
             "client_id": self.client_id,
             "client_secret": self.client_secret,
         }
@@ -154,11 +166,16 @@ class Auth:
         if self.token:
             self.check_auth()
 
-    def auth_login(self, params):
+    def auth_login(self, params: dict[str, str]) -> None:
         self.fetch_token(params["token"])
         self.check_auth()
 
-    def get_client(self, scope, redirect_uri, token: dict | None):
+    def get_client(
+        self,
+        scope: str,
+        redirect_uri: str,
+        token: dict[str, Any] | None,
+    ) -> OAuth2Session:
         client = OAuth2Session(
             self.client_id,
             auto_refresh_url=URL_SHIKIMORI_TOKEN,
@@ -171,11 +188,11 @@ class Auth:
         client.headers.update(self.headers)
         return client
 
-    def get_auth_url(self):
+    def get_auth_url(self) -> str:
         auth_url = URL_SHIKIMORI + "/oauth/authorize"
         return self.client.authorization_url(auth_url)[0]
 
-    def fetch_token(self, code):
+    def fetch_token(self, code: str) -> dict[str, Any] | None:
         try:
             self.client.fetch_token(
                 URL_SHIKIMORI_TOKEN,
@@ -184,10 +201,12 @@ class Auth:
             )
         except Exception as e:
             logging.error(e)
-        TokenManager.save_token(self.token, ShikimoriLib.CATALOG_NAME)
-        return self.token
+        token = self.token
+        if token is not None:
+            TokenManager.save_token(token, ShikimoriLib.CATALOG_NAME)
+        return token
 
-    def update_token(self, token):
+    def update_token(self, token: dict[str, Any] | None) -> None:
         if token and "access_token" in token and "refresh_token" in token:
             token = {
                 "access_token": token["access_token"],
@@ -199,9 +218,9 @@ class Auth:
             )
             self.tokens = token
 
-    def refresh_token(self):
+    def refresh_token(self) -> dict[str, Any] | None:
         if not TokenManager.load_token(ShikimoriLib.CATALOG_NAME):
-            return False
+            return None
         try:
             self.client.headers.clear()
             self.client.headers.update(SHIKIMORI_HEADERS)
@@ -226,13 +245,13 @@ class Auth:
 
     def request(
         self,
-        method,
-        url,
+        method: str,
+        url: str,
         *,
-        params=None,
-        json=None,
-        ignore_authorize=False,
-    ):
+        params: dict[str, Any] | None = None,
+        json: dict[str, Any] | None = None,
+        ignore_authorize: bool = False,
+    ) -> requests.Response | None:
         if (
             "test" in QApplication.arguments()
             or "noshiki" in QApplication.arguments()
@@ -249,8 +268,8 @@ class Auth:
             )
             response.raise_for_status()
             return response
-        except requests.exceptions.RequestException as e:
-            logging.error(
+        except requests.exceptions.HTTPError as e:
+            logger.error(
                 f"\n\tError fetching URL: {url}\n"
                 f"\t\tReason: {e}\n"
                 f"\t\tHeaders: {self.client.headers}\n"
@@ -266,10 +285,8 @@ class Auth:
         return self.is_authorized
 
     @property
-    def token(self):
+    def token(self) -> dict[str, Any] | None:
         return self.client.token
 
 
-__all__ = [
-    "ShikimoriLib",
-]
+__all__ = ["ShikimoriLib"]

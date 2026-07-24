@@ -1,11 +1,10 @@
 import re
-from types import NoneType
 from typing import override
 
-import validators
 from PySide6.QtCore import QLocale
+import validators
 
-from nlightreader.consts.enums import Nl
+from nlightreader.core.enums import Language, MangaKind, MangaStatus
 from nlightreader.models.base_model import NamedBaseModel
 from nlightreader.utils.config import cfg
 
@@ -13,153 +12,144 @@ from nlightreader.utils.config import cfg
 class Manga(NamedBaseModel):
     def __init__(
         self,
+        *,
         content_id: str,
         catalog_id: int,
         name: str,
         russian: str,
-    ):
+    ) -> None:
         super().__init__(content_id, catalog_id, name, russian)
 
-        self.__kind: Nl.MangaKind = Nl.MangaKind.undefined
-        self.__status: Nl.MangaStatus = Nl.MangaStatus.undefined
-        self.__score: int | float = 0
-        self.__preview_url: str | None = None
-
-        self.__volumes = 0
-        self.__chapters = 0
-
-        self.__descriptions: dict[Nl.Language, str] = {}
+        self._kind: MangaKind = MangaKind.UNDEFINED
+        self._status: MangaStatus = MangaStatus.UNDEFINED
+        self._score: int | float = 0
+        self._preview_url: str | None = None
+        self._volumes: int = 0
+        self._chapters: int = 0
+        self._descriptions: dict[Language, str] = {}
 
     @property
-    def kind(self):
-        return self.__kind
+    def kind(self) -> MangaKind:
+        return self._kind
 
     @kind.setter
-    def kind(self, kind):
-        if not isinstance(kind, Nl.MangaKind):
-            raise TypeError(f"Kind must be Nl.MangaKind got {type(kind)}")
-        self.__kind = kind
+    def kind(self, kind: MangaKind) -> None:
+        if not isinstance(kind, MangaKind):
+            msg = f"Kind must be MangaKind got {type(kind)}"
+            raise TypeError(msg)
+        self._kind = kind
 
     @property
-    def status(self):
-        return self.__status
+    def status(self) -> MangaStatus:
+        return self._status
 
     @status.setter
-    def status(self, status: Nl.MangaStatus):
-        if not isinstance(status, Nl.MangaStatus):
-            raise TypeError(
-                f"Status must be Nl.MangaStatus got {type(status)}",
-            )
-        self.__status = status
+    def status(self, status: MangaStatus) -> None:
+        if not isinstance(status, MangaStatus):
+            msg = f"Status must be MangaStatus got {type(status)}"
+            raise TypeError(msg)
+        self._status = status
 
     @property
-    def score(self):
-        return self.__score
+    def score(self) -> int | float:
+        return self._score
 
     @score.setter
-    def score(self, score: int | float):
+    def score(self, score: float) -> None:
         if not isinstance(score, (int, float)):
-            raise TypeError(f"Score must be int or float got {type(score)}")
+            msg = f"Score must be int or float got {type(score)}"
+            raise TypeError(msg)
 
         if isinstance(score, float) and score.is_integer():
             score = int(score)
-        self.__score = score
+        self._score = score
 
     @property
-    def preview_url(self):
-        return self.__preview_url
+    def preview_url(self) -> str | None:
+        return self._preview_url
 
     @preview_url.setter
-    def preview_url(self, url: str | None):
-        if not isinstance(url, (str, NoneType)):
-            raise TypeError(f"Preview url must be str or None got {type(url)}")
-        if url is not None and not validators.url(url):
-            raise ValueError(f"Url {url} is not valid")
-        self.__preview_url = url
+    def preview_url(self, url: str | None) -> None:
+        self._preview_url = None
+        if isinstance(url, str) and validators.url(url):
+            self._preview_url = url
 
     @property
-    def volumes(self):
-        return self.__volumes
+    def volumes(self) -> int:
+        return self._volumes
 
     @volumes.setter
-    def volumes(self, volumes: int):
+    def volumes(self, volumes: int) -> None:
         if not isinstance(volumes, int):
-            raise TypeError(f"Volumes must be int got {type(volumes)}")
-        self.__volumes = volumes
+            msg = f"Volumes must be int got {type(volumes)}"
+            raise TypeError(msg)
+        self._volumes = volumes
 
     @property
-    def chapters(self):
-        return self.__chapters
+    def chapters(self) -> int:
+        return self._chapters
 
     @chapters.setter
-    def chapters(self, chapters: int):
+    def chapters(self, chapters: int) -> None:
         if not isinstance(chapters, int):
-            raise TypeError(f"Chapters must be int got {type(chapters)}")
-        self.__chapters = chapters
+            msg = f"Chapters must be int got {type(chapters)}"
+            raise TypeError(msg)
+        self._chapters = chapters
 
-    def add_description(self, language: Nl.Language, description: str):
-        if not isinstance(language, Nl.Language):
-            raise TypeError(
-                f"Language must be Nl.Language got {type(language)}",
-            )
+    def add_description(self, language: Language, description: str) -> None:
+        if not isinstance(language, Language):
+            msg = f"Language must be Language got {type(language)}"
+            raise TypeError(msg)
         if not isinstance(description, str):
-            raise TypeError(
-                f"Description must be str got {type(description)}",
-            )
-        self.__descriptions.update({language: description})
+            msg = f"Description must be str got {type(description)}"
+            raise TypeError(msg)
+        self._descriptions.update({language: description})
 
-    def get_description(self) -> str:
-        if self.__descriptions.get(Nl.Language.undefined):
-            return self.__descriptions.get(Nl.Language.undefined)
+    def get_description(self) -> str | None:
+        if self._descriptions.get(Language.UNDEFINED):
+            return self._descriptions.get(Language.UNDEFINED)
 
         locale = cfg.get(cfg.language).value.language()
         if locale in (
             QLocale.Language.Russian,
             QLocale.Language.Ukrainian,
-        ) and self.__descriptions.get(Nl.Language.ru):
-            return self.__descriptions.get(Nl.Language.ru)
-        return self.__descriptions.get(Nl.Language.en)
+        ) and self._descriptions.get(Language.RUSSIAN):
+            return self._descriptions.get(Language.RUSSIAN)
+        return self._descriptions.get(Language.ENGLISH)
 
     def descriptions_to_str(self) -> str:
         desc_str = ""
-        for key in self.__descriptions:
-            if self.__descriptions.get(key):
+        for key in self._descriptions:
+            if self._descriptions.get(key):
                 desc_str += (
-                    f"<lang={key.name}>"
-                    f"{self.__descriptions.get(key)}"
-                    f"<end>"
+                    f"<lang={key.name}>{self._descriptions.get(key)}<end>"
                 )
         return desc_str
 
-    def set_description_from_str(self, desc: str):
-        for lang, text in re.findall(
+    def set_description_from_str(self, desc: str) -> None:
+        for lang_str, text in re.findall(
             r"<lang=(\w+)>(.+?)<end>",
             desc,
             re.DOTALL,
         ):
-            self.add_description(
-                Nl.Language.from_str(lang),
-                text,
-            )
+            lang_enum = Language.from_str(lang_str)
+            self.add_description(lang_enum, text)
 
     @override
     def to_dict(self) -> dict:
-        return {
-            "id": self.id,
-            "content_id": self.content_id,
-            "catalog_id": self.catalog_id,
-            "name": self.name,
-            "russian": self.russian,
-            "kind": self.kind.name,
-            "description": self.descriptions_to_str(),
-            "score": self.score,
-            "status": self.__status.name,
-            "volumes": self.__volumes,
-            "chapters": self.__chapters,
-            "preview_url": self.__preview_url,
-        }
+        data = super().to_dict()
+        data.update(
+            {
+                "kind": self._kind.name,
+                "description": self.descriptions_to_str(),
+                "score": self._score,
+                "status": self._status.name,
+                "volumes": self._volumes,
+                "chapters": self._chapters,
+                "preview_url": self._preview_url,
+            },
+        )
+        return data
 
 
-__all__ = [
-    "Manga",
-]
+__all__ = ["Manga"]

@@ -1,49 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+<ui version="4.0" idbasedtr="true">
+ <class>LibraryPage</class>
+ <widget class="QWidget" name="LibraryPage">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>562</width>
-    <height>350</height>
+    <width>640</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
    <item>
-    <widget class="SimpleCardWidget" name="items_frame">
+    <widget class="QWidget" name="itemsWidget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <layout class="QVBoxLayout" name="items_layout"/>
+     <layout class="QVBoxLayout" name="items_layout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+     </layout>
     </widget>
    </item>
    <item>
-    <widget class="SimpleCardWidget" name="lists_frame">
+    <widget class="QWidget" name="libraryListsWidget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
-       <widget class="PushButton" name="planned_btn">
+       <widget class="PushButton" name="plannedButton">
         <property name="text">
-         <string>Planned</string>
+         <string id="library-list.Planned">Planned</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -57,9 +73,9 @@
        </widget>
       </item>
       <item>
-       <widget class="PushButton" name="completed_btn">
+       <widget class="PushButton" name="completedButton">
         <property name="text">
-         <string>Completed</string>
+         <string id="library-list.Completed">Completed</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -70,9 +86,9 @@
        </widget>
       </item>
       <item>
-       <widget class="PushButton" name="reading_btn">
+       <widget class="PushButton" name="readingButton">
         <property name="text">
-         <string>Reading</string>
+         <string id="library-list.Reading">Reading</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -83,9 +99,9 @@
        </widget>
       </item>
       <item>
-       <widget class="PushButton" name="re_reading_btn">
+       <widget class="PushButton" name="reReadingButton">
         <property name="text">
-         <string>Re-reading</string>
+         <string id="library-list.Re-reading">Re-reading</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -96,9 +112,9 @@
        </widget>
       </item>
       <item>
-       <widget class="PushButton" name="on_hold_btn">
+       <widget class="PushButton" name="onHoldButton">
         <property name="text">
-         <string>On hold</string>
+         <string id="library-list.On hold">On hold</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -109,9 +125,9 @@
        </widget>
       </item>
       <item>
-       <widget class="PushButton" name="dropped_btn">
+       <widget class="PushButton" name="droppedButton">
         <property name="text">
-         <string>Dropped</string>
+         <string id="library-list.Dropped">Dropped</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -124,7 +140,7 @@
       <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Orientation::Vertical</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -144,18 +160,6 @@
    <class>PushButton</class>
    <extends>QPushButton</extends>
    <header>qfluentwidgets</header>
-  </customwidget>
-  <customwidget>
-   <class>CardWidget</class>
-   <extends>QFrame</extends>
-   <header>qfluentwidgets</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>SimpleCardWidget</class>
-   <extends>CardWidget</extends>
-   <header>qfluentwidgets</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

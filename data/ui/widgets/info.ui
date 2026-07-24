@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>InfoPage</class>
+ <widget class="QWidget" name="InfoPage">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>736</width>
-    <height>531</height>
+    <width>750</width>
+    <height>512</height>
    </rect>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_4">
-   <property name="spacing">
-    <number>0</number>
-   </property>
+  <layout class="QHBoxLayout" name="pageLayout">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -30,14 +27,9 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="ScrollArea" name="scrollArea">
-     <property name="styleSheet">
-      <string notr="true">QWidget {background: transparent;}
-QScrollArea {border: none;}
-</string>
-     </property>
-     <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+    <widget class="SingleDirectionScrollArea" name="scrollArea">
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
      </property>
      <property name="widgetResizable">
       <bool>true</bool>
@@ -46,44 +38,53 @@ QScrollArea {border: none;}
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>459</width>
-        <height>990</height>
+        <y>-271</y>
+        <width>461</width>
+        <height>988</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <layout class="QVBoxLayout" name="scrollAreaVLayout">
        <property name="leftMargin">
-        <number>0</number>
+        <number>9</number>
        </property>
        <property name="topMargin">
-        <number>0</number>
+        <number>9</number>
+       </property>
+       <property name="rightMargin">
+        <number>9</number>
        </property>
        <property name="bottomMargin">
-        <number>0</number>
+        <number>9</number>
        </property>
        <item>
-        <widget class="SimpleCardWidget" name="header_frame">
+        <widget class="SimpleCardWidget" name="headerWidget">
          <property name="frameShape">
           <enum>QFrame::Shape::StyledPanel</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Shadow::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <layout class="QHBoxLayout" name="headerHLayout">
           <property name="leftMargin">
-           <number>9</number>
+           <number>0</number>
           </property>
           <property name="topMargin">
-           <number>9</number>
+           <number>0</number>
           </property>
           <property name="rightMargin">
-           <number>9</number>
+           <number>0</number>
           </property>
           <property name="bottomMargin">
-           <number>9</number>
+           <number>0</number>
           </property>
           <item>
-           <spacer name="horizontalSpacer_2">
+           <spacer name="headerHSpacer">
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
             </property>
@@ -96,9 +97,9 @@ QScrollArea {border: none;}
            </spacer>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_7">
+           <layout class="QVBoxLayout" name="headerContentVLayout">
             <item>
-             <widget class="SimpleCardWidget" name="lib_frame">
+             <widget class="SimpleCardWidget" name="libraryWidget">
               <property name="frameShape">
                <enum>QFrame::Shape::StyledPanel</enum>
               </property>
@@ -119,10 +120,10 @@ QScrollArea {border: none;}
                 <number>0</number>
                </property>
                <item>
-                <widget class="ComboBox" name="lib_list_box"/>
+                <widget class="ComboBox" name="libraryListComboBox"/>
                </item>
                <item>
-                <widget class="ToolButton" name="add_btn">
+                <widget class="ToolButton" name="addButton">
                  <property name="checkable">
                   <bool>true</bool>
                  </property>
@@ -132,7 +133,7 @@ QScrollArea {border: none;}
              </widget>
             </item>
             <item>
-             <widget class="SimpleCardWidget" name="shikimori_frame">
+             <widget class="SimpleCardWidget" name="shikimoriWidget">
               <property name="frameShape">
                <enum>QFrame::Shape::StyledPanel</enum>
               </property>
@@ -153,7 +154,7 @@ QScrollArea {border: none;}
                 <number>0</number>
                </property>
                <item>
-                <widget class="ToolButton" name="shikimori_btn"/>
+                <widget class="ToolButton" name="shikimoriButton"/>
                </item>
               </layout>
              </widget>
@@ -164,203 +165,345 @@ QScrollArea {border: none;}
         </widget>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="manga_layout">
+        <widget class="QWidget" name="infoWidget" native="true">
+         <layout class="QHBoxLayout" name="infoHLayout">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="SimpleCardWidget" name="previewWidget">
+            <layout class="QVBoxLayout" name="previewLayout">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="ImageLabel" name="imageLabel"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="SimpleCardWidget" name="titleWidget">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_8">
+             <item>
+              <widget class="BodyLabel" name="name_label">
+               <property name="text">
+                <string>name</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="BodyLabel" name="russian_label">
+               <property name="text">
+                <string>russian</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="BodyLabel" name="status_label">
+               <property name="text">
+                <string>status</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="BodyLabel" name="catalog_score_label">
+               <property name="text">
+                <string>score</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Orientation::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="BodyLabel" name="volumes_label">
+               <property name="text">
+                <string>volumes</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="BodyLabel" name="chapters_label">
+               <property name="text">
+                <string>chapters</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_9">
          <item>
-          <layout class="QHBoxLayout" name="info_layout">
-           <item>
-            <widget class="SimpleCardWidget" name="image_frame">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_6">
-              <item>
-               <widget class="QLabel" name="image">
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="scaledContents">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="SimpleCardWidget" name="title_frame">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_8">
-              <item>
-               <widget class="BodyLabel" name="name_label">
-                <property name="text">
-                 <string>name</string>
-                </property>
-                <property name="wordWrap">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="BodyLabel" name="russian_label">
-                <property name="text">
-                 <string>russian</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="BodyLabel" name="status_label">
-                <property name="text">
-                 <string>status</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="BodyLabel" name="catalog_score_label">
-                <property name="text">
-                 <string>score</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="verticalSpacer">
-                <property name="orientation">
-                 <enum>Qt::Orientation::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>76</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="BodyLabel" name="volumes_label">
-                <property name="text">
-                 <string>volumes</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="BodyLabel" name="chapters_label">
-                <property name="text">
-                 <string>chapters</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
+          <widget class="QWidget" name="descriptionWidget" native="true">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <layout class="QVBoxLayout" name="descriptionVLayout">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="TextEdit" name="descriptionTextEdit">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="horizontalScrollBarPolicy">
+               <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+              </property>
+              <property name="undoRedoEnabled">
+               <bool>false</bool>
+              </property>
+              <property name="readOnly">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_9">
-           <item>
-            <widget class="TextEdit" name="description_text">
-             <property name="focusPolicy">
-              <enum>Qt::FocusPolicy::NoFocus</enum>
-             </property>
-             <property name="verticalScrollBarPolicy">
-              <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
-             </property>
-             <property name="undoRedoEnabled">
-              <bool>false</bool>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-             <property name="textInteractionFlags">
-              <set>Qt::TextInteractionFlag::NoTextInteraction</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="ElevatedCardWidget" name="characters_frame">
-             <layout class="QVBoxLayout" name="verticalLayout_2">
-              <item>
-               <widget class="BodyLabel" name="label_2">
-                <property name="text">
-                 <string>Characters</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="ListWidget" name="characters_list">
-                <property name="horizontalScrollBarPolicy">
-                 <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
-                </property>
-                <property name="wordWrap">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="ElevatedCardWidget" name="related_frame">
-             <layout class="QVBoxLayout" name="verticalLayout_4">
-              <item>
-               <widget class="BodyLabel" name="label">
-                <property name="text">
-                 <string>Related</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="ListWidget" name="related_list">
-                <property name="horizontalScrollBarPolicy">
-                 <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
-                </property>
-                <property name="wordWrap">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
+          <widget class="CardWidget" name="charactersWidget">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <layout class="QVBoxLayout" name="charactersVLayout">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QWidget" name="widget" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="BodyLabel" name="charactersLabel">
+                 <property name="text">
+                  <string>Characters</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="ListWidget" name="charactersList">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="horizontalScrollBarPolicy">
+               <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="CardWidget" name="relatedWidget">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <layout class="QVBoxLayout" name="relatedVLayout">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QWidget" name="widget_2" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_4">
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="BodyLabel" name="relatedLabel">
+                 <property name="text">
+                  <string>Related</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="ListWidget" name="relatedList">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="horizontalScrollBarPolicy">
+               <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
     </widget>
    </item>
    <item>
-    <widget class="ElevatedCardWidget" name="items_frame">
-     <layout class="QVBoxLayout" name="verticalLayout_5">
+    <widget class="QWidget" name="itemsWidget" native="true">
+     <layout class="QVBoxLayout" name="itemsWidgetVLayout">
       <property name="leftMargin">
-       <number>0</number>
+       <number>6</number>
       </property>
       <item>
-       <widget class="TreeWidget" name="items_tree">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="contextMenuPolicy">
-         <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
-        </property>
-        <attribute name="headerVisible">
-         <bool>false</bool>
-        </attribute>
-        <column>
-         <property name="text">
-          <string notr="true">1</string>
+       <widget class="CardWidget" name="itemsCard">
+        <layout class="QVBoxLayout" name="itemsCardVLayout">
+         <property name="spacing">
+          <number>6</number>
          </property>
-        </column>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="TreeWidget" name="itemsTree">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="contextMenuPolicy">
+            <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <attribute name="headerVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string notr="true">1</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
@@ -380,12 +523,6 @@ QScrollArea {border: none;}
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>ScrollArea</class>
-   <extends>QScrollArea</extends>
-   <header>qfluentwidgets</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>CardWidget</class>
    <extends>QFrame</extends>
    <header>qfluentwidgets</header>
@@ -393,7 +530,7 @@ QScrollArea {border: none;}
   </customwidget>
   <customwidget>
    <class>SimpleCardWidget</class>
-   <extends>CardWidget</extends>
+   <extends>QFrame</extends>
    <header>qfluentwidgets</header>
    <container>1</container>
   </customwidget>
@@ -418,8 +555,13 @@ QScrollArea {border: none;}
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>ElevatedCardWidget</class>
-   <extends>SimpleCardWidget</extends>
+   <class>ImageLabel</class>
+   <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>SingleDirectionScrollArea</class>
+   <extends>QScrollArea</extends>
    <header>qfluentwidgets</header>
    <container>1</container>
   </customwidget>

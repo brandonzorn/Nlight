@@ -4,7 +4,7 @@ from nlightreader.consts.items.parser_items import (
 
 
 class MangaDexItems(ParserItems):
-    ORDERS = [
+    ORDERS = (
         {
             "value": "relevance",
             "name": "Best Match",
@@ -40,7 +40,7 @@ class MangaDexItems(ParserItems):
             "name": "Year Descending",
             "russian": "",
         },
-    ]
+    )
 
 
 __all__ = [

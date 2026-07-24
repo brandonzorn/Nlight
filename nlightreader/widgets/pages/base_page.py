@@ -3,8 +3,8 @@ import time
 from PySide6.QtCore import Signal, Slot
 from PySide6.QtWidgets import QWidget
 
-from nlightreader.consts.enums import Nl
-from nlightreader.exceptions.parser_content_exc import (
+from nlightreader.core.enums import LibList
+from nlightreader.core.exceptions.parser_content_exc import (
     FetchContentError,
     NoContentError,
     RequestsParamsError,
@@ -22,8 +22,14 @@ from nlightreader.widgets.items.manga_item import MangaItem
 class BasePage(QWidget):
     manga_open = Signal(Manga)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent: QWidget) -> None:
         super().__init__(parent=parent)
+        self.setStyleSheet(
+            """
+            QWidget {background: transparent;}
+            QScrollArea {border: none;}
+            """,
+        )
         self.manga_area = MangaArea()
         self.mangas: list[Manga] = []
 
@@ -36,47 +42,47 @@ class BasePage(QWidget):
         self.catalog = None
         self.request_params = RequestForm()
 
-    def setup(self):
+    def setup(self) -> None:
         self.get_content()
 
-    def update_content(self):
+    def update_content(self) -> None:
         self.manga_area.delete_items()
         items = [self._setup_manga_item(manga) for manga in self.mangas]
-        self.manga_area.set_state(ContentContainerState.show_content)
+        self.manga_area.set_state(ContentContainerState.SHOW_CONTENT)
         self.manga_area.add_items(items)
         self.manga_area.update_items()
 
-    def __process_errors(self, exception: Exception):
+    def __process_errors(self, exception: Exception) -> None:
         try:
             raise exception
         except FetchContentError:
-            self.manga_area.set_state(ContentContainerState.fetch_error)
+            self.manga_area.set_state(ContentContainerState.FETCH_ERROR)
         except (NoContentError, RequestsParamsError):
-            self.manga_area.set_state(ContentContainerState.no_content)
+            self.manga_area.set_state(ContentContainerState.NO_CONTENT)
 
     @Slot()
-    def turn_page_next(self):
+    def turn_page_next(self) -> None:
         if self.request_params.page == 999:
             return
         self.request_params.page += 1
         self.get_content()
 
     @Slot()
-    def turn_page_prev(self):
+    def turn_page_prev(self) -> None:
         if self.request_params.page == 1:
             return
         self.request_params.page -= 1
         self.get_content()
 
-    def get_content(self):
+    def get_content(self) -> None:
         self.update_page()
         self._get_content_thread.terminate()
         self._get_content_thread.wait()
         self.manga_area.delete_items()
-        self.manga_area.set_state(ContentContainerState.fetch_content)
+        self.manga_area.set_state(ContentContainerState.FETCH_CONTENT)
         self._get_content_thread.start()
 
-    def _get_content_thread_func(self):
+    def _get_content_thread_func(self) -> None:
         page = self.request_params.page
         lib_list = self.request_params.lib_list
         time.sleep(0.25)
@@ -92,15 +98,13 @@ class BasePage(QWidget):
     def _setup_manga_item(self, manga: Manga) -> MangaItem:
         raise NotImplementedError
 
-    def update_page(self):
+    def update_page(self) -> None:
         pass
 
-    @Slot(Nl.LibList)
-    def change_list(self, lst: Nl.LibList):
+    @Slot(LibList)
+    def change_list(self, lst: LibList) -> None:
         self.request_params.lib_list = lst
         self.get_content()
 
 
-__all__ = [
-    "BasePage",
-]
+__all__ = ["BasePage"]

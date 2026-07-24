@@ -3,156 +3,152 @@
 ################################################################################
 ## Form generated from reading UI file 'reader.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
+                            QMetaObject, QObject, QPoint, QRect,
+                            QSize, QTime, QUrl, Qt, qtTrId)
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QListWidgetItem,
-    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QListWidgetItem, QSizePolicy,
+    QSpacerItem, QVBoxLayout, QWidget)
 
-from qfluentwidgets import (BodyLabel, CardWidget, ElevatedCardWidget, ListWidget,
-    SimpleCardWidget, ToolButton)
+from qfluentwidgets import (BodyLabel, CardWidget, ListWidget, SimpleCardWidget,
+    ToolButton)
 
 class Ui_ReaderWidget(object):
     def setupUi(self, ReaderWidget):
         if not ReaderWidget.objectName():
             ReaderWidget.setObjectName(u"ReaderWidget")
-        ReaderWidget.resize(618, 441)
-        self.horizontalLayout = QHBoxLayout(ReaderWidget)
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.widget = QWidget(ReaderWidget)
-        self.widget.setObjectName(u"widget")
+        ReaderWidget.resize(640, 480)
+        self.horizontalLayout_2 = QHBoxLayout(ReaderWidget)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.readerCardWidget = SimpleCardWidget(ReaderWidget)
+        self.readerCardWidget.setObjectName(u"readerCardWidget")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
-        self.widget.setSizePolicy(sizePolicy)
-        self.verticalLayout_3 = QVBoxLayout(self.widget)
+        sizePolicy.setHeightForWidth(self.readerCardWidget.sizePolicy().hasHeightForWidth())
+        self.readerCardWidget.setSizePolicy(sizePolicy)
+        self.verticalLayout_3 = QVBoxLayout(self.readerCardWidget)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.reader_widget = QWidget(self.widget)
-        self.reader_widget.setObjectName(u"reader_widget")
-        sizePolicy.setHeightForWidth(self.reader_widget.sizePolicy().hasHeightForWidth())
-        self.reader_widget.setSizePolicy(sizePolicy)
-        self.reader_layout = QHBoxLayout(self.reader_widget)
+        self.readerWidget = QWidget(self.readerCardWidget)
+        self.readerWidget.setObjectName(u"readerWidget")
+        sizePolicy.setHeightForWidth(self.readerWidget.sizePolicy().hasHeightForWidth())
+        self.readerWidget.setSizePolicy(sizePolicy)
+        self.reader_layout = QHBoxLayout(self.readerWidget)
+        self.reader_layout.setSpacing(0)
         self.reader_layout.setObjectName(u"reader_layout")
         self.reader_layout.setContentsMargins(0, 0, 0, 0)
 
-        self.verticalLayout_3.addWidget(self.reader_widget)
+        self.verticalLayout_3.addWidget(self.readerWidget)
 
-        self.actions_layout = QHBoxLayout()
-        self.actions_layout.setObjectName(u"actions_layout")
-        self.actions_frame = QFrame(self.widget)
-        self.actions_frame.setObjectName(u"actions_frame")
+        self.actionsHLayout = QHBoxLayout()
+        self.actionsHLayout.setObjectName(u"actionsHLayout")
+        self.readerActionsWidget = QWidget(self.readerCardWidget)
+        self.readerActionsWidget.setObjectName(u"readerActionsWidget")
         sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.actions_frame.sizePolicy().hasHeightForWidth())
-        self.actions_frame.setSizePolicy(sizePolicy1)
-        self.actions_frame.setFrameShape(QFrame.StyledPanel)
-        self.actions_frame.setFrameShadow(QFrame.Raised)
-        self.verticalLayout = QVBoxLayout(self.actions_frame)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.page_actions_btn = QHBoxLayout()
-        self.page_actions_btn.setObjectName(u"page_actions_btn")
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        sizePolicy1.setHeightForWidth(self.readerActionsWidget.sizePolicy().hasHeightForWidth())
+        self.readerActionsWidget.setSizePolicy(sizePolicy1)
+        self.horizontalLayout = QHBoxLayout(self.readerActionsWidget)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalSpacer = QSpacerItem(10, 29, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.page_actions_btn.addItem(self.horizontalSpacer)
+        self.horizontalLayout.addItem(self.horizontalSpacer)
 
-        self.prev_chapter_btn = ToolButton(self.actions_frame)
+        self.prev_chapter_btn = ToolButton(self.readerActionsWidget)
         self.prev_chapter_btn.setObjectName(u"prev_chapter_btn")
 
-        self.page_actions_btn.addWidget(self.prev_chapter_btn)
+        self.horizontalLayout.addWidget(self.prev_chapter_btn)
 
-        self.prev_page_btn = ToolButton(self.actions_frame)
+        self.prev_page_btn = ToolButton(self.readerActionsWidget)
         self.prev_page_btn.setObjectName(u"prev_page_btn")
 
-        self.page_actions_btn.addWidget(self.prev_page_btn)
+        self.horizontalLayout.addWidget(self.prev_page_btn)
 
-        self.chapter_label = BodyLabel(self.actions_frame)
-        self.chapter_label.setObjectName(u"chapter_label")
-        self.chapter_label.setWordWrap(True)
+        self.chapterLabel = BodyLabel(self.readerActionsWidget)
+        self.chapterLabel.setObjectName(u"chapterLabel")
+        self.chapterLabel.setWordWrap(True)
 
-        self.page_actions_btn.addWidget(self.chapter_label)
+        self.horizontalLayout.addWidget(self.chapterLabel)
 
-        self.page_label = BodyLabel(self.actions_frame)
-        self.page_label.setObjectName(u"page_label")
-        self.page_label.setWordWrap(True)
+        self.pageLabel = BodyLabel(self.readerActionsWidget)
+        self.pageLabel.setObjectName(u"pageLabel")
+        self.pageLabel.setWordWrap(True)
 
-        self.page_actions_btn.addWidget(self.page_label)
+        self.horizontalLayout.addWidget(self.pageLabel)
 
-        self.next_page_btn = ToolButton(self.actions_frame)
+        self.next_page_btn = ToolButton(self.readerActionsWidget)
         self.next_page_btn.setObjectName(u"next_page_btn")
 
-        self.page_actions_btn.addWidget(self.next_page_btn)
+        self.horizontalLayout.addWidget(self.next_page_btn)
 
-        self.next_chapter_btn = ToolButton(self.actions_frame)
+        self.next_chapter_btn = ToolButton(self.readerActionsWidget)
         self.next_chapter_btn.setObjectName(u"next_chapter_btn")
 
-        self.page_actions_btn.addWidget(self.next_chapter_btn)
+        self.horizontalLayout.addWidget(self.next_chapter_btn)
 
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.horizontalSpacer_2 = QSpacerItem(11, 29, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.page_actions_btn.addItem(self.horizontalSpacer_2)
-
-
-        self.verticalLayout.addLayout(self.page_actions_btn)
+        self.horizontalLayout.addItem(self.horizontalSpacer_2)
 
 
-        self.actions_layout.addWidget(self.actions_frame)
+        self.actionsHLayout.addWidget(self.readerActionsWidget)
 
-        self.frame = QFrame(self.widget)
-        self.frame.setObjectName(u"frame")
-        self.frame.setFrameShape(QFrame.StyledPanel)
-        self.frame.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_4 = QHBoxLayout(self.frame)
+        self.windowActionsWidget = QWidget(self.readerCardWidget)
+        self.windowActionsWidget.setObjectName(u"windowActionsWidget")
+        self.horizontalLayout_4 = QHBoxLayout(self.windowActionsWidget)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.fullscreen_btn = ToolButton(self.frame)
-        self.fullscreen_btn.setObjectName(u"fullscreen_btn")
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.fullscreenButton = ToolButton(self.windowActionsWidget)
+        self.fullscreenButton.setObjectName(u"fullscreenButton")
 
-        self.horizontalLayout_4.addWidget(self.fullscreen_btn)
+        self.horizontalLayout_4.addWidget(self.fullscreenButton)
 
-        self.ch_list_btn = ToolButton(self.frame)
-        self.ch_list_btn.setObjectName(u"ch_list_btn")
+        self.chaptersListButton = ToolButton(self.windowActionsWidget)
+        self.chaptersListButton.setObjectName(u"chaptersListButton")
 
-        self.horizontalLayout_4.addWidget(self.ch_list_btn)
-
-
-        self.actions_layout.addWidget(self.frame)
+        self.horizontalLayout_4.addWidget(self.chaptersListButton)
 
 
-        self.verticalLayout_3.addLayout(self.actions_layout)
+        self.actionsHLayout.addWidget(self.windowActionsWidget)
 
 
-        self.horizontalLayout.addWidget(self.widget)
+        self.verticalLayout_3.addLayout(self.actionsHLayout)
 
-        self.chapters_frame = ElevatedCardWidget(ReaderWidget)
-        self.chapters_frame.setObjectName(u"chapters_frame")
-        self.verticalLayout_2 = QVBoxLayout(self.chapters_frame)
+
+        self.horizontalLayout_2.addWidget(self.readerCardWidget)
+
+        self.chaptersCard = CardWidget(ReaderWidget)
+        self.chaptersCard.setObjectName(u"chaptersCard")
+        self.verticalLayout_2 = QVBoxLayout(self.chaptersCard)
+        self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.items_list = ListWidget(self.chapters_frame)
-        self.items_list.setObjectName(u"items_list")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.chaptersList = ListWidget(self.chaptersCard)
+        self.chaptersList.setObjectName(u"chaptersList")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.items_list.sizePolicy().hasHeightForWidth())
-        self.items_list.setSizePolicy(sizePolicy2)
-        self.items_list.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.items_list.setWordWrap(True)
+        sizePolicy2.setHeightForWidth(self.chaptersList.sizePolicy().hasHeightForWidth())
+        self.chaptersList.setSizePolicy(sizePolicy2)
+        self.chaptersList.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.chaptersList.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.chaptersList.setWordWrap(True)
 
-        self.verticalLayout_2.addWidget(self.items_list)
+        self.verticalLayout_2.addWidget(self.chaptersList)
 
 
-        self.horizontalLayout.addWidget(self.chapters_frame)
+        self.horizontalLayout_2.addWidget(self.chaptersCard)
 
 
         self.retranslateUi(ReaderWidget)
@@ -161,27 +157,23 @@ class Ui_ReaderWidget(object):
     # setupUi
 
     def retranslateUi(self, ReaderWidget):
-        ReaderWidget.setWindowTitle(QCoreApplication.translate("ReaderWidget", u"Form", None))
 #if QT_CONFIG(shortcut)
-        self.prev_chapter_btn.setShortcut(QCoreApplication.translate("ReaderWidget", u"Down", None))
-#endif // QT_CONFIG(shortcut)
-        self.prev_page_btn.setText("")
-#if QT_CONFIG(shortcut)
-        self.prev_page_btn.setShortcut(QCoreApplication.translate("ReaderWidget", u"Left", None))
-#endif // QT_CONFIG(shortcut)
-        self.chapter_label.setText(QCoreApplication.translate("ReaderWidget", u"\u0413\u043b\u0430\u0432\u0430 1", None))
-        self.page_label.setText(QCoreApplication.translate("ReaderWidget", u"\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 1", None))
-#if QT_CONFIG(shortcut)
-        self.next_page_btn.setShortcut(QCoreApplication.translate("ReaderWidget", u"Right", None))
+        self.prev_chapter_btn.setShortcut(qtTrId(u""))
 #endif // QT_CONFIG(shortcut)
 #if QT_CONFIG(shortcut)
-        self.next_chapter_btn.setShortcut(QCoreApplication.translate("ReaderWidget", u"Up", None))
+        self.prev_page_btn.setShortcut(qtTrId(u""))
+#endif // QT_CONFIG(shortcut)
+        self.chapterLabel.setText(qtTrId(u"label.Chapter"))
+        self.pageLabel.setText(qtTrId(u"label.Page"))
+#if QT_CONFIG(shortcut)
+        self.next_page_btn.setShortcut(qtTrId(u""))
 #endif // QT_CONFIG(shortcut)
 #if QT_CONFIG(shortcut)
-        self.fullscreen_btn.setShortcut(QCoreApplication.translate("ReaderWidget", u"F11", None))
+        self.next_chapter_btn.setShortcut(qtTrId(u""))
 #endif // QT_CONFIG(shortcut)
 #if QT_CONFIG(shortcut)
-        self.ch_list_btn.setShortcut("")
+        self.fullscreenButton.setShortcut(qtTrId(u""))
 #endif // QT_CONFIG(shortcut)
+        pass
     # retranslateUi
 

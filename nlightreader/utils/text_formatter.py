@@ -21,11 +21,11 @@ class TextFormatter:
             Formats the text and returns it as HTML text.
     """
 
-    def __init__(self, text: str, show_spoilers=False):
+    def __init__(self, text: str, show_spoilers: bool = False) -> None:
         self._text = " ".join(text.splitlines())
         self._show_spoilers = show_spoilers
 
-    def replace_spoilers(self):
+    def replace_spoilers(self) -> None:
         for i, spoiler_text in re.findall(
             r"\[spoiler=(\w+)](.+?)\[/spoiler]",
             self._text,
@@ -51,7 +51,7 @@ class TextFormatter:
                 f'<span style=" color:#951a00;">{spoiler}</span>',
             )
 
-    def replace_characters(self):
+    def replace_characters(self) -> None:
         for ch_id, name in re.findall(
             r"\[character=(\w+)](.+?)\[/character]",
             self._text,
@@ -71,7 +71,7 @@ class TextFormatter:
                 f'<span style=" color:#177e00;">{name}</span>',
             )
 
-    def replace_urls(self):
+    def replace_urls(self) -> None:
         for url, url_text in re.findall(
             r"\[url=(.+?)](.+?)\[/url]",
             self._text,
@@ -91,7 +91,7 @@ class TextFormatter:
         return self._text
 
 
-def description_to_html(text: str, show_spoilers=False) -> str:
+def description_to_html(text: str, show_spoilers: bool = False) -> str:
     if not text:
         return ""
     return TextFormatter(text, show_spoilers).to_html_text()

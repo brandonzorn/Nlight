@@ -3,26 +3,28 @@ from nlightreader.consts.items.parser_items import (
 )
 from nlightreader.consts.items.preset_items import (
     PresetKinds as Pk,
+)
+from nlightreader.consts.items.preset_items import (
     PresetOrders as Po,
 )
 
 
 class DesuItems(ParserItems):
-    ORDERS = [
+    ORDERS = (
         {"value": "popular"} | Po.POPULARITY,
         {"value": "name"} | Po.NAME,
         {"value": "updated"} | Po.UPDATED,
-    ]
+    )
 
-    KINDS = [
+    KINDS = (
         {"value": "manga"} | Pk.MANGA,
         {"value": "manhwa"} | Pk.MANHWA,
         {"value": "manhua"} | Pk.MANHUA,
         {"value": "one_shot"} | Pk.ONESHOT,
         {"value": "comics"} | Pk.COMIC,
-    ]
+    )
 
-    GENRES = [
+    GENRES = (
         {
             "value": "Dementia",
             "name": "Dementia",
@@ -273,9 +275,7 @@ class DesuItems(ParserItems):
             "name": "Yaoi",
             "russian": "Яой",
         },
-    ]
+    )
 
 
-__all__ = [
-    "DesuItems",
-]
+__all__ = ["DesuItems"]

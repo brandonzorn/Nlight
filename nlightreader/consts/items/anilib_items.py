@@ -3,12 +3,14 @@ from nlightreader.consts.items.lib_base_items import (
 )
 from nlightreader.consts.items.preset_items import (
     PresetKinds as Pk,
+)
+from nlightreader.consts.items.preset_items import (
     PresetOrders as Po,
 )
 
 
 class AniLibItems(LibBaseItems):
-    ORDERS = [
+    ORDERS = (
         {"value": None} | Po.POPULARITY,
         {"value": "rate_avg"} | Po.RATING,
         {"value": "views"} | Po.VIEWS,
@@ -18,9 +20,9 @@ class AniLibItems(LibBaseItems):
         {"value": "created_at"} | Po.CREATED,
         {"value": "name"} | Po.NAME,
         {"value": "rus_name"} | Po.RUS_NAME,
-    ]
+    )
 
-    KINDS = [
+    KINDS = (
         {"value": 16} | Pk.TV,
         {"value": 17} | Pk.MOVIE,
         {
@@ -32,7 +34,7 @@ class AniLibItems(LibBaseItems):
         {"value": 20} | Pk.OVA,
         {"value": 21} | Pk.ONA,
         {"value": 22} | Pk.MUSIC,
-    ]
+    )
 
 
 __all__ = [

@@ -1,15 +1,16 @@
 from typing import override
 
-from PySide6.QtCore import Slot
+from PySide6.QtCore import qtTrId, Slot
+from PySide6.QtWidgets import QWidget
 from qfluentwidgets import FluentIcon
 
-from data.ui.widgets.shikimori import Ui_Form
-from nlightreader.consts.enums import Nl
+from data.ui.widgets.shikimori import Ui_ExternalLibraryPage
+from nlightreader.core.enums import LibList
 from nlightreader.items import User
 from nlightreader.models import Manga
 from nlightreader.parsers import ShikimoriLib
+from nlightreader.parsers.catalog import CatalogAuthType, LibParser
 from nlightreader.utils.threads import Worker
-from nlightreader.utils.translator import translate
 from nlightreader.widgets.dialogs import (
     TokenAuthMessageBox,
     UserDataAuthMessageBox,
@@ -19,45 +20,46 @@ from nlightreader.widgets.pages.base_page import BasePage
 
 
 class ExternalLibraryPage(BasePage):
-    def __init__(self, parent=None):
+    def __init__(self, parent: QWidget) -> None:
         super().__init__(parent=parent)
-        self.ui = Ui_Form()
+        self.ui = Ui_ExternalLibraryPage()
         self.ui.setupUi(self)
 
-        self.ui.next_btn.setIcon(FluentIcon.RIGHT_ARROW)
-        self.ui.prev_btn.setIcon(FluentIcon.LEFT_ARROW)
+        self.ui.nextButton.setIcon(FluentIcon.RIGHT_ARROW)
+        self.ui.previousButton.setIcon(FluentIcon.LEFT_ARROW)
 
-        self.setObjectName("FormShikimori")
+        self.manga_area.install(self.ui.itemsLayout)
 
-        self.manga_area.install(self.ui.items_layout)
-
-        self.ui.planned_btn.clicked.connect(
-            lambda: self.change_list(Nl.LibList.planned),
+        self.ui.plannedButton.clicked.connect(
+            lambda: self.change_list(LibList.planned),
         )
-        self.ui.reading_btn.clicked.connect(
-            lambda: self.change_list(Nl.LibList.reading),
+        self.ui.readingButton.clicked.connect(
+            lambda: self.change_list(LibList.reading),
         )
-        self.ui.on_hold_btn.clicked.connect(
-            lambda: self.change_list(Nl.LibList.on_hold),
+        self.ui.onHoldButton.clicked.connect(
+            lambda: self.change_list(LibList.on_hold),
         )
-        self.ui.completed_btn.clicked.connect(
-            lambda: self.change_list(Nl.LibList.completed),
+        self.ui.completedButton.clicked.connect(
+            lambda: self.change_list(LibList.completed),
         )
-        self.ui.dropped_btn.clicked.connect(
-            lambda: self.change_list(Nl.LibList.dropped),
+        self.ui.droppedButton.clicked.connect(
+            lambda: self.change_list(LibList.dropped),
         )
-        self.ui.re_reading_btn.clicked.connect(
-            lambda: self.change_list(Nl.LibList.re_reading),
+        self.ui.reReadingButton.clicked.connect(
+            lambda: self.change_list(LibList.re_reading),
         )
-        self.ui.next_btn.clicked.connect(self.turn_page_next)
-        self.ui.prev_btn.clicked.connect(self.turn_page_prev)
-        self.ui.title_line.searchSignal.connect(self.search)
-        self.ui.auth_btn.clicked.connect(self.authorize)
-        self.catalog = ShikimoriLib()
-        Worker(target=self.get_user_info, callback=self.set_user_info).start()
+        self.ui.nextButton.clicked.connect(self.turn_page_next)
+        self.ui.previousButton.clicked.connect(self.turn_page_prev)
+        self.ui.searchLineEdit.searchSignal.connect(self.search)
+        self.ui.signInButton.clicked.connect(self.authorize)
+        self.catalog: LibParser = ShikimoriLib()
+        Worker(
+            target=self._get_user_info,
+            callback=self._set_user_info,
+        ).start()
 
     @override
-    def _setup_manga_item(self, manga: Manga):
+    def _setup_manga_item(self, manga: Manga) -> MangaItem:
         item = MangaItem(
             manga,
             is_added_to_lib=False,
@@ -66,49 +68,49 @@ class ExternalLibraryPage(BasePage):
         item.manga_clicked.connect(self.manga_open.emit)
         return item
 
-    def get_user_info(self):
-        self.ui.auth_btn.setEnabled(False)
+    def _get_user_info(self) -> User:
+        self.ui.signInButton.setEnabled(False)
         return self.catalog.get_user()
 
-    def set_user_info(self, user: User):
+    def _set_user_info(self, user: User) -> None:
         if user.nickname:
-            self.ui.auth_btn.setText(user.nickname)
+            self.ui.signInButton.setText(user.nickname)
         else:
-            self.ui.auth_btn.setText(
-                translate("Other", "Sign in"),
-            )
-        self.ui.auth_btn.setEnabled(True)
+            self.ui.signInButton.setText(self.tr("Sign in"))
+        self.ui.signInButton.setEnabled(True)
 
     @override
-    def update_page(self):
-        self.ui.page_label.setText(
-            f"{translate('Other', 'Page')} {self.request_params.page}",
+    def update_page(self) -> None:
+        self.ui.pageLabel.setText(
+            f"{qtTrId('label.Page')} {self.request_params.page}",
         )
 
-    def auth_success_callback(self, user: User):
-        self.set_user_info(user)
+    def auth_success_callback(self, user: User) -> None:
+        self._set_user_info(user)
         self.get_content()
 
     @Slot()
-    def authorize(self):
-        if self.catalog.fields == 1:
-            w = TokenAuthMessageBox(self.catalog, parent=self)
-        else:
-            w = UserDataAuthMessageBox(self.catalog, parent=self)
+    def authorize(self) -> None:
+        match self.catalog.AUTH_TYPE:
+            case CatalogAuthType.TOKEN:
+                w = TokenAuthMessageBox(self.catalog, parent=self)
+            case CatalogAuthType.CREDENTIALS:
+                w = UserDataAuthMessageBox(self.catalog, parent=self)
+            case _:
+                return
+
         if w.exec():
             self.catalog.session.auth_login(w.get_user_data())
             Worker(
-                target=self.get_user_info,
+                target=self._get_user_info,
                 callback=self.auth_success_callback,
             ).start()
 
     @Slot()
-    def search(self):
+    def search(self) -> None:
         self.request_params.page = 1
-        self.request_params.search = self.ui.title_line.text()
+        self.request_params.search = self.ui.searchLineEdit.text()
         self.get_content()
 
 
-__all__ = [
-    "ExternalLibraryPage",
-]
+__all__ = ["ExternalLibraryPage"]

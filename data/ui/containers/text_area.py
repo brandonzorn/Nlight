@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'text_area.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -20,57 +20,61 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QSizePolicy,
 
 from qfluentwidgets import (CardWidget, SimpleCardWidget, Slider, TextEdit)
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        if not Form.objectName():
-            Form.setObjectName(u"Form")
-        Form.resize(607, 508)
-        self.verticalLayout_2 = QVBoxLayout(Form)
+class Ui_TextArea(object):
+    def setupUi(self, TextArea):
+        if not TextArea.objectName():
+            TextArea.setObjectName(u"TextArea")
+        TextArea.resize(640, 480)
+        self.verticalLayout_2 = QVBoxLayout(TextArea)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.size_frame = SimpleCardWidget(Form)
-        self.size_frame.setObjectName(u"size_frame")
-        self.horizontalLayout_2 = QHBoxLayout(self.size_frame)
+        self.fontSizeCard = SimpleCardWidget(TextArea)
+        self.fontSizeCard.setObjectName(u"fontSizeCard")
+        self.horizontalLayout_2 = QHBoxLayout(self.fontSizeCard)
+        self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.size_slider = Slider(self.size_frame)
-        self.size_slider.setObjectName(u"size_slider")
-        self.size_slider.setFocusPolicy(Qt.NoFocus)
-        self.size_slider.setMinimum(9)
-        self.size_slider.setMaximum(25)
-        self.size_slider.setOrientation(Qt.Horizontal)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.fontSizeSlider = Slider(self.fontSizeCard)
+        self.fontSizeSlider.setObjectName(u"fontSizeSlider")
+        self.fontSizeSlider.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.fontSizeSlider.setMinimum(9)
+        self.fontSizeSlider.setMaximum(25)
+        self.fontSizeSlider.setOrientation(Qt.Orientation.Horizontal)
 
-        self.horizontalLayout_2.addWidget(self.size_slider)
+        self.horizontalLayout_2.addWidget(self.fontSizeSlider)
 
 
-        self.verticalLayout_2.addWidget(self.size_frame)
+        self.verticalLayout_2.addWidget(self.fontSizeCard)
 
-        self.frame = SimpleCardWidget(Form)
-        self.frame.setObjectName(u"frame")
+        self.textCard = SimpleCardWidget(TextArea)
+        self.textCard.setObjectName(u"textCard")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
-        self.frame.setSizePolicy(sizePolicy)
-        self.horizontalLayout = QHBoxLayout(self.frame)
+        sizePolicy.setHeightForWidth(self.textCard.sizePolicy().hasHeightForWidth())
+        self.textCard.setSizePolicy(sizePolicy)
+        self.horizontalLayout = QHBoxLayout(self.textCard)
+        self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.text_browser = TextEdit(self.frame)
-        self.text_browser.setObjectName(u"text_browser")
-        self.text_browser.setFocusPolicy(Qt.NoFocus)
-        self.text_browser.setFrameShape(QFrame.NoFrame)
-        self.text_browser.setTextInteractionFlags(Qt.NoTextInteraction)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.textContent = TextEdit(self.textCard)
+        self.textContent.setObjectName(u"textContent")
+        self.textContent.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.textContent.setFrameShape(QFrame.Shape.NoFrame)
+        self.textContent.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByKeyboard|Qt.TextInteractionFlag.TextSelectableByMouse)
 
-        self.horizontalLayout.addWidget(self.text_browser)
-
-
-        self.verticalLayout_2.addWidget(self.frame)
+        self.horizontalLayout.addWidget(self.textContent)
 
 
-        self.retranslateUi(Form)
+        self.verticalLayout_2.addWidget(self.textCard)
 
-        QMetaObject.connectSlotsByName(Form)
+
+        self.retranslateUi(TextArea)
+
+        QMetaObject.connectSlotsByName(TextArea)
     # setupUi
 
-    def retranslateUi(self, Form):
-        Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
+    def retranslateUi(self, TextArea):
+        pass
     # retranslateUi
 

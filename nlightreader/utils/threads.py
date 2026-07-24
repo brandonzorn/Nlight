@@ -1,5 +1,5 @@
+from collections.abc import Callable
 import traceback
-from typing import Callable
 
 from PySide6.QtCore import (
     QObject,
@@ -20,12 +20,12 @@ class NlThread:
     def __init__(
         self,
         target: Callable,
-        args=(),
-        kwargs=None,
+        args: tuple = (),
+        kwargs: dict | None = None,
         *,
-        callback=None,
-        error_callback=None,
-    ):
+        callback: Callable | None = None,
+        error_callback: Callable | None = None,
+    ) -> None:
         super().__init__()
         if kwargs is None:
             kwargs = {}
@@ -39,7 +39,7 @@ class NlThread:
             self.signals.error.connect(error_callback)
 
     @Slot()
-    def run(self):
+    def run(self) -> None:
         try:
             result = self._target(*self._args, **self._kwargs)
         except Exception as e:
@@ -72,12 +72,12 @@ class Worker(NlThread, QRunnable):
     def __init__(
         self,
         target: Callable,
-        args=(),
-        kwargs=None,
+        args: tuple = (),
+        kwargs: dict | None = None,
         *,
-        callback=None,
-        error_callback=None,
-    ):
+        callback: Callable | None = None,
+        error_callback: Callable | None = None,
+    ) -> None:
         super().__init__(
             target,
             args,
@@ -86,7 +86,7 @@ class Worker(NlThread, QRunnable):
             error_callback=error_callback,
         )
 
-    def start(self, pool=None):
+    def start(self, pool: QThreadPool | None = None) -> None:
         if pool is None:
             pool = QThreadPool.globalInstance()
         if pool.activeThreadCount() == pool.maxThreadCount():
@@ -117,12 +117,12 @@ class Thread(NlThread, QThread):
     def __init__(
         self,
         target: Callable,
-        args=(),
-        kwargs=None,
+        args: tuple = (),
+        kwargs: dict | None = None,
         *,
-        callback=None,
-        error_callback=None,
-    ):
+        callback: Callable | None = None,
+        error_callback: Callable | None = None,
+    ) -> None:
         super().__init__(
             target,
             args,

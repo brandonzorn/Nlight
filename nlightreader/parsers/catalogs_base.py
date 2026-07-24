@@ -1,38 +1,26 @@
-from nlightreader.consts.enums import Nl
+from nlightreader.core.enums import CatalogType
 from nlightreader.parsers.catalog import AbstractCatalog
 
 
 class AbstractMangaCatalog(AbstractCatalog):
-    CATALOG_TYPE = Nl.CatalogType.manga
-
-    def __init__(self):
-        super().__init__()
+    CATALOG_TYPE = CatalogType.MANGA
 
 
 class AbstractHentaiMangaCatalog(AbstractCatalog):
-    CATALOG_TYPE = Nl.CatalogType.hentai_manga
-
-    def __init__(self):
-        super().__init__()
+    CATALOG_TYPE = CatalogType.HENTAI_MANGA
 
 
 class AbstractRanobeCatalog(AbstractCatalog):
-    CATALOG_TYPE = Nl.CatalogType.ranobe
-
-    def __init__(self):
-        super().__init__()
+    CATALOG_TYPE = CatalogType.RANOBE
 
 
 class AbstractAnimeCatalog(AbstractCatalog):
-    CATALOG_TYPE = Nl.CatalogType.anime
-
-    def __init__(self):
-        super().__init__()
+    CATALOG_TYPE = CatalogType.ANIME
 
 
 __all__ = [
-    "AbstractMangaCatalog",
     "AbstractAnimeCatalog",
-    "AbstractRanobeCatalog",
     "AbstractHentaiMangaCatalog",
+    "AbstractMangaCatalog",
+    "AbstractRanobeCatalog",
 ]

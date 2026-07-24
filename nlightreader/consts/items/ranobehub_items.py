@@ -7,7 +7,7 @@ from nlightreader.consts.items.preset_items import (
 
 
 class RanobehubItems(ParserItems):
-    ORDERS = [
+    ORDERS = (
         {"value": ""} | Po.UPDATED,
         {"value": "created_at"} | Po.CREATED,
         {"value": "name_rus"} | Po.NAME,
@@ -15,9 +15,9 @@ class RanobehubItems(ParserItems):
         {"value": "computed_rating"} | Po.RATING,
         {"value": "count_chapters"} | Po.CHAPTERS_COUNT,
         {"value": "count_of_symbols"} | Po.TRANSLATION_VOLUME,
-    ]
+    )
 
-    GENRES = [
+    GENRES = (
         {
             "value": "1",
             "name": "Horror",
@@ -228,9 +228,7 @@ class RanobehubItems(ParserItems):
             "name": "isekai",
             "russian": "isekai",
         },
-    ]
+    )
 
 
-__all__ = [
-    "RanobehubItems",
-]
+__all__ = ["RanobehubItems"]

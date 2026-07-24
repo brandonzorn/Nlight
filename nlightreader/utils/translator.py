@@ -1,31 +1,13 @@
-from PySide6.QtCore import QLocale, QTranslator
-from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import QLocale, QObject, QTranslator
 
 
-class NlightTranslator(QTranslator):
-    def __init__(self, locale: QLocale = None, parent=None):
+class AppTranslator(QTranslator):
+    def __init__(self, locale: QLocale, parent: QObject | None = None) -> None:
         super().__init__(parent=parent)
-        self.load(locale or QLocale())
+        self._load(locale)
 
-    def load(self, locale: QLocale):
-        super().load(f":/translations/i18n/{locale.name()}.qm")
-
-
-def translate(context, string):
-    """
-    Translates a string using the current translation context.
-
-    Args:
-        context: The context in which the string appears.
-        string: The string to be translated.
-
-    Returns:
-        A translated version of the input string.
-    """
-    return QApplication.translate(context, string, None)
+    def _load(self, locale: QLocale) -> None:
+        super().load(f":/i18n/{locale.language().name}.qm")
 
 
-__all__ = [
-    "NlightTranslator",
-    "translate",
-]
+__all__ = ["AppTranslator"]

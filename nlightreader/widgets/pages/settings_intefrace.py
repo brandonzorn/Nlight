@@ -1,16 +1,17 @@
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import (
-    BodyLabel,
     ExpandLayout,
     FluentIcon,
     HyperlinkCard,
     InfoBar,
     OptionsSettingCard,
     PrimaryPushSettingCard,
-    ScrollArea,
+    setTheme,
     SettingCardGroup,
+    SingleDirectionScrollArea,
     SwitchSettingCard,
+    TitleLabel,
 )
 
 from nlightreader.consts.app import APP_VERSION
@@ -18,33 +19,30 @@ from nlightreader.consts.urls import GITHUB_REPO
 from nlightreader.utils.config import cfg
 
 
-class SettingsPage(ScrollArea):
+class SettingsPage(SingleDirectionScrollArea):
     check_for_updates_signal = Signal()
-    theme_changed = Signal()
+    mica_enable_changed = Signal(bool)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent: QWidget) -> None:
         super().__init__(parent=parent)
-        self.setObjectName("SettingsInterface")
+        self.setObjectName("SettingsPage")
         self.scrollWidget = QWidget()
         self.expandLayout = ExpandLayout(self.scrollWidget)
-        self.setStyleSheet(
-            """
-            QWidget {background: transparent;}
-            QScrollArea {border: none;}
-            BodyLabel {font: 33px 'Microsoft YaHei Light';}
-            """,
-        )
-        self.settingLabel = BodyLabel(
-            self.tr("Settings"),
-            self,
-        )
+        self.settingLabel = TitleLabel(self.tr("Settings"), self)
 
         self.personalGroup = SettingCardGroup(
             self.tr("Personalization"),
             self.scrollWidget,
         )
+        self.micaCard = SwitchSettingCard(
+            FluentIcon.TRANSPARENT,
+            self.tr("Mica effect"),
+            self.tr("Apply semi transparent to windows and surfaces"),
+            cfg.mica_enabled,
+            self.personalGroup,
+        )
         self.themeCard = OptionsSettingCard(
-            cfg.theme_mode,
+            cfg.themeMode,
             FluentIcon.BRUSH,
             self.tr("Application theme"),
             self.tr("Change the appearance of application"),
@@ -93,7 +91,7 @@ class SettingsPage(ScrollArea):
             self.tr(
                 "Automatically mark episodes as watched",
             ),
-            configItem=cfg.enable_kodik_server,
+            configItem=cfg.enable_kodik_metrics,
             parent=self.utilsSoftwareGroup,
         )
 
@@ -135,13 +133,13 @@ class SettingsPage(ScrollArea):
             self.aboutGroup,
         )
 
-        self.__init_widget()
+        self._init_widget()
+        self.enableTransparentBackground()
 
-    def setup(self):
+    def setup(self) -> None:
         pass
 
-    def __init_widget(self):
-        self.resize(1000, 800)
+    def _init_widget(self) -> None:
         self.setHorizontalScrollBarPolicy(
             Qt.ScrollBarPolicy.ScrollBarAlwaysOff,
         )
@@ -149,13 +147,14 @@ class SettingsPage(ScrollArea):
         self.setWidget(self.scrollWidget)
         self.setWidgetResizable(True)
 
-        self.__init_layout()
-        self.__connect_signals()
+        self._init_layout()
+        self._connect_signals()
 
-    def __init_layout(self):
+    def _init_layout(self) -> None:
         self.settingLabel.move(60, 63)
 
         self.personalGroup.addSettingCard(self.themeCard)
+        self.personalGroup.addSettingCard(self.micaCard)
         self.personalGroup.addSettingCard(self.zoomCard)
         self.personalGroup.addSettingCard(self.languageCard)
 
@@ -173,7 +172,7 @@ class SettingsPage(ScrollArea):
         self.expandLayout.addWidget(self.updateSoftwareGroup)
         self.expandLayout.addWidget(self.aboutGroup)
 
-    def __show_restart_tooltip(self):
+    def _show_restart_tooltip(self) -> None:
         InfoBar.warning(
             "",
             self.tr(
@@ -182,12 +181,42 @@ class SettingsPage(ScrollArea):
             parent=self.window(),
         )
 
-    def __connect_signals(self):
-        cfg.appRestartSig.connect(self.__show_restart_tooltip)
+    def show_no_updates_tooltip(self) -> None:
+        InfoBar.success(
+            title=self.tr("Checking for updates."),
+            content=self.tr(
+                "No updates available. You are using the latest version.",
+            ),
+            duration=3500,
+            parent=self.window(),
+        )
+
+    def show_has_updates_tooltip(self, result: str) -> None:
+        InfoBar.info(
+            title=self.tr("Checking for updates."),
+            content=self.tr(
+                "New version {result} is available! "
+                "You are currently on version {APP_VERSION}.",
+            ).format(result=result, APP_VERSION=APP_VERSION),
+            duration=3500,
+            parent=self.window(),
+        )
+
+    def show_err_updates_tooltip(self) -> None:
+        InfoBar.error(
+            title=self.tr("Checking for updates."),
+            content=self.tr(
+                "Error checking for updates.",
+            ),
+            duration=3500,
+            parent=self.window(),
+        )
+
+    def _connect_signals(self) -> None:
+        cfg.appRestartSig.connect(self._show_restart_tooltip)
+        cfg.themeChanged.connect(setTheme)
+        self.micaCard.checkedChanged.connect(self.mica_enable_changed)
         self.aboutCard.clicked.connect(self.check_for_updates_signal)
-        self.themeCard.optionChanged.connect(self.theme_changed)
 
 
-__all__ = [
-    "SettingsPage",
-]
+__all__ = ["SettingsPage"]

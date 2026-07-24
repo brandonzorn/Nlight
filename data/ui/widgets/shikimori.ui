@@ -1,52 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+<ui version="4.0" idbasedtr="true">
+ <class>ExternalLibraryPage</class>
+ <widget class="QWidget" name="ExternalLibraryPage">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>662</width>
-    <height>397</height>
+    <width>640</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
    <item>
-    <layout class="QVBoxLayout" name="search">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="SimpleCardWidget" name="items_frame">
+      <widget class="QWidget" name="itemsWidget" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <layout class="QVBoxLayout" name="items_layout"/>
+       <layout class="QVBoxLayout" name="itemsLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
       </widget>
      </item>
      <item>
-      <widget class="SimpleCardWidget" name="search_frame">
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
+      <widget class="QWidget" name="searchWidget" native="true">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <property name="leftMargin">
          <number>0</number>
@@ -61,12 +59,27 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="SimpleCardWidget" name="text_frame">
+         <widget class="QWidget" name="text_widget" native="true">
           <layout class="QHBoxLayout" name="horizontalLayout">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
            <item>
-            <widget class="SearchLineEdit" name="title_line">
+            <widget class="SearchLineEdit" name="searchLineEdit">
              <property name="placeholderText">
-              <string>Search</string>
+              <string id="label.Search">Search</string>
              </property>
             </widget>
            </item>
@@ -74,20 +87,32 @@
          </widget>
         </item>
         <item>
-         <widget class="SimpleCardWidget" name="page_frame">
-          <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <widget class="QWidget" name="page_widget" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
            <item>
-            <widget class="ToolButton" name="prev_btn"/>
+            <widget class="ToolButton" name="previousButton"/>
            </item>
            <item>
-            <widget class="BodyLabel" name="page_label">
+            <widget class="BodyLabel" name="pageLabel">
              <property name="text">
-              <string>Page 1</string>
+              <string id="label.Page">Page</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="ToolButton" name="next_btn"/>
+            <widget class="ToolButton" name="nextButton"/>
            </item>
           </layout>
          </widget>
@@ -98,12 +123,24 @@
     </layout>
    </item>
    <item>
-    <widget class="SimpleCardWidget" name="lists_frame">
+    <widget class="QWidget" name="libraryListWidget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
-       <widget class="PushButton" name="planned_btn">
+       <widget class="PushButton" name="plannedButton">
         <property name="text">
-         <string>Planned</string>
+         <string id="library-list.Planned">Planned</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -117,9 +154,9 @@
        </widget>
       </item>
       <item>
-       <widget class="PushButton" name="completed_btn">
+       <widget class="PushButton" name="completedButton">
         <property name="text">
-         <string>Completed</string>
+         <string id="library-list.Completed">Completed</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -130,9 +167,9 @@
        </widget>
       </item>
       <item>
-       <widget class="PushButton" name="reading_btn">
+       <widget class="PushButton" name="readingButton">
         <property name="text">
-         <string>Reading</string>
+         <string id="library-list.Reading">Reading</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -143,9 +180,9 @@
        </widget>
       </item>
       <item>
-       <widget class="PushButton" name="re_reading_btn">
+       <widget class="PushButton" name="reReadingButton">
         <property name="text">
-         <string>Re-reading</string>
+         <string id="library-list.Re-reading">Re-reading</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -156,9 +193,9 @@
        </widget>
       </item>
       <item>
-       <widget class="PushButton" name="on_hold_btn">
+       <widget class="PushButton" name="onHoldButton">
         <property name="text">
-         <string>On hold</string>
+         <string id="library-list.On hold">On hold</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -169,9 +206,9 @@
        </widget>
       </item>
       <item>
-       <widget class="PushButton" name="dropped_btn">
+       <widget class="PushButton" name="droppedButton">
         <property name="text">
-         <string>Dropped</string>
+         <string id="library-list.Dropped">Dropped</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -184,7 +221,7 @@
       <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Orientation::Vertical</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -195,7 +232,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="PushButton" name="auth_btn">
+       <widget class="PushButton" name="signInButton">
         <property name="text">
          <string>Sign in</string>
         </property>
@@ -216,18 +253,6 @@
    <class>ToolButton</class>
    <extends>QToolButton</extends>
    <header>qfluentwidgets</header>
-  </customwidget>
-  <customwidget>
-   <class>CardWidget</class>
-   <extends>QFrame</extends>
-   <header>qfluentwidgets</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>SimpleCardWidget</class>
-   <extends>CardWidget</extends>
-   <header>qfluentwidgets</header>
-   <container>1</container>
   </customwidget>
   <customwidget>
    <class>BodyLabel</class>

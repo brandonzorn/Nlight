@@ -1,25 +1,61 @@
 import logging
 from typing import Any
 
-import requests
 from PySide6.QtWidgets import QApplication
+import requests
 
-from nlightreader.consts.enums import Nl
 from nlightreader.consts.files import LangIcons
 from nlightreader.consts.urls import DEFAULT_HEADERS
+from nlightreader.core.enums import Language
+
+type JSONValue = str | int | float | bool | None | JSONArray | JSONObject
+type JSONObject = dict[str, JSONValue]
+type JSONArray = list[JSONValue]
+
+
+def dd_get(
+    structure: JSONObject | JSONArray,
+    path: str,
+    default: JSONValue = None,
+) -> JSONValue:
+    """dict_deep_get"""
+    if not isinstance(structure, (dict, list)):
+        msg = f"Expected a dictionary, got {type(structure)}"
+        raise TypeError(msg)
+
+    if not isinstance(path, str):
+        msg = "path must be a string"
+        raise TypeError(msg)
+
+    current: JSONValue = structure
+    for key in path.split("."):
+        if isinstance(current, dict) and key in current:
+            current = current[key]
+        elif isinstance(current, list) and key.isdigit():
+            index = int(key)
+            if 0 <= index < len(current):
+                current = current[index]
+            else:
+                return default
+        else:
+            if default is None:
+                default = {}
+            return default
+
+    return current
 
 
 def make_request(
-    url: str,
+    url: str | bytes,
     method: str,
     *,
-    headers=None,
-    params=None,
-    json=None,
-    data=None,
-    cookies=None,
-    content_type=None,
-):
+    headers: dict[str, str] | None = None,
+    params: dict[str, Any] | None = None,
+    json: dict[str, Any] | None = None,
+    data: dict[str, str] | None = None,
+    cookies: dict[str, str] | None = None,
+    content_type: str | None = None,
+) -> None | bytes | str | dict | requests.Response:
     """
     Sends an HTTP GET request to the specified URL with the given
     headers, query parameters, and cookies.
@@ -33,7 +69,7 @@ def make_request(
     :param params:
         Optional dictionary of query parameters.
     :param json:
-        Optional dictionary of json to include in the request.
+        Optional dictionary of JSON to include in the request.
     :param data:
         Optional dictionary of data to include in the request.
     :param cookies:
@@ -81,109 +117,31 @@ def make_request(
         )
 
 
-def get_html(
-    url: str,
-    *,
-    headers=None,
-    params=None,
-    json=None,
-    data=None,
-    cookies=None,
-    content_type=None,
-):
-    """
-    Sends an HTTP GET request to the specified
-    URL with the given headers, query parameters, and cookies.
-
-    :param url:
-        The URL to request.
-    :param headers:
-        Optional dictionary of request headers.
-    :param params:
-        Optional dictionary of query parameters.
-    :param json:
-        Optional dictionary of json to include in the request.
-    :param data:
-        Optional dictionary of data to include in the request.
-    :param cookies:
-        Optional dictionary of cookies to include in the request.
-    :param content_type:
-        Optional string indicating the expected
-        content type of the response ('content', 'text', or 'json').
-    :return:
-        If content_type is 'content', returns the raw response content (bytes).
-        If content_type is 'json', returns the JSON-decoded response.
-        Otherwise, returns the full requests.Response object.
-        Returns None if there was an error.
-    """
-    return make_request(
-        url,
-        "GET",
-        headers=headers,
-        params=params,
-        json=json,
-        data=data,
-        cookies=cookies,
-        content_type=content_type,
-    )
-
-
-def get_language_icon(language: Nl.Language) -> str:
+def get_language_icon(language: Language) -> str:
     """
     Returns the file path to the icon for the specified language.
 
-    :param language: Nl.Language.
+    :param language: Language.
     :return:
         The file path to the icon associated
-        with the language as a string, or an
+        with the language as a string or an
         empty string if no icon is found.
     """
-    if not isinstance(language, Nl.Language):
-        raise TypeError("Language must be Nl.Language")
+    if not isinstance(language, Language):
+        msg = "Language must be Language"
+        raise TypeError(msg)
     lang_icons = {
-        Nl.Language.ru: LangIcons.Ru,
-        Nl.Language.en: LangIcons.Gb,
-        Nl.Language.jp: LangIcons.Jp,
-        Nl.Language.uk: LangIcons.Ua,
-        Nl.Language.undefined: "",
+        Language.RUSSIAN: LangIcons.RU,
+        Language.ENGLISH: LangIcons.GB,
+        Language.JAPANESE: LangIcons.JP,
+        Language.UKRAINIAN: LangIcons.UA,
+        Language.UNDEFINED: "",
     }
-    return lang_icons.get(language)
-
-
-def get_data(data: dict, path: list, default_val=None) -> Any:
-    """
-    Retrieves a value from a dictionary using a list of nested keys.
-
-    :param data:
-        The dictionary to retrieve values from.
-    :param path:
-        A list of keys representing the path
-        to the desired value. Each key corresponds
-        to a nested level in the dictionary.
-    :param default_val:
-        Optional default value to return
-        if the specified path does not exist in the dictionary.
-    :return:
-        The value located at the specified path in the dictionary,
-        or the default value if the path does not exist.
-    :raises TypeError:
-        If the input data is not a dictionary.
-    """
-    if not isinstance(data, dict):
-        raise TypeError("Data must be a dictionary")
-    if default_val is None:
-        default_val = None
-    try:
-        for key in path:
-            data = data[key]
-        return data
-    except (KeyError, TypeError):
-        return default_val
+    return lang_icons[language]
 
 
 __all__ = [
-    "make_request",
-    "get_html",
+    "dd_get",
     "get_language_icon",
-    "get_data",
+    "make_request",
 ]

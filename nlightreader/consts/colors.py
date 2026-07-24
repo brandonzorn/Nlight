@@ -7,6 +7,4 @@ class ItemsIcons:
     UNREAD = FluentIcon.ACCEPT_MEDIUM.icon(color=QColor("RED"))
 
 
-__all__ = [
-    "ItemsIcons",
-]
+__all__ = ["ItemsIcons"]

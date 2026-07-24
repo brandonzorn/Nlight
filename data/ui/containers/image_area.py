@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'image_area.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -20,55 +20,58 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
 
 from qfluentwidgets import (ScrollArea, SimpleCardWidget)
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        if not Form.objectName():
-            Form.setObjectName(u"Form")
-        Form.resize(674, 512)
-        self.verticalLayout = QVBoxLayout(Form)
+class Ui_ImageArea(object):
+    def setupUi(self, ImageArea):
+        if not ImageArea.objectName():
+            ImageArea.setObjectName(u"ImageArea")
+        ImageArea.resize(736, 480)
+        self.verticalLayout = QVBoxLayout(ImageArea)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.frame = SimpleCardWidget(Form)
-        self.frame.setObjectName(u"frame")
-        self.frame.setFrameShape(QFrame.StyledPanel)
-        self.frame.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout = QHBoxLayout(self.frame)
+        self.imageCard = SimpleCardWidget(ImageArea)
+        self.imageCard.setObjectName(u"imageCard")
+        self.imageCard.setFrameShape(QFrame.Shape.StyledPanel)
+        self.imageCard.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout = QHBoxLayout(self.imageCard)
+        self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(9, 9, 9, 9)
-        self.scrollArea = ScrollArea(self.frame)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.scrollArea = ScrollArea(self.imageCard)
         self.scrollArea.setObjectName(u"scrollArea")
-        self.scrollArea.setFocusPolicy(Qt.NoFocus)
-        self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scrollArea.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.scrollArea.setFrameShape(QFrame.Shape.NoFrame)
+        self.scrollArea.setFrameShadow(QFrame.Shadow.Plain)
+        self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 652, 490))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 732, 476))
         self.horizontalLayout_2 = QHBoxLayout(self.scrollAreaWidgetContents)
+        self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.img_lbl = QLabel(self.scrollAreaWidgetContents)
-        self.img_lbl.setObjectName(u"img_lbl")
-        self.img_lbl.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
-        self.img_lbl.setTextInteractionFlags(Qt.NoTextInteraction)
+        self.imageLabel = QLabel(self.scrollAreaWidgetContents)
+        self.imageLabel.setObjectName(u"imageLabel")
+        self.imageLabel.setAlignment(Qt.AlignmentFlag.AlignHCenter|Qt.AlignmentFlag.AlignTop)
+        self.imageLabel.setTextInteractionFlags(Qt.TextInteractionFlag.NoTextInteraction)
 
-        self.horizontalLayout_2.addWidget(self.img_lbl)
+        self.horizontalLayout_2.addWidget(self.imageLabel)
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
         self.horizontalLayout.addWidget(self.scrollArea)
 
 
-        self.verticalLayout.addWidget(self.frame)
+        self.verticalLayout.addWidget(self.imageCard)
 
 
-        self.retranslateUi(Form)
+        self.retranslateUi(ImageArea)
 
-        QMetaObject.connectSlotsByName(Form)
+        QMetaObject.connectSlotsByName(ImageArea)
     # setupUi
 
-    def retranslateUi(self, Form):
-        Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.img_lbl.setText("")
+    def retranslateUi(self, ImageArea):
+        pass
     # retranslateUi
 

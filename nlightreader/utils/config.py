@@ -1,4 +1,5 @@
 from enum import Enum
+import sys
 
 from PySide6.QtCore import QLocale
 from qfluentwidgets import (
@@ -9,9 +10,14 @@ from qfluentwidgets import (
     OptionsValidator,
     QConfig,
     qconfig,
+    Theme,
 )
 
 from nlightreader.consts.paths.paths import APP_DATA_PATH
+
+
+def is_win11() -> bool:
+    return sys.platform == "win32" and sys.getwindowsversion().build >= 22000
 
 
 class Language(Enum):
@@ -22,26 +28,14 @@ class Language(Enum):
 
 
 class LanguageSerializer(ConfigSerializer):
-    def serialize(self, language):
-        return language.value.name() if language != Language.AUTO else "Auto"
+    def serialize(self, value: Language) -> str:
+        return value.value.name() if value != Language.AUTO else "Auto"
 
-    def deserialize(self, value: str):
+    def deserialize(self, value: str) -> Language:
         return Language(QLocale(value)) if value != "Auto" else Language.AUTO
 
 
 class Config(QConfig):
-    theme_mode = OptionsConfigItem(
-        "MainWindow",
-        "ThemeMode",
-        "Auto",
-        OptionsValidator(
-            [
-                "Light",
-                "Dark",
-                "Auto",
-            ],
-        ),
-    )
     dpi_scale = OptionsConfigItem(
         "MainWindow",
         "DpiScale",
@@ -66,25 +60,30 @@ class Config(QConfig):
         LanguageSerializer(),
         restart=True,
     )
+    mica_enabled = ConfigItem(
+        "MainWindow",
+        "MicaEnabled",
+        is_win11(),
+        BoolValidator(),
+    )
     check_updates_at_startup = ConfigItem(
         "Update",
         "CheckUpdateAtStartUp",
         True,
         BoolValidator(),
     )
-    enable_kodik_server = ConfigItem(
+    enable_kodik_metrics = ConfigItem(
         "Utils",
-        "EnableKodikServer",
-        True,
+        "EnableKodikMetrics",
+        False,
         BoolValidator(),
         restart=True,
     )
 
 
 cfg = Config()
+cfg.themeMode.value = Theme.AUTO
 qconfig.load(APP_DATA_PATH / "config.json", cfg)
 
 
-__all__ = [
-    "cfg",
-]
+__all__ = ["cfg"]

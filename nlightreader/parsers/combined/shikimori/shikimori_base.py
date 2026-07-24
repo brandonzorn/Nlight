@@ -1,143 +1,166 @@
-from nlightreader.consts.enums import Nl
+from typing import override
+
 from nlightreader.consts.items import ShikimoriItems
 from nlightreader.consts.urls import (
     SHIKIMORI_HEADERS,
     URL_SHIKIMORI,
     URL_SHIKIMORI_API,
 )
+from nlightreader.core.enums import Language, MangaKind, MangaStatus
 from nlightreader.models import Character, Genre, Manga, Order
 from nlightreader.parsers.catalog import AbstractCatalog
-from nlightreader.utils.utils import get_html
+from nlightreader.utils.network import NetworkClient
 
 
 class ShikimoriBase(AbstractCatalog):
     CATALOG_ID = 1
     CATALOG_NAME = "Shikimori"
+    is_primary = True
+    _URL = URL_SHIKIMORI
+    _URL_API = URL_SHIKIMORI_API
+    _HEADERS = SHIKIMORI_HEADERS
 
-    def __init__(self):
-        super().__init__()
-        self.url = URL_SHIKIMORI
-        self.url_api = URL_SHIKIMORI_API
-        self.headers = SHIKIMORI_HEADERS
-        self.is_primary = True
+    def __init__(self) -> None:
+        self._client = NetworkClient(headers=self._HEADERS)
 
-    def setup_manga(self, data: dict) -> Manga:
+    def _setup_manga(self, data: dict) -> Manga:
         return Manga(
-            str(data.get("id")),
-            self.CATALOG_ID,
-            data.get("name"),
-            data.get("russian"),
+            content_id=str(data.get("id", "")),
+            catalog_id=self.CATALOG_ID,
+            name=data.get("name", ""),
+            russian=data.get("russian", ""),
         )
 
+    @override
     def get_manga(self, manga: Manga) -> Manga:
-        url = f"{self.url_api}/mangas/{manga.content_id}"
-        response = get_html(url, headers=self.headers, content_type="json")
+        url = f"{self._URL_API}/mangas/{manga.content_id}"
+        response = self._client.get_json(url)
         if response:
             data = response
-            manga.kind = Nl.MangaKind.from_str(data.get("kind"))
-            manga.score = float(data.get("score"))
-            manga.status = Nl.MangaStatus.from_str(data.get("status"))
-            if data.get("volumes"):
-                manga.volumes = int(data.get("volumes"))
-            if data.get("chapters"):
-                manga.chapters = int(data.get("chapters"))
+            manga.kind = MangaKind.from_str(data.get("kind"))
+            manga.score = float(data.get("score", 0))
+            manga.status = MangaStatus.from_str(data.get("status"))
+            manga.volumes = int(data.get("volumes", 0))
+            manga.chapters = int(data.get("chapters", 0))
 
-            if description := data.get("description"):
+            description = data.get("description")
+            if isinstance(description, str):
                 manga.add_description(
-                    Nl.Language.undefined,
+                    Language.UNDEFINED,
                     description,
                 )
         return manga
 
+    @override
     def get_character(self, character: Character) -> Character:
-        url = f"{self.url_api}/characters/{character.content_id}"
-        response = get_html(url, headers=self.headers, content_type="json")
-        if response and (description := response.get("description")):
+        url = f"{self._URL_API}/characters/{character.content_id}"
+        response = self._client.get_json(url)
+        if not isinstance(response, dict):
+            return character
+        if description := response.get("description"):
             character.description = description
         return character
 
-    def get_preview(self, manga: Manga):
-        return get_html(
-            f"{self.url}/system/mangas/original/{manga.content_id}.jpg",
-            content_type="content",
+    @override
+    def get_preview(self, manga: Manga) -> bytes | None:
+        image_response = self._client.get_bytes(
+            f"{self._URL}/system/mangas/original/{manga.content_id}.jpg",
         )
+        if not isinstance(image_response, bytes):
+            return None
+        return image_response
 
-    def get_character_preview(self, character: Character):
-        return get_html(
-            f"{self.url}/system/characters/"
+    @override
+    def get_character_preview(self, character: Character) -> bytes | None:
+        image_response = self._client.get_bytes(
+            f"{self._URL}/system/characters/"
             f"original/{character.content_id}.jpg",
-            content_type="content",
         )
+        if not isinstance(image_response, bytes):
+            return None
+        return image_response
 
-    def get_genres(self):
-        url = f"{self.url_api}/genres"
-        response = get_html(url, headers=self.headers, content_type="json")
-        if not response:
-            return []
-
-        return [
-            Genre(
-                str(i["id"]),
-                self.CATALOG_ID,
-                i["name"],
-                i["russian"],
+    @override
+    def get_genres(self) -> list[Genre]:
+        url = f"{self._URL_API}/genres"
+        response = self._client.get_json(url)
+        genres: list[Genre] = []
+        if not isinstance(response, list):
+            return genres
+        for data in response:
+            if data.get("entry_type") != "Manga":
+                continue
+            genres.append(
+                Genre(
+                    content_id=str(data["id"]),
+                    catalog_id=self.CATALOG_ID,
+                    name=data["name"],
+                    russian=data["russian"],
+                ),
             )
-            for i in response
-            if i["entry_type"] == "Manga"
-        ]
+        return genres
 
+    @override
     def get_orders(self) -> list[Order]:
         return [
             Order(
-                i["value"],
-                self.CATALOG_ID,
-                i["name"],
-                i["russian"],
+                content_id=i["value"],
+                catalog_id=self.CATALOG_ID,
+                name=i["name"],
+                russian=i["russian"],
             )
             for i in ShikimoriItems.ORDERS
         ]
 
+    @override
     def get_relations(self, manga: Manga) -> list[Manga]:
-        mangas = []
-        url = f"{self.url_api}/mangas/{manga.content_id}/related"
-        response = get_html(url, headers=self.headers, content_type="json")
-        if response:
-            for i in response:
-                if manga_data := i.get("manga"):
-                    mangas.append(
-                        self.setup_manga(manga_data),
-                    )
+        url = f"{self._URL_API}/mangas/{manga.content_id}/related"
+        response = self._client.get_json(url)
+        mangas: list[Manga] = []
+        if not isinstance(response, list):
+            return mangas
+        for i in response:
+            manga_data = i.get("manga", {})
+            if not manga_data:
+                continue
+            mangas.append(self._setup_manga(manga_data))
         return mangas
 
+    @override
     def get_characters(self, manga: Manga) -> list[Character]:
         characters = []
-        url = f"{self.url_api}/mangas/{manga.content_id}/roles"
-        response = get_html(url, headers=self.headers, content_type="json")
-        if not response:
+        url = f"{self._URL_API}/mangas/{manga.content_id}/roles"
+        response = self._client.get_json(url)
+        if not isinstance(response, list):
             return characters
-
         for i in response:
-            if roles_data := i.get("roles"):
-                role = roles_data[0]
-                if role in ["Supporting", "Main"]:
-                    if data := i.get("character"):
-                        characters.append(
-                            Character(
-                                str(data.get("id")),
-                                self.CATALOG_ID,
-                                data.get("name"),
-                                data.get("russian"),
-                                "",
-                                role,
-                            ),
-                        )
+            if not isinstance(i, dict):
+                continue
+            roles_data = i.get("roles")
+            if not roles_data:
+                continue
+            role = roles_data[0]
+            if role not in ("Supporting", "Main"):
+                continue
+            data = i.get("character")
+            if not data:
+                continue
+            characters.append(
+                Character(
+                    content_id=str(data.get("id")),
+                    catalog_id=self.CATALOG_ID,
+                    name=data.get("name"),
+                    russian=data.get("russian"),
+                    description="",
+                    role=role,
+                ),
+            )
         characters.sort(key=lambda x: x.role)
         return characters
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
-        return f"{self.url}/mangas/{manga.content_id}"
+        return f"{self._URL}/mangas/{manga.content_id}"
 
 
-__all__ = [
-    "ShikimoriBase",
-]
+__all__ = ["ShikimoriBase"]

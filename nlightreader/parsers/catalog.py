@@ -1,3 +1,6 @@
+from enum import IntEnum
+from typing import ClassVar
+
 from nlightreader.consts.items.parser_items import ParserItems
 from nlightreader.consts.urls import DEFAULT_HEADERS
 from nlightreader.items import (
@@ -16,15 +19,20 @@ from nlightreader.models import (
 )
 
 
+class CatalogAuthType(IntEnum):
+    NO_AUTH = 0
+    TOKEN = 1
+    CREDENTIALS = 2
+
+
 class AbstractCatalog:
+    AUTH_TYPE: ClassVar[CatalogAuthType] = CatalogAuthType.NO_AUTH
     CATALOG_NAME = "CATALOG"
     CATALOG_ID = -1
     is_primary = False
-
-    def __init__(self):
-        self.headers = DEFAULT_HEADERS
-        self.cookies = None
-        self.items = ParserItems
+    _HEADERS: ClassVar = DEFAULT_HEADERS
+    _COOKIES: ClassVar = None
+    _FILTERS: ClassVar = ParserItems
 
     def get_manga(self, manga: Manga) -> Manga:
         return manga
@@ -33,90 +41,103 @@ class AbstractCatalog:
         return character
 
     def search_manga(self, form: RequestForm) -> list[Manga]:
-        return []
+        raise NotImplementedError
 
     def get_chapters(self, manga: Manga) -> list[Chapter]:
-        return []
+        raise NotImplementedError
 
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
-        return []
+        raise NotImplementedError
 
-    def get_image(self, image: Image):
-        return
+    def get_image(self, image: Image) -> bytes | str | None:
+        raise NotImplementedError
 
-    def get_preview(self, manga: Manga):
-        return
+    def get_preview(self, manga: Manga) -> bytes | None:
+        raise NotImplementedError
 
-    def get_character_preview(self, character: Character):
-        return
+    def get_character_preview(self, character: Character) -> bytes | None:
+        raise NotImplementedError
 
-    def get_genres(self):
+    def get_genres(self) -> list[Genre]:
         return [
             Genre(
-                i["value"],
-                self.CATALOG_ID,
-                i["name"],
-                i["russian"],
+                content_id=i["value"],
+                catalog_id=self.CATALOG_ID,
+                name=i["name"],
+                russian=i["russian"],
             )
-            for i in self.items.GENRES
+            for i in self._FILTERS.GENRES
         ]
 
     def get_kinds(self) -> list[Kind]:
         return [
             Kind(
-                i["value"],
-                self.CATALOG_ID,
-                i["name"],
-                i["russian"],
+                content_id=i["value"],
+                catalog_id=self.CATALOG_ID,
+                name=i["name"],
+                russian=i["russian"],
             )
-            for i in self.items.KINDS
+            for i in self._FILTERS.KINDS
         ]
 
     def get_orders(self) -> list[Order]:
         return [
             Order(
-                i["value"],
-                self.CATALOG_ID,
-                i["name"],
-                i["russian"],
+                content_id=i["value"],
+                catalog_id=self.CATALOG_ID,
+                name=i["name"],
+                russian=i["russian"],
             )
-            for i in self.items.ORDERS
+            for i in self._FILTERS.ORDERS
         ]
 
     def get_relations(self, manga: Manga) -> list[Manga]:
-        return []
+        raise NotImplementedError
 
     def get_characters(self, manga: Manga) -> list[Character]:
-        return []
+        raise NotImplementedError
 
     def get_manga_url(self, manga: Manga) -> str:
-        pass
+        raise NotImplementedError
 
 
 class LibParser:
+    AUTH_TYPE: CatalogAuthType = CatalogAuthType.NO_AUTH
+
+    def __init__(self) -> None:
+        self._session = None
+
+    @property
+    def session(self) -> object:
+        if self._session is None:
+            msg = "session is not implemented"
+            raise NotImplementedError(msg)
+        return self._session
+
     def search_manga(self, form: RequestForm) -> list[Manga]:
-        return []
+        raise NotImplementedError
 
     def get_user(self) -> User:
         return User(None, None, None)
 
     def create_user_rate(self, manga: Manga) -> None:
-        pass
+        raise NotImplementedError
 
     def check_user_rate(self, manga: Manga) -> None:
-        pass
+        raise NotImplementedError
 
-    def delete_user_rate(self, user_rate: UserRate):
-        pass
+    def delete_user_rate(self, user_rate: UserRate) -> None:
+        raise NotImplementedError
 
     def get_user_rate(self, manga: Manga) -> UserRate:
-        pass
+        raise NotImplementedError
 
-    def update_user_rate(self, user_rate: UserRate):
-        pass
+    def update_user_rate(self, user_rate: UserRate) -> None:
+        raise NotImplementedError
 
 
 __all__ = [
     "AbstractCatalog",
+    "CatalogAuthType",
     "LibParser",
 ]

@@ -1,77 +1,87 @@
 import base64
 import re
+from typing import override
 
-from nlightreader.consts.enums import Nl
 from nlightreader.consts.items import RanobeLibItems
-from nlightreader.consts.urls import URL_RANOBELIB
+from nlightreader.core.enums import MangaKind
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
 from nlightreader.parsers.combined.lib.lib_base import LibBase
-from nlightreader.utils.utils import get_html
 
 
 class LibRanobelib(LibBase, AbstractRanobeCatalog):
     CATALOG_NAME = "RanobeLib"
     CATALOG_ID = 13
+    _FILTERS = RanobeLibItems
+    _URL = "https://ranobelib.me"
 
-    def __init__(self):
-        super().__init__()
-        self.url = URL_RANOBELIB
-        self.items = RanobeLibItems
+    _CONTENT_NAME = "manga"
+    _SITE_ID = 3
 
-        self.content_name = "manga"
-        self.site_id = 3
-
+    @override
     def get_manga(self, manga: Manga) -> Manga:
-        manga.kind = Nl.MangaKind.ranobe
+        manga.kind = MangaKind.RANOBE
         return super().get_manga(manga)
 
+    @override
     def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
         url = (
-            f"{self.url_api}/{self.content_name}/{manga.content_id}/chapter"
+            f"{self._URL_API}/{self._CONTENT_NAME}/{manga.content_id}/chapter"
             f"?number={chapter.chapter_number}"
             f"&volume={chapter.volume_number}"
+            f"&branch_id={chapter.content_id.rsplit('_', maxsplit=1)[-1]}"
         )
-        return [Image("", 1, url)]
+        return [
+            Image(
+                content_id="",
+                page_number=1,
+                url=url,
+            ),
+        ]
 
-    def get_image(self, image: Image):
-        def get_chapter_content_image(media_id: str):
+    @override
+    def get_image(self, image: Image) -> str | None:
+        if image.url is None:
+            return None
+
+        def get_chapter_content_image(media_id: str) -> str:
             url = (
                 media_id
                 if media_id.startswith(
                     "http",
                 )
-                else f"{self.url}{media_id}"
+                else f"{self._URL}{media_id}"
             )
-            chapter_image = get_html(
+            chapter_image = self._client.get_bytes(
                 url,
-                headers=self.headers,
-            ).content
+                extra_headers=self._HEADERS,
+            )
+            if chapter_image is None:
+                return ""
             str_equivalent_image = base64.b64encode(chapter_image).decode()
             return f"data:image/png;base64,{str_equivalent_image}"
 
-        def replace_images(text: str):
-            pattern = r'src="([^"]+)"'
+        def replace_images(text: str) -> str:
+            pattern = r'src=["\']([^"\']+)["\']'
             return re.sub(
                 pattern,
                 lambda x: f'src="{get_chapter_content_image(x.group(1))}"',
                 text,
             )
 
-        response = get_html(image.url, content_type="json")
-        if response:
-            data = response["data"]
-            content = data["content"]
-            if isinstance(content, str):
-                content = content.replace("\n", "")
-                content = content.replace("\r", "")
-            return replace_images(content)
-        return None
+        response = self._client.get_json(image.url)
+        if not isinstance(response, dict):
+            return None
+        content_data = response.get("data", {}).get("content")
 
+        if not isinstance(content_data, str):
+            return None
+        content_data = content_data.replace("\n", " ").replace("\r", " ")
+        return replace_images(content_data)
+
+    @override
     def get_manga_url(self, manga: Manga) -> str:
-        return f"{self.url}/ru/book/{manga.content_id}"
+        return f"{self._URL}/ru/book/{manga.content_id}"
 
 
-__all__ = [
-    "LibRanobelib",
-]
+__all__ = ["LibRanobelib"]

@@ -1,18 +1,17 @@
 from nlightreader.consts.items import ShikimoriItems
 from nlightreader.items import RequestForm
-from nlightreader.models import Kind
+from nlightreader.models import Kind, Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.parsers.combined.shikimori.shikimori_base import (
     ShikimoriBase,
 )
-from nlightreader.utils.utils import get_html
 
 
 class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
     CATALOG_NAME = "Shikimori(Manga)"
 
-    def search_manga(self, form: RequestForm):
-        url = f"{self.url_api}/mangas"
+    def search_manga(self, form: RequestForm) -> list[Manga]:
+        url = f"{self._URL_API}/mangas"
         params = {
             "limit": form.limit,
             "search": form.search,
@@ -21,31 +20,24 @@ class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
             "genre": ",".join(form.get_genre_ids()),
             "kind": ",".join(form.get_kind_ids()),
         }
-        response = get_html(
-            url,
-            headers=self.headers,
-            params=params,
-            content_type="json",
-        )
+        response = self._client.get_json(url, params=params)
 
-        mangas = []
-        if response:
-            for i in response:
-                mangas.append(self.setup_manga(i))
+        mangas: list[Manga] = []
+        if not isinstance(response, list):
+            return mangas
+        mangas.extend(self._setup_manga(data) for data in response)
         return mangas
 
-    def get_kinds(self):
+    def get_kinds(self) -> list[Kind]:
         return [
             Kind(
-                i["value"],
-                self.CATALOG_ID,
-                i["name"],
-                i["russian"],
+                content_id=i["value"],
+                catalog_id=self.CATALOG_ID,
+                name=i["name"],
+                russian=i["russian"],
             )
             for i in ShikimoriItems.KINDS
         ]
 
 
-__all__ = [
-    "ShikimoriManga",
-]
+__all__ = ["ShikimoriManga"]

@@ -3,12 +3,14 @@ from nlightreader.consts.items.parser_items import (
 )
 from nlightreader.consts.items.preset_items import (
     PresetKinds as Pk,
+)
+from nlightreader.consts.items.preset_items import (
     PresetOrders as Po,
 )
 
 
 class RemangaItems(ParserItems):
-    ORDERS = [
+    ORDERS = (
         {"value": "-id"} | Po.CREATED,
         {"value": "-chapter_date"} | Po.UPDATED,
         {"value": "-rating"} | Po.POPULARITY,
@@ -16,9 +18,9 @@ class RemangaItems(ParserItems):
         {"value": "-views"} | Po.VIEWS,
         {"value": "-count_chapters"} | Po.CHAPTERS_COUNT,
         {"value": "-random"} | Po.RANDOM,
-    ]
+    )
 
-    KINDS = [
+    KINDS = (
         {"value": 1} | Pk.MANGA,
         {"value": 2} | Pk.MANHWA,
         {"value": 3} | Pk.MANHUA,
@@ -26,7 +28,7 @@ class RemangaItems(ParserItems):
         {"value": 5} | Pk.RU_COMIC,
         {"value": 6} | Pk.INDONESIAN_COMIC,
         {"value": 7} | Pk.OTHER,
-    ]
+    )
 
 
 __all__ = [

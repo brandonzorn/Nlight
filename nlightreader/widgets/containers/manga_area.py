@@ -1,8 +1,9 @@
+from typing import override
+
 from PySide6.QtCore import Qt, QThreadPool
-from PySide6.QtWidgets import QGridLayout, QHBoxLayout, QWidget
-from qfluentwidgets import (
-    ScrollArea,
-)
+from PySide6.QtGui import QResizeEvent
+from PySide6.QtWidgets import QGridLayout, QHBoxLayout, QLayout, QWidget
+from qfluentwidgets import ScrollArea
 
 from nlightreader.utils.threads import Thread
 from nlightreader.widgets.containers.content_container import (
@@ -13,23 +14,15 @@ from nlightreader.widgets.items import MangaItem
 
 
 class MangaArea(ScrollArea, AbstractContentContainer):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.setWidgetResizable(True)
-        self.setStyleSheet(
-            """
-            QWidget {background: transparent;}
-            QScrollArea {border: none;}
-            """,
-        )
+
         self._column_count = 5
         self._spacing = 12
         self._manga_items: list[MangaItem] = []
 
         self._scrollAreaWidgetContents = QWidget()
-        self._scrollAreaWidgetContents.setObjectName(
-            "scrollAreaWidgetContents",
-        )
 
         self._scroll_layout = QHBoxLayout(self._scrollAreaWidgetContents)
         self._scroll_layout.setSpacing(0)
@@ -44,20 +37,24 @@ class MangaArea(ScrollArea, AbstractContentContainer):
 
         self.setWidget(self._scrollAreaWidgetContents)
 
+        self.enableTransparentBackground()
+
         self.manga_thread_pool = QThreadPool()
         self.manga_thread_pool.setMaxThreadCount(self._column_count)
         self._set_images_thread = Thread(target=self.partial_image_addition)
 
-    def resizeEvent(self, arg__1):
-        super().resizeEvent(arg__1)
+    @override
+    def resizeEvent(self, arg__1: QResizeEvent, /) -> None:
         if arg__1.oldSize().width() != arg__1.size().width():
             self._scrollAreaWidgetContents.setFixedWidth(arg__1.size().width())
-            if self._state == ContentContainerState.show_content:
+            if self._state == ContentContainerState.SHOW_CONTENT:
                 self.update_items()
+        super().resizeEvent(arg__1)
 
-    def add_items(self, items: list[MangaItem]):
-        if self._state != ContentContainerState.show_content:
-            raise PermissionError("this method is now available in this state")
+    def add_items(self, items: list[MangaItem]) -> None:
+        if self._state != ContentContainerState.SHOW_CONTENT:
+            msg = "this method is now available in this state"
+            raise PermissionError(msg)
         i, j = 0, 0
         for item in items:
             self._manga_items.append(item)
@@ -73,7 +70,7 @@ class MangaArea(ScrollArea, AbstractContentContainer):
                 i += 1
         self._set_images_thread.start()
 
-    def partial_image_addition(self):
+    def partial_image_addition(self) -> None:
         for item in self._manga_items:
             if (
                 self.manga_thread_pool.activeThreadCount()
@@ -82,7 +79,7 @@ class MangaArea(ScrollArea, AbstractContentContainer):
                 self.manga_thread_pool.waitForDone()
             item.update_image()
 
-    def delete_items(self):
+    def delete_items(self) -> None:
         self._set_images_thread.terminate()
         self.verticalScrollBar().setValue(0)
         for item in self._manga_items:
@@ -90,19 +87,20 @@ class MangaArea(ScrollArea, AbstractContentContainer):
             item.deleteLater()
         self._manga_items.clear()
 
-    def update_items(self):
-        if self._state != ContentContainerState.show_content:
-            raise PermissionError("this method is now available in this state")
+    def update_items(self) -> None:
+        if self._state != ContentContainerState.SHOW_CONTENT:
+            msg = "this method is now available in this state"
+            raise PermissionError(msg)
         size = (
             self.size().width()
             - (self._content_grid.horizontalSpacing() * self._column_count)
         ) // self._column_count
         [item.set_size(size) for item in self._manga_items]
 
-    def get_content_widget(self):
-        return self._scrollAreaWidgetContents
+    @override
+    @property
+    def _content_layout(self) -> QLayout:
+        return self._scrollAreaWidgetContents.layout()
 
 
-__all__ = [
-    "MangaArea",
-]
+__all__ = ["MangaArea"]

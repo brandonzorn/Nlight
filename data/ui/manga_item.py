@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'manga_item.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -20,48 +20,48 @@ from PySide6.QtWidgets import (QApplication, QLabel, QSizePolicy, QVBoxLayout,
 
 from qfluentwidgets import (BodyLabel, CardWidget)
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        if not Form.objectName():
-            Form.setObjectName(u"Form")
-        Form.resize(400, 380)
-        Form.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.verticalLayout_2 = QVBoxLayout(Form)
-        self.verticalLayout_2.setSpacing(3)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.image_card = CardWidget(Form)
-        self.image_card.setObjectName(u"image_card")
+class Ui_MangaItem(object):
+    def setupUi(self, MangaItem):
+        if not MangaItem.objectName():
+            MangaItem.setObjectName(u"MangaItem")
+        MangaItem.resize(400, 380)
+        MangaItem.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.mangaItemVLayout = QVBoxLayout(MangaItem)
+        self.mangaItemVLayout.setSpacing(3)
+        self.mangaItemVLayout.setObjectName(u"mangaItemVLayout")
+        self.mangaItemVLayout.setContentsMargins(0, 0, 0, 0)
+        self.imageCardWidget = CardWidget(MangaItem)
+        self.imageCardWidget.setObjectName(u"imageCardWidget")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.image_card.sizePolicy().hasHeightForWidth())
-        self.image_card.setSizePolicy(sizePolicy)
-        self.verticalLayout_3 = QVBoxLayout(self.image_card)
-        self.verticalLayout_3.setSpacing(0)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.image = QLabel(self.image_card)
-        self.image.setObjectName(u"image")
-        self.image.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
+        sizePolicy.setHeightForWidth(self.imageCardWidget.sizePolicy().hasHeightForWidth())
+        self.imageCardWidget.setSizePolicy(sizePolicy)
+        self.imageVLayout = QVBoxLayout(self.imageCardWidget)
+        self.imageVLayout.setSpacing(0)
+        self.imageVLayout.setObjectName(u"imageVLayout")
+        self.imageVLayout.setContentsMargins(0, 0, 0, 0)
+        self.imageLabel = QLabel(self.imageCardWidget)
+        self.imageLabel.setObjectName(u"imageLabel")
+        self.imageLabel.setAlignment(Qt.AlignmentFlag.AlignHCenter|Qt.AlignmentFlag.AlignTop)
 
-        self.verticalLayout_3.addWidget(self.image)
-
-
-        self.verticalLayout_2.addWidget(self.image_card)
-
-        self.name_lbl = BodyLabel(Form)
-        self.name_lbl.setObjectName(u"name_lbl")
-
-        self.verticalLayout_2.addWidget(self.name_lbl)
+        self.imageVLayout.addWidget(self.imageLabel)
 
 
-        self.retranslateUi(Form)
+        self.mangaItemVLayout.addWidget(self.imageCardWidget)
 
-        QMetaObject.connectSlotsByName(Form)
+        self.nameLabel = BodyLabel(MangaItem)
+        self.nameLabel.setObjectName(u"nameLabel")
+
+        self.mangaItemVLayout.addWidget(self.nameLabel)
+
+
+        self.retranslateUi(MangaItem)
+
+        QMetaObject.connectSlotsByName(MangaItem)
     # setupUi
 
-    def retranslateUi(self, Form):
-        Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
+    def retranslateUi(self, MangaItem):
+        pass
     # retranslateUi
 

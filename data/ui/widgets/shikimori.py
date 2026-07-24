@@ -3,169 +3,172 @@
 ################################################################################
 ## Form generated from reading UI file 'shikimori.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
+                            QMetaObject, QObject, QPoint, QRect,
+                            QSize, QTime, QUrl, Qt, qtTrId)
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QSizePolicy,
-    QSpacerItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QSizePolicy, QSpacerItem,
+    QVBoxLayout, QWidget)
 
-from qfluentwidgets import (BodyLabel, CardWidget, LineEdit, PushButton,
-    SearchLineEdit, SimpleCardWidget, ToolButton)
+from qfluentwidgets import (BodyLabel, LineEdit, PushButton, SearchLineEdit,
+    ToolButton)
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        if not Form.objectName():
-            Form.setObjectName(u"Form")
-        Form.resize(662, 397)
-        Form.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
-        self.horizontalLayout_4 = QHBoxLayout(Form)
+class Ui_ExternalLibraryPage(object):
+    def setupUi(self, ExternalLibraryPage):
+        if not ExternalLibraryPage.objectName():
+            ExternalLibraryPage.setObjectName(u"ExternalLibraryPage")
+        ExternalLibraryPage.resize(640, 480)
+        ExternalLibraryPage.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
+        self.horizontalLayout_4 = QHBoxLayout(ExternalLibraryPage)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
-        self.search = QVBoxLayout()
-        self.search.setObjectName(u"search")
-        self.items_frame = SimpleCardWidget(Form)
-        self.items_frame.setObjectName(u"items_frame")
+        self.verticalLayout_2 = QVBoxLayout()
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.itemsWidget = QWidget(ExternalLibraryPage)
+        self.itemsWidget.setObjectName(u"itemsWidget")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.items_frame.sizePolicy().hasHeightForWidth())
-        self.items_frame.setSizePolicy(sizePolicy)
-        self.items_layout = QVBoxLayout(self.items_frame)
-        self.items_layout.setObjectName(u"items_layout")
+        sizePolicy.setHeightForWidth(self.itemsWidget.sizePolicy().hasHeightForWidth())
+        self.itemsWidget.setSizePolicy(sizePolicy)
+        self.itemsLayout = QVBoxLayout(self.itemsWidget)
+        self.itemsLayout.setSpacing(0)
+        self.itemsLayout.setObjectName(u"itemsLayout")
+        self.itemsLayout.setContentsMargins(0, 0, 0, 0)
 
-        self.search.addWidget(self.items_frame)
+        self.verticalLayout_2.addWidget(self.itemsWidget)
 
-        self.search_frame = SimpleCardWidget(Form)
-        self.search_frame.setObjectName(u"search_frame")
-        self.search_frame.setFrameShape(QFrame.StyledPanel)
-        self.search_frame.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_3 = QHBoxLayout(self.search_frame)
+        self.searchWidget = QWidget(ExternalLibraryPage)
+        self.searchWidget.setObjectName(u"searchWidget")
+        self.horizontalLayout_3 = QHBoxLayout(self.searchWidget)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.text_frame = SimpleCardWidget(self.search_frame)
-        self.text_frame.setObjectName(u"text_frame")
-        self.horizontalLayout = QHBoxLayout(self.text_frame)
+        self.text_widget = QWidget(self.searchWidget)
+        self.text_widget.setObjectName(u"text_widget")
+        self.horizontalLayout = QHBoxLayout(self.text_widget)
+        self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.title_line = SearchLineEdit(self.text_frame)
-        self.title_line.setObjectName(u"title_line")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.searchLineEdit = SearchLineEdit(self.text_widget)
+        self.searchLineEdit.setObjectName(u"searchLineEdit")
 
-        self.horizontalLayout.addWidget(self.title_line)
-
-
-        self.horizontalLayout_3.addWidget(self.text_frame)
-
-        self.page_frame = SimpleCardWidget(self.search_frame)
-        self.page_frame.setObjectName(u"page_frame")
-        self.horizontalLayout_5 = QHBoxLayout(self.page_frame)
-        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.prev_btn = ToolButton(self.page_frame)
-        self.prev_btn.setObjectName(u"prev_btn")
-
-        self.horizontalLayout_5.addWidget(self.prev_btn)
-
-        self.page_label = BodyLabel(self.page_frame)
-        self.page_label.setObjectName(u"page_label")
-
-        self.horizontalLayout_5.addWidget(self.page_label)
-
-        self.next_btn = ToolButton(self.page_frame)
-        self.next_btn.setObjectName(u"next_btn")
-
-        self.horizontalLayout_5.addWidget(self.next_btn)
+        self.horizontalLayout.addWidget(self.searchLineEdit)
 
 
-        self.horizontalLayout_3.addWidget(self.page_frame)
+        self.horizontalLayout_3.addWidget(self.text_widget)
+
+        self.page_widget = QWidget(self.searchWidget)
+        self.page_widget.setObjectName(u"page_widget")
+        self.horizontalLayout_2 = QHBoxLayout(self.page_widget)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.previousButton = ToolButton(self.page_widget)
+        self.previousButton.setObjectName(u"previousButton")
+
+        self.horizontalLayout_2.addWidget(self.previousButton)
+
+        self.pageLabel = BodyLabel(self.page_widget)
+        self.pageLabel.setObjectName(u"pageLabel")
+
+        self.horizontalLayout_2.addWidget(self.pageLabel)
+
+        self.nextButton = ToolButton(self.page_widget)
+        self.nextButton.setObjectName(u"nextButton")
+
+        self.horizontalLayout_2.addWidget(self.nextButton)
 
 
-        self.search.addWidget(self.search_frame)
+        self.horizontalLayout_3.addWidget(self.page_widget)
 
 
-        self.horizontalLayout_4.addLayout(self.search)
+        self.verticalLayout_2.addWidget(self.searchWidget)
 
-        self.lists_frame = SimpleCardWidget(Form)
-        self.lists_frame.setObjectName(u"lists_frame")
-        self.verticalLayout = QVBoxLayout(self.lists_frame)
+
+        self.horizontalLayout_4.addLayout(self.verticalLayout_2)
+
+        self.libraryListWidget = QWidget(ExternalLibraryPage)
+        self.libraryListWidget.setObjectName(u"libraryListWidget")
+        self.verticalLayout = QVBoxLayout(self.libraryListWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.planned_btn = PushButton(self.lists_frame)
-        self.planned_btn.setObjectName(u"planned_btn")
-        self.planned_btn.setCheckable(True)
-        self.planned_btn.setChecked(True)
-        self.planned_btn.setAutoExclusive(True)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.plannedButton = PushButton(self.libraryListWidget)
+        self.plannedButton.setObjectName(u"plannedButton")
+        self.plannedButton.setCheckable(True)
+        self.plannedButton.setChecked(True)
+        self.plannedButton.setAutoExclusive(True)
 
-        self.verticalLayout.addWidget(self.planned_btn)
+        self.verticalLayout.addWidget(self.plannedButton)
 
-        self.completed_btn = PushButton(self.lists_frame)
-        self.completed_btn.setObjectName(u"completed_btn")
-        self.completed_btn.setCheckable(True)
-        self.completed_btn.setAutoExclusive(True)
+        self.completedButton = PushButton(self.libraryListWidget)
+        self.completedButton.setObjectName(u"completedButton")
+        self.completedButton.setCheckable(True)
+        self.completedButton.setAutoExclusive(True)
 
-        self.verticalLayout.addWidget(self.completed_btn)
+        self.verticalLayout.addWidget(self.completedButton)
 
-        self.reading_btn = PushButton(self.lists_frame)
-        self.reading_btn.setObjectName(u"reading_btn")
-        self.reading_btn.setCheckable(True)
-        self.reading_btn.setAutoExclusive(True)
+        self.readingButton = PushButton(self.libraryListWidget)
+        self.readingButton.setObjectName(u"readingButton")
+        self.readingButton.setCheckable(True)
+        self.readingButton.setAutoExclusive(True)
 
-        self.verticalLayout.addWidget(self.reading_btn)
+        self.verticalLayout.addWidget(self.readingButton)
 
-        self.re_reading_btn = PushButton(self.lists_frame)
-        self.re_reading_btn.setObjectName(u"re_reading_btn")
-        self.re_reading_btn.setCheckable(True)
-        self.re_reading_btn.setAutoExclusive(True)
+        self.reReadingButton = PushButton(self.libraryListWidget)
+        self.reReadingButton.setObjectName(u"reReadingButton")
+        self.reReadingButton.setCheckable(True)
+        self.reReadingButton.setAutoExclusive(True)
 
-        self.verticalLayout.addWidget(self.re_reading_btn)
+        self.verticalLayout.addWidget(self.reReadingButton)
 
-        self.on_hold_btn = PushButton(self.lists_frame)
-        self.on_hold_btn.setObjectName(u"on_hold_btn")
-        self.on_hold_btn.setCheckable(True)
-        self.on_hold_btn.setAutoExclusive(True)
+        self.onHoldButton = PushButton(self.libraryListWidget)
+        self.onHoldButton.setObjectName(u"onHoldButton")
+        self.onHoldButton.setCheckable(True)
+        self.onHoldButton.setAutoExclusive(True)
 
-        self.verticalLayout.addWidget(self.on_hold_btn)
+        self.verticalLayout.addWidget(self.onHoldButton)
 
-        self.dropped_btn = PushButton(self.lists_frame)
-        self.dropped_btn.setObjectName(u"dropped_btn")
-        self.dropped_btn.setCheckable(True)
-        self.dropped_btn.setAutoExclusive(True)
+        self.droppedButton = PushButton(self.libraryListWidget)
+        self.droppedButton.setObjectName(u"droppedButton")
+        self.droppedButton.setCheckable(True)
+        self.droppedButton.setAutoExclusive(True)
 
-        self.verticalLayout.addWidget(self.dropped_btn)
+        self.verticalLayout.addWidget(self.droppedButton)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout.addItem(self.verticalSpacer)
 
-        self.auth_btn = PushButton(self.lists_frame)
-        self.auth_btn.setObjectName(u"auth_btn")
+        self.signInButton = PushButton(self.libraryListWidget)
+        self.signInButton.setObjectName(u"signInButton")
 
-        self.verticalLayout.addWidget(self.auth_btn)
-
-
-        self.horizontalLayout_4.addWidget(self.lists_frame)
+        self.verticalLayout.addWidget(self.signInButton)
 
 
-        self.retranslateUi(Form)
+        self.horizontalLayout_4.addWidget(self.libraryListWidget)
 
-        QMetaObject.connectSlotsByName(Form)
+
+        self.retranslateUi(ExternalLibraryPage)
+
+        QMetaObject.connectSlotsByName(ExternalLibraryPage)
     # setupUi
 
-    def retranslateUi(self, Form):
-        self.title_line.setPlaceholderText(QCoreApplication.translate("Form", u"Search", None))
-        self.page_label.setText(QCoreApplication.translate("Form", u"Page 1", None))
-        self.planned_btn.setText(QCoreApplication.translate("Form", u"Planned", None))
-        self.completed_btn.setText(QCoreApplication.translate("Form", u"Completed", None))
-        self.reading_btn.setText(QCoreApplication.translate("Form", u"Reading", None))
-        self.re_reading_btn.setText(QCoreApplication.translate("Form", u"Re-reading", None))
-        self.on_hold_btn.setText(QCoreApplication.translate("Form", u"On hold", None))
-        self.dropped_btn.setText(QCoreApplication.translate("Form", u"Dropped", None))
-        self.auth_btn.setText(QCoreApplication.translate("Form", u"Sign in", None))
+    def retranslateUi(self, ExternalLibraryPage):
+        self.searchLineEdit.setPlaceholderText(qtTrId(u"label.Search"))
+        self.pageLabel.setText(qtTrId(u"label.Page"))
+        self.plannedButton.setText(qtTrId(u"library-list.Planned"))
+        self.completedButton.setText(qtTrId(u"library-list.Completed"))
+        self.readingButton.setText(qtTrId(u"library-list.Reading"))
+        self.reReadingButton.setText(qtTrId(u"library-list.Re-reading"))
+        self.onHoldButton.setText(qtTrId(u"library-list.On hold"))
+        self.droppedButton.setText(qtTrId(u"library-list.Dropped"))
+        self.signInButton.setText(qtTrId(u""))
         pass
     # retranslateUi
 

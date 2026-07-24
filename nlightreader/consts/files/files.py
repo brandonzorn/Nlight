@@ -1,30 +1,24 @@
-from enum import Enum
+from enum import Enum, StrEnum
 
 from qfluentwidgets import FluentIconBase, getIconColor, Theme
 
 
-class LangIcons:
-    Gb = ":/lang_icons/icons/lang/gb.svg"
-    Ru = ":/lang_icons/icons/lang/ru.svg"
-    Jp = ":/lang_icons/icons/lang/jp.svg"
-    Ua = ":/lang_icons/icons/lang/ua.svg"
+class LangIcons(StrEnum):
+    GB = ":/icons/flags/gb.svg"
+    RU = ":/icons/flags/ru.svg"
+    JP = ":/icons/flags/jp.svg"
+    UA = ":/icons/flags/ua.svg"
 
 
-class Icons:
-    App = ":/png_white/icons/icon.png"
+class Icons(StrEnum):
+    APP = ":/icons/common/app-icon.png"
 
 
 class NlFluentIcons(FluentIconBase, Enum):
-    """Custom icons"""
-
     SHIKIMORI = "shikimori"
 
-    def path(self, theme=Theme.AUTO):
-        return (
-            f":/actions_{getIconColor(theme)}"
-            f"/icons/buttons/svg_24dp_{getIconColor(theme)}"
-            f"/actions/{self.value}.svg"
-        )
+    def path(self, theme: Theme = Theme.AUTO) -> str:
+        return f":/icons/{getIconColor(theme)}/{self.value}.svg"
 
 
 __all__ = [

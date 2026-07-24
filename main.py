@@ -1,174 +1,139 @@
 import os
 import sys
-import time
-from http.server import HTTPServer
 from threading import Thread as PyThread
+from typing import override
 
-import darkdetect
-from PySide6.QtCore import QThreadPool
-from PySide6.QtGui import QIcon
+from PySide6.QtCore import QThreadPool, QTimer, Slot
+from PySide6.QtGui import QCloseEvent, QIcon
 from PySide6.QtWidgets import QApplication
-from qfluentwidgets import InfoBar, setTheme, Theme
+from qfluentwidgets import (
+    FluentTranslator,
+    isDarkTheme,
+    SystemThemeListener,
+)
 
-from data import resource
+from data import resource  # noqa:F401
 from nlightreader import ParentWindow
 from nlightreader.consts.app import APP_BRANCH, APP_NAME, APP_VERSION
 from nlightreader.consts.files import Icons
 from nlightreader.consts.paths import APP_DATA_PATH
 from nlightreader.consts.urls import GITHUB_REPO_API
+from nlightreader.utils import kodik_server
 from nlightreader.utils.config import cfg
-from nlightreader.utils.kodik_server import KodikHTTPRequestHandler
 from nlightreader.utils.threads import Thread
-from nlightreader.utils.translator import NlightTranslator, translate
-from nlightreader.utils.utils import get_html
-
+from nlightreader.utils.translator import AppTranslator
+from nlightreader.utils.utils import make_request
 
 __all__ = []
 
 
 class App(QApplication):
-    def __init__(self, argv):
-        super().__init__(argv)
+    def __init__(self) -> None:
+        super().__init__()
         self.setApplicationDisplayName(APP_NAME)
         self.setApplicationVersion(APP_VERSION)
-        self.setWindowIcon(QIcon(Icons.App))
+        self.setWindowIcon(QIcon(Icons.APP))
 
-        self.translator = NlightTranslator()
-
-        self.load_translator()
-        self.update_theme_mode()
-
-    def load_translator(self):
         locale = cfg.get(cfg.language).value
-        self.translator.load(locale)
+
+        self.translator = FluentTranslator(locale)
         self.installTranslator(self.translator)
 
-    @staticmethod
-    def update_theme_mode():
-        if (theme_mode := cfg.get(cfg.theme_mode)) == "Auto":
-            setTheme(Theme.DARK if darkdetect.isDark() else Theme.LIGHT)
-        else:
-            setTheme(Theme.DARK if theme_mode == "Dark" else Theme.LIGHT)
+        self.app_translator = AppTranslator(locale)
+        self.installTranslator(self.app_translator)
 
 
 class MainWindow(ParentWindow):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
-        self.set_min_size_by_screen()
+        self.setMicaEffectEnabled(cfg.get(cfg.mica_enabled))
+        self.themeListener = SystemThemeListener(self)
+
         self.setWindowTitle(APP_NAME)
-        self.setWindowIcon(QIcon(Icons.App))
-        self._theme_updater = Thread(
-            target=self.theme_listener,
-            callback=self.update_style,
-        )
+        self.setWindowIcon(QIcon(Icons.APP))
         self._update_checker = Thread(
             target=self.check_for_updates,
             callback=self.show_update_info,
-            error_callback=lambda: self.show_update_info(None),
+            error_callback=self.show_update_info,
         )
 
         self.settings_interface.check_for_updates_signal.connect(
-            self.start_check_for_updates_thread,
-        )
-        self.settings_interface.theme_changed.connect(
-            app.update_theme_mode,
+            self._start_check_for_updates,
         )
 
-        self._theme_updater.start()
+        self.themeListener.start()
         if cfg.get(cfg.check_updates_at_startup):
-            self.start_check_for_updates_thread()
+            self._start_check_for_updates()
 
-    def closeEvent(self, event, /):
-        self._theme_updater.terminate()
-        self._theme_updater.deleteLater()
+    @override
+    def closeEvent(self, event: QCloseEvent, /) -> None:
+        self.themeListener.terminate()
+        self.themeListener.deleteLater()
         app.closeAllWindows()
         super().closeEvent(event)
 
-    def start_check_for_updates_thread(self):
+    @override
+    def _onThemeChangedFinished(self) -> None:
+        super()._onThemeChangedFinished()
+        if self.isMicaEffectEnabled():
+            QTimer.singleShot(
+                100,
+                lambda: self.windowEffect.setMicaEffect(
+                    self.winId(),
+                    isDarkTheme(),
+                ),
+            )
+
+    @Slot()
+    def _start_check_for_updates(self) -> None:
         self._update_checker.terminate()
         self._update_checker.wait()
         self._update_checker.start()
 
-    def check_for_updates(self) -> str | None:
-        response = get_html(
+    @staticmethod
+    def check_for_updates() -> str | None:
+        response = make_request(
             f"{GITHUB_REPO_API}/releases",
+            "GET",
             params={"per_page": 2},
             content_type="json",
         )
-        if not response:
+        if not isinstance(response, list):
             return None
         latest_version = None
         for release in reversed(response):
-            version = release["tag_name"]
+            if not isinstance(release, dict):
+                continue
+            version = str(release.get("tag_name") or "")
             if APP_BRANCH in version:
                 latest_version = version
         return latest_version
 
-    def show_update_info(self, result):
-        info_bar_title = translate(
-            "Message",
-            "Check for updates.",
-        )
-        info_bar_duration = 3500
+    @Slot()
+    def show_update_info(self, result: str | None = None) -> None:
         if result is None:
-            InfoBar.error(
-                title=info_bar_title,
-                content=translate(
-                    "Message",
-                    "Error checking for updates.",
-                ),
-                duration=info_bar_duration,
-                parent=self,
-            )
-
+            self.settings_interface.show_err_updates_tooltip()
         elif result != APP_VERSION:
-            InfoBar.info(
-                title=info_bar_title,
-                content=translate(
-                    "Message",
-                    "New version {result} is available! "
-                    "You are currently on version {APP_VERSION}.",
-                ).format(result=result, APP_VERSION=APP_VERSION),
-                duration=info_bar_duration,
-                parent=self,
-            )
+            self.settings_interface.show_has_updates_tooltip(result)
         else:
-            InfoBar.success(
-                title=info_bar_title,
-                content=translate(
-                    "Message",
-                    "No updates available. You are using the latest version.",
-                ),
-                duration=info_bar_duration,
-                parent=self,
-            )
-
-    @staticmethod
-    def theme_listener():
-        theme = darkdetect.theme()
-        while darkdetect.theme() == theme or cfg.get(cfg.theme_mode) != "Auto":
-            time.sleep(1)
-
-    def update_style(self):
-        app.update_theme_mode()
-        self._theme_updater.start()
+            self.settings_interface.show_no_updates_tooltip()
 
 
 if __name__ == "__main__":
+    APP_DATA_PATH.mkdir(parents=True, exist_ok=True)
     QThreadPool.globalInstance().setMaxThreadCount(32)
 
     if cfg.get(cfg.dpi_scale) != "Auto":
         os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
         os.environ["QT_SCALE_FACTOR"] = str(cfg.get(cfg.dpi_scale))
 
-    app = App(sys.argv)
+    kodik_server: PyThread = kodik_server.get_local_server(
+        server_port=8000,
+        track_progress=cfg.get(cfg.enable_kodik_metrics),
+    )
+    kodik_server.start()
 
-    APP_DATA_PATH.mkdir(parents=True, exist_ok=True)
-
-    if cfg.get(cfg.enable_kodik_server):
-        httpd = HTTPServer(("localhost", 8000), KodikHTTPRequestHandler)
-        PyThread(target=httpd.serve_forever, daemon=True).start()
-
+    app = App()
     window = MainWindow()
     window.show()
     sys.exit(app.exec())

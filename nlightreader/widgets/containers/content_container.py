@@ -1,55 +1,53 @@
 from enum import Enum, unique
 
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QLayout
 from qfluentwidgets import (
     FluentIcon,
     IndeterminateProgressRing,
     TransparentPushButton,
 )
 
-from nlightreader.utils.translator import translate
-
 
 @unique
 class ContentContainerState(Enum):
-    empty = 0
-    show_content = 1
-    fetch_content = 2
-    no_content = 3
-    fetch_error = 4
+    EMPTY = 0
+    SHOW_CONTENT = 1
+    FETCH_CONTENT = 2
+    NO_CONTENT = 3
+    FETCH_ERROR = 4
 
 
-class AbstractContentContainer:
-    def __init__(self):
+class AbstractContentContainer[T]:
+    def __init__(self) -> None:
         self._progress_ring = IndeterminateProgressRing()
         self._progress_ring.setVisible(False)
 
         self._fetch_error_widget = TransparentPushButton(
             FluentIcon.CLOUD,
-            translate("Message", "No connection"),
+            self.tr("No connection"),
         )
         self._fetch_error_widget.setEnabled(False)
         self._fetch_error_widget.setVisible(False)
 
         self._no_content_error_widget = TransparentPushButton(
             FluentIcon.CLOUD,
-            translate("Message", "Nothing found"),
+            self.tr("Nothing found"),
         )
         self._no_content_error_widget.setEnabled(False)
         self._no_content_error_widget.setVisible(False)
 
         self._content_widget = None
 
-        self._state = ContentContainerState.empty
+        self._state = ContentContainerState.EMPTY
 
-    def install(self, parent):
-        self.get_content_widget().layout().addWidget(
+    def install(self, parent: QLayout) -> None:
+        self._content_layout.addWidget(
             self._no_content_error_widget,
         )
-        self.get_content_widget().layout().addWidget(
+        self._content_layout.addWidget(
             self._fetch_error_widget,
         )
-        self.get_content_widget().layout().addWidget(
+        self._content_layout.addWidget(
             self._progress_ring,
         )
         parent.addWidget(self)
@@ -57,7 +55,7 @@ class AbstractContentContainer:
     def _reset_area(self) -> None:
         raise NotImplementedError
 
-    def set_state(self, state: ContentContainerState):
+    def set_state(self, state: ContentContainerState) -> None:
         state_objects = (
             self._progress_ring,
             self._no_content_error_widget,
@@ -65,26 +63,25 @@ class AbstractContentContainer:
             self._content_widget,
         )
         if not isinstance(state, ContentContainerState):
-            raise TypeError(
-                f"state must be ContentContainerState got {type(state)}",
-            )
+            msg = f"state must be ContentContainerState got {type(state)}"
+            raise TypeError(msg)
 
         self._state = state
 
         state_obj = None
-        if state == ContentContainerState.empty:
+        if state == ContentContainerState.EMPTY:
             state_obj = None
 
-        elif state == ContentContainerState.show_content:
+        elif state == ContentContainerState.SHOW_CONTENT:
             state_obj = self._content_widget
 
-        elif state == ContentContainerState.fetch_content:
+        elif state == ContentContainerState.FETCH_CONTENT:
             state_obj = self._progress_ring
 
-        elif state == ContentContainerState.no_content:
+        elif state == ContentContainerState.NO_CONTENT:
             state_obj = self._no_content_error_widget
 
-        elif state == ContentContainerState.fetch_error:
+        elif state == ContentContainerState.FETCH_ERROR:
             state_obj = self._fetch_error_widget
 
         [
@@ -95,10 +92,11 @@ class AbstractContentContainer:
             if obj is not None
         ]
 
-    def set_content(self, content) -> None:
+    def set_content(self, content: T) -> None:
         raise NotImplementedError
 
-    def get_content_widget(self) -> QWidget:
+    @property
+    def _content_layout(self) -> QLayout:
         raise NotImplementedError
 
 

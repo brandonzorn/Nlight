@@ -1,45 +1,53 @@
-from nlightreader.consts.enums import Nl
+from typing import override
+
 from nlightreader.consts.items import RemangaItems
-from nlightreader.consts.urls import URL_REMANGA, URL_REMANGA_API
+from nlightreader.core.enums import Language, MangaKind
 from nlightreader.items import RequestForm
 from nlightreader.models import Chapter, Image, Manga
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
-from nlightreader.utils.utils import get_data, get_html
+from nlightreader.utils.network import NetworkClient
+from nlightreader.utils.utils import dd_get
 
 
 class Remanga(AbstractMangaCatalog):
     CATALOG_ID = 6
     CATALOG_NAME = "ReManga"
+    _FILTERS = RemangaItems
+    _URL = "https://remanga.org"
+    _URL_API = f"{_URL}/api"
 
-    def __init__(self):
-        super().__init__()
-        self.url = URL_REMANGA
-        self.url_api = URL_REMANGA_API
-        self.items = RemangaItems
+    def __init__(self) -> None:
+        self._client = NetworkClient(headers=self._HEADERS)
 
+    @override
     def get_manga(self, manga: Manga) -> Manga:
-        url = f"{self.url_api}/titles/{manga.content_id}/"
-        response = get_html(url, headers=self.headers, content_type="json")
-        if response:
-            data = response.get("content")
+        url = f"{self._URL_API}/titles/{manga.content_id}/"
+        response = self._client.get_json(url)
+        if not response or not isinstance(response, dict):
+            return manga
+        manga_data = response.get("content", {})
 
-            if kind_name := data.get("type").get("name"):
-                manga.kind = Nl.MangaKind.from_str(kind_name)
+        kind_name = dd_get(manga_data, "type.name")
+        if isinstance(kind_name, str):
+            manga.kind = MangaKind.from_str(kind_name)
 
-            manga.score = float(data.get("avg_rating"))
-            if (img := data.get("img").get("high")) and (img != "/media/None"):
-                manga.preview_url = f"{self.url}{img}"
+        manga.score = float(manga_data.get("avg_rating", 0))
 
-            manga.add_description(
-                Nl.Language.undefined,
-                data.get("description"),
-            )
+        img = dd_get(manga_data, "img.high")
+        if img and img != "/media/None":
+            manga.preview_url = f"{self._URL}{img}"
+
+        manga.add_description(
+            Language.UNDEFINED,
+            manga_data.get("description"),
+        )
         return manga
 
-    def search_manga(self, form: RequestForm):
-        url = f"{self.url_api}/search/catalog"
+    @override
+    def search_manga(self, form: RequestForm) -> list[Manga]:
+        url = f"{self._URL_API}/search/catalog"
         if form.search:
-            url = f"{self.url_api}/search"
+            url = f"{self._URL_API}/search"
         params = {
             "page": form.page,
             "query": form.search,
@@ -47,101 +55,119 @@ class Remanga(AbstractMangaCatalog):
             "ordering": form.get_order_id(),
             "types": form.get_kind_ids(),
         }
-        response = get_html(
+        response = self._client.get_json(
             url,
-            headers=self.headers,
             params=params,
-            content_type="json",
         )
 
-        mangas = []
-        if not response:
+        mangas: list[Manga] = []
+        if not isinstance(response, dict):
             return mangas
 
-        for data in response.get("content"):
+        for data in response.get("content", {}):
             manga_id = data.get("dir")
             name = data.get("en_name")
             russian = data.get("rus_name")
-            manga = Manga(manga_id, self.CATALOG_ID, name, russian)
-            manga.kind = Nl.MangaKind.from_str(data.get("type"))
+            manga = Manga(
+                content_id=manga_id,
+                catalog_id=self.CATALOG_ID,
+                name=name,
+                russian=russian,
+            )
+            manga.kind = MangaKind.from_str(data.get("type"))
             manga.score = float(data.get("avg_rating"))
 
-            if (img := data.get("img").get("high")) and (img != "/media/None"):
-                manga.preview_url = f"{self.url}{img}"
+            if (img := data.get("img", {}).get("high")) and (
+                img != "/media/None"
+            ):
+                manga.preview_url = f"{self._URL}{img}"
             mangas.append(manga)
         return mangas
 
+    @override
     def get_chapters(self, manga: Manga) -> list[Chapter]:
-        url = f"{self.url_api}/titles/{manga.content_id}/"
-        response = get_html(url, headers=self.headers, content_type="json")
-        chapters = []
-        if response:
-            data = response.get("content")
-            branch_id = data.get("branches")[0].get("id")
-            chapters_data = get_html(
-                f"{self.url_api}/titles/chapters"
-                f"?branch_id={branch_id}&user_data=0",
-                headers=self.headers,
-                content_type="json",
+        url = f"{self._URL_API}/titles/{manga.content_id}/"
+        response = self._client.get_json(url)
+        chapters: list[Chapter] = []
+        if not isinstance(response, dict):
+            return chapters
+        data = response.get("content", {})
+        branch_id = data.get("branches")[0].get("id")
+        chapters_data = self._client.get_json(
+            f"{self._URL_API}/titles/chapters"
+            f"?branch_id={branch_id}&user_data=0",
+        )
+        if not isinstance(chapters_data, dict):
+            return chapters
+        data = chapters_data.get("content", {})
+        for ch in data:
+            if ch.get("is_paid"):
+                continue
+            chapter = Chapter(
+                content_id=ch.get("id"),
+                catalog_id=self.CATALOG_ID,
+                volume_number=str(ch.get("tome")),
+                chapter_number=ch.get("chapter"),
+                title=ch.get("name"),
+                language=Language.RUSSIAN,
             )
-            if chapters_data:
-                data = chapters_data.get("content")
-                if data:
-                    for ch in data:
-                        if ch.get("is_paid"):
-                            continue
-                        chapter = Chapter(
-                            ch.get("id"),
-                            self.CATALOG_ID,
-                            str(ch.get("tome")),
-                            ch.get("chapter"),
-                            ch.get("name"),
-                            Nl.Language.ru,
-                        )
-                        chapters.append(chapter)
+            chapters.append(chapter)
         return chapters
 
-    def get_images(self, manga: Manga, chapter: Chapter):
-        url = f"{self.url_api}/titles/chapters/{chapter.content_id}/"
-        response = get_html(url, headers=self.headers, content_type="json")
-        images = []
-        if response:
-            for i, page_data in enumerate(
-                get_data(
-                    response,
-                    ["content", "pages"],
-                    {},
+    @override
+    def get_images(self, manga: Manga, chapter: Chapter) -> list[Image]:
+        url = f"{self._URL_API}/titles/chapters/{chapter.content_id}/"
+        response = self._client.get_json(url)
+        images: list[Image] = []
+        if not isinstance(response, dict):
+            return images
+        pages_data = dd_get(response, "content.pages")
+        if not isinstance(pages_data, list):
+            return images
+        for i, page_data in enumerate(pages_data):
+            if not isinstance(page_data, list):
+                continue
+            data = page_data[0]
+            if not isinstance(data, dict):
+                continue
+            pg_id = str(data.get("id") or "")
+            page = i + 1
+            pg_link = data.get("link")
+            if not isinstance(pg_link, str):
+                pg_link = None
+            images.append(
+                Image(
+                    content_id=pg_id,
+                    page_number=page,
+                    url=pg_link,
                 ),
-            ):
-                page_data = page_data[0]
-                pg_id = page_data.get("id")
-                page = i + 1
-                pg_link = page_data.get("link")
-                images.append(Image(pg_id, page, pg_link))
+            )
         return images
 
-    def get_image(self, image: Image):
+    @override
+    def get_image(self, image: Image) -> bytes | None:
         headers = {
             "User-Agent": "Nlight",
-            "Referer": f"{self.url}/",
+            "Referer": f"{self._URL}/",
         }
-        return get_html(
+        image_response = self._client.get_bytes(
             f"{image.url}",
-            headers=headers,
-            content_type="content",
+            extra_headers=headers,
         )
+        if not isinstance(image_response, bytes):
+            return None
+        return image_response
 
-    def get_preview(self, manga: Manga):
-        return get_html(
-            manga.preview_url,
-            headers=self.headers,
-            content_type="content",
-        )
+    @override
+    def get_preview(self, manga: Manga) -> bytes | None:
+        url = manga.preview_url
+        if not isinstance(url, str):
+            return None
+        return self._client.get_bytes(url)
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
-        return f"{self.url}/manga/{manga.content_id}"
+        return f"{self._URL}/manga/{manga.content_id}"
 
 
-__all__ = [
-    "Remanga",
-]
+__all__ = ["Remanga"]

@@ -1,33 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
+<ui version="4.0" idbasedtr="true">
  <class>ReaderWidget</class>
  <widget class="QWidget" name="ReaderWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>618</width>
-    <height>441</height>
+    <width>640</width>
+    <height>480</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
-    <widget class="QWidget" name="widget" native="true">
+    <widget class="SimpleCardWidget" name="readerCardWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -48,7 +33,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QWidget" name="reader_widget" native="true">
+       <widget class="QWidget" name="readerWidget" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -56,6 +41,9 @@
          </sizepolicy>
         </property>
         <layout class="QHBoxLayout" name="reader_layout">
+         <property name="spacing">
+          <number>0</number>
+         </property>
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -72,128 +60,129 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="actions_layout">
+       <layout class="QHBoxLayout" name="actionsHLayout">
         <item>
-         <widget class="QFrame" name="actions_frame">
+         <widget class="QWidget" name="readerActionsWidget" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout">
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
            <item>
-            <layout class="QHBoxLayout" name="page_actions_btn">
-             <item>
-              <spacer name="horizontalSpacer">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="ToolButton" name="prev_chapter_btn">
-               <property name="shortcut">
-                <string>Down</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="ToolButton" name="prev_page_btn">
-               <property name="text">
-                <string/>
-               </property>
-               <property name="shortcut">
-                <string>Left</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="BodyLabel" name="chapter_label">
-               <property name="text">
-                <string>Глава 1</string>
-               </property>
-               <property name="wordWrap">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="BodyLabel" name="page_label">
-               <property name="text">
-                <string>Страница 1</string>
-               </property>
-               <property name="wordWrap">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="ToolButton" name="next_page_btn">
-               <property name="shortcut">
-                <string>Right</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="ToolButton" name="next_chapter_btn">
-               <property name="shortcut">
-                <string>Up</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>10</width>
+               <height>29</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="ToolButton" name="prev_chapter_btn">
+             <property name="shortcut">
+              <string>Down</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ToolButton" name="prev_page_btn">
+             <property name="shortcut">
+              <string>Left</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="BodyLabel" name="chapterLabel">
+             <property name="text">
+              <string id="label.Chapter">Chapter</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="BodyLabel" name="pageLabel">
+             <property name="text">
+              <string id="label.Page">Page</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ToolButton" name="next_page_btn">
+             <property name="shortcut">
+              <string>Right</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ToolButton" name="next_chapter_btn">
+             <property name="shortcut">
+              <string>Up</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>11</width>
+               <height>29</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </widget>
         </item>
         <item>
-         <widget class="QFrame" name="frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
+         <widget class="QWidget" name="windowActionsWidget" native="true">
           <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
            <item>
-            <widget class="ToolButton" name="fullscreen_btn">
+            <widget class="ToolButton" name="fullscreenButton">
              <property name="shortcut">
               <string>F11</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="ToolButton" name="ch_list_btn">
-             <property name="shortcut">
-              <string/>
-             </property>
-            </widget>
+            <widget class="ToolButton" name="chaptersListButton"/>
            </item>
           </layout>
          </widget>
@@ -204,18 +193,36 @@
     </widget>
    </item>
    <item>
-    <widget class="ElevatedCardWidget" name="chapters_frame">
+    <widget class="CardWidget" name="chaptersCard">
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
-       <widget class="ListWidget" name="items_list">
+       <widget class="ListWidget" name="chaptersList">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="contextMenuPolicy">
-         <enum>Qt::CustomContextMenu</enum>
+         <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -234,18 +241,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>CardWidget</class>
-   <extends>QFrame</extends>
-   <header>qfluentwidgets</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>SimpleCardWidget</class>
-   <extends>CardWidget</extends>
-   <header>qfluentwidgets</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>BodyLabel</class>
    <extends>QLabel</extends>
    <header>qfluentwidgets</header>
@@ -256,8 +251,14 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>ElevatedCardWidget</class>
-   <extends>SimpleCardWidget</extends>
+   <class>CardWidget</class>
+   <extends>QFrame</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SimpleCardWidget</class>
+   <extends>QFrame</extends>
    <header>qfluentwidgets</header>
    <container>1</container>
   </customwidget>

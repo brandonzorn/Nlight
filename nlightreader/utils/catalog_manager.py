@@ -18,11 +18,13 @@ from nlightreader.parsers import (
     ShikimoriLib,
     ShikimoriManga,
     ShikimoriRanobe,
-    SlashLib,
+    SlashLibLegacy,
 )
-from nlightreader.parsers.catalog import AbstractCatalog
+from nlightreader.parsers.catalog import AbstractCatalog, LibParser
 
-CATALOGS = {
+logger = logging.getLogger(__name__)
+
+CATALOG_CLASSES: dict[int, type[AbstractCatalog]] = {
     0: Desu,
     1: ShikimoriBase,
     2: MangaDex,
@@ -32,14 +34,14 @@ CATALOGS = {
     6: Remanga,
     7: NHentai,
     8: AllHentai,
-    9: SlashLib,
+    9: SlashLibLegacy,
     10: LibMangalib,
     11: ShikimoriAnime,
     # 12:
     13: LibRanobelib,
     14: LibAnilib,
 }
-USER_CATALOGS = [
+USER_CATALOGS: list[type[AbstractCatalog]] = [
     Desu,
     MangaDex,
     Remanga,
@@ -55,22 +57,35 @@ USER_CATALOGS = [
     NHentai,
     AllHentai,
 ]
-LIB_CATALOGS = {ShikimoriBase: ShikimoriLib, MangaDex: MangaDexLib}
+LIB_CATALOGS: dict[type[AbstractCatalog], type[LibParser]] = {
+    ShikimoriBase: ShikimoriLib,
+    MangaDex: MangaDexLib,
+}
 
 
-def get_catalog_by_id(catalog_id):
-    if catalog_id not in CATALOGS:
-        logging.warning(f"Catalog with id {catalog_id} not found.")
-        return AbstractCatalog()
-    return CATALOGS[catalog_id]()
+_initialized_catalogs: dict[int, AbstractCatalog] = {}
 
 
-def get_lib_catalog(base_catalog):
-    return LIB_CATALOGS.get(base_catalog)()
+def get_catalog_by_id(catalog_id: int) -> AbstractCatalog:
+    if catalog_id in _initialized_catalogs:
+        return _initialized_catalogs[catalog_id]
+    if catalog_id in CATALOG_CLASSES:
+        instance = CATALOG_CLASSES[catalog_id]()
+        _initialized_catalogs[catalog_id] = instance
+        return instance
+    logger.warning("Catalog with id %s not found.", catalog_id)
+    return AbstractCatalog()
+
+
+def get_lib_catalog(base_catalog: type[AbstractCatalog]) -> LibParser:
+    if base_catalog in LIB_CATALOGS:
+        return LIB_CATALOGS[base_catalog]()
+    logger.warning("Catalog with id %s not found.", base_catalog.CATALOG_ID)
+    return LibParser()
 
 
 __all__ = [
+    "USER_CATALOGS",
     "get_catalog_by_id",
     "get_lib_catalog",
-    "USER_CATALOGS",
 ]

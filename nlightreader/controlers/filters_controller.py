@@ -6,13 +6,19 @@ from nlightreader.widgets.dialogs import GenresDialog
 
 
 class FiltersController:
-    def __init__(self):
-        self._order_items = {}
-        self._kind_items = {}
+    def __init__(
+        self,
+        *,
+        orders_layout: QLayout,
+        kinds_layout: QLayout,
+        genres_dialog: GenresDialog,
+    ) -> None:
+        self._order_items: dict[RadioButton, Order] = {}
+        self._kind_items: dict[CheckBox, Kind] = {}
 
-        self._orders_container: QLayout | None = None
-        self._kinds_container: QLayout | None = None
-        self._genres_container: GenresDialog | None = None
+        self._orders_container = orders_layout
+        self._kinds_container = kinds_layout
+        self._genres_container = genres_dialog
 
     def get_active_order(self) -> Order | None:
         for item in self._order_items:
@@ -20,72 +26,97 @@ class FiltersController:
                 return self._order_items[item]
         return None
 
-    def get_active_kinds(self) -> list[Kind]:
-        return [self._kind_items[i] for i in self._kind_items if i.isChecked()]
+    def get_active_kinds(self) -> set[Kind]:
+        return {
+            item
+            for widget, item in self._kind_items.items()
+            if widget.isChecked()
+        }
 
-    def get_active_genres(self) -> list[Genre]:
+    def get_active_genres(self) -> set[Genre]:
+        if not self._genres_container:
+            return set()
         return self._genres_container.selected_genres
 
-    def add_orders(self, items: list[Order]):
+    def add_orders(self, items: list[Order]) -> None:
         if not self._orders_container:
-            raise ValueError("Orders container is not set")
+            msg = "Orders container is not set"
+            raise ValueError(msg)
+
         for item in items:
             item_widget = RadioButton()
             item_widget.setText(item.get_name())
             if not self._order_items:
                 item_widget.setChecked(True)
             self._orders_container.addWidget(item_widget)
-            self._order_items.update({item_widget: item})
+            self._order_items[item_widget] = item
 
-    def add_kinds(self, items: list[Kind]):
-        if not self._orders_container:
-            raise ValueError("Kinds container is not set")
+    def add_kinds(self, items: list[Kind]) -> None:
+        if not self._kinds_container:
+            msg = "Kinds container is not set"
+            raise ValueError(msg)
+
         for item in items:
             item_widget = CheckBox()
             item_widget.setText(item.get_name())
             self._kinds_container.addWidget(item_widget)
-            self._kind_items.update({item_widget: item})
+            self._kind_items[item_widget] = item
 
-    def add_genres(self, items: list[Genre]):
-        if not self._orders_container:
-            raise ValueError("Genres container is not set")
+    def add_genres(self, items: list[Genre]) -> None:
+        if not self._genres_container:
+            msg = "Genres container is not set"
+            raise ValueError(msg)
         self._genres_container.set_genres(items)
 
-    def set_orders_container(self, container):
+    def set_orders_container(self, container: QLayout) -> None:
         if not isinstance(container, QLayout):
-            raise ValueError("Container must be a QLayout")
+            msg = "Container must be a QLayout"
+            raise TypeError(msg)
         if self._orders_container:
-            raise ValueError("Orders container is already set")
+            msg = "Orders container is already set"
+            raise ValueError(msg)
         self._orders_container = container
 
-    def set_kinds_container(self, container):
+    def set_kinds_container(self, container: QLayout) -> None:
         if not isinstance(container, QLayout):
-            raise ValueError("Container must be a QLayout")
+            msg = "Container must be a QLayout"
+            raise TypeError(msg)
         if self._kinds_container:
-            raise ValueError("Kinds container is already set")
+            msg = "Kinds container is already set"
+            raise ValueError(msg)
         self._kinds_container = container
 
-    def set_genres_container(self, container):
+    def set_genres_container(self, container: GenresDialog) -> None:
         if not isinstance(container, GenresDialog):
-            raise ValueError("Container must be a FormGenres")
+            msg = "Container must be a GenresDialog"
+            raise TypeError(msg)
         if self._genres_container:
-            raise ValueError("Genres container is already set")
+            msg = "Genres container is already set"
+            raise ValueError(msg)
         self._genres_container = container
 
-    def clear(self):
-        [item.deleteLater() for item in self._order_items]
-        [item.deleteLater() for item in self._kind_items]
+    def clear(self) -> None:
+        for widget in self._order_items:
+            widget.deleteLater()
+
+        for widget in self._kind_items:
+            widget.deleteLater()
+
         self._order_items.clear()
         self._kind_items.clear()
-        self._genres_container.clear()
 
-    def reset_items(self):
+        if self._genres_container:
+            self._genres_container.clear()
+
+    def reset_items(self) -> None:
         if self._order_items:
-            list(self._order_items.keys())[0].setChecked(True)
-        [i.setChecked(False) for i in self._kind_items]
-        self._genres_container.reset_items()
+            next(iter(self._order_items.keys())).setChecked(True)
+
+        for widget in self._kind_items:
+            widget.setChecked(False)
+
+        if self._genres_container:
+            self._genres_container.reset_items()
 
 
-__all__ = [
-    "FiltersController",
-]
+__all__ = ["FiltersController"]
