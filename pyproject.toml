@@ -45,6 +45,7 @@ select = [
     "ISC",
     "N",
     "PTH",
+    "PYI",
     "RET",
     "RSE",
     "Q",
