@@ -1,5 +1,4 @@
 import re
-from types import NoneType
 from typing import override
 
 from PySide6.QtCore import QLocale
@@ -56,7 +55,7 @@ class Manga(NamedBaseModel):
         return self._score
 
     @score.setter
-    def score(self, score: int | float) -> None:
+    def score(self, score: float) -> None:
         if not isinstance(score, (int, float)):
             msg = f"Score must be int or float got {type(score)}"
             raise TypeError(msg)
@@ -71,15 +70,9 @@ class Manga(NamedBaseModel):
 
     @preview_url.setter
     def preview_url(self, url: str | None) -> None:
-        if not isinstance(url, (str, NoneType)):
-            msg = f"Preview url must be str or None, got{type(url)}"
-            raise TypeError(msg)
-        if url and not validators.url(url):
-            msg = f"Url {url} is not valid"
-            raise ValueError(msg)
-        if isinstance(url, str) and not url:
-            url = None
-        self._preview_url = url
+        self._preview_url = None
+        if isinstance(url, str) and validators.url(url):
+            self._preview_url = url
 
     @property
     def volumes(self) -> int:
