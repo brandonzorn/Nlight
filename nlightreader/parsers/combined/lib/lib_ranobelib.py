@@ -29,6 +29,7 @@ class LibRanobelib(LibBase, AbstractRanobeCatalog):
             f"{self._URL_API}/{self._CONTENT_NAME}/{manga.content_id}/chapter"
             f"?number={chapter.chapter_number}"
             f"&volume={chapter.volume_number}"
+            f"&branch_id={chapter.content_id.rsplit('_', maxsplit=1)[-1]}"
         )
         return [
             Image(

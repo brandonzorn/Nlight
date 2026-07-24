@@ -97,7 +97,7 @@ class LibBase(AbstractCatalog):
             f"{self._URL_API}/branches/{manga.content_id.split('--')[0]}"
         )
 
-        branches = {}
+        branches: dict[str, str] = {}
         branches_response = self._client.get_json(branches_url)
         if isinstance(branches_response, dict):
             for branch in branches_response.get("data", {}):
@@ -112,19 +112,17 @@ class LibBase(AbstractCatalog):
         if not isinstance(chapters_response, dict):
             return chapters
         for i in reversed(chapters_response.get("data", [])):
-            chapter = Chapter(
-                content_id=str(i["id"]),
-                catalog_id=self.CATALOG_ID,
-                volume_number=i["volume"],
-                chapter_number=i["number"],
-                title=i["name"],
-                language=Language.RUSSIAN,
-            )
-            if branches_data := i.get("branches"):
-                chapter.translator = branches.get(
-                    branches_data[0]["branch_id"],
+            for branch in i.get("branches", []):
+                chapter = Chapter(
+                    content_id=f"{i['id']}_{branch['branch_id']}",
+                    catalog_id=self.CATALOG_ID,
+                    volume_number=i["volume"],
+                    chapter_number=i["number"],
+                    title=i["name"],
+                    language=Language.RUSSIAN,
                 )
-            chapters.append(chapter)
+                chapter.translator = branches.get(branch["branch_id"])
+                chapters.append(chapter)
         return chapters
 
     @override
