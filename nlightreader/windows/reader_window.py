@@ -233,7 +233,7 @@ class ReaderWindow(SimpleCardWidget):
                 ContentContainerState.NO_CONTENT,
             )
         else:
-            logger.exception("Unhandled error")
+            logger.error("Unhandled error %s", e)
 
     def get_content(self) -> str | QPixmap | None:
         page = self._cur_page
