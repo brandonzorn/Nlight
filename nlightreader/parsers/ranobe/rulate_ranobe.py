@@ -29,6 +29,7 @@ class Rulate(AbstractRanobeCatalog):
 
     @override
     def get_manga(self, manga: Manga) -> Manga:
+        manga.kind = MangaKind.RANOBE
         response = self._client.get_text(
             f"{self._URL}/book/{manga.content_id}",
         )
@@ -44,7 +45,6 @@ class Rulate(AbstractRanobeCatalog):
                 Language.UNDEFINED,
                 str(description_text),
             )
-        manga.kind = MangaKind.RANOBE
         return manga
 
     @override
@@ -158,7 +158,7 @@ class Rulate(AbstractRanobeCatalog):
                 continue
             img_tag = p.find("img")
             if img_tag is None:
-                content += f"<p>{p.text}</p>"
+                content += f"<p>{p.text.strip()}</p>"
             else:
                 img_src = img_tag["src"]
                 if isinstance(img_src, str):
