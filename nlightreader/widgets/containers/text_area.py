@@ -1,7 +1,7 @@
 from typing import override
 
 from PySide6.QtCore import Slot
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QLayout, QWidget
 
 from data.ui.containers.text_area import Ui_TextArea
 from nlightreader.widgets.containers.content_container import (
@@ -33,8 +33,9 @@ class TextArea(QWidget, AbstractContentContainer[str]):
         self.ui.textContent.setHtml(content)
 
     @override
-    def get_content_widget(self) -> QWidget:
-        return self.ui.textCard
+    @property
+    def _content_layout(self) -> QLayout:
+        return self._content_widget.parent().layout()
 
 
 __all__ = ["TextArea"]
