@@ -177,7 +177,6 @@ class Ui_MainPage(object):
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.genresButton = PushButton(self.moreFiltersWidget)
         self.genresButton.setObjectName(u"genresButton")
-        self.genresButton.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 
         self.verticalLayout_3.addWidget(self.genresButton)
 
@@ -224,15 +223,15 @@ class Ui_MainPage(object):
     # setupUi
 
     def retranslateUi(self, MainPage):
-        self.title_line.setPlaceholderText(QCoreApplication.translate("MainPage", u"Search", None))
-        self.filter_btn.setText(QCoreApplication.translate("MainPage", u"Filters", None))
-        self.page_label.setText(QCoreApplication.translate("MainPage", u"Page", None))
-        self.ordersLabel.setText(QCoreApplication.translate("MainPage", u"Order", None))
-        self.kindsLabel.setText(QCoreApplication.translate("MainPage", u"Kind", None))
-        self.genresButton.setText(QCoreApplication.translate("MainPage", u"Genres list", None))
-        self.catalogsButton.setText(QCoreApplication.translate("MainPage", u"Catalogs", None))
-        self.reset_btn.setText(QCoreApplication.translate("MainPage", u"Reset", None))
-        self.apply_btn.setText(QCoreApplication.translate("MainPage", u"Apply", None))
+        self.title_line.setPlaceholderText(qtTrId(u"label.Search"))
+        self.filter_btn.setText(qtTrId(u"label.Filters"))
+        self.page_label.setText(qtTrId(u"label.Page"))
+        self.ordersLabel.setText(qtTrId(u"label.Order"))
+        self.kindsLabel.setText(qtTrId(u"label.Kind"))
+        self.genresButton.setText(qtTrId(u"label.Genres list"))
+        self.catalogsButton.setText(qtTrId(u"label.Catalogs"))
+        self.reset_btn.setText(qtTrId(u"label.Reset"))
+        self.apply_btn.setText(qtTrId(u"label.Apply"))
         pass
     # retranslateUi
 

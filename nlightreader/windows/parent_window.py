@@ -59,7 +59,7 @@ class ParentWindow(FluentWindow):
         self.addSubInterface(
             self.external_library_interface,
             NlFluentIcons.SHIKIMORI,
-            self.tr("ExternalLibrary"),
+            self.tr("Shikimori"),
         )
         self.addSubInterface(
             self.history_interface,

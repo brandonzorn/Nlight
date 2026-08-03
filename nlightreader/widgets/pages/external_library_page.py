@@ -1,6 +1,6 @@
 from typing import override
 
-from PySide6.QtCore import Slot
+from PySide6.QtCore import qtTrId, Slot
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import FluentIcon
 
@@ -91,7 +91,7 @@ class ExternalLibraryPage(BaseMangaLibraryPage):
     @override
     def _update_page(self) -> None:
         self.ui.pageLabel.setText(
-            f"{self.tr('Page')} {self.request_params.page}",
+            f"{qtTrId('label.Page')} {self.request_params.page}",
         )
 
     def auth_success_callback(self, user: User) -> None:

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
+<ui version="4.0" idbasedtr="true">
  <class>LibraryPage</class>
  <widget class="QWidget" name="LibraryPage">
   <property name="geometry">
@@ -59,7 +59,7 @@
       <item>
        <widget class="PushButton" name="plannedButton">
         <property name="text">
-         <string>Planned</string>
+         <string id="library-list.Planned">Planned</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -75,7 +75,7 @@
       <item>
        <widget class="PushButton" name="completedButton">
         <property name="text">
-         <string>Completed</string>
+         <string id="library-list.Completed">Completed</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -88,7 +88,7 @@
       <item>
        <widget class="PushButton" name="readingButton">
         <property name="text">
-         <string>Reading</string>
+         <string id="library-list.Reading">Reading</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -101,7 +101,7 @@
       <item>
        <widget class="PushButton" name="reReadingButton">
         <property name="text">
-         <string>Re-reading</string>
+         <string id="library-list.Re-reading">Re-reading</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -114,7 +114,7 @@
       <item>
        <widget class="PushButton" name="onHoldButton">
         <property name="text">
-         <string>On hold</string>
+         <string id="library-list.On hold">On hold</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -127,7 +127,7 @@
       <item>
        <widget class="PushButton" name="droppedButton">
         <property name="text">
-         <string>Dropped</string>
+         <string id="library-list.Dropped">Dropped</string>
         </property>
         <property name="checkable">
          <bool>true</bool>

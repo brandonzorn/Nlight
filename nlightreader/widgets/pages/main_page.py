@@ -1,6 +1,6 @@
 from typing import override
 
-from PySide6.QtCore import Slot
+from PySide6.QtCore import qtTrId, Slot
 from PySide6.QtWidgets import QListWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
@@ -80,7 +80,7 @@ class MainPage(BaseMangaPage):
     @override
     def _update_page(self) -> None:
         self._ui.page_label.setText(
-            f"{self.tr('Page')} {self.request_params.page}",
+            f"{qtTrId('label.Page')} {self.request_params.page}",
         )
 
     @Slot()

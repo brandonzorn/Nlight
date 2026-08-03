@@ -2,7 +2,7 @@ from collections import defaultdict
 import logging
 from typing import override
 
-from PySide6.QtCore import QPoint, QSize, QThreadPool, Signal, Slot
+from PySide6.QtCore import QPoint, QSize, QThreadPool, qtTrId, Signal, Slot
 from PySide6.QtGui import QIcon, QPixmap, QResizeEvent
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import FluentIcon
@@ -71,7 +71,7 @@ class InfoPage(QWidget):
         self.ui.scrollArea.enableTransparentBackground()
 
         self.ui.libraryListComboBox.addItems(
-            [i.capitalize() for i in LIB_LISTS],
+            [qtTrId(f"library-list.{i.capitalize()}") for i in LIB_LISTS],
         )
 
         self.ui.itemsWidget.hide()
@@ -214,7 +214,8 @@ class InfoPage(QWidget):
         self.ui.russian_label.setText(self._manga.russian)
         self.ui.status_label.setVisible(bool(self._manga.status))
         self.ui.status_label.setText(
-            f"{self.tr('Status')}: {self.tr(self._manga.status.to_str())}",
+            f"{self.tr('Status')}: "
+            f"{qtTrId(f'status.{self._manga.status.to_str()}')}",
         )
         self.ui.volumes_label.setVisible(bool(self._manga.volumes_number))
         self.ui.chapters_label.setVisible(bool(self._manga.chapters_number))
@@ -266,7 +267,7 @@ class InfoPage(QWidget):
         self.ui.itemsWidget.setVisible(bool(self._chapters))
         for lang, translators in self._grouped_chapters.items():
             lang_item = GroupTreeItem(
-                translate("NlLanguage", lang.to_str()),
+                qtTrId(f"language.{lang.to_str()}"),
                 icon=QIcon(get_language_icon(lang)),
             )
             self.ui.itemsTree.addTopLevelItem(lang_item)

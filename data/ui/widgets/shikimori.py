@@ -160,15 +160,15 @@ class Ui_ExternalLibraryPage(object):
     # setupUi
 
     def retranslateUi(self, ExternalLibraryPage):
-        self.searchLineEdit.setPlaceholderText(QCoreApplication.translate("ExternalLibraryPage", u"Search", None))
-        self.pageLabel.setText(QCoreApplication.translate("ExternalLibraryPage", u"Page", None))
-        self.plannedButton.setText(QCoreApplication.translate("ExternalLibraryPage", u"Planned", None))
-        self.completedButton.setText(QCoreApplication.translate("ExternalLibraryPage", u"Completed", None))
-        self.readingButton.setText(QCoreApplication.translate("ExternalLibraryPage", u"Reading", None))
-        self.reReadingButton.setText(QCoreApplication.translate("ExternalLibraryPage", u"Re-reading", None))
-        self.onHoldButton.setText(QCoreApplication.translate("ExternalLibraryPage", u"On hold", None))
-        self.droppedButton.setText(QCoreApplication.translate("ExternalLibraryPage", u"Dropped", None))
-        self.signInButton.setText(QCoreApplication.translate("ExternalLibraryPage", u"Sign in", None))
+        self.searchLineEdit.setPlaceholderText(qtTrId(u"label.Search"))
+        self.pageLabel.setText(qtTrId(u"label.Page"))
+        self.plannedButton.setText(qtTrId(u"library-list.Planned"))
+        self.completedButton.setText(qtTrId(u"library-list.Completed"))
+        self.readingButton.setText(qtTrId(u"library-list.Reading"))
+        self.reReadingButton.setText(qtTrId(u"library-list.Re-reading"))
+        self.onHoldButton.setText(qtTrId(u"library-list.On hold"))
+        self.droppedButton.setText(qtTrId(u"library-list.Dropped"))
+        self.signInButton.setText(qtTrId(u""))
         pass
     # retranslateUi
 

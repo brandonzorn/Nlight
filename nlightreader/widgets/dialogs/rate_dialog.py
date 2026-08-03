@@ -1,6 +1,6 @@
 from typing import override
 
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import Qt, qtTrId, Slot
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QFormLayout, QWidget
 from qfluentwidgets import (
@@ -67,7 +67,7 @@ class RateDialog(MessageBoxBase):
         )
         self.lib_list_combo = ComboBox(parent=self.form_frame)
         self.lib_list_combo.addItems(
-            [translate("Form", i.capitalize()) for i in LIB_LISTS],
+            [qtTrId(f"library-list.{i.capitalize()}") for i in LIB_LISTS],
         )
         self.form_layout.addRow(self.lib_list_label, self.lib_list_combo)
 

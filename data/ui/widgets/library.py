@@ -104,12 +104,12 @@ class Ui_LibraryPage(object):
     # setupUi
 
     def retranslateUi(self, LibraryPage):
-        self.plannedButton.setText(QCoreApplication.translate("LibraryPage", u"Planned", None))
-        self.completedButton.setText(QCoreApplication.translate("LibraryPage", u"Completed", None))
-        self.readingButton.setText(QCoreApplication.translate("LibraryPage", u"Reading", None))
-        self.reReadingButton.setText(QCoreApplication.translate("LibraryPage", u"Re-reading", None))
-        self.onHoldButton.setText(QCoreApplication.translate("LibraryPage", u"On hold", None))
-        self.droppedButton.setText(QCoreApplication.translate("LibraryPage", u"Dropped", None))
+        self.plannedButton.setText(qtTrId(u"library-list.Planned"))
+        self.completedButton.setText(qtTrId(u"library-list.Completed"))
+        self.readingButton.setText(qtTrId(u"library-list.Reading"))
+        self.reReadingButton.setText(qtTrId(u"library-list.Re-reading"))
+        self.onHoldButton.setText(qtTrId(u"library-list.On hold"))
+        self.droppedButton.setText(qtTrId(u"library-list.Dropped"))
         pass
     # retranslateUi
 

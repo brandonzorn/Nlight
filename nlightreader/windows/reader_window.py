@@ -2,7 +2,7 @@ import logging
 import time
 from typing import override
 
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import Qt, qtTrId, Slot
 from PySide6.QtGui import QKeyEvent, QPixmap
 from PySide6.QtWidgets import QListWidgetItem
 from qfluentwidgets import (
@@ -180,7 +180,7 @@ class ReaderWindow(SimpleCardWidget):
 
     def update_page(self) -> None:
         self._ui.pageLabel.setText(
-            f"{self.tr('Page')} {self._cur_page} / {self._max_page}",
+            f"{qtTrId('label.Page')} {self._cur_page} / {self._max_page}",
         )
         self.attach_image()
 

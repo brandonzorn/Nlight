@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
+<ui version="4.0" idbasedtr="true">
  <class>MainPage</class>
  <widget class="QWidget" name="MainPage">
   <property name="geometry">
@@ -96,14 +96,14 @@
           <item>
            <widget class="SearchLineEdit" name="title_line">
             <property name="placeholderText">
-             <string>Search</string>
+             <string id="label.Search">Search</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="PushButton" name="filter_btn">
             <property name="text">
-             <string>Filters</string>
+             <string id="label.Filters">Filters</string>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -144,7 +144,7 @@
           <item>
            <widget class="BodyLabel" name="page_label">
             <property name="text">
-             <string>Page</string>
+             <string id="label.Page">Page</string>
             </property>
            </widget>
           </item>
@@ -231,7 +231,7 @@
             <item>
              <widget class="BodyLabel" name="ordersLabel">
               <property name="text">
-               <string>Order</string>
+               <string id="label.Order">Order</string>
               </property>
              </widget>
             </item>
@@ -247,7 +247,7 @@
             <item>
              <widget class="BodyLabel" name="kindsLabel">
               <property name="text">
-               <string>Kind</string>
+               <string id="label.Kind">Kind</string>
               </property>
              </widget>
             </item>
@@ -274,18 +274,15 @@
             </property>
             <item>
              <widget class="PushButton" name="genresButton">
-              <property name="contextMenuPolicy">
-               <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
-              </property>
               <property name="text">
-               <string>Genres list</string>
+               <string id="label.Genres list">Genres list</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="PushButton" name="catalogsButton">
               <property name="text">
-               <string>Catalogs</string>
+               <string id="label.Catalogs">Catalogs</string>
               </property>
              </widget>
             </item>
@@ -323,14 +320,14 @@
             <item>
              <widget class="PushButton" name="reset_btn">
               <property name="text">
-               <string>Reset</string>
+               <string id="label.Reset">Reset</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="PushButton" name="apply_btn">
               <property name="text">
-               <string>Apply</string>
+               <string id="label.Apply">Apply</string>
               </property>
              </widget>
             </item>

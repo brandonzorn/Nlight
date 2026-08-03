@@ -1,5 +1,4 @@
 from PySide6.QtCore import QLocale, QObject, QTranslator
-from PySide6.QtWidgets import QApplication
 
 
 class AppTranslator(QTranslator):
@@ -11,11 +10,4 @@ class AppTranslator(QTranslator):
         super().load(f":/i18n/{locale.language().name}.qm")
 
 
-def translate(context: str, string: str) -> str:
-    return QApplication.translate(context, string, None)
-
-
-__all__ = [
-    "AppTranslator",
-    "translate",
-]
+__all__ = ["AppTranslator"]
