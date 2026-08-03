@@ -13,52 +13,49 @@ from nlightreader.widgets.containers.content_container import (
 class ImageArea(QWidget, AbstractContentContainer[QPixmap]):
     def __init__(self) -> None:
         super().__init__()
-        self.ui = Ui_ImageArea()
-        self.ui.setupUi(self)
+        self._ui = Ui_ImageArea()
+        self._ui.setupUi(self)
 
-        self._content_widget: QLabel = self.ui.imageLabel
+        self._content_widget: QLabel = self._ui.imageLabel
         self._image_pixmap = QPixmap()
 
     @override
     def resizeEvent(self, event: QResizeEvent, /) -> None:
         super().resizeEvent(event)
-        if (self._image_pixmap.isNull()) or (event.oldSize() == event.size()):
+        if event.oldSize() == event.size():
             return
-        view_w = self.ui.scrollArea.viewport().width()
-        self.ui.imageLabel.setFixedWidth(view_w)
-        self.ui.scrollAreaWidgetContents.setFixedWidth(view_w)
-        self.ui.scrollAreaWidgetContents.resize(
-            self.ui.scrollArea.viewport().size(),
-        )
+        self._adjust_content_size()
         self._update_image()
 
+    def _adjust_content_size(self) -> None:
+        view_w = self._ui.scrollArea.viewport().width()
+        self._ui.imageLabel.setFixedWidth(view_w)
+        self._ui.scrollAreaWidgetContents.setFixedWidth(view_w)
+        self._ui.scrollAreaWidgetContents.resize(
+            self._ui.scrollArea.viewport().size(),
+        )
 
     @override
     def _reset_area(self) -> None:
-        self.ui.imageLabel.clear()
-        self.ui.scrollArea.verticalScrollBar().setValue(0)
-        self.ui.scrollArea.horizontalScrollBar().setValue(0)
-        view_w = self.ui.scrollArea.viewport().width()
-        self.ui.imageLabel.setFixedWidth(view_w)
-        self.ui.scrollAreaWidgetContents.setFixedWidth(view_w)
-        self.ui.scrollAreaWidgetContents.resize(
-            self.ui.scrollArea.viewport().size(),
-        )
+        self._image_pixmap = QPixmap()
+        self._ui.imageLabel.clear()
+        self._ui.scrollArea.verticalScrollBar().setValue(0)
+        self._ui.scrollArea.horizontalScrollBar().setValue(0)
+
+        self._adjust_content_size()
 
     def _resize_pixmap(self, pixmap: QPixmap) -> QPixmap:
-        if pixmap.isNull():
-            return pixmap
         if 0.5 < pixmap.width() / pixmap.height() < 2:
-            viewport_size = self.ui.scrollArea.viewport().size()
-            self.ui.scrollArea.setVerticalScrollBarPolicy(
+            viewport_size = self._ui.scrollArea.viewport().size()
+            self._ui.scrollArea.setVerticalScrollBarPolicy(
                 Qt.ScrollBarPolicy.ScrollBarAlwaysOff,
             )
         else:
             viewport_size = QSize(
-                self.ui.scrollArea.viewport().width(),
+                self._ui.scrollArea.viewport().width(),
                 pixmap.height(),
             )
-            self.ui.scrollArea.setVerticalScrollBarPolicy(
+            self._ui.scrollArea.setVerticalScrollBarPolicy(
                 Qt.ScrollBarPolicy.ScrollBarAsNeeded,
             )
         device_pixel_ratio = self.devicePixelRatio()
@@ -71,13 +68,15 @@ class ImageArea(QWidget, AbstractContentContainer[QPixmap]):
         return scaled_pixmap
 
     def _update_image(self) -> None:
+        if self._image_pixmap.isNull():
+            return
         pixmap = self._resize_pixmap(self._image_pixmap)
-        self.ui.imageLabel.setPixmap(pixmap)
+        self._ui.imageLabel.setPixmap(pixmap)
 
     @override
     def set_content(self, content: QPixmap) -> None:
-        self._image_pixmap = content
         self._reset_area()
+        self._image_pixmap = content
         self._update_image()
 
     @override
