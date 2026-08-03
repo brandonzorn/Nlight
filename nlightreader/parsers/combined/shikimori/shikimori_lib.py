@@ -61,11 +61,14 @@ class ShikimoriLib(ShikimoriBase, LibParser):
             f"{self._URL_API}/users/whoami",
         )
         self.user = User(None, None, None)
-        if response and (resp_json := response.json()):
+        if response and (user_data := response.json()):
+            user_id = user_data.get("id")
+            if not user_id:
+                return self.user
             self.user = User(
-                str(resp_json.get("id")),
-                str(resp_json.get("nickname")),
-                str(resp_json.get("avatar")),
+                str(user_id),
+                str(user_data.get("nickname")),
+                str(user_data.get("avatar")),
             )
         return self.user
 
