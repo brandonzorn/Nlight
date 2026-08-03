@@ -4,7 +4,7 @@ from typing import override
 
 from PySide6.QtCore import QPoint, QSize, QThreadPool, qtTrId, Signal, Slot
 from PySide6.QtGui import QIcon, QPixmap, QResizeEvent
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QTreeWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.info import Ui_InfoPage
@@ -19,7 +19,6 @@ from nlightreader.utils.file_manager import FileManager
 from nlightreader.utils.kodik_server import start_html_video
 from nlightreader.utils.text_formatter import description_to_html
 from nlightreader.utils.threads import NWorker
-from nlightreader.utils.translator import translate
 from nlightreader.utils.utils import get_language_icon
 from nlightreader.widgets.contexts import ReadMarkMenu, ReadMarkMode
 from nlightreader.widgets.dialogs import CharacterInfoDialog, RateDialog
@@ -128,12 +127,6 @@ class InfoPage(QWidget):
             self._grouped_chapters[chapter.language][
                 chapter.translator
             ].append(chapter)
-
-    def _get_selected_chapter(self) -> Chapter | None:
-        selected_item = self.ui.itemsTree.currentItem()
-        if not isinstance(selected_item, ModelTreeItem):
-            return None
-        return selected_item.model
 
     def update_add_button_icon(self) -> None:
         if self.ui.addButton.isChecked():
@@ -334,32 +327,28 @@ class InfoPage(QWidget):
             self._reader_window.deleteLater()
             self._reader_window = None
 
-    @Slot()
-    def open_reader(self) -> None:
+    @Slot(QTreeWidgetItem)
+    def open_reader(self, item: QTreeWidgetItem) -> None:
+        if not isinstance(item, ModelTreeItem):
+            return
         try:
             self._delete_reader_window()
         finally:
-            selected_chapter = self._get_selected_chapter()
-            if selected_chapter:
-                if hasattr(selected_chapter, "url"):
-                    start_html_video(self._manga, selected_chapter)
-                    return
-                self._reader_window = ReaderWindow(
-                    self._manga,
-                    self._grouped_chapters[selected_chapter.language][
-                        selected_chapter.translator
-                    ],
-                )
-                self._reader_window.setup(
-                    self._chapters.index(selected_chapter) + 1,
-                )
+            selected_chapter: Chapter = item.model
+            if hasattr(selected_chapter, "url"):
+                start_html_video(self._manga, selected_chapter)
+                return
+            selected_group = self._grouped_chapters[selected_chapter.language][
+                selected_chapter.translator
+            ]
+            self._reader_window = ReaderWindow(self._manga, selected_group)
+            self._reader_window.setup(
+                selected_group.index(selected_chapter) + 1,
+            )
 
     @Slot()
     def _open_related_manga(self) -> None:
-        item = self.ui.relatedList.currentItem()
-        if not isinstance(item, ModelTreeItem):
-            return
-        self.opened_related_manga.emit(item.model)
+        self.opened_related_manga.emit(self.ui.relatedList.currentItem().model)
 
     def _on_context_menu(self, position: QPoint) -> None:
         selected_item = self.ui.itemsTree.itemAt(position)
