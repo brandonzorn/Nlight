@@ -3,8 +3,9 @@ import os
 
 import requests
 
+from nlightreader.consts.app import APP_BRANCH
 from nlightreader.consts.files import LangIcons
-from nlightreader.consts.urls import DEFAULT_HEADERS
+from nlightreader.consts.urls import DEFAULT_HEADERS, GITHUB_REPO_API
 from nlightreader.core.enums import Language
 from nlightreader.core.utils.types import (
     JSONArray,
@@ -151,7 +152,27 @@ def get_language_icon(language: Language) -> str:
     return lang_icons[language]
 
 
+def check_for_updates() -> str | None:
+    response = make_request(
+        f"{GITHUB_REPO_API}/releases",
+        "GET",
+        params={"per_page": 2},
+        content_type="json",
+    )
+    if not isinstance(response, list):
+        return None
+    latest_version = None
+    for release in reversed(response):
+        if not isinstance(release, dict):
+            continue
+        version = str(release.get("tag_name") or "")
+        if APP_BRANCH in version:
+            latest_version = version
+    return latest_version
+
+
 __all__ = [
+    "check_for_updates",
     "dd_get",
     "get_language_icon",
     "make_request",

@@ -14,15 +14,14 @@ from qfluentwidgets import (
 
 from data import resource  # noqa:F401
 from nlightreader import ParentWindow
-from nlightreader.consts.app import APP_BRANCH, APP_NAME, APP_VERSION
+from nlightreader.consts.app import APP_NAME, APP_VERSION
 from nlightreader.consts.files import Icons
 from nlightreader.consts.paths import APP_DATA_PATH
-from nlightreader.consts.urls import GITHUB_REPO_API
 from nlightreader.utils import kodik_server
 from nlightreader.utils.config import cfg
 from nlightreader.utils.threads import NThread
 from nlightreader.utils.translator import AppTranslator
-from nlightreader.utils.utils import make_request
+from nlightreader.utils.utils import check_for_updates
 
 __all__ = []
 
@@ -52,7 +51,7 @@ class MainWindow(ParentWindow):
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QIcon(Icons.APP))
         self._update_checker = NThread(
-            target=self.check_for_updates,
+            target=check_for_updates,
             callback=self.show_update_info,
             error_callback=self.show_update_info,
         )
@@ -89,25 +88,6 @@ class MainWindow(ParentWindow):
         self._update_checker.terminate()
         self._update_checker.wait()
         self._update_checker.start()
-
-    @staticmethod
-    def check_for_updates() -> str | None:
-        response = make_request(
-            f"{GITHUB_REPO_API}/releases",
-            "GET",
-            params={"per_page": 2},
-            content_type="json",
-        )
-        if not isinstance(response, list):
-            return None
-        latest_version = None
-        for release in reversed(response):
-            if not isinstance(release, dict):
-                continue
-            version = str(release.get("tag_name") or "")
-            if APP_BRANCH in version:
-                latest_version = version
-        return latest_version
 
     @Slot()
     def show_update_info(self, result: str | None = None) -> None:
