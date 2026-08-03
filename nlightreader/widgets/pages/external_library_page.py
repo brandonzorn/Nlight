@@ -44,22 +44,22 @@ class ExternalLibraryPage(BaseMangaLibraryPage):
     @override
     def _setup_connections(self) -> None:
         self.ui.plannedButton.clicked.connect(
-            lambda: self._change_list(LibList.planned),
+            lambda: self._change_list(LibList.PLANNED),
         )
         self.ui.readingButton.clicked.connect(
-            lambda: self._change_list(LibList.reading),
+            lambda: self._change_list(LibList.READING),
         )
         self.ui.onHoldButton.clicked.connect(
-            lambda: self._change_list(LibList.on_hold),
+            lambda: self._change_list(LibList.ON_HOLD),
         )
         self.ui.completedButton.clicked.connect(
-            lambda: self._change_list(LibList.completed),
+            lambda: self._change_list(LibList.COMPLETED),
         )
         self.ui.droppedButton.clicked.connect(
-            lambda: self._change_list(LibList.dropped),
+            lambda: self._change_list(LibList.DROPPED),
         )
         self.ui.reReadingButton.clicked.connect(
-            lambda: self._change_list(LibList.re_reading),
+            lambda: self._change_list(LibList.RE_READING),
         )
         self.ui.nextButton.clicked.connect(self.turn_page_next)
         self.ui.previousButton.clicked.connect(self.turn_page_prev)

@@ -3,6 +3,7 @@ from typing import ClassVar
 
 from nlightreader.consts.items.parser_items import ParserItems
 from nlightreader.consts.urls import DEFAULT_HEADERS
+from nlightreader.core.enums import LibList
 from nlightreader.core.network import OAuthClient
 from nlightreader.items import (
     RequestForm,
@@ -134,6 +135,9 @@ class LibParser:
         raise NotImplementedError
 
     def update_user_rate(self, user_rate: UserRate) -> None:
+        raise NotImplementedError
+
+    def _lib_list_to_str(self, lib_list: LibList) -> str:
         raise NotImplementedError
 
 

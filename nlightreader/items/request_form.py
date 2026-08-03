@@ -12,7 +12,7 @@ class RequestForm:
         self._genres: Collection[Genre] = []
         self._kinds: Collection[Kind] = []
         self._order: Order | None = None
-        self.lib_list = LibList.planned
+        self.lib_list = LibList.PLANNED
 
     @property
     def offset(self) -> int:
@@ -45,7 +45,7 @@ class RequestForm:
         self._genres = []
         self._kinds = []
         self._order = None
-        self.lib_list = LibList.planned
+        self.lib_list = LibList.PLANNED
 
 
 __all__ = ["RequestForm"]

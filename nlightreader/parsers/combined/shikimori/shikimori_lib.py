@@ -43,18 +43,12 @@ class ShikimoriLib(ShikimoriBase, LibParser):
         url = f"{self._URL_API}/users/{self.user.id}/manga_rates"
         params = {"limit": 50, "page": form.page}
         response = self._client.request("GET", url, params=params)
-        lib_list = form.lib_list
-        if lib_list == LibList.reading:
-            lib_list = "watching"
-        elif lib_list == LibList.re_reading:
-            lib_list = "rewatching"
-        else:
-            lib_list = form.lib_list.name
+        status = self._lib_list_to_str(form.lib_list)
 
-        mangas = []
+        mangas: list[Manga] = []
         if response and (resp_json := response.json()):
             for i in resp_json:
-                if i.get("status") != lib_list:
+                if i.get("status") != status:
                     continue
                 manga_data = i.get("manga")
                 mangas.append(self._setup_manga(manga_data))
@@ -133,13 +127,7 @@ class ShikimoriLib(ShikimoriBase, LibParser):
     @override
     def update_user_rate(self, user_rate: UserRate) -> None:
         url = f"{self._URL_API}/v2/user_rates/{user_rate.id}"
-        status = user_rate.status.to_str()
-        if user_rate.status == LibList.reading:
-            status = "watching"
-        elif user_rate.status == LibList.re_reading:
-            status = "rewatching"
-        elif user_rate.status == LibList.on_hold:
-            status = "on_hold"
+        status = self._lib_list_to_str(user_rate.status)
         data = {
             "user_rate": {
                 "chapters": f"{user_rate.chapters}",
@@ -148,6 +136,22 @@ class ShikimoriLib(ShikimoriBase, LibParser):
             },
         }
         self._client.request("PATCH", url, json=data)
+
+    @override
+    def _lib_list_to_str(self, lib_list: LibList) -> str:
+        match lib_list:
+            case LibList.PLANNED:
+                return "planned"
+            case LibList.READING:
+                return "watching"
+            case LibList.RE_READING:
+                return "rewatching"
+            case LibList.COMPLETED:
+                return "completed"
+            case LibList.ON_HOLD:
+                return "on_hold"
+            case LibList.DROPPED:
+                return "dropped"
 
 
 class ShikimoriClient(OAuthClient):

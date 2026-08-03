@@ -1,39 +1,39 @@
 from enum import IntEnum, unique
 
-LIB_LISTS = (
+LIB_LISTS: tuple[str, ...] = (
     "planned",
     "completed",
     "reading",
     "re-reading",
-    "on hold",
+    "on_hold",
     "dropped",
 )
 
 
 @unique
 class LibList(IntEnum):
-    planned = 0
-    completed = 1
-    reading = 2
-    re_reading = 3
-    on_hold = 4
-    dropped = 5
+    PLANNED = 0
+    COMPLETED = 1
+    READING = 2
+    RE_READING = 3
+    ON_HOLD = 4
+    DROPPED = 5
 
     @classmethod
     def from_str(cls, string: str) -> "LibList":
         string = string.lower()
         if string == "planned":
-            return cls.planned
+            return cls.PLANNED
         if string == "completed":
-            return cls.completed
+            return cls.COMPLETED
         if string in ("reading", "watching"):
-            return cls.reading
+            return cls.READING
         if string in ("re-reading", "rewatching"):
-            return cls.re_reading
+            return cls.RE_READING
         if string in ("on hold", "on_hold"):
-            return cls.on_hold
+            return cls.ON_HOLD
         if string == "dropped":
-            return cls.dropped
+            return cls.DROPPED
         msg = f"Unknown lib_list: {string}"
         raise ValueError(msg)
 

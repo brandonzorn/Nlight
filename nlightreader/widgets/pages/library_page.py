@@ -27,22 +27,22 @@ class LibraryPage(BaseMangaLibraryPage):
     @override
     def _setup_connections(self) -> None:
         self._ui.plannedButton.clicked.connect(
-            lambda: self._change_list(LibList.planned),
+            lambda: self._change_list(LibList.PLANNED),
         )
         self._ui.readingButton.clicked.connect(
-            lambda: self._change_list(LibList.reading),
+            lambda: self._change_list(LibList.READING),
         )
         self._ui.onHoldButton.clicked.connect(
-            lambda: self._change_list(LibList.on_hold),
+            lambda: self._change_list(LibList.ON_HOLD),
         )
         self._ui.completedButton.clicked.connect(
-            lambda: self._change_list(LibList.completed),
+            lambda: self._change_list(LibList.COMPLETED),
         )
         self._ui.droppedButton.clicked.connect(
-            lambda: self._change_list(LibList.dropped),
+            lambda: self._change_list(LibList.DROPPED),
         )
         self._ui.reReadingButton.clicked.connect(
-            lambda: self._change_list(LibList.re_reading),
+            lambda: self._change_list(LibList.RE_READING),
         )
 
     @override

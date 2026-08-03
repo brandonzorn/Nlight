@@ -281,13 +281,11 @@ class MangaDexLib(MangaDex, LibParser):
     @override
     def search_manga(self, form: RequestForm) -> list[Manga]:
         mangas = []
-        lib_list = form.lib_list.name
-        if form.lib_list == LibList.planned:
-            lib_list = "plan_to_read"
+        status = self._lib_list_to_str(form.lib_list)
         response_statuses = self._client.request(
             "GET",
             f"{self._URL_API}/manga/status",
-            params={"status": lib_list},
+            params={"status": status},
         )
         if response_statuses is None:
             return mangas
@@ -316,6 +314,22 @@ class MangaDexLib(MangaDex, LibParser):
                 "",
             )
         return User(None, None, None)
+
+    @override
+    def _lib_list_to_str(self, lib_list: LibList) -> str:
+        match lib_list:
+            case LibList.PLANNED:
+                return "plan_to_read"
+            case LibList.READING:
+                return "reading"
+            case LibList.RE_READING:
+                return "re_reading"
+            case LibList.COMPLETED:
+                return "completed"
+            case LibList.ON_HOLD:
+                return "on_hold"
+            case LibList.DROPPED:
+                return "dropped"
 
 
 @singleton

@@ -6,7 +6,7 @@ from nlightreader.models import Manga
 
 
 class LibraryService:
-    def save(self, manga_id: str, lib_list: LibList = LibList.planned) -> None:
+    def save(self, manga_id: str, lib_list: LibList = LibList.PLANNED) -> None:
         with Session() as session:
             repo = LibraryRepository(session)
             repo.save(manga_id, lib_list)
