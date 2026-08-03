@@ -55,7 +55,7 @@ def make_request(
     data: dict[str, str] | None = None,
     cookies: dict[str, str] | None = None,
     content_type: str | None = None,
-) -> None | bytes | str | dict | requests.Response:
+) -> bytes | str | dict | requests.Response | None:
     """
     Sends an HTTP GET request to the specified URL with the given
     headers, query parameters, and cookies.

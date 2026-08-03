@@ -127,6 +127,4 @@ class AllHentai(AbstractHentaiMangaCatalog):
         return f"{self._URL}/{manga.content_id}"
 
 
-__all__ = [
-    "AllHentai",
-]
+__all__ = ["AllHentai"]

@@ -57,7 +57,7 @@ class Manga(NamedBaseModel):
         return self._score
 
     @score.setter
-    def score(self, score: int | float) -> None:
+    def score(self, score: float) -> None:
         if not isinstance(score, (int, float)):
             msg = f"Score must be int or float got {type(score)}"
             raise TypeError(msg)

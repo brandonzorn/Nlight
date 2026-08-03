@@ -12,6 +12,5 @@ __all__ = [
     "ImageStub",
     "Kind",
     "Manga",
-    "Manga",
     "Order",
 ]

@@ -98,7 +98,7 @@ class LibBase(AbstractCatalog):
             f"{self._URL_API}/branches/{manga.content_id.split('--')[0]}"
         )
 
-        branches = {}
+        branches: dict[str, str] = {}
         branches_response = self._client.get_json(branches_url)
         if isinstance(branches_response, dict):
             for branch in branches_response.get("data", {}):
