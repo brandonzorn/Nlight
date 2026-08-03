@@ -36,7 +36,7 @@ class HistoryRepository(BaseRepository[HistoryNoteEntity]):
             self.remove(entity)
 
     def delete_by_manga(self, manga_id: str) -> None:
-        self._session.scalars(
+        self._session.execute(
             delete(HistoryNoteEntity).where(
                 HistoryNoteEntity.manga_id == manga_id,
             ),
