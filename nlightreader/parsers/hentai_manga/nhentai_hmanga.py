@@ -18,7 +18,7 @@ class NHentai(AbstractHentaiMangaCatalog):
     def __init__(self) -> None:
         self._client = NetworkClient(
             catalog_name=self.CATALOG_NAME,
-            headers=self._HEADERS,
+            headers=self._HEADERS | {"Referer": self._URL},
         )
 
     @override
@@ -110,11 +110,10 @@ class NHentai(AbstractHentaiMangaCatalog):
 
     @override
     def get_image(self, image: Image) -> bytes | None:
-        get_img_headers = {"Referer": self._URL}
         url = image.url
         if url is None:
             return None
-        return self._client.get_bytes(url, extra_headers=get_img_headers)
+        return self._client.get_bytes(url)
 
     @override
     def get_preview(self, manga: Manga) -> bytes | None:
