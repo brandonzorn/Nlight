@@ -188,7 +188,7 @@ class SettingsPage(SingleDirectionScrollArea):
                 "No updates available. You are using the latest version.",
             ),
             duration=3500,
-            parent=self,
+            parent=self.window(),
         )
 
     def show_has_updates_tooltip(self, result: str) -> None:
@@ -199,7 +199,7 @@ class SettingsPage(SingleDirectionScrollArea):
                 "You are currently on version {APP_VERSION}.",
             ).format(result=result, APP_VERSION=APP_VERSION),
             duration=3500,
-            parent=self,
+            parent=self.window(),
         )
 
     def show_err_updates_tooltip(self) -> None:
@@ -209,7 +209,7 @@ class SettingsPage(SingleDirectionScrollArea):
                 "Error checking for updates.",
             ),
             duration=3500,
-            parent=self,
+            parent=self.window(),
         )
 
     def _connect_signals(self) -> None:

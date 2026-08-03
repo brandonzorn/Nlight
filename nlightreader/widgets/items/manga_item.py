@@ -45,11 +45,10 @@ class MangaItem(QWidget):
         is_added_to_lib: bool = True,
         pool: QThreadPool | None = None,
     ) -> None:
-        super().__init__()
+        super().__init__(parent)
         self._ui = Ui_MangaItem()
         self._ui.setupUi(self)
 
-        self._parent = parent
         self._pool = pool
         self._is_added_to_lib = is_added_to_lib
 
@@ -180,7 +179,7 @@ class MangaItem(QWidget):
                 "Manga {} has been added.",
             ).format(self._manga.get_name()),
             duration=2000,
-            parent=self._parent,
+            parent=self.window(),
         )
 
     def _show_remove_from_library(self) -> None:
@@ -191,7 +190,7 @@ class MangaItem(QWidget):
                 "Manga {} has been deleted.",
             ).format(self._manga.get_name()),
             duration=2000,
-            parent=self._parent,
+            parent=self.window(),
         )
         self.manga_changed.emit()
 
@@ -203,7 +202,7 @@ class MangaItem(QWidget):
                 "Files {} have been removed.",
             ).format(self._manga.get_name()),
             duration=2000,
-            parent=self._parent,
+            parent=self.window(),
         )
 
 
