@@ -78,7 +78,9 @@ class Ranobehub(AbstractRanobeCatalog):
                 russian=russian,
             )
             manga.status = MangaStatus.from_str(i.get("status"))
-            manga.preview_url = dd_get(i, "poster.medium", None)
+            preview_url = dd_get(i, "poster.medium")
+            if isinstance(preview_url, str) and preview_url.startswith("http"):
+                manga.preview_url = preview_url
 
             mangas.append(manga)
         return mangas
