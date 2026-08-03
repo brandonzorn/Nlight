@@ -26,6 +26,7 @@ from nlightreader.utils.file_manager import FileManager
 from nlightreader.utils.threads import NThread
 from nlightreader.widgets.containers import TextArea
 from nlightreader.widgets.containers.content_container import (
+    AbstractContentContainer,
     ContentContainerState,
 )
 from nlightreader.widgets.containers.image_area import ImageArea
@@ -78,7 +79,7 @@ class ReaderWindow(SimpleCardWidget):
         self._ui.next_chapter_btn.setIcon(FluentIcon.UP)
         self._ui.prev_chapter_btn.setIcon(FluentIcon.DOWN)
 
-        self._content_container = (
+        self._content_container: AbstractContentContainer = (
             TextArea()
             if (self._manga.kind == MangaKind.RANOBE)
             else ImageArea()

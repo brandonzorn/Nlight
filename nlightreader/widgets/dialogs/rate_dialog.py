@@ -19,7 +19,6 @@ from nlightreader.utils.catalog_manager import (
     get_catalog_by_id,
     get_lib_catalog,
 )
-from nlightreader.utils.translator import translate
 
 
 class RateDialog(MessageBoxBase):

@@ -101,6 +101,4 @@ class CharacterInfoDialog(MessageBoxBase):
         )
 
 
-__all__ = [
-    "CharacterInfoDialog",
-]
+__all__ = ["CharacterInfoDialog"]
