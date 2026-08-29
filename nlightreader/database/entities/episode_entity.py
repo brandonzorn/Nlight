@@ -16,10 +16,7 @@ class EpisodeEntity(ModelBase):
     language: Mapped[str | None] = mapped_column(UnicodeText)
 
     anime_id: Mapped[str | None] = mapped_column(
-        ForeignKey(
-            "manga.id",
-            ondelete="CASCADE",
-        ),
+        ForeignKey("manga.id", ondelete="CASCADE"),
         nullable=False,
     )
     translator: Mapped[str | None] = mapped_column(UnicodeText, nullable=True)

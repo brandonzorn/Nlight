@@ -16,10 +16,8 @@ class Manga(NamedBaseModel):
         content_id: str,
         catalog_id: int,
         name: str,
-        russian: str | None,
+        russian: str,
     ) -> None:
-        if russian is None:
-            russian = ""
         super().__init__(content_id, catalog_id, name, russian)
 
         self._kind: MangaKind = MangaKind.UNDEFINED
