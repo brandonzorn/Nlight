@@ -1,4 +1,5 @@
-from sqlalchemy import insert
+from sqlalchemy import insert, Table
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session
 
 from nlightreader.database.entities import SchemaVersionEntity
@@ -15,8 +16,18 @@ class MigrationManager:
         )
 
     def migrate(self, session: Session) -> None:
-        entity = session.get(SchemaVersionEntity, 1)
-        if not entity:
+        try:
+            entity = session.get(SchemaVersionEntity, 1)
+        except OperationalError:
+            entity = None
+            bind = session.bind
+            table = SchemaVersionEntity.__table__
+            if not isinstance(table, Table) or bind is None:
+                return
+            table.drop(bind=bind, checkfirst=True)
+            table.create(bind=bind, checkfirst=True)
+
+        if entity is None:
             session.execute(
                 insert(SchemaVersionEntity).values(id=1, version=0),
             )
@@ -24,7 +35,7 @@ class MigrationManager:
 
         for migration in self._migrations:
             entity = session.get(SchemaVersionEntity, 1)
-            if not entity:
+            if entity is None:
                 break
             if entity.version >= migration.version:
                 continue
