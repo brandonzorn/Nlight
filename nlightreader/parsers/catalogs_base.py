@@ -1,4 +1,5 @@
 from nlightreader.core.enums import CatalogType
+from nlightreader.models import Episode, Manga
 from nlightreader.parsers.catalog import AbstractCatalog
 
 
@@ -16,6 +17,9 @@ class AbstractRanobeCatalog(AbstractCatalog):
 
 class AbstractAnimeCatalog(AbstractCatalog):
     CATALOG_TYPE = CatalogType.ANIME
+
+    def get_episodes(self, anime: Manga) -> list[Episode]:
+        raise NotImplementedError
 
 
 __all__ = [
