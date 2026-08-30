@@ -5,8 +5,8 @@ from nlightreader.consts.paths import APP_DATA_PATH
 from nlightreader.database.entities.base import Base
 from nlightreader.database.migrations import MigrationManager
 
-db_file_path = APP_DATA_PATH / "data.db"
-engine = create_engine(f"sqlite:///{db_file_path}")
+DB_FILE_PATH = APP_DATA_PATH / "data.db"
+engine = create_engine(f"sqlite:///{DB_FILE_PATH}")
 
 Base.metadata.create_all(engine)
 

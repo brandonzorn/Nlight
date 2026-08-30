@@ -1,7 +1,9 @@
+from datetime import datetime
 from typing import override
 
-from sqlalchemy import inspect, text
+from sqlalchemy import Column, DateTime, inspect, text
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.ddl import CreateColumn
 
 from .base import Migration
 
@@ -32,23 +34,27 @@ class TimestampMigration(Migration):
 
     @override
     def upgrade(self, session: Session) -> None:
+        created_at_ddl = CreateColumn(
+            Column(
+                "created_at",
+                DateTime(timezone=True),
+                default=datetime.now,
+            ),
+        ).compile(bind=session.bind)
+
+        updated_at_ddl = CreateColumn(
+            Column(
+                "updated_at",
+                DateTime(timezone=True),
+                default=datetime.now,
+                onupdate=datetime.now,
+            ),
+        ).compile(bind=session.bind)
+
         for table in self.TABLES:
             session.execute(
-                text(
-                    f"""
-                    ALTER TABLE {table}
-                    ADD COLUMN created_at DATETIME
-                    DEFAULT NULL
-                    """,
-                ),
+                text(f"ALTER TABLE {table} ADD COLUMN {created_at_ddl}"),
             )
-
             session.execute(
-                text(
-                    f"""
-                    ALTER TABLE {table}
-                    ADD COLUMN updated_at DATETIME
-                    DEFAULT NULL
-                    """,
-                ),
+                text(f"ALTER TABLE {table} ADD COLUMN {updated_at_ddl}"),
             )
