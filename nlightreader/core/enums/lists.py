@@ -5,7 +5,7 @@ LIB_LISTS: tuple[str, ...] = (
     "completed",
     "reading",
     "re-reading",
-    "on_hold",
+    "on hold",
     "dropped",
 )
 
