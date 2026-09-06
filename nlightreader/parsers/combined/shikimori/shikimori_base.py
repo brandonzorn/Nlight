@@ -8,6 +8,7 @@ from nlightreader.consts.urls import (
 )
 from nlightreader.core.enums import Language, MangaKind, MangaStatus
 from nlightreader.core.network import NetworkClient
+from nlightreader.items import RequestForm
 from nlightreader.models import Character, Genre, Manga, Order
 from nlightreader.parsers.catalog import AbstractCatalog
 
@@ -19,6 +20,7 @@ class ShikimoriBase(AbstractCatalog):
     _URL = URL_SHIKIMORI
     _URL_API = URL_SHIKIMORI_API
     _HEADERS = SHIKIMORI_HEADERS
+    _CONTENT_NAME = None
 
     def __init__(self) -> None:
         self._client = NetworkClient(
@@ -33,6 +35,25 @@ class ShikimoriBase(AbstractCatalog):
             name=data.get("name", ""),
             russian=data.get("russian", ""),
         )
+
+    @override
+    def search_manga(self, form: RequestForm) -> list[Manga]:
+        url = f"{self._URL_API}/{self._CONTENT_NAME}"
+        params = {
+            "limit": form.limit,
+            "search": form.search,
+            "page": form.page,
+            "order": form.get_order_id(),
+            "genre": ",".join(form.get_genre_ids()),
+            "kind": ",".join(form.get_kind_ids()),
+        }
+        response = self._client.get_json(url, params=params)
+
+        mangas: list[Manga] = []
+        if not isinstance(response, list):
+            return mangas
+        mangas.extend(self._setup_manga(data) for data in response)
+        return mangas
 
     @override
     def get_manga(self, manga: Manga) -> Manga:

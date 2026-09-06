@@ -1,6 +1,5 @@
 from nlightreader.consts.items import ShikimoriItems
-from nlightreader.items import RequestForm
-from nlightreader.models import Kind, Manga
+from nlightreader.models import Kind
 from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
 from nlightreader.parsers.combined.shikimori.shikimori_base import (
     ShikimoriBase,
@@ -9,24 +8,7 @@ from nlightreader.parsers.combined.shikimori.shikimori_base import (
 
 class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
     CATALOG_NAME = "Shikimori(Manga)"
-
-    def search_manga(self, form: RequestForm) -> list[Manga]:
-        url = f"{self._URL_API}/mangas"
-        params = {
-            "limit": form.limit,
-            "search": form.search,
-            "page": form.page,
-            "order": form.get_order_id(),
-            "genre": ",".join(form.get_genre_ids()),
-            "kind": ",".join(form.get_kind_ids()),
-        }
-        response = self._client.get_json(url, params=params)
-
-        mangas: list[Manga] = []
-        if not isinstance(response, list):
-            return mangas
-        mangas.extend(self._setup_manga(data) for data in response)
-        return mangas
+    _CONTENT_NAME = "mangas"
 
     def get_kinds(self) -> list[Kind]:
         return [
