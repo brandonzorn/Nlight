@@ -8,14 +8,20 @@ from qfluentwidgets import (
 )
 
 from nlightreader.consts.files.files import NlFluentIcons
+from nlightreader.core.enums import CatalogType
 from nlightreader.models import Manga
+from nlightreader.utils.catalog_manager import get_catalog_by_id
 from nlightreader.widgets.pages import (
     ExternalLibraryPage,
     HistoryPage,
-    InfoPage,
     LibraryPage,
     MainPage,
     SettingsPage,
+)
+from nlightreader.widgets.pages.info import (
+    AnimeInfoPage,
+    BaseInfoPage,
+    MangaInfoPage,
 )
 
 
@@ -30,7 +36,7 @@ class ParentWindow(FluentWindow):
         self.history_interface = HistoryPage(self)
         self.settings_interface = SettingsPage(self)
 
-        self.info_interface: InfoPage | None = None
+        self.info_interface: BaseInfoPage | None = None
 
         self.library_interface.manga_open.connect(self.open_info)
         self.main_interface.manga_open.connect(self.open_info)
@@ -84,7 +90,7 @@ class ParentWindow(FluentWindow):
     @Slot(int)
     def on_widget_change(self, _: int) -> None:
         current_widget = self.stackedWidget.currentWidget()
-        if isinstance(current_widget, InfoPage):
+        if isinstance(current_widget, BaseInfoPage):
             self.navigationInterface.setReturnButtonVisible(True)
             return
         self.navigationInterface.setReturnButtonVisible(False)
@@ -101,11 +107,16 @@ class ParentWindow(FluentWindow):
         self.stackedWidget.setEnabled(False)
         current_widget = self.stackedWidget.currentWidget()
 
-        if isinstance(current_widget, InfoPage):
+        if isinstance(current_widget, BaseInfoPage):
             msg = "Previous info is not closed"
             raise TypeError(msg)
 
-        self.info_interface = InfoPage(self, manga)
+        catalog = get_catalog_by_id(manga.catalog_id)
+        if catalog.CATALOG_TYPE == CatalogType.ANIME:
+            self.info_interface = AnimeInfoPage(self, manga)
+        else:
+            self.info_interface = MangaInfoPage(self, manga)
+
         self.info_interface.opened_related_manga.connect(self._reopen_info)
         self.info_interface.setup_done.connect(self._on_info_setup_done)
         self.info_interface.setup_error.connect(self._on_info_setup_error)
