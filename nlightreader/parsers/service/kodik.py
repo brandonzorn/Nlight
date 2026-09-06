@@ -37,7 +37,12 @@ class Kodik:
             "token": KODIK_TOKEN,
             "shikimori_id": shikimori_id,
         }
-        response = make_request(url, "GET", params=params, content_type="json")
+        response = make_request(
+            url,
+            "GET",
+            params=params,
+            content_type="json",
+        )
         if not isinstance(response, dict):
             return translators
         translators_data = response.get("results")

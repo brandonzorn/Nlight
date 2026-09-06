@@ -4,7 +4,7 @@ from typing import override
 
 from PySide6.QtCore import QPoint, QSize, QThreadPool, qtTrId, Signal, Slot
 from PySide6.QtGui import QIcon, QPixmap, QResizeEvent
-from PySide6.QtWidgets import QTreeWidgetItem, QWidget
+from PySide6.QtWidgets import QListWidgetItem, QTreeWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.info import Ui_InfoPage
@@ -16,7 +16,6 @@ from nlightreader.items import HistoryNote
 from nlightreader.models import Chapter, Character, Manga
 from nlightreader.utils.catalog_manager import get_catalog_by_id
 from nlightreader.utils.file_manager import FileManager
-from nlightreader.utils.kodik_server import start_html_video
 from nlightreader.utils.text_formatter import description_to_html
 from nlightreader.utils.threads import NWorker
 from nlightreader.utils.utils import get_language_icon
@@ -27,12 +26,11 @@ from nlightreader.widgets.items import (
     ModelListItem,
     ModelTreeItem,
 )
-from nlightreader.windows.reader_window import ReaderWindow
 
 logger = logging.getLogger(__name__)
 
 
-class InfoPage(QWidget):
+class BaseInfoPage(QWidget):
     opened_related_manga = Signal(Manga)
     setup_done = Signal()
     setup_error = Signal()
@@ -58,13 +56,12 @@ class InfoPage(QWidget):
 
         self._related_mangas: list[Manga] = []
         self._related_characters: list[Character] = []
-        self._chapters: list[Chapter] = []
+        self._chapters: list = []
 
         self._grouped_chapters: dict[Language, dict[str | None, list]] = (
             defaultdict(lambda: defaultdict(list))
         )
         self._manga_pixmap = QPixmap()
-        self._reader_window = None
 
     def _setup_ui(self) -> None:
         self.ui.scrollArea.enableTransparentBackground()
@@ -79,14 +76,15 @@ class InfoPage(QWidget):
         self.ui.shikimoriButton.setIcon(NlFluentIcons.SHIKIMORI.qicon())
 
     def _setup_connections(self) -> None:
-        self.ui.itemsTree.doubleClicked.connect(self.open_reader)
-        self.ui.charactersList.doubleClicked.connect(
-            self.open_character_dialog,
+        self.ui.itemsTree.itemDoubleClicked.connect(self._open_reader_window)
+        self.ui.charactersList.itemDoubleClicked.connect(
+            self._open_character_dialog,
         )
-        self.ui.relatedList.doubleClicked.connect(self._open_related_manga)
+        self.ui.relatedList.itemDoubleClicked.connect(self._open_related_manga)
 
-        self.ui.shikimoriButton.clicked.connect(self.open_rate_dialog)
         self.ui.addButton.clicked.connect(self.add_to_favorites)
+        self.ui.shikimoriButton.clicked.connect(self._open_rate_dialog)
+
         self.ui.libraryListComboBox.currentIndexChanged.connect(
             self.change_lib_list,
         )
@@ -109,11 +107,6 @@ class InfoPage(QWidget):
         except Exception:
             logger.exception("Error fetching manga")
             self.setup_error.emit()
-
-    @override
-    def deleteLater(self, /) -> None:
-        self._delete_reader_window()
-        super().deleteLater()
 
     @override
     def resizeEvent(self, event: QResizeEvent) -> None:
@@ -175,15 +168,14 @@ class InfoPage(QWidget):
         self.setup_done.emit()
 
     @Slot()
-    def open_rate_dialog(self) -> None:
+    def _open_rate_dialog(self) -> None:
         RateDialog(self._manga, parent=self._parent).exec()
 
-    @Slot()
-    def open_character_dialog(self) -> None:
-        current_item = self.ui.charactersList.currentItem()
-        if not isinstance(current_item, ModelListItem):
+    @Slot(QListWidgetItem)
+    def _open_character_dialog(self, item: QListWidgetItem) -> None:
+        if not isinstance(item, ModelListItem):
             return
-        character = self._catalog.get_character(current_item.model)
+        character = self._catalog.get_character(item.model)
         CharacterInfoDialog(character, parent=self._parent).exec()
 
     def _fetch_manga_preview(self) -> None:
@@ -235,25 +227,14 @@ class InfoPage(QWidget):
             self._db.library.save(self._manga.id, lib_list)
         self.update_add_button_icon()
 
-    @Slot()
-    def change_lib_list(self) -> None:
+    @Slot(int)
+    def change_lib_list(self, index: int) -> None:
         if self._db.library.exists(self._manga.id):
-            lib_list = LibList(self.ui.libraryListComboBox.currentIndex())
+            lib_list = LibList(index)
             self._db.library.save(self._manga.id, lib_list)
 
     def get_chapters(self) -> None:
-        try:
-            self._chapters = self._catalog.get_chapters(self._manga)
-        except NotImplementedError:
-            logger.warning(
-                "get_chapters is not implemented for %s",
-                self._catalog.CATALOG_NAME,
-            )
-            self._chapters.clear()
-            return
-        self._chapters.reverse()
-        self._group_chapters()
-        self._db.chapters.save_many(self._chapters, self._manga.id)
+        raise NotImplementedError
 
     def _update_chapters_tree(self) -> None:
         self.ui.itemsTree.clear()
@@ -321,34 +302,13 @@ class InfoPage(QWidget):
             item = ModelListItem(character)
             self.ui.charactersList.addItem(item)
 
-    def _delete_reader_window(self) -> None:
-        if self._reader_window is not None:
-            self._reader_window.close()
-            self._reader_window.deleteLater()
-            self._reader_window = None
-
     @Slot(QTreeWidgetItem)
-    def open_reader(self, item: QTreeWidgetItem) -> None:
-        if not isinstance(item, ModelTreeItem):
-            return
-        try:
-            self._delete_reader_window()
-        finally:
-            selected_chapter: Chapter = item.model
-            if hasattr(selected_chapter, "url"):
-                start_html_video(self._manga, selected_chapter)
-                return
-            selected_group = self._grouped_chapters[selected_chapter.language][
-                selected_chapter.translator
-            ]
-            self._reader_window = ReaderWindow(self._manga, selected_group)
-            self._reader_window.setup(
-                selected_group.index(selected_chapter) + 1,
-            )
+    def _open_reader_window(self, item: QTreeWidgetItem) -> None:
+        raise NotImplementedError
 
-    @Slot()
-    def _open_related_manga(self) -> None:
-        self.opened_related_manga.emit(self.ui.relatedList.currentItem().model)
+    @Slot(QListWidgetItem)
+    def _open_related_manga(self, item: QListWidgetItem) -> None:
+        self.opened_related_manga.emit(item.model)
 
     def _on_context_menu(self, position: QPoint) -> None:
         selected_item = self.ui.itemsTree.itemAt(position)
@@ -398,6 +358,3 @@ class InfoPage(QWidget):
     def _remove_read_mark(self, selected_item: ModelTreeItem) -> None:
         self._db.history.delete_by_chapter(selected_item.model.id)
         selected_item.setIcon(0, QIcon())
-
-
-__all__ = ["InfoPage"]
