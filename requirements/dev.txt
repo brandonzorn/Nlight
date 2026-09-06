@@ -1,2 +1,0 @@
-pyinstaller-versionfile>=2.1.1
-sort-requirements>=1.3.0
