@@ -1,3 +1,5 @@
+from typing import override
+
 from nlightreader.consts.items import ShikimoriAnimeItems
 from nlightreader.consts.urls import (
     SHIKIMORI_HEADERS,
@@ -9,7 +11,13 @@ from nlightreader.core.network import NetworkClient
 from nlightreader.items import (
     RequestForm,
 )
-from nlightreader.models import Chapter, Character, Genre, Manga, Order
+from nlightreader.models import (
+    Character,
+    Episode,
+    Genre,
+    Manga,
+    Order,
+)
 from nlightreader.parsers.catalogs_base import AbstractAnimeCatalog
 from nlightreader.parsers.service.kodik import Kodik
 
@@ -35,6 +43,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             russian=data.get("russian", ""),
         )
 
+    @override
     def get_manga(self, manga: Manga) -> Manga:
         url = f"{self._URL_API}/animes/{manga.content_id}"
         response = self._client.get_json(url)
@@ -51,6 +60,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             )
         return manga
 
+    @override
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/animes"
         params = {
@@ -67,35 +77,32 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         )
 
         mangas: list[Manga] = []
-        if response is None:
-            return mangas
         for data in response:
             if not isinstance(data, dict):
                 continue
             mangas.append(self._setup_manga(data))
         return mangas
 
-    def get_chapters(self, manga: Manga) -> list[Chapter]:
-        translators = Kodik.search(manga.content_id)
-        chapters = []
+    @override
+    def get_episodes(self, anime: Manga) -> list[Episode]:
+        translators = Kodik.search(anime.content_id)
+        episodes = []
         for translator in translators:
             for episode_num in range(translator.episodes, 0, -1):
-                chapter = Chapter(
+                episode = Episode(
                     content_id=f"{translator.content_id}{episode_num}",
                     catalog_id=self.CATALOG_ID,
-                    volume_number=None,
-                    chapter_number="",
-                    title=f"Episode {episode_num}",
+                    season_number=0,
+                    episode_number=episode_num,
+                    title="",
+                    url=f"http:{translator.kodik_url}?episode={episode_num}",
                     language=Language.RUSSIAN,
                     translator=translator.translator_text,
                 )
-                chapter.__setattr__(
-                    "url",
-                    f"http:{translator.kodik_url}?episode={episode_num}",
-                )
-                chapters.append(chapter)
-        return chapters
+                episodes.append(episode)
+        return episodes
 
+    @override
     def get_character(self, character: Character) -> Character:
         url = f"{self._URL_API}/characters/{character.content_id}"
         response = self._client.get_json(url)
@@ -106,6 +113,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             character.description = description
         return character
 
+    @override
     def get_preview(self, manga: Manga) -> bytes | None:
         url = f"{self._URL}/system/animes/original/{manga.content_id}.jpg"
         response = self._client.get_bytes(url)
@@ -113,6 +121,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             return None
         return response
 
+    @override
     def get_character_preview(self, character: Character) -> bytes | None:
         url = (
             f"{self._URL}/system/characters/"
@@ -123,6 +132,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             return None
         return image_response
 
+    @override
     def get_genres(self) -> list[Genre]:
         url = f"{self._URL_API}/genres"
         response = self._client.get_json(url)
@@ -142,6 +152,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             )
         return genres
 
+    @override
     def get_orders(self) -> list[Order]:
         return [
             Order(
@@ -153,6 +164,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
             for i in ShikimoriAnimeItems.ORDERS
         ]
 
+    @override
     def get_characters(self, manga: Manga) -> list[Character]:
         url = f"{self._URL_API}/animes/{manga.content_id}/roles"
         response = self._client.get_json(url)
@@ -182,6 +194,7 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         characters.sort(key=lambda x: x.role)
         return characters
 
+    @override
     def get_manga_url(self, manga: Manga) -> str:
         return f"{self._URL}/animes/{manga.content_id}"
 
