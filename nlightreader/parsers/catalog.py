@@ -3,7 +3,7 @@ from typing import ClassVar
 
 from nlightreader.consts.items.parser_items import ParserItems
 from nlightreader.consts.urls import DEFAULT_HEADERS
-from nlightreader.core.enums import LibList
+from nlightreader.core.enums import CatalogType, LibList
 from nlightreader.core.network import OAuthClient
 from nlightreader.items import (
     RequestForm,
@@ -29,6 +29,7 @@ class CatalogAuthType(IntEnum):
 
 class AbstractCatalog:
     AUTH_TYPE: ClassVar[CatalogAuthType] = CatalogAuthType.NO_AUTH
+    CATALOG_TYPE: ClassVar[CatalogType] = CatalogType.UNDEFINED
     CATALOG_NAME = "CATALOG"
     CATALOG_ID = -1
     is_primary = False
