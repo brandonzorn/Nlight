@@ -7,7 +7,7 @@ import webbrowser
 
 from nlightreader.database.services.owm import Database
 from nlightreader.items import HistoryNote
-from nlightreader.models import Chapter, Manga
+from nlightreader.models import Episode, Manga
 
 logger = logging.getLogger(__name__)
 
@@ -203,9 +203,8 @@ def get_local_server(
     return Thread(target=_server_instance.serve_forever, daemon=True)
 
 
-def start_html_video(anime: Manga, episode: Chapter) -> None:
-    src_url = getattr(episode, "url", None)
-    if not src_url:
+def start_html_video(anime: Manga, episode: Episode) -> None:
+    if not episode.url:
         logger.error(
             "Attempted to play episode %s without valid stream URL",
             episode.id,
@@ -216,7 +215,7 @@ def start_html_video(anime: Manga, episode: Chapter) -> None:
         title=anime.get_name(),
         anime_id=anime.id,
         episode_id=episode.id,
-        src_url=src_url,
+        src_url=episode.url,
         server_port=KodikPlayerHttpRequestHandler._SERVER_PORT,
     )
 
