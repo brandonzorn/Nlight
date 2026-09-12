@@ -2,7 +2,7 @@ from typing import override
 
 from nlightreader.consts.items import AniLibItems
 from nlightreader.core.enums import Language
-from nlightreader.models import Chapter, Manga
+from nlightreader.models import Episode, Manga
 from nlightreader.parsers.catalogs_base import AbstractAnimeCatalog
 from nlightreader.parsers.combined.lib.lib_base import LibBase
 
@@ -18,9 +18,9 @@ class LibAnilib(LibBase, AbstractAnimeCatalog):
     _SITE_ID = 5
 
     @override
-    def get_chapters(self, manga: Manga) -> list[Chapter]:
-        url = f"{self._URL_API}/episodes?anime_id={manga.content_id}"
-        episodes: list[Chapter] = []
+    def get_episodes(self, anime: Manga) -> list[Episode]:
+        url = f"{self._URL_API}/episodes?anime_id={anime.content_id}"
+        episodes: list[Episode] = []
         episodes_response = self._client.get_json(url)
         if not isinstance(episodes_response, dict):
             return episodes
@@ -32,15 +32,19 @@ class LibAnilib(LibBase, AbstractAnimeCatalog):
             ep_id = ep_data.get("id")
             ep_number = ep_data.get("number", 0)
 
-            if not isinstance(ep_id, str):
+            if ep_id is None:
                 continue
 
-            episode = Chapter(
-                content_id=ep_id,
+            name = ep_data.get("name")
+            season = str(ep_data.get("season") or "")
+
+            episode = Episode(
+                content_id=str(ep_id),
                 catalog_id=self.CATALOG_ID,
-                volume_number=None,
-                chapter_number="",
-                title=f"Episode {ep_number}",
+                season_number=int(season),
+                episode_number=int(ep_number),
+                title=name,
+                url=None,
                 language=Language.RUSSIAN,
             )
             episodes.append(episode)
