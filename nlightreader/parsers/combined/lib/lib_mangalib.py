@@ -57,9 +57,5 @@ class LibMangalib(LibBase, AbstractMangaCatalog):
             return None
         return self._client.get_bytes(url)
 
-    @override
-    def get_manga_url(self, manga: Manga) -> str:
-        return f"{self._URL}/ru/manga/{manga.content_id}"
-
 
 __all__ = ["LibMangalib"]

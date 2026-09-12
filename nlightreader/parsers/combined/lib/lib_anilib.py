@@ -46,11 +46,5 @@ class LibAnilib(LibBase, AbstractAnimeCatalog):
             episodes.append(episode)
         return episodes
 
-    @override
-    def get_manga_url(self, manga: Manga) -> str:
-        return f"{self._URL}/ru/anime/{manga.content_id}"
 
-
-__all__ = [
-    "LibAnilib",
-]
+__all__ = ["LibAnilib"]
