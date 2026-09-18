@@ -64,11 +64,7 @@ class HistoryPage(BasePage):
         if not isinstance(selected_item, HistoryTreeItem):
             return
         self._db.history.delete_by_chapter(selected_item.note.chapter.id)
-        parent = selected_item.parent()
-        parent.removeChild(selected_item)
-        if parent.childCount() == 0:
-            i = self._ui.items_tree.indexOfTopLevelItem(parent)
-            self._ui.items_tree.takeTopLevelItem(i)
+        self._remove_note_item(selected_item)
 
     @override
     def _update_content(self) -> None:
@@ -86,7 +82,20 @@ class HistoryPage(BasePage):
             self._db.history.save(selected_item.note)
         selected_item.update_icon()
 
-    def _remove_manga_history(self, selected_item: HistoryTreeItem) -> None:
+    def _remove_note_item(self, item: HistoryTreeItem) -> None:
+        parent = item.parent()
+        if parent is None:
+            return
+        parent.removeChild(item)
+        if parent.childCount() == 0:
+            i = self._ui.items_tree.indexOfTopLevelItem(parent)
+            self._ui.items_tree.takeTopLevelItem(i)
+
+    def _delete_history_note(self, item: HistoryTreeItem) -> None:
+        self._db.history.delete_by_chapter(item.note.chapter.id)
+        self._remove_note_item(item)
+
+    def _delete_manga_history(self, selected_item: HistoryTreeItem) -> None:
         self._db.history.delete_by_manga(selected_item.note.manga.id)
         selected_item.delete_parent()
 
@@ -99,8 +108,11 @@ class HistoryPage(BasePage):
         menu.set_as_read.triggered.connect(
             partial(self._mark_chapter_as_read, selected_item),
         )
+        menu.remove.triggered.connect(
+            partial(self._delete_history_note, selected_item),
+        )
         menu.remove_all.triggered.connect(
-            partial(self._remove_manga_history, selected_item),
+            partial(self._delete_manga_history, selected_item),
         )
 
         if selected_item.note.is_completed:
