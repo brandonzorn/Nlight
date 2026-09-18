@@ -33,10 +33,10 @@ class MangaInfoPage(BaseInfoPage):
                 self._catalog.CATALOG_NAME,
             )
             self._chapters.clear()
-            return
-        self._chapters.reverse()
-        self._group_chapters()
-        self._db.chapters.save_many(self._chapters, self._manga.id)
+        else:
+            self._chapters.reverse()
+            self._group_chapters()
+            self._db.chapters.save_many(self._chapters, self._manga.id)
 
     @Slot(QTreeWidgetItem)
     def _open_reader_window(self, item: QTreeWidgetItem) -> None:
