@@ -1,6 +1,6 @@
-from nlightreader.database.entities import ChapterEntity
-from nlightreader.database.mappers.chapter_mapper import ChapterMapper
-from nlightreader.models import Chapter
+from database.entities import ChapterEntity
+from database.mappers.chapter_mapper import ChapterMapper
+from models import Chapter
 
 from .base_repository import BaseRepository
 

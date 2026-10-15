@@ -4,13 +4,13 @@ from PySide6.QtCore import qtTrId, Slot
 from PySide6.QtWidgets import QListWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
-from nlightreader.controllers import FiltersController
-from nlightreader.models import Manga
-from nlightreader.utils.catalog_manager import USER_CATALOGS
-from nlightreader.widgets.dialogs import GenresDialog
-from nlightreader.widgets.items.manga_item import MangaItem
-from nlightreader.widgets.pages.base_page import BaseMangaPage
+from controllers import FiltersController
+from models import Manga
 from resources.ui.widgets.facial import Ui_MainPage
+from utils.catalog_manager import USER_CATALOGS
+from widgets.dialogs import GenresDialog
+from widgets.items.manga_item import MangaItem
+from widgets.pages.base_page import BaseMangaPage
 
 
 class MainPage(BaseMangaPage):

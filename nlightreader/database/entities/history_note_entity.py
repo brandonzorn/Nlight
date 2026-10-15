@@ -1,9 +1,9 @@
 from sqlalchemy import Boolean, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from nlightreader.database.entities.base import Base
-from nlightreader.database.entities.chapter_entity import ChapterEntity
-from nlightreader.database.entities.manga_entity import MangaEntity
+from database.entities.base import Base
+from database.entities.chapter_entity import ChapterEntity
+from database.entities.manga_entity import MangaEntity
 
 
 class HistoryNoteEntity(Base):

@@ -5,22 +5,22 @@ from typing import override
 from PySide6.QtCore import Signal, Slot
 from PySide6.QtWidgets import QWidget
 
-from nlightreader.core.enums import LibList
-from nlightreader.core.exceptions.parser_content_exc import (
+from core.enums import LibList
+from core.exceptions.parser_content_exc import (
     BaseContentError,
     FetchContentError,
     NoContentError,
     RequestsParamsError,
 )
-from nlightreader.items import RequestForm
-from nlightreader.models import Manga
-from nlightreader.parsers.catalog import AbstractCatalog
-from nlightreader.utils.threads import NThread
-from nlightreader.widgets.containers.content_container import (
+from items import RequestForm
+from models import Manga
+from parsers.catalog import AbstractCatalog
+from utils.threads import NThread
+from widgets.containers.content_container import (
     ContentContainerState,
 )
-from nlightreader.widgets.containers.manga_area import MangaArea
-from nlightreader.widgets.items.manga_item import MangaItem
+from widgets.containers.manga_area import MangaArea
+from widgets.items.manga_item import MangaItem
 
 logger = logging.getLogger(__name__)
 

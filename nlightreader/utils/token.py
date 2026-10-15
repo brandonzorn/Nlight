@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from nlightreader.consts.paths import TOKEN_PATH
+from consts.paths import TOKEN_PATH
 
 
 class TokenManager:

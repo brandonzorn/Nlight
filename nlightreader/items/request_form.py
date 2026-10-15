@@ -1,7 +1,7 @@
 from collections.abc import Collection
 
-from nlightreader.core.enums import LibList
-from nlightreader.models.sort_models import Genre, Kind, Order
+from core.enums import LibList
+from models.sort_models import Genre, Kind, Order
 
 
 class RequestForm:

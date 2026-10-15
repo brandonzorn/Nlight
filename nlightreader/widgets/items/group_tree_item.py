@@ -2,9 +2,9 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QTreeWidgetItem
 
-from nlightreader.consts.colors import ItemsIcons
-from nlightreader.items import HistoryNote
-from nlightreader.models import Manga
+from consts.colors import ItemsIcons
+from items import HistoryNote
+from models import Manga
 
 
 class GroupTreeItem(QTreeWidgetItem):

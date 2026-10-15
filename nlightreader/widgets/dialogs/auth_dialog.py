@@ -10,7 +10,7 @@ from qfluentwidgets import (
     SubtitleLabel,
 )
 
-from nlightreader.parsers.catalog import LibParser
+from parsers.catalog import LibParser
 
 
 class AbstractAuthDialog(MessageBoxBase):

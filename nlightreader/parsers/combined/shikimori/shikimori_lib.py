@@ -1,25 +1,24 @@
 import logging
 from typing import override
 
-from nlightreader.consts.urls import (
+from consts.urls import (
     URL_SHIKIMORI,
     URL_SHIKIMORI_API,
     URL_SHIKIMORI_TOKEN,
 )
-from nlightreader.core.enums import LibList
-from nlightreader.core.network.oauth_client import OAuthClient
-from nlightreader.core.utils.decorators import singleton
-from nlightreader.items import RequestForm, User, UserRate
-from nlightreader.models import Manga
-from nlightreader.parsers.catalog import CatalogAuthType, LibParser
-from nlightreader.parsers.combined.shikimori.shikimori_base import (
-    ShikimoriBase,
-)
+from core.enums import LibList
+from core.network.oauth_client import OAuthClient
+from core.utils.decorators import singleton
+from items import RequestForm, User, UserRate
+from models import Manga
+from parsers.catalog import CatalogAuthType, LibParser
+
+from .shikimori_base import ShikimoriBase
 
 logger = logging.getLogger(__name__)
 
 try:
-    from nlightreader.consts.keys import (
+    from consts.keys import (
         SHIKIMORI_CLIENT_ID,
         SHIKIMORI_CLIENT_SECRET,
     )

@@ -2,7 +2,7 @@ from enum import IntEnum, unique
 
 from qfluentwidgets import Action, FluentIcon
 
-from nlightreader.widgets.contexts.context_menu_base import AbstractContextMenu
+from widgets.contexts.context_menu_base import AbstractContextMenu
 
 
 @unique

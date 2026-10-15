@@ -1,6 +1,6 @@
-from nlightreader.core.enums import CatalogType
-from nlightreader.models import Episode, Manga
-from nlightreader.parsers.catalog import AbstractCatalog
+from core.enums import CatalogType
+from models import Episode, Manga
+from parsers.catalog import AbstractCatalog
 
 
 class AbstractMangaCatalog(AbstractCatalog):

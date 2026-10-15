@@ -1,6 +1,6 @@
-from nlightreader.core.enums import MangaKind, MangaStatus
-from nlightreader.database.entities import MangaEntity
-from nlightreader.models import Manga
+from core.enums import MangaKind, MangaStatus
+from database.entities import MangaEntity
+from models import Manga
 
 
 class MangaMapper:

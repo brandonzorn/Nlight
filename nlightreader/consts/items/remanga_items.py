@@ -1,12 +1,6 @@
-from nlightreader.consts.items.parser_items import (
-    ParserItems,
-)
-from nlightreader.consts.items.preset_items import (
-    PresetKinds as Pk,
-)
-from nlightreader.consts.items.preset_items import (
-    PresetOrders as Po,
-)
+from consts.items.parser_items import ParserItems
+from consts.items.preset_items import PresetKinds as Pk
+from consts.items.preset_items import PresetOrders as Po
 
 
 class RemangaItems(ParserItems):

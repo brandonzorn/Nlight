@@ -1,7 +1,6 @@
-from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
-from nlightreader.parsers.combined.shikimori.shikimori_base import (
-    ShikimoriBase,
-)
+from parsers.catalogs_base import AbstractRanobeCatalog
+
+from .shikimori_base import ShikimoriBase
 
 
 class ShikimoriRanobe(ShikimoriBase, AbstractRanobeCatalog):

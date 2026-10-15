@@ -4,10 +4,10 @@ from typing import override
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QTreeWidgetItem, QWidget
 
-from nlightreader.models import Chapter, Manga
-from nlightreader.widgets.items import ModelTreeItem
-from nlightreader.widgets.pages.info.base_info_page import BaseInfoPage
-from nlightreader.windows.reader_window import ReaderWindow
+from models import Chapter, Manga
+from widgets.items import ModelTreeItem
+from widgets.pages.info.base_info_page import BaseInfoPage
+from windows.reader_window import ReaderWindow
 
 logger = logging.getLogger(__name__)
 

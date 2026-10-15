@@ -74,6 +74,16 @@ extend-ignore = [
 force-sort-within-sections = true
 order-by-type = false
 known-first-party = [
+    "consts",
+    "controllers",
+    "core",
+    "database",
+    "items",
+    "models",
+    "parsers",
+    "utils",
+    "widgets",
+    "windows",
     "nlightreader",
     "resources",
 ]

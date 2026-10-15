@@ -1,8 +1,8 @@
-from nlightreader.core.enums import LibList
-from nlightreader.database.repositories import LibraryRepository
-from nlightreader.database.session import Session
-from nlightreader.items.other_items import LibraryRecord
-from nlightreader.models import Manga
+from core.enums import LibList
+from database.repositories import LibraryRepository
+from database.session import Session
+from items.other_items import LibraryRecord
+from models import Manga
 
 
 class LibraryService:

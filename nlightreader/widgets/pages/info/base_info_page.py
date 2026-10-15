@@ -7,25 +7,25 @@ from PySide6.QtGui import QIcon, QPixmap, QResizeEvent
 from PySide6.QtWidgets import QListWidgetItem, QTreeWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
-from nlightreader.consts.colors import ItemsIcons
-from nlightreader.consts.files import NlFluentIcons
-from nlightreader.core.enums import Language, LIB_LISTS, LibList
-from nlightreader.database import Database
-from nlightreader.items import HistoryNote
-from nlightreader.models import Chapter, Character, Manga
-from nlightreader.utils.catalog_manager import get_catalog_by_id
-from nlightreader.utils.file_manager import FileManager
-from nlightreader.utils.text_formatter import description_to_html
-from nlightreader.utils.threads import NWorker
-from nlightreader.utils.utils import get_language_icon
-from nlightreader.widgets.contexts import ReadMarkMenu, ReadMarkMode
-from nlightreader.widgets.dialogs import CharacterInfoDialog, RateDialog
-from nlightreader.widgets.items import (
+from consts.colors import ItemsIcons
+from consts.files import NlFluentIcons
+from core.enums import Language, LIB_LISTS, LibList
+from database import Database
+from items import HistoryNote
+from models import Chapter, Character, Manga
+from resources.ui.widgets.info import Ui_InfoPage
+from utils.catalog_manager import get_catalog_by_id
+from utils.file_manager import FileManager
+from utils.text_formatter import description_to_html
+from utils.threads import NWorker
+from utils.utils import get_language_icon
+from widgets.contexts import ReadMarkMenu, ReadMarkMode
+from widgets.dialogs import CharacterInfoDialog, RateDialog
+from widgets.items import (
     GroupTreeItem,
     ModelListItem,
     ModelTreeItem,
 )
-from resources.ui.widgets.info import Ui_InfoPage
 
 logger = logging.getLogger(__name__)
 

@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from sqlalchemy import update
 from sqlalchemy.orm import Session
 
-from nlightreader.database.entities import SchemaVersionEntity
+from database.entities import SchemaVersionEntity
 
 
 class Migration(ABC):

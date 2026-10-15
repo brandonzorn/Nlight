@@ -1,6 +1,6 @@
-from nlightreader.core.enums import LibList
-from nlightreader.database.entities import LibraryEntity
-from nlightreader.items.other_items import LibraryRecord
+from core.enums import LibList
+from database.entities import LibraryEntity
+from items.other_items import LibraryRecord
 
 
 class LibraryMapper:

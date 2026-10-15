@@ -1,7 +1,7 @@
 from sqlalchemy import Integer
 from sqlalchemy.orm import Mapped, mapped_column
 
-from nlightreader.database.entities.base import Base
+from database.entities.base import Base
 
 
 class SchemaVersionEntity(Base):

@@ -1,5 +1,5 @@
-from nlightreader.core.enums import LibList
-from nlightreader.models import Chapter, Manga
+from core.enums import LibList
+from models import Chapter, Manga
 
 
 class HistoryNote:

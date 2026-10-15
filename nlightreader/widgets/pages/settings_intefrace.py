@@ -14,9 +14,9 @@ from qfluentwidgets import (
     TitleLabel,
 )
 
-from nlightreader.consts.app import APP_VERSION
-from nlightreader.consts.urls import GITHUB_REPO
-from nlightreader.utils.config import cfg
+from consts.app import APP_VERSION
+from consts.urls import GITHUB_REPO
+from utils.config import cfg
 
 
 class SettingsPage(SingleDirectionScrollArea):

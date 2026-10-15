@@ -4,10 +4,10 @@ from typing import override
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QTreeWidgetItem, QWidget
 
-from nlightreader.models import Episode, Manga
-from nlightreader.utils.kodik_server import start_html_video
-from nlightreader.widgets.items import ModelTreeItem
-from nlightreader.widgets.pages.info.base_info_page import BaseInfoPage
+from models import Episode, Manga
+from utils.kodik_server import start_html_video
+from widgets.items import ModelTreeItem
+from widgets.pages.info.base_info_page import BaseInfoPage
 
 logger = logging.getLogger(__name__)
 

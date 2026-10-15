@@ -1,6 +1,6 @@
-from nlightreader.core.enums import Language
-from nlightreader.database.entities import ChapterEntity
-from nlightreader.models import Chapter
+from core.enums import Language
+from database.entities import ChapterEntity
+from models import Chapter
 
 
 class ChapterMapper:

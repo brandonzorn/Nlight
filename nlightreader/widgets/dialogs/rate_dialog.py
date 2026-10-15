@@ -12,10 +12,10 @@ from qfluentwidgets import (
     SubtitleLabel,
 )
 
-from nlightreader.core.enums import LIB_LISTS, LibList
-from nlightreader.items import UserRate
-from nlightreader.models import Manga
-from nlightreader.utils.catalog_manager import (
+from core.enums import LIB_LISTS, LibList
+from items import UserRate
+from models import Manga
+from utils.catalog_manager import (
     get_catalog_by_id,
     get_lib_catalog,
 )

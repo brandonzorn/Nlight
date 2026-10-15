@@ -1,6 +1,6 @@
-from nlightreader.core.enums import Language
-from nlightreader.database.entities import EpisodeEntity
-from nlightreader.models import Episode
+from core.enums import Language
+from database.entities import EpisodeEntity
+from models import Episode
 
 
 class EpisodeMapper:

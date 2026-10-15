@@ -4,7 +4,7 @@ from PySide6.QtCore import QMargins, Qt, Slot
 from PySide6.QtWidgets import QHBoxLayout, QLayout, QVBoxLayout, QWidget
 from qfluentwidgets import SimpleCardWidget, Slider, TextEdit
 
-from nlightreader.widgets.containers.content_container import (
+from widgets.containers.content_container import (
     AbstractContentContainer,
 )
 

@@ -5,12 +5,12 @@ from PySide6.QtGui import QResizeEvent
 from PySide6.QtWidgets import QGridLayout, QHBoxLayout, QLayout, QWidget
 from qfluentwidgets import ScrollArea
 
-from nlightreader.utils.threads import NThread
-from nlightreader.widgets.containers.content_container import (
+from utils.threads import NThread
+from widgets.containers.content_container import (
     AbstractContentContainer,
     ContentContainerState,
 )
-from nlightreader.widgets.items import MangaItem
+from widgets.items import MangaItem
 
 
 class MangaArea(ScrollArea, AbstractContentContainer):

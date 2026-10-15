@@ -1,14 +1,14 @@
 from typing import override
 
-from nlightreader.core.enums import LibList
-from nlightreader.database.entities import LibraryEntity
-from nlightreader.database.mappers.library_mapper import LibraryMapper
-from nlightreader.database.mappers.manga_mapper import MangaMapper
-from nlightreader.database.repositories.base_repository import (
+from core.enums import LibList
+from database.entities import LibraryEntity
+from database.mappers.library_mapper import LibraryMapper
+from database.mappers.manga_mapper import MangaMapper
+from database.repositories.base_repository import (
     BaseRepository,
 )
-from nlightreader.items.other_items import LibraryRecord
-from nlightreader.models import Manga
+from items.other_items import LibraryRecord
+from models import Manga
 
 
 class LibraryRepository(BaseRepository[LibraryEntity]):

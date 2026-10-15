@@ -1,13 +1,13 @@
 from sqlalchemy import delete
 
-from nlightreader.database.entities import HistoryNoteEntity
-from nlightreader.database.mappers.history_note_mapper import (
+from database.entities import HistoryNoteEntity
+from database.mappers.history_note_mapper import (
     HistoryNoteMapper,
 )
-from nlightreader.database.repositories.base_repository import (
+from database.repositories.base_repository import (
     BaseRepository,
 )
-from nlightreader.items import HistoryNote
+from items import HistoryNote
 
 
 class HistoryRepository(BaseRepository[HistoryNoteEntity]):

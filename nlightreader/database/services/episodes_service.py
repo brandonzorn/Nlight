@@ -1,6 +1,6 @@
-from nlightreader.database.repositories import EpisodesRepository
-from nlightreader.database.session import Session
-from nlightreader.models import Episode
+from database.repositories import EpisodesRepository
+from database.session import Session
+from models import Episode
 
 
 class EpisodesService:

@@ -1,6 +1,6 @@
-from nlightreader.database.repositories import HistoryRepository
-from nlightreader.database.session import Session
-from nlightreader.items import HistoryNote
+from database.repositories import HistoryRepository
+from database.session import Session
+from items import HistoryNote
 
 
 class HistoryService:

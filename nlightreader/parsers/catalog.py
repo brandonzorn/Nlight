@@ -1,16 +1,12 @@
 from enum import IntEnum
 from typing import ClassVar
 
-from nlightreader.consts.items.parser_items import ParserItems
-from nlightreader.consts.urls import DEFAULT_HEADERS
-from nlightreader.core.enums import CatalogType, LibList
-from nlightreader.core.network import OAuthClient
-from nlightreader.items import (
-    RequestForm,
-    User,
-    UserRate,
-)
-from nlightreader.models import (
+from consts.items.parser_items import ParserItems
+from consts.urls import DEFAULT_HEADERS
+from core.enums import CatalogType, LibList
+from core.network import OAuthClient
+from items import RequestForm, User, UserRate
+from models import (
     Chapter,
     Character,
     Genre,
@@ -32,7 +28,7 @@ class AbstractCatalog:
     CATALOG_TYPE: ClassVar[CatalogType] = CatalogType.UNDEFINED
     CATALOG_NAME: ClassVar[str] = "CATALOG"
     CATALOG_ID: ClassVar[int] = -1
-    HAS_EXTERNAL_LIB: ClassVar[bool] = False
+    is_primary: ClassVar[bool] = False
 
     _HEADERS: ClassVar[dict] = DEFAULT_HEADERS
     _COOKIES: ClassVar[dict | None] = None

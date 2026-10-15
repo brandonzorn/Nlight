@@ -3,12 +3,12 @@ from typing import ClassVar, override
 
 from bs4 import BeautifulSoup, Tag
 
-from nlightreader.consts.items import RulateItems
-from nlightreader.core.enums import Language, MangaKind
-from nlightreader.core.network import NetworkClient
-from nlightreader.items import RequestForm
-from nlightreader.models import Chapter, Image, Manga
-from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
+from consts.items import RulateItems
+from core.enums import Language, MangaKind
+from core.network import NetworkClient
+from items import RequestForm
+from models import Chapter, Image, Manga
+from parsers.catalogs_base import AbstractRanobeCatalog
 
 
 class Rulate(AbstractRanobeCatalog):

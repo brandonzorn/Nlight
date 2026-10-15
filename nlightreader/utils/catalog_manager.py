@@ -1,6 +1,6 @@
 import logging
 
-from nlightreader.parsers import (
+from parsers import (
     AllHentai,
     Desu,
     Erolate,
@@ -20,7 +20,7 @@ from nlightreader.parsers import (
     ShikimoriRanobe,
     SlashLibLegacy,
 )
-from nlightreader.parsers.catalog import AbstractCatalog, LibParser
+from parsers.catalog import AbstractCatalog, LibParser
 
 logger = logging.getLogger(__name__)
 

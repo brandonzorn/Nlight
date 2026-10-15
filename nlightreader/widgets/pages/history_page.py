@@ -6,13 +6,13 @@ from PySide6.QtCore import QPoint, Slot
 from PySide6.QtWidgets import QTreeWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
-from nlightreader.database import Database
-from nlightreader.items import HistoryNote
-from nlightreader.models import Manga
-from nlightreader.widgets.contexts import HistoryMenuMode, HistoryNoteMenu
-from nlightreader.widgets.items import HistoryTreeItem, MangaTreeItem
-from nlightreader.widgets.pages.base_page import BasePage
+from database import Database
+from items import HistoryNote
+from models import Manga
 from resources.ui.widgets.history import Ui_HistoryPage
+from widgets.contexts import HistoryMenuMode, HistoryNoteMenu
+from widgets.items import HistoryTreeItem, MangaTreeItem
+from widgets.pages.base_page import BasePage
 
 
 class HistoryPage(BasePage):

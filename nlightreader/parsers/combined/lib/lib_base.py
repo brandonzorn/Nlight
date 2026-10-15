@@ -1,11 +1,11 @@
 from typing import ClassVar, override
 
-from nlightreader.core.enums import Language
-from nlightreader.core.network import NetworkClient
-from nlightreader.items import RequestForm
-from nlightreader.models import Chapter, Manga
-from nlightreader.parsers.catalog import AbstractCatalog
-from nlightreader.utils.utils import dd_get
+from core.enums import Language
+from core.network import NetworkClient
+from items import RequestForm
+from models import Chapter, Manga
+from parsers.catalog import AbstractCatalog
+from utils.utils import dd_get
 
 
 class LibBase(AbstractCatalog):

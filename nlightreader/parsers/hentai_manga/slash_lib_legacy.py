@@ -1,9 +1,9 @@
 from typing import override
 
-from nlightreader.consts.items import MangaLibItems
-from nlightreader.core.network import NetworkClient
-from nlightreader.models import Manga
-from nlightreader.parsers.catalogs_base import (
+from consts.items import MangaLibItems
+from core.network import NetworkClient
+from models import Manga
+from parsers.catalogs_base import (
     AbstractHentaiMangaCatalog,
 )
 

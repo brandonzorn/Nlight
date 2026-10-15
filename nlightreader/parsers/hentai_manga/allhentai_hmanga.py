@@ -2,13 +2,13 @@ from typing import override
 
 from bs4 import BeautifulSoup, Tag
 
-from nlightreader.core.enums import Language
-from nlightreader.core.exceptions import parser_content_exc
-from nlightreader.core.network import NetworkClient
-from nlightreader.items import RequestForm
-from nlightreader.models import Chapter, Manga
-from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
-from nlightreader.utils.utils import make_request
+from core.enums import Language
+from core.exceptions import parser_content_exc
+from core.network import NetworkClient
+from items import RequestForm
+from models import Chapter, Manga
+from parsers.catalogs_base import AbstractHentaiMangaCatalog
+from utils.utils import make_request
 
 
 class AllHentai(AbstractHentaiMangaCatalog):

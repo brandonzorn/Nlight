@@ -1,8 +1,8 @@
 from types import NoneType
 from typing import override
 
-from nlightreader.core.enums import Language
-from nlightreader.models.base_model import BaseModel
+from core.enums import Language
+from models.base_model import BaseModel
 
 
 class Episode(BaseModel):

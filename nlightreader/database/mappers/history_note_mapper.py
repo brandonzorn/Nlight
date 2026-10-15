@@ -1,7 +1,7 @@
-from nlightreader.database.entities import HistoryNoteEntity
-from nlightreader.database.mappers.chapter_mapper import ChapterMapper
-from nlightreader.database.mappers.manga_mapper import MangaMapper
-from nlightreader.items import HistoryNote
+from database.entities import HistoryNoteEntity
+from database.mappers.chapter_mapper import ChapterMapper
+from database.mappers.manga_mapper import MangaMapper
+from items import HistoryNote
 
 
 class HistoryNoteMapper:

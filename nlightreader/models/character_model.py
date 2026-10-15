@@ -1,6 +1,6 @@
 from typing import override
 
-from nlightreader.models.base_model import NamedBaseModel
+from models.base_model import NamedBaseModel
 
 
 class Character(NamedBaseModel):

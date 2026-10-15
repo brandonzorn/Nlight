@@ -1,6 +1,6 @@
-from nlightreader.database.repositories import ChaptersRepository
-from nlightreader.database.session import Session
-from nlightreader.models import Chapter
+from database.repositories import ChaptersRepository
+from database.session import Session
+from models import Chapter
 
 
 class ChaptersService:

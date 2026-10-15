@@ -1,11 +1,11 @@
 from sqlalchemy import select
 
-from nlightreader.database.entities import MangaEntity
-from nlightreader.database.mappers.manga_mapper import MangaMapper
-from nlightreader.database.repositories.base_repository import (
+from database.entities import MangaEntity
+from database.mappers.manga_mapper import MangaMapper
+from database.repositories.base_repository import (
     BaseRepository,
 )
-from nlightreader.models import Manga
+from models import Manga
 
 
 class MangaRepository(BaseRepository[MangaEntity]):

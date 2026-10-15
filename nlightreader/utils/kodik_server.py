@@ -6,9 +6,9 @@ from threading import Thread
 from typing import ClassVar
 import webbrowser
 
-from nlightreader.database.services.owm import Database
-from nlightreader.items import HistoryNote
-from nlightreader.models import Episode, Manga
+from database.services.owm import Database
+from items import HistoryNote
+from models import Episode, Manga
 
 logger = logging.getLogger(__name__)
 

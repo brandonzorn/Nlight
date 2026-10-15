@@ -2,7 +2,7 @@ from sqlalchemy import insert, Table
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session
 
-from nlightreader.database.entities import SchemaVersionEntity
+from database.entities import SchemaVersionEntity
 
 from .migration_0001 import InitialMigration
 from .migration_0002 import TimestampMigration

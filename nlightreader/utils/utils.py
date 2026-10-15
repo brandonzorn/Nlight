@@ -3,11 +3,11 @@ import os
 
 import requests
 
-from nlightreader.consts.app import APP_BRANCH
-from nlightreader.consts.files import LangIcons
-from nlightreader.consts.urls import DEFAULT_HEADERS, GITHUB_REPO_API
-from nlightreader.core.enums import Language
-from nlightreader.core.utils.types import (
+from consts.app import APP_BRANCH
+from consts.files import LangIcons
+from consts.urls import DEFAULT_HEADERS, GITHUB_REPO_API
+from core.enums import Language
+from core.utils.types import (
     JSONArray,
     JSONObject,
     JSONValue,

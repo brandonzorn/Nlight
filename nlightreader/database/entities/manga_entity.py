@@ -1,7 +1,7 @@
 from sqlalchemy import Float, Integer, UnicodeText
 from sqlalchemy.orm import Mapped, mapped_column
 
-from nlightreader.database.entities.base import ModelBase
+from database.entities.base import ModelBase
 
 
 class MangaEntity(ModelBase):

@@ -4,13 +4,13 @@ from typing import override
 from bs4 import BeautifulSoup
 import bs4.element
 
-from nlightreader.consts.items import RanobehubItems
-from nlightreader.core.enums import Language, MangaKind, MangaStatus
-from nlightreader.core.network import NetworkClient
-from nlightreader.items import RequestForm
-from nlightreader.models import Chapter, Image, Manga
-from nlightreader.parsers.catalogs_base import AbstractRanobeCatalog
-from nlightreader.utils.utils import dd_get
+from consts.items import RanobehubItems
+from core.enums import Language, MangaKind, MangaStatus
+from core.network import NetworkClient
+from items import RequestForm
+from models import Chapter, Image, Manga
+from parsers.catalogs_base import AbstractRanobeCatalog
+from utils.utils import dd_get
 
 
 class Ranobehub(AbstractRanobeCatalog):

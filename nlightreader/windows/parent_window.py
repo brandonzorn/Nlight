@@ -7,18 +7,18 @@ from qfluentwidgets import (
     Router,
 )
 
-from nlightreader.consts.files.files import NlFluentIcons
-from nlightreader.core.enums import CatalogType
-from nlightreader.models import Manga
-from nlightreader.utils.catalog_manager import get_catalog_by_id
-from nlightreader.widgets.pages import (
+from consts.files.files import NlFluentIcons
+from core.enums import CatalogType
+from models import Manga
+from utils.catalog_manager import get_catalog_by_id
+from widgets.pages import (
     ExternalLibraryPage,
     HistoryPage,
     LibraryPage,
     MainPage,
     SettingsPage,
 )
-from nlightreader.widgets.pages.info import (
+from widgets.pages.info import (
     AnimeInfoPage,
     BaseInfoPage,
     MangaInfoPage,

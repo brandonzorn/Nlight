@@ -1,6 +1,6 @@
-from nlightreader.database.repositories import MangaRepository
-from nlightreader.database.session import Session
-from nlightreader.models import Manga
+from database.repositories import MangaRepository
+from database.session import Session
+from models import Manga
 
 
 class MangaService:

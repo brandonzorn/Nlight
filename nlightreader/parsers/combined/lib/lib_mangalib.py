@@ -1,9 +1,10 @@
 from typing import override
 
-from nlightreader.consts.items import MangaLibItems
-from nlightreader.models import Chapter, Image, Manga
-from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
-from nlightreader.parsers.combined.lib.lib_base import LibBase
+from consts.items import MangaLibItems
+from models import Chapter, Image, Manga
+from parsers.catalogs_base import AbstractMangaCatalog
+
+from .lib_base import LibBase
 
 
 class LibMangalib(LibBase, AbstractMangaCatalog):

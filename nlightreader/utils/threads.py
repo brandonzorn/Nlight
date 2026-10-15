@@ -45,6 +45,7 @@ class BaseThread:
         try:
             result = self._target(*self._args, **self._kwargs)
         except Exception as e:
+            logger.exception("Thread raised an exception:\n")
             self.signals.on_error.emit(e)
         else:
             self.signals.on_finished.emit(result)

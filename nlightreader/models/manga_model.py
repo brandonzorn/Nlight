@@ -4,9 +4,9 @@ from typing import override
 from PySide6.QtCore import QLocale
 import validators
 
-from nlightreader.core.enums import Language, MangaKind, MangaStatus
-from nlightreader.models.base_model import NamedBaseModel
-from nlightreader.utils.config import cfg
+from core.enums import Language, MangaKind, MangaStatus
+from models.base_model import NamedBaseModel
+from utils.config import cfg
 
 
 class Manga(NamedBaseModel):

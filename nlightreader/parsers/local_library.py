@@ -1,9 +1,9 @@
 from typing import override
 
-from nlightreader.database import Database
-from nlightreader.items import RequestForm
-from nlightreader.models import Manga
-from nlightreader.parsers.catalog import AbstractCatalog
+from database import Database
+from items import RequestForm
+from models import Manga
+from parsers.catalog import AbstractCatalog
 
 
 class LocalLibrary(AbstractCatalog):

@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QGridLayout, QWidget
 from qfluentwidgets import CheckBox, MessageBoxBase, SubtitleLabel
 
-from nlightreader.models import Genre
+from models import Genre
 
 
 class GenresDialogUi(MessageBoxBase):

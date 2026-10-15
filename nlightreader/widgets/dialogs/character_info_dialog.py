@@ -18,11 +18,11 @@ from qfluentwidgets import (
     TextEdit,
 )
 
-from nlightreader.models import Character
-from nlightreader.utils.catalog_manager import get_catalog_by_id
-from nlightreader.utils.file_manager import FileManager
-from nlightreader.utils.text_formatter import description_to_html
-from nlightreader.utils.threads import NWorker
+from models import Character
+from utils.catalog_manager import get_catalog_by_id
+from utils.file_manager import FileManager
+from utils.text_formatter import description_to_html
+from utils.threads import NWorker
 
 
 class CharacterInfoDialog(MessageBoxBase):

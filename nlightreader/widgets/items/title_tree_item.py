@@ -3,7 +3,7 @@ from typing import TypeVar
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QListWidgetItem, QTreeWidgetItem
 
-from nlightreader.models.base_model import NamedBaseModel
+from models.base_model import NamedBaseModel
 
 T = TypeVar("T", bound=NamedBaseModel)
 

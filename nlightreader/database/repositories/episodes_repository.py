@@ -1,6 +1,6 @@
-from nlightreader.database.entities import EpisodeEntity
-from nlightreader.database.mappers.episode_mapper import EpisodeMapper
-from nlightreader.models import Episode
+from database.entities import EpisodeEntity
+from database.mappers.episode_mapper import EpisodeMapper
+from models import Episode
 
 from .base_repository import BaseRepository
 

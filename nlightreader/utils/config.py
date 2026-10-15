@@ -13,7 +13,7 @@ from qfluentwidgets import (
     Theme,
 )
 
-from nlightreader.consts.paths.paths import APP_DATA_PATH
+from consts.paths.paths import APP_DATA_PATH
 
 
 def is_win11() -> bool:

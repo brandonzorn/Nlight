@@ -1,6 +1,4 @@
-from nlightreader.consts.items.parser_items import (
-    ParserItems,
-)
+from consts.items.parser_items import ParserItems
 
 
 class LibBaseItems(ParserItems):

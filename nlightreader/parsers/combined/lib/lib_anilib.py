@@ -1,10 +1,11 @@
 from typing import override
 
-from nlightreader.consts.items import AniLibItems
-from nlightreader.core.enums import Language
-from nlightreader.models import Episode, Manga
-from nlightreader.parsers.catalogs_base import AbstractAnimeCatalog
-from nlightreader.parsers.combined.lib.lib_base import LibBase
+from consts.items import AniLibItems
+from core.enums import Language
+from models import Episode, Manga
+from parsers.catalogs_base import AbstractAnimeCatalog
+
+from .lib_base import LibBase
 
 
 class LibAnilib(LibBase, AbstractAnimeCatalog):

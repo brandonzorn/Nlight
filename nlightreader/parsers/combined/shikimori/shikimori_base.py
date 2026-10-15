@@ -1,16 +1,16 @@
 from typing import override
 
-from nlightreader.consts.items import ShikimoriItems
-from nlightreader.consts.urls import (
+from consts.items import ShikimoriItems
+from consts.urls import (
     SHIKIMORI_HEADERS,
     URL_SHIKIMORI,
     URL_SHIKIMORI_API,
 )
-from nlightreader.core.enums import Language, MangaKind, MangaStatus
-from nlightreader.core.network import NetworkClient
-from nlightreader.items import RequestForm
-from nlightreader.models import Character, Genre, Manga, Order
-from nlightreader.parsers.catalog import AbstractCatalog
+from core.enums import Language, MangaKind, MangaStatus
+from core.network import NetworkClient
+from items import RequestForm
+from models import Character, Genre, Manga, Order
+from parsers.catalog import AbstractCatalog
 
 
 class ShikimoriBase(AbstractCatalog):

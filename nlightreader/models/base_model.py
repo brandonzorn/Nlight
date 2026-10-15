@@ -1,6 +1,6 @@
 from PySide6.QtCore import QLocale
 
-from nlightreader.utils.config import cfg
+from utils.config import cfg
 
 
 class BaseModel:

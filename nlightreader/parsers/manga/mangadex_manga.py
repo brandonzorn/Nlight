@@ -1,21 +1,21 @@
 import logging
 from typing import ClassVar, override
 
-from nlightreader.consts.items import MangaDexItems
-from nlightreader.consts.urls import URL_MANGADEX_TOKEN
-from nlightreader.core.enums import Language, LibList, MangaKind, MangaStatus
-from nlightreader.core.network import NetworkClient, OAuthClient
-from nlightreader.core.utils.decorators import singleton
-from nlightreader.items import RequestForm, User
-from nlightreader.models import Chapter, Genre, Image, Kind, Manga
-from nlightreader.parsers.catalog import CatalogAuthType, LibParser
-from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
-from nlightreader.utils.utils import dd_get
+from consts.items import MangaDexItems
+from consts.urls import URL_MANGADEX_TOKEN
+from core.enums import Language, LibList, MangaKind, MangaStatus
+from core.network import NetworkClient, OAuthClient
+from core.utils.decorators import singleton
+from items import RequestForm, User
+from models import Chapter, Genre, Image, Kind, Manga
+from parsers.catalog import CatalogAuthType, LibParser
+from parsers.catalogs_base import AbstractMangaCatalog
+from utils.utils import dd_get
 
 logger = logging.getLogger(__name__)
 
 try:
-    from nlightreader.consts.keys import (
+    from consts.keys import (
         MANGADEX_CLIENT_ID,
         MANGADEX_CLIENT_SECRET,
     )

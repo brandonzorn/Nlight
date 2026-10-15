@@ -1,9 +1,5 @@
-from nlightreader.consts.items.lib_base_items import (
-    LibBaseItems,
-)
-from nlightreader.consts.items.preset_items import (
-    PresetOrders as Po,
-)
+from consts.items.lib_base_items import LibBaseItems
+from consts.items.preset_items import PresetOrders as Po
 
 
 class RanobeLibItems(LibBaseItems):

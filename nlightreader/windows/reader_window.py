@@ -10,27 +10,27 @@ from qfluentwidgets import (
     SimpleCardWidget,
 )
 
-from nlightreader.consts.colors import ItemsIcons
-from nlightreader.core.enums import MangaKind
-from nlightreader.core.exceptions.parser_content_exc import (
+from consts.colors import ItemsIcons
+from core.enums import MangaKind
+from core.exceptions.parser_content_exc import (
     BaseContentError,
     FetchContentError,
     NoContentError,
 )
-from nlightreader.database import Database
-from nlightreader.items import HistoryNote
-from nlightreader.models import Chapter, Image, ImageStub, Manga
-from nlightreader.utils.catalog_manager import get_catalog_by_id
-from nlightreader.utils.file_manager import FileManager
-from nlightreader.utils.threads import NThread
-from nlightreader.widgets.containers import TextArea
-from nlightreader.widgets.containers.content_container import (
+from database import Database
+from items import HistoryNote
+from models import Chapter, Image, ImageStub, Manga
+from resources.ui.widgets.reader import Ui_ReaderWidget
+from utils.catalog_manager import get_catalog_by_id
+from utils.file_manager import FileManager
+from utils.threads import NThread
+from widgets.containers import TextArea
+from widgets.containers.content_container import (
     AbstractContentContainer,
     ContentContainerState,
 )
-from nlightreader.widgets.containers.image_area import ImageArea
-from nlightreader.widgets.items import ModelListItem
-from resources.ui.widgets.reader import Ui_ReaderWidget
+from widgets.containers.image_area import ImageArea
+from widgets.items import ModelListItem
 
 logger = logging.getLogger(__name__)
 

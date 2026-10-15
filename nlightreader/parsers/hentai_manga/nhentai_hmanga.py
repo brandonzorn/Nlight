@@ -3,11 +3,11 @@ from typing import override
 from bs4 import BeautifulSoup
 import validators
 
-from nlightreader.core.exceptions import parser_content_exc
-from nlightreader.core.network import NetworkClient
-from nlightreader.items import RequestForm
-from nlightreader.models import Chapter, Image, Manga
-from nlightreader.parsers.catalogs_base import AbstractHentaiMangaCatalog
+from core.exceptions import parser_content_exc
+from core.network import NetworkClient
+from items import RequestForm
+from models import Chapter, Image, Manga
+from parsers.catalogs_base import AbstractHentaiMangaCatalog
 
 
 class NHentai(AbstractHentaiMangaCatalog):

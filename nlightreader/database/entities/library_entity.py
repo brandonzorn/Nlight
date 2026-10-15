@@ -1,8 +1,8 @@
 from sqlalchemy import ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from nlightreader.database.entities.base import Base
-from nlightreader.database.entities.manga_entity import MangaEntity
+from database.entities.base import Base
+from database.entities.manga_entity import MangaEntity
 
 
 class LibraryEntity(Base):

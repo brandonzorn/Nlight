@@ -1,7 +1,6 @@
-from nlightreader.consts.keys import KODIK_TOKEN
-from nlightreader.core.utils.types import RequestParams
-from nlightreader.utils.utils import dd_get, make_request
-
+from consts.keys import KODIK_TOKEN
+from core.utils.types import RequestParams
+from utils.utils import dd_get, make_request
 
 class KodikTranslator:
     def __init__(

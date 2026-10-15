@@ -1,9 +1,8 @@
-from nlightreader.consts.items import ShikimoriItems
-from nlightreader.models import Kind
-from nlightreader.parsers.catalogs_base import AbstractMangaCatalog
-from nlightreader.parsers.combined.shikimori.shikimori_base import (
-    ShikimoriBase,
-)
+from consts.items import ShikimoriItems
+from models import Kind
+from parsers.catalogs_base import AbstractMangaCatalog
+
+from .shikimori_base import ShikimoriBase
 
 
 class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):

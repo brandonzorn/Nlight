@@ -8,10 +8,10 @@ import subprocess
 
 from PySide6.QtGui import QPixmap
 
-from nlightreader.consts.paths import APP_DATA_PATH
-from nlightreader.core.enums import MangaKind
-from nlightreader.models import Chapter, Character, Image, Manga
-from nlightreader.parsers.catalog import AbstractCatalog
+from consts.paths import APP_DATA_PATH
+from core.enums import MangaKind
+from models import Chapter, Character, Image, Manga
+from parsers.catalog import AbstractCatalog
 
 logger = logging.getLogger(__name__)
 

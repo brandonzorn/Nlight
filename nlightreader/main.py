@@ -12,16 +12,16 @@ from qfluentwidgets import (
     SystemThemeListener,
 )
 
-from nlightreader.consts.app import APP_NAME, APP_VERSION
-from nlightreader.consts.files import Icons
-from nlightreader.consts.paths import APP_DATA_PATH
-from nlightreader.utils import kodik_server
-from nlightreader.utils.config import cfg
-from nlightreader.utils.threads import NThread
-from nlightreader.utils.translator import AppTranslator
-from nlightreader.utils.utils import check_for_updates
-from nlightreader.windows import ParentWindow
+from consts.app import APP_NAME, APP_VERSION
+from consts.files import Icons
+from consts.paths import APP_DATA_PATH
 from resources import resource  # noqa:F401
+from utils import kodik_server
+from utils.config import cfg
+from utils.threads import NThread
+from utils.translator import AppTranslator
+from utils.utils import check_for_updates
+from windows import ParentWindow
 
 __all__ = []
 

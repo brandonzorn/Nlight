@@ -5,19 +5,19 @@ from PySide6.QtCore import qtTrId, Slot
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import FluentIcon
 
-from nlightreader.core.enums import LibList
-from nlightreader.items import User
-from nlightreader.models import Manga
-from nlightreader.parsers import ShikimoriLib
-from nlightreader.parsers.catalog import CatalogAuthType, LibParser
-from nlightreader.utils.threads import NWorker
-from nlightreader.widgets.dialogs import (
+from core.enums import LibList
+from items import User
+from models import Manga
+from parsers import ShikimoriLib
+from parsers.catalog import CatalogAuthType, LibParser
+from resources.ui.widgets.shikimori import Ui_ExternalLibraryPage
+from utils.threads import NWorker
+from widgets.dialogs import (
     TokenAuthMessageBox,
     UserDataAuthMessageBox,
 )
-from nlightreader.widgets.items.manga_item import MangaItem
-from nlightreader.widgets.pages.base_page import BaseMangaLibraryPage
-from resources.ui.widgets.shikimori import Ui_ExternalLibraryPage
+from widgets.items.manga_item import MangaItem
+from widgets.pages.base_page import BaseMangaLibraryPage
 
 
 class ExternalLibraryPage(BaseMangaLibraryPage):

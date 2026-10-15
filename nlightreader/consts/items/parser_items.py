@@ -1,10 +1,11 @@
 from abc import ABC
+from typing import Any
 
 
 class ParserItems(ABC):
-    ORDERS: tuple[dict[str, str], ...] = ()
-    KINDS: tuple[dict[str, str], ...] = ()
-    GENRES: tuple[dict[str, str], ...] = ()
+    ORDERS: tuple[dict[str, Any], ...] = ()
+    KINDS: tuple[dict[str, Any], ...] = ()
+    GENRES: tuple[dict[str, Any], ...] = ()
 
 
 __all__ = ["ParserItems"]
