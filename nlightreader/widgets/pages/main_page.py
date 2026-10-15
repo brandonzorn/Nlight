@@ -115,6 +115,9 @@ class MainPage(BaseMangaPage):
 
     def setup_filters(self) -> None:
         self._filters_controller.clear()
+
+        if self.catalog is None:
+            return
         orders = self.catalog.get_orders()
         kinds = self.catalog.get_kinds()
         genres = self.catalog.get_genres()
