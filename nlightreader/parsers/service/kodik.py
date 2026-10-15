@@ -2,11 +2,12 @@ from consts.keys import KODIK_TOKEN
 from core.utils.types import RequestParams
 from utils.utils import dd_get, make_request
 
+
 class KodikTranslator:
     def __init__(
         self,
         content_id: str,
-        kodik_url: str,
+        kodik_url: str | None,
         episodes: int,
         translator: str,
         tr_type: str,
