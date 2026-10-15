@@ -14,7 +14,6 @@ from parsers import (
     Remanga,
     Rulate,
     ShikimoriAnime,
-    ShikimoriBase,
     ShikimoriLib,
     ShikimoriManga,
     ShikimoriRanobe,
@@ -26,7 +25,10 @@ logger = logging.getLogger(__name__)
 
 CATALOG_CLASSES: dict[int, type[AbstractCatalog]] = {
     0: Desu,
-    1: ShikimoriBase,
+    # 1:
+    1001: ShikimoriManga,
+    1002: ShikimoriRanobe,
+    11: ShikimoriAnime,
     2: MangaDex,
     3: Rulate,
     4: Ranobehub,
@@ -36,7 +38,6 @@ CATALOG_CLASSES: dict[int, type[AbstractCatalog]] = {
     8: AllHentai,
     9: SlashLibLegacy,
     10: LibMangalib,
-    11: ShikimoriAnime,
     # 12:
     13: LibRanobelib,
     14: LibAnilib,
@@ -58,7 +59,7 @@ USER_CATALOGS: list[type[AbstractCatalog]] = [
     AllHentai,
 ]
 LIB_CATALOGS: dict[type[AbstractCatalog], type[LibParser]] = {
-    ShikimoriBase: ShikimoriLib,
+    ShikimoriManga: ShikimoriLib,
     MangaDex: MangaDexLib,
 }
 
