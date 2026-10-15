@@ -1,5 +1,6 @@
 from enum import IntEnum, unique
 
+from PySide6.QtWidgets import QWidget
 from qfluentwidgets import Action, FluentIcon
 
 from widgets.contexts.context_menu_base import AbstractContextMenu
@@ -13,8 +14,8 @@ class LibraryMenuMode(IntEnum):
 
 
 class LibraryMangaMenu(AbstractContextMenu[LibraryMenuMode]):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, parent: QWidget) -> None:
+        super().__init__(parent)
         self.add_to_lib = Action(
             FluentIcon.ADD_TO,
             self.tr("Add to Library"),

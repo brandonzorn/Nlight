@@ -102,7 +102,7 @@ class HistoryPage(BasePage):
         if not isinstance(selected_item, HistoryTreeItem):
             return
 
-        menu = HistoryNoteMenu()
+        menu = HistoryNoteMenu(self)
         menu.set_as_read.triggered.connect(
             partial(self._mark_chapter_as_read, selected_item),
         )

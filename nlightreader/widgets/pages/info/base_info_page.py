@@ -315,7 +315,7 @@ class BaseInfoPage(QWidget):
         if not isinstance(selected_item, ModelTreeItem):
             return
 
-        menu = ReadMarkMenu()
+        menu = ReadMarkMenu(self)
         menu.set_as_read.triggered.connect(
             lambda: self._mark_chapter_as_read(selected_item),
         )

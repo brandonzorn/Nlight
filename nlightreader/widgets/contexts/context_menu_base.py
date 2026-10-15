@@ -1,12 +1,13 @@
 from collections.abc import Sequence
 from enum import IntEnum
 
+from PySide6.QtWidgets import QWidget
 from qfluentwidgets import Action, RoundMenu
 
 
 class AbstractContextMenu[TMode: IntEnum](RoundMenu):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, parent: QWidget) -> None:
+        super().__init__(parent=parent)
         self._actions_map: dict[TMode, Sequence[Action]] = {}
 
     def set_mode(self, mode: TMode) -> None:

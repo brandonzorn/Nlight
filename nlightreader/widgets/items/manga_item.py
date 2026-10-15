@@ -93,7 +93,7 @@ class MangaItem(QWidget):
             self.manga_clicked.emit(self._manga)
 
     def on_context_menu(self, pos: QPoint) -> None:
-        menu = LibraryMangaMenu()
+        menu = LibraryMangaMenu(self)
         if self._is_added_to_lib and not self._catalog.is_primary:
             if self._db.library.exists(self._manga.id):
                 menu.set_mode(LibraryMenuMode.IN_LIBRARY)

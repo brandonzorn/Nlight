@@ -1,5 +1,6 @@
 from enum import IntEnum, unique
 
+from PySide6.QtWidgets import QWidget
 from qfluentwidgets import Action, FluentIcon
 
 from widgets.contexts.context_menu_base import AbstractContextMenu
@@ -13,8 +14,8 @@ class ReadMarkMode(IntEnum):
 
 
 class ReadMarkMenu(AbstractContextMenu[ReadMarkMode]):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, parent: QWidget) -> None:
+        super().__init__(parent=parent)
         self.set_as_read = Action(
             FluentIcon.ACCEPT_MEDIUM,
             self.tr("Mark as read"),
