@@ -5,7 +5,6 @@ from PySide6.QtCore import qtTrId, Slot
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import FluentIcon
 
-from data.ui.widgets.shikimori import Ui_ExternalLibraryPage
 from nlightreader.core.enums import LibList
 from nlightreader.items import User
 from nlightreader.models import Manga
@@ -18,6 +17,7 @@ from nlightreader.widgets.dialogs import (
 )
 from nlightreader.widgets.items.manga_item import MangaItem
 from nlightreader.widgets.pages.base_page import BaseMangaLibraryPage
+from resources.ui.widgets.shikimori import Ui_ExternalLibraryPage
 
 
 class ExternalLibraryPage(BaseMangaLibraryPage):

@@ -4,10 +4,10 @@ from PySide6.QtCore import QSize, Qt
 from PySide6.QtGui import QPixmap, QResizeEvent
 from PySide6.QtWidgets import QLayout, QWidget
 
-from data.ui.containers.image_area import Ui_ImageArea
 from nlightreader.widgets.containers.content_container import (
     AbstractContentContainer,
 )
+from resources.ui.containers.image_area import Ui_ImageArea
 
 
 class ImageArea(QWidget, AbstractContentContainer[QPixmap]):

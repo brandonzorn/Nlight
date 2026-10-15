@@ -10,7 +10,6 @@ from qfluentwidgets import (
     SimpleCardWidget,
 )
 
-from data.ui.widgets.reader import Ui_ReaderWidget
 from nlightreader.consts.colors import ItemsIcons
 from nlightreader.core.enums import MangaKind
 from nlightreader.core.exceptions.parser_content_exc import (
@@ -31,6 +30,7 @@ from nlightreader.widgets.containers.content_container import (
 )
 from nlightreader.widgets.containers.image_area import ImageArea
 from nlightreader.widgets.items import ModelListItem
+from resources.ui.widgets.reader import Ui_ReaderWidget
 
 logger = logging.getLogger(__name__)
 

@@ -24,7 +24,7 @@ dev = [
 
 [tool.ruff]
 line-length = 79
-extend-exclude = ["data"]
+extend-exclude = ["resources"]
 
 [tool.ruff.format]
 indent-style = "space"
@@ -75,8 +75,7 @@ force-sort-within-sections = true
 order-by-type = false
 known-first-party = [
     "nlightreader",
-    "data",
-    "keys",
+    "resources",
 ]
 
 [tool.ruff.lint.flake8-quotes]

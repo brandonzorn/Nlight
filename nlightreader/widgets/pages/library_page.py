@@ -3,12 +3,12 @@ from typing import override
 
 from PySide6.QtWidgets import QWidget
 
-from data.ui.widgets.library import Ui_LibraryPage
 from nlightreader.core.enums import LibList
 from nlightreader.models import Manga
 from nlightreader.parsers import LocalLibrary
 from nlightreader.widgets.items.manga_item import MangaItem
 from nlightreader.widgets.pages.base_page import BaseMangaLibraryPage
+from resources.ui.widgets.library import Ui_LibraryPage
 
 
 class LibraryPage(BaseMangaLibraryPage):

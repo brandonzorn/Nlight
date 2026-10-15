@@ -12,8 +12,6 @@ from qfluentwidgets import (
     SystemThemeListener,
 )
 
-from data import resource  # noqa:F401
-from nlightreader import ParentWindow
 from nlightreader.consts.app import APP_NAME, APP_VERSION
 from nlightreader.consts.files import Icons
 from nlightreader.consts.paths import APP_DATA_PATH
@@ -22,6 +20,8 @@ from nlightreader.utils.config import cfg
 from nlightreader.utils.threads import NThread
 from nlightreader.utils.translator import AppTranslator
 from nlightreader.utils.utils import check_for_updates
+from nlightreader.windows import ParentWindow
+from resources import resource  # noqa:F401
 
 __all__ = []
 
