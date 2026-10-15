@@ -3,14 +3,14 @@
 ################################################################################
 ## Form generated from reading UI file 'reader.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.11.1
+## Created by: Qt User Interface Compiler version 6.12.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-                            QMetaObject, QObject, QPoint, QRect,
-                            QSize, QTime, QUrl, Qt, qtTrId)
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
@@ -26,6 +26,7 @@ class Ui_ReaderWidget(object):
         if not ReaderWidget.objectName():
             ReaderWidget.setObjectName(u"ReaderWidget")
         ReaderWidget.resize(640, 480)
+        ReaderWidget.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.horizontalLayout_2 = QHBoxLayout(ReaderWidget)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.readerCardWidget = SimpleCardWidget(ReaderWidget)
@@ -51,6 +52,7 @@ class Ui_ReaderWidget(object):
 
         self.actionsHLayout = QHBoxLayout()
         self.actionsHLayout.setObjectName(u"actionsHLayout")
+        self.actionsHLayout.setContentsMargins(9, -1, 9, 9)
         self.readerActionsWidget = QWidget(self.readerCardWidget)
         self.readerActionsWidget.setObjectName(u"readerActionsWidget")
         sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
@@ -67,33 +69,51 @@ class Ui_ReaderWidget(object):
 
         self.prev_chapter_btn = ToolButton(self.readerActionsWidget)
         self.prev_chapter_btn.setObjectName(u"prev_chapter_btn")
+        self.prev_chapter_btn.setText(u"")
+#if QT_CONFIG(shortcut)
+        self.prev_chapter_btn.setShortcut(u"Down")
+#endif // QT_CONFIG(shortcut)
 
         self.horizontalLayout.addWidget(self.prev_chapter_btn)
 
         self.prev_page_btn = ToolButton(self.readerActionsWidget)
         self.prev_page_btn.setObjectName(u"prev_page_btn")
+        self.prev_page_btn.setText(u"")
+#if QT_CONFIG(shortcut)
+        self.prev_page_btn.setShortcut(u"Left")
+#endif // QT_CONFIG(shortcut)
 
         self.horizontalLayout.addWidget(self.prev_page_btn)
 
         self.chapterLabel = BodyLabel(self.readerActionsWidget)
         self.chapterLabel.setObjectName(u"chapterLabel")
+        self.chapterLabel.setText(u"Chapter")
         self.chapterLabel.setWordWrap(True)
 
         self.horizontalLayout.addWidget(self.chapterLabel)
 
         self.pageLabel = BodyLabel(self.readerActionsWidget)
         self.pageLabel.setObjectName(u"pageLabel")
+        self.pageLabel.setText(u"Page")
         self.pageLabel.setWordWrap(True)
 
         self.horizontalLayout.addWidget(self.pageLabel)
 
         self.next_page_btn = ToolButton(self.readerActionsWidget)
         self.next_page_btn.setObjectName(u"next_page_btn")
+        self.next_page_btn.setText(u"")
+#if QT_CONFIG(shortcut)
+        self.next_page_btn.setShortcut(u"Right")
+#endif // QT_CONFIG(shortcut)
 
         self.horizontalLayout.addWidget(self.next_page_btn)
 
         self.next_chapter_btn = ToolButton(self.readerActionsWidget)
         self.next_chapter_btn.setObjectName(u"next_chapter_btn")
+        self.next_chapter_btn.setText(u"")
+#if QT_CONFIG(shortcut)
+        self.next_chapter_btn.setShortcut(u"Up")
+#endif // QT_CONFIG(shortcut)
 
         self.horizontalLayout.addWidget(self.next_chapter_btn)
 
@@ -111,11 +131,19 @@ class Ui_ReaderWidget(object):
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.fullscreenButton = ToolButton(self.windowActionsWidget)
         self.fullscreenButton.setObjectName(u"fullscreenButton")
+        self.fullscreenButton.setText(u"")
+#if QT_CONFIG(shortcut)
+        self.fullscreenButton.setShortcut(u"F11")
+#endif // QT_CONFIG(shortcut)
 
         self.horizontalLayout_4.addWidget(self.fullscreenButton)
 
         self.chaptersListButton = ToolButton(self.windowActionsWidget)
         self.chaptersListButton.setObjectName(u"chaptersListButton")
+        self.chaptersListButton.setText(u"")
+#if QT_CONFIG(shortcut)
+        self.chaptersListButton.setShortcut(u"")
+#endif // QT_CONFIG(shortcut)
 
         self.horizontalLayout_4.addWidget(self.chaptersListButton)
 
@@ -157,23 +185,6 @@ class Ui_ReaderWidget(object):
     # setupUi
 
     def retranslateUi(self, ReaderWidget):
-#if QT_CONFIG(shortcut)
-        self.prev_chapter_btn.setShortcut(qtTrId(u""))
-#endif // QT_CONFIG(shortcut)
-#if QT_CONFIG(shortcut)
-        self.prev_page_btn.setShortcut(qtTrId(u""))
-#endif // QT_CONFIG(shortcut)
-        self.chapterLabel.setText(qtTrId(u"label.Chapter"))
-        self.pageLabel.setText(qtTrId(u"label.Page"))
-#if QT_CONFIG(shortcut)
-        self.next_page_btn.setShortcut(qtTrId(u""))
-#endif // QT_CONFIG(shortcut)
-#if QT_CONFIG(shortcut)
-        self.next_chapter_btn.setShortcut(qtTrId(u""))
-#endif // QT_CONFIG(shortcut)
-#if QT_CONFIG(shortcut)
-        self.fullscreenButton.setShortcut(qtTrId(u""))
-#endif // QT_CONFIG(shortcut)
         pass
     # retranslateUi
 

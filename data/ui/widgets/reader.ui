@@ -10,6 +10,9 @@
     <height>480</height>
    </rect>
   </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
     <widget class="SimpleCardWidget" name="readerCardWidget">
@@ -61,6 +64,15 @@
       </item>
       <item>
        <layout class="QHBoxLayout" name="actionsHLayout">
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>9</number>
+        </property>
         <item>
          <widget class="QWidget" name="readerActionsWidget" native="true">
           <property name="sizePolicy">
@@ -97,22 +109,28 @@
            </item>
            <item>
             <widget class="ToolButton" name="prev_chapter_btn">
+             <property name="text">
+              <string notr="true"/>
+             </property>
              <property name="shortcut">
-              <string>Down</string>
+              <string notr="true">Down</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="ToolButton" name="prev_page_btn">
+             <property name="text">
+              <string notr="true"/>
+             </property>
              <property name="shortcut">
-              <string>Left</string>
+              <string notr="true">Left</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="BodyLabel" name="chapterLabel">
              <property name="text">
-              <string id="label.Chapter">Chapter</string>
+              <string notr="true" id="label.Chapter">Chapter</string>
              </property>
              <property name="wordWrap">
               <bool>true</bool>
@@ -122,7 +140,7 @@
            <item>
             <widget class="BodyLabel" name="pageLabel">
              <property name="text">
-              <string id="label.Page">Page</string>
+              <string notr="true" id="label.Page">Page</string>
              </property>
              <property name="wordWrap">
               <bool>true</bool>
@@ -131,15 +149,21 @@
            </item>
            <item>
             <widget class="ToolButton" name="next_page_btn">
+             <property name="text">
+              <string notr="true"/>
+             </property>
              <property name="shortcut">
-              <string>Right</string>
+              <string notr="true">Right</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="ToolButton" name="next_chapter_btn">
+             <property name="text">
+              <string notr="true"/>
+             </property>
              <property name="shortcut">
-              <string>Up</string>
+              <string notr="true">Up</string>
              </property>
             </widget>
            </item>
@@ -176,13 +200,23 @@
            </property>
            <item>
             <widget class="ToolButton" name="fullscreenButton">
+             <property name="text">
+              <string notr="true"/>
+             </property>
              <property name="shortcut">
-              <string>F11</string>
+              <string notr="true">F11</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="ToolButton" name="chaptersListButton"/>
+            <widget class="ToolButton" name="chaptersListButton">
+             <property name="text">
+              <string notr="true"/>
+             </property>
+             <property name="shortcut">
+              <string notr="true"/>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>

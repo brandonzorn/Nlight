@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'text_area.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.11.1
+## Created by: Qt User Interface Compiler version 6.12.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -46,27 +46,21 @@ class Ui_TextArea(object):
 
         self.verticalLayout_2.addWidget(self.fontSizeCard)
 
-        self.textCard = SimpleCardWidget(TextArea)
-        self.textCard.setObjectName(u"textCard")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.textCard.sizePolicy().hasHeightForWidth())
-        self.textCard.setSizePolicy(sizePolicy)
-        self.horizontalLayout = QHBoxLayout(self.textCard)
-        self.horizontalLayout.setSpacing(0)
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.textContent = TextEdit(self.textCard)
-        self.textContent.setObjectName(u"textContent")
-        self.textContent.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        self.textContent.setFrameShape(QFrame.Shape.NoFrame)
-        self.textContent.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByKeyboard|Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.contentWidget = SimpleCardWidget(TextArea)
+        self.contentWidget.setObjectName(u"contentWidget")
+        self.contentHLayout = QHBoxLayout(self.contentWidget)
+        self.contentHLayout.setSpacing(0)
+        self.contentHLayout.setObjectName(u"contentHLayout")
+        self.contentHLayout.setContentsMargins(0, 0, 0, 0)
+        self.contentText = TextEdit(self.contentWidget)
+        self.contentText.setObjectName(u"contentText")
+        self.contentText.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.contentText.setFrameShape(QFrame.Shape.NoFrame)
 
-        self.horizontalLayout.addWidget(self.textContent)
+        self.contentHLayout.addWidget(self.contentText)
 
 
-        self.verticalLayout_2.addWidget(self.textCard)
+        self.verticalLayout_2.addWidget(self.contentWidget)
 
 
         self.retranslateUi(TextArea)

@@ -61,14 +61,8 @@
     </widget>
    </item>
    <item>
-    <widget class="SimpleCardWidget" name="textCard">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+    <widget class="SimpleCardWidget" name="contentWidget">
+     <layout class="QHBoxLayout" name="contentHLayout">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -85,15 +79,12 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="TextEdit" name="textContent">
+       <widget class="TextEdit" name="contentText">
         <property name="focusPolicy">
          <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="frameShape">
          <enum>QFrame::Shape::NoFrame</enum>
-        </property>
-        <property name="textInteractionFlags">
-         <set>Qt::TextInteractionFlag::TextSelectableByKeyboard|Qt::TextInteractionFlag::TextSelectableByMouse</set>
         </property>
        </widget>
       </item>

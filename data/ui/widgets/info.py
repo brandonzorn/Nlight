@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'info.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.11.1
+## Created by: Qt User Interface Compiler version 6.12.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -20,25 +20,25 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
     QVBoxLayout, QWidget)
 
 from qfluentwidgets import (BodyLabel, CardWidget, ComboBox, ImageLabel,
-    ListWidget, SimpleCardWidget, SingleDirectionScrollArea, TextEdit,
+    ListWidget, SimpleCardWidget, SingleDirectionScrollArea, TextBrowser,
     ToolButton, TreeWidget)
 
 class Ui_InfoPage(object):
     def setupUi(self, InfoPage):
         if not InfoPage.objectName():
             InfoPage.setObjectName(u"InfoPage")
-        InfoPage.resize(750, 512)
+        InfoPage.resize(640, 480)
         InfoPage.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.pageLayout = QHBoxLayout(InfoPage)
+        self.pageLayout.setSpacing(0)
         self.pageLayout.setObjectName(u"pageLayout")
         self.pageLayout.setContentsMargins(0, 0, 0, 0)
         self.scrollArea = SingleDirectionScrollArea(InfoPage)
         self.scrollArea.setObjectName(u"scrollArea")
-        self.scrollArea.setFrameShape(QFrame.Shape.NoFrame)
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 461, 970))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 356, 984))
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -46,7 +46,7 @@ class Ui_InfoPage(object):
         self.scrollAreaWidgetContents.setSizePolicy(sizePolicy)
         self.scrollAreaVLayout = QVBoxLayout(self.scrollAreaWidgetContents)
         self.scrollAreaVLayout.setObjectName(u"scrollAreaVLayout")
-        self.scrollAreaVLayout.setContentsMargins(9, 9, 9, 9)
+        self.scrollAreaVLayout.setContentsMargins(6, 6, 9, 6)
         self.headerWidget = SimpleCardWidget(self.scrollAreaWidgetContents)
         self.headerWidget.setObjectName(u"headerWidget")
         self.headerWidget.setFrameShape(QFrame.Shape.StyledPanel)
@@ -62,8 +62,6 @@ class Ui_InfoPage(object):
         self.headerContentVLayout.setObjectName(u"headerContentVLayout")
         self.libraryWidget = SimpleCardWidget(self.headerWidget)
         self.libraryWidget.setObjectName(u"libraryWidget")
-        self.libraryWidget.setFrameShape(QFrame.Shape.StyledPanel)
-        self.libraryWidget.setFrameShadow(QFrame.Shadow.Raised)
         self.horizontalLayout = QHBoxLayout(self.libraryWidget)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -83,8 +81,6 @@ class Ui_InfoPage(object):
 
         self.shikimoriWidget = SimpleCardWidget(self.headerWidget)
         self.shikimoriWidget.setObjectName(u"shikimoriWidget")
-        self.shikimoriWidget.setFrameShape(QFrame.Shape.StyledPanel)
-        self.shikimoriWidget.setFrameShadow(QFrame.Shadow.Raised)
         self.horizontalLayout_2 = QHBoxLayout(self.shikimoriWidget)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -110,7 +106,6 @@ class Ui_InfoPage(object):
         self.previewWidget = SimpleCardWidget(self.infoWidget)
         self.previewWidget.setObjectName(u"previewWidget")
         self.previewLayout = QVBoxLayout(self.previewWidget)
-        self.previewLayout.setSpacing(0)
         self.previewLayout.setObjectName(u"previewLayout")
         self.previewLayout.setContentsMargins(0, 0, 0, 0)
         self.imageLabel = ImageLabel(self.previewWidget)
@@ -173,35 +168,45 @@ class Ui_InfoPage(object):
 
         self.verticalLayout_9 = QVBoxLayout()
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
-        self.descriptionWidget = QWidget(self.scrollAreaWidgetContents)
-        self.descriptionWidget.setObjectName(u"descriptionWidget")
-        self.descriptionWidget.setEnabled(True)
-        self.descriptionVLayout = QVBoxLayout(self.descriptionWidget)
+        self.descriptionCard = SimpleCardWidget(self.scrollAreaWidgetContents)
+        self.descriptionCard.setObjectName(u"descriptionCard")
+        self.descriptionVLayout = QVBoxLayout(self.descriptionCard)
         self.descriptionVLayout.setObjectName(u"descriptionVLayout")
         self.descriptionVLayout.setContentsMargins(0, 0, 0, 0)
-        self.descriptionTextEdit = TextEdit(self.descriptionWidget)
-        self.descriptionTextEdit.setObjectName(u"descriptionTextEdit")
-        sizePolicy1.setHeightForWidth(self.descriptionTextEdit.sizePolicy().hasHeightForWidth())
-        self.descriptionTextEdit.setSizePolicy(sizePolicy1)
-        self.descriptionTextEdit.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.descriptionTextEdit.setUndoRedoEnabled(False)
-        self.descriptionTextEdit.setReadOnly(False)
+        self.descriptionHeaderHLayout = QHBoxLayout()
+        self.descriptionHeaderHLayout.setObjectName(u"descriptionHeaderHLayout")
+        self.descriptionLabel = BodyLabel(self.descriptionCard)
+        self.descriptionLabel.setObjectName(u"descriptionLabel")
 
-        self.descriptionVLayout.addWidget(self.descriptionTextEdit)
+        self.descriptionHeaderHLayout.addWidget(self.descriptionLabel)
 
 
-        self.verticalLayout_9.addWidget(self.descriptionWidget)
+        self.descriptionVLayout.addLayout(self.descriptionHeaderHLayout)
+
+        self.descriptionText = TextBrowser(self.descriptionCard)
+        self.descriptionText.setObjectName(u"descriptionText")
+        self.descriptionText.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.descriptionText.setReadOnly(True)
+
+        self.descriptionVLayout.addWidget(self.descriptionText)
+
+
+        self.verticalLayout_9.addWidget(self.descriptionCard)
 
         self.charactersWidget = CardWidget(self.scrollAreaWidgetContents)
         self.charactersWidget.setObjectName(u"charactersWidget")
-        self.charactersWidget.setEnabled(True)
         self.charactersVLayout = QVBoxLayout(self.charactersWidget)
         self.charactersVLayout.setObjectName(u"charactersVLayout")
         self.charactersVLayout.setContentsMargins(0, 0, 0, 0)
+        self.charactersHeaderHLayout = QHBoxLayout()
+        self.charactersHeaderHLayout.setObjectName(u"charactersHeaderHLayout")
         self.charactersLabel = BodyLabel(self.charactersWidget)
         self.charactersLabel.setObjectName(u"charactersLabel")
 
-        self.charactersVLayout.addWidget(self.charactersLabel)
+        self.charactersHeaderHLayout.addWidget(self.charactersLabel)
+
+
+        self.charactersVLayout.addLayout(self.charactersHeaderHLayout)
 
         self.charactersList = ListWidget(self.charactersWidget)
         self.charactersList.setObjectName(u"charactersList")
@@ -217,14 +222,18 @@ class Ui_InfoPage(object):
 
         self.relatedWidget = CardWidget(self.scrollAreaWidgetContents)
         self.relatedWidget.setObjectName(u"relatedWidget")
-        self.relatedWidget.setEnabled(True)
         self.relatedVLayout = QVBoxLayout(self.relatedWidget)
         self.relatedVLayout.setObjectName(u"relatedVLayout")
         self.relatedVLayout.setContentsMargins(0, 0, 0, 0)
+        self.relatedHeaderHLayout = QHBoxLayout()
+        self.relatedHeaderHLayout.setObjectName(u"relatedHeaderHLayout")
         self.relatedLabel = BodyLabel(self.relatedWidget)
         self.relatedLabel.setObjectName(u"relatedLabel")
 
-        self.relatedVLayout.addWidget(self.relatedLabel)
+        self.relatedHeaderHLayout.addWidget(self.relatedLabel)
+
+
+        self.relatedVLayout.addLayout(self.relatedHeaderHLayout)
 
         self.relatedList = ListWidget(self.relatedWidget)
         self.relatedList.setObjectName(u"relatedList")
@@ -253,11 +262,10 @@ class Ui_InfoPage(object):
         self.itemsWidget.setObjectName(u"itemsWidget")
         self.itemsWidgetVLayout = QVBoxLayout(self.itemsWidget)
         self.itemsWidgetVLayout.setObjectName(u"itemsWidgetVLayout")
-        self.itemsWidgetVLayout.setContentsMargins(6, -1, -1, -1)
+        self.itemsWidgetVLayout.setContentsMargins(6, 6, 6, 6)
         self.itemsCard = CardWidget(self.itemsWidget)
         self.itemsCard.setObjectName(u"itemsCard")
         self.itemsCardVLayout = QVBoxLayout(self.itemsCard)
-        self.itemsCardVLayout.setSpacing(6)
         self.itemsCardVLayout.setObjectName(u"itemsCardVLayout")
         self.itemsCardVLayout.setContentsMargins(0, 0, 0, 0)
         self.itemsTree = TreeWidget(self.itemsCard)
@@ -296,6 +304,7 @@ class Ui_InfoPage(object):
         self.catalog_score_label.setText(QCoreApplication.translate("InfoPage", u"score", None))
         self.volumes_label.setText(QCoreApplication.translate("InfoPage", u"volumes", None))
         self.chapters_label.setText(QCoreApplication.translate("InfoPage", u"chapters", None))
+        self.descriptionLabel.setText(QCoreApplication.translate("InfoPage", u"Description", None))
         self.charactersLabel.setText(QCoreApplication.translate("InfoPage", u"Characters", None))
         self.relatedLabel.setText(QCoreApplication.translate("InfoPage", u"Related", None))
         pass

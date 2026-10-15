@@ -6,14 +6,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>750</width>
-    <height>512</height>
+    <width>640</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
   <layout class="QHBoxLayout" name="pageLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -28,9 +31,6 @@
    </property>
    <item>
     <widget class="SingleDirectionScrollArea" name="scrollArea">
-     <property name="frameShape">
-      <enum>QFrame::Shape::NoFrame</enum>
-     </property>
      <property name="widgetResizable">
       <bool>true</bool>
      </property>
@@ -39,8 +39,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>461</width>
-        <height>970</height>
+        <width>356</width>
+        <height>984</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -51,16 +51,16 @@
       </property>
       <layout class="QVBoxLayout" name="scrollAreaVLayout">
        <property name="leftMargin">
-        <number>9</number>
+        <number>6</number>
        </property>
        <property name="topMargin">
-        <number>9</number>
+        <number>6</number>
        </property>
        <property name="rightMargin">
         <number>9</number>
        </property>
        <property name="bottomMargin">
-        <number>9</number>
+        <number>6</number>
        </property>
        <item>
         <widget class="SimpleCardWidget" name="headerWidget">
@@ -100,12 +100,6 @@
            <layout class="QVBoxLayout" name="headerContentVLayout">
             <item>
              <widget class="SimpleCardWidget" name="libraryWidget">
-              <property name="frameShape">
-               <enum>QFrame::Shape::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Shadow::Raised</enum>
-              </property>
               <layout class="QHBoxLayout" name="horizontalLayout">
                <property name="leftMargin">
                 <number>0</number>
@@ -134,12 +128,6 @@
             </item>
             <item>
              <widget class="SimpleCardWidget" name="shikimoriWidget">
-              <property name="frameShape">
-               <enum>QFrame::Shape::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Shadow::Raised</enum>
-              </property>
               <layout class="QHBoxLayout" name="horizontalLayout_2">
                <property name="leftMargin">
                 <number>0</number>
@@ -182,9 +170,6 @@
           <item>
            <widget class="SimpleCardWidget" name="previewWidget">
             <layout class="QVBoxLayout" name="previewLayout">
-             <property name="spacing">
-              <number>0</number>
-             </property>
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -279,10 +264,7 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_9">
          <item>
-          <widget class="QWidget" name="descriptionWidget" native="true">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
+          <widget class="SimpleCardWidget" name="descriptionCard">
            <layout class="QVBoxLayout" name="descriptionVLayout">
             <property name="leftMargin">
              <number>0</number>
@@ -297,21 +279,23 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="TextEdit" name="descriptionTextEdit">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
+             <layout class="QHBoxLayout" name="descriptionHeaderHLayout">
+              <item>
+               <widget class="BodyLabel" name="descriptionLabel">
+                <property name="text">
+                 <string>Description</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="TextBrowser" name="descriptionText">
               <property name="horizontalScrollBarPolicy">
                <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
               </property>
-              <property name="undoRedoEnabled">
-               <bool>false</bool>
-              </property>
               <property name="readOnly">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -320,9 +304,6 @@
          </item>
          <item>
           <widget class="CardWidget" name="charactersWidget">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
            <layout class="QVBoxLayout" name="charactersVLayout">
             <property name="leftMargin">
              <number>0</number>
@@ -337,11 +318,15 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="BodyLabel" name="charactersLabel">
-              <property name="text">
-               <string>Characters</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" name="charactersHeaderHLayout">
+              <item>
+               <widget class="BodyLabel" name="charactersLabel">
+                <property name="text">
+                 <string>Characters</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
              <widget class="ListWidget" name="charactersList">
@@ -364,9 +349,6 @@
          </item>
          <item>
           <widget class="CardWidget" name="relatedWidget">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
            <layout class="QVBoxLayout" name="relatedVLayout">
             <property name="leftMargin">
              <number>0</number>
@@ -381,11 +363,15 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="BodyLabel" name="relatedLabel">
-              <property name="text">
-               <string>Related</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" name="relatedHeaderHLayout">
+              <item>
+               <widget class="BodyLabel" name="relatedLabel">
+                <property name="text">
+                 <string>Related</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
              <widget class="ListWidget" name="relatedList">
@@ -431,12 +417,18 @@
       <property name="leftMargin">
        <number>6</number>
       </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
       <item>
        <widget class="CardWidget" name="itemsCard">
         <layout class="QVBoxLayout" name="itemsCardVLayout">
-         <property name="spacing">
-          <number>6</number>
-         </property>
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -513,8 +505,8 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>TextEdit</class>
-   <extends>QTextEdit</extends>
+   <class>TextBrowser</class>
+   <extends>QTextBrowser</extends>
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>

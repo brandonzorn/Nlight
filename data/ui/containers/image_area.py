@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'image_area.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.11.1
+## Created by: Qt User Interface Compiler version 6.12.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -43,17 +43,15 @@ class Ui_ImageArea(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 732, 476))
-        self.horizontalLayout_2 = QHBoxLayout(self.scrollAreaWidgetContents)
-        self.horizontalLayout_2.setSpacing(0)
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.scrollAreaHLayout = QHBoxLayout(self.scrollAreaWidgetContents)
+        self.scrollAreaHLayout.setSpacing(0)
+        self.scrollAreaHLayout.setObjectName(u"scrollAreaHLayout")
+        self.scrollAreaHLayout.setContentsMargins(0, 0, 0, 0)
         self.imageLabel = QLabel(self.scrollAreaWidgetContents)
         self.imageLabel.setObjectName(u"imageLabel")
         self.imageLabel.setAlignment(Qt.AlignmentFlag.AlignHCenter|Qt.AlignmentFlag.AlignTop)
-        self.imageLabel.setTextInteractionFlags(Qt.TextInteractionFlag.NoTextInteraction)
 
-        self.horizontalLayout_2.addWidget(self.imageLabel)
+        self.scrollAreaHLayout.addWidget(self.imageLabel)
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
