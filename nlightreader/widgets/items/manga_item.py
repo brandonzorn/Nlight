@@ -33,6 +33,7 @@ from widgets.contexts import LibraryMangaMenu, LibraryMenuMode
 
 class MangaItem(QWidget):
     _HOVERED_OPACITY = 0.3
+    _BORDER_RADIUS = 10
 
     manga_clicked = Signal(Manga)
     manga_changed = Signal()
@@ -74,7 +75,7 @@ class MangaItem(QWidget):
         self.customContextMenuRequested.connect(self.on_context_menu)
 
     @override
-    def enterEvent(self, event: QEnterEvent) -> None:
+    def enterEvent(self, event: QEnterEvent, /) -> None:
         super().enterEvent(event)
         if self.isEnabled():
             self._opacity_effect.setEnabled(True)
@@ -85,7 +86,7 @@ class MangaItem(QWidget):
         self._opacity_effect.setEnabled(False)
 
     @override
-    def mouseReleaseEvent(self, event: QMouseEvent) -> None:
+    def mouseReleaseEvent(self, event: QMouseEvent, /) -> None:
         super().mouseReleaseEvent(event)
         if event.button() != Qt.MouseButton.LeftButton:
             return
@@ -127,6 +128,7 @@ class MangaItem(QWidget):
             return
         pixel_ratio = self.devicePixelRatio()
         result_image_size = self._ui.image_label.maximumSize() * pixel_ratio
+        border_r = self._BORDER_RADIUS * pixel_ratio
 
         result_image = QImage(result_image_size, QImage.Format.Format_ARGB32)
         result_image.fill(QColor(0, 0, 0, 0))
@@ -143,8 +145,8 @@ class MangaItem(QWidget):
                 result_image.width(),
                 result_image.height(),
             ),
-            10,
-            10,
+            border_r,
+            border_r,
         )
 
         painter.setClipPath(path)
