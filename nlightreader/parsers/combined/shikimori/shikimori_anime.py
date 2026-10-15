@@ -7,46 +7,33 @@ from consts.urls import (
     URL_SHIKIMORI_API,
 )
 from core.enums import Language, MangaStatus
-from core.network import NetworkClient
 from items import (
     RequestForm,
 )
 from models import (
-    Character,
     Episode,
     Genre,
     Manga,
-    Order,
 )
 from parsers.catalogs_base import AbstractAnimeCatalog
 from parsers.service.kodik import Kodik
 
 from .shikimori_base import ShikimoriBase
 
-class ShikimoriAnime(AbstractAnimeCatalog):
+
+class ShikimoriAnime(ShikimoriBase, AbstractAnimeCatalog):
     CATALOG_ID = 11
     CATALOG_NAME = "Shikimori(Anime)"
     _URL = URL_SHIKIMORI
     _URL_API = URL_SHIKIMORI_API
     _HEADERS = SHIKIMORI_HEADERS
+    _CONTENT_NAME = "animes"
 
-    def __init__(self) -> None:
-        self._client = NetworkClient(
-            catalog_name=self.CATALOG_NAME,
-            headers=self._HEADERS,
-        )
-
-    def _setup_manga(self, data: dict) -> Manga:
-        return Manga(
-            content_id=str(data.get("id", "")),
-            catalog_id=self.CATALOG_ID,
-            name=data.get("name", ""),
-            russian=data.get("russian", ""),
-        )
+    _FILTERS = ShikimoriAnimeItems
 
     @override
     def get_manga(self, manga: Manga) -> Manga:
-        url = f"{self._URL_API}/animes/{manga.content_id}"
+        url = f"{self._URL_API}/{self._CONTENT_NAME}/{manga.content_id}"
         response = self._client.get_json(url)
         if not isinstance(response, dict):
             return manga
@@ -104,36 +91,6 @@ class ShikimoriAnime(AbstractAnimeCatalog):
         return episodes
 
     @override
-    def get_character(self, character: Character) -> Character:
-        url = f"{self._URL_API}/characters/{character.content_id}"
-        response = self._client.get_json(url)
-        if not isinstance(response, dict):
-            return character
-        description = response.get("description")
-        if isinstance(description, str):
-            character.description = description
-        return character
-
-    @override
-    def get_preview(self, manga: Manga) -> bytes | None:
-        url = f"{self._URL}/system/animes/original/{manga.content_id}.jpg"
-        response = self._client.get_bytes(url)
-        if not isinstance(response, bytes):
-            return None
-        return response
-
-    @override
-    def get_character_preview(self, character: Character) -> bytes | None:
-        url = (
-            f"{self._URL}/system/characters/"
-            f"original/{character.content_id}.jpg"
-        )
-        image_response = self._client.get_bytes(url)
-        if not isinstance(image_response, bytes):
-            return None
-        return image_response
-
-    @override
     def get_genres(self) -> list[Genre]:
         url = f"{self._URL_API}/genres"
         response = self._client.get_json(url)
@@ -152,52 +109,6 @@ class ShikimoriAnime(AbstractAnimeCatalog):
                 ),
             )
         return genres
-
-    @override
-    def get_orders(self) -> list[Order]:
-        return [
-            Order(
-                content_id=i["value"],
-                catalog_id=self.CATALOG_ID,
-                name=i["name"],
-                russian=i["russian"],
-            )
-            for i in ShikimoriAnimeItems.ORDERS
-        ]
-
-    @override
-    def get_characters(self, manga: Manga) -> list[Character]:
-        url = f"{self._URL_API}/animes/{manga.content_id}/roles"
-        response = self._client.get_json(url)
-        characters: list[Character] = []
-        if not isinstance(response, list):
-            return characters
-        for data in response:
-            roles = data.get("roles")
-            if not isinstance(roles, list) or len(roles) == 0:
-                continue
-            role = data.get("roles", [])[0]
-            if role not in ["Supporting", "Main"]:
-                continue
-            character_data = data.get("character")
-            if not isinstance(character_data, dict):
-                continue
-            characters.append(
-                Character(
-                    content_id=str(character_data.get("id")),
-                    catalog_id=self.CATALOG_ID,
-                    name=character_data.get("name", ""),
-                    russian=character_data.get("russian", ""),
-                    description="",
-                    role=role,
-                ),
-            )
-        characters.sort(key=lambda x: x.role)
-        return characters
-
-    @override
-    def get_manga_url(self, manga: Manga) -> str:
-        return f"{self._URL}/animes/{manga.content_id}"
 
 
 __all__ = ["ShikimoriAnime"]
