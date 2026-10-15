@@ -70,7 +70,7 @@ class BaseInfoPage(QWidget):
             [qtTrId(f"library-list.{i.capitalize()}") for i in LIB_LISTS],
         )
 
-        self.ui.itemsWidget.hide()
+        self.ui.itemsCard.hide()
         self.ui.imageLabel.setBorderRadius(8, 8, 8, 8)
 
         self.ui.shikimoriButton.setIcon(NlFluentIcons.SHIKIMORI.qicon())
@@ -214,7 +214,7 @@ class BaseInfoPage(QWidget):
         self.ui.catalog_score_label.setText(
             f"{self.tr('Rating')}: {self._manga.score}",
         )
-        self.ui.descriptionTextEdit.setHtml(
+        self.ui.descriptionText.setHtml(
             description_to_html(self._manga.get_description() or ""),
         )
 
@@ -238,7 +238,7 @@ class BaseInfoPage(QWidget):
 
     def _update_chapters_tree(self) -> None:
         self.ui.itemsTree.clear()
-        self.ui.itemsWidget.setVisible(bool(self._chapters))
+        self.ui.itemsCard.setVisible(bool(self._chapters))
         for lang, translators in self._grouped_chapters.items():
             lang_item = GroupTreeItem(
                 qtTrId(f"language.{lang.to_str()}"),
