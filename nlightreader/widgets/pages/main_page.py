@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QListWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
 from data.ui.widgets.facial import Ui_MainPage
-from nlightreader.controlers import FiltersController
+from nlightreader.controllers import FiltersController
 from nlightreader.models import Manga
 from nlightreader.parsers.catalog import AbstractCatalog
 from nlightreader.utils.catalog_manager import USER_CATALOGS
