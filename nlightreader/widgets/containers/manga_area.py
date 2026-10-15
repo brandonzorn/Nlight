@@ -95,12 +95,18 @@ class MangaArea(ScrollArea, AbstractContentContainer):
             self.size().width()
             - (self._content_grid.horizontalSpacing() * self._column_count)
         ) // self._column_count
-        [item.set_size(size) for item in self._manga_items]
+        for item in self._manga_items:
+            item.set_size(size)
 
     @override
     @property
     def _content_layout(self) -> QLayout:
-        return self._scrollAreaWidgetContents.layout()
+        return self._scroll_layout
+
+    @override
+    @property
+    def _content_widget(self) -> None:
+        return None
 
 
 __all__ = ["MangaArea"]

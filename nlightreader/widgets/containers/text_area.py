@@ -36,7 +36,12 @@ class TextArea(QWidget, AbstractContentContainer[str]):
     @override
     @property
     def _content_layout(self) -> QLayout:
-        return self._content_widget.parent().layout()
+        return self._contentLayout
+
+    @override
+    @property
+    def _content_widget(self) -> QWidget:
+        return self._contentText
 
 
 __all__ = ["TextArea"]

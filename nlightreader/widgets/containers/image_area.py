@@ -2,7 +2,7 @@ from typing import override
 
 from PySide6.QtCore import QSize, Qt
 from PySide6.QtGui import QPixmap, QResizeEvent
-from PySide6.QtWidgets import QLabel, QLayout, QWidget
+from PySide6.QtWidgets import QLayout, QWidget
 
 from data.ui.containers.image_area import Ui_ImageArea
 from nlightreader.widgets.containers.content_container import (
@@ -16,7 +16,6 @@ class ImageArea(QWidget, AbstractContentContainer[QPixmap]):
         self._ui = Ui_ImageArea()
         self._ui.setupUi(self)
 
-        self._content_widget: QLabel = self._ui.imageLabel
         self._image_pixmap = QPixmap()
 
     @override
@@ -82,7 +81,12 @@ class ImageArea(QWidget, AbstractContentContainer[QPixmap]):
     @override
     @property
     def _content_layout(self) -> QLayout:
-        return self._content_widget.parent().layout()
+        return self._ui.scrollAreaHLayout
+
+    @override
+    @property
+    def _content_widget(self) -> QWidget:
+        return self._ui.imageLabel
 
 
 __all__ = ["ImageArea"]
