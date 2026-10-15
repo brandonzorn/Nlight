@@ -1,3 +1,4 @@
+from functools import partial
 from typing import override
 
 from PySide6.QtWidgets import QWidget
@@ -26,24 +27,17 @@ class LibraryPage(BaseMangaLibraryPage):
 
     @override
     def _setup_connections(self) -> None:
-        self._ui.plannedButton.clicked.connect(
-            lambda: self._change_list(LibList.PLANNED),
-        )
-        self._ui.readingButton.clicked.connect(
-            lambda: self._change_list(LibList.READING),
-        )
-        self._ui.onHoldButton.clicked.connect(
-            lambda: self._change_list(LibList.ON_HOLD),
-        )
-        self._ui.completedButton.clicked.connect(
-            lambda: self._change_list(LibList.COMPLETED),
-        )
-        self._ui.droppedButton.clicked.connect(
-            lambda: self._change_list(LibList.DROPPED),
-        )
-        self._ui.reReadingButton.clicked.connect(
-            lambda: self._change_list(LibList.RE_READING),
-        )
+        button_mapping = {
+            self._ui.plannedButton: LibList.PLANNED,
+            self._ui.readingButton: LibList.READING,
+            self._ui.onHoldButton: LibList.ON_HOLD,
+            self._ui.completedButton: LibList.COMPLETED,
+            self._ui.droppedButton: LibList.DROPPED,
+            self._ui.reReadingButton: LibList.RE_READING,
+        }
+
+        for button, lib_list in button_mapping.items():
+            button.clicked.connect(partial(self._change_list, lib_list))
 
     @override
     def _setup_manga_item(self, manga: Manga) -> MangaItem:

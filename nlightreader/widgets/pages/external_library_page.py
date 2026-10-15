@@ -1,3 +1,4 @@
+from functools import partial
 from typing import override
 
 from PySide6.QtCore import qtTrId, Slot
@@ -22,7 +23,7 @@ from nlightreader.widgets.pages.base_page import BaseMangaLibraryPage
 class ExternalLibraryPage(BaseMangaLibraryPage):
     def __init__(self, parent: QWidget) -> None:
         super().__init__(parent=parent)
-        self.ui = Ui_ExternalLibraryPage()
+        self._ui = Ui_ExternalLibraryPage()
         self._setup_ui()
         self._setup_connections()
 
@@ -34,37 +35,31 @@ class ExternalLibraryPage(BaseMangaLibraryPage):
 
     @override
     def _setup_ui(self) -> None:
-        self.ui.setupUi(self)
+        self._ui.setupUi(self)
 
-        self.ui.nextButton.setIcon(FluentIcon.RIGHT_ARROW)
-        self.ui.previousButton.setIcon(FluentIcon.LEFT_ARROW)
+        self._ui.nextButton.setIcon(FluentIcon.RIGHT_ARROW)
+        self._ui.previousButton.setIcon(FluentIcon.LEFT_ARROW)
 
-        self.manga_area.install(self.ui.itemsLayout)
+        self.manga_area.install(self._ui.itemsLayout)
 
     @override
     def _setup_connections(self) -> None:
-        self.ui.plannedButton.clicked.connect(
-            lambda: self._change_list(LibList.PLANNED),
-        )
-        self.ui.readingButton.clicked.connect(
-            lambda: self._change_list(LibList.READING),
-        )
-        self.ui.onHoldButton.clicked.connect(
-            lambda: self._change_list(LibList.ON_HOLD),
-        )
-        self.ui.completedButton.clicked.connect(
-            lambda: self._change_list(LibList.COMPLETED),
-        )
-        self.ui.droppedButton.clicked.connect(
-            lambda: self._change_list(LibList.DROPPED),
-        )
-        self.ui.reReadingButton.clicked.connect(
-            lambda: self._change_list(LibList.RE_READING),
-        )
-        self.ui.nextButton.clicked.connect(self.turn_page_next)
-        self.ui.previousButton.clicked.connect(self.turn_page_prev)
-        self.ui.searchLineEdit.searchSignal.connect(self.search)
-        self.ui.signInButton.clicked.connect(self.authorize)
+        button_mapping = {
+            self._ui.plannedButton: LibList.PLANNED,
+            self._ui.readingButton: LibList.READING,
+            self._ui.onHoldButton: LibList.ON_HOLD,
+            self._ui.completedButton: LibList.COMPLETED,
+            self._ui.droppedButton: LibList.DROPPED,
+            self._ui.reReadingButton: LibList.RE_READING,
+        }
+
+        for button, lib_list in button_mapping.items():
+            button.clicked.connect(partial(self._change_list, lib_list))
+
+        self._ui.nextButton.clicked.connect(self.turn_page_next)
+        self._ui.previousButton.clicked.connect(self.turn_page_prev)
+        self._ui.searchLineEdit.searchSignal.connect(self.search)
+        self._ui.signInButton.clicked.connect(self.authorize)
 
     @override
     def _setup_manga_item(self, manga: Manga) -> MangaItem:
@@ -78,19 +73,19 @@ class ExternalLibraryPage(BaseMangaLibraryPage):
         return item
 
     def _get_user_info(self) -> User:
-        self.ui.signInButton.setEnabled(False)
+        self._ui.signInButton.setEnabled(False)
         return self.catalog.get_user()
 
     def _set_user_info(self, user: User) -> None:
         if user.nickname:
-            self.ui.signInButton.setText(user.nickname)
+            self._ui.signInButton.setText(user.nickname)
         else:
-            self.ui.signInButton.setText(self.tr("Sign in"))
-        self.ui.signInButton.setEnabled(True)
+            self._ui.signInButton.setText(self.tr("Sign in"))
+        self._ui.signInButton.setEnabled(True)
 
     @override
     def _update_page(self) -> None:
-        self.ui.pageLabel.setText(
+        self._ui.pageLabel.setText(
             f"{qtTrId('label.Page')} {self.request_params.page}",
         )
 
@@ -118,7 +113,7 @@ class ExternalLibraryPage(BaseMangaLibraryPage):
     @Slot()
     def search(self) -> None:
         self.request_params.page = 1
-        self.request_params.search = self.ui.searchLineEdit.text()
+        self.request_params.search = self._ui.searchLineEdit.text()
         self._get_content()
 
 
