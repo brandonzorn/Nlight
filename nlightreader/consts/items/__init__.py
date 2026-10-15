@@ -13,6 +13,7 @@ from .rulate_items import RulateItems
 from .shikimori_items import (
     ShikimoriAnimeItems,
     ShikimoriItems,
+    ShikimoriRanobeItems,
 )
 
 __all__ = [
@@ -26,4 +27,5 @@ __all__ = [
     "RulateItems",
     "ShikimoriAnimeItems",
     "ShikimoriItems",
+    "ShikimoriRanobeItems",
 ]

@@ -46,7 +46,12 @@ class ShikimoriAnimeItems(ParserItems):
     )
 
 
+class ShikimoriRanobeItems(ShikimoriItems):
+    KINDS = ()
+
+
 __all__ = [
     "ShikimoriAnimeItems",
     "ShikimoriItems",
+    "ShikimoriRanobeItems",
 ]
