@@ -87,7 +87,8 @@ class ShikimoriBase(AbstractCatalog):
 
     @override
     def get_preview(self, manga: Manga) -> bytes | None:
-        url = f"{self._URL}/system/{self._CONTENT_NAME}/original/{manga.content_id}.jpg"
+        file_name = f"{manga.content_id}.jpg"
+        url = f"{self._URL}/system/{self._CONTENT_NAME}/original/{file_name}"
         response = self._client.get_bytes(url)
         if not isinstance(response, bytes):
             return None
@@ -95,7 +96,8 @@ class ShikimoriBase(AbstractCatalog):
 
     @override
     def get_character_preview(self, character: Character) -> bytes | None:
-        url = f"{self._URL}/system/characters/original/{character.content_id}.jpg"
+        file_name = f"{character.content_id}.jpg"
+        url = f"{self._URL}/system/characters/original/{file_name}"
         response = self._client.get_bytes(url)
         if not isinstance(response, bytes):
             return None
