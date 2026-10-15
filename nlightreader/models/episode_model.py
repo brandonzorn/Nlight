@@ -13,7 +13,7 @@ class Episode(BaseModel):
         catalog_id: int,
         season_number: int,
         episode_number: int,
-        title: str,
+        title: str | None,
         url: str | None,
         language: Language = Language.UNDEFINED,
         translator: str | None = None,
@@ -41,7 +41,7 @@ class Episode(BaseModel):
 
     @property
     def title(self) -> str:
-        return self._title
+        return self._title or ""
 
     @property
     def language(self) -> Language:
@@ -62,7 +62,7 @@ class Episode(BaseModel):
 
     def get_name(self) -> str:
         if not self._season_number and not self._episode_number:
-            return self._title
+            return self._title or ""
 
         num_name = f"{self._season_number}-{self._episode_number}"
         if self._title:
