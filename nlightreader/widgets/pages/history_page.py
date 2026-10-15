@@ -32,7 +32,7 @@ class HistoryPage(BasePage):
 
     @override
     def _setup_connections(self) -> None:
-        self._ui.delete_button.clicked.connect(self._delete_note)
+        self._ui.delete_button.clicked.connect(self._delete_selected_note)
 
         self._ui.items_tree.itemDoubleClicked.connect(self._open_info)
         self._ui.items_tree.customContextMenuRequested.connect(
@@ -59,12 +59,10 @@ class HistoryPage(BasePage):
         self.manga_open.emit(item.note.manga)
 
     @Slot()
-    def _delete_note(self) -> None:
+    def _delete_selected_note(self) -> None:
         selected_item = self._ui.items_tree.currentItem()
-        if not isinstance(selected_item, HistoryTreeItem):
-            return
-        self._db.history.delete_by_chapter(selected_item.note.chapter.id)
-        self._remove_note_item(selected_item)
+        if isinstance(selected_item, HistoryTreeItem):
+            self._delete_history_note(selected_item)
 
     @override
     def _update_content(self) -> None:
