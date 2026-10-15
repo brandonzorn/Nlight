@@ -15,7 +15,10 @@ from nlightreader.utils.utils import dd_get
 logger = logging.getLogger(__name__)
 
 try:
-    from keys import MANGADEX_CLIENT_ID, MANGADEX_CLIENT_SECRET
+    from nlightreader.consts.keys import (
+        MANGADEX_CLIENT_ID,
+        MANGADEX_CLIENT_SECRET,
+    )
 except (ModuleNotFoundError, ImportError):
     logger.warning("MangaDex API keys not found")
 

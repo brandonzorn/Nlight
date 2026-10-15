@@ -132,10 +132,10 @@ class Rulate(AbstractRanobeCatalog):
     @override
     def get_image(self, image: Image) -> str | None:
         def get_chapter_content_image(media_id: str) -> str:
-            url = f"{self._URL}/{media_id}"
+            media_url = f"{self._URL}/{media_id}"
             if media_id.startswith("http"):
-                url = media_id
-            chapter_image = self._client.get_bytes(url)
+                media_url = media_id
+            chapter_image = self._client.get_bytes(media_url)
             if not isinstance(chapter_image, bytes):
                 return ""
             str_equivalent_image = base64.b64encode(chapter_image).decode()

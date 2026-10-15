@@ -23,7 +23,9 @@ class KodikTranslator:
 
     @property
     def translator_text(self) -> str:
-        return f"{self.translator} ({self.tr_type})"
+        if self.tr_type:
+            return f"{self.translator} ({self.tr_type})"
+        return self.translator
 
 
 class Kodik:
@@ -32,44 +34,50 @@ class Kodik:
     @classmethod
     def search(cls, shikimori_id: str) -> list[KodikTranslator]:
         translators: list[KodikTranslator] = []
-        url = f"{cls.URL_API}/search"
+        api_url = f"{cls.URL_API}/search"
         params: RequestParams = {
             "token": KODIK_TOKEN,
             "shikimori_id": shikimori_id,
         }
         response = make_request(
-            url,
+            api_url,
             "GET",
             params=params,
             content_type="json",
         )
         if not isinstance(response, dict):
             return translators
+
         translators_data = response.get("results")
         if not isinstance(translators_data, list):
             return translators
+
         for data in translators_data:
             if not isinstance(data, dict):
                 continue
-            content_id = data.get("id")
+
+            content_id: str | None = data.get("id")
             if not isinstance(content_id, str):
                 continue
 
-            url = data.get("link")
-            episodes = data.get("last_episode")
+            kodik_url: str | None = data.get("link")
+
+            episodes: int | None = data.get("last_episode")
             if not isinstance(episodes, int):
-                episodes = 1
+                episodes: int = 1
 
             translator = dd_get(data, "translation.title")
             if not isinstance(translator, str):
-                translator = ""
+                translator: str = ""
+
             tr_type = dd_get(data, "translation.type")
             if not isinstance(tr_type, str):
                 tr_type = ""
+
             translators.append(
                 KodikTranslator(
                     content_id=content_id,
-                    kodik_url=url,
+                    kodik_url=kodik_url,
                     episodes=episodes,
                     translator=translator,
                     tr_type=tr_type,
@@ -78,4 +86,4 @@ class Kodik:
         return translators
 
 
-__all__ = ["Kodik"]
+__all__ = ["Kodik", "KodikTranslator"]

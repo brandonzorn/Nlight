@@ -7,7 +7,6 @@ from PySide6.QtGui import QIcon, QPixmap, QResizeEvent
 from PySide6.QtWidgets import QListWidgetItem, QTreeWidgetItem, QWidget
 from qfluentwidgets import FluentIcon
 
-from data.ui.widgets.info import Ui_InfoPage
 from nlightreader.consts.colors import ItemsIcons
 from nlightreader.consts.files import NlFluentIcons
 from nlightreader.core.enums import Language, LIB_LISTS, LibList
@@ -26,6 +25,7 @@ from nlightreader.widgets.items import (
     ModelListItem,
     ModelTreeItem,
 )
+from resources.ui.widgets.info import Ui_InfoPage
 
 logger = logging.getLogger(__name__)
 

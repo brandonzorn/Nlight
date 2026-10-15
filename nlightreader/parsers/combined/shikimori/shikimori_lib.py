@@ -19,7 +19,10 @@ from nlightreader.parsers.combined.shikimori.shikimori_base import (
 logger = logging.getLogger(__name__)
 
 try:
-    from keys import SHIKIMORI_CLIENT_ID, SHIKIMORI_CLIENT_SECRET
+    from nlightreader.consts.keys import (
+        SHIKIMORI_CLIENT_ID,
+        SHIKIMORI_CLIENT_SECRET,
+    )
 except (ModuleNotFoundError, ImportError):
     logger.warning("Shikimori API keys not found")
 

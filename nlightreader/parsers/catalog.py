@@ -30,12 +30,13 @@ class CatalogAuthType(IntEnum):
 class AbstractCatalog:
     AUTH_TYPE: ClassVar[CatalogAuthType] = CatalogAuthType.NO_AUTH
     CATALOG_TYPE: ClassVar[CatalogType] = CatalogType.UNDEFINED
-    CATALOG_NAME = "CATALOG"
-    CATALOG_ID = -1
-    is_primary = False
-    _HEADERS: ClassVar = DEFAULT_HEADERS
-    _COOKIES: ClassVar = None
-    _FILTERS: ClassVar = ParserItems
+    CATALOG_NAME: ClassVar[str] = "CATALOG"
+    CATALOG_ID: ClassVar[int] = -1
+    HAS_EXTERNAL_LIB: ClassVar[bool] = False
+
+    _HEADERS: ClassVar[dict] = DEFAULT_HEADERS
+    _COOKIES: ClassVar[dict | None] = None
+    _FILTERS: ClassVar[type[ParserItems]] = ParserItems
 
     def get_manga(self, manga: Manga) -> Manga:
         return manga
@@ -105,10 +106,10 @@ class AbstractCatalog:
 
 
 class LibParser:
-    AUTH_TYPE: CatalogAuthType = CatalogAuthType.NO_AUTH
+    AUTH_TYPE: ClassVar[CatalogAuthType] = CatalogAuthType.NO_AUTH
 
     def __init__(self) -> None:
-        self._client = None
+        self._client: OAuthClient | None = None
 
     @property
     def session(self) -> OAuthClient:

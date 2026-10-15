@@ -22,13 +22,13 @@ from PySide6.QtGui import (
 from PySide6.QtWidgets import QGraphicsOpacityEffect, QWidget
 from qfluentwidgets import InfoBar
 
-from data.ui.manga_item import Ui_MangaItem
 from nlightreader.database.services.owm import Database
 from nlightreader.models import Manga
 from nlightreader.utils.catalog_manager import get_catalog_by_id
 from nlightreader.utils.file_manager import FileManager
 from nlightreader.utils.threads import NWorker
 from nlightreader.widgets.contexts import LibraryMangaMenu, LibraryMenuMode
+from resources.ui.manga_item import Ui_MangaItem
 
 
 class MangaItem(QWidget):

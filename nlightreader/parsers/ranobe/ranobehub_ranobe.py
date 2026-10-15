@@ -118,8 +118,8 @@ class Ranobehub(AbstractRanobeCatalog):
     @override
     def get_image(self, image: Image) -> str | None:
         def get_chapter_content_image(media_id: str) -> str:
-            url = f"{self._URL_API}/media/{media_id}"
-            chapter_image = self._client.get_bytes(url)
+            media_url = f"{self._URL_API}/media/{media_id}"
+            chapter_image = self._client.get_bytes(media_url)
             if not chapter_image:
                 return ""
             str_equivalent_image = base64.b64encode(chapter_image).decode()
