@@ -24,7 +24,7 @@ class HistoryNoteEntity(Base):
         primary_key=True,
     )
 
-    is_completed: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    is_completed: Mapped[bool] = mapped_column(Boolean, nullable=False)
 
     manga: Mapped[MangaEntity] = relationship(MangaEntity)
     chapter: Mapped[ChapterEntity] = relationship(ChapterEntity)
