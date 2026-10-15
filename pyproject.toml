@@ -3,7 +3,7 @@ name = "nlight"
 version = "1.11.0"
 description = "Application for watching anime, reading manga/light novels."
 readme = "README.md"
-requires-python = ">=3.12,<3.16"
+requires-python = ">=3.13,<3.16"
 dependencies = [
     "authlib>=1.7.2",
     "beautifulsoup4>=4.13.5",
