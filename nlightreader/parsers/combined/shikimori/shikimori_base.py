@@ -9,18 +9,18 @@ from consts.urls import (
 from core.enums import Language, MangaKind, MangaStatus
 from core.network import NetworkClient
 from items import RequestForm
-from models import Character, Genre, Manga, Order
+from models import Character, Genre, Manga
 from parsers.catalog import AbstractCatalog
 
 
 class ShikimoriBase(AbstractCatalog):
-    CATALOG_ID = 1
     CATALOG_NAME = "Shikimori"
-    is_primary = True
     _URL = URL_SHIKIMORI
     _URL_API = URL_SHIKIMORI_API
     _HEADERS = SHIKIMORI_HEADERS
     _CONTENT_NAME = None
+
+    _FILTERS = ShikimoriItems
 
     def __init__(self) -> None:
         self._client = NetworkClient(
@@ -124,56 +124,28 @@ class ShikimoriBase(AbstractCatalog):
         return genres
 
     @override
-    def get_orders(self) -> list[Order]:
-        return [
-            Order(
-                content_id=i["value"],
-                catalog_id=self.CATALOG_ID,
-                name=i["name"],
-                russian=i["russian"],
-            )
-            for i in ShikimoriItems.ORDERS
-        ]
-
-    @override
-    def get_relations(self, manga: Manga) -> list[Manga]:
-        url = f"{self._URL_API}/mangas/{manga.content_id}/related"
-        response = self._client.get_json(url)
-        mangas: list[Manga] = []
-        if not isinstance(response, list):
-            return mangas
-        for i in response:
-            manga_data = i.get("manga", {})
-            if not manga_data:
-                continue
-            mangas.append(self._setup_manga(manga_data))
-        return mangas
-
-    @override
     def get_characters(self, manga: Manga) -> list[Character]:
-        characters = []
-        url = f"{self._URL_API}/mangas/{manga.content_id}/roles"
+        url = f"{self._URL_API}/{self._CONTENT_NAME}/{manga.content_id}/roles"
         response = self._client.get_json(url)
+        characters: list[Character] = []
         if not isinstance(response, list):
             return characters
-        for i in response:
-            if not isinstance(i, dict):
+        for data in response:
+            roles = data.get("roles")
+            if not isinstance(roles, list) or len(roles) == 0:
                 continue
-            roles_data = i.get("roles")
-            if not roles_data:
+            role = data.get("roles", [])[0]
+            if role not in ["Supporting", "Main"]:
                 continue
-            role = roles_data[0]
-            if role not in ("Supporting", "Main"):
-                continue
-            data = i.get("character")
-            if not data:
+            character_data = data.get("character")
+            if not isinstance(character_data, dict):
                 continue
             characters.append(
                 Character(
-                    content_id=str(data.get("id")),
+                    content_id=str(character_data.get("id")),
                     catalog_id=self.CATALOG_ID,
-                    name=data.get("name"),
-                    russian=data.get("russian"),
+                    name=character_data.get("name", ""),
+                    russian=character_data.get("russian", ""),
                     description="",
                     role=role,
                 ),
@@ -183,7 +155,7 @@ class ShikimoriBase(AbstractCatalog):
 
     @override
     def get_manga_url(self, manga: Manga) -> str:
-        return f"{self._URL}/mangas/{manga.content_id}"
+        return f"{self._URL}/{self._CONTENT_NAME}/{manga.content_id}"
 
 
 __all__ = ["ShikimoriBase"]

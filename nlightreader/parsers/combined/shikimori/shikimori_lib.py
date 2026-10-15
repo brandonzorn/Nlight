@@ -13,7 +13,7 @@ from items import RequestForm, User, UserRate
 from models import Manga
 from parsers.catalog import CatalogAuthType, LibParser
 
-from .shikimori_base import ShikimoriBase
+from .shikimori_manga import ShikimoriManga
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ except (ModuleNotFoundError, ImportError):
 
 
 @singleton
-class ShikimoriLib(ShikimoriBase, LibParser):
+class ShikimoriLib(ShikimoriManga, LibParser):
     AUTH_TYPE = CatalogAuthType.TOKEN
 
     def __init__(self) -> None:
