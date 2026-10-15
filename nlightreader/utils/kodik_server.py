@@ -3,6 +3,7 @@ import json
 import logging
 from string import Template
 from threading import Thread
+from typing import ClassVar
 import webbrowser
 
 from nlightreader.database.services.owm import Database
@@ -105,7 +106,7 @@ _CONTENT_TEMPLATE = Template(r"""
 
 
 class KodikPlayerHttpRequestHandler(BaseHTTPRequestHandler):
-    _SERVER_PORT = 8000
+    SERVER_PORT: ClassVar[int] = 8000
 
     _active_html = ""
     _track_progress = False
@@ -216,11 +217,11 @@ def start_html_video(anime: Manga, episode: Episode) -> None:
         anime_id=anime.id,
         episode_id=episode.id,
         src_url=episode.url,
-        server_port=KodikPlayerHttpRequestHandler._SERVER_PORT,
+        server_port=KodikPlayerHttpRequestHandler.SERVER_PORT,
     )
 
     webbrowser.open(
-        f"http://localhost:{KodikPlayerHttpRequestHandler._SERVER_PORT}/play",
+        f"http://localhost:{KodikPlayerHttpRequestHandler.SERVER_PORT}/play",
     )
 
 
