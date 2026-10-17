@@ -85,7 +85,7 @@ class CharacterInfoDialog(MessageBoxBase):
 
     def _setup_connections(self) -> None:
         self.show_spoilers_switch.checkedChanged.connect(
-            self.update_description
+            self.update_description,
         )
 
     @override
