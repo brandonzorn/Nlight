@@ -145,5 +145,19 @@ class NetworkClient:
             return None
         return response.text
 
+    def post_data(
+        self,
+        url: str,
+        data: HTTPData,
+    ) -> str | None:
+        response = self._send_request(
+            "POST",
+            url,
+            data=data,
+        )
+        if response is None:
+            return None
+        return response.text
+
 
 __all__ = ["NetworkClient"]

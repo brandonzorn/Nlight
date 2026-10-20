@@ -8,7 +8,6 @@ from core.network import NetworkClient
 from items import RequestForm
 from models import Chapter, Manga
 from parsers.catalogs_base import AbstractHentaiMangaCatalog
-from utils.utils import make_request
 
 
 class AllHentai(AbstractHentaiMangaCatalog):
@@ -27,21 +26,13 @@ class AllHentai(AbstractHentaiMangaCatalog):
         url = f"{self._URL}/search"
         if not form.search:
             msg = "Search field is empty"
-            raise parser_content_exc.RequestsParamsError(
-                msg,
-            )
+            raise parser_content_exc.RequestsParamsError(msg)
         params = {
             "q": form.search,
             "+": "Искать!",
             "fast-filter": "CREATION",
         }
-        response = make_request(
-            url,
-            "POST",
-            headers=self._HEADERS,
-            data=params,
-            content_type="text",
-        )
+        response = self._client.post_data(url, data=params)
         mangas: list[Manga] = []
         if not isinstance(response, str):
             return mangas
