@@ -5,7 +5,6 @@ from PySide6.QtGui import QResizeEvent
 from PySide6.QtWidgets import QGridLayout, QHBoxLayout, QLayout, QWidget
 from qfluentwidgets import ScrollArea
 
-from utils.threads import NThread
 from widgets.containers.content_container import (
     AbstractContentContainer,
     ContentContainerState,
@@ -16,12 +15,16 @@ from widgets.items import MangaItem
 class MangaArea(ScrollArea, AbstractContentContainer):
     def __init__(self) -> None:
         super().__init__()
-        self.setWidgetResizable(True)
-
         self._column_count = 5
         self._spacing = 12
         self._manga_items: list[MangaItem] = []
 
+        self._thread_pool = QThreadPool(self)
+        self._thread_pool.setMaxThreadCount(self._column_count)
+
+        self._setup_ui()
+
+    def _setup_ui(self) -> None:
         self._scrollAreaWidgetContents = QWidget()
 
         self._scroll_layout = QHBoxLayout(self._scrollAreaWidgetContents)
@@ -36,12 +39,8 @@ class MangaArea(ScrollArea, AbstractContentContainer):
         self._scroll_layout.addLayout(self._content_grid)
 
         self.setWidget(self._scrollAreaWidgetContents)
-
+        self.setWidgetResizable(True)
         self.enableTransparentBackground()
-
-        self.manga_thread_pool = QThreadPool()
-        self.manga_thread_pool.setMaxThreadCount(self._column_count)
-        self._set_images_thread = NThread(target=self.partial_image_addition)
 
     @override
     def resizeEvent(self, arg__1: QResizeEvent, /) -> None:
@@ -55,32 +54,23 @@ class MangaArea(ScrollArea, AbstractContentContainer):
         if self._state != ContentContainerState.SHOW_CONTENT:
             msg = "this method is now available in this state"
             raise PermissionError(msg)
-        i, j = 0, 0
-        for item in items:
+
+        for index, item in enumerate(items):
+            row, col = divmod(index, self._column_count)
             self._manga_items.append(item)
+
             self._content_grid.addWidget(
                 item,
-                i,
-                j,
+                row,
+                col,
                 Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop,
             )
-            j += 1
-            if j == self._column_count:
-                j = 0
-                i += 1
-        self._set_images_thread.start()
-
-    def partial_image_addition(self) -> None:
-        for item in self._manga_items:
-            if (
-                self.manga_thread_pool.activeThreadCount()
-                == self.manga_thread_pool.maxThreadCount()
-            ):
-                self.manga_thread_pool.waitForDone()
-            item.update_image()
+        self.update_items()
+        for item in items:
+            item.update_image(self._thread_pool)
 
     def delete_items(self) -> None:
-        self._set_images_thread.terminate()
+        self._thread_pool.clear()
         self.verticalScrollBar().setValue(0)
         for item in self._manga_items:
             self._content_grid.removeWidget(item)
