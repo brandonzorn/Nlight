@@ -3,6 +3,15 @@ from PySide6.QtCore import QLocale
 from utils.config import cfg
 
 
+def _is_cyrillic_locale() -> bool:
+    locale = cfg.get(cfg.language).value.language()
+    return locale in (
+        QLocale.Language.Belarusian,
+        QLocale.Language.Russian,
+        QLocale.Language.Ukrainian,
+    )
+
+
 class BaseModel:
     def __init__(self, content_id: str, catalog_id: int) -> None:
         self._id = f"|{catalog_id}|_|{content_id}|"
@@ -15,7 +24,10 @@ class BaseModel:
         return self._id == other._id
 
     def __hash__(self) -> int:
-        return hash(self._id)
+        return hash((type(self), self._id))
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(id={self._id!r})"
 
     @property
     def id(self) -> str:
@@ -58,15 +70,7 @@ class NamedBaseModel(BaseModel):
         return self._russian
 
     def get_name(self) -> str:
-        locale = cfg.get(cfg.language).value.language()
-        if (
-            locale
-            in (
-                QLocale.Language.Russian,
-                QLocale.Language.Ukrainian,
-            )
-            and self._russian
-        ):
+        if self._russian and _is_cyrillic_locale():
             return self._russian
         return self._name
 
