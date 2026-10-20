@@ -63,11 +63,7 @@ class MainPage(BaseMangaPage):
 
     @override
     def _setup_manga_item(self, manga: Manga) -> MangaItem:
-        item = MangaItem(
-            manga,
-            parent=self,
-            pool=self.manga_area.manga_thread_pool,
-        )
+        item = MangaItem(manga, parent=self)
         item.manga_clicked.connect(self.manga_open.emit)
         return item
 

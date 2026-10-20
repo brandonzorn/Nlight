@@ -63,12 +63,7 @@ class ExternalLibraryPage(BaseMangaLibraryPage):
 
     @override
     def _setup_manga_item(self, manga: Manga) -> MangaItem:
-        item = MangaItem(
-            manga,
-            parent=self,
-            is_added_to_lib=False,
-            pool=self.manga_area.manga_thread_pool,
-        )
+        item = MangaItem(manga, parent=self, is_added_to_lib=False)
         item.manga_clicked.connect(self.manga_open.emit)
         return item
 
