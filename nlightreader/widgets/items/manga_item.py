@@ -44,19 +44,19 @@ class MangaItem(QWidget):
         *,
         parent: QWidget,
         is_added_to_lib: bool = True,
-        pool: QThreadPool | None = None,
     ) -> None:
         super().__init__(parent)
         self._ui = Ui_MangaItem()
         self._ui.setupUi(self)
 
-        self._pool = pool
+        self._worker: NWorker | None = None
         self._is_added_to_lib = is_added_to_lib
 
         self._manga = manga
         self._catalog = get_catalog_by_id(self._manga.catalog_id)
-        self._manga_pixmap = QPixmap()
         self._db = Database()
+
+        self._manga_image = QImage()
 
         self._setup_ui()
         self._setup_connections()
@@ -115,19 +115,18 @@ class MangaItem(QWidget):
             self.setFixedWidth(max_size.width())
             self._ui.image_card.setFixedSize(max_size)
             self._ui.image_label.setMaximumSize(max_size)
-        self.set_image()
+        self._draw_image()
 
-    def get_image(self) -> None:
-        self._manga_pixmap = FileManager.get_manga_preview(
-            self._manga,
-            self._catalog,
-        )
-
-    def set_image(self) -> None:
-        if self._manga_pixmap.isNull():
+    def _draw_image(self) -> None:
+        if self._manga_image.isNull():
             return
+
+        target_max_size = self._ui.image_label.maximumSize()
+        if target_max_size.width() <= 0 or target_max_size.height() <= 0:
+            return
+
         pixel_ratio = self.devicePixelRatio()
-        result_image_size = self._ui.image_label.maximumSize() * pixel_ratio
+        result_image_size = target_max_size * pixel_ratio
         border_r = self._BORDER_RADIUS * pixel_ratio
 
         result_image = QImage(result_image_size, QImage.Format.Format_ARGB32)
@@ -139,32 +138,44 @@ class MangaItem(QWidget):
 
         path = QPainterPath()
         path.addRoundedRect(
-            QRect(
-                0,
-                0,
-                result_image.width(),
-                result_image.height(),
-            ),
+            QRect(0, 0, result_image.width(), result_image.height()),
             border_r,
             border_r,
         )
-
         painter.setClipPath(path)
 
-        scaled_pixmap = self._manga_pixmap.scaled(result_image_size)
+        scaled_image = self._manga_image.scaled(
+            result_image_size,
+            Qt.AspectRatioMode.KeepAspectRatioByExpanding,
+            Qt.TransformationMode.SmoothTransformation,
+        )
 
-        painter.drawPixmap(0, 0, scaled_pixmap)
+        painter.drawImage(0, 0, scaled_image)
         painter.end()
 
         result_pixmap = QPixmap.fromImage(result_image)
         result_pixmap.setDevicePixelRatio(pixel_ratio)
         self._ui.image_label.setPixmap(result_pixmap)
 
-    def update_image(self) -> None:
-        NWorker(
-            target=self.get_image,
-            callback=self.set_image,
-        ).start(self._pool)
+    def update_image(self, thread_pool: QThreadPool) -> None:
+        self._worker = NWorker(
+            target=self._fetch_image,
+            callback=self._on_image_loaded,
+        )
+        self._worker.start(thread_pool)
+
+    def _fetch_image(self) -> QImage:
+        return FileManager.get_manga_preview(
+            self._manga,
+            self._catalog,
+        )
+
+    def _on_image_loaded(self, image: QImage) -> None:
+        self._worker = None
+        if image is None or image.isNull():
+            return
+        self._manga_image = image
+        self._draw_image()
 
     def _open_in_browser(self) -> None:
         webbrowser.open_new_tab(self._catalog.get_manga_url(self._manga))

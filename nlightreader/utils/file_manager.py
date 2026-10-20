@@ -6,7 +6,7 @@ import re
 import shutil
 import subprocess
 
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QImage
 
 from consts.paths import APP_DATA_PATH
 from core.enums import MangaKind
@@ -91,7 +91,7 @@ class FileManager:
         chapter: Chapter,
         image: Image,
         catalog: AbstractCatalog,
-    ) -> QPixmap:
+    ) -> QImage:
         path = cls._get_chapter_folder(manga, chapter, catalog)
         file_name = f"{image.page_number}.jpg"
 
@@ -102,10 +102,10 @@ class FileManager:
                     "Failed to download image for page %s",
                     image.page_number,
                 )
-                return QPixmap()
+                return QImage()
             save_file(path, file_name, img_data)
 
-        return QPixmap(get_full_file_path(path, file_name))
+        return QImage(get_full_file_path(path, file_name))
 
     @classmethod
     def get_chapter_text_file(
@@ -138,28 +138,28 @@ class FileManager:
         cls,
         manga: Manga,
         catalog: AbstractCatalog,
-    ) -> QPixmap:
+    ) -> QImage:
         path = cls._get_manga_folder(manga, catalog)
         if not check_file_exists(path, cls._PREVIEW_FILE):
             preview_data = catalog.get_preview(manga)
             if not preview_data:
-                return QPixmap()
+                return QImage()
             save_file(path, cls._PREVIEW_FILE, preview_data)
-        return QPixmap(str(get_full_file_path(path, cls._PREVIEW_FILE)))
+        return QImage(get_full_file_path(path, cls._PREVIEW_FILE))
 
     @classmethod
     def get_character_preview(
         cls,
         character: Character,
         catalog: AbstractCatalog,
-    ) -> QPixmap:
+    ) -> QImage:
         path = cls._get_character_folder(character, catalog)
         if not check_file_exists(path, cls._PREVIEW_FILE):
             preview_data = catalog.get_character_preview(character)
             if not preview_data:
-                return QPixmap()
+                return QImage()
             save_file(path, cls._PREVIEW_FILE, preview_data)
-        return QPixmap(str(get_full_file_path(path, cls._PREVIEW_FILE)))
+        return QImage(get_full_file_path(path, cls._PREVIEW_FILE))
 
     @classmethod
     def remove_chapter_files(
