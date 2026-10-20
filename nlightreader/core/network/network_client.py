@@ -4,6 +4,15 @@ from typing import Any
 
 import requests
 
+from core.utils.types import (
+    HTTPCookies,
+    HTTPData,
+    HTTPHeaders,
+    JSONArray,
+    JSONObject,
+    JSONValue,
+)
+
 logger = logging.getLogger(__name__)
 
 IS_TEST_ENV = os.getenv("TEST") == "1"
@@ -30,9 +39,10 @@ class NetworkClient:
         method: str,
         url: str,
         params: dict[str, Any] | None = None,
-        json: dict | None = None,
-        extra_headers: dict[str, str] | None = None,
-        extra_cookies: dict[str, str] | None = None,
+        json: JSONValue = None,
+        data: HTTPData | None = None,
+        extra_headers: HTTPHeaders | None = None,
+        extra_cookies: HTTPCookies | None = None,
     ) -> requests.Response | None:
         if IS_TEST_ENV:
             logger.warning(
@@ -49,6 +59,7 @@ class NetworkClient:
                 cookies=extra_cookies,
                 params=params,
                 json=json,
+                data=data,
             )
             response.raise_for_status()
         except requests.exceptions.ConnectionError as e:
@@ -78,10 +89,10 @@ class NetworkClient:
         self,
         url: str,
         params: dict[str, Any] | None = None,
-        json: dict | None = None,
-        extra_headers: dict[str, str] | None = None,
-        extra_cookies: dict[str, str] | None = None,
-    ) -> dict[str, Any] | list[dict]:
+        json: JSONValue = None,
+        extra_headers: HTTPHeaders | None = None,
+        extra_cookies: HTTPCookies | None = None,
+    ) -> JSONArray | JSONObject:
         response = self._send_request(
             "GET",
             url,
@@ -98,9 +109,9 @@ class NetworkClient:
         self,
         url: str,
         params: dict[str, Any] | None = None,
-        json: dict | None = None,
-        extra_headers: dict[str, str] | None = None,
-        extra_cookies: dict[str, str] | None = None,
+        json: JSONValue = None,
+        extra_headers: HTTPHeaders | None = None,
+        extra_cookies: HTTPCookies | None = None,
     ) -> bytes | None:
         response = self._send_request(
             "GET",
@@ -118,9 +129,9 @@ class NetworkClient:
         self,
         url: str,
         params: dict[str, Any] | None = None,
-        json: dict | None = None,
-        extra_headers: dict[str, str] | None = None,
-        extra_cookies: dict[str, str] | None = None,
+        json: JSONValue = None,
+        extra_headers: HTTPHeaders | None = None,
+        extra_cookies: HTTPCookies | None = None,
     ) -> str | None:
         response = self._send_request(
             "GET",

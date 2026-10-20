@@ -8,6 +8,9 @@ from consts.files import LangIcons
 from consts.urls import DEFAULT_HEADERS, GITHUB_REPO_API
 from core.enums import Language
 from core.utils.types import (
+    HTTPCookies,
+    HTTPData,
+    HTTPHeaders,
     JSONArray,
     JSONObject,
     JSONValue,
@@ -50,40 +53,13 @@ def make_request(
     url: str | bytes,
     method: str,
     *,
-    headers: dict[str, str] | None = None,
+    headers: HTTPHeaders | None = None,
     params: RequestParams | None = None,
     json: JSONObject | None = None,
-    data: dict[str, str] | None = None,
-    cookies: dict[str, str] | None = None,
+    data: HTTPData | None = None,
+    cookies: HTTPCookies | None = None,
     content_type: str | None = None,
-) -> bytes | str | dict | requests.Response | None:
-    """
-    Sends an HTTP GET request to the specified URL with the given
-    headers, query parameters, and cookies.
-
-    :param url:
-        The URL to request.
-    :param method:
-        The type of request (GET, POST, PUT, DELETE).
-    :param headers:
-        Optional dictionary of request headers.
-    :param params:
-        Optional dictionary of query parameters.
-    :param json:
-        Optional dictionary of JSON to include in the request.
-    :param data:
-        Optional dictionary of data to include in the request.
-    :param cookies:
-        Optional dictionary of cookies to include in the request.
-    :param content_type:
-        Optional string indicating the expected
-        content type of the response ('content', 'text', or 'json').
-    :return:
-        If content_type is 'content', returns the raw response content (bytes).
-        If content_type is 'json', returns the JSON-decoded response.
-        Otherwise, returns the full requests.Response object.
-        Returns None if there was an error.
-    """
+) -> bytes | requests.Response | JSONValue:
     if IS_TEST_ENV:
         logger.warning(
             "%s: request to %s blocked. Reason: testing.",

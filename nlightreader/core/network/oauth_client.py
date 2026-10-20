@@ -6,6 +6,7 @@ from authlib.integrations.requests_client import OAuth2Session
 from authlib.oauth2.rfc6749 import OAuth2Token
 import requests
 
+from core.utils.types import JSONValue
 from utils.token import TokenManager
 
 logger = logging.getLogger(__name__)
@@ -94,7 +95,7 @@ class OAuthClient:
         url: str,
         *,
         params: dict[str, Any] | None = None,
-        json: dict[str, Any] | None = None,
+        json: JSONValue = None,
         ignore_authorize: bool = False,
     ) -> requests.Response | None:
         if IS_TEST_ENV:
