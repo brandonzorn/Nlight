@@ -1,6 +1,6 @@
 from typing import TypeVar
 
-from sqlalchemy import select
+from sqlalchemy import ColumnElement, select
 from sqlalchemy.orm import Session
 
 Entity = TypeVar("Entity")
@@ -39,6 +39,6 @@ class BaseRepository[Entity]:
     def _all(self) -> list[Entity]:
         return list(self._session.scalars(select(self.entity)))
 
-    def _find(self, *criteria: tuple) -> list[Entity]:
+    def _find(self, *criteria: ColumnElement[bool]) -> list[Entity]:
         stmt = select(self.entity).where(*criteria)
         return list(self._session.scalars(stmt))

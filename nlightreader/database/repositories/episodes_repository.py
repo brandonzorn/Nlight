@@ -22,8 +22,8 @@ class EpisodesRepository(BaseRepository[EpisodeEntity]):
             return
         self._remove(entity)
 
-    def get_model(self, chapter_id: str) -> Episode | None:
-        entity = self._get(chapter_id)
+    def get_model(self, episode_id: str) -> Episode | None:
+        entity = self._get(episode_id)
         if entity is None:
             return None
         return self._mapper.to_model(entity)
