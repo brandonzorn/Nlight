@@ -7,26 +7,26 @@ from .base_repository import BaseRepository
 
 class EpisodesRepository(BaseRepository[EpisodeEntity]):
     entity = EpisodeEntity
-
-    @staticmethod
-    def _to_entity(episode: Episode, anime_id: str | None) -> EpisodeEntity:
-        return EpisodeMapper.to_entity(episode, anime_id)
+    _mapper = EpisodeMapper
 
     def save(self, episode: Episode, anime_id: str) -> None:
-        self.add(self._to_entity(episode, anime_id))
+        self._merge(self._mapper.to_entity(episode, anime_id))
 
     def save_many(self, episodes: list[Episode], anime_id: str) -> None:
-        entities = [self._to_entity(episode, anime_id) for episode in episodes]
-        self.add_all(entities)
+        for episode in episodes:
+            self.save(episode, anime_id)
 
     def delete(self, episode: Episode) -> None:
-        self.remove(self._to_entity(episode, None))
+        entity = self._get(episode.id)
+        if entity is None:
+            return
+        self._remove(entity)
 
-    def get_model(self, episode_id: str) -> Episode | None:
-        entity = self.get(episode_id)
+    def get_model(self, chapter_id: str) -> Episode | None:
+        entity = self._get(chapter_id)
         if entity is None:
             return None
-        return EpisodeMapper.to_model(entity)
+        return self._mapper.to_model(entity)
 
     def get_all_models(self) -> list[Episode]:
-        return [EpisodeMapper.to_model(entity) for entity in self.all()]
+        return [self._mapper.to_model(entity) for entity in self._all()]

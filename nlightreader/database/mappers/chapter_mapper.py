@@ -5,7 +5,7 @@ from models import Chapter
 
 class ChapterMapper:
     @staticmethod
-    def to_entity(model: Chapter, manga_id: str | None) -> ChapterEntity:
+    def to_entity(model: Chapter, manga_id: str) -> ChapterEntity:
         return ChapterEntity(
             id=model.id,
             content_id=str(model.content_id),

@@ -10,7 +10,7 @@ class ChapterEntity(TranslatedContentModelBase):
     vol: Mapped[str | None] = mapped_column(UnicodeText)
     ch: Mapped[str | None] = mapped_column(UnicodeText)
 
-    manga_id: Mapped[str | None] = mapped_column(
+    manga_id: Mapped[str] = mapped_column(
         ForeignKey("manga.id", ondelete="CASCADE"),
         nullable=False,
     )

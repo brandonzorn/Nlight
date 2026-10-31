@@ -4,36 +4,42 @@ from items import HistoryNote
 
 
 class HistoryService:
-    def save(self, note: HistoryNote) -> None:
+    @staticmethod
+    def save(note: HistoryNote) -> None:
         with Session() as session:
             repo = HistoryRepository(session)
             repo.save(note)
             session.commit()
 
-    def save_many(self, notes: list[HistoryNote]) -> None:
+    @staticmethod
+    def save_many(notes: list[HistoryNote]) -> None:
         with Session() as session:
             repo = HistoryRepository(session)
             repo.save_many(notes)
             session.commit()
 
-    def delete_by_chapter(self, chapter_id: str) -> None:
+    @staticmethod
+    def delete_by_chapter(chapter_id: str) -> None:
         with Session() as session:
             repo = HistoryRepository(session)
             repo.delete_by_chapter(chapter_id)
             session.commit()
 
-    def delete_by_manga(self, manga_id: str) -> None:
+    @staticmethod
+    def delete_by_manga(manga_id: str) -> None:
         with Session() as session:
             repo = HistoryRepository(session)
             repo.delete_by_manga(manga_id)
             session.commit()
 
-    def exists(self, chapter_id: str) -> bool:
+    @staticmethod
+    def exists(chapter_id: str) -> bool:
         with Session() as session:
             repo = HistoryRepository(session)
             return repo.exists(chapter_id)
 
-    def is_completed(self, chapter_id: str) -> bool:
+    @staticmethod
+    def is_completed(chapter_id: str) -> bool:
         with Session() as session:
             repo = HistoryRepository(session)
             model = repo.get_model(chapter_id)
@@ -41,12 +47,14 @@ class HistoryService:
                 return False
             return model.is_completed
 
-    def get_by_id(self, chapter_id: str) -> HistoryNote | None:
+    @staticmethod
+    def get_by_id(chapter_id: str) -> HistoryNote | None:
         with Session() as session:
             repo = HistoryRepository(session)
             return repo.get_model(chapter_id)
 
-    def get_all(self) -> list[HistoryNote]:
+    @staticmethod
+    def get_all() -> list[HistoryNote]:
         with Session() as session:
             repo = HistoryRepository(session)
             return repo.get_all_models()

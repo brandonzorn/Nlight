@@ -5,7 +5,7 @@ from models import Episode
 
 class EpisodeMapper:
     @staticmethod
-    def to_entity(model: Episode, anime_id: str | None) -> EpisodeEntity:
+    def to_entity(model: Episode, anime_id: str) -> EpisodeEntity:
         return EpisodeEntity(
             id=model.id,
             content_id=str(model.content_id),

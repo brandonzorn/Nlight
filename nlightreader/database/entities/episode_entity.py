@@ -12,7 +12,7 @@ class EpisodeEntity(TranslatedContentModelBase):
 
     url: Mapped[str | None] = mapped_column(UnicodeText)
 
-    anime_id: Mapped[str | None] = mapped_column(
+    anime_id: Mapped[str] = mapped_column(
         ForeignKey("manga.id", ondelete="CASCADE"),
         nullable=False,
     )

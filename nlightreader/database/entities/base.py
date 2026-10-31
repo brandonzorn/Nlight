@@ -24,7 +24,6 @@ class ModelBase(Base):
     id: Mapped[str] = mapped_column(
         UnicodeText,
         primary_key=True,
-        sqlite_on_conflict_primary_key="REPLACE",
     )
     content_id: Mapped[str] = mapped_column(
         UnicodeText,
@@ -35,10 +34,14 @@ class ModelBase(Base):
         nullable=False,
     )
 
+
 class TranslatedContentModelBase(ModelBase):
     __abstract__ = True
 
     title: Mapped[str | None] = mapped_column(UnicodeText)
 
     language: Mapped[str | None] = mapped_column(UnicodeText)
-    translator: Mapped[str | None] = mapped_column(UnicodeText, nullable=True)
+    translator: Mapped[str | None] = mapped_column(
+        UnicodeText,
+        nullable=True,
+    )
