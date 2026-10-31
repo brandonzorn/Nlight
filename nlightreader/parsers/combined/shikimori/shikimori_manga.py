@@ -10,7 +10,10 @@ class ShikimoriManga(ShikimoriBase, AbstractMangaCatalog):
     CATALOG_ID = 1001
     CATALOG_NAME = "Shikimori(Manga)"
     is_primary = True
+
     _CONTENT_NAME = "mangas"
+    _PREVIEW_FOLDER = "mangas"
+    _GENRE_ENTRY_TYPE = "Manga"
 
     @override
     def get_relations(self, manga: Manga) -> list[Manga]:

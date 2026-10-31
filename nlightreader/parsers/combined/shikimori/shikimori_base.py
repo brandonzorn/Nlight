@@ -15,12 +15,16 @@ from parsers.catalog import AbstractCatalog
 
 class ShikimoriBase(AbstractCatalog):
     CATALOG_NAME = "Shikimori"
+
+    _HEADERS = SHIKIMORI_HEADERS
+    _FILTERS = ShikimoriItems
+
     _URL = URL_SHIKIMORI
     _URL_API = URL_SHIKIMORI_API
-    _HEADERS = SHIKIMORI_HEADERS
-    _CONTENT_NAME = None
 
-    _FILTERS = ShikimoriItems
+    _CONTENT_NAME: str
+    _PREVIEW_FOLDER: str
+    _GENRE_ENTRY_TYPE: str
 
     def __init__(self) -> None:
         self._client = NetworkClient(
@@ -36,6 +40,11 @@ class ShikimoriBase(AbstractCatalog):
             russian=data.get("russian", ""),
         )
 
+    def _fill_extra_details(self, manga: Manga, response: dict) -> None:
+        manga.kind = MangaKind.from_str(response.get("kind"))
+        manga.volumes_number = int(response.get("volumes", 0))
+        manga.chapters_number = int(response.get("chapters", 0))
+
     @override
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/{self._CONTENT_NAME}"
@@ -48,31 +57,25 @@ class ShikimoriBase(AbstractCatalog):
             "kind": ",".join(form.get_kind_ids()),
         }
         response = self._client.get_json(url, params=params)
-
-        mangas: list[Manga] = []
         if not isinstance(response, list):
-            return mangas
-        mangas.extend(self._setup_manga(data) for data in response)
-        return mangas
+            return []
+
+        return [self._setup_manga(data) for data in response]
 
     @override
     def get_manga(self, manga: Manga) -> Manga:
-        url = f"{self._URL_API}/mangas/{manga.content_id}"
+        url = f"{self._URL_API}/{self._CONTENT_NAME}/{manga.content_id}"
         response = self._client.get_json(url)
         if not isinstance(response, dict):
             return manga
-        manga.kind = MangaKind.from_str(response.get("kind"))
+
         manga.score = float(response.get("score", 0))
         manga.status = MangaStatus.from_str(response.get("status"))
-        manga.volumes_number = int(response.get("volumes", 0))
-        manga.chapters_number = int(response.get("chapters", 0))
-
         description = response.get("description")
         if isinstance(description, str):
-            manga.add_description(
-                Language.UNDEFINED,
-                description,
-            )
+            manga.add_description(Language.UNDEFINED, description)
+
+        self._fill_extra_details(manga, response)
         return manga
 
     @override
@@ -88,7 +91,7 @@ class ShikimoriBase(AbstractCatalog):
     @override
     def get_preview(self, manga: Manga) -> bytes | None:
         file_name = f"{manga.content_id}.jpg"
-        url = f"{self._URL}/system/{self._CONTENT_NAME}/original/{file_name}"
+        url = f"{self._URL}/system/{self._PREVIEW_FOLDER}/original/{file_name}"
         response = self._client.get_bytes(url)
         if not isinstance(response, bytes):
             return None
@@ -110,15 +113,16 @@ class ShikimoriBase(AbstractCatalog):
         genres: list[Genre] = []
         if not isinstance(response, list):
             return genres
+
         for data in response:
-            if data.get("entry_type") != "Manga":
+            if data.get("entry_type") != self._GENRE_ENTRY_TYPE:
                 continue
             genres.append(
                 Genre(
                     content_id=str(data["id"]),
                     catalog_id=self.CATALOG_ID,
-                    name=data["name"],
-                    russian=data["russian"],
+                    name=data.get("name", ""),
+                    russian=data.get("russian", ""),
                 ),
             )
         return genres

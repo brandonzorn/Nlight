@@ -28,6 +28,8 @@ except (ModuleNotFoundError, ImportError):
 
 @singleton
 class ShikimoriLib(ShikimoriManga, LibParser):
+    CATALOG_NAME = "Shikimori"
+
     AUTH_TYPE = CatalogAuthType.TOKEN
 
     def __init__(self) -> None:
@@ -43,7 +45,10 @@ class ShikimoriLib(ShikimoriManga, LibParser):
     @override
     def search_manga(self, form: RequestForm) -> list[Manga]:
         url = f"{self._URL_API}/users/{self.user.id}/manga_rates"
-        params = {"limit": 50, "page": form.page}
+        params = {
+            "limit": form.limit,
+            "page": form.page,
+        }
         response = self._client.request("GET", url, params=params)
         status = self._lib_list_to_str(form.lib_list)
 
