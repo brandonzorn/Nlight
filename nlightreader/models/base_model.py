@@ -1,9 +1,13 @@
+from types import NoneType
+from typing import Any, override
+
 from PySide6.QtCore import QLocale
 
+from core.enums import Language
 from utils.config import cfg
 
 
-def _is_cyrillic_locale() -> bool:
+def is_cyrillic_locale() -> bool:
     locale = cfg.get(cfg.language).value.language()
     return locale in (
         QLocale.Language.Belarusian,
@@ -41,7 +45,7 @@ class BaseModel:
     def catalog_id(self) -> int:
         return self._catalog_id
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "id": self._id,
             "content_id": self._content_id,
@@ -70,11 +74,12 @@ class NamedBaseModel(BaseModel):
         return self._russian
 
     def get_name(self) -> str:
-        if self._russian and _is_cyrillic_locale():
+        if self._russian and is_cyrillic_locale():
             return self._russian
         return self._name
 
-    def to_dict(self) -> dict:
+    @override
+    def to_dict(self) -> dict[str, Any]:
         data = super().to_dict()
         data.update(
             {
@@ -85,7 +90,57 @@ class NamedBaseModel(BaseModel):
         return data
 
 
+class TranslatedContentModel(BaseModel):
+    def __init__(
+        self,
+        content_id: str,
+        catalog_id: int,
+        title: str | None,
+        language: Language = Language.UNDEFINED,
+        translator: str | None = None,
+    ) -> None:
+        super().__init__(content_id, catalog_id)
+        self._title = title
+        self._language = language
+        self._translator: str | None = None
+        self.translator = translator
+
+    @property
+    def title(self) -> str:
+        return self._title or ""
+
+    @property
+    def language(self) -> Language:
+        return self._language
+
+    @property
+    def translator(self) -> str | None:
+        return self._translator
+
+    @translator.setter
+    def translator(self, translator: str | None) -> None:
+        if not isinstance(translator, (str, NoneType)):
+            msg = (
+                f"Translator must be a string or None, got {type(translator)}"
+            )
+            raise TypeError(msg)
+        self._translator = translator
+
+    @override
+    def to_dict(self) -> dict[str, Any]:
+        data = super().to_dict()
+        data.update(
+            {
+                "title": self._title,
+                "language": self._language.name,
+                "translator": self._translator,
+            },
+        )
+        return data
+
+
 __all__ = [
     "BaseModel",
     "NamedBaseModel",
+    "TranslatedContentModel",
 ]

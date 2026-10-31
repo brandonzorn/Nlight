@@ -1,11 +1,10 @@
-from types import NoneType
 from typing import override
 
 from core.enums import Language
-from models.base_model import BaseModel
+from models.base_model import TranslatedContentModel
 
 
-class Episode(BaseModel):
+class Episode(TranslatedContentModel):
     def __init__(
         self,
         *,
@@ -18,12 +17,9 @@ class Episode(BaseModel):
         language: Language = Language.UNDEFINED,
         translator: str | None = None,
     ) -> None:
-        super().__init__(content_id, catalog_id)
+        super().__init__(content_id, catalog_id, title, language, translator)
         self._season_number = season_number
         self._episode_number = episode_number
-        self._title = title
-        self._language = language
-        self._translator = translator
 
         self._url = url
 
@@ -39,35 +35,17 @@ class Episode(BaseModel):
     def episode_number(self) -> int:
         return self._episode_number
 
-    @property
-    def title(self) -> str:
-        return self._title or ""
-
-    @property
-    def language(self) -> Language:
-        return self._language
-
-    @property
-    def translator(self) -> str | None:
-        return self._translator
-
-    @translator.setter
-    def translator(self, translator: str | None) -> None:
-        if not isinstance(translator, (str, NoneType)):
-            msg = (
-                f"Translator must be a string or None, got {type(translator)}"
-            )
-            raise TypeError(msg)
-        self._translator = translator
-
     def get_name(self) -> str:
-        if not self._season_number and not self._episode_number:
-            return self._title or ""
+        parts = []
+        for p in [self._season_number, self._episode_number]:
+            if p is None or p == 0:
+                continue
+            parts.append(str(p))
+        num_name = "-".join(parts)
 
-        num_name = f"{self._season_number}-{self._episode_number}"
-        if self._title:
+        if num_name and self._title:
             return f"{num_name} {self._title}"
-        return num_name
+        return num_name or (self._title or "")
 
     @override
     def to_dict(self) -> dict:
@@ -76,9 +54,6 @@ class Episode(BaseModel):
             {
                 "season_number": self._season_number,
                 "episode_number": self._episode_number,
-                "title": self._title,
-                "language": self._language.name,
-                "translator": self._translator,
             },
         )
         return data
