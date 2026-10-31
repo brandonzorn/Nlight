@@ -3,7 +3,7 @@ import time
 from typing import override
 
 from PySide6.QtCore import Qt, qtTrId, Slot
-from PySide6.QtGui import QKeyEvent, QPixmap
+from PySide6.QtGui import QImage, QKeyEvent
 from PySide6.QtWidgets import QListWidgetItem
 from qfluentwidgets import (
     FluentIcon,
@@ -235,7 +235,7 @@ class ReaderWindow(SimpleCardWidget):
         else:
             logger.error("Unhandled error %s", e)
 
-    def get_content(self) -> str | QPixmap | None:
+    def get_content(self) -> str | QImage | None:
         page = self._cur_page
         chapter = self._cur_chapter
 
@@ -263,7 +263,7 @@ class ReaderWindow(SimpleCardWidget):
             self._catalog,
         )
 
-    def update_image(self, content: str | QPixmap) -> None:
+    def update_image(self, content: str | QImage) -> None:
         self._content_container.set_state(ContentContainerState.SHOW_CONTENT)
         self._content_container.set_content(content)
 

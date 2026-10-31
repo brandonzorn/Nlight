@@ -1,12 +1,10 @@
 from typing import override
 
-from PySide6.QtCore import Qt, Slot
-from PySide6.QtGui import QCloseEvent, QPixmap
+from PySide6.QtCore import Slot
+from PySide6.QtGui import QCloseEvent, QImage, QPixmap
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
-    QSizePolicy,
-    QSpacerItem,
     QVBoxLayout,
     QWidget,
 )
@@ -30,49 +28,49 @@ class CharacterInfoDialog(MessageBoxBase):
         super().__init__(parent)
         self._character = character
         self._catalog = get_catalog_by_id(character.catalog_id)
-        self._preview_image = QPixmap()
+        self._preview_image = QImage()
 
         self._setup_ui()
         self._setup_connections()
 
         self.update_description()
-        NWorker(
+
+        self._worker = NWorker(
             self._get_character_preview,
             callback=self._update_character_preview,
-        ).start()
+        )
+        self._worker.start(None)
 
     def _setup_ui(self) -> None:
-        self.image_frame = SimpleCardWidget()
+        self.image_frame = SimpleCardWidget(self)
         self.image_frame_layout = QVBoxLayout(self.image_frame)
-        self.image_label = QLabel()
+        self.image_label = QLabel(self.image_frame)
         self.image_frame_layout.addWidget(self.image_label)
 
-        self.title_frame = SimpleCardWidget()
+        self.title_frame = SimpleCardWidget(self)
         self.title_frame_layout = QVBoxLayout(self.title_frame)
-        self.name_label = BodyLabel(self._character.name)
-        self.russian_label = BodyLabel(self._character.russian)
-        self.title_frame_spacer = QSpacerItem(
-            20,
-            40,
-            QSizePolicy.Policy.Minimum,
-            QSizePolicy.Policy.Expanding,
+        self.name_label = BodyLabel(
+            self._character.name,
+            self.title_frame,
+        )
+        self.russian_label = BodyLabel(
+            self._character.russian,
+            self.title_frame,
         )
 
-        self.show_spoilers_switch = SwitchButton()
-        self.show_spoilers_switch.setText(self.tr("Show spoilers"))
-        self.show_spoilers_switch.setOnText(self.tr("Show spoilers"))
-        self.show_spoilers_switch.setOffText(self.tr("Show spoilers"))
+        self.show_spoilers_switch = SwitchButton(self.title_frame)
+        spoiler_text = self.tr("Show spoilers")
+        self.show_spoilers_switch.setText(spoiler_text)
+        self.show_spoilers_switch.setOnText(spoiler_text)
+        self.show_spoilers_switch.setOffText(spoiler_text)
 
         self.title_frame_layout.addWidget(self.name_label)
         self.title_frame_layout.addWidget(self.russian_label)
-        self.title_frame_layout.addItem(self.title_frame_spacer)
+        self.title_frame_layout.addStretch(1)
         self.title_frame_layout.addWidget(self.show_spoilers_switch)
 
-        self.description_text = TextEdit()
-        self.description_text.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        self.description_text.setTextInteractionFlags(
-            Qt.TextInteractionFlag.NoTextInteraction,
-        )
+        self.description_text = TextEdit(self)
+        self.description_text.setReadOnly(True)
 
         self.row = QHBoxLayout()
         self.row.addWidget(self.image_frame)
@@ -108,11 +106,14 @@ class CharacterInfoDialog(MessageBoxBase):
             self._catalog,
         )
 
+    @Slot()
     def _update_character_preview(self) -> None:
         if self._preview_image.isNull():
             self.image_frame.hide()
             return
-        self.image_label.setPixmap(self._preview_image)
+        result_pixmap = QPixmap.fromImage(self._preview_image)
+        result_pixmap.setDevicePixelRatio(self.devicePixelRatio())
+        self.image_label.setPixmap(result_pixmap)
 
 
 __all__ = ["CharacterInfoDialog"]
