@@ -33,7 +33,10 @@ class Ranobehub(AbstractRanobeCatalog):
         response = self._client.get_json(url)
         if not isinstance(response, dict):
             return manga
+
         response_data = response.get("data", {})
+        if not response_data:
+            return manga
 
         manga.score = response_data.get("rating", 0)
 
