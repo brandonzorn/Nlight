@@ -28,10 +28,11 @@ class ExternalLibraryPage(BaseMangaLibraryPage):
         self._setup_connections()
 
         self.catalog: LibParser = ShikimoriLib()
+
         NWorker(
             target=self._get_user_info,
             callback=self._set_user_info,
-        ).start()
+        ).start(None)
 
     @override
     def _setup_ui(self) -> None:
@@ -84,7 +85,8 @@ class ExternalLibraryPage(BaseMangaLibraryPage):
             f"{qtTrId('label.Page')} {self.request_params.page}",
         )
 
-    def auth_success_callback(self, user: User) -> None:
+    @Slot(User)
+    def _on_auth_success(self, user: User) -> None:
         self._set_user_info(user)
         self._get_content()
 
@@ -102,8 +104,8 @@ class ExternalLibraryPage(BaseMangaLibraryPage):
             self.catalog.session.authorize(w.auth_data)
             NWorker(
                 target=self._get_user_info,
-                callback=self.auth_success_callback,
-            ).start()
+                callback=self._on_auth_success,
+            ).start(None)
 
     @Slot()
     def search(self) -> None:

@@ -1,4 +1,5 @@
 from collections.abc import Callable
+import contextlib
 import logging
 
 from PySide6.QtCore import (
@@ -29,11 +30,10 @@ class BaseThread:
         error_callback: Callable | None = None,
     ) -> None:
         super().__init__()
-        if kwargs is None:
-            kwargs = {}
         self._target = target
         self._args = args
-        self._kwargs = kwargs
+        self._kwargs = kwargs or {}
+
         self.signals = Signals()
         if callback:
             self.signals.on_finished.connect(callback)
@@ -46,9 +46,11 @@ class BaseThread:
             result = self._target(*self._args, **self._kwargs)
         except Exception as e:
             logger.exception("Thread raised an exception:\n")
-            self.signals.on_error.emit(e)
+            with contextlib.suppress(RuntimeError):
+                self.signals.on_error.emit(e)
         else:
-            self.signals.on_finished.emit(result)
+            with contextlib.suppress(RuntimeError):
+                self.signals.on_finished.emit(result)
 
 
 class NWorker(BaseThread, QRunnable):
@@ -89,10 +91,10 @@ class NWorker(BaseThread, QRunnable):
         )
         self.setAutoDelete(True)
 
-    def start(self, pool: QThreadPool | None = None) -> None:
-        if pool is None:
-            pool = QThreadPool.globalInstance()
-        pool.start(self)
+    def start(self, thread_pool: QThreadPool | None) -> None:
+        if thread_pool is None:
+            thread_pool = QThreadPool.globalInstance()
+        thread_pool.start(self)
 
 
 class NThread(BaseThread, QThread):
