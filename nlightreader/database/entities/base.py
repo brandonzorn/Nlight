@@ -34,3 +34,11 @@ class ModelBase(Base):
         Integer,
         nullable=False,
     )
+
+class TranslatedContentModelBase(ModelBase):
+    __abstract__ = True
+
+    title: Mapped[str | None] = mapped_column(UnicodeText)
+
+    language: Mapped[str | None] = mapped_column(UnicodeText)
+    translator: Mapped[str | None] = mapped_column(UnicodeText, nullable=True)
